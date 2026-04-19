@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<title>연대보증 확약서</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+  :root {
+    --ink: #0b1220;
+    --ink-soft: #1e293b;
+    --mute: #475569;
+    --muted2: #64748b;
+    --line: #d6dbe3;
+    --line-strong: #b6bcc7;
+    --bg-soft: #f4f6f9;
+    --bg-tint: #eef1f5;
+    --danger: #b91c1c;
+    --danger-soft: #fef2f2;
+  }
+
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    font-size: 12px; color: var(--ink); line-height: 1.65;
+    font-weight: 450;
+    font-feature-settings: "tnum" 1;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page {
+    width: 210mm; min-height: 297mm; padding: 10mm 12mm; margin: 0 auto;
+    background: #fff; position: relative;
+    display: flex; flex-direction: column;
+  }
+  @media screen {
+    body { background: #eef1f5; padding: 20px 0; }
+    .page {
+      box-shadow: 0 1px 3px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.08);
+      border-radius: 2px;
+      background:
+        linear-gradient(transparent calc(297mm - 1px), rgba(220,38,38,0.4) calc(297mm - 1px), rgba(220,38,38,0.4) 297mm, transparent 297mm),
+        #fff;
+    }
+  }
+  @media print {
+    .page { padding: 10mm 12mm; margin: 0; box-shadow: none; }
+    body { background: #fff; margin: 0; }
+    .no-print { display: none !important; }
+  }
+
+  /* ─── Header ─── */
+  .doc-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    padding-bottom: 10px; margin-bottom: 16px; border-bottom: 1px solid var(--ink);
+  }
+  .brand-name { font-weight: 700; font-size: 13px; letter-spacing: -0.3px; color: var(--ink); }
+  .doc-title { text-align: right; }
+  .doc-title .eyebrow { font-size: 10.5px; color: var(--mute); margin-bottom: 2px; font-weight: 500; }
+  .doc-title .title { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+
+  /* ─── Footer ─── */
+  .doc-footer {
+    margin-top: auto; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 10px; color: var(--mute); border-top: 1px solid var(--line);
+  }
+
+  /* ─── Title ─── */
+  .page-title {
+    text-align: center; font-size: 22px; font-weight: 700;
+    letter-spacing: -0.5px; margin: 24px 0 8px;
+  }
+  .page-sub {
+    text-align: center; font-size: 12px; color: var(--mute);
+    margin-bottom: 28px; font-weight: 500;
+  }
+
+  /* ─── Tables ─── */
+  table { border-collapse: collapse; width: 100%; }
+  table.data {
+    border-top: 1.5px solid var(--line);
+    border-bottom: 1.5px solid var(--line);
+  }
+  table.data td, table.data th {
+    border: none; padding: 9px 12px;
+    font-size: 11.5px; line-height: 1.55;
+    vertical-align: middle; text-align: left; height: 34px;
+  }
+  table.data tbody tr + tr > th,
+  table.data tbody tr + tr > td {
+    border-top: 1px solid #eef0f4;
+  }
+  table.data tbody th {
+    background: var(--bg-soft); font-weight: 500; color: var(--mute); width: 120px;
+  }
+
+  .num-mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+  .text-center { text-align: center !important; }
+  .text-bold { font-weight: 700; }
+  .text-mute { color: var(--mute); }
+  .text-danger { color: var(--danger); }
+  .text-soft { color: var(--ink-soft); }
+  .fs-xs { font-size: 10.5px; }
+  .fs-sm { font-size: 11px; }
+
+  h2.section {
+    font-size: 14px; font-weight: 700; margin: 22px 0 10px;
+    display: flex; align-items: center; gap: 8px;
+    letter-spacing: -0.3px;
+  }
+  h2.section .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 20px; height: 20px; padding: 0 6px; border-radius: 2px;
+    background: var(--ink); color: #fff; font-size: 11px; font-weight: 700;
+  }
+
+  /* ─── Card ─── */
+  .card {
+    border: 1px solid var(--line); border-radius: 2px;
+    padding: 14px 16px; background: #fff;
+  }
+
+  /* ─── Notice ─── */
+  .notice-list { list-style: none; padding: 0; margin: 0; }
+  .notice-list li { position: relative; padding: 4px 0 4px 14px; font-size: 11.5px; line-height: 1.7; color: var(--ink-soft); }
+  .notice-list li::before {
+    content: ''; position: absolute; left: 2px; top: 11px;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--ink-soft);
+  }
+
+  /* ─── Signature ─── */
+  .sign-block {
+    margin-top: 24px; padding: 16px 20px;
+    border: 1px solid var(--line); border-radius: 2px; background: var(--bg-soft);
+  }
+  .sign-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: end;
+  }
+  .sign-col .role { font-size: 11.5px; color: var(--mute); margin-bottom: 5px; letter-spacing: 1px; }
+  .sign-col .name { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+  .sign-col .name .seal-mark { font-size: 12px; color: var(--mute); font-weight: 500; margin-left: 6px; vertical-align: 4px; }
+  .sign-col--right { text-align: right; }
+  .sign-col .company { font-size: 14.5px; font-weight: 700; }
+  .sign-col .meta { font-size: 12px; color: var(--mute); margin-top: 3px; }
+
+  .confirm-box {
+    text-align: center; font-size: 12px; font-weight: 600; color: var(--ink);
+    padding: 10px 16px; margin-bottom: 14px;
+    border-bottom: 1px dashed var(--line-strong);
+    line-height: 1.8;
+  }
+  .chk { display: inline-block; width: 12px; height: 12px; border: 1px solid var(--line-strong); border-radius: 0; vertical-align: middle; margin: 0 4px; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="doc-header">
+    <div><div class="brand-name" data-field="company_name">손오공렌터카 주식회사</div></div>
+    <div class="doc-title"><div class="eyebrow">별첨</div><div class="title">연대보증 확약서</div></div>
+  </div>
+
+  <div class="page-title">연대보증 확약서</div>
+  <div class="page-sub">본 확약서는 아래 자동차 임대차계약에 대한 연대보증 의사를 확인하기 위해 작성됩니다.</div>
+
+  <!-- 임차인 (피보증인) -->
+  <h2 class="section"><span class="num">1</span>임차인 (피보증인)</h2>
+  <table class="data">
+    <colgroup><col style="width:18%;"><col style="width:32%;"><col style="width:18%;"><col style="width:32%;"></colgroup>
+    <tbody>
+      <tr>
+        <th>성명</th><td data-field="customer_name">홍길동</td>
+        <th>계약서 번호</th><td class="num-mono" data-field="contract_code">—</td>
+      </tr>
+      <tr>
+        <th>전화번호</th><td data-field="customer_phone">010-1234-1234</td>
+        <th>주민번호</th><td data-field="customer_id">123456-1234567</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 계약 요약 -->
+  <h2 class="section"><span class="num">2</span>계약 요약</h2>
+  <table class="data">
+    <colgroup><col style="width:18%;"><col style="width:32%;"><col style="width:18%;"><col style="width:32%;"></colgroup>
+    <tbody>
+      <tr>
+        <th>차량</th><td><span data-field="maker">현대</span> <span class="text-bold" data-field="model">G80</span></td>
+        <th>차량번호</th><td class="num-mono" data-field="car_number">12가1234</td>
+      </tr>
+      <tr>
+        <th>대여 기간</th><td data-field="rent_month">48 개월</td>
+        <th>계약 기간</th><td><span data-field="contract_start">2026.__.__ </span> ~ <span data-field="contract_end">2030.__.__</span></td>
+      </tr>
+      <tr>
+        <th>월 대여료</th><td class="text-bold"><span data-field="rent_amount">1,000,000</span> 원</td>
+        <th>보증금</th><td class="text-bold"><span data-field="deposit_amount">1,000,000</span> 원</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 연대보증인 -->
+  <h2 class="section"><span class="num">3</span>연대보증인</h2>
+  <table class="data">
+    <colgroup><col style="width:18%;"><col style="width:32%;"><col style="width:18%;"><col style="width:32%;"></colgroup>
+    <tbody>
+      <tr>
+        <th>성명</th><td data-field="guarantor_name">홍길남</td>
+        <th>주민번호</th><td data-field="guarantor_rrn">650101-1234567</td>
+      </tr>
+      <tr>
+        <th>관계</th><td data-field="guarantor_relation">부</td>
+        <th>연락처</th><td data-field="guarantor_phone">010-1111-2222</td>
+      </tr>
+      <tr>
+        <th>직업</th><td data-field="guarantor_occupation">자영업</td>
+        <th>보증 범위</th><td class="text-bold text-danger" data-field="guarantor_scope">전액 연대</td>
+      </tr>
+      <tr>
+        <th>주소</th><td colspan="3" data-field="guarantor_address">—</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 보증 내용 -->
+  <h2 class="section"><span class="num">4</span>보증 내용</h2>
+  <div class="card" style="background:var(--bg-soft);">
+    <ul class="notice-list">
+      <li>본인은 상기 임차인(계약자)이 체결한 자동차 임대차계약에 대하여 <strong>연대보증인</strong>이 될 것을 확약합니다.</li>
+      <li>임차인이 본 계약에 따른 <strong>대여료·보증금·위약금·손해배상금·기타 일체의 채무</strong>를 이행하지 않을 경우, 연대보증인은 임차인과 동일한 책임으로 해당 채무 전액을 부담합니다.</li>
+      <li>보증 기간은 <strong>임대차계약 체결일부터 계약 종료 및 채무 완제일까지</strong>이며, 계약 연장 시 보증 기간도 자동 연장됩니다.</li>
+      <li>연대보증인은 임차인의 채무불이행 시 별도의 최고·검색 없이 즉시 이행할 의무가 있습니다. (민법 제437조)</li>
+      <li>본 확약서의 내용은 본 계약서 <strong>약관 제14조 (기타 약정)</strong>에 따릅니다.</li>
+    </ul>
+  </div>
+
+  <p class="fs-xs text-mute" style="margin-top:8px;">
+    ※ 본 확약서는 상기 임대차계약서와 일체로서 효력을 가지며, 연대보증인이 서명 또는 전자서명한 시점부터 법적 구속력이 발생합니다.
+  </p>
+
+  <!-- 서명 -->
+  <div class="sign-mini" style="margin-top:24px;">
+    <span class="sm-confirm"><span class="chk"></span> 상기 내용에 대해 설명을 듣고 확인 후 서명합니다.</span>
+    <span class="sm-signature">
+      <span class="sm-label">연대보증인</span>
+      <span class="sm-name" data-field="guarantor_name">홍길남</span>
+      <span class="sm-seal">(서명 또는 날인)</span>
+    </span>
+  </div>
+
+  <div class="doc-footer">
+    <div><span data-field="company_name">손오공렌터카 주식회사</span> &nbsp;·&nbsp; 대표전화 <span class="num-mono" data-field="company_phone">1544-3871</span></div>
+    <div>1 / 1</div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+@layer dark {
+  :root[data-theme="dark"] {
+    --c-bg:           #09090b;
+    --c-bg-sub:       #111113;
+    --c-bg-hover:     #1a1a1e;
+    --c-bg-active:    #222226;
+    --c-surface:      #0f0f11;
+    --c-border:       #27272a;
+    --c-border-strong:#3f3f46;
+
+    --c-text:         #e4e4e7;
+    --c-text-sub:     #a1a1aa;
+    --c-text-muted:   #52525b;
+    --c-text-inv:     #09090b;
+
+    --c-accent:       #6366f1;
+    --c-accent-hover: #818cf8;
+    --c-accent-soft:  rgba(99, 102, 241, .12);
+
+    --c-ok-bg:        rgba(13, 148, 136, .1);
+    --c-warn-bg:      rgba(217, 119, 6, .1);
+    --c-err-bg:       rgba(220, 38, 38, .1);
+    --c-info-bg:      rgba(37, 99, 235, .1);
+
+    --shadow-sm:      none;
+    --shadow-md:      0 1px 3px rgba(0,0,0,.4);
+    --shadow-lg:      0 2px 8px rgba(0,0,0,.5);
+    --shadow-popup:   0 4px 16px rgba(0,0,0,.6);
+  }
+}

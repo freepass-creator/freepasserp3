@@ -1,0 +1,136 @@
+@layer tokens {
+  :root {
+    /* ── Colors — B2B 톤 (짙고 단단하게) ── */
+    --c-bg:           #f8f9fa;
+    --c-bg-sub:       #f1f3f5;
+    --c-bg-hover:     #e9ecef;
+    --c-bg-active:    #dee2e6;
+    --c-surface:      #ffffff;
+    --c-border-soft:  #edeef0;    /* 보기모드 입력칸 — 얇고 은은 */
+    --c-border:       #d5d8dc;
+    --c-border-strong:#adb5bd;
+
+    --c-text:         #111111;
+    --c-text-sub:     #495057;
+    --c-text-muted:   #868e96;
+    --c-text-inv:     #ffffff;
+
+    /* freepass mobility CI — main navy + accent sky */
+    --c-accent:       #1B2A4A;    /* main — 딥 네이비 */
+    --c-accent-hover: #0F1B35;    /* 진한 네이비 (hover) */
+    --c-accent-soft:  #E6EEF8;    /* 아주 연한 스카이 (배경) */
+    --c-brand-base:   #7F93B3;    /* base (슬레이트) */
+    --c-brand-sky:    #9EC5F3;    /* 악센트 (강조 링크) */
+
+    /* Status — 채도 낮고 무게감 */
+    --c-ok:           #0d9488;
+    --c-ok-bg:        #f0fdfa;
+    --c-warn:         #d97706;
+    --c-warn-bg:      #fffbeb;
+    --c-err:          #dc2626;
+    --c-err-bg:       #fef2f2;
+    --c-info:         #2563eb;
+    --c-info-bg:      #eff6ff;
+    /* 썸네일 overlay 전용 반투명 톤 — 사진 위 가독성 고려 */
+    --c-overlay-safe:    rgba(96, 165, 250, 0.60);  /* 연한 파랑: 안전·무심사 */
+    --c-overlay-caution: rgba(244, 114, 182, 0.60); /* 연한 분홍: 주의·심사필요 */
+    /* 모달·팝업·갤러리 overlay (어두운 레이어) */
+    --c-overlay-xdark:   rgba(0, 0, 0, 0.92);  /* 전체화면 이미지 뷰어 */
+    --c-overlay-dark:    rgba(0, 0, 0, 0.60);  /* 모달 backdrop */
+    --c-overlay-med:     rgba(0, 0, 0, 0.50);  /* gallery nav 기본 */
+    --c-overlay-soft:    rgba(0, 0, 0, 0.40);  /* 모바일 backdrop */
+    --c-overlay-chip:    rgba(0, 0, 0, 0.55);  /* 사진 위 칩/버튼 */
+    --c-overlay-thin:    rgba(0, 0, 0, 0.35);  /* avatar 위 글자 */
+    --c-rose:         #be185d;
+    --c-rose-bg:      #fdf2f8;
+    --c-cyan:         #0891b2;
+    --c-cyan-bg:      #ecfeff;
+    --c-lime:         #65a30d;
+    --c-lime-bg:      #f7fee7;
+    --c-emerald:      #059669;
+    --c-emerald-bg:   #d1fae5;
+    --c-gold:         #ca8a04;
+    --c-gold-bg:      #fef3c7;
+    --c-green:        #16a34a;
+    --c-green-bg:     #dcfce7;
+    --c-purple:       #9333ea;
+    --c-purple-bg:    #faf5ff;
+    --c-sky:          #0284c7;
+    --c-sky-bg:       #f0f9ff;
+    --c-pink:         #db2777;
+    --c-pink-bg:      #fdf2f8;
+
+    /* Vehicle status */
+    --c-status-avail:     #0d9488;
+    --c-status-consult:   #d97706;
+    --c-status-contract:  #2563eb;
+    --c-status-delivered: #4b5563;
+    --c-status-blocked:   #dc2626;
+
+    /* ── Typography ── */
+    --font:           'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --fs-2xs:         10px;
+    --fs-xs:          11px;
+    --fs-sm:          12px;
+    --fs-base:        13px;
+    --fs-md:          14px;
+    --fs-lg:          16px;
+    --fs-xl:          18px;
+    --fs-2xl:         22px;
+    /* 텍스트 굵기 — "쨍"하지 않게, 계층으로 차등
+     *  normal  (400) 본문 · 보조 텍스트
+     *  medium  (500) 목록 값·강조 라벨 — 얇지만 눈에 띔
+     *  semibold(600) 섹션 제목·카드 제목 — 기본 굵은 단계 (쨍 X)
+     *  bold    (600) semibold 별칭 (기존 호환)
+     *  heavy   (700) 페이지 타이틀·hero — 매우 절제해서 사용 */
+    --fw-normal:      400;
+    --fw-medium:      500;
+    --fw-semibold:    600;
+    --fw-bold:        600;
+    --fw-heavy:       700;
+    --lh:             1.5;
+
+    /* ── Spacing (4pt grid) ── */
+    --sp-1:   4px;
+    --sp-2:   8px;
+    --sp-3:   12px;
+    --sp-4:   16px;
+    --sp-5:   20px;
+    --sp-6:   24px;
+    --sp-8:   32px;
+    --sp-10:  40px;
+    --sp-12:  48px;
+
+    /* ── Sizing ── */
+    --ctrl-h-xs:      22px;
+    --ctrl-h-sm:      28px;
+    --ctrl-h:         32px;
+    --ctrl-h-lg:      40px;
+    --ctrl-r:         2px;
+    --ctrl-pad:       6px 10px;
+    --panel-head-h:   36px;
+    --topbar-h:       48px;
+
+    /* ── Sidebar ── */
+    --sb-w:           200px;
+
+    /* ── Shadows — 최소화 (보더로 구분) ── */
+    --shadow-sm:      0 1px 2px rgba(0,0,0,.05);
+    --shadow-md:      0 1px 4px rgba(0,0,0,.08);
+    --shadow-lg:      0 2px 8px rgba(0,0,0,.1);
+    --shadow-popup:   0 4px 16px rgba(0,0,0,.14);
+
+    /* ── Z-index ── */
+    --z-base:         1;
+    --z-sticky:       100;
+    --z-dropdown:     500;
+    --z-overlay:      1000;
+    --z-modal:        2000;
+    --z-toast:        3000;
+
+    /* ── Transitions ── */
+    --ease:           cubic-bezier(.4, 0, .2, 1);
+    --dur:            150ms;
+    --dur-slow:       250ms;
+  }
+}

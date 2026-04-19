@@ -1,0 +1,4 @@
+/* === Layer Order Declaration ===
+   낮은 레이어가 먼저 선언 → 높은 레이어가 우선
+   !important 없이 캐스케이드 제어 */
+@layer reset, tokens, layout, components, pages, utilities, dark;

@@ -1,0 +1,172 @@
+@layer pages {
+  /* ── Contract Send Root ── */
+  .cs-root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .cs-body {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Left: A4 Preview ── */
+  .cs-stage {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--c-bg-sub);
+  }
+
+  .cs-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .cs-toolbar-info {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+
+  .cs-zoom {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+  }
+
+  .cs-iframe-wrap {
+    flex: 1;
+    overflow: auto;
+    padding: var(--sp-4);
+    display: flex;
+    justify-content: center;
+  }
+
+  .cs-iframe {
+    width: 210mm;
+    min-height: 297mm;
+    border: none;
+    background: #fff;
+    box-shadow: var(--shadow-lg);
+    border-radius: 2px;
+    transition: transform var(--dur) var(--ease);
+  }
+
+  /* ── Right: Form Panel ── */
+  .cs-form-panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-surface);
+    border-left: 1px solid var(--c-border);
+    overflow: hidden;
+  }
+
+  .cs-form-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .cs-form-actions {
+    display: flex;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-4);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .cs-form-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-3);
+  }
+
+  /* ── Form Sections ── */
+  .cs-section {
+    margin-bottom: var(--sp-3);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    overflow: hidden;
+  }
+
+  .cs-section-sum {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    background: var(--c-bg-sub);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+
+  .cs-section-sum::-webkit-details-marker { display: none; }
+
+  .cs-section-sum i {
+    font-size: 16px;
+    color: var(--c-text-sub);
+  }
+
+  .cs-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-2);
+    padding: var(--sp-3);
+  }
+
+  .cs-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cs-field-full {
+    grid-column: 1 / -1;
+  }
+
+  .cs-field span {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    font-weight: var(--fw-medium);
+  }
+
+  .cs-field input,
+  .cs-field select,
+  .cs-field textarea {
+    height: var(--ctrl-h);
+    padding: var(--ctrl-pad);
+    font-size: var(--fs-sm);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    outline: none;
+    background: var(--c-surface);
+    font-family: inherit;
+    width: 100%;
+  }
+
+  .cs-field textarea {
+    height: auto;
+    min-height: 60px;
+    resize: vertical;
+  }
+
+  .cs-field input:focus,
+  .cs-field select:focus,
+  .cs-field textarea:focus {
+    border-color: var(--c-accent);
+    box-shadow: 0 0 0 2px var(--c-accent-soft);
+  }
+}

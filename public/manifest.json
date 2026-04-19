@@ -1,0 +1,12 @@
+{
+  "name": "freepass erp",
+  "short_name": "freepass erp",
+  "description": "업무용 차량 거래 플랫폼",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#868e96",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

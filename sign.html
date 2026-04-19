@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>전자서명 · freepass</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: system-ui, -apple-system, 'Pretendard', sans-serif; background: #f5f5f5; color: #222; }
+    body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 16px; }
+    .head { font-size: 20px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 12px; }
+    .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+    .info-row:last-child { border-bottom: 0; }
+    .info-label { color: #666; }
+    .info-value { font-weight: 600; }
+    .sig-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #333; }
+    .sig-box { border: 2px dashed #bbb; border-radius: 8px; background: #fafafa; touch-action: none; cursor: crosshair; display: block; width: 100%; height: 240px; }
+    .sig-box.is-signed { border-style: solid; border-color: #4caf50; background: #fff; }
+    .btns { display: flex; gap: 8px; margin-top: 12px; }
+    .btn { flex: 1; padding: 14px; border: 0; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn-clear { background: #eee; color: #555; }
+    .btn-submit { background: #2d7ff9; color: #fff; }
+    .btn-submit:disabled { background: #bbb; cursor: not-allowed; }
+    .hint { font-size: 12px; color: #888; text-align: center; margin-top: 8px; }
+    .done { text-align: center; padding: 40px 20px; }
+    .done h2 { font-size: 22px; color: #4caf50; margin-bottom: 8px; }
+    .done p { color: #666; font-size: 14px; }
+    .err { text-align: center; padding: 40px 20px; color: #c62828; }
+    #loading { text-align: center; padding: 60px 20px; color: #888; }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="app">
+    <div id="loading">로딩 중...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import { getDatabase, ref, get, update } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js';
+
+    const app = initializeApp({
+      apiKey: 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY',
+      databaseURL: 'https://freepasserp3-default-rtdb.asia-southeast1.firebasedatabase.app',
+      projectId: 'freepasserp3',
+    });
+    const db = getDatabase(app);
+
+    const token = new URLSearchParams(location.search).get('t');
+    const appEl = document.getElementById('app');
+
+    if (!token) {
+      appEl.innerHTML = '<div class="err">❌ 잘못된 링크입니다.</div>';
+    } else {
+      (async () => {
+        try {
+          const snap = await get(ref(db, `contract_sign/${token}`));
+          const data = snap.val();
+          if (!data) {
+            appEl.innerHTML = '<div class="err">❌ 서명 요청을 찾을 수 없습니다.<br><small>링크가 만료되었거나 이미 취소되었습니다.</small></div>';
+            return;
+          }
+          if (data.signed_at) {
+            appEl.innerHTML = `<div class="done"><h2>✓ 이미 서명하셨습니다</h2><p>서명일시: ${new Date(data.signed_at).toLocaleString('ko-KR')}</p></div>`;
+            return;
+          }
+          if (data.expires_at && data.expires_at < Date.now()) {
+            appEl.innerHTML = '<div class="err">❌ 만료된 서명 요청입니다.</div>';
+            return;
+          }
+          renderSignForm(data);
+        } catch (e) {
+          console.error(e);
+          appEl.innerHTML = '<div class="err">❌ 서명 요청을 불러올 수 없습니다.</div>';
+        }
+      })();
+    }
+
+    function renderSignForm(data) {
+      appEl.innerHTML = `
+        <div class="head"><i>✍</i> 전자서명</div>
+        <div class="card">
+          <div class="sig-title">계약 정보</div>
+          <div class="info-row"><span class="info-label">차량</span><span class="info-value">${data.car_number || ''} ${data.model_name || ''}</span></div>
+          <div class="info-row"><span class="info-label">계약</span><span class="info-value">${data.contract_code || ''}</span></div>
+          <div class="info-row"><span class="info-label">고객명</span><span class="info-value">${data.customer_name || '-'}</span></div>
+          ${data.rent_amount ? `<div class="info-row"><span class="info-label">월 대여료</span><span class="info-value">${Number(data.rent_amount).toLocaleString('ko-KR')}원</span></div>` : ''}
+          ${data.rent_month ? `<div class="info-row"><span class="info-label">계약기간</span><span class="info-value">${data.rent_month}개월</span></div>` : ''}
+        </div>
+
+        <div class="card">
+          <div class="sig-title">서명 (아래 박스에 그려주세요)</div>
+          <canvas class="sig-box" id="sigCanvas"></canvas>
+          <div class="hint">손가락 또는 마우스로 서명해주세요</div>
+          <div class="btns">
+            <button class="btn btn-clear" id="btnClear">다시 쓰기</button>
+            <button class="btn btn-submit" id="btnSubmit" disabled>서명 제출</button>
+          </div>
+        </div>
+      `;
+      setupSignaturePad();
+    }
+
+    function setupSignaturePad() {
+      const canvas = document.getElementById('sigCanvas');
+      const ctx = canvas.getContext('2d');
+      // 고해상도 대응
+      const resize = () => {
+        const ratio = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * ratio;
+        canvas.height = rect.height * ratio;
+        ctx.scale(ratio, ratio);
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#222';
+      };
+      resize();
+
+      let drawing = false;
+      let hasInk = false;
+      const submitBtn = document.getElementById('btnSubmit');
+      const clearBtn = document.getElementById('btnClear');
+
+      const pos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const t = e.touches?.[0];
+        return { x: (t?.clientX ?? e.clientX) - rect.left, y: (t?.clientY ?? e.clientY) - rect.top };
+      };
+      const start = (e) => { e.preventDefault(); drawing = true; const { x, y } = pos(e); ctx.beginPath(); ctx.moveTo(x, y); };
+      const move  = (e) => { if (!drawing) return; e.preventDefault(); const { x, y } = pos(e); ctx.lineTo(x, y); ctx.stroke(); hasInk = true; submitBtn.disabled = false; canvas.classList.add('is-signed'); };
+      const end   = () => { drawing = false; };
+
+      canvas.addEventListener('mousedown', start);
+      canvas.addEventListener('mousemove', move);
+      canvas.addEventListener('mouseup', end);
+      canvas.addEventListener('mouseleave', end);
+      canvas.addEventListener('touchstart', start, { passive: false });
+      canvas.addEventListener('touchmove', move, { passive: false });
+      canvas.addEventListener('touchend', end);
+
+      clearBtn.addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hasInk = false;
+        submitBtn.disabled = true;
+        canvas.classList.remove('is-signed');
+      });
+
+      submitBtn.addEventListener('click', async () => {
+        if (!hasInk) return;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '제출 중...';
+        try {
+          const signaturePng = canvas.toDataURL('image/png');
+          await update(ref(db, `contract_sign/${token}`), {
+            signed_at: Date.now(),
+            signature_png: signaturePng,
+            user_agent: navigator.userAgent.slice(0, 200),
+          });
+          // 계약 상태도 '계약완료'로 best-effort 전환 (Rules 허용 시에만)
+          if (data.contract_code) {
+            try {
+              await update(ref(db, `contracts/${data.contract_code}`), {
+                contract_status: '계약완료',
+                signed_at: Date.now(),
+              });
+            } catch { /* auth 필요 — agent 측 watcher가 나중에 처리 */ }
+          }
+          appEl.innerHTML = `
+            <div class="done">
+              <h2>✓ 서명이 완료되었습니다</h2>
+              <p>계약 담당자에게 자동 전달됩니다.</p>
+              <p style="margin-top:16px;font-size:12px;color:#999;">이 창은 닫으셔도 됩니다.</p>
+            </div>
+          `;
+        } catch (e) {
+          console.error(e);
+          submitBtn.disabled = false;
+          submitBtn.textContent = '서명 제출';
+          alert('제출 실패. 네트워크 상태를 확인해주세요.');
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        // 리사이즈 시 초기화 (서명 중이 아니면)
+        if (!hasInk) resize();
+      });
+    }
+  </script>
+</body>
+</html>

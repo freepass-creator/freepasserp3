@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>freepass erp</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, system-ui, sans-serif;
+      background: #f5f5f5;
+      color: #171717;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .proposal {
+      max-width: 640px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+    }
+
+    /* Agent Card */
+    .agent-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .agent-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #6366f1;
+      flex-shrink: 0;
+    }
+    .agent-info { flex: 1; }
+    .agent-name { font-size: 16px; font-weight: 600; }
+    .agent-company { font-size: 12px; color: #525252; margin-top: 2px; }
+    .agent-contact { display: flex; gap: 8px; margin-top: 8px; }
+    .agent-contact a {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; color: #6366f1; text-decoration: none;
+      padding: 4px 12px; border: 1px solid #e5e5e5; border-radius: 4px;
+    }
+    .agent-contact a:hover { background: #eef2ff; }
+
+    /* Message */
+    .proposal-msg {
+      padding: 20px 24px;
+      font-size: 14px;
+      color: #525252;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    /* Compare Table */
+    .compare-section {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .compare-title {
+      font-size: 12px; font-weight: 600; color: #a3a3a3;
+      margin-bottom: 12px; letter-spacing: .3px;
+    }
+    .compare-table {
+      width: 100%; border-collapse: collapse;
+    }
+    .compare-table th, .compare-table td {
+      padding: 8px 12px; font-size: 13px; text-align: center;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .compare-table th {
+      font-weight: 600; font-size: 12px; color: #525252;
+      background: #fafafa;
+    }
+    .compare-table td:first-child {
+      text-align: left; color: #a3a3a3; font-size: 12px;
+    }
+    .compare-highlight { color: #6366f1; font-weight: 600; }
+
+    /* Vehicle Cards */
+    .vehicle-card {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .vehicle-card-cta {
+      display: block; margin-top: 12px; padding: 12px;
+      background: #f0f4ff; color: #2d7ff9;
+      border-radius: 8px; text-align: center;
+      text-decoration: none; font-weight: 600; font-size: 14px;
+    }
+    .vehicle-card-cta:active { background: #e0ebff; }
+    .vehicle-card-title {
+      font-size: 15px; font-weight: 600; margin-bottom: 12px;
+    }
+    .vehicle-card-gallery {
+      width: 100%; aspect-ratio: 16/9; border-radius: 4px;
+      overflow: hidden; background: #f5f5f5; margin-bottom: 12px;
+    }
+    .vehicle-card-gallery img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .vehicle-card-specs {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4px 16px; font-size: 13px;
+    }
+    .vehicle-card-row {
+      display: flex; justify-content: space-between;
+      padding: 4px 0;
+    }
+    .vehicle-card-label { color: #a3a3a3; font-size: 12px; }
+    .vehicle-card-value { font-weight: 500; }
+
+    /* CTA */
+    .proposal-cta {
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .proposal-cta p {
+      font-size: 14px; color: #525252; margin-bottom: 16px;
+    }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 12px 24px; border-radius: 4px; font-size: 14px;
+      font-weight: 500; text-decoration: none; cursor: pointer;
+      border: none;
+    }
+    .cta-phone { background: #171717; color: #fff; }
+
+    /* Footer */
+    .proposal-footer {
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 11px;
+      color: #a3a3a3;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    #loading {
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh; color: #a3a3a3; font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="proposal" id="proposal">
+    <div id="loading">로딩 중...</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import { getDatabase, ref, get, set, push } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js';
+
+    const app = initializeApp({
+      apiKey: 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY',
+      databaseURL: 'https://freepasserp3-default-rtdb.asia-southeast1.firebasedatabase.app',
+      projectId: 'freepasserp3',
+    });
+    const db = getDatabase(app);
+
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+
+    if (!id) {
+      document.getElementById('loading').textContent = '잘못된 링크입니다';
+    } else {
+      // Firebase RTDB 에서 제안서 데이터 읽기 (localStorage 대체 — 공유 링크가 다른 브라우저에서도 열림)
+      (async () => {
+        try {
+          const snap = await get(ref(db, `proposals/${id}`));
+          const data = snap.val();
+          if (!data) {
+            document.getElementById('loading').textContent = '제안서를 찾을 수 없습니다';
+            return;
+          }
+          loadProposal(data);
+          trackView(id);
+        } catch (e) {
+          document.getElementById('loading').textContent = '제안서를 불러올 수 없습니다';
+        }
+      })();
+    }
+
+    // Track view → Firebase
+    async function trackView(proposalId) {
+      try {
+        const viewRef = push(ref(db, `proposal_views/${proposalId}`));
+        await set(viewRef, {
+          viewed_at: Date.now(),
+          user_agent: navigator.userAgent.slice(0, 100),
+          referrer: document.referrer || '',
+        });
+      } catch (e) { /* ignore */ }
+    }
+
+    // Track product card views
+    function trackProductView(proposalId, productKey) {
+      try {
+        const vRef = push(ref(db, `proposal_views/${proposalId}/products`));
+        set(vRef, { product_key: productKey, viewed_at: Date.now() });
+      } catch (e) { /* ignore */ }
+    }
+
+    async function loadProposal(data) {
+      // Load agent info
+      let agent = {};
+      if (data.agent) {
+        // Find user by user_code
+        const usersSnap = await get(ref(db, 'users'));
+        const users = usersSnap.val() || {};
+        agent = Object.values(users).find(u => u.user_code === data.agent) || {};
+      }
+
+      // Load products
+      const products = [];
+      for (const key of data.products) {
+        const snap = await get(ref(db, `products/${key}`));
+        if (snap.val()) products.push({ _key: key, ...snap.val() });
+      }
+
+      renderProposal(agent, products);
+    }
+
+    function renderProposal(agent, products) {
+      const el = document.getElementById('proposal');
+
+      const fmtMoney = (v) => {
+        if (!v) return '-';
+        const n = Number(v);
+        if (isNaN(n)) return v;
+        if (n >= 10000) return Math.round(n / 10000) + '만';
+        return n.toLocaleString();
+      };
+
+      // Compare table
+      let compareHtml = '';
+      if (products.length > 1) {
+        compareHtml = `
+          <div class="compare-section">
+            <div class="compare-title">비교표</div>
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  ${products.map(p => `<th>${(p.model||p.model_name) || ''}</th>`).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>월납입</td>${products.map(p => {
+                  const price = p.price?.['24'] || p.price?.['12'] || p.price?.['36'] || {};
+                  return `<td class="compare-highlight">${fmtMoney(price.rent)}원</td>`;
+                }).join('')}</tr>
+                <tr><td>보증금</td>${products.map(p => {
+                  const price = p.price?.['24'] || p.price?.['12'] || p.price?.['36'] || {};
+                  return `<td>${fmtMoney(price.deposit)}원</td>`;
+                }).join('')}</tr>
+                <tr><td>연식</td>${products.map(p => `<td>${p.year || '-'}</td>`).join('')}</tr>
+                <tr><td>연료</td>${products.map(p => `<td>${p.fuel_type || '-'}</td>`).join('')}</tr>
+                <tr><td>주행</td>${products.map(p => `<td>${p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '-'}</td>`).join('')}</tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      // Vehicle cards
+      const cardsHtml = products.map(p => {
+        const images = p.image_urls || p.images || [];
+        const imgList = Array.isArray(images) ? images : Object.values(images);
+        const price = p.price || {};
+        const p24 = price['24'] || price['12'] || price['36'] || {};
+
+        return `
+          <div class="vehicle-card">
+            <div class="vehicle-card-title">${p.year || ''} ${(p.model||p.model_name) || ''} ${p.sub_model || ''}</div>
+            ${imgList.length > 0 ? `
+              <div class="vehicle-card-gallery"><img src="${imgList[0]}" alt=""></div>
+            ` : ''}
+            <div class="vehicle-card-specs">
+              <div class="vehicle-card-row"><span class="vehicle-card-label">차량번호</span><span class="vehicle-card-value">${p.car_number || '-'}</span></div>
+              <div class="vehicle-card-row"><span class="vehicle-card-label">연식</span><span class="vehicle-card-value">${p.year || '-'}</span></div>
+              <div class="vehicle-card-row"><span class="vehicle-card-label">연료</span><span class="vehicle-card-value">${p.fuel_type || '-'}</span></div>
+              <div class="vehicle-card-row"><span class="vehicle-card-label">주행</span><span class="vehicle-card-value">${p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '-'}</span></div>
+              <div class="vehicle-card-row"><span class="vehicle-card-label">색상</span><span class="vehicle-card-value">${p.ext_color || p.exterior_color || '-'}</span></div>
+              <div class="vehicle-card-row"><span class="vehicle-card-label">위치</span><span class="vehicle-card-value">${p.location || '-'}</span></div>
+            </div>
+            ${agent.phone ? `
+              <a class="vehicle-card-cta" href="tel:${agent.phone}">
+                📞 이 차량 전화문의
+              </a>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      el.innerHTML = `
+        <div class="agent-card">
+          <div class="agent-avatar">👤</div>
+          <div class="agent-info">
+            <div class="agent-name">${agent.name || '영업자'}</div>
+            <div class="agent-company">${agent.company_name || ''} ${agent.position || ''}</div>
+            <div class="agent-contact">
+              ${agent.phone ? `<a href="tel:${agent.phone}">📞 전화</a>` : ''}
+              <a href="#" id="saveContact">📇 연락처 저장</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proposal-msg">
+          고객님께 맞는 차량 ${products.length}대를 추천드립니다.
+        </div>
+
+        ${compareHtml}
+        ${cardsHtml}
+
+        ${agent.phone ? `
+          <div class="proposal-cta">
+            <p>마음에 드는 차량이 있으신가요?</p>
+            <a class="cta-btn cta-phone" href="tel:${agent.phone}">📞 전화문의</a>
+          </div>
+        ` : ''}
+
+        <div class="proposal-footer">freepass erp</div>
+      `;
+
+      // vCard download
+      document.getElementById('saveContact')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        const vcard = [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          `FN:${agent.name || ''}`,
+          `ORG:${agent.company_name || ''}`,
+          `TITLE:${agent.position || ''}`,
+          `TEL:${agent.phone || ''}`,
+          `EMAIL:${agent.email || ''}`,
+          'END:VCARD'
+        ].join('\\n');
+        const blob = new Blob([vcard], { type: 'text/vcard' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${agent.name || 'contact'}.vcf`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+  </script>
+</body>
+</html>

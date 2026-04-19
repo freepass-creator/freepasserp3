@@ -1,0 +1,406 @@
+@layer pages {
+  /* ══ PG2: 2-Panel Layout (계약/정산 공통) ══ */
+  .pg2 {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .pg2-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .pg2-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .pg2-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    padding: 0 var(--sp-3);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    background: var(--c-bg-sub);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+    height: var(--panel-head-h);
+  }
+
+  .pg2-filter {
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .pg2-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .pg2-resize {
+    width: 1px;
+    background: var(--c-border);
+    flex-shrink: 0;
+    position: relative;
+    transition: background var(--dur);
+  }
+  .pg2-resize::after {
+    content: '';
+    position: absolute;
+    inset: 0 -3px;
+    cursor: col-resize;
+  }
+  .pg2-resize:hover { background: var(--c-accent); }
+
+  /* stale 표시는 아바타 상태색으로 충분 (좌측 바 제거) */
+
+  .contract-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Kanban ── */
+  .kanban {
+    display: flex;
+    gap: 1px;
+    flex: 1;
+    overflow-x: auto;
+    background: var(--c-border);
+  }
+
+  .kanban-col {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg);
+    overflow: hidden;
+  }
+
+  .kanban-col-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .kanban-col-title {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    color: var(--c-text-sub);
+  }
+
+  .kanban-col-count {
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    background: var(--c-bg-sub);
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+
+  .kanban-col-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+
+  /* ── Kanban Card ── */
+  .kanban-card {
+    padding: var(--sp-3);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    cursor: pointer;
+    transition: all var(--dur) var(--ease);
+  }
+
+  .kanban-card:hover {
+    border-color: var(--c-border-strong);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .kanban-card.is-active {
+    border-color: var(--c-accent);
+    box-shadow: 0 0 0 1px var(--c-accent);
+  }
+
+  .kanban-card.is-stale {
+    border-left: 3px solid var(--c-err);
+  }
+
+  .kanban-card-title {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    margin-bottom: 4px;
+  }
+
+  .kanban-card-sub {
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+  }
+
+  .kanban-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--sp-2);
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+  }
+
+  .kanban-card-days {
+    font-weight: var(--fw-medium);
+  }
+
+  .kanban-card-days.is-stale {
+    color: var(--c-err);
+  }
+
+  /* ── Contract Detail ── */
+  .contract-detail {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .contract-detail-header {
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .contract-detail-title {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+  }
+
+  .contract-detail-sub {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    margin-top: 2px;
+  }
+
+  .contract-detail-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-3) var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+  }
+
+  /* ── Steps (원클릭 진행) ── */
+  .contract-steps {
+    display: flex;
+    gap: 2px;
+    background: var(--c-bg-sub);
+    border-radius: var(--ctrl-r);
+    padding: 2px;
+    overflow-x: auto;
+  }
+
+  .contract-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--sp-2) var(--sp-1);
+    border-radius: var(--ctrl-r);
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    cursor: pointer;
+    transition: all var(--dur) var(--ease);
+    min-width: 56px;
+    text-align: center;
+  }
+
+  .contract-step i {
+    font-size: 18px;
+  }
+
+  .contract-step:hover {
+    background: var(--c-bg-hover);
+  }
+
+  .contract-step.is-done {
+    background: var(--c-surface);
+    color: var(--c-accent);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .contract-step.is-current {
+    background: var(--c-accent);
+    color: var(--c-text-inv);
+  }
+
+  /* ── Contract Info Section ── */
+  .contract-section {
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    overflow: hidden;
+  }
+
+  .contract-section-title {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-sub);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--c-bg-sub);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .contract-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: var(--sp-2) var(--sp-3);
+  }
+
+  .contract-field {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-1);
+    font-size: var(--fs-sm);
+  }
+  .contract-field-label { margin-right: auto; }
+
+  .contract-field-label {
+    color: var(--c-text-muted);
+    font-size: var(--fs-xs);
+  }
+
+  .contract-field-value {
+    font-weight: var(--fw-medium);
+  }
+
+  /* 계약 섹션 그리드 내부 인라인 값 입력 — 전역 3모드 상속, 크기·정렬만 */
+  .contract-section-grid .contract-field-input {
+    width: 120px;
+    height: 24px;
+    padding: 2px 6px;
+    font-size: var(--fs-sm);
+    text-align: right;
+    font-weight: var(--fw-medium);
+  }
+
+  /* ── Status toggle ── */
+  .status-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: var(--ctrl-r);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+    transition: all var(--dur) var(--ease);
+    user-select: none;
+  }
+
+  .status-toggle:hover {
+    filter: brightness(.95);
+  }
+
+  .status-toggle .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── Settlement ── */
+  .settle-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .settle-detail {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .settle-detail-header {
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .settle-detail-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-3) var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+  }
+
+  .settle-amount {
+    text-align: center;
+    padding: var(--sp-4);
+    background: var(--c-bg-sub);
+    border-radius: var(--ctrl-r);
+  }
+
+  .settle-amount-label {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    margin-bottom: var(--sp-1);
+  }
+
+  .settle-amount-value {
+    font-size: var(--fs-2xl);
+    font-weight: var(--fw-bold);
+    color: var(--c-accent);
+  }
+
+  .settle-confirms {
+    display: flex;
+    gap: var(--sp-2);
+  }
+
+  .settle-confirm {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: var(--sp-3);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+    cursor: pointer;
+    transition: all var(--dur) var(--ease);
+  }
+
+  .settle-confirm:hover {
+    background: var(--c-bg-hover);
+  }
+
+  .settle-confirm.is-confirmed {
+    background: var(--c-ok-bg);
+    border-color: var(--c-ok);
+    color: var(--c-ok);
+  }
+
+  .settle-confirm i {
+    font-size: 20px;
+  }
+}

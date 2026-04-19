@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="freepass erp">
+  <meta property="og:description" content="다양한 장기렌트 차량을 만나보세요">
+  <meta property="og:type" content="website">
+  <title>freepass erp</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard', -apple-system, system-ui, sans-serif; background: #fafafa; color: #171717; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+
+    .catalog { max-width: 960px; margin: 0 auto; min-height: 100vh; }
+
+    /* Header / Branding */
+    .cat-header { padding: 24px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+    .cat-brand { display: flex; align-items: center; gap: 12px; }
+    .cat-brand-logo { width: 40px; height: 40px; border-radius: 50%; background: #eef2ff; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #6366f1; flex-shrink: 0; }
+    .cat-brand-name { font-size: 18px; font-weight: 600; }
+    .cat-brand-sub { font-size: 12px; color: #525252; }
+
+    /* Agent profile card */
+    .cat-agent { display: flex; align-items: center; gap: 16px; padding: 20px 24px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+    .cat-agent-avatar { width: 48px; height: 48px; border-radius: 50%; background: #eef2ff; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #6366f1; }
+    .cat-agent-name { font-size: 15px; font-weight: 600; }
+    .cat-agent-company { font-size: 12px; color: #525252; }
+    .cat-agent-actions { margin-left: auto; display: flex; gap: 8px; }
+    .cat-agent-btn { padding: 6px 14px; font-size: 12px; border-radius: 4px; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; text-decoration: none; color: #171717; display: inline-flex; align-items: center; gap: 4px; }
+    .cat-agent-btn:hover { background: #f5f5f5; }
+
+    /* Filters */
+    .cat-filters { padding: 12px 24px; background: #fff; border-bottom: 1px solid #e5e5e5; display: flex; flex-direction: column; gap: 8px; }
+    .cat-filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .cat-filter-label { font-size: 12px; color: #888; font-weight: 500; min-width: 40px; }
+    .cat-chip { padding: 6px 14px; font-size: 12px; border-radius: 4px; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; white-space: nowrap; transition: all .15s; }
+    .cat-chip:hover { background: #f5f5f5; }
+    .cat-chip.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+
+    /* Grid */
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 24px; }
+    .cat-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all .15s; }
+    .cat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+    .cat-card-img { aspect-ratio: 16/10; background: #f5f5f5; overflow: hidden; }
+    .cat-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cat-card-noimg { display: flex; align-items: center; justify-content: center; height: 100%; color: #a3a3a3; font-size: 32px; }
+    .cat-card-body { padding: 14px; }
+    .cat-card-title { font-size: 14px; font-weight: 600; }
+    .cat-card-specs { font-size: 11px; color: #525252; margin-top: 4px; }
+    .cat-card-price { display: flex; align-items: baseline; gap: 4px; margin-top: 10px; }
+    .cat-card-rent { font-size: 18px; font-weight: 700; color: #6366f1; }
+    .cat-card-period { font-size: 11px; color: #a3a3a3; }
+    .cat-card-deposit { font-size: 11px; color: #525252; margin-top: 2px; }
+
+    /* Detail overlay */
+    .cat-detail { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.5); }
+    .cat-detail.open { display: flex; align-items: flex-end; justify-content: center; }
+    .cat-detail-inner { background: #fff; width: 100%; max-width: 640px; max-height: 90vh; border-radius: 8px 8px 0 0; overflow-y: auto; animation: slideUp .2s ease; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .cat-detail-close { position: sticky; top: 0; display: flex; justify-content: flex-end; padding: 12px 16px; background: #fff; z-index: 1; }
+    .cat-detail-close button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; font-size: 16px; }
+    .cat-detail-img { width: 100%; aspect-ratio: 16/9; background: #f5f5f5; }
+    .cat-detail-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cat-detail-body { padding: 20px 24px; }
+    .cat-detail-title { font-size: 18px; font-weight: 700; }
+    .cat-detail-sub { font-size: 12px; color: #525252; margin-top: 4px; }
+    .cat-detail-section { margin-top: 20px; }
+    .cat-detail-section-title { font-size: 11px; font-weight: 600; color: #a3a3a3; margin-bottom: 8px; }
+    .cat-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .cat-detail-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; }
+    .cat-detail-label { color: #a3a3a3; font-size: 12px; }
+    .cat-detail-value { font-weight: 500; }
+    .cat-detail-cta { display: flex; gap: 12px; padding: 20px 24px; border-top: 1px solid #e5e5e5; }
+    .cat-cta-btn { flex: 1; padding: 12px; text-align: center; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; text-decoration: none; display: block; }
+    .cat-cta-phone { background: #171717; color: #fff; }
+
+    .cat-empty { text-align: center; padding: 60px; color: #a3a3a3; }
+    .cat-footer { text-align: center; padding: 24px; font-size: 11px; color: #a3a3a3; border-top: 1px solid #e5e5e5; }
+
+    @media (max-width: 640px) {
+      .cat-grid { grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
+      .cat-card-body { padding: 10px; }
+      .cat-card-rent { font-size: 15px; }
+      .cat-agent-actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="catalog" id="catalog">
+    <div class="cat-header"><div class="cat-brand"><div class="cat-brand-name">freepass erp</div></div></div>
+    <div id="agentCard"></div>
+    <div class="cat-filters" id="filters"></div>
+    <div class="cat-grid" id="grid"></div>
+    <div class="cat-footer">freepass erp</div>
+    <div class="cat-detail" id="detail"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js';
+
+    const app = initializeApp({
+      apiKey: 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY',
+      databaseURL: 'https://freepasserp3-default-rtdb.asia-southeast1.firebasedatabase.app',
+      projectId: 'freepasserp3',
+    });
+    const db = getDatabase(app);
+    const params = new URLSearchParams(location.search);
+    const providerCode = params.get('p');
+    const agentCode = params.get('a');
+
+    let allProducts = [];
+    let agent = null;
+
+    init();
+
+    async function init() {
+      // Load agent
+      if (agentCode) {
+        const snap = await get(ref(db, 'users'));
+        const users = snap.val() || {};
+        agent = Object.values(users).find(u => u.user_code === agentCode);
+        renderAgent();
+      }
+
+      // Load products
+      const snap = await get(ref(db, 'products'));
+      const raw = snap.val() || {};
+      allProducts = Object.entries(raw)
+        .map(([k, v]) => ({ _key: k, ...v }))
+        .filter(p => !p._deleted && (p.status !== 'deleted'))
+        .filter(p => !providerCode || p.provider_company_code === providerCode);
+
+      // Update OG tags
+      if (providerCode) {
+        const pSnap = await get(ref(db, 'partners'));
+        const partners = pSnap.val() || {};
+        const partner = Object.values(partners).find(p => p.partner_code === providerCode);
+        if (partner) {
+          document.querySelector('.cat-brand-name').textContent = partner.partner_name || 'freepass erp';
+          document.title = partner.partner_name || 'freepass erp';
+        }
+      }
+
+      renderFilters();
+      renderGrid(allProducts);
+    }
+
+    function renderAgent() {
+      if (!agent) return;
+      document.getElementById('agentCard').innerHTML = `
+        <div class="cat-agent">
+          <div class="cat-agent-avatar">👤</div>
+          <div>
+            <div class="cat-agent-name">${agent.name || ''}</div>
+            <div class="cat-agent-company">${agent.company_name || ''} ${agent.position || ''}</div>
+          </div>
+          <div class="cat-agent-actions">
+            ${agent.phone ? `<a class="cat-agent-btn" href="tel:${agent.phone}">📞 전화</a>` : ''}
+            <button class="cat-agent-btn" id="saveVcf">📇 저장</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('saveVcf')?.addEventListener('click', () => {
+        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${agent.name||''}\nORG:${agent.company_name||''}\nTITLE:${agent.position||''}\nTEL:${agent.phone||''}\nEMAIL:${agent.email||''}\nEND:VCARD`;
+        const blob = new Blob([vcard], { type: 'text/vcard' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${agent.name||'contact'}.vcf`;
+        a.click();
+      });
+    }
+
+    const activeFilters = { maker: null, fuel: null, period: null };
+    function applyFilters() {
+      let list = allProducts;
+      if (activeFilters.maker)  list = list.filter(p => p.maker === activeFilters.maker);
+      if (activeFilters.fuel)   list = list.filter(p => p.fuel_type === activeFilters.fuel);
+      if (activeFilters.period) list = list.filter(p => Number(p.price?.[activeFilters.period]?.rent) > 0);
+      return list;
+    }
+    function renderFilters() {
+      const makers = [...new Set(allProducts.map(p => p.maker).filter(Boolean))].sort();
+      const fuels  = [...new Set(allProducts.map(p => p.fuel_type).filter(Boolean))].sort();
+      const periods = ['12','24','36','48','60'].filter(m =>
+        allProducts.some(p => Number(p.price?.[m]?.rent) > 0)
+      );
+      const row = (key, label, values) => values.length ? `
+        <div class="cat-filter-row">
+          <span class="cat-filter-label">${label}</span>
+          <button class="cat-chip ${!activeFilters[key] ? 'active' : ''}" data-group="${key}" data-filter="">전체</button>
+          ${values.map(v => {
+            const display = key === 'period' ? `${v}개월` : v;
+            return `<button class="cat-chip ${activeFilters[key] === v ? 'active' : ''}" data-group="${key}" data-filter="${v}">${display}</button>`;
+          }).join('')}
+        </div>` : '';
+
+      const el = document.getElementById('filters');
+      el.innerHTML = `
+        ${row('maker',  '제조사', makers)}
+        ${row('fuel',   '연료',   fuels)}
+        ${row('period', '기간',   periods)}
+      `;
+      el.querySelectorAll('.cat-chip').forEach(c => {
+        c.addEventListener('click', () => {
+          const g = c.dataset.group;
+          activeFilters[g] = c.dataset.filter || null;
+          renderFilters();
+          renderGrid(applyFilters());
+        });
+      });
+    }
+
+    function renderGrid(products) {
+      const el = document.getElementById('grid');
+      if (!products.length) { el.innerHTML = '<div class="cat-empty">등록된 차량이 없습니다</div>'; return; }
+
+      el.innerHTML = products.map(p => {
+        const imgs = p.image_urls || p.images || [];
+        const imgList = Array.isArray(imgs) ? imgs : Object.values(imgs);
+        const price = p.price || {};
+        const best = price['24'] || price['12'] || price['36'] || {};
+
+        return `
+          <div class="cat-card" data-key="${p._key}">
+            <div class="cat-card-img">
+              ${imgList.length ? `<img src="${imgList[0]}" alt="" loading="lazy">` : '<div class="cat-card-noimg">🚗</div>'}
+            </div>
+            <div class="cat-card-body">
+              <div class="cat-card-title">${p.year||''} ${p.model_name||''}</div>
+              <div class="cat-card-specs">${p.sub_model||''} · ${p.fuel_type||''} · ${p.mileage ? Number(p.mileage).toLocaleString()+'km' : ''}</div>
+              <div class="cat-card-price">
+                <span class="cat-card-rent">${fmtMoney(best.rent)}</span>
+                <span class="cat-card-period">/월</span>
+              </div>
+              <div class="cat-card-deposit">보증금 ${fmtMoney(best.deposit)}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      el.querySelectorAll('.cat-card').forEach(card => {
+        card.addEventListener('click', () => openDetail(card.dataset.key));
+      });
+    }
+
+    function openDetail(key) {
+      const p = allProducts.find(x => x._key === key);
+      if (!p) return;
+
+      const imgs = p.image_urls || p.images || [];
+      const imgList = Array.isArray(imgs) ? imgs : Object.values(imgs);
+      const price = p.price || {};
+
+      const el = document.getElementById('detail');
+      el.classList.add('open');
+      el.innerHTML = `
+        <div class="cat-detail-inner">
+          <div class="cat-detail-close"><button id="closeDetail">✕</button></div>
+          ${imgList.length ? `<div class="cat-detail-img"><img src="${imgList[0]}"></div>` : ''}
+          <div class="cat-detail-body">
+            <div class="cat-detail-title">${p.year||''} ${p.model_name||''} ${p.sub_model||''}</div>
+            <div class="cat-detail-sub">${p.car_number||''} · ${p.maker||''}</div>
+
+            <div class="cat-detail-section">
+              <div class="cat-detail-section-title">스펙</div>
+              <div class="cat-detail-grid">
+                ${dRow('연식', p.year)} ${dRow('연료', p.fuel_type)}
+                ${dRow('주행', p.mileage ? Number(p.mileage).toLocaleString()+'km' : '-')}
+                ${dRow('색상', p.ext_color || p.exterior_color)}
+                ${dRow('위치', p.location)}
+              </div>
+            </div>
+
+            <div class="cat-detail-section">
+              <div class="cat-detail-section-title">대여료</div>
+              <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                <tr style="border-bottom:1px solid #e5e5e5;">
+                  <th style="padding:8px;text-align:left;color:#a3a3a3;font-size:11px;"></th>
+                  <th style="padding:8px;text-align:center;font-size:11px;">12개월</th>
+                  <th style="padding:8px;text-align:center;font-size:11px;">24개월</th>
+                  <th style="padding:8px;text-align:center;font-size:11px;">36개월</th>
+                </tr>
+                <tr style="border-bottom:1px solid #e5e5e5;">
+                  <td style="padding:8px;color:#a3a3a3;font-size:11px;">월납입</td>
+                  <td style="padding:8px;text-align:center;font-weight:700;color:#6366f1;">${fmtMoney(price['12']?.rent)}</td>
+                  <td style="padding:8px;text-align:center;font-weight:700;color:#6366f1;">${fmtMoney(price['24']?.rent)}</td>
+                  <td style="padding:8px;text-align:center;font-weight:700;color:#6366f1;">${fmtMoney(price['36']?.rent)}</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px;color:#a3a3a3;font-size:11px;">보증금</td>
+                  <td style="padding:8px;text-align:center;">${fmtMoney(price['12']?.deposit)}</td>
+                  <td style="padding:8px;text-align:center;">${fmtMoney(price['24']?.deposit)}</td>
+                  <td style="padding:8px;text-align:center;">${fmtMoney(price['36']?.deposit)}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="cat-detail-cta">
+            ${agent?.phone ? `<a class="cat-cta-btn cat-cta-phone" href="tel:${agent.phone}">📞 전화문의</a>` : ''}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('closeDetail').addEventListener('click', () => el.classList.remove('open'));
+      el.addEventListener('click', (e) => { if (e.target === el) el.classList.remove('open'); });
+    }
+
+    function dRow(l, v) { return `<div class="cat-detail-row"><span class="cat-detail-label">${l}</span><span class="cat-detail-value">${v||'-'}</span></div>`; }
+    function fmtMoney(v) { if (!v) return '-'; const n = Number(v); if (isNaN(n)) return v; if (n >= 10000) return Math.round(n/10000)+'만원'; return n.toLocaleString()+'원'; }
+  </script>
+</body>
+</html>

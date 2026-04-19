@@ -1,0 +1,113 @@
+/**
+ * Firebase DB helpers — shared subscription cache + common operations
+ */
+import { ref, onValue, off, get, set, update, push, query, limitToLast } from 'firebase/database';
+import { db } from './config.js';
+import { trackSave } from '../core/save-status.js';
+
+/* ── Shared Watcher Cache ── */
+const _watchers = new Map(); // cacheKey → { ref, callbacks, unsubscribe }
+
+/**
+ * Watch a collection with shared subscription cache.
+ * Multiple callers watching the same path share ONE Firebase listener.
+ */
+export function watchCollection(path, callback, options = {}) {
+  const { limit, transform } = options;
+  const cacheKey = `${path}\x00${limit || ''}`;
+
+  if (_watchers.has(cacheKey)) {
+    const entry = _watchers.get(cacheKey);
+    entry.callbacks.add(callback);
+    // Fire immediately with last known data
+    if (entry.lastData !== undefined) callback(entry.lastData);
+    return () => {
+      entry.callbacks.delete(callback);
+      if (entry.callbacks.size === 0) {
+        entry.unsubscribe();
+        _watchers.delete(cacheKey);
+      }
+    };
+  }
+
+  const dbRef = limit
+    ? query(ref(db, path), limitToLast(limit))
+    : ref(db, path);
+
+  const callbacks = new Set([callback]);
+
+  const entry = { ref: dbRef, callbacks, unsubscribe: () => off(dbRef), lastData: undefined };
+  _watchers.set(cacheKey, entry);
+
+  const unsubscribe = onValue(dbRef, (snapshot) => {
+    const raw = snapshot.val();
+    const data = transform ? transform(raw) : snapshotToArray(raw);
+    entry.lastData = data;
+    callbacks.forEach(cb => cb(data));
+  });
+
+  return () => {
+    callbacks.delete(callback);
+    if (callbacks.size === 0) {
+      off(dbRef);
+      _watchers.delete(cacheKey);
+    }
+  };
+}
+
+/**
+ * Watch a single record
+ */
+export function watchRecord(path, callback) {
+  const dbRef = ref(db, path);
+  const unsub = onValue(dbRef, (snap) => callback(snap.val()));
+  return unsub;
+}
+
+/**
+ * Fetch once
+ */
+export async function fetchCollection(path) {
+  const snap = await get(ref(db, path));
+  return snapshotToArray(snap.val());
+}
+
+export async function fetchRecord(path) {
+  const snap = await get(ref(db, path));
+  return snap.val();
+}
+
+/**
+ * Write operations
+ */
+export async function setRecord(path, data) {
+  return trackSave(set(ref(db, path), { ...data, updated_at: Date.now() }));
+}
+
+export async function updateRecord(path, data) {
+  return trackSave(update(ref(db, path), { ...data, updated_at: Date.now() }));
+}
+
+export async function pushRecord(path, data) {
+  const newRef = push(ref(db, path));
+  await trackSave(set(newRef, { ...data, created_at: Date.now() }));
+  return newRef.key;
+}
+
+/**
+ * Soft delete (status = 'deleted')
+ */
+export async function softDelete(path) {
+  await update(ref(db, path), { _deleted: true, deleted_at: Date.now() });
+}
+
+/* ── Helpers ── */
+function snapshotToArray(val) {
+  if (!val) return [];
+  return Object.entries(val)
+    .map(([key, v]) => (typeof v === 'object' ? { _key: key, ...v } : { _key: key, value: v }))
+    .filter(item => !item._deleted)
+    .sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+}
+
+export { ref, db, push, update, get, set, onValue, off, query, limitToLast };

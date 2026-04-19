@@ -1,0 +1,688 @@
+@layer components {
+  /* ══ WS4: 4-Panel Workspace ══ */
+  .ws4 {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .ws4-panel {
+    flex: 1 1 25%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Collapsed panel */
+  .ws4-panel.is-collapsed {
+    flex: none;
+    width: 32px;
+    min-width: 32px;
+    cursor: pointer;
+  }
+
+  .ws4-panel.is-collapsed .ws4-body,
+  .ws4-panel.is-collapsed .ws4-search,
+  .ws4-panel.is-collapsed .ws4-chat-input,
+  .ws4-panel.is-collapsed .ws4-chat-msgs { display: none; }
+
+  .ws4-panel.is-collapsed .ws4-head {
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    padding: var(--sp-3) var(--sp-1);
+    justify-content: flex-start;
+    height: 100%;
+  }
+
+  .ws4-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    padding: 0 var(--sp-3);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    background: var(--c-bg-sub);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+    height: var(--panel-head-h);
+    user-select: none;
+  }
+
+  .ws4-head-toggle {
+    font-size: 14px;
+    color: var(--c-text-muted);
+    cursor: pointer;
+    padding: 2px;
+  }
+
+  .ws4-head-toggle:hover { color: var(--c-text); }
+
+  .ws4-search {
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .ws4-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .ws4-resize {
+    width: 1px;
+    background: var(--c-border);
+    flex-shrink: 0;
+    position: relative;
+    transition: background var(--dur);
+  }
+  .ws4-resize::after {
+    content: '';
+    position: absolute;
+    inset: 0 -3px;
+    cursor: col-resize;
+  }
+  .ws4-resize:hover { background: var(--c-accent); }
+
+  /* Chat messages */
+  .ws4-chat-msgs {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+
+  .ws4-chat-input {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: var(--sp-2) var(--sp-3);
+    border-top: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .ws4-input {
+    flex: 1;
+    height: 32px;
+    padding: var(--ctrl-pad);
+    font-size: var(--fs-sm);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    outline: none;
+    background: var(--c-bg-sub);
+    font-family: inherit;
+  }
+
+  .ws4-input:focus {
+    border-color: var(--c-accent);
+    background: var(--c-surface);
+  }
+
+  .ws4-input-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--ctrl-r);
+    color: var(--c-text-muted);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .ws4-input-btn:hover {
+    background: var(--c-bg-hover);
+    color: var(--c-accent);
+  }
+
+  /* ── Product Photo Grid ── */
+  .pd-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--sp-2);
+  }
+
+  .pd-photo-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: var(--ctrl-r);
+    overflow: hidden;
+    background: var(--c-bg-sub);
+  }
+
+  .pd-photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pd-photo-del {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-overlay-med);
+    color: #fff;
+    border-radius: 50%;
+    font-size: var(--fs-2xs);
+    opacity: 0;
+    transition: opacity var(--dur);
+  }
+
+  .pd-photo-item:hover .pd-photo-del { opacity: 1; }
+
+  /* ── Generic Room/List Item (전 목록 통일 구조) ──
+     [avatar]  [title   ─────  right-top (badge/amount/time)]
+                [sub info ─────  right-bot (meta/unread)]
+     .room-item는 controls.css의 .list-row 규격(padding/border/hover) 상속 */
+  .room-item {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+
+  /* 아바타 (목록 썸네일 fallback) — B2B톤: 중립 회색 사각형 */
+  .room-item-avatar {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--ctrl-r);
+    background: var(--c-bg-sub);
+    color: var(--c-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    border: 1px solid var(--c-border);
+    user-select: none;
+  }
+  .room-item-avatar i { font-size: 16px; }
+  .room-item-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    display: block;
+  }
+
+  /* 상태별 아바타 색상 */
+  /* 상태 아바타 — 색상 tone 클래스는 전부 중립 유지 (상태는 뱃지로만 표현) */
+  .room-item-avatar.is-ok,
+  .room-item-avatar.is-emerald,
+  .room-item-avatar.is-lime,
+  .room-item-avatar.is-gold,
+  .room-item-avatar.is-warn,
+  .room-item-avatar.is-err,
+  .room-item-avatar.is-info,
+  .room-item-avatar.is-accent,
+  .room-item-avatar.is-rose,
+  .room-item-avatar.is-cyan,
+  .room-item-avatar.is-green,
+  .room-item-avatar.is-purple,
+  .room-item-avatar.is-sky,
+  .room-item-avatar.is-pink,
+  .room-item-avatar.is-muted {
+    background: var(--c-bg-sub);
+    color: var(--c-text-muted);
+    border-color: var(--c-border);
+  }
+
+  .room-item-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .room-item-top, .room-item-msg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-2);
+    min-width: 0;
+  }
+  .room-item-top > *:first-child,
+  .room-item-msg > *:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .room-item-chk {
+    accent-color: var(--c-accent);
+    flex-shrink: 0;
+  }
+  .room-item-name .dot {
+    display: inline-block;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .m-shell .room-item-avatar { width: 44px; height: 44px; font-size: var(--fs-md); }
+  .m-shell .room-item-avatar i { font-size: 20px; }
+
+  /* 공용 텍스트 스타일 */
+  .room-item-name {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-bold);
+    color: var(--c-text);
+  }
+  .room-item-msg,
+  .room-item-msg > span:first-child {
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+  }
+  .room-item-time {
+    flex-shrink: 0;
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .room-item-badge {
+    flex-shrink: 0;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--c-accent);
+    color: #fff;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-bold);
+    line-height: 18px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .room-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    min-width: 0;
+  }
+
+  .room-item-name {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .room-item-time {
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    flex-shrink: 0;
+  }
+
+  .room-item-msg {
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .room-item-tags {
+    display: flex;
+    gap: var(--sp-1);
+    margin-top: 2px;
+    flex-wrap: wrap;
+  }
+
+  .room-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: var(--fs-2xs);
+    padding: 1px 5px;
+    border-radius: 2px;
+    background: var(--c-bg-sub);
+    color: var(--c-text-muted);
+  }
+
+  .room-tag:hover {
+    background: var(--c-bg-active);
+    color: var(--c-text-sub);
+  }
+
+  .room-unread {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    flex-shrink: 0;
+  }
+
+  /* ── Chat Panel Body ── */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+
+  /* Chat panel narrower, others wider */
+  .ws-panel[data-panel-id^="chat"] {
+    flex: 0.6;
+    min-width: 220px;
+  }
+
+  .chat-msg {
+    max-width: 85%;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    border-radius: var(--ctrl-r);
+    word-break: break-word;
+  }
+
+  .chat-msg-mine {
+    align-self: flex-end;
+    background: var(--c-accent);
+    color: var(--c-text-inv);
+  }
+
+  .chat-msg-other {
+    align-self: flex-start;
+    background: var(--c-bg-sub);
+    color: var(--c-text);
+  }
+
+  .chat-msg-meta {
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    margin-top: 2px;
+  }
+
+  .chat-msg-mine .chat-msg-meta {
+    color: rgba(255,255,255,.6);
+    text-align: right;
+  }
+
+  .chat-input-area {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);
+    border-top: 1px solid var(--c-border);
+    background: var(--c-surface);
+  }
+
+  .chat-input {
+    flex: 1;
+    height: var(--ctrl-h);
+    padding: var(--ctrl-pad);
+    font-size: var(--fs-sm);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    outline: none;
+    background: var(--c-bg-sub);
+  }
+
+  .chat-input:focus {
+    border-color: var(--c-accent);
+    background: var(--c-surface);
+  }
+
+  .chat-send-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ctrl-h);
+    height: var(--ctrl-h);
+    border-radius: var(--ctrl-r);
+    color: var(--c-text-muted);
+    font-size: 18px;
+  }
+
+  .chat-send-btn:hover {
+    background: var(--c-accent-soft);
+    color: var(--c-accent);
+  }
+
+  /* ── Vehicle Detail (horizontal sections) ── */
+  .vehicle-detail {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .vehicle-header {
+    padding: var(--sp-3) var(--sp-4);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .vehicle-header-title {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+  }
+
+  .vehicle-header-sub {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    margin-top: 2px;
+  }
+
+  .vehicle-sections {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+  }
+
+  .vehicle-section {
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    overflow: hidden;
+  }
+
+  .vehicle-section-title {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    color: var(--c-text-sub);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--c-bg-sub);
+    border-bottom: 1px solid var(--c-border);
+    letter-spacing: .3px;
+  }
+
+  .vehicle-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: var(--sp-2) var(--sp-3);
+    gap: 0;
+  }
+
+  .vehicle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sp-1) var(--sp-1);
+    font-size: var(--fs-sm);
+  }
+
+  .vehicle-row-label {
+    color: var(--c-text-muted);
+    font-size: var(--fs-xs);
+  }
+
+  .vehicle-row-value {
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    text-align: right;
+  }
+
+  .vehicle-options {
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .vehicle-memo {
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+    background: var(--c-bg-sub);
+    border-top: 1px solid var(--c-border);
+  }
+
+  /* ── Vehicle Gallery ── */
+  .vehicle-gallery {
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    overflow: hidden;
+  }
+
+  .vehicle-gallery-main {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--c-bg-sub);
+    overflow: hidden;
+  }
+
+  .vehicle-gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .vehicle-gallery-thumbs {
+    display: flex;
+    gap: 2px;
+    padding: 2px;
+    background: var(--c-bg-sub);
+    overflow-x: auto;
+  }
+
+  .vehicle-thumb {
+    width: 48px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: .6;
+    flex-shrink: 0;
+    transition: opacity var(--dur) var(--ease);
+  }
+
+  .vehicle-thumb:hover,
+  .vehicle-thumb.is-active {
+    opacity: 1;
+  }
+
+  .vehicle-thumb.is-active {
+    outline: 2px solid var(--c-accent);
+    outline-offset: -2px;
+  }
+
+  .vehicle-thumb-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 36px;
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    background: var(--c-bg-hover);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* Price table */
+  .vehicle-price-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .vehicle-price-table th,
+  .vehicle-price-table td {
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-sm);
+    text-align: center;
+  }
+
+  .vehicle-price-table thead th {
+    font-weight: var(--fw-medium);
+    color: var(--c-text-muted);
+    font-size: var(--fs-xs);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .vehicle-price-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .vehicle-price-label {
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+    text-align: left;
+  }
+
+  .vehicle-price-highlight {
+    font-weight: var(--fw-bold);
+    color: var(--c-accent);
+  }
+
+  /* Actions */
+  .vehicle-actions {
+    display: flex;
+    gap: var(--sp-2);
+    padding: var(--sp-3);
+    border-top: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+
+  .vehicle-actions .btn {
+    flex: 1;
+  }
+
+  /* ── 모바일(≤768px): ws4 4패널 → 세로 스택 ── */
+  @media (max-width: 768px) {
+    .ws4 {
+      flex-direction: column;
+      height: auto;
+      min-height: 100%;
+      overflow: visible;
+    }
+    .ws4-panel {
+      flex: 0 0 auto;
+      width: 100% !important;
+      min-width: 0;
+      max-height: none;
+      border-right: 0;
+      border-bottom: 1px solid var(--c-border);
+    }
+    .ws4-panel:last-child { border-bottom: 0; }
+    .ws4-panel.is-collapsed {
+      flex: 0 0 auto;
+      width: 100% !important;
+      min-width: 0;
+    }
+    .ws4-panel.is-collapsed .ws4-head {
+      writing-mode: horizontal-tb;  /* 세로 글자 → 가로로 되돌림 */
+      padding: var(--sp-2) var(--sp-3);
+      height: auto;
+      justify-content: space-between;
+    }
+    .ws4-resize { display: none; }  /* 리사이즈 핸들 불필요 */
+    .ws4-body { max-height: 60vh; }
+  }
+}
