@@ -34,10 +34,7 @@ export function mount() {
       <div class="ws4-panel" data-panel="list">
         <div class="ws4-head">
           <span>목록</span>
-          <div style="display:flex;gap:var(--sp-1);">
-            <button class="btn btn-xs btn-outline" id="pdClone" title="선택 상품 복제"><i class="ph ph-copy"></i> 복제</button>
-            <button class="btn btn-xs btn-primary" id="pdNew" title="빈 상품 새로 만들기"><i class="ph ph-plus"></i> 새 상품</button>
-          </div>
+          <button class="btn btn-xs btn-primary" id="pdNew"><i class="ph ph-plus"></i> 새 상품</button>
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="pdSearch" placeholder="차량번호, 모델..." >
@@ -90,13 +87,6 @@ export function mount() {
   });
 
   // 현재 선택된 상품 복제 — 식별·사진 제외한 모든 필드 복사
-  document.getElementById('pdClone')?.addEventListener('click', async () => {
-    if (!activeKey) { showToast('복제할 차량을 먼저 선택하세요'); return; }
-    const src = allProducts.find(p => p._key === activeKey);
-    if (!src) return;
-    await createProduct(src);
-    showToast(`${src.model || '상품'} 복제됨 — 차량번호만 입력하세요`);
-  });
 
   unsubProducts = watchCollection('products', (data) => {
     allProducts = data.filter(p => !p._deleted);
@@ -497,7 +487,8 @@ function renderAsset(p, key) {
     headActions.innerHTML = key === DRAFT_KEY
       ? `<button class="btn btn-xs btn-outline" id="pdCancel"><i class="ph ph-x"></i> 취소</button>
          <button class="btn btn-xs btn-primary" id="pdSave"><i class="ph ph-check"></i> 저장</button>`
-      : `<button class="btn btn-xs btn-outline pd-delete" id="pdDelete"><i class="ph ph-trash"></i> 삭제</button>`;
+      : `<button class="btn btn-xs btn-outline" id="pdClone"><i class="ph ph-copy"></i> 복제</button>
+         <button class="btn btn-xs btn-outline pd-delete" id="pdDelete" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>`;
   }
 
   bindPicker(el, p, key);
@@ -519,6 +510,12 @@ function renderAsset(p, key) {
   headActions?.querySelector('#pdSave')?.addEventListener('click', () => saveDraft());
   headActions?.querySelector('#pdCancel')?.addEventListener('click', () => {
     if (confirm('저장하지 않은 내용이 사라집니다. 계속할까요?')) cancelDraft();
+  });
+  headActions?.querySelector('#pdClone')?.addEventListener('click', async () => {
+    const src = allProducts.find(x => x._key === key);
+    if (!src) return;
+    await createProduct(src);
+    showToast(`${src.model || '상품'} 복제됨 — 차량번호만 입력하세요`);
   });
   headActions?.querySelector('#pdDelete')?.addEventListener('click', async () => {
     if (!confirm('이 상품을 삭제하시겠습니까?')) return;

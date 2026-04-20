@@ -36,7 +36,10 @@ export function mount(subPath) {
   main.innerHTML = `
     <div class="ws4">
       <div class="ws4-panel" data-panel="list">
-        <div class="ws4-head">${mode === 'users' ? '사용자' : '파트너'}</div>
+        <div class="ws4-head">
+          <span>${mode === 'users' ? '사용자' : '파트너'}</span>
+          ${mode === 'partners' ? '<button class="btn btn-xs btn-primary" id="admNewPartner"><i class="ph ph-plus"></i> 새 파트너</button>' : ''}
+        </div>
         <div class="ws4-search">
           <input class="input input-sm" id="admSearch" placeholder="검색..." >
           <div style="display:flex;gap:3px;margin-top:var(--sp-1);">
@@ -50,7 +53,7 @@ export function mount(subPath) {
       </div>
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="form">
-        <div class="ws4-head">정보</div>
+        <div class="ws4-head"><span>정보</span><div style="display:flex;gap:var(--sp-1);" id="admFormActions"></div></div>
         <div class="ws4-body" id="admForm">${empty('선택하세요')}</div>
       </div>
       <div class="ws4-resize" data-idx="1"></div>
@@ -76,6 +79,38 @@ export function mount(subPath) {
     });
   });
   document.getElementById('admSearch')?.addEventListener('input', () => renderList());
+
+  document.getElementById('admNewPartner')?.addEventListener('click', () => {
+    const fa = document.getElementById('admFormActions');
+    if (fa) fa.innerHTML = `<button class="btn btn-xs btn-primary" id="admSaveNew"><i class="ph ph-check"></i> 저장</button>`;
+    const el = document.getElementById('admForm');
+    el.innerHTML = `
+      <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
+        <div class="cat-section-title"><i class="ph ph-plus-circle"></i> 새 파트너 등록</div>
+        <div class="cat-rows">
+          <div class="cat-row"><span class="cat-row-label">파트너코드</span><input class="contract-field-input" data-field="partner_code" placeholder="예: RP001"></div>
+          <div class="cat-row"><span class="cat-row-label">파트너명</span><input class="contract-field-input" data-field="partner_name" placeholder="회사명"></div>
+          <div class="cat-row"><span class="cat-row-label">파트너유형</span><input class="contract-field-input" data-field="partner_type" placeholder="공급사/대리점"></div>
+          <div class="cat-row"><span class="cat-row-label">담당자명</span><input class="contract-field-input" data-field="manager_name" placeholder="이름"></div>
+          <div class="cat-row"><span class="cat-row-label">직급</span><input class="contract-field-input" data-field="manager_position" placeholder="직급"></div>
+          <div class="cat-row"><span class="cat-row-label">연락처</span><input class="contract-field-input" data-field="manager_phone" placeholder="010-0000-0000"></div>
+          <div class="cat-row"><span class="cat-row-label">비고</span><textarea class="contract-field-input" data-field="note" rows="3" placeholder="메모"></textarea></div>
+        </div>
+      </div>
+    `;
+    document.getElementById('admSaveNew')?.addEventListener('click', async () => {
+      const fields = {};
+      el.querySelectorAll('.contract-field-input').forEach(inp => { fields[inp.dataset.field] = inp.value.trim(); });
+      if (!fields.partner_code) { showToast('파트너코드 필수'); return; }
+      await setRecord('partners/' + fields.partner_code, {
+        ...fields,
+        status: 'active',
+        created_at: Date.now(),
+        created_by: store.currentUser?.uid || '',
+      });
+      showToast('파트너 등록 완료');
+    });
+  });
 
   const col = mode === 'users' ? 'users' : 'partners';
   unsubs.push(watchCollection(col, (data) => {
@@ -168,7 +203,15 @@ function loadItem(key) {
 function loadUser(key) {
   const u = (store.users || []).find(x => x._key === key);
   if (!u) return;
-
+  const fa = document.getElementById('admFormActions');
+  if (fa) {
+    fa.innerHTML = `<button class="btn btn-xs btn-outline" id="admDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>`;
+    document.getElementById('admDeleteBtn')?.addEventListener('click', async () => {
+      if (!confirm('삭제하시겠습니까?')) return;
+      await updateRecord(`users/${key}`, { status: 'deleted' });
+      showToast('삭제됨');
+    });
+  }
   // 폼
   document.getElementById('admForm').innerHTML = `
     <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
@@ -221,6 +264,15 @@ function loadUser(key) {
 
 /* ── 파트너 상세 ── */
 function loadPartner(key) {
+  const fa = document.getElementById('admFormActions');
+  if (fa) {
+    fa.innerHTML = `<button class="btn btn-xs btn-outline" id="admDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>`;
+    document.getElementById('admDeleteBtn')?.addEventListener('click', async () => {
+      if (!confirm('삭제하시겠습니까?')) return;
+      await softDelete(`partners/${key}`);
+      showToast('삭제됨');
+    });
+  }
   const p = (store.partners || []).find(x => x._key === key);
   if (!p) return;
 

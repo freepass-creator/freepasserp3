@@ -2,7 +2,7 @@
  * 정산 — 4패널: 목록 | 작업(상태/확인) | 상세 | 보조(메모/이력)
  */
 import { store } from '../core/store.js';
-import { watchCollection, updateRecord, setRecord } from '../firebase/db.js';
+import { watchCollection, updateRecord, setRecord, softDelete } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtWon, fmtMoney, empty, cField } from '../core/format.js';
 import { initWs4Resize } from '../core/resize.js';
@@ -46,7 +46,7 @@ export function mount() {
       </div>
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="work">
-        <div class="ws4-head">작업</div>
+        <div class="ws4-head"><span>작업</span><div style="display:flex;gap:var(--sp-1);" id="stWorkActions"></div></div>
         <div class="ws4-body" id="stWork">
           <div class="srch-empty"><i class="ph ph-coins"></i><p>정산을 선택하세요</p></div>
         </div>
@@ -161,6 +161,15 @@ function loadAll(key) {
 
 /* ── 작업 패널: 수수료 + 상태 + 확인 ── */
 function renderWork(s) {
+  const stActions = document.getElementById('stWorkActions');
+  if (stActions) stActions.innerHTML = `<button class="btn btn-xs btn-outline" id="stDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>`;
+  setTimeout(() => {
+    document.getElementById('stDeleteBtn')?.addEventListener('click', async () => {
+      if (!confirm('이 정산을 삭제하시겠습니까?')) return;
+      await softDelete(`settlements/${s._key}`);
+      showToast('삭제됨');
+    });
+  });
   const el = document.getElementById('stWork');
   const status = getSettlementStatus(s);
   const confirms = s.confirms || {};

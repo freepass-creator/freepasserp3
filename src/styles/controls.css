@@ -694,6 +694,38 @@
     line-height: 1.3;
   }
 
+  /* ── 공용 폼 행 (form-fields.js 전용) ── */
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px var(--sp-2);
+    font-size: var(--fs-xs);
+    min-height: 28px;
+  }
+  .form-row-label { color: var(--c-text-muted); flex-shrink: 0; min-width: 80px; }
+  .form-row-value { color: var(--c-text); font-weight: var(--fw-medium); text-align: right; word-break: break-word; }
+  .form-row-control {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    min-width: 0;
+  }
+  .form-row-control .contract-field-input { flex: 1; min-width: 0; }
+  .form-state {
+    flex-shrink: 0;
+    font-size: var(--fs-2xs);
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 48px;
+    white-space: nowrap;
+  }
+  .form-state.is-editing { color: var(--c-accent); }
+  .form-state.is-saved   { color: var(--c-ok); }
+  .form-state.is-error   { color: var(--c-err); }
+
   /* 공용 섹션 구조 — 페이지별 prefix 대신 이것 재사용 권장
    * .section > .section-title + .section-body(grid/flex) */
   .section {

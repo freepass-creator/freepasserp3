@@ -2,7 +2,7 @@
  * 계약 — 4패널: 목록 | 작업(진행) | 상세 | 보조
  */
 import { store } from '../core/store.js';
-import { watchCollection, updateRecord } from '../firebase/db.js';
+import { watchCollection, updateRecord, softDelete } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtWon, empty, cField } from '../core/format.js';
 import { initWs4Resize } from '../core/resize.js';
@@ -45,7 +45,7 @@ export function mount() {
       </div>
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="work">
-        <div class="ws4-head">작업</div>
+        <div class="ws4-head"><span>작업</span><div style="display:flex;gap:var(--sp-1);" id="ctWorkActions"></div></div>
         <div class="ws4-body" id="ctWork">
           <div class="srch-empty"><i class="ph ph-clipboard-text"></i><p>계약을 선택하세요</p></div>
         </div>
@@ -164,6 +164,10 @@ function loadAll(code) {
 
 /* ── 작업 패널: 진행 스텝 + 상태 + 서류 ── */
 function renderWork(c) {
+  const actions = document.getElementById('ctWorkActions');
+  if (actions) actions.innerHTML = `
+    <button class="btn btn-xs btn-outline" id="ctDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
+  `;
   const el = document.getElementById('ctWork');
   el.innerHTML = `
     <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);">
@@ -300,6 +304,12 @@ function renderSignReqButton(c) {
     <i class="ph ph-paper-plane-tilt"></i> 관리자에게 발송 요청
   </button>`;
 }
+
+  document.getElementById('ctDeleteBtn')?.addEventListener('click', async () => {
+    if (!confirm('이 계약을 삭제하시겠습니까?')) return;
+    await softDelete(`contracts/${c.contract_code}`);
+    showToast('삭제됨');
+  });
 
 /* ── 상세 패널: 차량/대여/관계자 ── */
 function renderDetail(c) {

@@ -5,6 +5,7 @@ import { store } from '../core/store.js';
 import { watchCollection, updateRecord, setRecord, softDelete } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { cField, fmtWon, empty } from '../core/format.js';
+import { fieldInput as fi, fieldSelect as fs, fieldView, fieldNew as finew, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
 
@@ -14,6 +15,40 @@ let activeCode = null;
 
 const WS_KEY = 'fp.policy.widths';
 
+/* ── 드롭다운 옵션 (v1 기반) ── */
+const OPTS = {
+  screening_criteria: ['무심사','심사필요'],
+  credit_grade: ['저신용','중신용','일반신용'],
+  basic_driver_age: ['만 21세 이상','만 22세 이상','만 23세 이상','만 24세 이상','만 25세 이상','만 26세 이상','만 27세 이상','만 28세 이상','만 29세 이상','만 30세 이상'],
+  driver_age_upper_limit: ['제한없음','만 60세 이하','만 65세 이하','만 70세 이하','만 75세 이하','만 80세 이하','협의'],
+  driver_age_lowering: ['불가','협의','만25세','만24세','만23세','만22세','만21세'],
+  personal_driver_scope: ['계약자 본인+직계가족','계약자 본인만','계약자 본인+추가운전자','협의'],
+  business_driver_scope: ['계약사업자 임직원 및 관계자','대표자 본인만','대표자 본인+추가운전자','협의'],
+  additional_driver_allowance_count: ['불가','1인','2인','3인','무제한'],
+  additional_driver_cost: ['없음','월 1만원','월 2만원','월 3만원','월 5만원','협의'],
+  age_lowering_cost: ['대여료의 5%','대여료의 7%','대여료의 10%','5만원','7만원','10만원','월15만원 추가'],
+  annual_mileage: ['연간 1만Km 주행','연간 2만Km 주행','연간 3만Km 주행','연간 4만Km 주행','연간 5만Km 주행'],
+  mileage_upcharge_per_10000km: ['없음','1만원','2만원','3만원','5만원','10만원','협의'],
+  deposit_installment: ['불가능','협의','가능'],
+  deposit_card_payment: ['가능','협의','불가'],
+  rental_region: ['전국','수도권','제주도불가','협의'],
+  injury_deductible: ['없음','10만원','20만원','30만원','50만원','100만원'],
+  property_compensation_limit: ['2천만원','3천만원','5천만원','1억원','2억원','3억원','5억원','10억원'],
+  property_deductible: ['없음','10만원','20만원','30만원','50만원','100만원'],
+  self_body_accident: ['1,500만원','3,000만원','5,000만원','1억원'],
+  self_body_deductible: ['없음','10만원','30만원','50만원','100만원'],
+  uninsured_damage: ['없음','1억원','2억원','3억원'],
+  uninsured_deductible: ['없음','10만원','30만원','50만원','100만원'],
+  own_damage_compensation: ['차량가액','300만원','500만원','1000만원'],
+  own_damage_repair_ratio: ['20%','30%','40%','50%'],
+  own_damage_min_deductible: ['없음','30만원','50만원','100만원','200만원','300만원'],
+  own_damage_max_deductible: ['없음','50만원','100만원','200만원','300만원','400만원','500만원'],
+  maintenance_service: ['불포함','포함','협의'],
+  annual_roadside_assistance: ['연간 1회','연간 2회','연간 3회','연간 4회','연간 5회','없음'],
+  insurance_included: ['보험료 포함','보험료 별도','보험료 협의'],
+};
+
+
 export function mount() {
   unsubPolicies?.();
   activeCode = null;
@@ -22,7 +57,10 @@ export function mount() {
   main.innerHTML = `
     <div class="ws4">
       <div class="ws4-panel" data-panel="list">
-        <div class="ws4-head">목록</div>
+        <div class="ws4-head">
+          <span>목록</span>
+          <button class="btn btn-xs btn-primary" id="plNewBtn"><i class="ph ph-plus"></i> 새 정책</button>
+        </div>
         <div class="ws4-search">
           <input class="input input-sm" id="plSearch" placeholder="정책명, 공급사..." >
           <div style="display:flex;gap:3px;margin-top:var(--sp-1);">
@@ -31,13 +69,13 @@ export function mount() {
           </div>
         </div>
         <div class="ws4-body" id="plList"></div>
-        <div style="padding:var(--sp-2) var(--sp-3);border-top:1px solid var(--c-border);">
-          <button class="btn btn-primary btn-sm" id="plNewBtn" style="width:100%;"><i class="ph ph-plus"></i> 정책 등록</button>
-        </div>
       </div>
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="form">
-        <div class="ws4-head">등록</div>
+        <div class="ws4-head">
+          <span>등록/수정</span>
+          <div style="display:flex;gap:var(--sp-1);" id="plFormActions"></div>
+        </div>
         <div class="ws4-body" id="plForm">
           <div class="srch-empty"><i class="ph ph-scroll"></i><p>정책을 선택하세요</p></div>
         </div>
@@ -77,10 +115,9 @@ export function mount() {
     renderList();
     const active = data.filter(p => p.status === 'active').length;
     const providers = new Set(data.map(p => p.provider_company_code).filter(Boolean)).size;
-    setBreadcrumbBrief(`활성 ${active} · 공급사 ${providers}`);
+    setBreadcrumbBrief(`활성 ${active} > 공급사 ${providers}`);
   });
 
-  // Also watch products for linked products
   watchCollection('products', (data) => { store.products = data; });
 }
 
@@ -101,7 +138,7 @@ function renderList() {
 
   el.innerHTML = list.map(p => {
     const tone = p.status === 'active' ? 'ok' : 'muted';
-    const badge = p.status === 'active' ? '<span class="badge badge-ok">활성</span>' : p.status ? `<span class="badge">${p.status}</span>` : '';
+    const badge = p.status === 'active' ? '<span class="badge is-filled badge-ok">활성</span>' : p.status ? `<span class="badge is-filled badge-muted">${p.status}</span>` : '';
     return `
     <div class="room-item ${activeCode === p._key ? 'is-active' : ''}" data-key="${p._key}">
       <div class="room-item-avatar is-${tone}"><i class="ph ph-scroll"></i></div>
@@ -141,60 +178,162 @@ function renderForm(p, key) {
   const el = document.getElementById('plForm');
   el.innerHTML = `
     <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
-      <div style="display:flex;gap:3px;">
-        ${['active','inactive'].map(s => {
-          const active = p.status === s;
-          return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:3px 8px;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : ''}">${s === 'active' ? '활성' : '비활성'}</div>`;
-        }).join('')}
-      </div>
-      <div class="contract-section"><div class="contract-section-title">기본정보</div>
-        <div class="contract-section-grid" style="grid-template-columns:1fr;">
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-info"></i> 기본정보</div>
+        <div class="cat-rows">
           ${fi('정책코드','policy_code',p)}
           ${fi('정책명','policy_name',p)}
           ${fi('공급사코드','provider_company_code',p)}
           ${fi('정책유형','policy_type',p)}
+          ${fi('정책설명','term_description',p)}
+          ${fs('심사기준','screening_criteria',p,OPTS.screening_criteria)}
+          ${fs('신용등급','credit_grade',p,OPTS.credit_grade)}
         </div>
       </div>
-      <button class="btn btn-outline btn-sm" id="plDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-user"></i> 운전자 조건</div>
+        <div class="cat-rows">
+          ${fs('기본운전자연령','basic_driver_age',p,OPTS.basic_driver_age)}
+          ${fs('운전연령상한','driver_age_upper_limit',p,OPTS.driver_age_upper_limit)}
+          ${fs('운전연령하향','driver_age_lowering',p,OPTS.driver_age_lowering)}
+          ${fs('운전연령하향비용','age_lowering_cost',p,OPTS.age_lowering_cost)}
+          ${fs('개인운전자범위','personal_driver_scope',p,OPTS.personal_driver_scope)}
+          ${fs('사업자운전자범위','business_driver_scope',p,OPTS.business_driver_scope)}
+          ${fs('추가운전자허용인원수','additional_driver_allowance_count',p,OPTS.additional_driver_allowance_count)}
+          ${fs('추가운전자1인당비용','additional_driver_cost',p,OPTS.additional_driver_cost)}
+        </div>
+      </div>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-list-checks"></i> 대여조건</div>
+        <div class="cat-rows">
+          ${fs('약정주행거리','annual_mileage',p,OPTS.annual_mileage)}
+          ${fs('1만Km추가비용','mileage_upcharge_per_10000km',p,OPTS.mileage_upcharge_per_10000km)}
+          ${fs('보증금분납','deposit_installment',p,OPTS.deposit_installment)}
+          ${fs('보증금카드결제','deposit_card_payment',p,OPTS.deposit_card_payment)}
+          ${fi('결제방식','payment_method',p)}
+          ${fi('위약금','penalty_condition',p)}
+          ${fs('대여지역','rental_region',p,OPTS.rental_region)}
+          ${fi('탁송비','delivery_fee',p)}
+          ${fi('수수료환수조건','commission_clawback_condition',p)}
+        </div>
+      </div>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험조건</div>
+        <div class="cat-rows">
+          ${fi('대인배상','injury_compensation_limit',{ injury_compensation_limit: p.injury_compensation_limit || '무한' })}
+          ${fs('대인면책금','injury_deductible',p,OPTS.injury_deductible)}
+          ${fs('대물배상','property_compensation_limit',p,OPTS.property_compensation_limit)}
+          ${fs('대물면책금','property_deductible',p,OPTS.property_deductible)}
+          ${fs('자기신체사고','self_body_accident',p,OPTS.self_body_accident)}
+          ${fs('자손면책금','self_body_deductible',p,OPTS.self_body_deductible)}
+          ${fs('무보험차상해','uninsured_damage',p,OPTS.uninsured_damage)}
+          ${fs('무보험면책금','uninsured_deductible',p,OPTS.uninsured_deductible)}
+          ${fs('자기차량손해','own_damage_compensation',p,OPTS.own_damage_compensation)}
+          ${fs('자차수리비율','own_damage_repair_ratio',p,OPTS.own_damage_repair_ratio)}
+          ${fs('자차최소면책금','own_damage_min_deductible',p,OPTS.own_damage_min_deductible)}
+          ${fs('자차최대면책금','own_damage_max_deductible',p,OPTS.own_damage_max_deductible)}
+          ${fs('정비서비스','maintenance_service',p,OPTS.maintenance_service)}
+          ${fs('긴급출동','annual_roadside_assistance',p,OPTS.annual_roadside_assistance)}
+          ${fs('보험료','insurance_included',p,OPTS.insurance_included)}
+        </div>
+      </div>
+
     </div>
   `;
 
-  el.querySelectorAll('.status-toggle').forEach(tog => {
+  // 헤드 액션 버튼
+  const actions = document.getElementById('plFormActions');
+  if (actions) actions.innerHTML = `
+    ${['active','inactive'].map(s => {
+      const active = p.status === s;
+      return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:2px 6px;border-radius:var(--ctrl-r);cursor:pointer;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : 'color:var(--c-text-muted);'}">${s === 'active' ? '활성' : '비활성'}</div>`;
+    }).join('')}
+    <button class="btn btn-xs btn-outline" id="plCloneBtn"><i class="ph ph-copy"></i> 복제</button>
+    <button class="btn btn-xs btn-outline" id="plDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
+  `;
+
+  // 상태 토글 (헤드에 있음)
+  document.querySelectorAll('#plFormActions .status-toggle').forEach(tog => {
     tog.addEventListener('click', async () => {
       await updateRecord(`policies/${key}`, { status: tog.dataset.status });
       showToast(`→ ${tog.dataset.status === 'active' ? '활성' : '비활성'}`);
     });
   });
 
-  el.querySelectorAll('.contract-field-input').forEach(inp => {
-    inp.addEventListener('blur', async () => { await updateRecord(`policies/${key}`, { [inp.dataset.field]: inp.value.trim() }); });
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
-  });
+  // 자동 저장 + 피드백
+  bindFormAutoSave(el, (field, value) => updateRecord(`policies/${key}`, { [field]: value }));
 
-  el.querySelector('#plDeleteBtn')?.addEventListener('click', async () => {
+  document.getElementById('plDeleteBtn')?.addEventListener('click', async () => {
     if (!confirm('삭제하시겠습니까?')) return;
     await softDelete(`policies/${key}`);
     showToast('삭제됨');
+  });
+
+  document.getElementById('plCloneBtn')?.addEventListener('click', async () => {
+    const clone = { ...p };
+    delete clone._key;
+    delete clone._deleted;
+    const newCode = `${p.provider_company_code || 'XX'}_P${String(Date.now()).slice(-3)}`;
+    clone.policy_code = newCode;
+    clone.policy_name = (p.policy_name || '') + ' (복제)';
+    clone.created_at = Date.now();
+    clone.created_by = store.currentUser?.user_code || '';
+    await setRecord(`policies/${newCode}`, clone);
+    showToast('정책 복제됨');
   });
 }
 
 function renderNewForm() {
   const el = document.getElementById('plForm');
   el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);">
-      <div style="font-weight:var(--fw-heavy);">정책 등록</div>
-      <div class="contract-section"><div class="contract-section-title">기본정보</div>
-        <div class="contract-section-grid" style="grid-template-columns:1fr;">
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
+      <div class="cat-section-title"><i class="ph ph-plus-circle"></i> 정책 등록</div>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-info"></i> 기본정보</div>
+        <div class="cat-rows">
           ${finew('정책명','policy_name')}
           ${finew('공급사코드','provider_company_code')}
           ${finew('정책유형','policy_type')}
+          ${finew('정책설명','term_description')}
+          ${finew('심사기준','screening_criteria',OPTS.screening_criteria)}
+          ${finew('신용등급','credit_grade',OPTS.credit_grade)}
         </div>
       </div>
-      <button class="btn btn-primary btn-sm" id="plSaveNew"><i class="ph ph-check"></i> 등록</button>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-user"></i> 운전자 조건</div>
+        <div class="cat-rows">
+          ${finew('기본운전자연령','basic_driver_age',OPTS.basic_driver_age)}
+          ${finew('운전연령상한','driver_age_upper_limit',OPTS.driver_age_upper_limit)}
+          ${finew('운전연령하향','driver_age_lowering',OPTS.driver_age_lowering)}
+          ${finew('약정주행거리','annual_mileage',OPTS.annual_mileage)}
+        </div>
+      </div>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험조건</div>
+        <div class="cat-rows">
+          ${finew('대물배상','property_compensation_limit',OPTS.property_compensation_limit)}
+          ${finew('자기신체사고','self_body_accident',OPTS.self_body_accident)}
+          ${finew('무보험차상해','uninsured_damage',OPTS.uninsured_damage)}
+          ${finew('자기차량손해','own_damage_compensation',OPTS.own_damage_compensation)}
+          ${finew('보험료','insurance_included',OPTS.insurance_included)}
+        </div>
+      </div>
+
     </div>
   `;
 
-  el.querySelector('#plSaveNew')?.addEventListener('click', async () => {
+  // 헤드 액션 버튼
+  const actions = document.getElementById('plFormActions');
+  if (actions) actions.innerHTML = `<button class="btn btn-xs btn-primary" id="plSaveNew"><i class="ph ph-check"></i> 저장</button>`;
+
+  document.getElementById('plSaveNew')?.addEventListener('click', async () => {
     const fields = {};
     el.querySelectorAll('.contract-field-input').forEach(inp => { fields[inp.dataset.field] = inp.value.trim(); });
     if (!fields.policy_name) { showToast('정책명 필수'); return; }
@@ -213,13 +352,70 @@ function renderNewForm() {
 
 function renderDetail(p) {
   const el = document.getElementById('plDetail');
+
+  const row = fieldView;
+
   el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);">
-      <div class="contract-section"><div class="contract-section-title">정책 정보</div>
-        <div class="contract-section-grid">
-          ${cField('코드',p.policy_code)}${cField('이름',p.policy_name)}
-          ${cField('공급사',p.provider_company_code)}${cField('유형',p.policy_type)}
-          ${cField('상태',p.status)}${cField('생성자',p.created_by)}
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-info"></i> 기본정보</div>
+        <div class="cat-rows">
+          ${row('정책코드', p.policy_code)}
+          ${row('정책명', p.policy_name)}
+          ${row('공급사', p.provider_company_code)}
+          ${row('유형', p.policy_type)}
+          ${row('심사기준', p.screening_criteria)}
+          ${row('신용등급', p.credit_grade)}
+          ${row('상태', p.status)}
+        </div>
+      </div>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-user"></i> 운전자 조건</div>
+        <div class="cat-rows">
+          ${row('기본운전자연령', p.basic_driver_age)}
+          ${row('운전연령상한', p.driver_age_upper_limit)}
+          ${row('운전연령하향', p.driver_age_lowering)}
+          ${row('운전연령하향비용', p.age_lowering_cost)}
+          ${row('개인운전자범위', p.personal_driver_scope)}
+          ${row('사업자운전자범위', p.business_driver_scope)}
+          ${row('추가운전자인원', p.additional_driver_allowance_count)}
+          ${row('추가운전자비용', p.additional_driver_cost)}
+        </div>
+      </div>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-list-checks"></i> 대여조건</div>
+        <div class="cat-rows">
+          ${row('약정주행거리', p.annual_mileage)}
+          ${row('1만Km추가비용', p.mileage_upcharge_per_10000km)}
+          ${row('보증금분납', p.deposit_installment)}
+          ${row('보증금카드결제', p.deposit_card_payment)}
+          ${row('결제방식', p.payment_method)}
+          ${row('위약금', p.penalty_condition)}
+          ${row('대여지역', p.rental_region)}
+          ${row('탁송비', p.delivery_fee)}
+        </div>
+      </div>
+
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험조건</div>
+        <div class="cat-rows">
+          ${row('대인배상', p.injury_compensation_limit || '무한')}
+          ${row('대인면책금', p.injury_deductible)}
+          ${row('대물배상', p.property_compensation_limit)}
+          ${row('대물면책금', p.property_deductible)}
+          ${row('자기신체사고', p.self_body_accident)}
+          ${row('자손면책금', p.self_body_deductible)}
+          ${row('무보험차상해', p.uninsured_damage)}
+          ${row('무보험면책금', p.uninsured_deductible)}
+          ${row('자기차량손해', p.own_damage_compensation)}
+          ${row('자차수리비율', p.own_damage_repair_ratio)}
+          ${row('자차최소면책금', p.own_damage_min_deductible)}
+          ${row('자차최대면책금', p.own_damage_max_deductible)}
+          ${row('정비서비스', p.maintenance_service)}
+          ${row('긴급출동', p.annual_roadside_assistance)}
+          ${row('보험료', p.insurance_included)}
         </div>
       </div>
     </div>
@@ -231,19 +427,19 @@ function renderSub(p) {
   const products = (store.products || []).filter(x => x.policy_code === p.policy_code);
 
   el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2);">
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2);overflow-y:auto;height:100%;">
       <div style="font-weight:var(--fw-bold);font-size:var(--fs-sm);">연결 상품 (${products.length})</div>
       ${products.map(pr => `
         <div class="room-item">
-          <div class="room-item-name">${pr.car_number || ''} · ${pr.model || ''}</div>
+          <div class="room-item-body">
+            <div class="room-item-name">${pr.car_number || ''} · ${pr.model || pr.model_name || ''}</div>
+            <div class="room-item-msg"><span>${pr.vehicle_status || ''} · ${pr.product_type || ''}</span></div>
+          </div>
         </div>
       `).join('') || '<div style="color:var(--c-text-muted);font-size:var(--fs-xs);">연결된 상품 없음</div>'}
     </div>
   `;
 }
-
-function fi(l,field,p) { return `<div class="contract-field"><span class="contract-field-label">${l}</span><input class="contract-field-input" data-field="${field}" value="${p[field]||''}" placeholder="-"></div>`; }
-function finew(l,field) { return `<div class="contract-field"><span class="contract-field-label">${l}</span><input class="contract-field-input" data-field="${field}" value="" placeholder="-"></div>`; }
 
 export function unmount() {
   unsubPolicies?.();
