@@ -623,6 +623,8 @@ async function init() {
       watchCollection('contracts', d => { store.contracts = d; });
       watchCollection('settlements', d => { store.settlements = d; });
       watchCollection('products', d => { store.products = d; });
+      watchCollection('users', d => { store.users = d; });
+      watchCollection('partners', d => { store.partners = d; });
     });
     // Init background services
     import('./core/auto-status.js').then(m => m.initAutoStatus());

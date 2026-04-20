@@ -45,10 +45,15 @@ function recompute() {
   }).length;
   setBadge('settle', pendingSettle);
 
-  // 계약발송: admin 전용 — 발송 요청 들어왔는데 아직 발송 안 된 건
+  // admin 전용
   if (user.role === 'admin') {
+    // 계약발송: 발송 요청 들어왔는데 아직 발송 안 된 건
     const pendingSign = (store.contracts || []).filter(c => c.sign_requested && !c.sign_token).length;
     setBadge('sign', pendingSign);
+
+    // 사용자관리: 대기중 사용자
+    const pendingUsers = (store.users || []).filter(u => u.status === 'pending').length;
+    setBadge('users', pendingUsers);
   }
 }
 
@@ -56,6 +61,7 @@ export function initMenuBadges() {
   subscribe('rooms', recompute);
   subscribe('contracts', recompute);
   subscribe('settlements', recompute);
+  subscribe('users', recompute);
   subscribe('currentUser', recompute);
   recompute();
 }
