@@ -37,9 +37,7 @@ export function mount() {
           <input class="input input-sm" id="wsRoomSearch" placeholder="검색..." >
           <div style="display:flex;gap:3px;">
             <button class="chip is-active" data-rf="unread">안읽음</button>
-            <button class="chip" data-rf="received">받은거</button>
-            <button class="chip" data-rf="sent">보낸거</button>
-            <button class="chip" data-rf="all">전체</button>
+            <button class="chip" data-rf="all">읽음</button>
           </div>
         </div>
         <div class="ws4-body" id="wsRoomList"></div>
