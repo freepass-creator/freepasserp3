@@ -8,6 +8,7 @@ import { store } from '../core/store.js';
 import { watchCollection, watchRecord, updateRecord, softDelete, setRecord, pushRecord, fetchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { cField, empty } from '../core/format.js';
+import { fieldInput as ffi, fieldSelect as ffs, fieldView as ffv, fieldTextarea as ffta, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
 import { initWs4Resize } from '../core/resize.js';
 import { saveNotice, updateNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
@@ -85,16 +86,18 @@ export function mount(subPath) {
     if (fa) fa.innerHTML = `<button class="btn btn-xs btn-primary" id="admSaveNew"><i class="ph ph-check"></i> 저장</button>`;
     const el = document.getElementById('admForm');
     el.innerHTML = `
-      <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
-        <div class="cat-section-title"><i class="ph ph-plus-circle"></i> 새 파트너 등록</div>
-        <div class="cat-rows">
-          <div class="cat-row"><span class="cat-row-label">파트너코드</span><input class="contract-field-input" data-field="partner_code" placeholder="예: RP001"></div>
-          <div class="cat-row"><span class="cat-row-label">파트너명</span><input class="contract-field-input" data-field="partner_name" placeholder="회사명"></div>
-          <div class="cat-row"><span class="cat-row-label">파트너유형</span><input class="contract-field-input" data-field="partner_type" placeholder="공급사/대리점"></div>
-          <div class="cat-row"><span class="cat-row-label">담당자명</span><input class="contract-field-input" data-field="manager_name" placeholder="이름"></div>
-          <div class="cat-row"><span class="cat-row-label">직급</span><input class="contract-field-input" data-field="manager_position" placeholder="직급"></div>
-          <div class="cat-row"><span class="cat-row-label">연락처</span><input class="contract-field-input" data-field="manager_phone" placeholder="010-0000-0000"></div>
-          <div class="cat-row"><span class="cat-row-label">비고</span><textarea class="contract-field-input" data-field="note" rows="3" placeholder="메모"></textarea></div>
+      <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+        <div class="form-section">
+          <div class="form-section-title"><i class="ph ph-plus-circle"></i> 새 파트너 등록</div>
+          <div class="form-section-body">
+            ${ffi('파트너코드','partner_code',{})}
+            ${ffi('파트너명','partner_name',{})}
+            ${ffi('유형','partner_type',{})}
+            ${ffi('담당자명','manager_name',{})}
+            ${ffi('직급','manager_position',{})}
+            ${ffi('연락처','manager_phone',{})}
+            ${ffta('비고','note',{},{ rows: 3 })}
+          </div>
         </div>
       </div>
     `;
@@ -212,33 +215,54 @@ function loadUser(key) {
       showToast('삭제됨');
     });
   }
+  // 상태 토글 → 헤드로
+  if (fa) {
+    fa.innerHTML = `
+      ${['pending','active','rejected'].map(s => {
+        const active = u.status === s;
+        const labels = { pending: '대기', active: '승인', rejected: '반려' };
+        return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:2px 6px;border-radius:var(--ctrl-r);cursor:pointer;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : 'color:var(--c-text-muted);'}">${labels[s]}</div>`;
+      }).join('')}
+      <button class="btn btn-xs btn-outline" id="admDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
+    `;
+    document.getElementById('admDeleteBtn')?.addEventListener('click', async () => {
+      if (!confirm('삭제하시겠습니까?')) return;
+      await updateRecord(`users/${key}`, { status: 'deleted' });
+      showToast('삭제됨');
+    });
+  }
+
   // 폼
-  document.getElementById('admForm').innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
-      <div style="display:flex;gap:3px;flex-wrap:wrap;">
-        ${['pending','active','rejected'].map(s => {
-          const active = u.status === s;
-          const labels = { pending: '대기', active: '승인', rejected: '반려' };
-          return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:3px 8px;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : ''}">${labels[s]}</div>`;
-        }).join('')}
-      </div>
-      <div class="contract-section"><div class="contract-section-title">계정</div>
-        <div class="contract-section-grid" style="grid-template-columns:1fr;">
-          ${fi('이름','name',u)}${fi('이메일','email',u)}${fi('역할','role',u)}
-          ${fi('소속코드','company_code',u)}${fi('소속명','company_name',u)}
-          ${fi('계정코드','user_code',u)}${fi('연락처','phone',u)}${fi('직급','position',u)}
+  const formEl = document.getElementById('admForm');
+  formEl.innerHTML = `
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-user"></i> 계정</div>
+        <div class="form-section-body">
+          ${ffi('이름','name',u)}
+          ${ffi('이메일','email',u,{ readonly: true })}
+          ${ffs('역할','role',u,['admin','provider','agent'])}
+          ${ffi('소속코드','company_code',u)}
+          ${ffi('소속명','company_name',u)}
+          ${ffi('계정코드','user_code',u)}
+          ${ffi('연락처','phone',u)}
+          ${ffi('직급','position',u)}
         </div>
       </div>
     </div>
   `;
+  bindFormAutoSave(formEl, (field, value) => updateRecord(`users/${key}`, { [field]: value }));
 
   // 상세
   document.getElementById('admDetail').innerHTML = `
-    <div style="padding:var(--sp-3);">
-      <div class="contract-section"><div class="contract-section-title">상세</div>
-        <div class="contract-section-grid">
-          ${cField('UID',u.uid)}${cField('상태',u.status)}
-          ${cField('역할',u.role)}${cField('가입일',u.created_at ? new Date(u.created_at).toLocaleDateString('ko') : '-')}
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-info"></i> 상세</div>
+        <div class="form-section-body">
+          ${ffv('UID', u.uid)}
+          ${ffv('상태', u.status)}
+          ${ffv('역할', u.role)}
+          ${ffv('가입일', u.created_at ? new Date(u.created_at).toLocaleDateString('ko') : '-')}
         </div>
       </div>
     </div>
@@ -249,68 +273,86 @@ function loadUser(key) {
     <div style="padding:var(--sp-3);color:var(--c-text-muted);font-size:var(--fs-xs);">사용자 관련 로그/활동</div>
   `;
 
-  // Events
-  document.querySelectorAll('#admForm .status-toggle').forEach(tog => {
+  // 상태 토글 이벤트 (헤드)
+  document.querySelectorAll('#admFormActions .status-toggle').forEach(tog => {
     tog.addEventListener('click', async () => {
       await updateRecord(`users/${key}`, { status: tog.dataset.status });
       showToast(`→ ${tog.dataset.status}`);
     });
-  });
-  document.querySelectorAll('#admForm .contract-field-input').forEach(inp => {
-    inp.addEventListener('blur', async () => { await updateRecord(`users/${key}`, { [inp.dataset.field]: inp.value.trim() }); });
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
   });
 }
 
 /* ── 파트너 상세 ── */
 function loadPartner(key) {
   const fa = document.getElementById('admFormActions');
+  const p = (store.partners || []).find(x => x._key === key);
+  if (!p) return;
+
   if (fa) {
-    fa.innerHTML = `<button class="btn btn-xs btn-outline" id="admDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>`;
+    fa.innerHTML = `
+      ${['active','inactive'].map(s => {
+        const active = p.status === s;
+        return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:2px 6px;border-radius:var(--ctrl-r);cursor:pointer;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : 'color:var(--c-text-muted);'}">${s === 'active' ? '활성' : '비활성'}</div>`;
+      }).join('')}
+      <button class="btn btn-xs btn-outline" id="admDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
+    `;
     document.getElementById('admDeleteBtn')?.addEventListener('click', async () => {
       if (!confirm('삭제하시겠습니까?')) return;
       await softDelete(`partners/${key}`);
       showToast('삭제됨');
     });
+    document.querySelectorAll('#admFormActions .status-toggle').forEach(tog => {
+      tog.addEventListener('click', async () => {
+        await updateRecord(`partners/${key}`, { status: tog.dataset.status });
+        showToast(`→ ${tog.dataset.status}`);
+      });
+    });
   }
-  const p = (store.partners || []).find(x => x._key === key);
-  if (!p) return;
 
-  document.getElementById('admForm').innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
-      <div style="display:flex;gap:3px;">
-        ${['active','inactive'].map(s => {
-          const active = p.status === s;
-          return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:3px 8px;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : ''}">${s === 'active' ? '활성' : '비활성'}</div>`;
-        }).join('')}
-      </div>
-      <div class="contract-section"><div class="contract-section-title">회사정보</div>
-        <div class="contract-section-grid" style="grid-template-columns:1fr;">
-          ${fi('파트너코드','partner_code',p)}${fi('파트너명','partner_name',p)}
-          ${fi('유형','partner_type',p)}${fi('사업자번호','business_number',p)}
-          ${fi('대표자','ceo_name',p)}${fi('주소','address',p)}
-          ${fi('전화','company_phone',p)}${fi('이메일','email',p)}${fi('팩스','fax',p)}
+  const formEl = document.getElementById('admForm');
+  formEl.innerHTML = `
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-buildings"></i> 회사정보</div>
+        <div class="form-section-body">
+          ${ffi('파트너코드','partner_code',p)}
+          ${ffi('파트너명','partner_name',p)}
+          ${ffi('유형','partner_type',p)}
+          ${ffi('사업자번호','business_number',p)}
+          ${ffi('대표자','ceo_name',p)}
+          ${ffi('주소','address',p)}
+          ${ffi('전화','company_phone',p)}
+          ${ffi('이메일','email',p)}
+          ${ffi('팩스','fax',p)}
         </div>
       </div>
-      <div class="contract-section"><div class="contract-section-title">담당자</div>
-        <div class="contract-section-grid" style="grid-template-columns:1fr;">
-          ${fi('담당자명','manager_name',p)}${fi('직급','manager_position',p)}${fi('연락처','manager_phone',p)}
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-user"></i> 담당자</div>
+        <div class="form-section-body">
+          ${ffi('담당자명','manager_name',p)}
+          ${ffi('직급','manager_position',p)}
+          ${ffi('연락처','manager_phone',p)}
         </div>
       </div>
-      <div class="contract-section"><div class="contract-section-title">비고</div>
-        <div class="contract-section-grid">
-          <textarea class="input" id="admMemo" rows="3" style="resize:vertical;height:auto;">${p.note || ''}</textarea>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-note"></i> 비고</div>
+        <div class="form-section-body">
+          ${ffta('메모','note',p,{ rows: 3 })}
         </div>
       </div>
     </div>
   `;
+  bindFormAutoSave(formEl, (field, value) => updateRecord(`partners/${key}`, { [field]: value }));
 
   document.getElementById('admDetail').innerHTML = `
-    <div style="padding:var(--sp-3);">
-      <div class="contract-section"><div class="contract-section-title">상세</div>
-        <div class="contract-section-grid">
-          ${cField('코드',p.partner_code)}${cField('유형',p.partner_type)}
-          ${cField('상태',p.status)}${cField('생성자',p.created_by)}
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-info"></i> 상세</div>
+        <div class="form-section-body">
+          ${ffv('코드', p.partner_code)}
+          ${ffv('유형', p.partner_type)}
+          ${ffv('상태', p.status)}
+          ${ffv('생성자', p.created_by)}
         </div>
       </div>
     </div>
@@ -319,22 +361,6 @@ function loadPartner(key) {
   document.getElementById('admSub').innerHTML = `
     <div style="padding:var(--sp-3);color:var(--c-text-muted);font-size:var(--fs-xs);">파트너 연결 상품/정책</div>
   `;
-
-  document.querySelectorAll('#admForm .status-toggle').forEach(tog => {
-    tog.addEventListener('click', async () => {
-      await updateRecord(`partners/${key}`, { status: tog.dataset.status });
-      showToast(`→ ${tog.dataset.status}`);
-    });
-  });
-  document.querySelectorAll('#admForm .contract-field-input').forEach(inp => {
-    inp.addEventListener('blur', async () => { await updateRecord(`partners/${key}`, { [inp.dataset.field]: inp.value.trim() }); });
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
-  });
-  let mt;
-  document.getElementById('admMemo')?.addEventListener('input', e => {
-    clearTimeout(mt);
-    mt = setTimeout(() => updateRecord(`partners/${key}`, { note: e.target.value }), 800);
-  });
 }
 
 /* ── 개발모드 (구 관리자 통합) ── */

@@ -731,20 +731,33 @@
   .form-row-control {
     display: flex;
     align-items: center;
-    gap: var(--sp-1);
     min-width: 0;
+    position: relative;
   }
   .form-row-control .contract-field-input { flex: 1; min-width: 0; }
   .form-state {
-    flex-shrink: 0;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: var(--fs-2xs);
     display: inline-flex;
     align-items: center;
     gap: 2px;
-    min-width: 40px;
     white-space: nowrap;
+    pointer-events: none;
+    opacity: 0.8;
   }
-  .form-state:empty { min-width: 0; }
+  .form-state:empty { display: none; }
+  .form-undo {
+    color: var(--c-accent);
+    cursor: pointer;
+    pointer-events: auto;
+    margin-left: 2px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .form-undo:hover { opacity: 0.7; }
 
   /* full-width row (textarea, file, photo) — 2열 grid에서 전폭 */
   .form-row-full { grid-column: 1 / -1; }

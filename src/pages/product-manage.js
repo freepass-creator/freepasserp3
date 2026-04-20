@@ -232,9 +232,10 @@ function renderList() {
     const title = [p.sub_model, p.trim_name || p.trim].filter(v => v && v !== '-').join(' > ') || p.model || '-';
     const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
     const sub = [
+      p.provider_company_code,
       p.car_number,
       p.maker,
-      p.year ? `${p.year}년식` : '',
+      p.year ? `${p.year}년` : '',
       p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '',
       p.fuel_type,
       color,
@@ -378,19 +379,16 @@ function renderPicker(p) {
   const isAdmin = store.currentUser?.role === 'admin';
   const addOpt = isAdmin ? '<option value="__new__">+ 직접 입력</option>' : '';
 
-  const sel = (field, cur, list, placeholder, enabled = true) => `
-    <select class="pd-hero-select" data-field="${field}" ${enabled ? '' : 'disabled'}>
-      <option value="">${placeholder}</option>
-      ${list.map(v => `<option value="${v.replace(/"/g,'&quot;')}" ${v === cur ? 'selected' : ''}>${v}</option>`).join('')}
-      ${addOpt}
-    </select>`;
+  const sel = (label, field, cur, list) => {
+    const opts = [...list];
+    if (isAdmin) opts.push('+ 직접 입력');
+    return fs(label, field, { [field]: cur }, opts);
+  };
 
   return `
-    <div class="pd-hero-selects">
-      ${sel('maker', curMk, makers, '제조사')}
-      ${sel('model', curMd, models, '모델', !!curMk)}
-      ${sel('sub_model', curSub, subs, '세부모델', !!(curMk && curMd))}
-    </div>`;
+    ${sel('제조사','maker',curMk,makers)}
+    ${sel('모델','model',curMd,models)}
+    ${sel('세부모델','sub_model',curSub,subs)}`;
 }
 
 /* ── 패널 2: 차량 자산 (불변 스펙·등록정보) ── */
@@ -412,69 +410,56 @@ function renderAsset(p, key) {
   const productCode  = p.product_code || (carNo && partnerCode ? `${carNo}_${partnerCode}` : '');
 
   el.innerHTML = `
-    <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}">
-      <div class="pd-hero">
-        <input class="pd-hero-carno" data-field="car_number" value="${carNo}" placeholder="차량번호 (예: 12가3456)">
-        <div class="pd-hero-path">${pathHtml}</div>
-        ${renderPicker(p)}
-      </div>
+    <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}" style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
 
       <div class="form-section">
-        <div class="form-section-title">상태</div>
+        <div class="form-section-title"><i class="ph ph-identification-card"></i> 기본정보</div>
         <div class="form-section-body">
-          ${fs('차량상태','vehicle_status',p,STATUS_OPTS)}
-          ${fs('상품구분','product_type',p,TYPE_OPTS)}
+          ${fi('차량번호','car_number',p)}
+          ${fi('차대번호','vin',p)}
+          ${fi('공급사코드','provider_company_code',{ provider_company_code: providerCode })}
+          ${fi('상품코드','product_code',{ product_code: productCode },{ readonly: true })}
         </div>
       </div>
 
       <div class="form-section">
-        <div class="form-section-title">차량 세부사양</div>
+        <div class="form-section-title"><i class="ph ph-car-simple"></i> 제조사 및 차량사양</div>
         <div class="form-section-body">
+          ${renderPicker(p)}
           ${fi('세부트림','trim_name',p,{ autocomplete: true })}
+          ${fi('선택옵션','options',p,{ full: true })}
           ${fs('차종구분','vehicle_class',p,CLASS_OPTS)}
           ${fs('연식','year',p,YEAR_OPTS)}
-          ${fi('주행거리 (km)','mileage',p,{ num: true })}
-          ${fs('연료','fuel_type',p,FUEL_OPTS)}
+          ${fs('연료(동력)','fuel_type',p,FUEL_OPTS)}
           ${fi('외장색','ext_color',p,{ autocomplete: true })}
           ${fi('내장색','int_color',p,{ autocomplete: true })}
           ${fs('구동방식','drive_type',p,['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'])}
-          ${fta('선택옵션','options',p,{ rows: 2 })}
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title">가격 · 위치</div>
-        <div class="form-section-body">
           ${fi('차량가격 (원)','vehicle_price',p,{ num: true })}
-          ${fi('위치','location',p,{ autocomplete: true })}
         </div>
       </div>
 
       <div class="form-section">
-        <div class="form-section-title">비고</div>
+        <div class="form-section-title"><i class="ph ph-file-text"></i> 등록증 정보</div>
         <div class="form-section-body">
-          ${fta('내부 메모','partner_memo',p,{ rows: 3 })}
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title">등록사항 <span class="form-section-hint">(등록증 정보, 선택 입력)</span></div>
-        <div class="form-section-body">
-          ${fi('최초등록일','first_registration_date',p)}
-          ${fi('차령만료일','vehicle_age_expiry_date',p)}
-          ${fi('인승','seats',p,{ num: true })}
-          ${fi('배기량 (cc)','engine_cc',p,{ num: true })}
-          ${fi('차대번호','vin',p)}
+          ${fi('등록증 차종','reg_vehicle_type',p)}
           ${fs('용도','usage',p,['자가용','영업용','관용'])}
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title">코드 (자동등록)</div>
-        <div class="form-section-body">
-          <div class="contract-field"><span class="contract-field-label">공급사</span><span class="contract-field-value">${providerCode || '-'}</span></div>
-          <div class="contract-field"><span class="contract-field-label">파트너</span><span class="contract-field-value">${partnerCode || '-'}</span></div>
-          <div class="contract-field"><span class="contract-field-label">상품코드</span><span class="contract-field-value">${productCode || '-'}</span></div>
+          ${fi('배기량 (cc)','engine_cc',p,{ num: true })}
+          ${fi('승차정원','seats',p,{ num: true })}
+          ${fi('최초등록일','first_registration_date',p)}
+          ${fi('제작연월','manufacture_date',p)}
+          ${fi('차령만료일','vehicle_age_expiry_date',p)}
+          ${fi('형식','model_code',p)}
+          ${fi('원동기형식','engine_code',p)}
+          ${fi('연비 (km/L)','fuel_efficiency',p,{ num: true })}
+          ${fi('총중량 (kg)','total_weight',p,{ num: true })}
+          ${fi('길이 (mm)','length',p,{ num: true })}
+          ${fi('너비 (mm)','width',p,{ num: true })}
+          ${fi('높이 (mm)','height',p,{ num: true })}
+          ${fi('기통수','cylinders',p,{ num: true })}
+          ${fi('정격출력','rated_power',p)}
+          ${fi('제원관리번호','registration_number',p)}
+          ${fi('위치','location',p,{ autocomplete: true })}
+          ${fta('내부 메모','partner_memo',p,{ rows: 3 })}
         </div>
       </div>
 
@@ -492,7 +477,6 @@ function renderAsset(p, key) {
   }
 
   bindPicker(el, p, key);
-  bindHeroCarNo(el, p, key);
   bindFormAutoSave(el, (field, value) => saveField(key, field, value));
 
   // 차량번호·파트너 바뀌면 상품코드 자동 재조합 (기존 상품만)
@@ -553,27 +537,28 @@ function renderTerms(p, key) {
   const curPolicy = p.policy_code || '';
   const curPolicyObj = myPolicies.find(t => (t.policy_code || t._key) === curPolicy);
 
+  // 정책에서 자동 연동되는 값들
+  const pol = curPolicyObj || {};
+  const autoRows = [
+    ['심사여부', pol.screening_criteria || '-'],
+    ['심사기준', pol.credit_grade || '-'],
+    ['최저운전연령', pol.basic_driver_age || '-'],
+    ['운전연령하향', pol.driver_age_lowering || '-'],
+    ['연간약정주행거리', pol.annual_mileage || '-'],
+    ['보험료', pol.insurance_included || '-'],
+    ['보증금분납', pol.deposit_installment || '-'],
+    ['대여지역', pol.rental_region || '-'],
+  ];
+
   el.innerHTML = `
-    <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}">
+    <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}" style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
       <div class="form-section">
-        <div class="form-section-title">정책 연결</div>
+        <div class="form-section-title"><i class="ph ph-scroll"></i> 상태 · 정책</div>
         <div class="form-section-body">
-          <div class="contract-field">
-            <span class="contract-field-label">정책</span>
-            <select class="contract-field-input contract-field-select" data-field="policy_code">
-              <option value="">-</option>
-              ${myPolicies.map(t => {
-                const code = t.policy_code || t._key;
-                return `<option value="${code}" ${code === curPolicy ? 'selected' : ''}>${(t.policy_name || t.policy_code || '-').replace(/"/g,'&quot;')}</option>`;
-              }).join('')}
-            </select>
-            <span class="ac-state" data-state="policy_code"></span>
-          </div>
-          <div class="contract-field">
-            <span class="contract-field-label">정책코드</span>
-            <span class="contract-field-value" id="pdPolicyCode">${curPolicy || '-'}</span>
-          </div>
-          <div class="pd-hint">공급사 <b>${productProvider || '-'}</b>의 정책만 선택 가능 · 상세는 정책 페이지에서 관리</div>
+          ${fs('정책','policy_code',p,myPolicies.map(t => t.policy_code || t._key))}
+          ${fs('상품구분','product_type',p,TYPE_OPTS)}
+          ${fs('차량상태','vehicle_status',p,STATUS_OPTS)}
+          ${fi('현재 주행거리','mileage',p,{ num: true })}
         </div>
       </div>
 
@@ -619,15 +604,21 @@ function renderTerms(p, key) {
           </table>
         </div>
       </div>
+
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-clipboard-text"></i> 정책 연동 <span class="form-section-hint">정책 변경 시 자동 갱신</span></div>
+        <div class="form-section-body">
+          ${autoRows.map(([l, v]) => `<div class="form-row"><span class="form-row-label">${l}</span><span class="form-row-value">${v}</span></div>`).join('')}
+        </div>
+      </div>
     </div>
   `;
 
   bindFormAutoSave(el, (field, value) => saveField(key, field, value));
 
-  // 정책 선택 변경 시 정책코드 표시 갱신
-  el.querySelector('[data-field="policy_code"]')?.addEventListener('change', (e) => {
-    const codeEl = el.querySelector('#pdPolicyCode');
-    if (codeEl) codeEl.textContent = e.target.value || '-';
+  // 정책 변경 시 연동값 갱신
+  el.querySelector('[data-field="policy_code"]')?.addEventListener('change', () => {
+    renderTerms(allProducts.find(x => x._key === key) || p, key);
   });
 
   // 기간별 가격 셀(대여료/보증금/수수료: 숫자 + 수수료 비고: 문자열)

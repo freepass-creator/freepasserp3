@@ -915,6 +915,7 @@ function renderList() {
     // 보조: 차량번호 · 제조사 · 연식 · 주행 · 연료 · 색상(외/내)
     const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
     const sub = [
+      p.provider_company_code,
       p.car_number,
       p.maker,
       p.year ? `${p.year}년` : '',

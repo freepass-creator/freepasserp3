@@ -23,7 +23,8 @@ export function fieldInput(label, field, data, opts = {}) {
   const listId = opts.autocomplete ? `dl_${field}` : '';
   const listAttr = listId ? ` list="${listId}"` : '';
   const dlEl = listId && opts.datalist ? `<datalist id="${listId}">${opts.datalist.map(x => `<option value="${x}">`).join('')}</datalist>` : '';
-  return `<div class="form-row">
+  const fullClass = opts.full ? ' form-row-full' : '';
+  return `<div class="form-row${fullClass}">
     <span class="form-row-label">${label}</span>
     <div class="form-row-control">
       <input class="contract-field-input" data-field="${field}" value="${v}" placeholder="-"${numAttr}${roAttr}${listAttr}>${dlEl}
@@ -167,13 +168,22 @@ export function bindAutoSave(el, saveFn) {
         return;
       }
       const val = isNum ? (v ? Number(v) : null) : v;
+      const prevVal = original;
       try {
         await saveFn(f, val);
         original = v;
         if (isNum && v !== '') inp.value = Number(v).toLocaleString('ko-KR');
-        setFieldState(stateEl, 'saved');
+        const undo = () => {
+          const restoreVal = isNum ? (prevVal ? Number(prevVal) : null) : prevVal;
+          inp.value = prevVal;
+          saveFn(f, restoreVal);
+          original = prevVal;
+          if (isNum && prevVal !== '') inp.value = Number(prevVal).toLocaleString('ko-KR');
+          setFieldState(stateEl, null);
+        };
+        setFieldState(stateEl, 'saved', undo);
         clearTimeout(stateEl?._t);
-        if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 1500);
+        if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 5000);
       } catch (err) { setFieldState(stateEl, 'error'); }
     });
     inp.addEventListener('keydown', e => {
@@ -192,12 +202,14 @@ export function bindAutoSave(el, saveFn) {
       clearTimeout(t);
       setFieldState(stateEl, 'editing');
       t = setTimeout(async () => {
+        const prevVal = original;
         try {
           await saveFn(f, ta.value);
           original = ta.value;
-          setFieldState(stateEl, 'saved');
+          const undo = () => { ta.value = prevVal; saveFn(f, prevVal); original = prevVal; setFieldState(stateEl, null); };
+          setFieldState(stateEl, 'saved', undo);
           clearTimeout(stateEl?._t);
-          if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 1500);
+          if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 5000);
         } catch (err) { setFieldState(stateEl, 'error'); }
       }, 600);
     });
@@ -216,12 +228,14 @@ export function bindAutoSave(el, saveFn) {
       if (stateEl?.classList.contains('is-editing')) setFieldState(stateEl, null);
     });
     sel.addEventListener('change', async () => {
+      const prevVal = originalSel;
       try {
         await saveFn(f, sel.value);
         originalSel = sel.value;
-        setFieldState(stateEl, 'saved');
+        const undo = () => { sel.value = prevVal; saveFn(f, prevVal); originalSel = prevVal; setFieldState(stateEl, null); };
+        setFieldState(stateEl, 'saved', undo);
         clearTimeout(stateEl?._t);
-        if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 1500);
+        if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 5000);
       } catch (err) { setFieldState(stateEl, 'error'); }
     });
   });
@@ -240,19 +254,26 @@ export function formSection(icon, title, bodyHtml) {
   </div>`;
 }
 
-function setFieldState(el, state) {
+function setFieldState(el, state, undoFn) {
   if (!el) return;
   el.classList.remove('is-editing', 'is-saved', 'is-error');
+  el.style.pointerEvents = 'none';
   if (state === 'editing') {
-    el.innerHTML = '<i class="ph ph-pencil-simple"></i>';
+    el.textContent = '수정중';
     el.classList.add('is-editing');
   } else if (state === 'saved') {
-    el.innerHTML = '<i class="ph ph-check"></i> 저장됨';
+    if (undoFn) {
+      el.innerHTML = '저장됨 <span class="form-undo">되돌리기</span>';
+      el.style.pointerEvents = 'auto';
+      el.querySelector('.form-undo')?.addEventListener('click', undoFn);
+    } else {
+      el.textContent = '저장됨';
+    }
     el.classList.add('is-saved');
   } else if (state === 'error') {
-    el.innerHTML = '<i class="ph ph-warning"></i> 오류';
+    el.textContent = '오류';
     el.classList.add('is-error');
   } else {
-    el.innerHTML = '';
+    el.textContent = '';
   }
 }
