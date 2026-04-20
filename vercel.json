@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.py" },
+    { "source": "/catalog.html", "destination": "/catalog.html" },
+    { "source": "/proposal.html", "destination": "/proposal.html" },
+    { "source": "/sign.html", "destination": "/sign.html" },
+    { "source": "/((?!assets|manifest|favicon|icons|robots).*)", "destination": "/index.html" }
+  ]
+}
