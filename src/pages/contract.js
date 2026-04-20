@@ -124,17 +124,25 @@ function renderList() {
   const statusBadge = s => s ? `<span class="badge badge-${tone(s)}">${s.replace('계약','')}</span>` : '';
 
   el.innerHTML = list.map(c => {
+    const done = c.contract_status === '계약완료';
+    const avatarTone = done ? 'ok' : 'muted';
+    const avatarLabel = done ? '완료' : '미완료';
+    // 진행률
+    const stepsDone = STEPS.filter(s => c[s.key] === 'yes' || c[s.key] === true).length;
+    const stepsTotal = STEPS.length;
+    const progressColor = stepsDone === stepsTotal ? 'var(--c-ok)' : stepsDone > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
+    const fmtDate = c.contract_date || (c.created_at ? new Date(c.created_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '');
     return `
       <div class="room-item ${activeCode === c.contract_code ? 'is-active' : ''}" data-code="${c.contract_code}">
-        <div class="room-item-avatar is-${tone(c.contract_status)}"><i class="ph ph-file-text"></i></div>
+        <div class="room-item-avatar is-${avatarTone}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ph-file-text"></i>${avatarLabel}</div>
         <div class="room-item-body">
           <div class="room-item-top">
-            <span class="room-item-name">${c.vehicle_name_snapshot || c.car_number_snapshot || c.contract_code}</span>
-            ${statusBadge(c.contract_status)}
+            <span class="room-item-name">${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}</span>
+            <span class="room-item-time">${fmtDate}</span>
           </div>
           <div class="room-item-msg">
-            <span>${c.customer_name||''} · ${c.agent_code||''}</span>
-            <span class="room-item-time">${c.contract_date||''}</span>
+            <span>${[c.provider_company_code, c.agent_channel_code, c.agent_code].filter(Boolean).join(' · ')}</span>
+            <span style="font-size:var(--fs-2xs);font-weight:var(--fw-medium);color:${progressColor};">${stepsDone}/${stepsTotal}</span>
           </div>
         </div>
       </div>

@@ -124,15 +124,15 @@ function renderList() {
 
   el.innerHTML = list.map(s => `
     <div class="room-item ${activeKey === s._key ? 'is-active' : ''}" data-key="${s._key}">
-      <div class="room-item-avatar is-${settlementStatusTone(s)}"><i class="ph ph-coins"></i></div>
+      <div class="room-item-avatar is-${settlementStatusTone(s)}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ph-coins"></i>${getSettlementStatus(s) === SS.DONE ? '완료' : '미완료'}</div>
       <div class="room-item-body">
         <div class="room-item-top">
-          <span class="room-item-name">${s.vehicle_name_snapshot || s.car_number || s.settlement_code || ''}</span>
-          <span class="list-row-value">${fmtWon(s.fee_amount)}</span>
+          <span class="room-item-name">${s.car_number || ''} ${s.sub_model_snapshot || s.model_snapshot || ''}</span>
+          <span class="room-item-time">${gs(s)}</span>
         </div>
         <div class="room-item-msg">
-          <span>${s.customer_name||''}</span>
-          <span class="room-item-time">${gs(s)}</span>
+          <span>${[s.provider_company_code, s.agent_code, s.customer_name].filter(Boolean).join(' · ')}</span>
+          <span class="list-row-value">${fmtWon(s.fee_amount)}</span>
         </div>
       </div>
     </div>

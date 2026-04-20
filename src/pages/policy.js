@@ -154,12 +154,14 @@ function renderList() {
     // 파트너명 조회
     const partner = (store.partners || []).find(pt => pt.partner_code === p.provider_company_code);
     const providerName = partner?.partner_name || p.provider_company_code || '';
+    const fmtDate = p.created_at ? new Date(p.created_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '';
     return `
     <div class="room-item ${activeCode === p._key ? 'is-active' : ''}" data-key="${p._key}">
       <div class="room-item-avatar is-${tone}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ph-scroll"></i>${p.status === 'active' ? '활성' : '비활'}</div>
       <div class="room-item-body">
         <div class="room-item-top">
           <span class="room-item-name">${providerName} · ${p.policy_name || '-'}</span>
+          <span class="room-item-time">${fmtDate}</span>
         </div>
         <div class="room-item-msg">
           <span>${[p.provider_company_code, p.policy_code, p.term_description].filter(Boolean).join(' · ')}</span>

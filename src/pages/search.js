@@ -1030,6 +1030,8 @@ async function startInquiryContract(p) {
       providerCompanyCode: p.provider_company_code || '',
       vehicleNumber: p.car_number || '',
       modelName: p.model || '',
+      subModel: p.sub_model || '',
+      providerCode: p.provider_company_code || '',
     });
     store.pendingOpenRoom = roomId;
     navigate('/');

@@ -83,7 +83,7 @@ export async function createSettlement(contract) {
 }
 
 /* ── 대화방 생성/열기 ── */
-export async function ensureRoom({ productUid, productCode, agentUid, agentCode, agentName, agentChannelCode, providerUid, providerName, providerCompanyCode, vehicleNumber, modelName }) {
+export async function ensureRoom({ productUid, productCode, agentUid, agentCode, agentName, agentChannelCode, providerUid, providerName, providerCompanyCode, providerCode, vehicleNumber, modelName, subModel }) {
   const roomId = `CH_${productCode || productUid}_${agentCode}`;
 
   // Check if exists
@@ -104,6 +104,8 @@ export async function ensureRoom({ productUid, productCode, agentUid, agentCode,
     provider_company_code: providerCompanyCode || '',
     vehicle_number: vehicleNumber || '',
     model: modelName || '',
+    sub_model: subModel || '',
+    provider_code: providerCode || providerCompanyCode || '',
     last_message: '',
     last_message_at: Date.now(),
     chat_status: '신규',

@@ -707,6 +707,8 @@ async function handlePendingCar(carNumber) {
       providerCompanyCode: product.provider_company_code || '',
       vehicleNumber: product.car_number,
       modelName: product.model || '',
+      subModel: product.sub_model || '',
+      providerCode: product.provider_company_code || '',
     });
     store.pendingOpenRoom = roomId;
     navigate('/', { transition: false });

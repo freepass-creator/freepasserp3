@@ -194,24 +194,21 @@ function renderRoomList() {
   const sorted = [...rooms].sort((a,b) => (b.last_message_at||0) - (a.last_message_at||0));
 
   el.innerHTML = sorted.map(room => {
-    const name = role === 'agent' ? (room.provider_name||'공급사') : role === 'provider' ? (room.agent_name||'영업자') : (room.agent_name||room.provider_name||'대화');
     const unread = role === 'agent' ? room.unread_for_agent : role === 'provider' ? room.unread_for_provider : 0;
     const active = activeRoomId === room._key;
-    const preview = room.vehicle_number
-      ? `🚗 ${room.vehicle_number}  ·  ${room.last_message || ''}`
-      : (room.last_message || '');
-    const initial = (name || '?').trim().charAt(0) || '?';
+    const fmtDate = room.last_message_at ? new Date(room.last_message_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '';
+    const fmtHM = room.last_message_at ? new Date(room.last_message_at).toLocaleTimeString('ko', { hour: '2-digit', minute: '2-digit' }) : '';
 
     return `
       <div class="room-item ${active ? 'is-active' : ''}" data-id="${room._key}">
         <div class="room-item-avatar ${unread > 0 ? 'is-accent' : 'is-muted'}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ${unread > 0 ? 'ph-chat-circle-dots' : 'ph-chat-circle'}"></i>${unread > 0 ? '안읽음' : '읽음'}</div>
         <div class="room-item-body">
           <div class="room-item-top">
-            <span class="room-item-name">${name}</span>
-            <span class="room-item-time">${fmtTime(room.last_message_at)}</span>
+            <span class="room-item-name">${[room.vehicle_number, room.sub_model || room.model].filter(Boolean).join(' ') || '-'}</span>
+            <span class="room-item-time">${fmtDate}</span>
           </div>
           <div class="room-item-msg">
-            <span>${preview}</span>
+            <span>${[room.provider_code, room.agent_code, fmtHM, room.last_message].filter(Boolean).join(' · ')}</span>
             ${unread > 0 ? `<span class="badge is-filled is-pill badge-accent">${unread > 99 ? '99+' : unread}</span>` : ''}
           </div>
         </div>
