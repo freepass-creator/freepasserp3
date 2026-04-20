@@ -37,7 +37,7 @@ export function mount() {
         <div class="ws4-search">
           <input class="input input-sm" id="ctSearch" placeholder="검색..." >
           <div style="display:flex;gap:3px;">
-            <button class="chip is-active" data-f="active">진행중</button>
+            <button class="chip is-active" data-f="active">미완료</button>
             <button class="chip" data-f="done">완료</button>
             <button class="chip" data-f="all">전체</button>
           </div>

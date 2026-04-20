@@ -37,9 +37,8 @@ export function mount() {
         <div class="ws4-search">
           <input class="input input-sm" id="stSearch" placeholder="검색..." >
           <div style="display:flex;gap:3px;">
-            <button class="chip is-active" data-f="pending">대기</button>
+            <button class="chip is-active" data-f="pending">미완료</button>
             <button class="chip" data-f="done">완료</button>
-            <button class="chip" data-f="hold">보류</button>
             <button class="chip" data-f="all">전체</button>
           </div>
         </div>
@@ -108,12 +107,8 @@ function renderList() {
   const f = document.querySelector('.chip[data-f].is-active')?.dataset.f || 'pending';
 
   let list = [...allSettlements];
-  if (f === 'pending') list = list.filter(s => getSettlementStatus(s) === SS.PENDING);
+  if (f === 'pending') list = list.filter(s => getSettlementStatus(s) !== SS.DONE);
   else if (f === 'done') list = list.filter(s => getSettlementStatus(s) === SS.DONE);
-  else if (f === 'hold') list = list.filter(s => {
-    const st = getSettlementStatus(s);
-    return st === SS.HOLD || st.includes('환수');
-  });
 
   if (q) list = list.filter(s => [
     s.vehicle_name_snapshot, s.car_number, s.customer_name,
