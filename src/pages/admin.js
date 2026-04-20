@@ -42,7 +42,7 @@ export function mount(subPath) {
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="admSearch" placeholder="검색..." >
-          <div style="display:flex;gap:3px;margin-top:var(--sp-1);">
+          <div style="display:flex;gap:3px;">
             ${mode === 'users'
               ? '<button class="chip is-active" data-f="active">승인</button><button class="chip" data-f="pending">대기</button><button class="chip" data-f="all">전체</button>'
               : '<button class="chip is-active" data-f="active">활성</button><button class="chip" data-f="all">전체</button>'
@@ -365,7 +365,7 @@ function mountSignInbox(main) {
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="signSearch" placeholder="차량번호·고객명 검색...">
-          <div style="display:flex;gap:3px;margin-top:var(--sp-1);">
+          <div style="display:flex;gap:3px;">
             <button class="chip is-active" data-f="pending">발송대기</button>
             <button class="chip" data-f="sent">발송됨</button>
             <button class="chip" data-f="all">전체</button>

@@ -238,7 +238,7 @@ function renderList() {
       p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '',
       p.fuel_type,
       color,
-    ].filter(Boolean).join(' > ');
+    ].filter(Boolean).join(' · ');
     return `
     <div class="srch-item ${activeKey === p._key ? 'is-active' : ''}" data-key="${p._key}">
       <div class="srch-item-thumb">
@@ -419,17 +419,17 @@ function renderAsset(p, key) {
         ${renderPicker(p)}
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">상태</div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">상태</div>
+        <div class="form-section-body">
           ${fs('차량상태','vehicle_status',p,STATUS_OPTS)}
           ${fs('상품구분','product_type',p,TYPE_OPTS)}
         </div>
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">차량 세부사양</div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">차량 세부사양</div>
+        <div class="form-section-body">
           ${fi('세부트림','trim_name',p,{ autocomplete: true })}
           ${fs('차종구분','vehicle_class',p,CLASS_OPTS)}
           ${fs('연식','year',p,YEAR_OPTS)}
@@ -438,28 +438,28 @@ function renderAsset(p, key) {
           ${fi('외장색','ext_color',p,{ autocomplete: true })}
           ${fi('내장색','int_color',p,{ autocomplete: true })}
           ${fs('구동방식','drive_type',p,['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'])}
-          <textarea class="input pd-textarea" data-field="options" rows="2" placeholder="선택옵션 (선루프, HUD, 가죽시트 등)">${p.options||''}</textarea>
+          ${fta('선택옵션','options',p,{ rows: 2 })}
         </div>
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">가격 · 위치</div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">가격 · 위치</div>
+        <div class="form-section-body">
           ${fi('차량가격 (원)','vehicle_price',p,{ num: true })}
           ${fi('위치','location',p,{ autocomplete: true })}
         </div>
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">비고</div>
-        <div class="pd-section-body">
-          <textarea class="input pd-textarea" data-field="partner_memo" rows="3" placeholder="내부 메모 (고객에게 노출 안됨)">${p.partner_memo||''}</textarea>
+      <div class="form-section">
+        <div class="form-section-title">비고</div>
+        <div class="form-section-body">
+          ${fta('내부 메모','partner_memo',p,{ rows: 3 })}
         </div>
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">등록사항 <span class="pd-section-hint">(등록증 정보, 선택 입력)</span></div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">등록사항 <span class="form-section-hint">(등록증 정보, 선택 입력)</span></div>
+        <div class="form-section-body">
           ${fi('최초등록일','first_registration_date',p)}
           ${fi('차령만료일','vehicle_age_expiry_date',p)}
           ${fi('인승','seats',p,{ num: true })}
@@ -469,9 +469,9 @@ function renderAsset(p, key) {
         </div>
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">코드 (자동등록)</div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">코드 (자동등록)</div>
+        <div class="form-section-body">
           <div class="contract-field"><span class="contract-field-label">공급사</span><span class="contract-field-value">${providerCode || '-'}</span></div>
           <div class="contract-field"><span class="contract-field-label">파트너</span><span class="contract-field-value">${partnerCode || '-'}</span></div>
           <div class="contract-field"><span class="contract-field-label">상품코드</span><span class="contract-field-value">${productCode || '-'}</span></div>
@@ -493,7 +493,7 @@ function renderAsset(p, key) {
 
   bindPicker(el, p, key);
   bindHeroCarNo(el, p, key);
-  bindAutoSave(el, key);
+  bindFormAutoSave(el, (field, value) => saveField(key, field, value));
 
   // 차량번호·파트너 바뀌면 상품코드 자동 재조합 (기존 상품만)
   if (key !== DRAFT_KEY) {
@@ -535,95 +535,6 @@ async function saveField(key, field, value) {
 }
 
 /* ── 공용: focus/blur 자동저장 바인딩 ── */
-function bindAutoSave(el, key) {
-  el.querySelectorAll('.contract-field-input:not(select)').forEach(inp => {
-    const f = inp.dataset.field;
-    const stateEl = el.querySelector(`.ac-state[data-state="${f}"]`);
-    const isNum = inp.dataset.num === '1';
-
-    let original = inp.value;
-    inp.addEventListener('focus', () => {
-      // 수정모드 진입: 숫자 필드는 콤마 제거하고 raw 숫자 표시
-      if (isNum) inp.value = inp.value.replace(/[^\d]/g, '');
-      original = inp.value;
-      setState(stateEl, 'editing');
-    });
-    if (isNum) {
-      // 입력 중엔 숫자만 허용
-      inp.addEventListener('input', () => {
-        const cleaned = inp.value.replace(/[^\d]/g, '');
-        if (cleaned !== inp.value) inp.value = cleaned;
-      });
-    }
-    inp.addEventListener('blur', async () => {
-      const v = inp.value.trim();
-      if (v === original) {
-        // 변경 없어도 숫자 필드는 보기모드 포맷(콤마) 복구
-        if (isNum && v !== '') inp.value = Number(v).toLocaleString('ko-KR');
-        setState(stateEl, null);
-        return;
-      }
-      const val = isNum ? (v ? Number(v) : null) : v;
-      try {
-        await saveField(key, f, val);
-        original = v;
-        // 저장 후 콤마 포맷으로 표시
-        if (isNum && v !== '') inp.value = Number(v).toLocaleString('ko-KR');
-        setState(stateEl, 'saved');
-        clearTimeout(stateEl._t);
-        stateEl._t = setTimeout(() => setState(stateEl, null), 1500);
-      } catch (err) { setState(stateEl, 'error'); }
-    });
-    inp.addEventListener('keydown', e => {
-      if (e.key === 'Enter') inp.blur();
-      else if (e.key === 'Escape') {
-        // 취소: 원래 값으로 복구 후 blur (blur에서 v === original이라 save 건너뜀)
-        inp.value = original;
-        inp.blur();
-      }
-    });
-  });
-
-  el.querySelectorAll('.contract-field-select').forEach(sel => {
-    const f = sel.dataset.field;
-    const stateEl = el.querySelector(`.ac-state[data-state="${f}"]`);
-    let originalSel = sel.value;
-    sel.addEventListener('focus', () => { originalSel = sel.value; setState(stateEl, 'editing'); });
-    sel.addEventListener('blur',  () => {
-      if (stateEl?.classList.contains('is-editing')) setState(stateEl, null);
-    });
-    sel.addEventListener('change', async () => {
-      try {
-        await saveField(key, f, sel.value);
-        originalSel = sel.value;
-        setState(stateEl, 'saved');
-        clearTimeout(stateEl._t);
-        stateEl._t = setTimeout(() => setState(stateEl, null), 1500);
-      } catch (err) { setState(stateEl, 'error'); }
-    });
-    sel.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { sel.value = originalSel; sel.blur(); }
-    });
-  });
-
-  el.querySelectorAll('textarea[data-field]').forEach(ta => {
-    let t;
-    let originalTa = ta.value;
-    ta.addEventListener('focus', () => { originalTa = ta.value; });
-    ta.addEventListener('input', () => {
-      clearTimeout(t);
-      t = setTimeout(() => { saveField(key, ta.dataset.field, ta.value); originalTa = ta.value; }, 600);
-    });
-    ta.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        // 취소: 디바운스된 저장 취소 + 원래 값으로 복구
-        clearTimeout(t);
-        ta.value = originalTa;
-        ta.blur();
-      }
-    });
-  });
-}
 
 /* ── 패널 3: 대여조건 · 가격 — 정책 연결 + 기간별 가격만 ── */
 const PRICE_PERIODS = ['1','12','24','36','48','60'];
@@ -644,9 +555,9 @@ function renderTerms(p, key) {
 
   el.innerHTML = `
     <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}">
-      <div class="pd-section">
-        <div class="pd-section-title">정책 연결</div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">정책 연결</div>
+        <div class="form-section-body">
           <div class="contract-field">
             <span class="contract-field-label">정책</span>
             <select class="contract-field-input contract-field-select" data-field="policy_code">
@@ -666,9 +577,9 @@ function renderTerms(p, key) {
         </div>
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">기간별 가격</div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">기간별 가격</div>
+        <div class="form-section-body">
           <table class="pd-price-table">
             <thead><tr><th>기간</th><th>대여료</th><th>보증금</th></tr></thead>
             <tbody>
@@ -688,9 +599,9 @@ function renderTerms(p, key) {
         </div>
       </div>
 
-      <div class="pd-section">
-        <div class="pd-section-title">영업수수료 <span class="pd-section-hint">(내부용 · 카탈로그 배포 시 제외)</span></div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">영업수수료 <span class="form-section-hint">(내부용 · 카탈로그 배포 시 제외)</span></div>
+        <div class="form-section-body">
           <table class="pd-price-table">
             <thead><tr><th>기간</th><th>수수료</th><th>비고</th></tr></thead>
             <tbody>
@@ -711,7 +622,7 @@ function renderTerms(p, key) {
     </div>
   `;
 
-  bindAutoSave(el, key);
+  bindFormAutoSave(el, (field, value) => saveField(key, field, value));
 
   // 정책 선택 변경 시 정책코드 표시 갱신
   el.querySelector('[data-field="policy_code"]')?.addEventListener('change', (e) => {
@@ -810,11 +721,11 @@ function renderPhotos(p, key) {
   el.innerHTML = `
     <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}">
       <!-- 차량 사진 -->
-      <div class="pd-section">
-        <div class="pd-section-title">
-          차량 사진 <span class="pd-section-hint">${imgs.length}/${MAX_PHOTOS}</span>
+      <div class="form-section">
+        <div class="form-section-title">
+          차량 사진 <span class="form-section-hint">${imgs.length}/${MAX_PHOTOS}</span>
         </div>
-        <div class="pd-section-body">
+        <div class="form-section-body">
           <label class="pd-dropzone" id="pdDropzone" for="pdPhotoFile">
             <i class="ph ph-upload-simple" aria-hidden="true"></i>
             <div class="pd-dropzone-text">이미지를 끌어놓거나 클릭해서 파일 선택</div>
@@ -835,17 +746,17 @@ function renderPhotos(p, key) {
       </div>
 
       <!-- 사진 링크 (외부 URL) -->
-      <div class="pd-section">
-        <div class="pd-section-title">사진 링크 <span class="pd-section-hint">여러 줄 · 콤마 구분</span></div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">사진 링크 <span class="form-section-hint">여러 줄 · 콤마 구분</span></div>
+        <div class="form-section-body">
           <textarea class="input pd-textarea" data-field="photo_link" rows="3" placeholder="https://... (moderentcar, drive 폴더 등)">${photoLink}</textarea>
         </div>
       </div>
 
       <!-- 등록증 (OCR) -->
-      <div class="pd-section">
-        <div class="pd-section-title">자동차등록증 <span class="pd-section-hint">업로드 시 OCR로 기본정보 자동 채움</span></div>
-        <div class="pd-section-body">
+      <div class="form-section">
+        <div class="form-section-title">자동차등록증 <span class="form-section-hint">업로드 시 OCR로 기본정보 자동 채움</span></div>
+        <div class="form-section-body">
           <div class="pd-reg-wrap">
             ${regImg
               ? `<img src="${regImg}" class="pd-reg-image">
@@ -859,7 +770,7 @@ function renderPhotos(p, key) {
     </div>
   `;
 
-  bindAutoSave(el, key);   // photo_link textarea
+  bindFormAutoSave(el, (field, value) => saveField(key, field, value));   // photo_link textarea
 
   // ── 차량 사진 업로드 (label for="pdPhotoFile"이 클릭 자동 트리거) ──
   const fileInput = document.getElementById('pdPhotoFile');
@@ -1087,20 +998,8 @@ function uniqueValues(field) {
   return [...s].filter(Boolean).sort();
 }
 
-function fi(l, field, p, opts = {}) {
-  const raw = p[field] ?? '';
-  const isNum = opts.num === true;
-  const v = isNum && raw !== '' && raw !== null ? Number(raw).toLocaleString('ko-KR') : raw;
-  const listId = opts.autocomplete ? `dl_${field}` : '';
-  const listAttr = listId ? ` list="${listId}"` : '';
-  const numAttr = isNum ? ' data-num="1" inputmode="numeric"' : '';
-  const dlEl = listId ? `<datalist id="${listId}">${uniqueValues(field).map(x => `<option value="${x}">`).join('')}</datalist>` : '';
-  return `<div class="contract-field"><span class="contract-field-label">${l}</span><input class="contract-field-input" data-field="${field}" value="${v}" placeholder="-"${listAttr}${numAttr}>${dlEl}<span class="ac-state" data-state="${field}"></span></div>`;
-}
-function fs(l, field, p, opts) {
-  const cur = String(p[field] ?? '');
-  return `<div class="contract-field"><span class="contract-field-label">${l}</span><select class="contract-field-input contract-field-select" data-field="${field}"><option value="">-</option>${opts.map(o => `<option value="${o}" ${o === cur ? 'selected' : ''}>${o}</option>`).join('')}</select><span class="ac-state" data-state="${field}"></span></div>`;
-}
+// fi/fs → 공용 form-fields.js 사용
+import { fieldInput as fi, fieldSelect as fs, fieldTextarea as fta, formSection, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
 
 export function unmount() {
   unsubProducts?.();

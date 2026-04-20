@@ -20,10 +20,13 @@ export function fieldInput(label, field, data, opts = {}) {
   const v = isNum && raw !== '' && raw !== null ? Number(raw).toLocaleString('ko-KR') : raw;
   const numAttr = isNum ? ' data-num="1" inputmode="numeric"' : '';
   const roAttr = opts.readonly ? ' readonly' : '';
+  const listId = opts.autocomplete ? `dl_${field}` : '';
+  const listAttr = listId ? ` list="${listId}"` : '';
+  const dlEl = listId && opts.datalist ? `<datalist id="${listId}">${opts.datalist.map(x => `<option value="${x}">`).join('')}</datalist>` : '';
   return `<div class="form-row">
     <span class="form-row-label">${label}</span>
     <div class="form-row-control">
-      <input class="contract-field-input" data-field="${field}" value="${v}" placeholder="-"${numAttr}${roAttr}>
+      <input class="contract-field-input" data-field="${field}" value="${v}" placeholder="-"${numAttr}${roAttr}${listAttr}>${dlEl}
       <span class="form-state" data-state="${field}"></span>
     </div>
   </div>`;
@@ -80,6 +83,59 @@ export function fieldNew(label, field, options) {
 }
 
 /**
+ * 여러 줄 입력 (메모, 옵션 등)
+ */
+export function fieldTextarea(label, field, data, opts = {}) {
+  const v = data[field] ?? '';
+  const rows = opts.rows || 3;
+  return `<div class="form-row form-row-full">
+    <span class="form-row-label">${label}</span>
+    <div class="form-row-control">
+      <textarea class="contract-field-input" data-field="${field}" rows="${rows}" placeholder="-" style="resize:vertical;">${v}</textarea>
+      <span class="form-state" data-state="${field}"></span>
+    </div>
+  </div>`;
+}
+
+/**
+ * 파일 업로드 (서류 등)
+ * @param {string} label
+ * @param {string} field - data-field (저장될 URL 필드)
+ * @param {object} data
+ * @param {object} opts - { accept: 'image/*,.pdf' }
+ */
+export function fieldFile(label, field, data, opts = {}) {
+  const url = data[field] || '';
+  const accept = opts.accept || 'image/*,.pdf';
+  return `<div class="form-row form-row-full">
+    <span class="form-row-label">${label}</span>
+    <div class="form-row-control">
+      ${url ? `<a href="${url}" target="_blank" class="form-file-link"><i class="ph ph-file"></i> 업로드됨</a>` : '<span style="color:var(--c-text-muted);font-size:var(--fs-2xs);">미등록</span>'}
+      <button class="btn btn-xs btn-outline form-file-btn" data-field="${field}" data-accept="${accept}"><i class="ph ph-upload-simple"></i></button>
+      <span class="form-state" data-state="${field}"></span>
+    </div>
+  </div>`;
+}
+
+/**
+ * 사진 업로드 (이미지 프리뷰 + 업로드)
+ * @param {string} label
+ * @param {string} field
+ * @param {object} data
+ */
+export function fieldPhoto(label, field, data) {
+  const url = data[field] || '';
+  return `<div class="form-row form-row-full">
+    <span class="form-row-label">${label}</span>
+    <div class="form-row-control form-photo-control">
+      ${url ? `<img src="${url}" class="form-photo-preview" alt="">` : '<div class="form-photo-empty"><i class="ph ph-image"></i></div>'}
+      <button class="btn btn-xs btn-outline form-photo-btn" data-field="${field}"><i class="ph ph-camera"></i></button>
+      <span class="form-state" data-state="${field}"></span>
+    </div>
+  </div>`;
+}
+
+/**
  * 자동저장 바인딩 — el 안의 모든 .contract-field-input에 blur/change 시 저장 + 피드백
  * @param {HTMLElement} el - 컨테이너
  * @param {function} saveFn - (field, value) => Promise
@@ -126,6 +182,30 @@ export function bindAutoSave(el, saveFn) {
     });
   });
 
+  // textarea (디바운스 저장)
+  el.querySelectorAll('textarea.contract-field-input').forEach(ta => {
+    const f = ta.dataset.field;
+    const stateEl = el.querySelector(`.form-state[data-state="${f}"]`);
+    let t, original = ta.value;
+    ta.addEventListener('focus', () => { original = ta.value; setFieldState(stateEl, 'editing'); });
+    ta.addEventListener('input', () => {
+      clearTimeout(t);
+      setFieldState(stateEl, 'editing');
+      t = setTimeout(async () => {
+        try {
+          await saveFn(f, ta.value);
+          original = ta.value;
+          setFieldState(stateEl, 'saved');
+          clearTimeout(stateEl?._t);
+          if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 1500);
+        } catch (err) { setFieldState(stateEl, 'error'); }
+      }, 600);
+    });
+    ta.addEventListener('blur', () => {
+      if (ta.value === original) setFieldState(stateEl, null);
+    });
+  });
+
   // select dropdowns
   el.querySelectorAll('.contract-field-select').forEach(sel => {
     const f = sel.dataset.field;
@@ -145,6 +225,19 @@ export function bindAutoSave(el, saveFn) {
       } catch (err) { setFieldState(stateEl, 'error'); }
     });
   });
+}
+
+/**
+ * 섹션 래퍼 — 아이콘 + 타이틀 + 2열 grid 바디
+ * @param {string} icon - phosphor 아이콘 클래스
+ * @param {string} title - 섹션 타이틀
+ * @param {string} bodyHtml - form-row 들의 HTML
+ */
+export function formSection(icon, title, bodyHtml) {
+  return `<div class="form-section">
+    <div class="form-section-title">${icon ? `<i class="${icon}"></i>` : ''} ${title}</div>
+    <div class="form-section-body">${bodyHtml}</div>
+  </div>`;
 }
 
 function setFieldState(el, state) {

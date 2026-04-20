@@ -694,19 +694,41 @@
     line-height: 1.3;
   }
 
-  /* ── 공용 폼 행 (form-fields.js 전용) ── */
+  /* ── 공용 폼 섹션 + 행 (form-fields.js 전용) ── */
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+  .form-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    color: var(--c-text);
+  }
+  .form-section-title i { color: var(--c-accent); font-size: 14px; }
+  .form-section-hint { font-size: var(--fs-2xs); font-weight: var(--fw-normal); color: var(--c-text-muted); margin-left: auto; }
+  .form-section-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 600px) {
+    .form-section-body { grid-template-columns: 1fr; }
+  }
+
   .form-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 4px var(--sp-2);
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--sp-1) var(--sp-2);
     font-size: var(--fs-xs);
-    min-height: 28px;
   }
-  .form-row-label { color: var(--c-text-muted); flex-shrink: 0; min-width: 80px; }
-  .form-row-value { color: var(--c-text); font-weight: var(--fw-medium); text-align: right; word-break: break-word; }
+  .form-row-label { color: var(--c-text-muted); font-size: var(--fs-2xs); }
+  .form-row-value { color: var(--c-text); font-weight: var(--fw-medium); word-break: break-word; }
   .form-row-control {
-    flex: 1;
     display: flex;
     align-items: center;
     gap: var(--sp-1);
@@ -719,9 +741,23 @@
     display: inline-flex;
     align-items: center;
     gap: 2px;
-    min-width: 48px;
+    min-width: 40px;
     white-space: nowrap;
   }
+  .form-state:empty { min-width: 0; }
+
+  /* full-width row (textarea, file, photo) — 2열 grid에서 전폭 */
+  .form-row-full { grid-column: 1 / -1; }
+
+  /* file */
+  .form-file-link { font-size: var(--fs-2xs); color: var(--c-accent); display: inline-flex; align-items: center; gap: 3px; }
+  .form-file-btn { flex-shrink: 0; }
+
+  /* photo */
+  .form-photo-control { gap: var(--sp-2); }
+  .form-photo-preview { width: 48px; height: 36px; object-fit: cover; border-radius: var(--ctrl-r); border: 1px solid var(--c-border); }
+  .form-photo-empty { width: 48px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--c-bg-sub); border-radius: var(--ctrl-r); color: var(--c-text-muted); font-size: 18px; }
+  .form-photo-btn { flex-shrink: 0; }
   .form-state.is-editing { color: var(--c-accent); }
   .form-state.is-saved   { color: var(--c-ok); }
   .form-state.is-error   { color: var(--c-err); }

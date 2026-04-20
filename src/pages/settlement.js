@@ -35,7 +35,7 @@ export function mount() {
         <div class="ws4-head">목록</div>
         <div class="ws4-search">
           <input class="input input-sm" id="stSearch" placeholder="검색..." >
-          <div style="display:flex;gap:3px;margin-top:var(--sp-1);">
+          <div style="display:flex;gap:3px;">
             <button class="chip is-active" data-f="pending">대기</button>
             <button class="chip" data-f="done">완료</button>
             <button class="chip" data-f="hold">보류</button>

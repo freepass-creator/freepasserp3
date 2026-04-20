@@ -21,6 +21,9 @@
     padding: var(--sp-2) var(--sp-3);
     flex-shrink: 0;
     border-bottom: 1px solid var(--c-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
   }
 
   .srch-filters {
@@ -112,7 +115,7 @@
     align-items: center;
     gap: var(--sp-1);
     min-height: 28px;
-    margin-top: var(--sp-2);
+    line-height: 28px;
   }
 
   /* ── Resize Handle ── */

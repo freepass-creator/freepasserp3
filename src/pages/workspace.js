@@ -34,7 +34,7 @@ export function mount() {
         <div class="ws4-head">작업 <span class="ws4-head-toggle" data-collapse="rooms"><i class="ph ph-caret-left"></i></span></div>
         <div class="ws4-search">
           <input class="input input-sm" id="wsRoomSearch" placeholder="검색..." >
-          <div style="display:flex;gap:3px;margin-top:var(--sp-1);">
+          <div style="display:flex;gap:3px;">
             <button class="chip is-active" data-rf="unread">안읽음</button>
             <button class="chip" data-rf="received">받은거</button>
             <button class="chip" data-rf="sent">보낸거</button>

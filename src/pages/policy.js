@@ -63,7 +63,7 @@ export function mount() {
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="plSearch" placeholder="정책명, 공급사..." >
-          <div style="display:flex;gap:3px;margin-top:var(--sp-1);">
+          <div style="display:flex;gap:3px;">
             <button class="chip is-active" data-f="active">활성</button>
             <button class="chip" data-f="all">전체</button>
           </div>
@@ -73,25 +73,32 @@ export function mount() {
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="form">
         <div class="ws4-head">
-          <span>등록/수정</span>
+          <span>대여조건</span>
           <div style="display:flex;gap:var(--sp-1);" id="plFormActions"></div>
         </div>
         <div class="ws4-body" id="plForm">
-          <div class="srch-empty"><i class="ph ph-scroll"></i><p>정책을 선택하세요</p></div>
+          <div class="srch-empty"><i class="ph ph-list-checks"></i><p>정책을 선택하세요</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="1"></div>
-      <div class="ws4-panel" data-panel="detail">
-        <div class="ws4-head">상세</div>
-        <div class="ws4-body" id="plDetail">
-          <div class="srch-empty"><i class="ph ph-info"></i><p>상세 정보</p></div>
+      <div class="ws4-panel" data-panel="insurance">
+        <div class="ws4-head">보험 · 운전자</div>
+        <div class="ws4-body" id="plInsurance">
+          <div class="srch-empty"><i class="ph ph-shield-check"></i><p>보험/운전자 조건</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="2"></div>
-      <div class="ws4-panel" data-panel="sub">
-        <div class="ws4-head">보조</div>
-        <div class="ws4-body" id="plSub">
-          <div class="srch-empty"><i class="ph ph-note"></i><p>연결 상품</p></div>
+      <div class="ws4-panel" data-panel="etc">
+        <div class="ws4-head">기타 대여조건</div>
+        <div class="ws4-body" id="plEtc">
+          <div class="srch-empty"><i class="ph ph-note"></i><p>기타 대여조건</p></div>
+        </div>
+      </div>
+      <div class="ws4-resize" data-idx="3"></div>
+      <div class="ws4-panel" data-panel="linked">
+        <div class="ws4-head">연결 상품</div>
+        <div class="ws4-body" id="plLinked">
+          <div class="srch-empty"><i class="ph ph-car-simple"></i><p>연결 상품</p></div>
         </div>
       </div>
     </div>
@@ -170,18 +177,18 @@ function loadAll(key) {
   const p = allPolicies.find(x => x._key === key);
   if (!p) return;
   renderForm(p, key);
-  renderDetail(p);
-  renderSub(p);
+  renderInsurance(p, key);
+  renderEtc(p, key);
+  renderLinked(p);
 }
 
 function renderForm(p, key) {
   const el = document.getElementById('plForm');
   el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
-
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-info"></i> 기본정보</div>
-        <div class="cat-rows">
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-info"></i> 기본정보</div>
+        <div class="form-section-body">
           ${fi('정책코드','policy_code',p)}
           ${fi('정책명','policy_name',p)}
           ${fi('공급사코드','provider_company_code',p)}
@@ -191,24 +198,9 @@ function renderForm(p, key) {
           ${fs('신용등급','credit_grade',p,OPTS.credit_grade)}
         </div>
       </div>
-
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-user"></i> 운전자 조건</div>
-        <div class="cat-rows">
-          ${fs('기본운전자연령','basic_driver_age',p,OPTS.basic_driver_age)}
-          ${fs('운전연령상한','driver_age_upper_limit',p,OPTS.driver_age_upper_limit)}
-          ${fs('운전연령하향','driver_age_lowering',p,OPTS.driver_age_lowering)}
-          ${fs('운전연령하향비용','age_lowering_cost',p,OPTS.age_lowering_cost)}
-          ${fs('개인운전자범위','personal_driver_scope',p,OPTS.personal_driver_scope)}
-          ${fs('사업자운전자범위','business_driver_scope',p,OPTS.business_driver_scope)}
-          ${fs('추가운전자허용인원수','additional_driver_allowance_count',p,OPTS.additional_driver_allowance_count)}
-          ${fs('추가운전자1인당비용','additional_driver_cost',p,OPTS.additional_driver_cost)}
-        </div>
-      </div>
-
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-list-checks"></i> 대여조건</div>
-        <div class="cat-rows">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-list-checks"></i> 대여조건</div>
+        <div class="form-section-body">
           ${fs('약정주행거리','annual_mileage',p,OPTS.annual_mileage)}
           ${fs('1만Km추가비용','mileage_upcharge_per_10000km',p,OPTS.mileage_upcharge_per_10000km)}
           ${fs('보증금분납','deposit_installment',p,OPTS.deposit_installment)}
@@ -220,28 +212,6 @@ function renderForm(p, key) {
           ${fi('수수료환수조건','commission_clawback_condition',p)}
         </div>
       </div>
-
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험조건</div>
-        <div class="cat-rows">
-          ${fi('대인배상','injury_compensation_limit',{ injury_compensation_limit: p.injury_compensation_limit || '무한' })}
-          ${fs('대인면책금','injury_deductible',p,OPTS.injury_deductible)}
-          ${fs('대물배상','property_compensation_limit',p,OPTS.property_compensation_limit)}
-          ${fs('대물면책금','property_deductible',p,OPTS.property_deductible)}
-          ${fs('자기신체사고','self_body_accident',p,OPTS.self_body_accident)}
-          ${fs('자손면책금','self_body_deductible',p,OPTS.self_body_deductible)}
-          ${fs('무보험차상해','uninsured_damage',p,OPTS.uninsured_damage)}
-          ${fs('무보험면책금','uninsured_deductible',p,OPTS.uninsured_deductible)}
-          ${fs('자기차량손해','own_damage_compensation',p,OPTS.own_damage_compensation)}
-          ${fs('자차수리비율','own_damage_repair_ratio',p,OPTS.own_damage_repair_ratio)}
-          ${fs('자차최소면책금','own_damage_min_deductible',p,OPTS.own_damage_min_deductible)}
-          ${fs('자차최대면책금','own_damage_max_deductible',p,OPTS.own_damage_max_deductible)}
-          ${fs('정비서비스','maintenance_service',p,OPTS.maintenance_service)}
-          ${fs('긴급출동','annual_roadside_assistance',p,OPTS.annual_roadside_assistance)}
-          ${fs('보험료','insurance_included',p,OPTS.insurance_included)}
-        </div>
-      </div>
-
     </div>
   `;
 
@@ -350,85 +320,86 @@ function renderNewForm() {
   });
 }
 
-function renderDetail(p) {
-  const el = document.getElementById('plDetail');
-
-  const row = fieldView;
+function renderInsurance(p, key) {
+  const el = document.getElementById('plInsurance');
+  const saveFn = (field, value) => updateRecord(`policies/${key}`, { [field]: value });
 
   el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-info"></i> 기본정보</div>
-        <div class="cat-rows">
-          ${row('정책코드', p.policy_code)}
-          ${row('정책명', p.policy_name)}
-          ${row('공급사', p.provider_company_code)}
-          ${row('유형', p.policy_type)}
-          ${row('심사기준', p.screening_criteria)}
-          ${row('신용등급', p.credit_grade)}
-          ${row('상태', p.status)}
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-shield-check"></i> 보험조건</div>
+        <div class="form-section-body">
+          ${fi('대인배상','injury_compensation_limit',{ injury_compensation_limit: p.injury_compensation_limit || '무한' })}
+          ${fs('대인면책금','injury_deductible',p,OPTS.injury_deductible)}
+          ${fs('대물배상','property_compensation_limit',p,OPTS.property_compensation_limit)}
+          ${fs('대물면책금','property_deductible',p,OPTS.property_deductible)}
+          ${fs('자기신체사고','self_body_accident',p,OPTS.self_body_accident)}
+          ${fs('자손면책금','self_body_deductible',p,OPTS.self_body_deductible)}
+          ${fs('무보험차상해','uninsured_damage',p,OPTS.uninsured_damage)}
+          ${fs('무보험면책금','uninsured_deductible',p,OPTS.uninsured_deductible)}
+          ${fs('자기차량손해','own_damage_compensation',p,OPTS.own_damage_compensation)}
+          ${fs('자차수리비율','own_damage_repair_ratio',p,OPTS.own_damage_repair_ratio)}
+          ${fs('자차최소면책금','own_damage_min_deductible',p,OPTS.own_damage_min_deductible)}
+          ${fs('자차최대면책금','own_damage_max_deductible',p,OPTS.own_damage_max_deductible)}
+          ${fs('정비서비스','maintenance_service',p,OPTS.maintenance_service)}
+          ${fs('긴급출동','annual_roadside_assistance',p,OPTS.annual_roadside_assistance)}
+          ${fs('보험료','insurance_included',p,OPTS.insurance_included)}
         </div>
       </div>
-
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-user"></i> 운전자 조건</div>
-        <div class="cat-rows">
-          ${row('기본운전자연령', p.basic_driver_age)}
-          ${row('운전연령상한', p.driver_age_upper_limit)}
-          ${row('운전연령하향', p.driver_age_lowering)}
-          ${row('운전연령하향비용', p.age_lowering_cost)}
-          ${row('개인운전자범위', p.personal_driver_scope)}
-          ${row('사업자운전자범위', p.business_driver_scope)}
-          ${row('추가운전자인원', p.additional_driver_allowance_count)}
-          ${row('추가운전자비용', p.additional_driver_cost)}
-        </div>
-      </div>
-
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-list-checks"></i> 대여조건</div>
-        <div class="cat-rows">
-          ${row('약정주행거리', p.annual_mileage)}
-          ${row('1만Km추가비용', p.mileage_upcharge_per_10000km)}
-          ${row('보증금분납', p.deposit_installment)}
-          ${row('보증금카드결제', p.deposit_card_payment)}
-          ${row('결제방식', p.payment_method)}
-          ${row('위약금', p.penalty_condition)}
-          ${row('대여지역', p.rental_region)}
-          ${row('탁송비', p.delivery_fee)}
-        </div>
-      </div>
-
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험조건</div>
-        <div class="cat-rows">
-          ${row('대인배상', p.injury_compensation_limit || '무한')}
-          ${row('대인면책금', p.injury_deductible)}
-          ${row('대물배상', p.property_compensation_limit)}
-          ${row('대물면책금', p.property_deductible)}
-          ${row('자기신체사고', p.self_body_accident)}
-          ${row('자손면책금', p.self_body_deductible)}
-          ${row('무보험차상해', p.uninsured_damage)}
-          ${row('무보험면책금', p.uninsured_deductible)}
-          ${row('자기차량손해', p.own_damage_compensation)}
-          ${row('자차수리비율', p.own_damage_repair_ratio)}
-          ${row('자차최소면책금', p.own_damage_min_deductible)}
-          ${row('자차최대면책금', p.own_damage_max_deductible)}
-          ${row('정비서비스', p.maintenance_service)}
-          ${row('긴급출동', p.annual_roadside_assistance)}
-          ${row('보험료', p.insurance_included)}
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-user"></i> 운전자 조건</div>
+        <div class="form-section-body">
+          ${fs('기본운전자연령','basic_driver_age',p,OPTS.basic_driver_age)}
+          ${fs('운전연령상한','driver_age_upper_limit',p,OPTS.driver_age_upper_limit)}
+          ${fs('운전연령하향','driver_age_lowering',p,OPTS.driver_age_lowering)}
+          ${fs('운전연령하향비용','age_lowering_cost',p,OPTS.age_lowering_cost)}
+          ${fs('개인운전자범위','personal_driver_scope',p,OPTS.personal_driver_scope)}
+          ${fs('사업자운전자범위','business_driver_scope',p,OPTS.business_driver_scope)}
+          ${fs('추가운전자허용인원수','additional_driver_allowance_count',p,OPTS.additional_driver_allowance_count)}
+          ${fs('추가운전자1인당비용','additional_driver_cost',p,OPTS.additional_driver_cost)}
         </div>
       </div>
     </div>
   `;
+  bindFormAutoSave(el, saveFn);
 }
 
-function renderSub(p) {
-  const el = document.getElementById('plSub');
+function renderEtc(p, key) {
+  const el = document.getElementById('plEtc');
+  const saveFn = (field, value) => updateRecord(`policies/${key}`, { [field]: value });
+
+  el.innerHTML = `
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-note"></i> 정책 요약</div>
+        <div class="form-section-body">
+          ${fieldView('정책코드', p.policy_code)}
+          ${fieldView('정책명', p.policy_name)}
+          ${fieldView('공급사', p.provider_company_code)}
+          ${fieldView('심사기준', p.screening_criteria)}
+          ${fieldView('신용등급', p.credit_grade)}
+          ${fieldView('상태', p.status === 'active' ? '활성' : p.status || '-')}
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-warning-circle"></i> 기타</div>
+        <div class="form-section-body">
+          ${fi('수수료환수조건','commission_clawback_condition',p)}
+          ${fi('정책설명','term_description',p)}
+        </div>
+      </div>
+    </div>
+  `;
+  bindFormAutoSave(el, saveFn);
+}
+
+function renderLinked(p) {
+  const el = document.getElementById('plLinked');
   const products = (store.products || []).filter(x => x.policy_code === p.policy_code);
 
   el.innerHTML = `
     <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2);overflow-y:auto;height:100%;">
-      <div style="font-weight:var(--fw-bold);font-size:var(--fs-sm);">연결 상품 (${products.length})</div>
+      <div style="font-size:var(--fs-xs);color:var(--c-text-muted);">${products.length}대 연결</div>
       ${products.map(pr => `
         <div class="room-item">
           <div class="room-item-body">
