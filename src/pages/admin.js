@@ -162,20 +162,20 @@ function renderList() {
   el.innerHTML = list.map(item => {
     const key = item._key;
     const name = mode === 'users' ? (item.name || item.email) : (item.partner_name || item.partner_code);
-    const sub  = mode === 'users' ? `${item.role || ''} · ${item.company_name || ''}` : `${item.partner_type || ''} · ${item.ceo_name || ''}`;
-    const avatarContent = mode === 'users'
-      ? (name || '?').trim().charAt(0) || '?'
-      : `<i class="ph ph-buildings"></i>`;
+    const statusLabel = { active: '승인', pending: '대기', rejected: '반려', inactive: '비활' }[item.status] || '';
+    const avatarIcon = mode === 'users' ? 'ph-user' : 'ph-buildings';
+    const sub = mode === 'users'
+      ? [item.role, item.company_name, item.phone].filter(Boolean).join(' · ')
+      : [item.partner_type, item.business_number, item.manager_phone || item.company_phone].filter(Boolean).join(' · ');
 
     return `
       <div class="room-item ${activeKey === key ? 'is-active' : ''}" data-key="${key}">
-        <div class="room-item-avatar is-${tone(item.status)}">${avatarContent}</div>
+        <div class="room-item-avatar is-${tone(item.status)}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ${avatarIcon}"></i>${statusLabel}</div>
         <div class="room-item-body">
           <div class="room-item-top">
             <span class="room-item-name">${name}</span>
-            ${statusBadge(item.status)}
           </div>
-          <div class="room-item-msg">${sub}</div>
+          <div class="room-item-msg"><span>${sub}</span></div>
         </div>
       </div>
     `;
