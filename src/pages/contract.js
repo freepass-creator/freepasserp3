@@ -191,10 +191,11 @@ function renderWork(c) {
 
     // 영업자 쪽
     const agentClass = locked ? 'is-locked' : agentDone ? 'is-done' : 'is-pending';
-    const canClickAgent = !locked && (role === 'agent' || role === 'admin');
+    const isAdmin = role === 'admin';
+    const canClickAgent = isAdmin || (!locked && role === 'agent');
     // 공급사/관리자 쪽
-    const respClass = !agentDone ? 'is-locked' : rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
-    const canClickResp = agentDone && !locked && (role === respRole || role === 'admin');
+    const respClass = !agentDone && !isAdmin ? 'is-locked' : rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
+    const canClickResp = isAdmin || (agentDone && !locked && role === respRole);
 
     return `
       <div class="ct-step-row ${step.parallel ? 'is-parallel' : ''}" data-step="${step.id}">
@@ -215,6 +216,11 @@ function renderWork(c) {
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-list-checks"></i> 진행 단계 <span class="form-section-hint" style="color:${prog.done === prog.total ? 'var(--c-ok)' : 'var(--c-info)'};">${prog.done}/${prog.total}</span></div>
         <div class="ct-steps">
+          <div class="ct-step-row" style="font-size:var(--fs-2xs);color:var(--c-text-muted);font-weight:var(--fw-medium);">
+            <div style="text-align:center;">영업자</div>
+            <div></div>
+            <div style="text-align:center;">공급사 / 관리자</div>
+          </div>
           ${STEPS.map(renderStep).join('')}
         </div>
       </div>
@@ -245,22 +251,29 @@ function renderWork(c) {
     cell.addEventListener('click', async () => {
       const key = cell.dataset.key;
       if (!key) return;
+      // 즉시 시각 반영
+      cell.classList.add('is-done');
+      cell.classList.remove('is-pending', 'is-locked');
       const choices = cell.dataset.choices;
       if (choices) {
-        // 선택지 있는 경우 (가능/불가, 승인/부결)
         const opts = choices.split(',');
         const cur = c[key];
         let next;
-        if (!cur || cur === 'no' || cur === false) next = opts[0]; // 첫 선택
-        else if (cur === opts[0]) next = opts[1]; // 토글
-        else next = null; // 해제
+        if (!cur || cur === 'no' || cur === false) next = opts[0];
+        else if (cur === opts[0]) next = opts[1];
+        else { next = null; cell.classList.remove('is-done'); cell.classList.add('is-pending'); }
+        if (next === opts[1]) { cell.classList.remove('is-done'); cell.classList.add('is-rejected'); }
+        c[key] = next || '';
         await updateRecord(`contracts/${c.contract_code}`, { [key]: next || '' });
         showToast(next || '해제');
+        renderWork(c); // 전체 재렌더 (잠금 상태 갱신)
       } else {
-        // 단순 체크
         const cur = c[key] === true || c[key] === 'yes';
+        if (cur) { cell.classList.remove('is-done'); cell.classList.add('is-pending'); }
+        c[key] = !cur;
         await updateRecord(`contracts/${c.contract_code}`, { [key]: !cur });
         showToast(cur ? '해제' : '완료');
+        renderWork(c);
       }
     });
   });
