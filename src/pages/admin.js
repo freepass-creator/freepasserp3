@@ -92,7 +92,7 @@ export function mount(subPath) {
           <div class="form-section-body">
             ${ffi('파트너코드','partner_code',{})}
             ${ffi('파트너명','partner_name',{})}
-            ${ffi('유형','partner_type',{})}
+            ${ffs('유형','partner_type',{},['공급사','영업채널'])}
             ${ffi('담당자명','manager_name',{})}
             ${ffi('직급','manager_position',{})}
             ${ffi('연락처','manager_phone',{})}
@@ -320,7 +320,7 @@ function loadPartner(key) {
         <div class="form-section-body">
           ${ffi('파트너코드','partner_code',p,{ readonly: true })}
           ${ffi('파트너명','partner_name',p)}
-          ${ffi('유형','partner_type',p)}
+          ${ffs('유형','partner_type',p,['공급사','영업채널'])}
           ${ffi('사업자번호','business_number',p)}
           ${ffi('대표자','ceo_name',p)}
           ${ffi('주소','address',p)}
@@ -655,6 +655,7 @@ function renderToolsTab(el) {
         <div class="form-section-body" style="grid-template-columns:1fr;">
           <button class="btn btn-outline btn-sm" id="devMigrateTermPolicy"><i class="ph ph-swap"></i> policies: term_* → policy_*</button>
           <button class="btn btn-outline btn-sm" id="devMigrateModelName"><i class="ph ph-swap"></i> model_name → model (products · contracts · rooms)</button>
+          <button class="btn btn-outline btn-sm" id="devMigratePartnerType"><i class="ph ph-swap"></i> partner_type 영어 → 한글 (provider→공급사)</button>
         </div>
       </div>
     </div>
@@ -758,6 +759,38 @@ function renderToolsTab(el) {
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<i class="ph ph-swap"></i> model_name → model (products · contracts · rooms)';
+    }
+  });
+
+  document.getElementById('devMigratePartnerType').addEventListener('click', async () => {
+    if (!confirm('partners/ 의 partner_type을 영어→한글로 변환합니다.\nprovider→공급사, channel→영업채널\n진행하시겠습니까?')) return;
+    const btn = document.getElementById('devMigratePartnerType');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ph ph-spinner"></i> 마이그레이션 중...';
+    try {
+      const { ref, get, update } = await import('firebase/database');
+      const { db } = await import('../firebase/config.js');
+      const snap = await get(ref(db, 'partners'));
+      const data = snap.val() || {};
+      const MAP = { provider: '공급사', channel: '영업채널', supplier: '공급사' };
+      let count = 0;
+      for (const [key, val] of Object.entries(data)) {
+        const cur = val.partner_type || '';
+        const mapped = MAP[cur.toLowerCase()];
+        if (mapped && mapped !== cur) {
+          await update(ref(db, `partners/${key}`), { partner_type: mapped });
+          count++;
+        }
+      }
+      devLog(`partner_type 한글 변환: ${count}건 완료`);
+      showToast(`${count}건 변환 완료`);
+    } catch (e) {
+      console.error(e);
+      devLog(`✗ 실패: ${e.message}`);
+      showToast('마이그레이션 실패', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ph ph-swap"></i> partner_type 영어 → 한글 (provider→공급사)';
     }
   });
 }
