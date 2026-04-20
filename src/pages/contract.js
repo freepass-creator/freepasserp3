@@ -6,6 +6,7 @@ import { watchCollection, updateRecord, softDelete } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtWon, empty, cField } from '../core/format.js';
 import { fieldInput as ffi, fieldView as ffv, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
+import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
 
@@ -14,14 +15,6 @@ let allContracts = [];
 let activeCode = null;
 
 const WS_KEY = 'fp.ct.widths';
-const STEPS = [
-  { key: 'docs_attached', icon: '📄', label: '서류' },
-  { key: 'approval_requested', icon: '✋', label: '승인요청' },
-  { key: 'progress_approved', icon: '✅', label: '진행승인' },
-  { key: 'deposit_confirmed', icon: '💰', label: '보증금' },
-  { key: 'contract_written', icon: '📝', label: '계약서' },
-  { key: 'delivery_confirmed', icon: '🚗', label: '출고' },
-];
 
 export function mount() {
   unsubContracts?.();
@@ -128,8 +121,9 @@ function renderList() {
     const avatarTone = done ? 'ok' : 'muted';
     const avatarLabel = done ? '완료' : '미완료';
     // 진행률
-    const stepsDone = STEPS.filter(s => c[s.key] === 'yes' || c[s.key] === true).length;
-    const stepsTotal = STEPS.length;
+    const prog = getProgress(c);
+    const stepsDone = prog.done;
+    const stepsTotal = prog.total;
     const progressColor = stepsDone === stepsTotal ? 'var(--c-ok)' : stepsDone > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
     const fmtDate = c.contract_date || (c.created_at ? new Date(c.created_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '');
     return `
@@ -178,16 +172,50 @@ function renderWork(c) {
     <button class="btn btn-xs btn-outline" id="ctDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
   `;
   const el = document.getElementById('ctWork');
-  const stepsDone = STEPS.filter(s => c[s.key] === 'yes' || c[s.key] === true).length;
+  const role = store.currentUser?.role || 'agent';
+  const states = getStepStates(c);
+  const prog = getProgress(c);
+
+  const renderStep = (step) => {
+    const st = states[step.id];
+    const agentKey = step.agent?.key;
+    const respKey = step.provider?.key || step.admin?.key;
+    const respLabel = step.provider?.label || step.admin?.label || '';
+    const respRole = step.admin ? 'admin' : 'provider';
+    const choices = step.provider?.choices || step.admin?.choices || null;
+    const agentDone = agentKey ? (c[agentKey] === true || c[agentKey] === 'yes') : false;
+    const respVal = respKey ? c[respKey] : null;
+    const respDone = respVal === true || respVal === 'yes' || respVal === '가능' || respVal === '승인';
+    const rejected = respVal === '불가' || respVal === '부결';
+    const locked = st?.locked;
+
+    // 영업자 쪽
+    const agentClass = locked ? 'is-locked' : agentDone ? 'is-done' : 'is-pending';
+    const canClickAgent = !locked && (role === 'agent' || role === 'admin');
+    // 공급사/관리자 쪽
+    const respClass = !agentDone ? 'is-locked' : rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
+    const canClickResp = agentDone && !locked && (role === respRole || role === 'admin');
+
+    return `
+      <div class="ct-step-row ${step.parallel ? 'is-parallel' : ''}" data-step="${step.id}">
+        <div class="ct-step-cell ${agentClass}" data-key="${agentKey || ''}" ${canClickAgent && agentKey ? 'data-clickable' : ''}>
+          <i class="ph ${agentDone ? 'ph-check-circle' : locked ? 'ph-lock' : 'ph-circle'}"></i>
+          <span>${step.agent?.label || ''}</span>
+        </div>
+        <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
+        <div class="ct-step-cell ${respClass}" data-key="${respKey || ''}" ${canClickResp && respKey ? 'data-clickable' : ''} ${choices ? `data-choices="${choices.join(',')}"` : ''}>
+          <i class="ph ${rejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : !agentDone ? 'ph-lock' : 'ph-circle'}"></i>
+          <span>${respLabel}${rejected ? ` (${respVal})` : respDone && respVal && respVal !== 'yes' && respVal !== true ? ` (${respVal})` : ''}</span>
+        </div>
+      </div>`;
+  };
+
   el.innerHTML = `
     <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
       <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-list-checks"></i> 진행 단계 <span class="form-section-hint" style="color:${stepsDone === STEPS.length ? 'var(--c-ok)' : 'var(--c-info)'};">${stepsDone}/${STEPS.length}</span></div>
-        <div class="contract-steps">
-          ${STEPS.map(s => {
-            const done = c[s.key] === 'yes' || c[s.key] === true;
-            return `<div class="contract-step ${done ? 'is-done' : ''}" data-step="${s.key}"><span style="font-size:14px;">${s.icon}</span><span>${s.label}</span></div>`;
-          }).join('')}
+        <div class="form-section-title"><i class="ph ph-list-checks"></i> 진행 단계 <span class="form-section-hint" style="color:${prog.done === prog.total ? 'var(--c-ok)' : 'var(--c-info)'};">${prog.done}/${prog.total}</span></div>
+        <div class="ct-steps">
+          ${STEPS.map(renderStep).join('')}
         </div>
       </div>
 
@@ -212,13 +240,28 @@ function renderWork(c) {
     </div>
   `;
 
-  el.querySelectorAll('.contract-step').forEach(step => {
-    step.addEventListener('click', async () => {
-      const key = step.dataset.step;
-      const latest = allContracts.find(x => x.contract_code === c.contract_code);
-      const done = latest?.[key] === 'yes' || latest?.[key] === true;
-      await updateRecord(`contracts/${c.contract_code}`, { [key]: done ? 'no' : 'yes' });
-      showToast(done ? '해제' : '완료');
+  // 단계 클릭 이벤트
+  el.querySelectorAll('.ct-step-cell[data-clickable]').forEach(cell => {
+    cell.addEventListener('click', async () => {
+      const key = cell.dataset.key;
+      if (!key) return;
+      const choices = cell.dataset.choices;
+      if (choices) {
+        // 선택지 있는 경우 (가능/불가, 승인/부결)
+        const opts = choices.split(',');
+        const cur = c[key];
+        let next;
+        if (!cur || cur === 'no' || cur === false) next = opts[0]; // 첫 선택
+        else if (cur === opts[0]) next = opts[1]; // 토글
+        else next = null; // 해제
+        await updateRecord(`contracts/${c.contract_code}`, { [key]: next || '' });
+        showToast(next || '해제');
+      } else {
+        // 단순 체크
+        const cur = c[key] === true || c[key] === 'yes';
+        await updateRecord(`contracts/${c.contract_code}`, { [key]: !cur });
+        showToast(cur ? '해제' : '완료');
+      }
     });
   });
 
@@ -228,8 +271,6 @@ function renderWork(c) {
       showToast(`→ ${tog.dataset.status}`);
     });
   });
-
-  bindFormAutoSave(el, (field, value) => updateRecord(`contracts/${c.contract_code}`, { [field]: value }));
 
   el.querySelector('#ctDocBtn')?.addEventListener('click', async () => {
     const { mount: m } = await import('./contract-send.js');

@@ -239,6 +239,24 @@
     color: var(--c-text-inv);
   }
 
+  /* ── 새 진행단계 (영업↔공급 매칭) ── */
+  .ct-steps { display: flex; flex-direction: column; gap: 2px; }
+  .ct-step-row { display: flex; align-items: center; gap: 2px; }
+  .ct-step-row.is-parallel { border-left: 2px solid var(--c-border); margin-left: var(--sp-2); padding-left: var(--sp-1); }
+  .ct-step-cell {
+    flex: 1; display: flex; align-items: center; gap: var(--sp-1);
+    padding: var(--sp-1) var(--sp-2); border-radius: var(--ctrl-r);
+    font-size: var(--fs-2xs); cursor: default; transition: background var(--dur);
+  }
+  .ct-step-cell[data-clickable] { cursor: pointer; }
+  .ct-step-cell[data-clickable]:hover { background: var(--c-bg-hover); }
+  .ct-step-cell.is-done { color: var(--c-ok); }
+  .ct-step-cell.is-pending { color: var(--c-text-sub); }
+  .ct-step-cell.is-locked { color: var(--c-text-muted); opacity: 0.5; }
+  .ct-step-cell.is-rejected { color: var(--c-err); }
+  .ct-step-cell i { font-size: 14px; }
+  .ct-step-arrow { color: var(--c-text-muted); font-size: 10px; flex-shrink: 0; }
+
   /* ── Contract Info Section (flat-stacked, canonical) ── */
   .contract-section {
     background: transparent;
