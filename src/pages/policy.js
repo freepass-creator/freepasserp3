@@ -73,7 +73,7 @@ export function mount() {
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="form">
         <div class="ws4-head">
-          <span>대여조건</span>
+          <span style="display:flex;align-items:center;gap:var(--sp-1);">기본정책 <span id="plStatusToggles"></span></span>
           <div style="display:flex;gap:var(--sp-1);" id="plFormActions"></div>
         </div>
         <div class="ws4-body" id="plForm">
@@ -117,8 +117,13 @@ export function mount() {
   document.getElementById('plNewBtn')?.addEventListener('click', () => renderNewForm());
 
   unsubPolicies = watchCollection('policies', (data) => {
-    allPolicies = data;
-    store.policies = data;
+    // v1 필드명 폴백 (term_* → policy_*)
+    allPolicies = data.map(p => {
+      if (!p.policy_name && p.term_name) p.policy_name = p.term_name;
+      if (!p.policy_code && p.term_code) p.policy_code = p.term_code;
+      return p;
+    });
+    store.policies = allPolicies;
     renderList();
     const active = data.filter(p => p.status === 'active').length;
     const providers = new Set(data.map(p => p.provider_company_code).filter(Boolean)).size;
@@ -155,7 +160,6 @@ function renderList() {
       <div class="room-item-body">
         <div class="room-item-top">
           <span class="room-item-name">${providerName} · ${p.policy_name || '-'}</span>
-          ${badge}
         </div>
         <div class="room-item-msg">
           <span>${[p.provider_company_code, p.policy_code, p.term_description].filter(Boolean).join(' · ')}</span>
@@ -220,19 +224,22 @@ function renderForm(p, key) {
     </div>
   `;
 
-  // 헤드 액션 버튼
+  // 상태 토글 → 타이틀 옆
+  const toggles = document.getElementById('plStatusToggles');
+  if (toggles) toggles.innerHTML = ['active','inactive'].map(s => {
+    const active = p.status === s;
+    return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:2px 6px;border-radius:var(--ctrl-r);cursor:pointer;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : 'color:var(--c-text-muted);'}">${s === 'active' ? '활성' : '비활성'}</div>`;
+  }).join('');
+
+  // 복제/삭제 → 우측
   const actions = document.getElementById('plFormActions');
   if (actions) actions.innerHTML = `
-    ${['active','inactive'].map(s => {
-      const active = p.status === s;
-      return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:2px 6px;border-radius:var(--ctrl-r);cursor:pointer;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : 'color:var(--c-text-muted);'}">${s === 'active' ? '활성' : '비활성'}</div>`;
-    }).join('')}
     <button class="btn btn-xs btn-outline" id="plCloneBtn"><i class="ph ph-copy"></i> 복제</button>
     <button class="btn btn-xs btn-outline" id="plDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
   `;
 
-  // 상태 토글 (헤드에 있음)
-  document.querySelectorAll('#plFormActions .status-toggle').forEach(tog => {
+  // 상태 토글 이벤트
+  document.querySelectorAll('#plStatusToggles .status-toggle').forEach(tog => {
     tog.addEventListener('click', async () => {
       await updateRecord(`policies/${key}`, { status: tog.dataset.status });
       showToast(`→ ${tog.dataset.status === 'active' ? '활성' : '비활성'}`);

@@ -162,7 +162,9 @@ export function mount() {
   // Load — 콜백 내 오류가 전체 페이지를 깨뜨리지 않도록 보호
   // 정책 미리 로드
   if (!store.policies) {
-    fetchCollection('policies').then(p => { store.policies = p; }).catch(() => { store.policies = []; });
+    fetchCollection('policies').then(p => {
+      store.policies = p.map(x => { if (!x.policy_name && x.term_name) x.policy_name = x.term_name; if (!x.policy_code && x.term_code) x.policy_code = x.term_code; return x; });
+    }).catch(() => { store.policies = []; });
   }
 
   unsubProducts = watchCollection('products', (data) => {

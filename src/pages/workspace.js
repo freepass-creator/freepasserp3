@@ -37,7 +37,8 @@ export function mount() {
           <input class="input input-sm" id="wsRoomSearch" placeholder="검색..." >
           <div style="display:flex;gap:3px;">
             <button class="chip is-active" data-rf="unread">안읽음</button>
-            <button class="chip" data-rf="all">읽음</button>
+            <button class="chip" data-rf="read">읽음</button>
+            <button class="chip" data-rf="all">전체</button>
           </div>
         </div>
         <div class="ws4-body" id="wsRoomList"></div>
@@ -183,10 +184,11 @@ function renderRoomList() {
       if (role === 'provider') return r.unread_for_provider > 0;
       return false;
     });
-  } else if (rf === 'received') {
-    rooms = rooms.filter(r => r.last_sender_role !== role);
-  } else if (rf === 'sent') {
-    rooms = rooms.filter(r => r.last_sender_role === role);
+  } else if (rf === 'read') {
+    rooms = rooms.filter(r => {
+      const unread = role === 'agent' ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : 0;
+      return !unread || unread <= 0;
+    });
   }
 
   const sorted = [...rooms].sort((a,b) => (b.last_message_at||0) - (a.last_message_at||0));
@@ -202,7 +204,7 @@ function renderRoomList() {
 
     return `
       <div class="room-item ${active ? 'is-active' : ''}" data-id="${room._key}">
-        <div class="room-item-avatar ${unread > 0 ? 'is-accent' : 'is-muted'}"><i class="ph ${unread > 0 ? 'ph-chat-circle-dots' : 'ph-chat-circle'}"></i></div>
+        <div class="room-item-avatar ${unread > 0 ? 'is-accent' : 'is-muted'}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ${unread > 0 ? 'ph-chat-circle-dots' : 'ph-chat-circle'}"></i>${unread > 0 ? '안읽음' : '읽음'}</div>
         <div class="room-item-body">
           <div class="room-item-top">
             <span class="room-item-name">${name}</span>
