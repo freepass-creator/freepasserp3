@@ -200,7 +200,7 @@ function renderForm(p, key) {
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-info"></i> 기본정보</div>
         <div class="form-section-body">
-          ${fi('정책코드','policy_code',p)}
+          ${fi('정책코드','policy_code',p,{ readonly: true })}
           ${fi('정책명','policy_name',p)}
           ${fi('공급사코드','provider_company_code',p)}
           ${fi('정책유형','policy_type',p)}

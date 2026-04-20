@@ -417,7 +417,7 @@ function renderAsset(p, key) {
         <div class="form-section-body">
           ${fi('차량번호','car_number',p)}
           ${fi('차대번호','vin',p)}
-          ${fi('공급사코드','provider_company_code',{ provider_company_code: providerCode })}
+          ${fi('공급사코드','provider_company_code',{ provider_company_code: providerCode },{ readonly: true })}
           ${fi('상품코드','product_code',{ product_code: productCode },{ readonly: true })}
         </div>
       </div>

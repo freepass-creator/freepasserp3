@@ -43,7 +43,11 @@ export function fieldSelect(label, field, data, options) {
     <div class="form-row-control">
       <select class="contract-field-input contract-field-select" data-field="${field}">
         <option value="">-</option>
-        ${options.map(o => `<option value="${o}" ${o === cur ? 'selected' : ''}>${o}</option>`).join('')}
+        ${options.map(o => {
+          const val = typeof o === 'object' ? o.value : o;
+          const lbl = typeof o === 'object' ? o.label : o;
+          return `<option value="${val}" ${val === cur ? 'selected' : ''}>${lbl}</option>`;
+        }).join('')}
       </select>
       <span class="form-state" data-state="${field}"></span>
     </div>

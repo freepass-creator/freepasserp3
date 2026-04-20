@@ -161,11 +161,14 @@ function renderList() {
 
   el.innerHTML = list.map(item => {
     const key = item._key;
-    const name = mode === 'users' ? (item.name || item.email) : (item.partner_name || item.partner_code);
+    const name = mode === 'users'
+      ? [item.email, item.name, item.position].filter(Boolean).join(' ')
+      : [item.partner_name, item.ceo_name, item.manager_name].filter(Boolean).join(' ');
     const statusLabel = { active: '승인', pending: '대기', rejected: '반려', inactive: '비활' }[item.status] || '';
     const avatarIcon = mode === 'users' ? 'ph-user' : 'ph-buildings';
+    const roleLabel = { admin: '관리자', provider: '공급사', agent: '영업자', manager: '영업관리자' }[item.role] || item.role || '';
     const sub = mode === 'users'
-      ? [item.role, item.company_name, item.phone].filter(Boolean).join(' · ')
+      ? [roleLabel, item.company_name, item.phone].filter(Boolean).join(' · ')
       : [item.partner_type, item.business_number, item.manager_phone || item.company_phone].filter(Boolean).join(' · ');
 
     return `
@@ -241,10 +244,10 @@ function loadUser(key) {
         <div class="form-section-body">
           ${ffi('이름','name',u)}
           ${ffi('이메일','email',u,{ readonly: true })}
-          ${ffs('역할','role',u,['admin','provider','agent'])}
-          ${ffi('소속코드','company_code',u)}
+          ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'},{value:'manager',label:'영업관리자'}])}
+          ${ffi('소속코드','company_code',u,{ readonly: true })}
           ${ffi('소속명','company_name',u)}
-          ${ffi('계정코드','user_code',u)}
+          ${ffi('계정코드','user_code',u,{ readonly: true })}
           ${ffi('연락처','phone',u)}
           ${ffi('직급','position',u)}
         </div>
@@ -260,8 +263,8 @@ function loadUser(key) {
         <div class="form-section-title"><i class="ph ph-info"></i> 상세</div>
         <div class="form-section-body">
           ${ffv('UID', u.uid)}
-          ${ffv('상태', u.status)}
-          ${ffv('역할', u.role)}
+          ${ffv('상태', { active: '승인', pending: '대기', rejected: '반려', inactive: '비활', deleted: '삭제' }[u.status] || u.status)}
+          ${ffv('역할', { admin: '관리자', provider: '공급사', agent: '영업자', manager: '영업관리자' }[u.role] || u.role)}
           ${ffv('가입일', u.created_at ? new Date(u.created_at).toLocaleDateString('ko') : '-')}
         </div>
       </div>
@@ -315,7 +318,7 @@ function loadPartner(key) {
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-buildings"></i> 회사정보</div>
         <div class="form-section-body">
-          ${ffi('파트너코드','partner_code',p)}
+          ${ffi('파트너코드','partner_code',p,{ readonly: true })}
           ${ffi('파트너명','partner_name',p)}
           ${ffi('유형','partner_type',p)}
           ${ffi('사업자번호','business_number',p)}
@@ -351,7 +354,7 @@ function loadPartner(key) {
         <div class="form-section-body">
           ${ffv('코드', p.partner_code)}
           ${ffv('유형', p.partner_type)}
-          ${ffv('상태', p.status)}
+          ${ffv('상태', { active: '활성', inactive: '비활성' }[p.status] || p.status)}
           ${ffv('생성자', p.created_by)}
         </div>
       </div>
