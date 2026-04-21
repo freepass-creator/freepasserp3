@@ -206,9 +206,43 @@ export function mount() {
     const toggleBtn = document.getElementById('srchViewToggle2');
     toggleBtn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i>' : '<i class="ph ph-table"></i>';
     toggleBtn.title = viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환';
-    // 엑셀모드에서 기간별 헤드 숨기기 (테이블 안에 포함됨)
-    const periodHead = document.getElementById('srchPeriodHead');
-    if (periodHead) periodHead.style.display = viewMode === 'excel' ? 'none' : '';
+    const listHead = document.getElementById('srchListHead');
+    if (listHead) {
+      if (viewMode === 'excel') {
+        listHead.innerHTML = `
+          <span style="display:flex;align-items:center;gap:var(--sp-2);">
+            <button class="btn btn-xs btn-outline" id="srchFilterOpen" style="${document.getElementById('srchFilterPanel')?.classList.contains('is-collapsed') ? '' : 'display:none;'}" title="조건 열기"><i class="ph ph-funnel"></i></button>
+            <span class="srch-count" id="srchCount">${filteredProducts.length}대</span>
+          </span>
+          <div class="srch-excel-head">
+            <span>공급사</span><span>차량번호</span><span>제조사</span><span>세부모델</span><span>연식</span><span>연료</span><span>주행</span><span>색상</span><span>상태</span>
+            <span>36개월</span><span>48개월</span><span>60개월</span>
+            <button class="btn btn-xs btn-outline" id="srchDetailOpen" style="${document.getElementById('srchDetail')?.classList.contains('is-collapsed') ? '' : 'display:none;'}" title="상세 열기"><i class="ph ph-sidebar-simple"></i></button>
+          </div>`;
+        // 열기 버튼 재바인딩
+        document.getElementById('srchFilterOpen')?.addEventListener('click', () => { document.getElementById('srchFilterPanel')?.classList.remove('is-collapsed'); updatePanelBtns(); });
+        document.getElementById('srchDetailOpen')?.addEventListener('click', () => { document.getElementById('srchDetail')?.classList.remove('is-collapsed'); updatePanelBtns(); });
+      } else {
+        // 카드뷰 헤드 복원
+        listHead.innerHTML = `
+          <span style="display:flex;align-items:center;gap:var(--sp-2);">
+            <button class="btn btn-xs btn-outline" id="srchFilterOpen" style="${document.getElementById('srchFilterPanel')?.classList.contains('is-collapsed') ? '' : 'display:none;'}" title="조건 열기"><i class="ph ph-funnel"></i></button>
+            <span>목록</span>
+            <span class="srch-count" id="srchCount">${filteredProducts.length}대</span>
+            <button class="btn btn-xs btn-outline" id="srchExcelDl" title="Excel 다운로드"><i class="ph ph-file-xls"></i> Excel</button>
+            <button class="btn btn-xs btn-outline" id="srchPhotoZipDl" title="사진 ZIP"><i class="ph ph-file-zip"></i> 사진</button>
+          </span>
+          <span style="display:flex;align-items:center;gap:var(--sp-1);">
+            <div class="srch-period-head" id="srchPeriodHead">
+              <span class="srch-sort-hint" id="srchSortHint"></span>
+              <span class="srch-sort-col" data-sort="36" title="클릭: 낮은순 → 높은순 → 해제">36개월</span><span class="srch-sort-col" data-sort="48" title="클릭: 낮은순 → 높은순 → 해제">48개월</span><span class="srch-sort-col" data-sort="60" title="클릭: 낮은순 → 높은순 → 해제">60개월</span>
+            </div>
+            <button class="btn btn-xs btn-outline" id="srchDetailOpen" style="${document.getElementById('srchDetail')?.classList.contains('is-collapsed') ? '' : 'display:none;'}" title="상세 열기"><i class="ph ph-sidebar-simple"></i></button>
+          </span>`;
+        document.getElementById('srchFilterOpen')?.addEventListener('click', () => { document.getElementById('srchFilterPanel')?.classList.remove('is-collapsed'); updatePanelBtns(); });
+        document.getElementById('srchDetailOpen')?.addEventListener('click', () => { document.getElementById('srchDetail')?.classList.remove('is-collapsed'); updatePanelBtns(); });
+      }
+    }
     renderList();
   });
 
@@ -952,10 +986,6 @@ function renderList() {
   if (viewMode === 'excel') {
     el.innerHTML = `
       <table class="srch-excel-table">
-        <thead><tr>
-          <th>공급사</th><th>차량번호</th><th>제조사</th><th>세부모델</th><th>연식</th><th>연료</th><th>주행</th><th>외장</th><th>상태</th>
-          <th>36개월</th><th>48개월</th><th>60개월</th>
-        </tr></thead>
         <tbody>${filteredProducts.map(p => {
           const price = p.price || {};
           const r36 = Number(price['36']?.rent) || 0;

@@ -39,6 +39,22 @@
   .srch-excel-table th:last-child,
   .srch-excel-table td:last-child { border-right: none; }
   .srch-excel-price { text-align: right; font-weight: var(--fw-medium); color: var(--c-accent); }
+  .srch-excel-head {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    font-weight: var(--fw-medium);
+  }
+  .srch-excel-head > span {
+    flex: 1;
+    padding: 0 4px;
+    white-space: nowrap;
+    border-right: 1px solid var(--c-border-soft);
+    text-align: center;
+  }
+  .srch-excel-head > span:last-of-type { border-right: none; }
 
   /* 패널 접기 */
   .srch-filter-panel.is-collapsed,
