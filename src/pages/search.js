@@ -1025,8 +1025,8 @@ function renderList() {
             <td ${t(p.product_type)}>${p.product_type || ''}</td>
             <td ${t(p.maker)}>${p.maker || ''}</td>
             <td ${t(p.model)}>${p.model || ''}</td>
-            <td class="srch-excel-detail-cell" data-detail="${[p.sub_model, p.trim_name || p.trim, p.options].filter(Boolean).join('|')}">${p.sub_model || ''}</td>
-            <td class="srch-excel-detail-cell" data-detail="${[p.sub_model, p.trim_name || p.trim, p.options].filter(Boolean).join('|')}">${p.trim_name || p.trim || ''}</td>
+            <td class="srch-excel-detail-cell" data-info="${encodeURIComponent(JSON.stringify({n:p.car_number,mk:p.maker,md:p.model,sm:p.sub_model,tr:p.trim_name||p.trim,op:p.options,y:p.year,km:p.mileage,f:p.fuel_type,ec:p.ext_color,ic:p.int_color}))}">${p.sub_model || ''}</td>
+            <td class="srch-excel-detail-cell" data-info="${encodeURIComponent(JSON.stringify({n:p.car_number,mk:p.maker,md:p.model,sm:p.sub_model,tr:p.trim_name||p.trim,op:p.options,y:p.year,km:p.mileage,f:p.fuel_type,ec:p.ext_color,ic:p.int_color}))}">${p.trim_name || p.trim || ''}</td>
             <td ${t(p.year)}>${p.year || ''}</td>
             <td ${t(p.mileage ? Number(p.mileage).toLocaleString() : '')}>${p.mileage ? Number(p.mileage).toLocaleString() : ''}</td>
             <td ${t(p.fuel_type)}>${p.fuel_type || ''}</td>
@@ -1039,25 +1039,32 @@ function renderList() {
       </table>` || `<div class="srch-empty"><i class="ph ph-magnifying-glass"></i><p>조건에 맞는 차량이 없습니다</p></div>`;
     bindListDelegation(el);
 
-    // 세부모델/트림 hover → 상세 팝업
-    el.querySelectorAll('.srch-excel-detail-cell').forEach(cell => {
-      cell.addEventListener('mouseenter', () => {
+    // 행 hover → 차량 상세 팝업
+    el.querySelectorAll('.srch-excel-row').forEach(row => {
+      row.addEventListener('mouseenter', () => {
         document.querySelector('.srch-excel-popup')?.remove();
-        const detail = cell.dataset.detail;
-        if (!detail) return;
-        const parts = detail.split('|');
-        const labels = ['세부모델', '세부트림', '선택옵션'];
+        const cell = row.querySelector('.srch-excel-detail-cell');
+        if (!cell?.dataset.info) return;
+        const d = JSON.parse(decodeURIComponent(cell.dataset.info));
+        const color = [d.ec, d.ic].filter(Boolean).join(' / ');
+        const spec = [d.y ? d.y+'년' : '', d.km ? Number(d.km).toLocaleString()+'km' : '', d.f, color].filter(Boolean).join(' · ');
         const popup = document.createElement('div');
         popup.className = 'srch-excel-popup';
-        popup.innerHTML = parts.map((v, i) => `<div><span style="color:var(--c-text-muted);font-size:var(--fs-2xs);">${labels[i] || ''}</span> ${v}</div>`).join('');
-        const rect = cell.getBoundingClientRect();
+        popup.innerHTML = `
+          <div style="font-weight:var(--fw-medium);color:var(--c-text);">${d.n || ''}</div>
+          <div>${d.mk || ''} / ${d.md || ''}</div>
+          <div>${d.sm || '-'}</div>
+          <div>${d.tr || '-'}</div>
+          ${d.op ? `<div style="color:var(--c-text-sub);">${d.op}</div>` : ''}
+          <div style="color:var(--c-text-muted);font-size:var(--fs-2xs);margin-top:2px;">${spec}</div>`;
+        const rect = row.getBoundingClientRect();
         const parentRect = el.getBoundingClientRect();
-        popup.style.left = `${rect.left - parentRect.left}px`;
+        popup.style.left = `${rect.left - parentRect.left + 85}px`;
         popup.style.top = `${rect.bottom - parentRect.top + 2}px`;
         el.appendChild(popup);
       });
-      cell.addEventListener('mouseleave', () => {
-        setTimeout(() => document.querySelector('.srch-excel-popup')?.remove(), 200);
+      row.addEventListener('mouseleave', () => {
+        document.querySelector('.srch-excel-popup')?.remove();
       });
     });
 
