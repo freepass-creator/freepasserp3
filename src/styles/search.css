@@ -39,6 +39,7 @@
   .srch-excel-table th:last-child,
   .srch-excel-table td:last-child { border-right: none; }
   .srch-excel-price { text-align: right; font-weight: var(--fw-medium); color: var(--c-accent); }
+  .srch-excel-dep { font-size: 10px; color: var(--c-text-muted); font-weight: var(--fw-normal); }
   .srch-excel-head {
     display: flex;
     align-items: center;

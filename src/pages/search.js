@@ -210,11 +210,10 @@ export function mount() {
     if (listHead) {
       if (viewMode === 'excel') {
         listHead.innerHTML = `
-          <div class="srch-excel-head">
-            <span>공급사</span><span>차량번호</span><span>제조사</span><span>세부모델</span><span>연식</span><span>연료</span><span>주행</span><span>색상</span><span>상태</span>
-            <span>36개월</span><span>48개월</span><span>60개월</span>
-            <button class="btn btn-xs btn-outline" id="srchDetailOpen" style="${document.getElementById('srchDetail')?.classList.contains('is-collapsed') ? '' : 'display:none;'}" title="상세 열기"><i class="ph ph-sidebar-simple"></i></button>
-          </div>`;
+          <span style="display:flex;gap:var(--sp-1);">
+            <button class="btn btn-xs btn-outline" id="srchExcelDl2" title="Excel 다운로드"><i class="ph ph-file-xls"></i></button>
+            <button class="btn btn-xs btn-outline" id="srchPhotoZipDl2" title="사진 ZIP"><i class="ph ph-file-zip"></i></button>
+          </span>`;
         // 열기 버튼 재바인딩
         document.getElementById('srchFilterOpen')?.addEventListener('click', () => { document.getElementById('srchFilterPanel')?.classList.remove('is-collapsed'); updatePanelBtns(); });
         document.getElementById('srchDetailOpen')?.addEventListener('click', () => { document.getElementById('srchDetail')?.classList.remove('is-collapsed'); updatePanelBtns(); });
@@ -980,11 +979,18 @@ function renderList() {
   if (viewMode === 'excel') {
     el.innerHTML = `
       <table class="srch-excel-table">
+        <thead><tr>
+          <th>공급사</th><th>차량번호</th><th>제조사</th><th>세부모델</th><th>연식</th><th>연료</th><th>주행</th><th>색상</th><th>상태</th>
+          <th>36개월</th><th>48개월</th><th>60개월</th>
+        </tr></thead>
         <tbody>${filteredProducts.map(p => {
           const price = p.price || {};
-          const r36 = Number(price['36']?.rent) || 0;
-          const r48 = Number(price['48']?.rent) || 0;
-          const r60 = Number(price['60']?.rent) || 0;
+          const priceCell = m => {
+            const v = price[m] || {};
+            const rent = Number(v.rent) || 0;
+            const dep = Number(v.deposit) || 0;
+            return `<td class="srch-excel-price">${rent ? fmtMoney(rent) : '-'}${dep ? `<div class="srch-excel-dep">${fmtMoney(dep)}</div>` : ''}</td>`;
+          };
           return `<tr class="srch-excel-row ${selectedProductKey === p._key ? 'is-active' : ''}" data-key="${p._key}">
             <td>${p.provider_company_code || ''}</td>
             <td>${p.car_number || ''}</td>
@@ -995,9 +1001,7 @@ function renderList() {
             <td>${p.mileage ? Number(p.mileage).toLocaleString() : ''}</td>
             <td>${p.ext_color || ''}</td>
             <td>${p.vehicle_status || ''}</td>
-            <td class="srch-excel-price">${r36 ? fmtMoney(r36) : '-'}</td>
-            <td class="srch-excel-price">${r48 ? fmtMoney(r48) : '-'}</td>
-            <td class="srch-excel-price">${r60 ? fmtMoney(r60) : '-'}</td>
+            ${priceCell('36')}${priceCell('48')}${priceCell('60')}
           </tr>`;
         }).join('')}</tbody>
       </table>` || `<div class="srch-empty"><i class="ph ph-magnifying-glass"></i><p>조건에 맞는 차량이 없습니다</p></div>`;
