@@ -747,14 +747,17 @@ function renderPhotos(p, key) {
       <div class="form-section">
         <div class="form-section-title">자동차등록증 <span class="form-section-hint">업로드 시 OCR로 기본정보 자동 채움</span></div>
         <div class="form-section-body" style="grid-template-columns:1fr;">
-          <div class="pd-reg-wrap">
-            ${regImg
-              ? `<img src="${regImg}" class="pd-reg-image">
-                 <button class="btn btn-xs btn-outline pd-reg-del" id="pdRegDel"><i class="ph ph-x"></i> 제거</button>`
-              : `<button class="btn btn-outline btn-sm" id="pdRegUpload"><i class="ph ph-scan"></i> 등록증 첨부하기</button>
+          ${regImg
+            ? `<div style="position:relative;display:inline-block;">
+                 <img src="${regImg}" class="pd-reg-image" style="max-width:100%;border-radius:var(--ctrl-r);border:1px solid var(--c-border);">
+                 <button class="btn btn-xs btn-outline pd-reg-del" id="pdRegDel" style="position:absolute;top:4px;right:4px;"><i class="ph ph-x"></i> 제거</button>
+               </div>`
+            : `<label class="pd-dropzone" id="pdRegDropzone" for="pdRegFile">
+                 <i class="ph ph-scan" aria-hidden="true"></i>
+                 <div class="pd-dropzone-text">등록증 사진을 끌어놓거나 클릭해서 업로드</div>
+                 <div class="pd-dropzone-hint">OCR로 차량번호 · 제조사 · 모델 · 연식 자동 채움</div>
                  <input type="file" id="pdRegFile" hidden accept="image/*">
-                 <div class="pd-hint">등록증 사진을 찍거나 업로드하면 OCR로 차량번호·제조사·모델·연식을 자동 채웁니다</div>`}
-          </div>
+               </label>`}
         </div>
       </div>
     </div>
