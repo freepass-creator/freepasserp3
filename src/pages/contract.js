@@ -197,16 +197,22 @@ function renderWork(c) {
     const respClass = !agentDone && !isAdmin ? 'is-locked' : rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
     const canClickResp = isAdmin || (agentDone && !locked && role === respRole);
 
+    // 관리자가 대신 처리한 경우 표시
+    const agentBy = c[agentKey + '_by'];
+    const respBy = c[(respKey || '') + '_by'];
+    const agentAdmin = agentBy === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
+    const respAdmin = respBy === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
+
     return `
       <div class="ct-step-row ${step.parallel ? 'is-parallel' : ''}" data-step="${step.id}">
         <div class="ct-step-cell ${agentClass}" data-key="${agentKey || ''}" ${canClickAgent && agentKey ? 'data-clickable' : ''}>
-          <i class="ph ${agentDone ? 'ph-check-circle' : locked ? 'ph-lock' : 'ph-circle'}"></i>
-          <span>${step.agent?.label || ''}</span>
+          <i class="ph ${agentDone ? 'ph-check-circle' : 'ph-circle'}"></i>
+          <span>${step.agent?.label || ''}</span>${agentAdmin}
         </div>
         <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
         <div class="ct-step-cell ${respClass}" data-key="${respKey || ''}" ${canClickResp && respKey ? 'data-clickable' : ''} ${choices ? `data-choices="${choices.join(',')}"` : ''}>
-          <i class="ph ${rejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : !agentDone ? 'ph-lock' : 'ph-circle'}"></i>
-          <span>${respLabel}${rejected ? ` (${respVal})` : respDone && respVal && respVal !== 'yes' && respVal !== true ? ` (${respVal})` : ''}</span>
+          <i class="ph ${rejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : 'ph-circle'}"></i>
+          <span>${respLabel}${rejected ? ` (${respVal})` : respDone && respVal && respVal !== 'yes' && respVal !== true ? ` (${respVal})` : ''}</span>${respAdmin}
         </div>
       </div>`;
   };
@@ -219,7 +225,7 @@ function renderWork(c) {
           <div class="ct-step-row" style="font-size:var(--fs-2xs);color:var(--c-text-muted);font-weight:var(--fw-medium);">
             <div style="text-align:center;">영업자</div>
             <div></div>
-            <div style="text-align:center;">공급사 / 관리자</div>
+            <div style="text-align:center;">공급사</div>
           </div>
           ${STEPS.map(renderStep).join('')}
         </div>
@@ -264,14 +270,16 @@ function renderWork(c) {
         else { next = null; cell.classList.remove('is-done'); cell.classList.add('is-pending'); }
         if (next === opts[1]) { cell.classList.remove('is-done'); cell.classList.add('is-rejected'); }
         c[key] = next || '';
-        await updateRecord(`contracts/${c.contract_code}`, { [key]: next || '' });
+        const byField = isAdmin ? { [key + '_by']: next ? 'admin' : '' } : {};
+        await updateRecord(`contracts/${c.contract_code}`, { [key]: next || '', ...byField });
         showToast(next || '해제');
-        renderWork(c); // 전체 재렌더 (잠금 상태 갱신)
+        renderWork(c);
       } else {
         const cur = c[key] === true || c[key] === 'yes';
         if (cur) { cell.classList.remove('is-done'); cell.classList.add('is-pending'); }
         c[key] = !cur;
-        await updateRecord(`contracts/${c.contract_code}`, { [key]: !cur });
+        const byField = isAdmin ? { [key + '_by']: !cur ? 'admin' : '' } : {};
+        await updateRecord(`contracts/${c.contract_code}`, { [key]: !cur, ...byField });
         showToast(cur ? '해제' : '완료');
         renderWork(c);
       }

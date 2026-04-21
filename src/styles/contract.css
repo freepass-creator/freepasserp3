@@ -259,6 +259,7 @@
   .ct-step-cell.is-rejected { background: var(--c-err-bg); border-color: var(--c-err); color: var(--c-err); }
   .ct-step-cell i { font-size: 16px; }
   .ct-step-arrow { color: var(--c-text-muted); font-size: 12px; }
+  .ct-step-admin { font-size: var(--fs-2xs); color: var(--c-accent); margin-left: auto; opacity: 0.7; }
 
   /* ── Contract Info Section (flat-stacked, canonical) ── */
   .contract-section {
