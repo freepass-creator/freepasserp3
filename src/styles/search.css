@@ -34,8 +34,17 @@
   .srch-excel-row { cursor: pointer; transition: background var(--dur); }
   .srch-excel-row:hover { background: var(--c-bg-hover); }
   .srch-excel-row.is-active { background: var(--c-bg-hover); }
+  .srch-excel-table th,
+  .srch-excel-table td { border-right: 1px solid var(--c-border-soft); }
+  .srch-excel-table th:last-child,
+  .srch-excel-table td:last-child { border-right: none; }
   .srch-excel-price { text-align: right; font-weight: var(--fw-medium); color: var(--c-accent); }
-  .srch.is-excel-mode .srch-resize { display: none; }
+
+  /* 패널 접기 */
+  .srch-filter-panel.is-collapsed,
+  .srch-detail.is-collapsed { display: none !important; }
+  .srch-filter-panel.is-collapsed + .srch-resize,
+  .srch-detail.is-collapsed { display: none !important; }
 
   /* .srch-panel-head — base styles unified in controls.css .panel-head group */
 

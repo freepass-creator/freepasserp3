@@ -115,7 +115,13 @@ export function mount() {
     <div class="srch">
       <!-- 필터(좌) | 목록(중) | 상세(우) 가로 3패널 -->
       <div class="srch-filter-panel" id="srchFilterPanel">
-        <div class="srch-panel-head"><span>조건</span><span class="sb-badge" id="srchFilterCount"></span></div>
+        <div class="srch-panel-head">
+          <span style="display:flex;align-items:center;gap:var(--sp-1);"><span>조건</span><span class="sb-badge" id="srchFilterCount"></span></span>
+          <span style="display:flex;gap:var(--sp-1);">
+            <button class="btn btn-xs btn-outline" id="srchViewToggle2" title="카드/엑셀 전환"><i class="ph ph-table"></i></button>
+            <button class="btn btn-xs btn-outline" id="srchFilterToggle" title="조건 접기"><i class="ph ph-caret-left"></i></button>
+          </span>
+        </div>
         <div class="srch-filter-search">
           <input class="input input-sm" id="srchText" placeholder="차량번호, 모델명, 금액, 무심사 등...">
           <div class="srch-active" id="srchActive"><span style="font-size:var(--fs-2xs);color:var(--c-text-muted);">전체해제</span></div>
@@ -130,7 +136,6 @@ export function mount() {
           <span style="display:flex;align-items:center;gap:var(--sp-2);">
             <span>목록</span>
             <span class="srch-count" id="srchCount">0대</span>
-            <button class="btn btn-xs btn-outline" id="srchViewToggle" title="카드/엑셀 뷰 전환"><i class="ph ph-table"></i></button>
             <button class="btn btn-xs btn-outline" id="srchExcel" title="현재 목록 Excel 다운로드"><i class="ph ph-file-xls"></i> Excel</button>
             <button class="btn btn-xs btn-outline" id="srchPhotoZip" title="현재 목록 사진 ZIP 다운로드 (공급사/차량번호 폴더)"><i class="ph ph-file-zip"></i> 사진</button>
           </span>
@@ -149,7 +154,7 @@ export function mount() {
       <div class="srch-resize" id="srchResize2"></div>
 
       <div class="srch-detail" id="srchDetail">
-        <div class="srch-panel-head">상세</div>
+        <div class="srch-panel-head"><span>상세</span><button class="btn btn-xs btn-outline" id="srchDetailToggle" title="상세 접기"><i class="ph ph-caret-right"></i></button></div>
         <div class="srch-detail-content">
           <div class="srch-empty"><i class="ph ph-car-simple"></i><p>차량을 선택하세요</p></div>
         </div>
@@ -191,27 +196,27 @@ export function mount() {
     }
   });
 
-  // 뷰 전환
-  document.getElementById('srchViewToggle')?.addEventListener('click', () => {
+  // 뷰 전환 (목록만 카드/엑셀)
+  document.getElementById('srchViewToggle2')?.addEventListener('click', () => {
     viewMode = viewMode === 'card' ? 'excel' : 'card';
-    const container = document.querySelector('.srch');
-    const filterPanel = document.getElementById('srchFilterPanel');
-    const detailPanel = document.getElementById('srchDetail');
-    const toggleBtn = document.getElementById('srchViewToggle');
-    if (viewMode === 'excel') {
-      container?.classList.add('is-excel-mode');
-      filterPanel?.style.setProperty('display', 'none');
-      detailPanel?.style.setProperty('display', 'none');
-      toggleBtn.innerHTML = '<i class="ph ph-cards"></i>';
-      toggleBtn.title = '카드뷰로 전환';
-    } else {
-      container?.classList.remove('is-excel-mode');
-      filterPanel?.style.removeProperty('display');
-      detailPanel?.style.removeProperty('display');
-      toggleBtn.innerHTML = '<i class="ph ph-table"></i>';
-      toggleBtn.title = '엑셀뷰로 전환';
-    }
+    const toggleBtn = document.getElementById('srchViewToggle2');
+    toggleBtn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i>' : '<i class="ph ph-table"></i>';
+    toggleBtn.title = viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환';
     renderList();
+  });
+
+  // 조건/상세 패널 접기
+  document.getElementById('srchFilterToggle')?.addEventListener('click', () => {
+    const panel = document.getElementById('srchFilterPanel');
+    const btn = document.getElementById('srchFilterToggle');
+    panel?.classList.toggle('is-collapsed');
+    btn.innerHTML = panel?.classList.contains('is-collapsed') ? '<i class="ph ph-funnel"></i>' : '<i class="ph ph-x"></i>';
+  });
+  document.getElementById('srchDetailToggle')?.addEventListener('click', () => {
+    const panel = document.getElementById('srchDetail');
+    const btn = document.getElementById('srchDetailToggle');
+    panel?.classList.toggle('is-collapsed');
+    btn.innerHTML = panel?.classList.contains('is-collapsed') ? '<i class="ph ph-sidebar"></i>' : '<i class="ph ph-x"></i>';
   });
 
   // Text search
