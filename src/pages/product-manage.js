@@ -417,8 +417,8 @@ function renderAsset(p, key) {
         <div class="form-section-body">
           ${fi('차량번호','car_number',p)}
           ${fi('차대번호','vin',p)}
-          ${fi('공급사코드','provider_company_code',{ provider_company_code: providerCode },{ readonly: true })}
-          ${fi('상품코드','product_code',{ product_code: productCode },{ readonly: true })}
+          ${fv('공급사코드', providerCode)}
+          ${fv('상품코드', productCode)}
         </div>
       </div>
 
@@ -992,7 +992,7 @@ function uniqueValues(field) {
 }
 
 // fi/fs → 공용 form-fields.js 사용
-import { fieldInput as fi, fieldSelect as fs, fieldTextarea as fta, formSection, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
+import { fieldInput as fi, fieldSelect as fs, fieldTextarea as fta, fieldView as fv, formSection, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
 
 export function unmount() {
   unsubProducts?.();

@@ -242,11 +242,11 @@ function loadUser(key) {
         <div class="form-section-title"><i class="ph ph-user"></i> 계정</div>
         <div class="form-section-body">
           ${ffi('이름','name',u)}
-          ${ffi('이메일','email',u,{ readonly: true })}
+          ${ffv('이메일', u.email)}
           ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'},{value:'manager',label:'영업관리자'}])}
-          ${ffi('소속코드','company_code',u,{ readonly: true })}
+          ${ffv('소속코드', u.company_code)}
           ${ffi('소속명','company_name',u)}
-          ${ffi('계정코드','user_code',u,{ readonly: true })}
+          ${ffv('계정코드', u.user_code)}
           ${ffi('연락처','phone',u)}
           ${ffi('직급','position',u)}
         </div>
@@ -317,7 +317,7 @@ function loadPartner(key) {
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-buildings"></i> 회사정보</div>
         <div class="form-section-body">
-          ${ffi('파트너코드','partner_code',p,{ readonly: true })}
+          ${ffv('파트너코드', p.partner_code)}
           ${ffi('파트너명','partner_name',p)}
           ${ffs('유형','partner_type',p,['공급사','영업채널'])}
           ${ffi('사업자번호','business_number',p)}
