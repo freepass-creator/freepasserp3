@@ -169,7 +169,6 @@ function loadAll(code) {
 function renderWork(c) {
   const actions = document.getElementById('ctWorkActions');
   if (actions) actions.innerHTML = `
-    <button class="btn btn-xs btn-outline" id="ctCancelBtn" style="color:var(--c-warn);"><i class="ph ph-prohibit"></i> 계약취소</button>
     <button class="btn btn-xs btn-outline" id="ctDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
   `;
   const el = document.getElementById('ctWork');
@@ -252,6 +251,11 @@ function renderWork(c) {
             </div>` : ''}
         </div>
       </div>
+
+      ${prog.done === prog.total
+        ? `<button class="btn btn-primary btn-full" id="ctCompleteBtn" style="height:44px;font-size:var(--fs-sm);"><i class="ph ph-check-circle"></i> 계약 완료</button>`
+        : `<button class="btn btn-outline btn-full" id="ctCancelBtn" style="height:44px;font-size:var(--fs-sm);color:var(--c-err);border-color:var(--c-err);"><i class="ph ph-prohibit"></i> 계약 취소</button>`
+      }
     </div>
   `;
 
@@ -387,10 +391,19 @@ function renderSignReqButton(c) {
   </button>`;
 }
 
-  document.getElementById('ctCancelBtn')?.addEventListener('click', async () => {
-    if (!confirm('이 계약을 취소하시겠습니까? 진행상황이 모두 초기화됩니다.')) return;
+  el.querySelector('#ctCancelBtn')?.addEventListener('click', async () => {
+    if (!confirm('이 계약을 취소하시겠습니까?')) return;
     await updateRecord(`contracts/${c.contract_code}`, { contract_status: '계약취소' });
+    c.contract_status = '계약취소';
     showToast('계약 취소됨');
+    renderWork(c);
+  });
+
+  el.querySelector('#ctCompleteBtn')?.addEventListener('click', async () => {
+    if (!confirm('모든 단계가 완료되었습니다. 계약을 완료 처리하시겠습니까?')) return;
+    await updateRecord(`contracts/${c.contract_code}`, { contract_status: '계약완료' });
+    c.contract_status = '계약완료';
+    showToast('계약 완료!');
     renderWork(c);
   });
 
