@@ -49,11 +49,13 @@
   .srch-excel-head-bar {
     flex-shrink: 0;
     overflow: hidden;
+    height: var(--panel-head-h);
+    box-sizing: border-box;
   }
+  .srch-excel-head-bar table { height: 100%; }
   .srch-excel-head-bar th {
     background: var(--c-bg-sub);
-    height: var(--panel-head-h);
-    padding: 0 6px;
+    padding: 0 4px;
     font-size: 12px;
     font-weight: var(--fw-medium);
     color: var(--c-text-muted);
