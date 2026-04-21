@@ -207,13 +207,12 @@ export function mount() {
     toggleBtn.title = viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환';
     const listHead = document.getElementById('srchListHead');
     if (listHead) {
-      const leftInfo = document.getElementById('srchListLeft');
-      if (leftInfo) {
-        if (viewMode === 'excel') {
-          leftInfo.innerHTML = `<span class="srch-excel-cols">공급사</span><span class="srch-excel-cols">차량번호</span><span class="srch-excel-cols">제조사</span><span class="srch-excel-cols">세부모델</span><span class="srch-excel-cols">연식</span><span class="srch-excel-cols">연료</span><span class="srch-excel-cols">주행</span><span class="srch-excel-cols">색상</span><span class="srch-excel-cols">상태</span>`;
-        } else {
-          leftInfo.innerHTML = `<span>목록</span><span class="srch-count" id="srchCount">${filteredProducts.length}대</span>`;
-        }
+      if (viewMode === 'excel') {
+        listHead.style.display = 'none';
+      } else {
+        listHead.style.display = '';
+        const leftInfo = document.getElementById('srchListLeft');
+        if (leftInfo) leftInfo.innerHTML = `<span>목록</span><span class="srch-count" id="srchCount">${filteredProducts.length}대</span>`;
       }
     }
     renderList();
@@ -957,6 +956,7 @@ function renderList() {
   if (viewMode === 'excel') {
     el.innerHTML = `
       <table class="srch-excel-table">
+        <thead><tr><th>공급사</th><th>차량번호</th><th>제조사</th><th>세부모델</th><th>연식</th><th>연료</th><th>주행</th><th>색상</th><th>상태</th><th>36개월</th><th>48개월</th><th>60개월</th></tr></thead>
         <tbody>${filteredProducts.map(p => {
           const price = p.price || {};
           const priceCell = m => {
