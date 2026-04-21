@@ -123,7 +123,7 @@ export function mount() {
             <button class="btn btn-xs btn-outline" id="srchExcel" title="Excel 다운로드"><i class="ph ph-download-simple"></i> Excel</button>
             <button class="btn btn-xs btn-outline" id="srchPhotoZip" title="사진 ZIP"><i class="ph ph-file-zip"></i> 사진</button>
             <button class="btn btn-xs btn-outline" id="srchViewToggle2" title="엑셀형식 보기"><i class="ph ph-table"></i> 엑셀보기</button>
-            <button class="btn btn-xs btn-outline" id="srchFilterToggle" title="조건 접기"><i class="ph ph-caret-left"></i></button>
+            <span class="ws4-head-toggle" id="srchFilterToggle" title="조건 접기"><i class="ph ph-caret-left"></i></span>
           </span>
         </div>
         <div class="srch-filter-search">
@@ -159,7 +159,7 @@ export function mount() {
       <div class="srch-resize" id="srchResize2"></div>
 
       <div class="srch-detail" id="srchDetail">
-        <div class="srch-panel-head"><span>상세</span><button class="btn btn-xs btn-outline" id="srchDetailToggle" title="상세 접기"><i class="ph ph-caret-right"></i></button></div>
+        <div class="srch-panel-head"><span>상세</span><span class="ws4-head-toggle" id="srchDetailToggle" title="상세 접기"><i class="ph ph-caret-right"></i></span></div>
         <div class="srch-detail-content">
           <div class="srch-empty"><i class="ph ph-car-simple"></i><p>차량을 선택하세요</p></div>
         </div>
@@ -235,20 +235,34 @@ export function mount() {
   };
   document.getElementById('srchFilterToggle')?.addEventListener('click', (e) => {
     e.stopPropagation();
-    document.getElementById('srchFilterPanel')?.classList.add('is-collapsed');
+    const panel = document.getElementById('srchFilterPanel');
+    panel?.classList.toggle('is-collapsed');
+    const icon = document.querySelector('#srchFilterToggle i');
+    if (icon) icon.className = panel?.classList.contains('is-collapsed') ? 'ph ph-caret-right' : 'ph ph-caret-left';
   });
   document.getElementById('srchDetailToggle')?.addEventListener('click', (e) => {
     e.stopPropagation();
-    document.getElementById('srchDetail')?.classList.add('is-collapsed');
+    const panel = document.getElementById('srchDetail');
+    panel?.classList.toggle('is-collapsed');
+    const icon = document.querySelector('#srchDetailToggle i');
+    if (icon) icon.className = panel?.classList.contains('is-collapsed') ? 'ph ph-caret-left' : 'ph ph-caret-right';
   });
   // 접힌 패널 클릭 시 열기
   document.getElementById('srchFilterPanel')?.addEventListener('click', (e) => {
     const panel = document.getElementById('srchFilterPanel');
-    if (panel?.classList.contains('is-collapsed')) { panel.classList.remove('is-collapsed'); }
+    if (panel?.classList.contains('is-collapsed')) {
+      panel.classList.remove('is-collapsed');
+      const icon = document.querySelector('#srchFilterToggle i');
+      if (icon) icon.className = 'ph ph-caret-left';
+    }
   });
   document.getElementById('srchDetail')?.addEventListener('click', (e) => {
     const panel = document.getElementById('srchDetail');
-    if (panel?.classList.contains('is-collapsed')) { panel.classList.remove('is-collapsed'); }
+    if (panel?.classList.contains('is-collapsed')) {
+      panel.classList.remove('is-collapsed');
+      const icon = document.querySelector('#srchDetailToggle i');
+      if (icon) icon.className = 'ph ph-caret-right';
+    }
   });
 
   // Text search

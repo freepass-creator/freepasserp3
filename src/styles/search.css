@@ -82,6 +82,8 @@
   .srch-filter-panel.is-collapsed .srch-panel-head span,
   .srch-detail.is-collapsed .srch-panel-head span { display: none; }
   .srch-filter-panel.is-collapsed .srch-panel-head::after { content: '조건'; }
+  .srch-filter-panel.is-collapsed .btn { font-size: 0; padding: 2px; min-width: 0; }
+  .srch-filter-panel.is-collapsed .btn i { font-size: 14px; }
   .srch-detail.is-collapsed .srch-panel-head::after { content: '상세'; }
 
   /* .srch-panel-head — base styles unified in controls.css .panel-head group */
