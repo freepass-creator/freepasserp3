@@ -17,8 +17,9 @@
     top: 0;
     z-index: 1;
     background: var(--c-bg-sub);
-    height: var(--panel-head-h);
+    height: calc(var(--panel-head-h) - 1px);
     padding: 0 6px;
+    box-sizing: border-box;
     font-weight: var(--fw-medium);
     color: var(--c-text-muted);
     border-bottom: 1px solid var(--c-border);
