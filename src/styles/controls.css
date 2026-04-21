@@ -261,6 +261,14 @@
     box-sizing: border-box;
     width: 100%;
   }
+  /* readonly — 입력칸 형태 유지, 수정 불가 */
+  .contract-field-input[readonly] {
+    cursor: default;
+    pointer-events: none;
+    color: var(--c-text-sub);
+    background: var(--c-bg-sub);
+    border-color: transparent;
+  }
   /* textarea는 높이 자동 */
   textarea.contract-field-input {
     height: auto;

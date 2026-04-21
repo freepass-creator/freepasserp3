@@ -55,12 +55,14 @@ export function fieldSelect(label, field, data, options) {
 }
 
 /**
- * 읽기 전용 값 표시
+ * 읽기 전용 값 표시 — 입력칸 형태 유지, 수정 불가
  */
 export function fieldView(label, value) {
   return `<div class="form-row">
     <span class="form-row-label">${label}</span>
-    <span class="form-row-value">${value || '-'}</span>
+    <div class="form-row-control">
+      <input class="contract-field-input" value="${value || '-'}" readonly tabindex="-1">
+    </div>
   </div>`;
 }
 
