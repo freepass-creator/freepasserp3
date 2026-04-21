@@ -13,6 +13,7 @@ import { fmtMoney, fmtWon, fmtTime, cField } from '../core/format.js';
 import { fieldInput as ffi, fieldView as ffv, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
 import { initWs4Resize } from '../core/resize.js';
 import { getSettlementStatus, SETTLEMENT_STATUSES_BASIC } from '../core/settlement-status.js';
+import { STEPS as CONTRACT_STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 
 let unsubs = [];
 let activeRoomId = null;
@@ -366,119 +367,73 @@ function setupChatInput(roomId) {
 }
 
 /* ── Contract Panel ── */
-const STEPS = [
-  { key: 'docs_attached', icon: '📄', label: '서류' },
-  { key: 'approval_requested', icon: '✋', label: '승인' },
-  { key: 'progress_approved', icon: '✅', label: '진행' },
-  { key: 'deposit_confirmed', icon: '💰', label: '보증금' },
-  { key: 'contract_written', icon: '📝', label: '계약서' },
-  { key: 'delivery_confirmed', icon: '🚗', label: '출고' },
-];
-
 function loadContract(room) {
   const el = document.getElementById('wsContractBody');
   if (!el || !room) return;
 
-  // Find contract linked to this room's product
   const contracts = store.contracts || [];
-  const c = contracts.find(x => x.product_uid === room.product_uid || x.seed_product_key === room.product_uid) || room.linked_contract && contracts.find(x => x.contract_code === room.linked_contract);
+  const c = contracts.find(x => x.product_uid === room.product_uid || x.seed_product_key === room.product_uid) || (room.linked_contract && contracts.find(x => x.contract_code === room.linked_contract));
 
   if (!c) {
-    el.innerHTML = '<div style="padding:var(--sp-4);color:var(--c-text-muted);font-size:var(--fs-xs);text-align:center;">연결된 계약 없음</div>';
+    el.innerHTML = `
+      <div style="padding:var(--sp-4);display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);">
+        <i class="ph ph-file-text" style="font-size:36px;color:var(--c-text-muted);"></i>
+        <p style="color:var(--c-text-muted);font-size:var(--fs-xs);">연결된 계약 없음</p>
+        <button class="btn btn-primary btn-sm" id="wsCreateContract" style="width:100%;"><i class="ph ph-plus"></i> 계약 생성하기</button>
+      </div>`;
+    el.querySelector('#wsCreateContract')?.addEventListener('click', async () => {
+      const { createContractFromRoom } = await import('../firebase/collections.js');
+      try {
+        const code = await createContractFromRoom(room, store.currentUser);
+        showToast('계약 생성됨');
+        loadContract(room);
+      } catch (e) { showToast('생성 실패', 'error'); console.error(e); }
+    });
     return;
   }
 
   activeContract = c;
+  const role = store.currentUser?.role || 'agent';
+  const isAgent = role === 'agent' || role === 'manager';
+  const prog = getProgress(c);
 
   el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);">
-      <div style="font-weight:var(--fw-bold);font-size:var(--fs-sm);">${c.contract_code}</div>
-      <div style="font-size:var(--fs-xs);color:var(--c-text-sub);">${c.vehicle_name_snapshot||''} · ${c.customer_name||''}</div>
-
-      <div class="contract-steps">
-        ${STEPS.map(s => {
-          const done = c[s.key] === 'yes' || c[s.key] === true;
-          return `<div class="contract-step ${done ? 'is-done' : ''}" data-step="${s.key}"><span style="font-size:14px;">${s.icon}</span><span>${s.label}</span></div>`;
-        }).join('')}
-      </div>
-
-      <div style="display:flex;gap:3px;flex-wrap:wrap;">
-        ${['계약대기','계약요청','계약발송','계약완료','계약취소'].map(s => {
-          const active = c.contract_status === s;
-          return `<div class="status-toggle" data-status="${s}" style="font-size:var(--fs-2xs);padding:3px 8px;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : ''}">${s.replace('계약','')}</div>`;
-        }).join('')}
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-weight:var(--fw-bold);font-size:var(--fs-sm);">${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}</div>
+        <span style="font-size:var(--fs-2xs);color:${prog.done === prog.total ? 'var(--c-ok)' : 'var(--c-info)'};">${prog.done}/${prog.total}</span>
       </div>
 
       <div class="form-section">
-        <div class="form-section-title">정보</div>
-        <div class="form-section-body">
-          ${ffv('상태', c.contract_status)}${ffv('기간', c.rent_month_snapshot ? c.rent_month_snapshot+'개월' : '-')}
-          ${ffv('월대여료', fmtWon(c.rent_amount_snapshot))}${ffv('보증금', fmtWon(c.deposit_amount_snapshot))}
-          ${ffv('계약일', c.contract_date)}${ffv('영업자', c.agent_code)}
+        <div class="form-section-title"><i class="ph ph-list-checks"></i> 진행상황</div>
+        <div class="ct-steps">
+          <div class="ct-step-row" style="font-size:var(--fs-2xs);color:var(--c-text-muted);font-weight:var(--fw-medium);">
+            <div style="text-align:center;">영업자</div><div></div><div style="text-align:center;">공급사</div>
+          </div>
+          ${CONTRACT_STEPS.map(step => {
+            const agentKey = step.agent?.key;
+            const respKey = step.provider?.key || step.admin?.key;
+            const agentDone = agentKey ? (c[agentKey] === true || c[agentKey] === 'yes') : false;
+            const respVal = respKey ? c[respKey] : null;
+            const respDone = respVal === true || respVal === 'yes' || respVal === '출고 가능' || respVal === '출고 협의' || respVal === '서류 승인';
+            const rejected = respVal === '출고 불가' || respVal === '서류 부결';
+            const agentClass = agentDone ? 'is-done' : 'is-pending';
+            const respClass = rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
+            return `<div class="ct-step-row">
+              <div class="ct-step-cell ${agentClass}"><i class="ph ${agentDone ? 'ph-check-circle' : 'ph-circle'}"></i><span>${step.agent?.label || ''}</span></div>
+              <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
+              <div class="ct-step-cell ${respClass}"><i class="ph ${rejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : 'ph-circle'}"></i><span>${respDone && respVal && respVal !== 'yes' && respVal !== true ? respVal : rejected ? respVal : step.provider?.label || step.admin?.label || ''}</span></div>
+            </div>`;
+          }).join('')}
         </div>
       </div>
 
-      <div class="form-section">
-        <div class="form-section-title">고객</div>
-        <div class="form-section-body">
-          ${ffi('고객명','customer_name',c)}
-          ${ffi('연락처','customer_phone',c)}
-        </div>
-      </div>
-
-      ${renderSettlementSection(c)}
+      <button class="btn btn-outline btn-sm" style="width:100%;" onclick="location.hash='';import('./contract.js').then(()=>{});window.__nav?.('/contract');">
+        <i class="ph ph-arrow-square-out"></i> 계약관리에서 상세보기
+      </button>
     </div>
   `;
-
-  // Step click
-  el.querySelectorAll('.contract-step').forEach(step => {
-    step.addEventListener('click', async () => {
-      const key = step.dataset.step;
-      const latest = (store.contracts||[]).find(x => x.contract_code === c.contract_code);
-      const done = latest?.[key] === 'yes' || latest?.[key] === true;
-      await updateRecord(`contracts/${c.contract_code}`, { [key]: done ? 'no' : 'yes' });
-      showToast(done ? '해제' : '완료');
-    });
-  });
-
-  // Contract status toggle (not settlement)
-  el.querySelectorAll('.status-toggle:not(.ws4-settle-status)').forEach(tog => {
-    tog.addEventListener('click', async () => {
-      await updateRecord(`contracts/${c.contract_code}`, { contract_status: tog.dataset.status });
-      showToast(`→ ${tog.dataset.status}`);
-    });
-  });
-
-  // Settlement status toggle
-  el.querySelectorAll('.ws4-settle-status').forEach(tog => {
-    tog.addEventListener('click', async () => {
-      const key = tog.dataset.settleKey;
-      const { settlementStatusPayload } = await import('../core/settlement-status.js');
-      await updateRecord(`settlements/${key}`, settlementStatusPayload(tog.dataset.status));
-      showToast(`정산 → ${tog.dataset.status}`);
-    });
-  });
-
-  // Settlement confirm toggle
-  el.querySelectorAll('.ws4-settle-confirm').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const key = btn.dataset.settleKey;
-      const role = btn.dataset.role;
-      const settlements = store.settlements || [];
-      const s = settlements.find(x => x._key === key);
-      const current = s?.confirms?.[role] || false;
-      await updateRecord(`settlements/${key}`, { [`confirms/${role}`]: !current });
-      showToast(!current ? '확인' : '해제');
-    });
-  });
-
-  // Auto-save inputs
-  el.querySelectorAll('.contract-field-input').forEach(inp => {
-    inp.addEventListener('blur', async () => {
-      await updateRecord(`contracts/${c.contract_code}`, { [inp.dataset.field]: inp.value.trim() });
-    });
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
-  });
+  bindFormAutoSave(el, (field, value) => updateRecord(`contracts/${c.contract_code}`, { [field]: value }));
 }
 
 /* ── Vehicle Detail Panel ── */
