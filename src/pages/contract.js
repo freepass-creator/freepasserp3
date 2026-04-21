@@ -367,6 +367,28 @@ function renderWork(c) {
       } catch { /* silent */ }
     })();
   }
+
+  // 계약취소/완료 버튼
+  el.querySelector('#ctCancelBtn')?.addEventListener('click', async () => {
+    if (!confirm('이 계약을 취소하시겠습니까?')) return;
+    await updateRecord(`contracts/${c.contract_code}`, { contract_status: '계약취소' });
+    c.contract_status = '계약취소';
+    showToast('계약 취소됨');
+    renderWork(c);
+  });
+  el.querySelector('#ctCompleteBtn')?.addEventListener('click', async () => {
+    if (!confirm('모든 단계가 완료되었습니다. 계약을 완료 처리하시겠습니까?')) return;
+    await updateRecord(`contracts/${c.contract_code}`, { contract_status: '계약완료' });
+    c.contract_status = '계약완료';
+    showToast('계약 완료!');
+    renderWork(c);
+  });
+
+  document.getElementById('ctDeleteBtn')?.addEventListener('click', async () => {
+    if (!confirm('이 계약을 삭제하시겠습니까?')) return;
+    await softDelete(`contracts/${c.contract_code}`);
+    showToast('삭제됨');
+  });
 }
 
 /** 서명 요청 버튼 — 계약 상태에 따라 4단계 표시
@@ -390,28 +412,6 @@ function renderSignReqButton(c) {
     <i class="ph ph-paper-plane-tilt"></i> 관리자에게 발송 요청
   </button>`;
 }
-
-  el.querySelector('#ctCancelBtn')?.addEventListener('click', async () => {
-    if (!confirm('이 계약을 취소하시겠습니까?')) return;
-    await updateRecord(`contracts/${c.contract_code}`, { contract_status: '계약취소' });
-    c.contract_status = '계약취소';
-    showToast('계약 취소됨');
-    renderWork(c);
-  });
-
-  el.querySelector('#ctCompleteBtn')?.addEventListener('click', async () => {
-    if (!confirm('모든 단계가 완료되었습니다. 계약을 완료 처리하시겠습니까?')) return;
-    await updateRecord(`contracts/${c.contract_code}`, { contract_status: '계약완료' });
-    c.contract_status = '계약완료';
-    showToast('계약 완료!');
-    renderWork(c);
-  });
-
-  document.getElementById('ctDeleteBtn')?.addEventListener('click', async () => {
-    if (!confirm('이 계약을 삭제하시겠습니까?')) return;
-    await softDelete(`contracts/${c.contract_code}`);
-    showToast('삭제됨');
-  });
 
 /* ── 상세 패널: 차량/대여/관계자 ── */
 function renderDetail(c) {
