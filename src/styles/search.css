@@ -45,7 +45,7 @@
     top: 0;
     z-index: 1;
     background: var(--c-bg-sub);
-    height: calc(var(--panel-head-h) - 1px);
+    height: var(--panel-head-h);
     padding: 0 6px;
     box-sizing: border-box;
     font-weight: var(--fw-medium);
@@ -53,12 +53,14 @@
     border-bottom: 1px solid var(--c-border);
     border-right: 1px solid var(--c-border-soft);
     text-align: left;
+    vertical-align: middle;
     white-space: nowrap;
   }
   .srch-excel-table td {
     padding: 4px 6px;
     border-bottom: 1px solid var(--c-border-soft);
     white-space: nowrap;
+    vertical-align: middle;
   }
   .srch-excel-row { cursor: pointer; transition: background var(--dur); }
   .srch-excel-row:hover { background: var(--c-bg-hover); }
@@ -304,6 +306,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
   }
 
   .srch-count {

@@ -210,11 +210,7 @@ export function mount() {
     const listHead = document.getElementById('srchListHead');
     if (listHead) {
       if (viewMode === 'excel') {
-        listHead.className = 'srch-excel-head-bar';
-        listHead.style.display = '';
-        listHead.innerHTML = `<table class="srch-excel-table" style="margin:0;"><tr>
-          <th>차량번호</th><th>상태</th><th>구분</th><th>제조사</th><th>모델명</th><th>세부모델</th><th>세부트림</th><th>연식</th><th>주행</th><th>연료</th><th>색상</th><th>심사</th><th>연령</th><th>24</th><th>36</th><th>48</th><th>60</th>
-        </tr></table>`;
+        listHead.style.display = 'none';
       } else {
         listHead.className = 'srch-panel-head';
         listHead.style.display = '';
@@ -1007,6 +1003,9 @@ function renderList() {
   if (viewMode === 'excel') {
     el.innerHTML = `
       <table class="srch-excel-table">
+        <thead><tr>
+          <th>차량번호</th><th>상태</th><th>구분</th><th>제조사</th><th>모델명</th><th>세부모델</th><th>세부트림</th><th>연식</th><th>주행</th><th>연료</th><th>색상</th><th>심사</th><th>연령</th><th>24</th><th>36</th><th>48</th><th>60</th>
+        </tr></thead>
         <tbody>${filteredProducts.map(p => {
           const price = p.price || {};
           const priceCell = m => {
@@ -1039,11 +1038,7 @@ function renderList() {
       </table>` || `<div class="srch-empty"><i class="ph ph-magnifying-glass"></i><p>조건에 맞는 차량이 없습니다</p></div>`;
     bindListDelegation(el);
 
-    // 헤드-바디 가로 스크롤 동기화
-    const listHead = document.getElementById('srchListHead');
-    el.addEventListener('scroll', () => { if (listHead) listHead.scrollLeft = el.scrollLeft; });
-
-    // 패널헤드 th 클릭 → 드롭다운 필터
+    // thead th 클릭 → 드롭다운 필터
     const colDefs = [
       { key: 'car_number', label: '차량번호', type: 'search' },
       { key: 'vehicle_status', label: '상태', type: 'check' },
@@ -1063,7 +1058,7 @@ function renderList() {
       { key: 'rent_48', label: '48', type: 'sort' },
       { key: 'rent_60', label: '60', type: 'sort' },
     ];
-    document.querySelectorAll('.srch-excel-head-bar th').forEach((th, i) => {
+    el.querySelectorAll('.srch-excel-table thead th').forEach((th, i) => {
       const def = colDefs[i];
       th.addEventListener('click', (e) => {
         // 기존 드롭다운 닫기
