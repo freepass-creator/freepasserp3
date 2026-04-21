@@ -243,7 +243,9 @@ export function mount() {
   document.getElementById('srchDetailToggle')?.addEventListener('click', (e) => {
     e.stopPropagation();
     const panel = document.getElementById('srchDetail');
+    const resize = document.getElementById('srchResize2');
     panel?.classList.toggle('is-collapsed');
+    if (resize) resize.style.display = panel?.classList.contains('is-collapsed') ? 'none' : '';
     const icon = document.querySelector('#srchDetailToggle i');
     if (icon) icon.className = panel?.classList.contains('is-collapsed') ? 'ph ph-caret-left' : 'ph ph-caret-right';
   });
@@ -260,6 +262,8 @@ export function mount() {
     const panel = document.getElementById('srchDetail');
     if (panel?.classList.contains('is-collapsed')) {
       panel.classList.remove('is-collapsed');
+      const resize = document.getElementById('srchResize2');
+      if (resize) resize.style.display = '';
       const icon = document.querySelector('#srchDetailToggle i');
       if (icon) icon.className = 'ph ph-caret-right';
     }
