@@ -46,16 +46,16 @@ export function mount() {
       </div>
       <div class="ws4-resize" data-idx="1"></div>
       <div class="ws4-panel" data-panel="detail">
-        <div class="ws4-head">계약접수내용</div>
+        <div class="ws4-head">고객 · 서류</div>
         <div class="ws4-body" id="ctDetail">
-          <div class="srch-empty"><i class="ph ph-file-text"></i><p>계약 접수 내용</p></div>
+          <div class="srch-empty"><i class="ph ph-user"></i><p>고객정보 · 첨부서류</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="2"></div>
       <div class="ws4-panel" data-panel="sub">
-        <div class="ws4-head">보조</div>
+        <div class="ws4-head">계약조건</div>
         <div class="ws4-body" id="ctSub">
-          <div class="srch-empty"><i class="ph ph-note"></i><p>정산 · 메모</p></div>
+          <div class="srch-empty"><i class="ph ph-info"></i><p>차량 · 대여 · 관계자</p></div>
         </div>
       </div>
     </div>
@@ -234,23 +234,10 @@ function renderWork(c) {
         </div>
       </div>
 
-      <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-file-text"></i> 첨부 서류</div>
-        <div class="form-section-body" style="grid-template-columns:1fr;">
-          <label class="pd-dropzone" id="ctDocDropzone" for="ctDocFile">
-            <i class="ph ph-upload-simple" aria-hidden="true"></i>
-            <div class="pd-dropzone-text">서류를 끌어놓거나 클릭해서 업로드</div>
-            <div class="pd-dropzone-hint">고객 신분증 · 면허증 · 재직증명서 등</div>
-            <input type="file" id="ctDocFile" multiple hidden accept="image/*,.pdf">
-          </label>
-          ${(c.doc_urls || []).length ? `
-            <div style="display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1);">
-              ${(c.doc_urls || []).map((url, i) => `
-                <a href="${url}" target="_blank" class="btn btn-xs btn-outline"><i class="ph ph-file"></i> 서류${i+1}</a>
-              `).join('')}
-            </div>` : ''}
-        </div>
-      </div>
+      ${prog.done === prog.total
+        ? `<button class="btn btn-primary btn-full" id="ctCompleteBtn" style="height:44px;font-size:var(--fs-sm);"><i class="ph ph-check-circle"></i> 계약 완료</button>`
+        : `<button class="btn btn-outline btn-full" id="ctCancelBtn" style="height:44px;font-size:var(--fs-sm);color:var(--c-err);border-color:var(--c-err);"><i class="ph ph-prohibit"></i> 계약 취소</button>`
+      }
 
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-note"></i> 진행 메모</div>
@@ -279,10 +266,6 @@ function renderWork(c) {
         </div>
       </div>
 
-      ${prog.done === prog.total
-        ? `<button class="btn btn-primary btn-full" id="ctCompleteBtn" style="height:44px;font-size:var(--fs-sm);"><i class="ph ph-check-circle"></i> 계약 완료</button>`
-        : `<button class="btn btn-outline btn-full" id="ctCancelBtn" style="height:44px;font-size:var(--fs-sm);color:var(--c-err);border-color:var(--c-err);"><i class="ph ph-prohibit"></i> 계약 취소</button>`
-      }
     </div>
   `;
 
@@ -315,29 +298,6 @@ function renderWork(c) {
       renderWork(c);
     });
   });
-
-  // 서류 업로드
-  const docInput = el.querySelector('#ctDocFile');
-  const docZone = el.querySelector('#ctDocDropzone');
-  if (docInput && docZone) {
-    const uploadDocs = async (files) => {
-      const { uploadFile } = await import('../firebase/storage-helper.js');
-      const urls = [...(c.doc_urls || [])];
-      for (const file of files) {
-        const path = `contract-docs/${c.contract_code}/${Date.now()}_${file.name}`;
-        const { url } = await uploadFile(path, file);
-        urls.push(url);
-      }
-      c.doc_urls = urls;
-      await updateRecord(`contracts/${c.contract_code}`, { doc_urls: urls });
-      showToast(`${files.length}건 업로드 완료`);
-      renderWork(c);
-    };
-    docInput.addEventListener('change', () => { if (docInput.files.length) uploadDocs([...docInput.files]); });
-    docZone.addEventListener('dragover', e => { e.preventDefault(); docZone.classList.add('is-dragover'); });
-    docZone.addEventListener('dragleave', () => docZone.classList.remove('is-dragover'));
-    docZone.addEventListener('drop', e => { e.preventDefault(); docZone.classList.remove('is-dragover'); if (e.dataTransfer.files.length) uploadDocs([...e.dataTransfer.files]); });
-  }
 
   el.querySelector('#ctDocBtn')?.addEventListener('click', async () => {
     const { mount: m } = await import('./contract-send.js');
@@ -457,99 +417,102 @@ function renderDetail(c) {
         </div>
       </div>
       <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-car-simple"></i> 차량정보</div>
-        <div class="form-section-body">
-          ${ffv('차량번호',c.car_number_snapshot)}
-          ${ffv('세부모델',c.sub_model_snapshot || c.model_snapshot)}
-          ${ffv('차량명',c.vehicle_name_snapshot)}
-        </div>
-      </div>
-      <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-currency-krw"></i> 대여정보</div>
-        <div class="form-section-body">
-          ${ffv('기간',c.rent_month_snapshot?c.rent_month_snapshot+'개월':'-')}
-          ${ffv('월대여료',fmtWon(c.rent_amount_snapshot))}
-          ${ffv('보증금',fmtWon(c.deposit_amount_snapshot))}
-          ${ffv('계약일',c.contract_date)}
-        </div>
-      </div>
-      <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-users"></i> 관계자</div>
-        <div class="form-section-body">
-          ${ffv('공급사',c.provider_company_code)}
-          ${ffv('영업자',c.agent_code)}
-          ${ffv('채널',c.agent_channel_code)}
-          ${ffv('정책',c.policy_code)}
-          ${ffv('계약코드',c.contract_code)}
+        <div class="form-section-title"><i class="ph ph-file-text"></i> 첨부 서류</div>
+        <div class="form-section-body" style="grid-template-columns:1fr;">
+          <label class="pd-dropzone" id="ctDocDropzone" for="ctDocFile">
+            <i class="ph ph-upload-simple" aria-hidden="true"></i>
+            <div class="pd-dropzone-text">서류를 끌어놓거나 클릭해서 업로드</div>
+            <div class="pd-dropzone-hint">고객 신분증 · 면허증 · 재직증명서 등</div>
+            <input type="file" id="ctDocFile" multiple hidden accept="image/*,.pdf">
+          </label>
+          ${(c.doc_urls || []).length ? `
+            <div style="display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1);">
+              ${(c.doc_urls || []).map((url, i) => `
+                <a href="${url}" target="_blank" class="btn btn-xs btn-outline"><i class="ph ph-file"></i> 서류${i+1}</a>
+              `).join('')}
+            </div>` : ''}
         </div>
       </div>
     </div>
   `;
   bindFormAutoSave(el, (field, value) => updateRecord(`contracts/${c.contract_code}`, { [field]: value }));
+
+  // 서류 업로드
+  const docInput = el.querySelector('#ctDocFile');
+  const docZone = el.querySelector('#ctDocDropzone');
+  if (docInput && docZone) {
+    const uploadDocs = async (files) => {
+      const { uploadFile } = await import('../firebase/storage-helper.js');
+      const urls = [...(c.doc_urls || [])];
+      for (const file of files) {
+        const path = `contract-docs/${c.contract_code}/${Date.now()}_${file.name}`;
+        const { url } = await uploadFile(path, file);
+        urls.push(url);
+      }
+      c.doc_urls = urls;
+      await updateRecord(`contracts/${c.contract_code}`, { doc_urls: urls });
+      showToast(`${files.length}건 업로드 완료`);
+      renderDetail(c);
+    };
+    docInput.addEventListener('change', () => { if (docInput.files.length) uploadDocs([...docInput.files]); });
+    docZone.addEventListener('dragover', e => { e.preventDefault(); docZone.classList.add('is-dragover'); });
+    docZone.addEventListener('dragleave', () => docZone.classList.remove('is-dragover'));
+    docZone.addEventListener('drop', e => { e.preventDefault(); docZone.classList.remove('is-dragover'); if (e.dataTransfer.files.length) uploadDocs([...e.dataTransfer.files]); });
+  }
 }
 
-/* ── 보조 패널: 정산 + 메모 ── */
+/* ── 4번 패널: 계약조건 (차량/대여/관계자/정산) ── */
 function renderSub(c) {
   const el = document.getElementById('ctSub');
-  const settlements = store.settlements || [];
-  const s = settlements.find(x => x.contract_code === c.contract_code);
-
-  let settleHtml = '<div style="color:var(--c-text-muted);font-size:var(--fs-xs);">정산 정보 없음</div>';
-  if (s) {
-    const confirms = s.confirms || {};
-    settleHtml = `
-      <div class="settle-amount" style="margin-bottom:var(--sp-2);">
-        <div class="settle-amount-label">수수료</div>
-        <div class="settle-amount-value">${fmtWon(s.fee_amount)}</div>
-      </div>
-      <div style="display:flex;gap:var(--sp-1);margin-bottom:var(--sp-2);">
-        ${['공급사','영업자','관리자'].map((label,i) => {
-          const roles = ['provider','agent','admin'];
-          const confirmed = confirms[roles[i]];
-          return `<div class="settle-confirm ${confirmed ? 'is-confirmed' : ''}" data-settle-key="${s._key}" data-role="${roles[i]}" style="padding:var(--sp-2);font-size:var(--fs-2xs);">
-            <i class="ph ${confirmed ? 'ph-check-circle' : 'ph-circle'}" style="font-size:16px;"></i><span>${label}</span>
-          </div>`;
-        }).join('')}
-      </div>
-      <div class="form-section"><div class="form-section-title">정산정보</div>
-        <div class="form-section-body">
-          ${ffv('상태',s.settlement_status||s.status)}${ffv('정산일',s.settled_date||'-')}
-          ${ffv('월대여료',fmtWon(s.rent_amount))}${ffv('보증금',fmtWon(s.deposit_amount))}
-        </div>
-      </div>
-    `;
-  }
+  const s = (store.settlements || []).find(x => x.contract_code === c.contract_code);
 
   el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);">
-      <div style="font-weight:var(--fw-bold);font-size:var(--fs-sm);">정산</div>
-      ${settleHtml}
-      <div class="form-section"><div class="form-section-title">메모</div>
+    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-car-simple"></i> 차량정보</div>
         <div class="form-section-body">
-          <textarea class="input" id="ctMemo" rows="4" style="resize:vertical;height:auto;" placeholder="메모...">${c.admin_memo||''}</textarea>
+          ${ffv('차량번호', c.car_number_snapshot)}
+          ${ffv('제조사', c.maker_snapshot || '')}
+          ${ffv('모델', c.model_snapshot)}
+          ${ffv('세부모델', c.sub_model_snapshot)}
+          ${ffv('차량명', c.vehicle_name_snapshot)}
+          ${ffv('연식', c.year_snapshot || '')}
+          ${ffv('연료', c.fuel_type_snapshot || '')}
+          ${ffv('색상', c.ext_color_snapshot || '')}
         </div>
       </div>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-currency-krw"></i> 대여정보</div>
+        <div class="form-section-body">
+          ${ffv('대여기간', c.rent_month_snapshot ? c.rent_month_snapshot + '개월' : '-')}
+          ${ffv('월대여료', fmtWon(c.rent_amount_snapshot))}
+          ${ffv('보증금', fmtWon(c.deposit_amount_snapshot))}
+          ${ffv('계약일', c.contract_date)}
+          ${ffv('심사기준', c.credit_grade_snapshot || '')}
+          ${ffv('정책명', c.policy_name_snapshot || c.policy_code || '')}
+        </div>
+      </div>
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-users"></i> 관계자</div>
+        <div class="form-section-body">
+          ${ffv('공급사', c.provider_company_code)}
+          ${ffv('영업자', c.agent_code)}
+          ${ffv('채널', c.agent_channel_code)}
+          ${ffv('정책코드', c.policy_code)}
+          ${ffv('계약코드', c.contract_code)}
+        </div>
+      </div>
+      ${s ? `
+      <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-coins"></i> 정산</div>
+        <div class="form-section-body">
+          ${ffv('정산상태', s.settlement_status || s.status)}
+          ${ffv('수수료', fmtWon(s.fee_amount))}
+          ${ffv('정산일', s.settled_date || '-')}
+        </div>
+      </div>` : ''}
     </div>
   `;
-
-  // Settle confirm
-  el.querySelectorAll('.settle-confirm').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const key = btn.dataset.settleKey;
-      const role = btn.dataset.role;
-      const st = (store.settlements||[]).find(x => x._key === key);
-      const current = st?.confirms?.[role] || false;
-      await updateRecord(`settlements/${key}`, { [`confirms/${role}`]: !current });
-      showToast(!current ? '확인' : '해제');
-    });
-  });
-
-  // Memo
-  let memoTimer;
-  document.getElementById('ctMemo')?.addEventListener('input', (e) => {
-    clearTimeout(memoTimer);
-    memoTimer = setTimeout(() => updateRecord(`contracts/${c.contract_code}`, { admin_memo: e.target.value }), 800);
-  });
 }
 
 
