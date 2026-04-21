@@ -715,7 +715,7 @@ function renderPhotos(p, key) {
         <div class="form-section-title">
           차량 사진 <span class="form-section-hint">${imgs.length}/${MAX_PHOTOS}</span>
         </div>
-        <div class="form-section-body">
+        <div class="form-section-body" style="grid-template-columns:1fr;">
           <label class="pd-dropzone" id="pdDropzone" for="pdPhotoFile">
             <i class="ph ph-upload-simple" aria-hidden="true"></i>
             <div class="pd-dropzone-text">이미지를 끌어놓거나 클릭해서 파일 선택</div>
@@ -738,7 +738,7 @@ function renderPhotos(p, key) {
       <!-- 사진 링크 (외부 URL) -->
       <div class="form-section">
         <div class="form-section-title">사진 링크 <span class="form-section-hint">여러 줄 · 콤마 구분</span></div>
-        <div class="form-section-body">
+        <div class="form-section-body" style="grid-template-columns:1fr;">
           <textarea class="input pd-textarea" data-field="photo_link" rows="3" placeholder="https://... (moderentcar, drive 폴더 등)">${photoLink}</textarea>
         </div>
       </div>
@@ -746,7 +746,7 @@ function renderPhotos(p, key) {
       <!-- 등록증 (OCR) -->
       <div class="form-section">
         <div class="form-section-title">자동차등록증 <span class="form-section-hint">업로드 시 OCR로 기본정보 자동 채움</span></div>
-        <div class="form-section-body">
+        <div class="form-section-body" style="grid-template-columns:1fr;">
           <div class="pd-reg-wrap">
             ${regImg
               ? `<img src="${regImg}" class="pd-reg-image">
