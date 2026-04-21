@@ -241,24 +241,23 @@
 
   /* ── 새 진행단계 (영업↔공급 매칭) ── */
   .ct-steps { display: flex; flex-direction: column; gap: var(--sp-1); }
-  .ct-step-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--sp-1); align-items: center; }
-  .ct-step-row.is-parallel { margin-left: var(--sp-3); }
+  .ct-step-row { display: grid; grid-template-columns: 1fr 20px 1fr; gap: var(--sp-1); align-items: center; }
   .ct-step-cell {
     display: flex; align-items: center; justify-content: center; gap: var(--sp-1);
-    padding: var(--sp-2) var(--sp-3); border-radius: var(--ctrl-r);
+    padding: var(--sp-2) var(--sp-2); border-radius: var(--ctrl-r);
     font-size: var(--fs-xs); font-weight: var(--fw-medium);
     border: 1px solid var(--c-border); background: var(--c-surface);
-    cursor: default; transition: all var(--dur); min-height: 36px;
+    cursor: default; transition: all var(--dur); height: 36px;
   }
   .ct-step-cell[data-clickable] { cursor: pointer; }
   .ct-step-cell[data-clickable]:hover { background: var(--c-bg-hover); border-color: var(--c-border-strong); }
   .ct-step-cell[data-clickable]:active { background: var(--c-bg-active); }
   .ct-step-cell.is-done { background: var(--c-ok-bg); border-color: var(--c-ok); color: var(--c-ok); }
-  .ct-step-cell.is-pending { background: var(--c-surface); color: var(--c-text); }
-  .ct-step-cell.is-locked { background: var(--c-bg-sub); border-color: transparent; color: var(--c-text-muted); opacity: 0.6; }
+  .ct-step-cell.is-pending { background: var(--c-surface); border-color: var(--c-border); color: var(--c-text); }
+  .ct-step-cell.is-locked { background: var(--c-bg-sub); border-color: var(--c-border); color: var(--c-text-muted); }
   .ct-step-cell.is-rejected { background: var(--c-err-bg); border-color: var(--c-err); color: var(--c-err); }
-  .ct-step-cell i { font-size: 16px; }
-  .ct-step-arrow { color: var(--c-text-muted); font-size: 12px; }
+  .ct-step-cell i { font-size: 14px; flex-shrink: 0; }
+  .ct-step-arrow { color: var(--c-text-muted); font-size: 10px; text-align: center; }
   .ct-step-admin { font-size: var(--fs-2xs); color: var(--c-accent); margin-left: auto; opacity: 0.7; }
 
   /* ── Contract Info Section (flat-stacked, canonical) ── */
