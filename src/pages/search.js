@@ -118,9 +118,9 @@ export function mount() {
         <div class="srch-panel-head">
           <span style="display:flex;align-items:center;gap:var(--sp-1);"><span>조건</span><span class="sb-badge" id="srchFilterCount"></span></span>
           <span style="display:flex;gap:var(--sp-1);">
-            <button class="btn btn-xs btn-outline" id="srchExcel" title="Excel 다운로드"><i class="ph ph-file-xls"></i> <span class="srch-btn-label">Excel</span></button>
-            <button class="btn btn-xs btn-outline" id="srchPhotoZip" title="사진 ZIP"><i class="ph ph-file-zip"></i> <span class="srch-btn-label">사진</span></button>
-            <button class="btn btn-xs btn-outline" id="srchViewToggle2" title="엑셀형식 보기"><i class="ph ph-table"></i> <span class="srch-btn-label">엑셀보기</span></button>
+            <button class="btn btn-xs btn-outline" id="srchExcel" title="Excel 다운로드"><i class="ph ph-download-simple"></i> Excel</button>
+            <button class="btn btn-xs btn-outline" id="srchPhotoZip" title="사진 ZIP"><i class="ph ph-file-zip"></i> 사진</button>
+            <button class="btn btn-xs btn-outline" id="srchViewToggle2" title="엑셀형식 보기"><i class="ph ph-table"></i> 엑셀보기</button>
             <button class="btn btn-xs btn-outline" id="srchFilterToggle" title="조건 접기"><i class="ph ph-caret-left"></i></button>
           </span>
         </div>

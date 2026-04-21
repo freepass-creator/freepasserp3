@@ -74,7 +74,6 @@
   .srch-filter-panel.is-collapsed .srch-panel-head span,
   .srch-detail.is-collapsed .srch-panel-head span { display: none; }
   .srch-filter-panel.is-collapsed .srch-panel-head::after { content: '조건'; }
-  .srch-filter-panel.is-collapsed .srch-btn-label { display: none; }
   .srch-detail.is-collapsed .srch-panel-head::after { content: '상세'; }
 
   /* .srch-panel-head — base styles unified in controls.css .panel-head group */
