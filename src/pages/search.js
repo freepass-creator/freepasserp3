@@ -203,7 +203,7 @@ export function mount() {
   document.getElementById('srchViewToggle2')?.addEventListener('click', () => {
     viewMode = viewMode === 'card' ? 'excel' : 'card';
     const toggleBtn = document.getElementById('srchViewToggle2');
-    toggleBtn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i>' : '<i class="ph ph-table"></i>';
+    toggleBtn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
     toggleBtn.title = viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환';
     const listHead = document.getElementById('srchListHead');
     if (listHead) {
