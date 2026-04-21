@@ -7,7 +7,7 @@
 
   /* ── Excel View ── */
   .srch-excel-table {
-    width: 100%;
+    width: max(100%, 1100px);
     border-collapse: collapse;
     font-size: 12px;
     font-variant-numeric: tabular-nums;
@@ -16,7 +16,7 @@
   .srch-excel-table td,
   .srch-excel-table th { overflow: hidden; text-overflow: ellipsis; }
   /* 컬럼 폭 — 70~80% 데이터 기준 */
-  .srch-excel-table th:nth-child(1)  { width: 72px; }  /* 차량번호 */
+  .srch-excel-table th:nth-child(1)  { width: 85px; }  /* 차량번호 */
   .srch-excel-table th:nth-child(2)  { width: 58px; }  /* 상태 */
   .srch-excel-table th:nth-child(3)  { width: 52px; }  /* 구분 */
   .srch-excel-table th:nth-child(4)  { width: 38px; }  /* 제조사 */
@@ -33,6 +33,43 @@
   .srch-excel-table th:nth-child(15),
   .srch-excel-table th:nth-child(16),
   .srch-excel-table th:nth-child(17) { width: 55px; }  /* 24/36/48/60 */
+
+  /* 틀고정 — 차량번호(좌), 대여료 24/36/48/60(우) */
+  .srch-excel-table th:nth-child(1),
+  .srch-excel-table td:nth-child(1) {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--c-surface);
+    border-right: 2px solid var(--c-border);
+  }
+  .srch-excel-table thead th:nth-child(1) {
+    z-index: 3;
+    background: var(--c-bg-sub);
+  }
+  .srch-excel-table th:nth-child(14),
+  .srch-excel-table td:nth-child(14) { position: sticky; right: calc(55px * 3); z-index: 2; background: var(--c-surface); }
+  .srch-excel-table th:nth-child(15),
+  .srch-excel-table td:nth-child(15) { position: sticky; right: calc(55px * 2); z-index: 2; background: var(--c-surface); }
+  .srch-excel-table th:nth-child(16),
+  .srch-excel-table td:nth-child(16) { position: sticky; right: 55px; z-index: 2; background: var(--c-surface); }
+  .srch-excel-table th:nth-child(17),
+  .srch-excel-table td:nth-child(17) { position: sticky; right: 0; z-index: 2; background: var(--c-surface); }
+  .srch-excel-table td:nth-child(14) { border-left: 2px solid var(--c-border); }
+  .srch-excel-table thead th:nth-child(14),
+  .srch-excel-table thead th:nth-child(15),
+  .srch-excel-table thead th:nth-child(16),
+  .srch-excel-table thead th:nth-child(17) { z-index: 3; background: var(--c-bg-sub); }
+  .srch-excel-row:hover td:nth-child(1),
+  .srch-excel-row:hover td:nth-child(14),
+  .srch-excel-row:hover td:nth-child(15),
+  .srch-excel-row:hover td:nth-child(16),
+  .srch-excel-row:hover td:nth-child(17) { background: var(--c-bg-hover); }
+  .srch-excel-row.is-active td:nth-child(1),
+  .srch-excel-row.is-active td:nth-child(14),
+  .srch-excel-row.is-active td:nth-child(15),
+  .srch-excel-row.is-active td:nth-child(16),
+  .srch-excel-row.is-active td:nth-child(17) { background: var(--c-bg-hover); }
   .srch-excel-table th {
     position: sticky;
     top: 0;
