@@ -417,6 +417,23 @@ function renderDetail(c) {
         </div>
       </div>
       <div class="form-section">
+        <div class="form-section-title"><i class="ph ph-identification-card"></i> 면허증</div>
+        <div class="form-section-body" style="grid-template-columns:1fr;">
+          ${c.license_url
+            ? `<div style="position:relative;display:inline-block;">
+                 <img src="${c.license_url}" style="max-width:100%;border-radius:var(--ctrl-r);border:1px solid var(--c-border);">
+                 <button class="btn btn-xs btn-outline" id="ctLicenseDel" style="position:absolute;top:4px;right:4px;"><i class="ph ph-x"></i> 제거</button>
+               </div>`
+            : `<label class="pd-dropzone" id="ctLicenseDropzone" for="ctLicenseFile">
+                 <i class="ph ph-identification-card" aria-hidden="true"></i>
+                 <div class="pd-dropzone-text">면허증 사진 업로드</div>
+                 <div class="pd-dropzone-hint">운전면허증 앞면 사진</div>
+                 <input type="file" id="ctLicenseFile" hidden accept="image/*">
+               </label>`}
+        </div>
+      </div>
+
+      <div class="form-section">
         <div class="form-section-title"><i class="ph ph-file-text"></i> 첨부 서류</div>
         <div class="form-section-body" style="grid-template-columns:1fr;">
           <label class="pd-dropzone" id="ctDocDropzone" for="ctDocFile">
@@ -436,6 +453,31 @@ function renderDetail(c) {
     </div>
   `;
   bindFormAutoSave(el, (field, value) => updateRecord(`contracts/${c.contract_code}`, { [field]: value }));
+
+  // 면허증 업로드
+  const licInput = el.querySelector('#ctLicenseFile');
+  const licZone = el.querySelector('#ctLicenseDropzone');
+  if (licInput && licZone) {
+    const uploadLic = async (file) => {
+      const { uploadImage } = await import('../firebase/storage-helper.js');
+      const path = `contract-docs/${c.contract_code}/license_${Date.now()}.webp`;
+      const { url } = await uploadImage(path, file);
+      c.license_url = url;
+      await updateRecord(`contracts/${c.contract_code}`, { license_url: url });
+      showToast('면허증 업로드 완료');
+      renderDetail(c);
+    };
+    licInput.addEventListener('change', () => { if (licInput.files[0]) uploadLic(licInput.files[0]); });
+    licZone.addEventListener('dragover', e => { e.preventDefault(); licZone.classList.add('is-dragover'); });
+    licZone.addEventListener('dragleave', () => licZone.classList.remove('is-dragover'));
+    licZone.addEventListener('drop', e => { e.preventDefault(); licZone.classList.remove('is-dragover'); if (e.dataTransfer.files[0]) uploadLic(e.dataTransfer.files[0]); });
+  }
+  el.querySelector('#ctLicenseDel')?.addEventListener('click', async () => {
+    c.license_url = '';
+    await updateRecord(`contracts/${c.contract_code}`, { license_url: '' });
+    showToast('면허증 제거됨');
+    renderDetail(c);
+  });
 
   // 서류 업로드
   const docInput = el.querySelector('#ctDocFile');
