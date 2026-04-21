@@ -210,11 +210,20 @@ export function mount() {
     const listHead = document.getElementById('srchListHead');
     if (listHead) {
       if (viewMode === 'excel') {
-        listHead.style.display = 'none';
-      } else {
+        listHead.className = 'srch-excel-head-bar';
         listHead.style.display = '';
-        const leftInfo = document.getElementById('srchListLeft');
-        if (leftInfo) leftInfo.innerHTML = `<span>목록</span><span class="srch-count" id="srchCount">${filteredProducts.length}대</span>`;
+        listHead.innerHTML = `<span>공급사</span><span>차량번호</span><span>제조사</span><span>세부모델</span><span>연식</span><span>연료</span><span>주행</span><span>색상</span><span>상태</span><span>36개월</span><span>48개월</span><span>60개월</span>`;
+      } else {
+        listHead.className = 'srch-panel-head';
+        listHead.style.display = '';
+        listHead.innerHTML = `
+          <span style="display:flex;align-items:center;gap:var(--sp-2);flex:1;min-width:0;" id="srchListLeft">
+            <span>목록</span><span class="srch-count" id="srchCount">${filteredProducts.length}대</span>
+          </span>
+          <div class="srch-period-head" id="srchPeriodHead">
+            <span class="srch-sort-hint" id="srchSortHint"></span>
+            <span class="srch-sort-col" data-sort="36">36개월</span><span class="srch-sort-col" data-sort="48">48개월</span><span class="srch-sort-col" data-sort="60">60개월</span>
+          </div>`;
       }
     }
     renderList();
@@ -996,20 +1005,6 @@ function renderList() {
   if (viewMode === 'excel') {
     el.innerHTML = `
       <table class="srch-excel-table">
-        <thead><tr>
-          <th class="srch-excel-th" data-col="provider_company_code">공급사</th>
-          <th class="srch-excel-th" data-col="car_number">차량번호</th>
-          <th class="srch-excel-th" data-col="maker">제조사</th>
-          <th class="srch-excel-th" data-col="sub_model">세부모델</th>
-          <th class="srch-excel-th" data-col="year">연식</th>
-          <th class="srch-excel-th" data-col="fuel_type">연료</th>
-          <th class="srch-excel-th" data-col="mileage">주행</th>
-          <th class="srch-excel-th" data-col="ext_color">색상</th>
-          <th class="srch-excel-th" data-col="vehicle_status">상태</th>
-          <th class="srch-excel-th" data-col="rent_36">36개월</th>
-          <th class="srch-excel-th" data-col="rent_48">48개월</th>
-          <th class="srch-excel-th" data-col="rent_60">60개월</th>
-        </tr></thead>
         <tbody>${filteredProducts.map(p => {
           const price = p.price || {};
           const priceCell = m => {
@@ -1033,10 +1028,13 @@ function renderList() {
         }).join('')}</tbody>
       </table>` || `<div class="srch-empty"><i class="ph ph-magnifying-glass"></i><p>조건에 맞는 차량이 없습니다</p></div>`;
     bindListDelegation(el);
-    // thead 정렬 클릭
-    el.querySelectorAll('.srch-excel-th').forEach(th => {
-      th.addEventListener('click', () => {
-        const col = th.dataset.col;
+
+    // 패널헤드 span 정렬 클릭
+    const cols = ['provider_company_code','car_number','maker','sub_model','year','fuel_type','mileage','ext_color','vehicle_status','rent_36','rent_48','rent_60'];
+    document.querySelectorAll('.srch-excel-head-bar > span').forEach((span, i) => {
+      span.style.cursor = 'pointer';
+      span.addEventListener('click', () => {
+        const col = cols[i];
         if (excelSortField === col) {
           if (excelSortDir === 'asc') excelSortDir = 'desc';
           else { excelSortField = null; excelSortDir = null; }
@@ -1045,12 +1043,10 @@ function renderList() {
         }
         applyFilters();
       });
-    });
-    // 정렬 표시
-    el.querySelectorAll('.srch-excel-th').forEach(th => {
-      th.classList.remove('is-sort-asc', 'is-sort-desc');
-      if (excelSortField === th.dataset.col && excelSortDir) {
-        th.classList.add(excelSortDir === 'asc' ? 'is-sort-asc' : 'is-sort-desc');
+      // 정렬 표시
+      span.classList.remove('is-sort-asc', 'is-sort-desc');
+      if (excelSortField === cols[i] && excelSortDir) {
+        span.classList.add(excelSortDir === 'asc' ? 'is-sort-asc' : 'is-sort-desc');
       }
     });
     return;

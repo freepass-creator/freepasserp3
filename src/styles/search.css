@@ -44,6 +44,32 @@
   .srch-excel-th.is-sort-desc { color: var(--c-err); background: var(--c-err-bg); }
   .srch-excel-th.is-sort-asc::after { content: ' ↑'; }
   .srch-excel-th.is-sort-desc::after { content: ' ↓'; }
+  /* 엑셀 헤드바 — 패널헤드가 컬럼 헤더 역할 */
+  .srch-excel-head-bar {
+    display: flex;
+    align-items: center;
+    height: var(--panel-head-h);
+    background: var(--c-bg-sub);
+    border-bottom: 1px solid var(--c-border);
+    font-size: 12px;
+    font-weight: var(--fw-medium);
+    color: var(--c-text-muted);
+    flex-shrink: 0;
+  }
+  .srch-excel-head-bar > span {
+    flex: 1;
+    padding: 0 6px;
+    white-space: nowrap;
+    text-align: center;
+    border-right: 1px solid var(--c-border-soft);
+  }
+  .srch-excel-head-bar > span:last-child { border-right: none; }
+  .srch-excel-head-bar > span:hover { background: var(--c-bg-hover); }
+  .srch-excel-head-bar > span.is-sort-asc { color: var(--c-info); background: var(--c-info-bg); }
+  .srch-excel-head-bar > span.is-sort-desc { color: var(--c-err); background: var(--c-err-bg); }
+  .srch-excel-head-bar > span.is-sort-asc::after { content: ' ↑'; }
+  .srch-excel-head-bar > span.is-sort-desc::after { content: ' ↓'; }
+
   .srch-excel-table td { border-right: 1px solid var(--c-border-soft); }
   .srch-excel-table td:last-child { border-right: none; }
   .srch-excel-price { text-align: right; font-weight: var(--fw-medium); color: var(--c-accent); }
