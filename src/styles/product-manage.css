@@ -183,6 +183,7 @@
     width: 100%;
     border-collapse: collapse;
     font-variant-numeric: tabular-nums;
+    grid-column: 1 / -1;
   }
   .pd-price-table th, .pd-price-table td {
     padding: 4px 6px;
@@ -200,8 +201,9 @@
     width: 56px;
   }
   /* 가격표 셀 — 전역 3모드 상속, 크기/정렬만 */
+  .pd-price-table td { vertical-align: middle; }
   .pd-price-input,
-  .pd-price-memo { width: 100%; height: var(--ctrl-h-sm); padding: 4px 8px; font-size: var(--fs-xs); box-sizing: border-box; }
+  .pd-price-memo { width: 100%; height: var(--ctrl-h-sm); padding: 4px 8px; font-size: var(--fs-xs); box-sizing: border-box; border: 1px solid var(--c-border-soft); border-radius: var(--ctrl-r); background: transparent; }
   .pd-price-input { text-align: right; }
   .pd-price-memo  { text-align: left; font-size: var(--fs-2xs); }
   .pd-section-hint {
