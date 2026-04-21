@@ -1041,15 +1041,23 @@ function renderList() {
 
     // 행 hover → 차량 상세 팝업
     el.querySelectorAll('.srch-excel-row').forEach(row => {
-      row.addEventListener('mouseenter', () => {
-        document.querySelector('.srch-excel-popup')?.remove();
+      row.addEventListener('mousemove', (e) => {
+        let popup = document.querySelector('.srch-excel-popup');
+        if (popup && popup._rowKey === row.dataset.key) {
+          const parentRect = el.getBoundingClientRect();
+          popup.style.left = `${e.clientX - parentRect.left + 12}px`;
+          popup.style.top = `${e.clientY - parentRect.top + 12}px`;
+          return;
+        }
+        popup?.remove();
         const cell = row.querySelector('.srch-excel-detail-cell');
         if (!cell?.dataset.info) return;
         const d = JSON.parse(decodeURIComponent(cell.dataset.info));
         const color = [d.ec, d.ic].filter(Boolean).join(' / ');
         const spec = [d.y ? d.y+'년' : '', d.km ? Number(d.km).toLocaleString()+'km' : '', d.f, color].filter(Boolean).join(' · ');
-        const popup = document.createElement('div');
+        popup = document.createElement('div');
         popup.className = 'srch-excel-popup';
+        popup._rowKey = row.dataset.key;
         popup.innerHTML = `
           <div style="font-weight:var(--fw-medium);color:var(--c-text);">${d.n || ''}</div>
           <div>${d.mk || ''} / ${d.md || ''}</div>
@@ -1057,10 +1065,9 @@ function renderList() {
           <div>${d.tr || '-'}</div>
           ${d.op ? `<div style="color:var(--c-text-sub);">${d.op}</div>` : ''}
           <div style="color:var(--c-text-muted);font-size:var(--fs-2xs);margin-top:2px;">${spec}</div>`;
-        const rect = row.getBoundingClientRect();
         const parentRect = el.getBoundingClientRect();
-        popup.style.left = `${rect.left - parentRect.left + 85}px`;
-        popup.style.top = `${rect.bottom - parentRect.top + 2}px`;
+        popup.style.left = `${e.clientX - parentRect.left + 12}px`;
+        popup.style.top = `${e.clientY - parentRect.top + 12}px`;
         el.appendChild(popup);
       });
       row.addEventListener('mouseleave', () => {
