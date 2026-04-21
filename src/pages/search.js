@@ -210,7 +210,9 @@ export function mount() {
     const listHead = document.getElementById('srchListHead');
     if (listHead) {
       if (viewMode === 'excel') {
-        listHead.style.display = 'none';
+        listHead.style.display = '';
+        listHead.className = 'srch-panel-head';
+        listHead.innerHTML = `<span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${filteredProducts.length}대</span>`;
       } else {
         listHead.className = 'srch-panel-head';
         listHead.style.display = '';
