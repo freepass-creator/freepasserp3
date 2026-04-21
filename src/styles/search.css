@@ -5,6 +5,38 @@
     overflow: hidden;
   }
 
+  /* ── Excel View ── */
+  .srch-excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-2xs);
+    font-variant-numeric: tabular-nums;
+  }
+  .srch-excel-table th {
+    position: sticky;
+    top: 0;
+    background: var(--c-bg-sub);
+    padding: 4px 6px;
+    font-weight: var(--fw-medium);
+    color: var(--c-text-muted);
+    border-bottom: 1px solid var(--c-border);
+    text-align: left;
+    white-space: nowrap;
+  }
+  .srch-excel-table td {
+    padding: 4px 6px;
+    border-bottom: 1px solid var(--c-border-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+  }
+  .srch-excel-row { cursor: pointer; transition: background var(--dur); }
+  .srch-excel-row:hover { background: var(--c-bg-hover); }
+  .srch-excel-row.is-active { background: var(--c-bg-hover); }
+  .srch-excel-price { text-align: right; font-weight: var(--fw-medium); color: var(--c-accent); }
+  .srch.is-excel-mode .srch-resize { display: none; }
+
   /* .srch-panel-head — base styles unified in controls.css .panel-head group */
 
   /* ── Filter Panel (좌측) — 1/4 ── */

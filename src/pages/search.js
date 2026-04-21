@@ -20,8 +20,9 @@ let selected = new Set();
 let activeFilters = {};
 let selectedProductKey = null;
 const LIST_PERIODS = [36, 48, 60];
-let sortCol = null;  // '36' | '48' | '60' | null
-let sortDir = null;  // 'asc' | 'desc' | null
+let sortCol = null;
+let sortDir = null;
+let viewMode = 'card'; // 'card' | 'excel'
 
 const FILTERS = {
   rent: {
@@ -129,6 +130,7 @@ export function mount() {
           <span style="display:flex;align-items:center;gap:var(--sp-2);">
             <span>목록</span>
             <span class="srch-count" id="srchCount">0대</span>
+            <button class="btn btn-xs btn-outline" id="srchViewToggle" title="카드/엑셀 뷰 전환"><i class="ph ph-table"></i></button>
             <button class="btn btn-xs btn-outline" id="srchExcel" title="현재 목록 Excel 다운로드"><i class="ph ph-file-xls"></i> Excel</button>
             <button class="btn btn-xs btn-outline" id="srchPhotoZip" title="현재 목록 사진 ZIP 다운로드 (공급사/차량번호 폴더)"><i class="ph ph-file-zip"></i> 사진</button>
           </span>
@@ -187,6 +189,29 @@ export function mount() {
       console.error('[search] watchCollection(products) 콜백 오류', err);
       showToast('차량 목록을 갱신하지 못했습니다');
     }
+  });
+
+  // 뷰 전환
+  document.getElementById('srchViewToggle')?.addEventListener('click', () => {
+    viewMode = viewMode === 'card' ? 'excel' : 'card';
+    const container = document.querySelector('.srch');
+    const filterPanel = document.getElementById('srchFilterPanel');
+    const detailPanel = document.getElementById('srchDetail');
+    const toggleBtn = document.getElementById('srchViewToggle');
+    if (viewMode === 'excel') {
+      container?.classList.add('is-excel-mode');
+      filterPanel?.style.setProperty('display', 'none');
+      detailPanel?.style.setProperty('display', 'none');
+      toggleBtn.innerHTML = '<i class="ph ph-cards"></i>';
+      toggleBtn.title = '카드뷰로 전환';
+    } else {
+      container?.classList.remove('is-excel-mode');
+      filterPanel?.style.removeProperty('display');
+      detailPanel?.style.removeProperty('display');
+      toggleBtn.innerHTML = '<i class="ph ph-table"></i>';
+      toggleBtn.title = '엑셀뷰로 전환';
+    }
+    renderList();
   });
 
   // Text search
@@ -894,6 +919,39 @@ function renderList() {
   if (countEl) countEl.textContent = `${filteredProducts.length}대`;
 
   const PERIODS = [36, 48, 60];
+
+  if (viewMode === 'excel') {
+    el.innerHTML = `
+      <table class="srch-excel-table">
+        <thead><tr>
+          <th>공급사</th><th>차량번호</th><th>제조사</th><th>세부모델</th><th>연식</th><th>연료</th><th>주행</th><th>외장</th><th>상태</th>
+          <th>36개월</th><th>48개월</th><th>60개월</th>
+        </tr></thead>
+        <tbody>${filteredProducts.map(p => {
+          const price = p.price || {};
+          const r36 = Number(price['36']?.rent) || 0;
+          const r48 = Number(price['48']?.rent) || 0;
+          const r60 = Number(price['60']?.rent) || 0;
+          return `<tr class="srch-excel-row ${selectedProductKey === p._key ? 'is-active' : ''}" data-key="${p._key}">
+            <td>${p.provider_company_code || ''}</td>
+            <td>${p.car_number || ''}</td>
+            <td>${p.maker || ''}</td>
+            <td>${p.sub_model || p.model || ''}</td>
+            <td>${p.year || ''}</td>
+            <td>${p.fuel_type || ''}</td>
+            <td>${p.mileage ? Number(p.mileage).toLocaleString() : ''}</td>
+            <td>${p.ext_color || ''}</td>
+            <td>${p.vehicle_status || ''}</td>
+            <td class="srch-excel-price">${r36 ? fmtMoney(r36) : '-'}</td>
+            <td class="srch-excel-price">${r48 ? fmtMoney(r48) : '-'}</td>
+            <td class="srch-excel-price">${r60 ? fmtMoney(r60) : '-'}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>` || `<div class="srch-empty"><i class="ph ph-magnifying-glass"></i><p>조건에 맞는 차량이 없습니다</p></div>`;
+    bindListDelegation(el);
+    return;
+  }
+
   el.innerHTML = filteredProducts.map(p => {
     const price = p.price || {};
     const isActive = selectedProductKey === p._key;
