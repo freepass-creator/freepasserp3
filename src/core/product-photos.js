@@ -11,6 +11,24 @@
 // 서버 스크래핑이 필요한 URL (img src에 직접 박으면 안 되는 HTML 페이지)
 const NEEDS_SERVER_RE = /drive\.google\.com\/(drive\/folders\/|drive\/u\/\d+\/folders\/)|moderentcar\.co\.kr/;
 
+// 모바일 브라우저의 cross-origin 이미지 차단 이슈 우회용 프록시 대상 호스트
+const PROXY_HOSTS_RE = /(^|\.)(googleusercontent\.com|drive\.google\.com)$/;
+
+/** 외부 이미지 URL 을 /api/img 프록시로 감싸서 우리 오리진으로 서빙 —
+ *  Samsung Internet / Chrome Android 등에서 Drive/lh3 직접 로딩 실패 해결.
+ *  이미 프록시됐거나 같은 오리진이면 그대로 반환. */
+export function toProxiedImage(url) {
+  if (!url || typeof url !== 'string') return url;
+  if (url.startsWith('/api/img')) return url;               // 이미 프록시됨
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
+  try {
+    const u = new URL(url, (typeof location !== 'undefined' ? location.origin : 'https://x/'));
+    if (typeof location !== 'undefined' && u.origin === location.origin) return url;
+    if (!PROXY_HOSTS_RE.test(u.hostname)) return url;       // 화이트리스트 외 호스트는 그대로
+    return `/api/img?url=${encodeURIComponent(url)}`;
+  } catch { return url; }
+}
+
 /** URL의 "동일성 키" — Firebase Storage URL은 경로(o/...)만, 나머지는 쿼리스트링 제외한 origin+path
  *  같은 이미지인데 토큰만 다른 경우를 같은 것으로 인식하기 위함 */
 function dedupKey(url) {
@@ -68,9 +86,11 @@ export function productExternalImages(product) {
     .filter(u => !NEEDS_SERVER_RE.test(u));
 }
 
-/** 첫번째 이미지 URL 한 장 (목록 썸네일용) — 업로드 우선, 없으면 외부링크 */
+/** 첫번째 이미지 URL 한 장 (목록 썸네일용) — 업로드 우선, 없으면 외부링크.
+ *  모바일 호환 위해 외부 호스트는 자동으로 /api/img 프록시 URL 로 변환. */
 export function firstProductImage(product) {
-  return productImages(product)[0] || productExternalImages(product)[0] || '';
+  const raw = productImages(product)[0] || productExternalImages(product)[0] || '';
+  return raw ? toProxiedImage(raw) : '';
 }
 
 /** product.photo_link 중 서버 스크래핑이 필요한 URL 하나 반환 (없으면 '') */

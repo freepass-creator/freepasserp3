@@ -10,7 +10,7 @@
  * 서버(localhost:5200) 로 포워드.
  */
 
-const SESSION_CACHE_KEY = 'fp_drive_folder_cache_v2';
+const SESSION_CACHE_KEY = 'fp_drive_folder_cache_v3';  /* v3: /api/img 프록시 URL 전환 */
 const SESSION_CACHE_TTL = 60 * 60 * 1000;
 const MEMORY = new Map();
 
@@ -67,7 +67,18 @@ export function fetchDriveFolderImages(sourceUrl, size = SIZE_FULL) {
   const p = fetch(`/api/extract-photos?url=${encodeURIComponent(sourceUrl)}&size=${size}`)
     .then((r) => (r.ok ? r.json() : null))
     .then((j) => {
-      const urls = j && j.ok && Array.isArray(j.urls) ? j.urls : [];
+      const rawUrls = j && j.ok && Array.isArray(j.urls) ? j.urls : [];
+      // 외부 Drive URL 을 /api/img 프록시로 감싸 모바일 cross-origin 이슈 우회
+      const urls = rawUrls.map(u => {
+        if (!u || u.startsWith('/api/img')) return u;
+        try {
+          const host = new URL(u, location.origin).hostname;
+          if (/(^|\.)(googleusercontent\.com|drive\.google\.com)$/.test(host)) {
+            return `/api/img?url=${encodeURIComponent(u)}`;
+          }
+        } catch {}
+        return u;
+      });
       if (urls.length) {
         const next = loadSessionCache();
         next[cacheKey] = { ts: Date.now(), urls };
