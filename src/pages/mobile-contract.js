@@ -9,6 +9,7 @@ import { showToast } from '../core/toast.js';
 import { fmtWon } from '../core/format.js';
 import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { pushMobileView } from '../core/mobile-shell.js';
+import { filterByRole } from '../core/roles.js';
 
 /** 운전 가능 연령 — 기본 연령 + 하향 연령 포맷 */
 function formatDriverAge(pol) {
@@ -148,12 +149,7 @@ export function mount() {
 }
 
 function getVisible() {
-  const me = store.currentUser || {};
-  let list = [...(store.contracts || [])];
-  if (me.role === 'agent') list = list.filter(c => c.agent_uid === me.uid || c.agent_code === me.user_code);
-  else if (me.role === 'agent_admin') list = list.filter(c => c.agent_channel_code === (me.agent_channel_code || me.channel_code));
-  else if (me.role === 'provider') list = list.filter(c => c.provider_uid === me.uid || c.provider_company_code === me.company_code);
-  return list;
+  return filterByRole([...(store.contracts || [])], store.currentUser || {});
 }
 
 function renderList() {

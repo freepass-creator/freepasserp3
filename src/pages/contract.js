@@ -10,6 +10,7 @@ import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
 import { renderExcelTable } from '../core/excel-table.js';
+import { filterByRole } from '../core/roles.js';
 
 let unsubContracts = null;
 let allContracts = [];
@@ -139,16 +140,8 @@ function renderList() {
 
   let list = [...allContracts];
 
-  // 영업자: 본인 계약만 / 영업관리자: 본인 채널 전체 / 공급사: 본인 소속 계약만
-  const me = store.currentUser || {};
-  const myChannel = me.agent_channel_code || me.channel_code || '';
-  if (me.role === 'agent') {
-    list = list.filter(c => c.agent_uid === me.uid || c.agent_code === me.user_code);
-  } else if (me.role === 'agent_admin') {
-    list = list.filter(c => c.agent_channel_code === myChannel);
-  } else if (me.role === 'provider') {
-    list = list.filter(c => c.provider_uid === me.uid || c.provider_company_code === me.company_code);
-  }
+  // 역할별 가시성 — core/roles.js filterByRole 공통
+  list = filterByRole(list, store.currentUser || {});
 
   if (f === 'active') list = list.filter(c => c.contract_status !== '계약완료' && c.contract_status !== '계약취소');
   else if (f === 'done') list = list.filter(c => c.contract_status === '계약완료');

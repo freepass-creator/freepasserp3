@@ -1,7 +1,7 @@
 /**
  * 사이드바 메뉴 카운트 뱃지 — 미처리 작업 수 실시간 표시
  */
-import { store, subscribe, filterByRole } from './store.js';
+import { store, subscribe, filterCollectionByRole } from './store.js';
 import { SETTLEMENT_STATUS as SS, getSettlementStatus } from './settlement-status.js';
 
 function setBadge(id, n) {
@@ -21,7 +21,7 @@ function recompute() {
   if (!user) return;
 
   // 업무 소통: 안읽은 메시지 총 수 (역할별)
-  const rooms = filterByRole(store.rooms || [], 'rooms').filter(r => !r._deleted);
+  const rooms = filterCollectionByRole(store.rooms || [], 'rooms').filter(r => !r._deleted);
   const hiddenField = user.role === 'agent' ? 'hidden_for_agent' : user.role === 'provider' ? 'hidden_for_provider' : 'hidden_for_admin';
   const totalUnread = rooms.filter(r => !r[hiddenField]).reduce((sum, r) => {
     const n = user.role === 'agent' ? (r.unread_for_agent || 0)
@@ -32,7 +32,7 @@ function recompute() {
   setBadge('home', totalUnread);
 
   // 계약: 진행 중
-  const contracts = filterByRole(store.contracts || [], 'contracts');
+  const contracts = filterCollectionByRole(store.contracts || [], 'contracts');
   const activeContracts = contracts.filter(c => {
     const s = c.contract_status;
     return s && s !== '완료' && s !== '취소' && s !== '종료';
@@ -40,7 +40,7 @@ function recompute() {
   setBadge('contract', activeContracts);
 
   // 정산: 미정산
-  const settlements = filterByRole(store.settlements || [], 'settlements');
+  const settlements = filterCollectionByRole(store.settlements || [], 'settlements');
   // 정산대기 기본 + 구버전 '대기'·'진행'·'미정산' legacy 호환
   const pendingSettle = settlements.filter(s => {
     const st = getSettlementStatus(s);

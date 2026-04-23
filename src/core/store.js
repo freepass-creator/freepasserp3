@@ -55,10 +55,10 @@ export function getState(key) {
 }
 
 /**
- * Role-based data filter
- * admin: 전체, provider: 자기 공급사, agent: 자기 관련
+ * Role-based data filter — collection-name 기반 (메뉴 배지 집계용).
+ * 페이지 목록 필터는 core/roles.js 의 filterByRole(list, me) 사용.
  */
-export function filterByRole(data, collection) {
+export function filterCollectionByRole(data, collection) {
   const user = state.currentUser;
   if (!user || user.role === 'admin') return data;
 

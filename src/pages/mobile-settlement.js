@@ -22,6 +22,7 @@ function iSection(title, rowsHtml) {
   </section>`;
 }
 import { openBottomSheet } from '../core/mobile-shell.js';
+import { filterByRole } from '../core/roles.js';
 import {
   SETTLEMENT_STATUS as SS,
   SETTLEMENT_STATUSES_FULL,
@@ -88,13 +89,7 @@ export function mount() {
 }
 
 function getVisible() {
-  const me = store.currentUser || {};
-  const myChannelCode = me.agent_channel_code || me.channel_code || '';
-  let list = [...(store.settlements || [])];
-  if (me.role === 'agent') list = list.filter(s => s.agent_uid === me.uid || s.agent_code === me.user_code);
-  else if (me.role === 'agent_admin') list = list.filter(s => s.agent_channel_code === myChannelCode);
-  else if (me.role === 'provider') list = list.filter(s => s.provider_uid === me.uid || s.provider_company_code === me.company_code || s.partner_code === me.company_code);
-  return list;
+  return filterByRole([...(store.settlements || [])], store.currentUser || {});
 }
 
 function renderList() {

@@ -9,6 +9,7 @@ import { fieldView as ffv } from '../core/form-fields.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
 import { renderExcelTable } from '../core/excel-table.js';
+import { filterByRole } from '../core/roles.js';
 import {
   SETTLEMENT_STATUS as SS,
   SETTLEMENT_STATUSES_FULL,
@@ -117,16 +118,8 @@ function renderList() {
 
   let list = [...allSettlements];
 
-  // 영업자: 본인 정산만 / 영업관리자: 본인 채널 전체 / 공급사: 본인 소속 정산만
-  const me = store.currentUser || {};
-  const myChannel = me.agent_channel_code || me.channel_code || '';
-  if (me.role === 'agent') {
-    list = list.filter(s => s.agent_uid === me.uid || s.agent_code === me.user_code);
-  } else if (me.role === 'agent_admin') {
-    list = list.filter(s => s.agent_channel_code === myChannel);
-  } else if (me.role === 'provider') {
-    list = list.filter(s => s.provider_uid === me.uid || s.provider_company_code === me.company_code || s.partner_code === me.company_code);
-  }
+  // 역할별 가시성 — core/roles.js filterByRole 공통
+  list = filterByRole(list, store.currentUser || {});
 
   if (f === 'pending') list = list.filter(s => getSettlementStatus(s) !== SS.DONE);
   else if (f === 'done') list = list.filter(s => getSettlementStatus(s) === SS.DONE);
