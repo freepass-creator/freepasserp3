@@ -311,19 +311,26 @@ function bindChatInput(roomId, room) {
   const send = async () => {
     const text = input.value.trim();
     if (!text) return;
-    input.value = '';
     const user = store.currentUser;
+    if (!user?.uid || !user?.role) { showToast('로그인 필요', 'error'); return; }
+    input.value = '';  // 낙관적 클리어 — 실패 시 복구
     // 개인 식별자만 허용 — company_code 폴백 금지 (SP999 같은 공유 임시채널 노출 방지)
     const senderCode = user.user_code || '';
-    await pushRecord(`messages/${roomId}`, {
-      text, sender_uid: user.uid, sender_role: user.role,
-      sender_code: senderCode, sender_name: user.name || '', created_at: Date.now(),
-    });
-    const cur = (store.rooms || []).find(r => r._key === roomId) || {};
-    const upd = { last_message: text, last_message_at: Date.now(), last_sender_role: user.role, last_sender_uid: user.uid, last_sender_code: senderCode };
-    if (user.role === 'agent' || user.role === 'agent_admin') upd.unread_for_provider = (cur.unread_for_provider || 0) + 1;
-    else if (user.role === 'provider') upd.unread_for_agent = (cur.unread_for_agent || 0) + 1;
-    await updateRecord(`rooms/${roomId}`, upd);
+    try {
+      await pushRecord(`messages/${roomId}`, {
+        text, sender_uid: user.uid, sender_role: user.role,
+        sender_code: senderCode, sender_name: user.name || '', created_at: Date.now(),
+      });
+      const cur = (store.rooms || []).find(r => r._key === roomId) || {};
+      const upd = { last_message: text, last_message_at: Date.now(), last_sender_role: user.role, last_sender_uid: user.uid, last_sender_code: senderCode };
+      if (user.role === 'agent' || user.role === 'agent_admin') upd.unread_for_provider = (cur.unread_for_provider || 0) + 1;
+      else if (user.role === 'provider') upd.unread_for_agent = (cur.unread_for_agent || 0) + 1;
+      await updateRecord(`rooms/${roomId}`, upd).catch(err => console.warn('[chat] room update 실패 (메시지는 전송됨):', err));
+    } catch (err) {
+      console.error('[chat] 전송 실패:', err);
+      input.value = text; // 입력 복구
+      showToast('전송 실패 — 다시 시도하세요', 'error');
+    }
   };
 
   sendBtn?.addEventListener('click', send);

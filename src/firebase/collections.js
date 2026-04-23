@@ -181,10 +181,12 @@ export async function saveUserProfile(uid, profile) {
   });
 }
 
-/** 가입 순 전역 시퀀스 — 'U0001' 포맷 (4자리), runTransaction 으로 원자적 증가 */
+/** 가입 순 전역 시퀀스 — 'U0001' 포맷 (4자리), runTransaction 으로 원자적 증가
+ *  트랜잭션 실패 시 throw — 중복 위험한 fallback 대신 호출자가 재시도하게 함 */
 async function allocateUserCode() {
   const seqRef = ref(db, 'counters/user_code_seq');
   const result = await runTransaction(seqRef, (cur) => (cur || 0) + 1);
-  const seq = result.committed ? result.snapshot.val() : Date.now() % 10000; // 실패 fallback
+  if (!result.committed) throw new Error('user_code 시퀀스 발급 실패 — 다시 시도하세요');
+  const seq = result.snapshot.val();
   return `U${String(seq).padStart(4, '0')}`;
 }

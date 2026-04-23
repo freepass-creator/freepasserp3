@@ -281,22 +281,32 @@ function bindContractView(view, c) {
     const key = cell.dataset.key;
     if (!key) return;
     const cur = c[key] === true || c[key] === 'yes';
-    await updateRecord(`contracts/${c.contract_code}`, { [key]: !cur });
-    c[key] = !cur;
-    showToast(cur ? '해제' : '완료');
-    const panel = view.querySelector('[data-panel="progress"]');
-    panel.innerHTML = renderProgressPanel(c);
+    try {
+      await updateRecord(`contracts/${c.contract_code}`, { [key]: !cur });
+      c[key] = !cur;
+      showToast(cur ? '해제' : '완료');
+      const panel = view.querySelector('[data-panel="progress"]');
+      panel.innerHTML = renderProgressPanel(c);
+    } catch (err) {
+      console.error('[contract.step]', err);
+      showToast('저장 실패', 'error');
+    }
   });
 
   // 드롭다운 선택
   view.querySelector('[data-panel="progress"]').addEventListener('change', async (e) => {
     const sel = e.target.closest('.ct-step-select');
     if (!sel) return;
-    await updateRecord(`contracts/${c.contract_code}`, { [sel.dataset.key]: sel.value });
-    c[sel.dataset.key] = sel.value;
-    showToast(sel.value || '해제');
-    const panel = view.querySelector('[data-panel="progress"]');
-    panel.innerHTML = renderProgressPanel(c);
+    try {
+      await updateRecord(`contracts/${c.contract_code}`, { [sel.dataset.key]: sel.value });
+      c[sel.dataset.key] = sel.value;
+      showToast(sel.value || '해제');
+      const panel = view.querySelector('[data-panel="progress"]');
+      panel.innerHTML = renderProgressPanel(c);
+    } catch (err) {
+      console.error('[contract.step-select]', err);
+      showToast('저장 실패', 'error');
+    }
   });
 
   // 기간 칩 선택 → rent_month 업데이트 + 상품 price 에서 대여료/보증금 자동 반영
@@ -313,11 +323,16 @@ function bindContractView(view, c) {
     const updates = { rent_month: m };
     if (rent) updates.rent_amount = rent;
     if (deposit) updates.deposit_amount = deposit;
-    await updateRecord(`contracts/${c.contract_code}`, updates);
-    Object.assign(c, updates);
-    showToast(`${m}개월${rent ? ` · ${rent.toLocaleString()}원` : ''}`);
-    const panel = view.querySelector('[data-panel="progress"]');
-    panel.innerHTML = renderProgressPanel(c);
+    try {
+      await updateRecord(`contracts/${c.contract_code}`, updates);
+      Object.assign(c, updates);
+      showToast(`${m}M${rent ? ` · ${rent.toLocaleString()}원` : ''}`);
+      const panel = view.querySelector('[data-panel="progress"]');
+      panel.innerHTML = renderProgressPanel(c);
+    } catch (err) {
+      console.error('[contract.period]', err);
+      showToast('저장 실패', 'error');
+    }
   });
 
   // 대여료 / 보증금 직접 수정 (blur 에 저장)
@@ -364,11 +379,16 @@ function bindContractView(view, c) {
     // 면허증 삭제
     if (e.target.closest('#ctLicenseDel')) {
       if (!confirm('운전면허증을 삭제하시겠습니까?')) return;
-      await updateRecord(`contracts/${c.contract_code}`, { customer_license_url: '', customer_license_at: 0 });
-      c.customer_license_url = '';
-      c.customer_license_at = 0;
-      refreshCustomer();
-      showToast('면허증 삭제됨');
+      try {
+        await updateRecord(`contracts/${c.contract_code}`, { customer_license_url: '', customer_license_at: 0 });
+        c.customer_license_url = '';
+        c.customer_license_at = 0;
+        refreshCustomer();
+        showToast('면허증 삭제됨');
+      } catch (err) {
+        console.error('[contract.license-del]', err);
+        showToast('삭제 실패', 'error');
+      }
       return;
     }
     // 일반 첨부서류 추가
@@ -381,11 +401,16 @@ function bindContractView(view, c) {
     if (delBtn) {
       if (!confirm('첨부 파일을 삭제하시겠습니까?')) return;
       const key = delBtn.dataset.docDel;
-      await updateRecord(`contracts/${c.contract_code}/customer_docs/${key}`, { _deleted: true });
-      c.customer_docs = c.customer_docs || {};
-      if (c.customer_docs[key]) c.customer_docs[key]._deleted = true;
-      refreshCustomer();
-      showToast('삭제됨');
+      try {
+        await updateRecord(`contracts/${c.contract_code}/customer_docs/${key}`, { _deleted: true });
+        c.customer_docs = c.customer_docs || {};
+        if (c.customer_docs[key]) c.customer_docs[key]._deleted = true;
+        refreshCustomer();
+        showToast('삭제됨');
+      } catch (err) {
+        console.error('[contract.doc-del]', err);
+        showToast('삭제 실패', 'error');
+      }
     }
   });
 
