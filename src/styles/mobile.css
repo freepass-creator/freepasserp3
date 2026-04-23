@@ -232,6 +232,40 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* ── Onboarding (앱 설치 + 알림 유도 바텀시트) ── */
+  .onb-lead {
+    font-size: var(--fs-sm);
+    color: var(--c-text-sub);
+    padding: var(--sp-2) 0 var(--sp-3);
+  }
+  .onb-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .onb-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+    background: var(--c-bg-sub);
+    border-radius: var(--ctrl-r);
+  }
+  .onb-item.is-muted { opacity: 0.6; }
+  .onb-item-ico {
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--c-surface);
+    color: var(--c-accent);
+    border-radius: 50%;
+    font-size: var(--fs-lg);
+  }
+  .onb-item-body { flex: 1; min-width: 0; }
+  .onb-item-title { font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--c-text); }
+  .onb-item-desc {
+    margin-top: 2px;
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+    line-height: 1.4;
+  }
+
   /* ── Chat 아바타 (room-item 내부에서 재활용) ── */
   .m-chat-avatar {
     width: 44px;

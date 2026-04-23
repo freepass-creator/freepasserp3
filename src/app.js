@@ -643,7 +643,8 @@ async function init() {
     import('./core/menu-badges.js').then(m => m.initMenuBadges());
     import('./core/car-models.js').then(m => m.subscribeCarModels());
     import('./firebase/messaging.js').then(m => m.onForegroundMessage(() => {}));
-    if (Notification.permission === 'default') Notification.requestPermission();
+    // PWA 설치 + 알림 권한 유도 (모바일, 설명 포함 시트) — 기존의 묵시적 Notification.requestPermission() 대체
+    import('./core/onboard-prompt.js').then(m => m.checkOnboard());
   } else {
     renderLogin();
   }
