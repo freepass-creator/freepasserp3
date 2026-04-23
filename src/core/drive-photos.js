@@ -24,15 +24,19 @@ function saveSessionCache(obj) {
   try { sessionStorage.setItem(SESSION_CACHE_KEY, JSON.stringify(obj)); } catch {}
 }
 
+// isomorphic — api/extract-photos.js (서버 serverless) 도 동일 로직 사용
 export function extractDriveFolderId(value) {
   if (!value) return '';
   const s = String(value).trim();
-  let m = s.match(/\/folders\/([a-zA-Z0-9_-]+)/);
-  if (m) return m[1];
-  m = s.match(/\/drive\/.*?\/([a-zA-Z0-9_-]{20,})/);
-  if (m) return m[1];
-  if (/^[a-zA-Z0-9_-]{20,}$/.test(s)) return s;
-  return '';
+  const patterns = [
+    /\/folders\/([a-zA-Z0-9_-]+)/,
+    /\/drive\/.*?\/([a-zA-Z0-9_-]{20,})/,
+  ];
+  for (const re of patterns) {
+    const m = s.match(re);
+    if (m) return m[1];
+  }
+  return /^[a-zA-Z0-9_-]{20,}$/.test(s) ? s : '';
 }
 
 export function isDriveFolderLink(value) {

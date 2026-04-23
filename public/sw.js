@@ -7,7 +7,7 @@
  *  - 폰트: cache-first (영구)
  *  - API/Firebase: 캐시 안 함
  */
-const VERSION = 'v13';
+const VERSION = 'v23';
 const CACHE_SHELL = `freepass-shell-${VERSION}`;
 const CACHE_ASSETS = `freepass-assets-${VERSION}`;
 const CACHE_IMAGES = `freepass-images-${VERSION}`;

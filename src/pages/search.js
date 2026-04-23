@@ -4,7 +4,7 @@
 import { store } from '../core/store.js';
 import { watchCollection, fetchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
-import { fmtMoney } from '../core/format.js';
+import { fmtMoney, trimMinusSub } from '../core/format.js';
 import { setBreadcrumbTail, setBreadcrumbBrief } from '../core/breadcrumb.js';
 import { openContextMenu } from '../core/context-menu.js';
 import { navigate } from '../core/router.js';
@@ -1196,10 +1196,7 @@ function renderList() {
     // 메인: 세부모델 + 트림 (한글/영문/숫자 단어 단위로 중복 제거 — 띄어쓰기·대소문자 무관)
     const subModel = (p.sub_model || '').trim();
     const trimRaw  = (p.trim_name || p.trim || '').trim();
-    const WORD_RE = /[A-Za-z]+|[0-9]+(?:\.[0-9]+)?|[\uAC00-\uD7AF]+/g;
-    const subTokens = new Set((subModel.match(WORD_RE) || []).map(t => t.toLowerCase()));
-    const trimTokens = trimRaw.match(WORD_RE) || [];
-    const trimClean = trimTokens.filter(t => !subTokens.has(t.toLowerCase())).join(' ');
+    const trimClean = trimMinusSub(subModel, trimRaw);
     const title = [subModel, trimClean].filter(Boolean).join(' ');
 
     // 뱃지 — 공용 헬퍼

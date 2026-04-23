@@ -2,6 +2,20 @@
  * 공통 포맷/HTML 유틸
  */
 
+/** 세부모델에 이미 포함된 토큰을 트림에서 제거해서 반환.
+ *  예: sub="아반떼 (CN7)", trim="아반떼 CN7 인스퍼레이션" → "인스퍼레이션"
+ *  한글/영문/숫자 단위로 토큰화 후 대소문자 무시 비교. */
+const _WORD_RE = /[A-Za-z]+|[0-9]+(?:\.[0-9]+)?|[가-힯]+/g;
+export function trimMinusSub(sub, trim) {
+  const raw = String(trim || '').trim();
+  if (!raw) return '';
+  if (!sub) return raw;
+  const subSet = new Set((String(sub).match(_WORD_RE) || []).map(t => t.toLowerCase()));
+  const tokens = raw.match(_WORD_RE) || [];
+  const out = tokens.filter(t => !subSet.has(t.toLowerCase())).join(' ');
+  return out;
+}
+
 /** 금액 → 만원 단위 (예: 450000 → "45만") */
 export function fmtMoney(v) {
   if (!v) return '-';

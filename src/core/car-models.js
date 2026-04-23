@@ -33,29 +33,97 @@ export function unsubscribeCarModels() {
 
 /* ── 공용 조회 헬퍼 ── */
 
-/** 제조사 unique 목록 (정렬) */
-export function getMakers() {
-  const s = new Set();
-  for (const m of store.carModels || []) if (m.maker) s.add(m.maker);
-  return [...s].sort();
+/** products 기준 보유 카운트 계산 — 제조사별 · 제조사+모델별 */
+function productCounts() {
+  const byMaker = new Map();
+  const byMakerModel = new Map();
+  for (const p of store.products || []) {
+    if (p._deleted || p.status === 'deleted') continue;
+    const mk = p.maker || '';
+    const md = p.model || '';
+    if (mk) byMaker.set(mk, (byMaker.get(mk) || 0) + 1);
+    if (mk && md) byMakerModel.set(`${mk}|${md}`, (byMakerModel.get(`${mk}|${md}`) || 0) + 1);
+  }
+  return { byMaker, byMakerModel };
 }
 
-/** 주어진 제조사의 모델 unique 목록 (정렬) */
+/** 제조사/모델의 엔카 인기도 합계 — carModels 의 popularity 집계
+ *  popularity: 엔카 매물 수 (세대별), model_popularity: 모델그룹 전체 매물 수 */
+function popularityIndex() {
+  const byMaker = new Map();
+  const byMakerModel = new Map();
+  for (const m of store.carModels || []) {
+    if (m.archived) continue;
+    const mk = m.maker;
+    const md = m.model;
+    const pop = Number(m.model_popularity || m.popularity || 0);
+    if (mk && pop) byMaker.set(mk, Math.max(byMaker.get(mk) || 0, pop));
+    if (mk && md && pop) byMakerModel.set(`${mk}|${md}`, Math.max(byMakerModel.get(`${mk}|${md}`) || 0, pop));
+  }
+  return { byMaker, byMakerModel };
+}
+
+/** 제조사 목록 — 보유대수 → 엔카 인기도 → 가나다 (JPKerp2 asset-create 준용) */
+export function getMakers() {
+  const { byMaker: countByMaker } = productCounts();
+  const { byMaker: popByMaker } = popularityIndex();
+  const s = new Set();
+  for (const m of store.carModels || []) if (m.maker && !m.archived) s.add(m.maker);
+  return [...s].sort((a, b) => {
+    const ca = countByMaker.get(a) || 0;
+    const cb = countByMaker.get(b) || 0;
+    if (cb !== ca) return cb - ca;                        // 1순위: 보유 많은 순
+    const pa = popByMaker.get(a) || 0;
+    const pb = popByMaker.get(b) || 0;
+    if (pb !== pa) return pb - pa;                        // 2순위: 엔카 인기순
+    return a.localeCompare(b, 'ko');                      // 3순위: 가나다
+  });
+}
+
+/** 제조사의 모델 목록 — 보유대수 → 엔카 모델 인기도 → 가나다 */
 export function getModelsByMaker(maker) {
   if (!maker) return [];
-  const s = new Set();
-  for (const m of store.carModels || []) if (m.maker === maker && m.model) s.add(m.model);
-  return [...s].sort();
-}
-
-/** (제조사, 모델)로 세부모델 unique 목록 (정렬) */
-export function getSubModels(maker, model) {
-  if (!maker || !model) return [];
+  const { byMakerModel: countByMM } = productCounts();
+  const { byMakerModel: popByMM } = popularityIndex();
   const s = new Set();
   for (const m of store.carModels || []) {
-    if (m.maker === maker && m.model === model && m.sub_model) s.add(m.sub_model);
+    if (m.maker === maker && m.model && !m.archived) s.add(m.model);
   }
-  return [...s].sort();
+  return [...s].sort((a, b) => {
+    const ca = countByMM.get(`${maker}|${a}`) || 0;
+    const cb = countByMM.get(`${maker}|${b}`) || 0;
+    if (cb !== ca) return cb - ca;
+    const pa = popByMM.get(`${maker}|${a}`) || 0;
+    const pb = popByMM.get(`${maker}|${b}`) || 0;
+    if (pb !== pa) return pb - pa;
+    return a.localeCompare(b, 'ko');
+  });
+}
+
+/** (제조사, 모델)의 세부모델 목록 — 연식 내림차순 (최신 먼저) */
+export function getSubModels(maker, model) {
+  if (!maker || !model) return [];
+  const rows = (store.carModels || []).filter(m =>
+    m.maker === maker && m.model === model && m.sub_model && !m.archived
+  );
+  rows.sort((a, b) => {
+    // production_start ("YYYY-MM") 우선, 없으면 year_start ("YYYY"→"YYYY-01"), 그래도 없으면 이름
+    const pa = a.production_start || (a.year_start ? `${a.year_start}-01` : '');
+    const pb = b.production_start || (b.year_start ? `${b.year_start}-01` : '');
+    if (pa && pb && pa !== pb) return pb.localeCompare(pa);   // 최신 먼저
+    if (pa && !pb) return -1;
+    if (!pa && pb) return 1;
+    return (a.sub_model || '').localeCompare(b.sub_model || '', 'ko');
+  });
+  // 중복 sub_model 제거 (같은 세부모델이 여러 레코드에 있을 경우)
+  const seen = new Set();
+  const out = [];
+  for (const r of rows) {
+    if (seen.has(r.sub_model)) continue;
+    seen.add(r.sub_model);
+    out.push(r.sub_model);
+  }
+  return out;
 }
 
 /** (제조사, 모델, 세부모델)의 트림 unique 목록 (정렬) */

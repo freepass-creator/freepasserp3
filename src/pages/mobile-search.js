@@ -9,7 +9,7 @@
 import { store } from '../core/store.js';
 import { watchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
-import { fmtMoney } from '../core/format.js';
+import { fmtMoney, trimMinusSub } from '../core/format.js';
 import { firstProductImage, supportedDriveSource } from '../core/product-photos.js';
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
@@ -381,13 +381,9 @@ function renderCard(p) {
     if (r > 0) { bestMonth = m; bestRent = r; bestDep = Number(v.deposit) || 0; break; }
   }
 
-  // 세부모델 + 트림 (중복 토큰 제거)
+  // 세부모델 + 트림 (중복 토큰 제거 — core/format.js 공용 유틸)
   const subModel = (p.sub_model || '').trim();
-  const trimRaw  = (p.trim_name || p.trim || '').trim();
-  const WORD_RE = /[A-Za-z]+|[0-9]+(?:\.[0-9]+)?|[가-힯]+/g;
-  const subTokens = new Set((subModel.match(WORD_RE) || []).map(t => t.toLowerCase()));
-  const trimTokens = trimRaw.match(WORD_RE) || [];
-  const trimClean = trimTokens.filter(t => !subTokens.has(t.toLowerCase())).join(' ');
+  const trimClean = trimMinusSub(subModel, p.trim_name || p.trim);
   const modelLine = [subModel || p.model || '차량', trimClean].filter(Boolean).join(' ');
 
   // 메인 (강조) — 월대여료 · 보증금 · 대여기간 + [차량상태][상품구분] 뱃지 2개

@@ -23,39 +23,50 @@ export function isMobile() {
 }
 
 /** 햅틱 피드백 — 사용자 설정 존중 (localStorage fp.haptic === 'off' 면 비활성)
- *  ⚠️ iOS Safari 는 navigator.vibrate 미지원 — iPhone 에선 전혀 울리지 않음 (브라우저 제약) */
+ *  ⚠️ iOS Safari 는 navigator.vibrate 미지원 — iPhone 에선 울리지 않음 (브라우저 제약)
+ *  숫자 단위: ms. 한 줄 계층 = 가벼운 탭 / 확정 액션 / 큰 액션. 40ms 이하가 "타격감", 그 이상은 "진동" 느낌. */
+const HAPTIC_PATTERNS = {
+  light:   12,
+  medium:  25,
+  heavy:   45,
+  toggle:  [8, 40, 8],
+  success: [15, 50, 20],
+  error:   [40, 40, 40],
+};
+
+let _lastHapticAt = 0;
 export function haptic(type = 'light') {
   if (localStorage.getItem('fp.haptic') === 'off') return;
   if (!navigator.vibrate) return;
-  const patterns = {
-    light:   12,           // 일반 탭 (버튼/칩/탭바) — 타격감 있게
-    medium:  25,           // 중요 액션 (시트 열기/카드 진입)
-    heavy:   45,           // 강한 확인 (계약 완료/삭제)
-    toggle:  [8, 40, 8],   // 토글 on/off
-    success: [15, 50, 20], // 성공 피드백
-    error:   [40, 40, 40], // 오류 — 뚜렷하게
-  };
-  try { navigator.vibrate(patterns[type] ?? 12); } catch {}
+  // rate limit — 30ms 이내 연속 탭은 드롭 (Android 드라이버 thrash 방지)
+  const now = Date.now();
+  if (now - _lastHapticAt < 30) return;
+  _lastHapticAt = now;
+  try { navigator.vibrate(HAPTIC_PATTERNS[type] ?? HAPTIC_PATTERNS.light); } catch {}
 }
 
-/** 전역 버튼 탭 햅틱 — 앱 부팅 시 한 번 호출하면 모든 버튼/칩/m-탭에 자동 적용 */
-let _globalHapticBound = false;
+// 전역 버튼 탭 햅틱 — 셀렉터는 mobile.css 의 클래스 규격과 동기화
+const HAPTIC_TAP_SELECTORS = [
+  'button', '.btn', '.chip', '[role="button"]',
+  '.m-tab-item', '.m-info-row', '.m-card',
+  '.m-sheet-close', '.m-topbar-back', '.m-topbar-action', '.m-fab',
+].join(', ');
+
+/** 전역 버튼 탭 햅틱 — 앱 부팅 시 한 번 호출하면 모든 버튼/칩/m-탭에 자동 적용.
+ *  HMR 안전: 핸들러 ref 를 window 에 저장해 재바인딩 시 기존 것 제거. */
 export function bindGlobalHaptic() {
-  if (_globalHapticBound) return;
-  _globalHapticBound = true;
-  document.addEventListener('pointerdown', (e) => {
-    const el = e.target.closest(
-      'button, .btn, .chip, [role="button"], .m-tab-item, .m-info-row, .m-card, .m-sheet-close, .m-topbar-back, .m-topbar-action, .m-fab'
-    );
-    if (!el) return;
-    if (el.disabled) return;
-    // 강한 액션(danger·primary 대형)은 medium, 나머지 light
-    if (el.classList.contains('btn-danger') || el.classList.contains('btn-primary')) {
-      haptic('medium');
-    } else {
-      haptic('light');
-    }
-  }, { passive: true, capture: true });
+  const SLOT = '__fpHapticHandler';
+  if (window[SLOT]) {
+    document.removeEventListener('pointerdown', window[SLOT], { capture: true });
+  }
+  const handler = (e) => {
+    const el = e.target.closest(HAPTIC_TAP_SELECTORS);
+    if (!el || el.disabled) return;
+    const strong = el.classList.contains('btn-danger') || el.classList.contains('btn-primary');
+    haptic(strong ? 'medium' : 'light');
+  };
+  window[SLOT] = handler;
+  document.addEventListener('pointerdown', handler, { passive: true, capture: true });
 }
 
 /** 모바일 뷰포트 변경 감지 (debounced) */

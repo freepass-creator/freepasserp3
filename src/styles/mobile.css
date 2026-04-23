@@ -27,13 +27,7 @@
      Mobile Typography System (Toss·당근 톤)
      모바일 전용 토큰 재정의 + 텍스트 역할 클래스
      ────────────────────────────────────────── */
-  .m-shell {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    overflow: hidden;
-    background: var(--c-bg);
-
+  .m-shell-page {
     /* 스케일 +1px ~ +2px — 웹 대비 모바일 가독성 */
     --fs-2xs:  11px;
     --fs-xs:   12px;
@@ -65,14 +59,14 @@
      meta   12 / 500  — 메타 (시간·라벨)
      cap    11 / 500  — 캡션 (아주 작은 라벨)
   */
-  .m-shell .t-hero  { font-size: var(--fs-2xl); font-weight: var(--fw-heavy);    letter-spacing: -0.02em; }
-  .m-shell .t-page  { font-size: var(--fs-xl);  font-weight: var(--fw-heavy);    letter-spacing: -0.02em; }
-  .m-shell .t-sect  { font-size: var(--fs-lg);  font-weight: var(--fw-heavy);    letter-spacing: -0.015em; }
-  .m-shell .t-title { font-size: var(--fs-md);  font-weight: var(--fw-semibold); letter-spacing: -0.01em; }
-  .m-shell .t-body  { font-size: var(--fs-base); font-weight: var(--fw-normal); }
-  .m-shell .t-sub   { font-size: var(--fs-sm);  font-weight: var(--fw-medium);   color: var(--c-text-sub); }
-  .m-shell .t-meta  { font-size: var(--fs-xs);  font-weight: var(--fw-medium);   color: var(--c-text-muted); }
-  .m-shell .t-cap   { font-size: var(--fs-2xs); font-weight: var(--fw-medium);   color: var(--c-text-muted); }
+  .m-shell-page .t-hero  { font-size: var(--fs-2xl); font-weight: var(--fw-heavy);    letter-spacing: -0.02em; }
+  .m-shell-page .t-page  { font-size: var(--fs-xl);  font-weight: var(--fw-heavy);    letter-spacing: -0.02em; }
+  .m-shell-page .t-sect  { font-size: var(--fs-lg);  font-weight: var(--fw-heavy);    letter-spacing: -0.015em; }
+  .m-shell-page .t-title { font-size: var(--fs-md);  font-weight: var(--fw-semibold); letter-spacing: -0.01em; }
+  .m-shell-page .t-body  { font-size: var(--fs-base); font-weight: var(--fw-normal); }
+  .m-shell-page .t-sub   { font-size: var(--fs-sm);  font-weight: var(--fw-medium);   color: var(--c-text-sub); }
+  .m-shell-page .t-meta  { font-size: var(--fs-xs);  font-weight: var(--fw-medium);   color: var(--c-text-muted); }
+  .m-shell-page .t-cap   { font-size: var(--fs-2xs); font-weight: var(--fw-medium);   color: var(--c-text-muted); }
   .m-shell .t-num   { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }
 
   /* ── Top Bar ── */

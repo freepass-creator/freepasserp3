@@ -5,7 +5,7 @@ import { store } from '../core/store.js';
 import { watchCollection, updateRecord, setRecord, softDelete } from '../firebase/db.js';
 import { uploadImage } from '../firebase/storage-helper.js';
 import { showToast } from '../core/toast.js';
-import { empty } from '../core/format.js';
+import { empty, trimMinusSub } from '../core/format.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
 import { openContextMenu } from '../core/context-menu.js';
@@ -366,7 +366,7 @@ function renderList() {
         activeKey = p._key;
         loadAll(p._key);
         const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
-        const name = [p.maker, p.sub_model, p.trim_name || p.trim].filter(Boolean).join(' ');
+        const name = [p.maker, p.sub_model, trimMinusSub(p.sub_model, p.trim_name || p.trim)].filter(Boolean).join(' ');
         setBreadcrumbTail({ icon: 'ph ph-car-simple', label: name || p.car_number || '차량', sub: p.car_number || '' });
       },
       onContextMenu: (p, e) => {
@@ -398,7 +398,8 @@ function renderListCards(el, list) {
   el.innerHTML = list.map(p => {
     const thumb = firstProductImage(p);
     const driveFolderUrl = !thumb ? supportedDriveSource(p) : '';
-    const title = [p.sub_model, p.trim_name || p.trim].filter(v => v && v !== '-').join(' > ') || p.model || '-';
+    const _trim = trimMinusSub(p.sub_model, p.trim_name || p.trim);
+    const title = [p.sub_model, _trim].filter(v => v && v !== '-').join(' > ') || p.model || '-';
     const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
     const sub = [
       p.provider_company_code,
@@ -444,7 +445,7 @@ function bindListEvents(el) {
     const p = allProducts.find(x => x._key === item.dataset.key);
     if (p) {
       const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
-      const name = [p.maker, p.sub_model, p.trim_name || p.trim].filter(Boolean).join(' ');
+      const name = [p.maker, p.sub_model, trimMinusSub(p.sub_model, p.trim_name || p.trim)].filter(Boolean).join(' ');
       setBreadcrumbTail({ icon: 'ph ph-car-simple', label: name || p.car_number || '차량', sub: p.car_number || '' });
     }
   });
@@ -513,12 +514,14 @@ async function registerCarModelStub(maker, model, sub_model) {
 }
 
 /** 차종 마스터(car_models) 우선, 없으면 allProducts에서 유도 (이행기 fallback) */
+/* picker 옵션 — 차종 마스터 우선, 폴백으로 products 에서 추출.
+ *  정렬: 제조사·모델 → 보유대수 내림차순, 세부모델 → 연식 내림차순 (car-models.js) */
 function pickerMakers() {
   const fromMaster = getMakers();
   if (fromMaster.length) return fromMaster;
   const s = new Set();
   for (const p of allProducts) if (p.maker) s.add(p.maker.trim());
-  return [...s].filter(Boolean).sort();
+  return [...s].filter(Boolean).sort((a, b) => a.localeCompare(b, 'ko'));
 }
 function pickerModels(maker) {
   if (!maker) return [];
@@ -526,7 +529,7 @@ function pickerModels(maker) {
   if (fromMaster.length) return fromMaster;
   const s = new Set();
   for (const p of allProducts) if (p.maker === maker && p.model) s.add(p.model.trim());
-  return [...s].filter(Boolean).sort();
+  return [...s].filter(Boolean).sort((a, b) => a.localeCompare(b, 'ko'));
 }
 function pickerSubs(maker, model) {
   if (!maker || !model) return [];
@@ -534,10 +537,25 @@ function pickerSubs(maker, model) {
   if (fromMaster.length) return fromMaster;
   const s = new Set();
   for (const p of allProducts) if (p.maker === maker && p.model === model && p.sub_model) s.add(p.sub_model.trim());
-  return [...s].filter(Boolean).sort();
+  return [...s].filter(Boolean).sort((a, b) => a.localeCompare(b, 'ko'));
 }
 
-/** 제조사·모델·세부모델 연결 드롭다운 — bindAutoSave 가 아니라 bindPicker 가 직접 제어 */
+/** 제조사별/모델별 상품 보유수 — 드롭다운에 (N) 표시 */
+function pickerCounts() {
+  const byMaker = new Map();
+  const byMakerModel = new Map();
+  for (const p of allProducts) {
+    if (p._deleted || p.status === 'deleted') continue;
+    const mk = p.maker || '';
+    const md = p.model || '';
+    if (mk) byMaker.set(mk, (byMaker.get(mk) || 0) + 1);
+    if (mk && md) byMakerModel.set(`${mk}|${md}`, (byMakerModel.get(`${mk}|${md}`) || 0) + 1);
+  }
+  return { byMaker, byMakerModel };
+}
+
+/** 제조사·모델·세부모델 연결 드롭다운 — bindAutoSave 가 아니라 bindPicker 가 직접 제어
+ *  정렬: 제조사·모델 → 보유대수 순 (ex: "현대 (42)"), 세부모델 → 최신 연식 순 */
 function renderPicker(p) {
   const curMk = p.maker || '';
   const curMd = p.model || '';
@@ -545,11 +563,23 @@ function renderPicker(p) {
   const makers = pickerMakers();
   const models = pickerModels(curMk);
   const subs = pickerSubs(curMk, curMd);
+  const { byMaker, byMakerModel } = pickerCounts();
   const isAdmin = store.currentUser?.role === 'admin';
+
+  const labelOf = (field, o) => {
+    if (field === 'maker') {
+      const c = byMaker.get(o) || 0;
+      return c > 0 ? `${o} (${c})` : o;
+    }
+    if (field === 'model') {
+      const c = byMakerModel.get(`${curMk}|${o}`) || 0;
+      return c > 0 ? `${o} (${c})` : o;
+    }
+    return o;                               // 세부모델은 이름 그대로 (이미 연식 suffix 포함)
+  };
 
   const sel = (label, field, cur, list) => {
     const opts = [...list];
-    // 현재 값이 리스트에 없으면 (직접 입력된 값 등) 추가해서 선택 유지
     if (cur && !opts.includes(cur)) opts.unshift(cur);
     return `
       <div class="form-row">
@@ -557,7 +587,7 @@ function renderPicker(p) {
         <div class="form-row-control">
           <select class="contract-field-input pd-picker-select" data-picker-field="${field}">
             <option value="">-</option>
-            ${opts.map(o => `<option value="${o}" ${o === cur ? 'selected' : ''}>${o}</option>`).join('')}
+            ${opts.map(o => `<option value="${o}" ${o === cur ? 'selected' : ''}>${labelOf(field, o)}</option>`).join('')}
             ${isAdmin ? `<option value="__new__">+ 직접 입력</option>` : ''}
           </select>
         </div>
@@ -608,12 +638,10 @@ function renderAsset(p, key) {
           ${renderPicker(p)}
           ${fi('세부트림','trim_name',p,{ autocomplete: true })}
           ${fi('선택옵션','options',p,{ full: true })}
-          ${fs('차종구분','vehicle_class',p,CLASS_OPTS)}
-          ${fs('연료(동력)','fuel_type',p,FUEL_OPTS)}
-          ${fs('구동방식','drive_type',p,['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'])}
-          ${fi('변속기','transmission',p)}
           ${fi('외장색','ext_color',p,{ autocomplete: true })}
           ${fi('내장색','int_color',p,{ autocomplete: true })}
+          ${fs('구동방식','drive_type',p,['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'])}
+          ${fs('차종구분','vehicle_class',p,CLASS_OPTS)}
           ${fi('차량가격 (원)','vehicle_price',p,{ num: true })}
         </div>
       </div>
@@ -621,17 +649,19 @@ function renderAsset(p, key) {
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-file-text"></i> 등록증스펙 <span class="form-section-hint">차량등록증 OCR 로 자동 입력 가능</span></div>
         <div class="form-section-body">
+          ${fi('차대번호(VIN)','vin',p)}
           ${fs('연식','year',p,YEAR_OPTS)}
-          ${fs('용도','usage',p,['자가용','영업용','관용'])}
           ${fi('배기량 (cc)','engine_cc',p,{ num: true })}
           ${fi('승차정원','seats',p,{ num: true })}
-          ${fi('최초등록일','first_registration_date',p)}
-          ${fi('제작연월','manufacture_date',p)}
-          ${fi('차령만료일','vehicle_age_expiry_date',p)}
+          ${fs('연료(동력)','fuel_type',p,FUEL_OPTS)}
           ${fi('형식번호','model_code',p)}
           ${fi('원동기형식','engine_code',p)}
-          ${fi('차대번호(VIN)','vin',p)}
+          ${fi('최초등록일','first_registration_date',p)}
+          ${fs('용도','usage',p,['자가용','영업용','관용'])}
           ${fi('소유자명','owner_name',p)}
+          ${fi('변속기','transmission',p)}
+          ${fi('제작연월','manufacture_date',p)}
+          ${fi('차령만료일','vehicle_age_expiry_date',p)}
           ${fi('연비 (km/L)','fuel_efficiency',p,{ num: true })}
           ${fi('총중량 (kg)','total_weight',p,{ num: true })}
           ${fi('길이 (mm)','length',p,{ num: true })}

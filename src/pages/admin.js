@@ -1509,7 +1509,17 @@ async function vmNormalizeProductsAction(vm) {
   const master = _vmModels.filter(m => m.maker && m.model && m.sub && !m.archived);
   if (!master.length) { showToast('엔카 마스터가 비어있음 — 먼저 import', 'error'); return; }
 
-  const norm = s => String(s || '').toLowerCase().replace(/[\s()\/\-.,~·_]/g, '');
+  // 1) 연식 suffix 제거 ("쏘렌토 MQ4 20-" → "쏘렌토 MQ4", "아반떼 CN7 2023-" → "아반떼 CN7")
+  // 2) "(페리)", "(페리2)", "더 뉴" 같은 페이스리프트 표기 제거
+  // 3) 공백·괄호·하이픈·점 제거 후 소문자화
+  const stripYear = s => String(s || '')
+    .replace(/\s+\d{2,4}\s*-\s*\d{0,4}\s*$/, '')   // " 20-", " 2020-", " 20-22"
+    .replace(/\s+\d{4}\s*$/, '')                     // trailing " 2023"
+    .replace(/\s*\(페리\d*\)\s*/g, ' ')              // "(페리)", "(페리2)" → space
+    .replace(/^\s*더\s*뉴\s+/, '')                   // "더 뉴 " prefix
+    .trim();
+  const norm = s => stripYear(s).toLowerCase().replace(/[\s()\/\-.,~·_]/g, '');
+
   const idxExact = new Map();        // "maker|model|sub" → row
   const idxBySub = new Map();        // normSub → [row, ...]
   for (const m of master) {
@@ -1523,34 +1533,46 @@ async function vmNormalizeProductsAction(vm) {
 
   let unchanged = 0, unmatched = 0;
   const changes = [];
+  const changedMaker = [];            // maker 자체가 바뀐 건 (데이터 오류 교정 — 눈에 띄게 표시)
   const unmatchedSamples = [];
   for (const p of products) {
     if (!p.maker && !p.sub_model) { unmatched++; continue; }
     let best = null;
 
-    // 1) 완전일치
+    // ① 완전일치
     const exactKey = `${p.maker || ''}|${p.model || ''}|${p.sub_model || ''}`;
     if (idxExact.has(exactKey)) best = idxExact.get(exactKey);
 
-    // 2) sub 정규화 일치 (maker 우선)
+    // ② sub 정규화 일치 (maker/model 일치 우선)
     if (!best && p.sub_model) {
       const list = idxBySub.get(norm(p.sub_model)) || [];
       if (list.length === 1) best = list[0];
       else if (list.length > 1) {
         best = list.find(m => m.maker === p.maker && m.model === p.model)
             || list.find(m => m.maker === p.maker)
+            || list.find(m => m.model === p.model)
             || list[0];
       }
     }
 
-    // 3) maker + sub 부분일치 (master.sub가 product.sub_model 포함)
+    // ③ maker + sub 부분일치 (master.sub 가 product.sub_model 을 포함, 혹은 그 반대)
     if (!best && p.maker && p.sub_model) {
       const nSub = norm(p.sub_model);
-      const cands = master.filter(m => m.maker === p.maker && (norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
+      const cands = master.filter(m => m.maker === p.maker && nSub && (norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
       if (cands.length === 1) best = cands[0];
       else if (cands.length > 1) {
-        // model 일치 우선
         best = cands.find(m => m.model === p.model) || null;
+      }
+    }
+
+    // ④ maker 무시하고 model + sub 로 매칭 (maker 오입력 교정용 — "기아 그랜저" → "현대 그랜저")
+    if (!best && p.model && p.sub_model) {
+      const nSub = norm(p.sub_model);
+      const cands = master.filter(m => m.model === p.model && (norm(m.sub) === nSub || norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
+      if (cands.length === 1) best = cands[0];
+      else if (cands.length > 1) {
+        // popularity 높은 것 선택
+        best = cands.sort((a, b) => (b.popularity || 0) - (a.popularity || 0))[0];
       }
     }
 
@@ -1563,24 +1585,31 @@ async function vmNormalizeProductsAction(vm) {
     if (best.maker === p.maker && best.model === p.model && best.sub === p.sub_model) {
       unchanged++;
     } else {
-      changes.push({
+      const change = {
         key: p._key,
         from: { maker: p.maker, model: p.model, sub_model: p.sub_model },
         to:   { maker: best.maker, model: best.model, sub_model: best.sub },
-      });
+        makerChanged: best.maker !== p.maker,
+      };
+      changes.push(change);
+      if (change.makerChanged) changedMaker.push(change);
     }
   }
 
   const sampleChanges = changes.slice(0, 6).map(c =>
     `  ${c.from.maker || '-'} / ${c.from.model || '-'} / ${c.from.sub_model || '-'}\n    → ${c.to.maker} / ${c.to.model} / ${c.to.sub_model}`
   ).join('\n');
+  const sampleMakerChanges = changedMaker.slice(0, 6).map(c =>
+    `  ⚠ ${c.from.maker || '-'} → ${c.to.maker}  (${c.to.sub_model})`
+  ).join('\n');
 
   if (!confirm(
     `상품 ${products.length}건 분석 결과\n`
-    + `  변경 필요: ${changes.length}건\n`
+    + `  변경 필요: ${changes.length}건` + (changedMaker.length ? ` (그 중 제조사 교정 ${changedMaker.length}건)` : '') + `\n`
     + `  이미 표준: ${unchanged}건\n`
     + `  매칭 실패: ${unmatched}건\n\n`
-    + (changes.length ? `변경 예시 (최대 6건):\n${sampleChanges}\n\n` : '')
+    + (changedMaker.length ? `제조사 교정 예시:\n${sampleMakerChanges}\n\n` : '')
+    + (changes.length ? `전체 변경 예시:\n${sampleChanges}\n\n` : '')
     + (unmatched ? `매칭 실패 예시:\n${unmatchedSamples.join('\n')}\n\n` : '')
     + `${changes.length}건 적용?`)) return;
 

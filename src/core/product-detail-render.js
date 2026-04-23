@@ -3,7 +3,7 @@
  * 이미지 갤러리 / 뱃지 / 가격표 / 보험·조건 / 수수료 섹션을 한꺼번에 렌더.
  */
 import { store } from './store.js';
-import { fmtMoney } from './format.js';
+import { fmtMoney, trimMinusSub } from './format.js';
 import { first, parsePol, findPolicy } from './policy-utils.js';
 import { topBadgesHtml, reviewOverlayHtml, needsReview } from './product-badges.js';
 import { productImages, productExternalImages, supportedDriveSource } from './product-photos.js';
@@ -284,7 +284,7 @@ function _renderProductDetail(container, product, options = {}) {
         <div class="cat-section-title"><i class="ph ph-car-simple"></i> ${modelText || '차량'}${p.car_number ? `<span class="cat-carno">${p.car_number}</span>` : ''}</div>
         <div class="cat-rows">
           <div class="cat-row"><span class="cat-row-label">세부모델</span><span class="cat-row-value">${p.sub_model || '-'}</span></div>
-          <div class="cat-row"><span class="cat-row-label">세부트림</span><span class="cat-row-value">${((p.trim || p.trim_name || '') && p.sub_model) ? (p.trim || p.trim_name || '').replace(p.sub_model, '').trim() || '-' : (p.trim || p.trim_name || '-')}</span></div>
+          <div class="cat-row"><span class="cat-row-label">세부트림</span><span class="cat-row-value">${trimMinusSub(p.sub_model, p.trim || p.trim_name) || '-'}</span></div>
           <div class="cat-row"><span class="cat-row-label">선택옵션</span><span class="cat-row-value">${p.options || '-'}</span></div>
         </div>
         <div class="cat-spec">

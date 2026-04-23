@@ -188,7 +188,7 @@ function openRoom(roomId) {
       const me = store.currentUser;
       if (me?.uid && me?.role) markRoomRead(roomId, me.role, me.uid, room).catch(() => {});
       document.getElementById('mwsShowContract')?.addEventListener('click', () => openContractSheet(room));
-      // 입력칸 자동 포커스 — 방 열자마자 키보드 올림
+      // 입력칸 자동 포커스 — slide-in 중 focus 하면 iOS 가 스크롤 점프 발생, 완료 후 올림
       setTimeout(() => document.getElementById('mwsChatText')?.focus(), 120);
     },
     onClose: () => {

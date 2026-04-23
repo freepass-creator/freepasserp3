@@ -983,13 +983,7 @@
     font-weight: var(--fw-semibold);
     color: var(--c-accent);
   }
-  .excl-table tbody tr:nth-child(even) td {
-    background-color: var(--c-bg-zebra);
-  }
-  .excl-table tbody tr:nth-child(even) td.excl-sticky-left {
-    background-color: var(--c-bg-zebra);
-  }
-  .excl-table tbody tr:nth-child(even) td.excl-pin-r {
+  .excl-table tbody tr:nth-child(even) :is(td, td.excl-sticky-left, td.excl-pin-r) {
     background-color: var(--c-bg-zebra);
   }
   .excl-table td:last-child { border-right: none; }
