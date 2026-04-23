@@ -31,6 +31,15 @@ export default defineConfig({
         proposal: resolve(__dirname, 'proposal.html'),
         sign: resolve(__dirname, 'sign.html'),
       },
+      output: {
+        // 초기 번들 경량화 — 큰 벤더/라이브러리 분리
+        manualChunks(id) {
+          if (id.includes('node_modules/firebase')) return 'firebase';
+          if (id.includes('node_modules/exceljs')) return 'exceljs';
+          if (id.includes('node_modules/jszip')) return 'jszip';
+          if (id.includes('node_modules')) return 'vendor';
+        },
+      },
     },
   },
   appType: 'mpa',
