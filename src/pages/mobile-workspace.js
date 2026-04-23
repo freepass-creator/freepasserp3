@@ -30,6 +30,7 @@ export function mount() {
                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                  enterkeyhint="search">
           <span class="m-search-count" id="mwsCount"></span>
+          <button class="m-topbar-action" id="mwsSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
         </div>
         <div class="m-filter-chips">
           <button class="chip is-active" data-rf="all">전체</button>

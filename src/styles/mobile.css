@@ -309,7 +309,7 @@
     display: flex;
     align-items: center;
     margin: var(--sp-3) var(--sp-4);
-    /* 높이는 내부 버튼(m-topbar-action 32px) + 상하 여백으로 자동 결정 */
+    min-height: 40px;              /* 내부 버튼 유무와 무관하게 전 페이지 동일 높이 */
     padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
     background: var(--c-bg-sub);
     border: 1px solid var(--c-border);
@@ -1093,11 +1093,10 @@
     min-width: 0;
   }
   .m-card-price-rent {
-    font-size: var(--fs-xl);           /* 20px — 대여료만 도드라지게 */
-    font-weight: var(--fw-semibold);    /* 600 — heavy 는 hero 전용 */
+    font-size: var(--fs-md);           /* 본문과 비슷 — 색으로만 강조 */
+    font-weight: var(--fw-semibold);
     color: var(--c-accent);
-    letter-spacing: -0.02em;
-    line-height: 1;
+    letter-spacing: -0.01em;
   }
   .m-card-price-rent::after {           /* 단위(/월) 힌트 — 보조 텍스트와 동일 규격 */
     content: '/월';

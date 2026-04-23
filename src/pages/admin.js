@@ -1775,6 +1775,47 @@ async function vmNormalizeProductsAction(vm) {
     }
   }
 
+  // 연식 기간 체크 — master.production_start ~ production_end 범위 안에 product.year 가 들어가는가
+  const yearNum = (p) => {
+    const y = Number(p?.year);
+    return Number.isFinite(y) && y >= 1900 && y <= 2100 ? y : null;
+  };
+  const yearOf = (ym) => {
+    const m = String(ym || '').match(/^(\d{4})/);
+    return m ? Number(m[1]) : null;
+  };
+  const withinRange = (p, m) => {
+    const y = yearNum(p);
+    if (!y) return null;                                        // 연식 없으면 판정 유보
+    const ys = yearOf(m.production_start ?? m.year_start);
+    const ye = m.production_end === '현재' || !m.production_end ? 9999 : (yearOf(m.production_end ?? m.year_end) ?? 9999);
+    if (!ys) return null;
+    return y >= ys && y <= ye;
+  };
+  // 트림 토큰 기반 추가 점수 (예: "인스퍼레이션" 이 master.sub 에 들어있으면 +1)
+  const trimTokens = p => {
+    const t = String(p?.trim_name || p?.trim || '');
+    return (t.match(/[A-Za-z]+|[0-9]+|[가-힯]+/g) || []).map(x => x.toLowerCase());
+  };
+  /** 여러 후보 중 [연식 매칭 → 트림 토큰 일치 수 → popularity] 순으로 최선 선택 */
+  const pickBest = (p, cands) => {
+    if (!cands || !cands.length) return null;
+    if (cands.length === 1) return cands[0];
+    const tks = trimTokens(p);
+    const scored = cands.map(m => {
+      const yr = withinRange(p, m);                             // true/false/null
+      const tokenHits = tks.reduce((s, t) => norm(m.sub).includes(t) ? s + 1 : s, 0);
+      return {
+        m,
+        yearOk: yr === true ? 2 : yr === null ? 1 : 0,          // 범위 일치 > 미판정 > 불일치
+        tokens: tokenHits,
+        pop: Number(m.popularity || m.model_popularity || 0),
+      };
+    });
+    scored.sort((a, b) => (b.yearOk - a.yearOk) || (b.tokens - a.tokens) || (b.pop - a.pop));
+    return scored[0].m;
+  };
+
   let unchanged = 0, unmatched = 0;
   const changes = [];
   const changedMaker = [];            // maker 자체가 바뀐 건 (데이터 오류 교정 — 눈에 띄게 표시)
@@ -1787,15 +1828,14 @@ async function vmNormalizeProductsAction(vm) {
     const exactKey = `${p.maker || ''}|${p.model || ''}|${p.sub_model || ''}`;
     if (idxExact.has(exactKey)) best = idxExact.get(exactKey);
 
-    // ② sub 정규화 일치 (maker/model 일치 우선)
+    // ② sub 정규화 일치 (maker/model 일치 우선 → 연식·트림 가중치)
     if (!best && p.sub_model) {
       const list = idxBySub.get(norm(p.sub_model)) || [];
       if (list.length === 1) best = list[0];
       else if (list.length > 1) {
-        best = list.find(m => m.maker === p.maker && m.model === p.model)
-            || list.find(m => m.maker === p.maker)
-            || list.find(m => m.model === p.model)
-            || list[0];
+        const byMakerModel = list.filter(m => m.maker === p.maker && m.model === p.model);
+        const byMaker = list.filter(m => m.maker === p.maker);
+        best = pickBest(p, byMakerModel.length ? byMakerModel : byMaker.length ? byMaker : list);
       }
     }
 
@@ -1803,21 +1843,20 @@ async function vmNormalizeProductsAction(vm) {
     if (!best && p.maker && p.sub_model) {
       const nSub = norm(p.sub_model);
       const cands = master.filter(m => m.maker === p.maker && nSub && (norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
-      if (cands.length === 1) best = cands[0];
-      else if (cands.length > 1) {
-        best = cands.find(m => m.model === p.model) || null;
-      }
+      best = pickBest(p, cands);
     }
 
     // ④ maker 무시하고 model + sub 로 매칭 (maker 오입력 교정용 — "기아 그랜저" → "현대 그랜저")
     if (!best && p.model && p.sub_model) {
       const nSub = norm(p.sub_model);
       const cands = master.filter(m => m.model === p.model && (norm(m.sub) === nSub || norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
-      if (cands.length === 1) best = cands[0];
-      else if (cands.length > 1) {
-        // popularity 높은 것 선택
-        best = cands.sort((a, b) => (b.popularity || 0) - (a.popularity || 0))[0];
-      }
+      best = pickBest(p, cands);
+    }
+
+    // ⑤ generic sub (sub_model 이 model 과 동일 "쏘나타") — maker+model 로 후보 모아 연식+트림으로 세대 특정
+    if (!best && p.maker && p.model && p.sub_model === p.model) {
+      const cands = master.filter(m => m.maker === p.maker && m.model === p.model);
+      if (cands.length) best = pickBest(p, cands);
     }
 
     if (!best) {
@@ -1826,14 +1865,22 @@ async function vmNormalizeProductsAction(vm) {
       continue;
     }
 
-    if (best.maker === p.maker && best.model === p.model && best.sub === p.sub_model) {
+    // 매칭 성공 → 연식 보완 체크 (product.year 가 비어있거나 범위 밖이면 master.production_start 연도로 채움)
+    const bestStartYear = yearOf(best.production_start ?? best.year_start);
+    const py = yearNum(p);
+    const needYearFix = bestStartYear && (!py || withinRange(p, best) === false);
+    const identical = best.maker === p.maker && best.model === p.model && best.sub === p.sub_model;
+
+    if (identical && !needYearFix) {
       unchanged++;
     } else {
       const change = {
         key: p._key,
-        from: { maker: p.maker, model: p.model, sub_model: p.sub_model },
-        to:   { maker: best.maker, model: best.model, sub_model: best.sub },
+        from: { maker: p.maker, model: p.model, sub_model: p.sub_model, year: p.year },
+        to:   { maker: best.maker, model: best.model, sub_model: best.sub, year: needYearFix ? String(bestStartYear) : undefined },
         makerChanged: best.maker !== p.maker,
+        yearChanged: needYearFix,
+        fieldChanged: !identical,
       };
       changes.push(change);
       if (change.makerChanged) changedMaker.push(change);
@@ -1847,9 +1894,13 @@ async function vmNormalizeProductsAction(vm) {
     `  ⚠ ${c.from.maker || '-'} → ${c.to.maker}  (${c.to.sub_model})`
   ).join('\n');
 
+  const yearChangeCount = changes.filter(c => c.yearChanged).length;
   if (!confirm(
     `상품 ${products.length}건 분석 결과\n`
-    + `  변경 필요: ${changes.length}건` + (changedMaker.length ? ` (그 중 제조사 교정 ${changedMaker.length}건)` : '') + `\n`
+    + `  변경 필요: ${changes.length}건`
+    + (changedMaker.length ? ` (제조사 교정 ${changedMaker.length})` : '')
+    + (yearChangeCount ? ` (연식 교정 ${yearChangeCount})` : '')
+    + `\n`
     + `  이미 표준: ${unchanged}건\n`
     + `  매칭 실패: ${unmatched}건\n\n`
     + (changedMaker.length ? `제조사 교정 예시:\n${sampleMakerChanges}\n\n` : '')
@@ -1864,9 +1915,14 @@ async function vmNormalizeProductsAction(vm) {
   const updates = {};
   const now = Date.now();
   for (const c of changes) {
-    updates[`products/${c.key}/maker`] = c.to.maker;
-    updates[`products/${c.key}/model`] = c.to.model;
-    updates[`products/${c.key}/sub_model`] = c.to.sub_model;
+    if (c.fieldChanged) {
+      updates[`products/${c.key}/maker`] = c.to.maker;
+      updates[`products/${c.key}/model`] = c.to.model;
+      updates[`products/${c.key}/sub_model`] = c.to.sub_model;
+    }
+    if (c.yearChanged && c.to.year) {
+      updates[`products/${c.key}/year`] = c.to.year;
+    }
     updates[`products/${c.key}/updated_at`] = now;
   }
   const keys = Object.keys(updates);
