@@ -1035,14 +1035,16 @@
   /* 틀고정 — 우측 대여료 (62px 기준) */
   .excl-pin-r {
     position: sticky;
-    z-index: 1;
+    z-index: 2;
     background-color: var(--c-bg);
     background-clip: border-box;
     text-align: right;
     box-shadow: 1px 0 0 0 var(--c-border-soft);
+    /* horizontal scroll 중 뒤 td 콘텐츠가 순간 비치는 Chrome paint lag 방지 */
+    will-change: transform;
   }
   .excl-pin-r:last-child { box-shadow: none; }
-  th.excl-pin-r { z-index: 4; background-color: var(--c-bg-sub); text-align: right; }
+  th.excl-pin-r { z-index: 5; background-color: var(--c-bg-sub); text-align: right; }
   /* pinned right 오프셋은 JS가 inline으로 관리 — 첫 pin-r만 좌측 구분선 */
   .excl-pin-r:first-of-type {
     box-shadow: 1px 0 0 0 var(--c-border-soft), -1px 0 0 0 var(--c-border);
