@@ -27,6 +27,7 @@
   .btn-outline {
     border: 1px solid var(--c-border);
     color: var(--c-text);
+    font-weight: var(--fw-normal);   /* 보조 액션 — 강조 낮춤 (엑셀보기·새로고침 등) */
   }
   .btn-outline:hover { border-color: var(--c-border-strong); background: var(--c-bg-hover); }
 
