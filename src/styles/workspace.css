@@ -377,10 +377,10 @@
   }
   .chat-row.is-mine { align-self: flex-end; flex-direction: row-reverse; }
   .chat-row.is-other { align-self: flex-start; }
-  /* 카톡 규격 간격 — 1/2/3 스케일 */
-  .chat-row + .chat-row { margin-top: 1px; }                /* 같은 사람, 같은 분 */
-  .chat-row + .chat-row.is-minute-start { margin-top: 2px; }/* 같은 사람, 분 바뀜 */
-  .chat-row + .chat-row.is-sender-start { margin-top: 3px; }/* 발신자 바뀜 */
+  /* 카톡 규격 간격 — 2/4/6 스케일 */
+  .chat-row + .chat-row { margin-top: 2px; }                /* 같은 사람, 같은 분 */
+  .chat-row + .chat-row.is-minute-start { margin-top: 4px; }/* 같은 사람, 분 바뀜 */
+  .chat-row + .chat-row.is-sender-start { margin-top: 6px; }/* 발신자 바뀜 */
   .chat-row + .chat-date-sep,
   .chat-date-sep + .chat-row { margin-top: var(--sp-2); }
   .chat-sender {
