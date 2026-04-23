@@ -1561,14 +1561,22 @@ function vmAuditAction(vm) {
   const products = (store.products || []).filter(p => p.status !== 'deleted' && !p._deleted);
   if (!products.length) { showToast('상품 없음'); return; }
 
-  // 15년 이상 단종 master 제외 — normalize 와 동일 정책
+  // 15년 이상 된 세대는 아예 후보 풀에서 제외 (사용자 정책)
+  //  - production_start 가 15년 이상 전이면 제외 (옛 세대 전부 컷)
+  //  - production_end 가 15년 이상 전이면 제외 (단종 오래된 것)
   const thisYear = new Date().getFullYear();
-  const minEndYear = thisYear - 15;
+  const cutoffYear = thisYear - 15;    // 현재 2026 기준 2011 이하 excluded
+  const toInt4 = v => {
+    if (!v || v === '현재') return null;
+    const m = String(v).match(/(\d{4})/);
+    return m ? Number(m[1]) : null;
+  };
   const tooOld = m => {
-    const ye = m?.production_end;
-    if (!ye || ye === '현재') return false;
-    const y = Number(String(ye).match(/^(\d{4})/)?.[1]);
-    return y && y < minEndYear;
+    const ys = toInt4(m?.production_start ?? m?.year_start);
+    if (ys && ys <= cutoffYear) return true;
+    const ye = toInt4(m?.production_end ?? m?.year_end);
+    if (ye && ye <= cutoffYear) return true;
+    return false;
   };
   const master = _vmModels.filter(m => m.maker && m.sub && !m.archived && !tooOld(m));
 
@@ -1957,50 +1965,48 @@ async function vmNormalizeProductsAction(vm) {
 
   let unchanged = 0, unmatched = 0;
   const changes = [];
-  const changedMaker = [];            // maker 자체가 바뀐 건 (데이터 오류 교정 — 눈에 띄게 표시)
+  const changedMaker = [];
   const unmatchedSamples = [];
+  // 단계별 집계 — "검증 보완" — 매칭 신뢰도 가시화
+  const stageCount = { exact: 0, norm: 0, 'norm-multi': 0, partial: 0, 'maker-fix': 0, generic: 0 };
+
   for (const p of products) {
     if (!p.maker && !p.sub_model) { unmatched++; continue; }
-    let best = null;
+    let best = null, stage = '';
 
-    // Generic sub 판정 — 아래 세 케이스는 세대 정보가 없는 것으로 간주
-    //  1) sub_model 비어있음
-    //  2) sub_model === model ("쏘나타"만)
-    //  3) prefix(더 뉴·더뉴·올뉴·신형·뉴) 벗긴 나머지가 model 과 동일 ("더뉴아반떼" → "아반떼")
-    //     → 공식 엔카 세대코드(CN7/MQ4/DN8)가 없는 단순 표기 → generic 취급
-    //  generic 이면 ①~④ 스킵하고 maker+model 후보 풀에서 연식·트림·코드로 세대 자동 특정
+    // Generic sub 판정 — 세대 정보 없는 케이스
     const strippedSub = stripYear(p.sub_model || '').trim();
     const isGeneric = p.maker && p.model && (
       !p.sub_model ||
       p.sub_model === p.model ||
       strippedSub === p.model ||
       strippedSub === '' ||
-      // 세대코드 괄호 (CN7 등) 없이 model 이름만 포함된 경우
-      // 예: "더뉴아반떼" stripped "아반떼", "신형쏘렌토" stripped "쏘렌토"
       (strippedSub && norm(strippedSub) === norm(p.model))
     );
 
     if (!isGeneric) {
       // ① 완전일치
       const exactKey = `${p.maker || ''}|${p.model || ''}|${p.sub_model || ''}`;
-      if (idxExact.has(exactKey)) best = idxExact.get(exactKey);
+      if (idxExact.has(exactKey)) { best = idxExact.get(exactKey); stage = 'exact'; }
 
       // ② sub 정규화 일치 (maker/model 일치 우선 → 연식·트림 가중치)
       if (!best && p.sub_model) {
         const list = idxBySub.get(norm(p.sub_model)) || [];
-        if (list.length === 1) best = list[0];
+        if (list.length === 1) { best = list[0]; stage = 'norm'; }
         else if (list.length > 1) {
           const byMakerModel = list.filter(m => m.maker === p.maker && m.model === p.model);
           const byMaker = list.filter(m => m.maker === p.maker);
           best = pickBest(p, byMakerModel.length ? byMakerModel : byMaker.length ? byMaker : list);
+          stage = 'norm-multi';
         }
       }
 
-      // ③ maker + sub 부분일치 (master.sub 가 product.sub_model 을 포함, 혹은 그 반대)
+      // ③ maker + sub 부분일치
       if (!best && p.maker && p.sub_model) {
         const nSub = norm(p.sub_model);
         const cands = master.filter(m => m.maker === p.maker && nSub && (norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
         best = pickBest(p, cands);
+        if (best) stage = 'partial';
       }
 
       // ④ maker 무시하고 model + sub 로 매칭 (maker 오입력 교정용 — "기아 그랜저" → "현대 그랜저")
@@ -2049,15 +2055,14 @@ async function vmNormalizeProductsAction(vm) {
     `  ⚠ ${c.from.maker || '-'} → ${c.to.maker}  (${c.to.sub_model})`
   ).join('\n');
 
-  const yearChangeCount = changes.filter(c => c.yearChanged).length;
   if (!confirm(
     `상품 ${products.length}건 분석 결과\n`
     + `  변경 필요: ${changes.length}건`
     + (changedMaker.length ? ` (제조사 교정 ${changedMaker.length})` : '')
-    + (yearChangeCount ? ` (연식 교정 ${yearChangeCount})` : '')
     + `\n`
     + `  이미 표준: ${unchanged}건\n`
     + `  매칭 실패: ${unmatched}건\n\n`
+    + `※ year(연식) 필드는 건드리지 않습니다.\n\n`
     + (changedMaker.length ? `제조사 교정 예시:\n${sampleMakerChanges}\n\n` : '')
     + (changes.length ? `전체 변경 예시:\n${sampleChanges}\n\n` : '')
     + (unmatched ? `매칭 실패 예시:\n${unmatchedSamples.join('\n')}\n\n` : '')

@@ -304,11 +304,11 @@
   .m-chat-input-area .m-chat-attach:active,
   .m-chat-input-area .m-chat-send:active { background: var(--c-bg-hover); }
 
-  /* ── Search (Mobile) ── */
+  /* ── Search (Mobile) — 검색헤더의 모든 여백은 부모 .m-search-head 가 관리 ── */
   .m-search-bar {
     display: flex;
     align-items: center;
-    margin: var(--sp-2) var(--sp-3) var(--sp-1);
+    margin: 0;
     min-height: 40px;              /* 내부 버튼 유무와 무관하게 전 페이지 동일 높이 */
     padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
     background: var(--c-bg-sub);
@@ -341,15 +341,16 @@
     height: 32px;
   }
 
-  /* 검색창 아래 한 줄 — 필터칩(탭)·활성필터 스트립 공통 규격 */
+  /* 검색창 아래 한 줄 — 필터칩(탭)·활성필터 스트립 공통 규격
+     여백은 부모 .m-search-head 가 관리, 자식은 height 와 내부 gap 만 담당 */
   .m-filter-chips,
   .m-search-active {
     display: flex;
     align-items: center;
     gap: var(--sp-1);
     min-height: 24px;
-    padding: 0 var(--sp-3) var(--sp-1);
-    margin: 0;
+    padding: 0;
+    margin: var(--sp-1) 0 0;       /* 검색바와 이 줄 사이 4px */
   }
   .m-filter-chips { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .m-filter-chips::-webkit-scrollbar { display: none; }
@@ -965,7 +966,8 @@
     background: var(--c-bg);
   }
 
-  /* ── 검색 헤더 (sticky) — 전 페이지 공통 규격 ── */
+  /* ── 검색 헤더 (sticky) — 전 페이지 공통 규격
+     모든 여백(좌우·상하)은 여기서 관리 → 자식 margin 제거로 collapse 이슈 원천차단 */
   .m-search-head {
     position: sticky;
     top: 0;
@@ -974,6 +976,7 @@
     border-bottom: 1px solid var(--c-border);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    padding: var(--sp-2) var(--sp-3) var(--sp-1);
   }
 
   /* ── 검색 리스트 / 일반 페이지 body ── */
