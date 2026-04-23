@@ -41,7 +41,7 @@ export function mount() {
           <button class="m-topbar-action" id="mSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
           <button class="m-topbar-action" id="mSearchFilterBtn" aria-label="필터"><i class="ph ph-sliders-horizontal"></i><span class="m-filter-dot" id="mSearchFilterDot" hidden></span></button>
         </div>
-        <div class="m-search-active" id="mSearchActive"><span class="m-search-active-empty">전체해제</span></div>
+        <div class="m-search-active" id="mSearchActive"><button class="m-search-clear-all" disabled>전체해제</button></div>
       </div>
       <div class="m-page m-search-list" id="mSearchList"></div>
     </div>
