@@ -340,10 +340,9 @@ function renderActive() {
     return;
   }
   const total = chips.length;
-  el.innerHTML = `<button class="m-search-clear-all" id="mSearchClearAll">전체해제 <span class="sb-badge is-visible" style="margin-left:4px;">${total}</span></button>`
-    + chips.map(c => `
+  el.innerHTML = chips.map(c => `
     <span class="chip is-active m-active-chip"><span>${c.label}</span><button class="chip-remove" data-remove="${c.g}::${c.cid}" aria-label="${c.label} 해제">×</button></span>
-  `).join('');
+  `).join('') + `<button class="m-search-clear-all" id="mSearchClearAll">전체해제 <span class="sb-badge is-visible" style="margin-left:4px;">${total}</span></button>`;
 }
 
 function render() {
