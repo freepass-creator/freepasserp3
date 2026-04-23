@@ -161,10 +161,20 @@ export async function markRoomRead(roomId, role, uid, room) {
 
 /* ── 사용자 프로필 저장 (회원가입 시) ── */
 export async function saveUserProfile(uid, profile) {
+  const user_code = await allocateUserCode();
   await setRecord(`users/${uid}`, {
     uid,
     ...profile,
+    user_code,
     status: 'pending',
     created_at: Date.now(),
   });
+}
+
+/** 가입 순 전역 시퀀스 — 'U-001' 포맷, runTransaction 으로 원자적 증가 */
+async function allocateUserCode() {
+  const seqRef = ref(db, 'counters/user_code_seq');
+  const result = await runTransaction(seqRef, (cur) => (cur || 0) + 1);
+  const seq = result.committed ? result.snapshot.val() : Date.now() % 10000; // 실패 fallback
+  return `U-${String(seq).padStart(3, '0')}`;
 }

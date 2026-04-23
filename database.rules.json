@@ -155,6 +155,12 @@
       ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
       ".write": false
     },
+    "counters": {
+      ".read": "auth != null",
+      "user_code_seq": {
+        ".write": "auth != null && ((!data.exists() && newData.val() === 1) || newData.val() === data.val() + 1)"
+      }
+    },
     "$other": {
       ".read": false,
       ".write": false
