@@ -220,7 +220,8 @@ function openRoom(roomId) {
 function subscribeMessages(roomId) {
   unsubMessages?.();
   unsubMessages = watchCollection(`messages/${roomId}`, (msgs) => {
-    chatMessages = msgs;
+    // 구독 콜백에서 한 번만 정렬 — 매 렌더마다 재정렬 방지
+    chatMessages = [...msgs].sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
     renderMessages();
     const me = store.currentUser;
     if (activeRoomId === roomId && !document.hidden && me?.uid && me?.role) {
@@ -233,7 +234,7 @@ function renderMessages() {
   const el = document.getElementById('mwsChatMsgs');
   if (!el) return;
   const me = store.currentUser || {};
-  const sorted = [...chatMessages].sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
+  const sorted = chatMessages; // 이미 subscribeMessages 에서 정렬됨
   if (!sorted.length) {
     el.innerHTML = `<div class="m-empty"><i class="ph ph-chat-circle"></i><p>메시지 없음</p></div>`;
     return;

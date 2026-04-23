@@ -5,14 +5,20 @@ import { ref, runTransaction, get } from 'firebase/database';
 import { db } from './config.js';
 import { setRecord, updateRecord, pushRecord } from './db.js';
 
-/* ── 코드 시퀀스 채번 ── */
+/* ── 코드 시퀀스 채번 ──
+ *  정상 트랜잭션 → 1부터 증가하는 seq
+ *  실패 fallback → 충돌 회피용 999000+ 난수 (정상 seq 범위와 명확 분리)
+ *  실패했더라도 호출 로그 남겨서 재발 감지 가능 */
 export async function nextSequence(sequenceKey) {
   const seqRef = ref(db, `code_sequences/${sequenceKey}`);
   try {
     const result = await runTransaction(seqRef, (v) => (v || 0) + 1);
     if (result.committed) return result.snapshot.val();
-  } catch (e) {}
-  return (Date.now() % 90) + 10; // fallback
+    console.warn(`[nextSequence] ${sequenceKey} 트랜잭션 커밋 실패 — fallback 사용`);
+  } catch (e) {
+    console.warn(`[nextSequence] ${sequenceKey} 에러 — fallback 사용:`, e);
+  }
+  return 999000 + Math.floor(Math.random() * 999); // 정상 seq 대역(<1000 일반적) 과 분리
 }
 
 /* ── 상품 등록 ── */
@@ -46,7 +52,8 @@ export async function saveContract(data) {
   // 계약 생성 시점의 차량 상태: 출고협의 (진행 중) — auto-status는 prev 없으면 건너뛰므로 여기서 직접 세팅
   const productKey = data.product_uid || data.seed_product_key;
   if (productKey) {
-    try { await updateRecord(`products/${productKey}`, { vehicle_status: '출고협의' }); } catch {}
+    try { await updateRecord(`products/${productKey}`, { vehicle_status: '출고협의' }); }
+    catch (e) { console.warn('[createContract] 상품 상태 동기화 실패:', e); }
   }
 
   return code;
@@ -135,7 +142,7 @@ export async function ensureRoom({ productUid, productCode, agentUid, agentCode,
         model: modelName,
       });
     }
-  } catch { /* silent */ }
+  } catch (e) { console.warn('[room.notify] 신규 문의 알림톡 실패 (Aligo 미설정 가능):', e); }
 
   return roomId;
 }

@@ -336,23 +336,31 @@ function bindContractView(view, c) {
   });
 
   // 대여료 / 보증금 직접 수정 (blur 에 저장)
+  // 경합 방지: dataset.saving 플래그로 저장 중 입력 처리 차단 + 저장 후 재포커스 상태면 value 덮어쓰지 않음
   view.querySelector('[data-panel="progress"]').addEventListener('focusout', async (e) => {
     const inp = e.target.closest('[data-ct-field]');
     if (!inp) return;
+    if (inp.dataset.saving === '1') return; // 이미 저장 중
     const field = inp.dataset.ctField;
     const raw = String(inp.value || '').replace(/[^0-9]/g, '');
     const num = raw ? Number(raw) : 0;
     const prev = Number(c[field]) || 0;
     if (num === prev) return;
     const stateEl = view.querySelector(`[data-state="${field}"]`);
+    inp.dataset.saving = '1';
     try {
       await updateRecord(`contracts/${c.contract_code}`, { [field]: num });
       c[field] = num;
-      inp.value = num ? num.toLocaleString() : '';
+      // 저장 완료 시점에 사용자가 다시 포커스 잡고 있으면 값 덮어쓰지 않음 (경합 방지)
+      if (document.activeElement !== inp) {
+        inp.value = num ? num.toLocaleString() : '';
+      }
       if (stateEl) { stateEl.className = 'm-state is-saved'; stateEl.textContent = '저장'; setTimeout(() => { stateEl.className = 'm-state'; stateEl.textContent = ''; }, 1200); }
     } catch (err) {
       if (stateEl) { stateEl.className = 'm-state is-error'; stateEl.textContent = '실패'; }
       showToast('저장 실패', 'error');
+    } finally {
+      inp.dataset.saving = '';
     }
   });
 
@@ -360,7 +368,7 @@ function bindContractView(view, c) {
   view.querySelector('[data-panel="progress"]').addEventListener('input', (e) => {
     const inp = e.target.closest('[data-ct-field]');
     if (!inp) return;
-    const pos = inp.selectionStart;
+    if (inp.dataset.saving === '1') return; // 저장 중엔 덮어쓰지 않음
     const clean = String(inp.value || '').replace(/[^0-9]/g, '');
     inp.value = clean ? Number(clean).toLocaleString() : '';
     try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch {}
