@@ -500,17 +500,20 @@ function renderDetail(c) {
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-identification-card"></i> 면허증</div>
         <div class="form-section-body" style="grid-template-columns:1fr;">
-          ${c.license_url
-            ? `<div style="position:relative;display:inline-block;">
-                 <img src="${c.license_url}" style="max-width:100%;border-radius:var(--ctrl-r);border:1px solid var(--c-border);">
-                 <button class="btn btn-xs btn-outline" id="ctLicenseDel" style="position:absolute;top:4px;right:4px;"><i class="ph ph-x"></i> 제거</button>
-               </div>`
-            : `<label class="pd-dropzone" id="ctLicenseDropzone" for="ctLicenseFile">
-                 <i class="ph ph-identification-card" aria-hidden="true"></i>
-                 <div class="pd-dropzone-text">면허증 사진 업로드</div>
-                 <div class="pd-dropzone-hint">운전면허증 앞면 사진</div>
-                 <input type="file" id="ctLicenseFile" hidden accept="image/*">
-               </label>`}
+          ${(() => {
+            const licUrl = c.customer_license_url || c.license_url || '';  // legacy fallback
+            return licUrl
+              ? `<div style="position:relative;display:inline-block;">
+                   <img src="${licUrl}" style="max-width:100%;border-radius:var(--ctrl-r);border:1px solid var(--c-border);">
+                   <button class="btn btn-xs btn-outline" id="ctLicenseDel" style="position:absolute;top:4px;right:4px;"><i class="ph ph-x"></i> 제거</button>
+                 </div>`
+              : `<label class="pd-dropzone" id="ctLicenseDropzone" for="ctLicenseFile">
+                   <i class="ph ph-identification-card" aria-hidden="true"></i>
+                   <div class="pd-dropzone-text">면허증 사진 업로드</div>
+                   <div class="pd-dropzone-hint">운전면허증 앞/뒤면 사진 · PDF</div>
+                   <input type="file" id="ctLicenseFile" hidden accept="image/*,.pdf">
+                 </label>`;
+          })()}
         </div>
       </div>
 
@@ -523,30 +526,55 @@ function renderDetail(c) {
             <div class="pd-dropzone-hint">고객 신분증 · 면허증 · 재직증명서 등</div>
             <input type="file" id="ctDocFile" multiple hidden accept="image/*,.pdf">
           </label>
-          ${(c.doc_urls || []).length ? `
-            <div style="display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1);">
-              ${(c.doc_urls || []).map((url, i) => `
-                <a href="${url}" target="_blank" class="btn btn-xs btn-outline"><i class="ph ph-file"></i> 서류${i+1}</a>
-              `).join('')}
-            </div>` : ''}
+          ${(() => {
+            // 신규 스키마(customer_docs 객체) 우선, legacy doc_urls 배열 병합 표시
+            const docs = c.customer_docs || {};
+            const docEntries = Object.entries(docs)
+              .filter(([, d]) => d && !d._deleted)
+              .sort((a, b) => (b[1].created_at || 0) - (a[1].created_at || 0));
+            const legacyDocs = (c.doc_urls || []).map((url, i) => ({ url, name: `서류${i+1}`, legacy: true, idx: i }));
+            const items = [
+              ...docEntries.map(([key, d]) => ({ key, url: d.url, name: d.name || '파일', legacy: false })),
+              ...legacyDocs,
+            ];
+            if (!items.length) return '';
+            return `
+              <div style="display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1);">
+                ${items.map(it => `
+                  <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:1px solid var(--c-border);border-radius:var(--ctrl-r);font-size:var(--fs-xs);">
+                    <a href="${it.url}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;color:var(--c-text);"><i class="ph ph-file"></i> ${it.name}</a>
+                    ${it.legacy ? '' : `<button class="btn btn-xs" data-ct-doc-del="${it.key}" style="padding:0;color:var(--c-text-muted);"><i class="ph ph-x"></i></button>`}
+                  </span>
+                `).join('')}
+              </div>`;
+          })()}
         </div>
       </div>
     </div>
   `;
   bindFormAutoSave(el, (field, value) => updateRecord(`contracts/${c.contract_code}`, { [field]: value }));
 
-  // 면허증 업로드
+  // 면허증 업로드 — 모바일과 동일 스키마 (customer_license_url/customer_license_at)
   const licInput = el.querySelector('#ctLicenseFile');
   const licZone = el.querySelector('#ctLicenseDropzone');
   if (licInput && licZone) {
     const uploadLic = async (file) => {
-      const { uploadImage } = await import('../firebase/storage-helper.js');
-      const path = `contract-docs/${c.contract_code}/license_${Date.now()}.webp`;
-      const { url } = await uploadImage(path, file);
-      c.license_url = url;
-      await updateRecord(`contracts/${c.contract_code}`, { license_url: url });
-      showToast('면허증 업로드 완료');
-      renderDetail(c);
+      const { uploadImage, uploadFile } = await import('../firebase/storage-helper.js');
+      const safe = String(file.name).replace(/[^\w.\-가-힯]/g, '_').slice(0, 64);
+      const path = `chat-files/contract-${c.contract_code}/license_${Date.now()}_${safe}`;
+      const isImage = (file.type || '').startsWith('image/');
+      try {
+        const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+        const now = Date.now();
+        await updateRecord(`contracts/${c.contract_code}`, { customer_license_url: url, customer_license_at: now });
+        c.customer_license_url = url;
+        c.customer_license_at = now;
+        showToast('면허증 업로드 완료');
+        renderDetail(c);
+      } catch (err) {
+        console.error('[ct.license]', err);
+        showToast('업로드 실패', 'error');
+      }
     };
     licInput.addEventListener('change', () => { if (licInput.files[0]) uploadLic(licInput.files[0]); });
     licZone.addEventListener('dragover', e => { e.preventDefault(); licZone.classList.add('is-dragover'); });
@@ -554,27 +582,42 @@ function renderDetail(c) {
     licZone.addEventListener('drop', e => { e.preventDefault(); licZone.classList.remove('is-dragover'); if (e.dataTransfer.files[0]) uploadLic(e.dataTransfer.files[0]); });
   }
   el.querySelector('#ctLicenseDel')?.addEventListener('click', async () => {
-    c.license_url = '';
-    await updateRecord(`contracts/${c.contract_code}`, { license_url: '' });
-    showToast('면허증 제거됨');
-    renderDetail(c);
+    if (!confirm('운전면허증을 삭제하시겠습니까?')) return;
+    try {
+      // legacy license_url 도 함께 정리
+      await updateRecord(`contracts/${c.contract_code}`, { customer_license_url: '', customer_license_at: 0, license_url: '' });
+      c.customer_license_url = '';
+      c.license_url = '';
+      showToast('면허증 제거됨');
+      renderDetail(c);
+    } catch (err) { console.error(err); showToast('삭제 실패', 'error'); }
   });
 
-  // 서류 업로드
+  // 서류 업로드 — 모바일과 동일 스키마 (customer_docs/{pushKey})
   const docInput = el.querySelector('#ctDocFile');
   const docZone = el.querySelector('#ctDocDropzone');
   if (docInput && docZone) {
     const uploadDocs = async (files) => {
-      const { uploadFile } = await import('../firebase/storage-helper.js');
-      const urls = [...(c.doc_urls || [])];
+      const { uploadFile, uploadImage } = await import('../firebase/storage-helper.js');
+      const { pushRecord } = await import('../firebase/db.js');
+      let ok = 0, fail = 0;
       for (const file of files) {
-        const path = `contract-docs/${c.contract_code}/${Date.now()}_${file.name}`;
-        const { url } = await uploadFile(path, file);
-        urls.push(url);
+        try {
+          const safe = String(file.name).replace(/[^\w.\-가-힯]/g, '_').slice(0, 64);
+          const path = `chat-files/contract-${c.contract_code}/${Date.now()}_${safe}`;
+          const isImage = (file.type || '').startsWith('image/');
+          const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+          await pushRecord(`contracts/${c.contract_code}/customer_docs`, {
+            url, name: file.name, type: file.type || '', size: file.size || 0,
+          });
+          ok++;
+        } catch (err) { console.error('[ct.doc]', err); fail++; }
       }
-      c.doc_urls = urls;
-      await updateRecord(`contracts/${c.contract_code}`, { doc_urls: urls });
-      showToast(`${files.length}건 업로드 완료`);
+      showToast(fail ? `${ok}건 업로드 · ${fail}건 실패` : `${ok}건 업로드 완료`, fail ? 'error' : 'info');
+      // 최신 customer_docs 재조회
+      const { fetchRecord } = await import('../firebase/db.js');
+      const latest = await fetchRecord(`contracts/${c.contract_code}`);
+      if (latest?.customer_docs) c.customer_docs = latest.customer_docs;
       renderDetail(c);
     };
     docInput.addEventListener('change', () => { if (docInput.files.length) uploadDocs([...docInput.files]); });
@@ -582,6 +625,19 @@ function renderDetail(c) {
     docZone.addEventListener('dragleave', () => docZone.classList.remove('is-dragover'));
     docZone.addEventListener('drop', e => { e.preventDefault(); docZone.classList.remove('is-dragover'); if (e.dataTransfer.files.length) uploadDocs([...e.dataTransfer.files]); });
   }
+  // 개별 서류 삭제 (신규 스키마만)
+  el.querySelectorAll('[data-ct-doc-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('첨부 파일을 삭제하시겠습니까?')) return;
+      const key = btn.dataset.ctDocDel;
+      try {
+        await updateRecord(`contracts/${c.contract_code}/customer_docs/${key}`, { _deleted: true });
+        if (c.customer_docs?.[key]) c.customer_docs[key]._deleted = true;
+        renderDetail(c);
+        showToast('삭제됨');
+      } catch (err) { console.error(err); showToast('삭제 실패', 'error'); }
+    });
+  });
 }
 
 /* ── 4번 패널: 계약조건 (차량/대여/관계자/정산) ── */
