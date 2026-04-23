@@ -1754,13 +1754,19 @@ async function vmNormalizeProductsAction(vm) {
   if (!master.length) { showToast('엔카 마스터가 비어있음 — 먼저 import', 'error'); return; }
 
   // 1) 연식 suffix 제거 ("쏘렌토 MQ4 20-" → "쏘렌토 MQ4", "아반떼 CN7 2023-" → "아반떼 CN7")
-  // 2) "(페리)", "(페리2)", "더 뉴" 같은 페이스리프트 표기 제거
-  // 3) 공백·괄호·하이픈·점 제거 후 소문자화
+  // 2) "(페리)", "(페리2)", "더뉴"/"더 뉴", "신형" 같은 표기 제거
+  // 3) 공백·괄호·하이픈·점·한국 정식/전각 문자 제거 후 소문자화
   const stripYear = s => String(s || '')
+    // 전각 문자 정규화 (유저가 IME 전각으로 입력한 "（ＣＮ７）" 같은 케이스)
+    .replace(/[！-～]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xfee0))
     .replace(/\s+\d{2,4}\s*-\s*\d{0,4}\s*$/, '')   // " 20-", " 2020-", " 20-22"
     .replace(/\s+\d{4}\s*$/, '')                     // trailing " 2023"
     .replace(/\s*\(페리\d*\)\s*/g, ' ')              // "(페리)", "(페리2)" → space
-    .replace(/^\s*더\s*뉴\s+/, '')                   // "더 뉴 " prefix
+    .replace(/\s*페리\d*\s*/g, ' ')                  // 괄호 없는 "페리"
+    .replace(/^\s*더\s*뉴\s*/, '')                   // "더 뉴 " or "더뉴" (공백 선택)
+    .replace(/^\s*신\s*형\s*/, '')                   // "신형"
+    .replace(/^\s*올\s*뉴\s*/, '')                   // "올 뉴", "올뉴"
+    .replace(/^\s*뉴\s+/, '')                        // "뉴 " (단독 prefix)
     .trim();
   const norm = s => stripYear(s).toLowerCase().replace(/[\s()\/\-.,~·_]/g, '');
 
@@ -1797,22 +1803,35 @@ async function vmNormalizeProductsAction(vm) {
     const t = String(p?.trim_name || p?.trim || '');
     return (t.match(/[A-Za-z]+|[0-9]+|[가-힯]+/g) || []).map(x => x.toLowerCase());
   };
-  /** 여러 후보 중 [연식 매칭 → 트림 토큰 일치 수 → popularity] 순으로 최선 선택 */
+  /** 여러 후보 중 최선 선택 — 연식을 HARD FILTER 로 우선 사용
+   *  1. product.year 가 있으면 → 범위 일치하는 것만 후보로 축소 (있으면 그 안에서만 선택)
+   *  2. 트림 토큰 일치 수 내림차순
+   *  3. popularity 내림차순
+   *  4. production_start 내림차순 (최신) */
   const pickBest = (p, cands) => {
     if (!cands || !cands.length) return null;
     if (cands.length === 1) return cands[0];
+
+    // 1) 연식 hard filter — product.year 가 있으면 범위 맞는 것 우선
+    const py = yearNum(p);
+    if (py) {
+      const inRange = cands.filter(m => withinRange(p, m) === true);
+      if (inRange.length) cands = inRange;
+    }
+
+    // 2-4) 남은 후보를 토큰→popularity→최신 순으로 정렬
     const tks = trimTokens(p);
     const scored = cands.map(m => {
-      const yr = withinRange(p, m);                             // true/false/null
       const tokenHits = tks.reduce((s, t) => norm(m.sub).includes(t) ? s + 1 : s, 0);
+      const ys = yearOf(m.production_start ?? m.year_start) || 0;
       return {
         m,
-        yearOk: yr === true ? 2 : yr === null ? 1 : 0,          // 범위 일치 > 미판정 > 불일치
         tokens: tokenHits,
         pop: Number(m.popularity || m.model_popularity || 0),
+        ys,
       };
     });
-    scored.sort((a, b) => (b.yearOk - a.yearOk) || (b.tokens - a.tokens) || (b.pop - a.pop));
+    scored.sort((a, b) => (b.tokens - a.tokens) || (b.pop - a.pop) || (b.ys - a.ys));
     return scored[0].m;
   };
 
@@ -1824,37 +1843,45 @@ async function vmNormalizeProductsAction(vm) {
     if (!p.maker && !p.sub_model) { unmatched++; continue; }
     let best = null;
 
-    // ① 완전일치
-    const exactKey = `${p.maker || ''}|${p.model || ''}|${p.sub_model || ''}`;
-    if (idxExact.has(exactKey)) best = idxExact.get(exactKey);
+    // Generic sub 판정 — sub_model 이 model 과 동일하거나 비어있으면 generic
+    //  ("쏘나타"만 들어있는 케이스) → ①~④ 스킵하고 maker+model 후보에서 연식·트림으로 세대 특정
+    const isGeneric = p.maker && p.model && (!p.sub_model || p.sub_model === p.model);
 
-    // ② sub 정규화 일치 (maker/model 일치 우선 → 연식·트림 가중치)
-    if (!best && p.sub_model) {
-      const list = idxBySub.get(norm(p.sub_model)) || [];
-      if (list.length === 1) best = list[0];
-      else if (list.length > 1) {
-        const byMakerModel = list.filter(m => m.maker === p.maker && m.model === p.model);
-        const byMaker = list.filter(m => m.maker === p.maker);
-        best = pickBest(p, byMakerModel.length ? byMakerModel : byMaker.length ? byMaker : list);
+    if (!isGeneric) {
+      // ① 완전일치
+      const exactKey = `${p.maker || ''}|${p.model || ''}|${p.sub_model || ''}`;
+      if (idxExact.has(exactKey)) best = idxExact.get(exactKey);
+
+      // ② sub 정규화 일치 (maker/model 일치 우선 → 연식·트림 가중치)
+      if (!best && p.sub_model) {
+        const list = idxBySub.get(norm(p.sub_model)) || [];
+        if (list.length === 1) best = list[0];
+        else if (list.length > 1) {
+          const byMakerModel = list.filter(m => m.maker === p.maker && m.model === p.model);
+          const byMaker = list.filter(m => m.maker === p.maker);
+          best = pickBest(p, byMakerModel.length ? byMakerModel : byMaker.length ? byMaker : list);
+        }
+      }
+
+      // ③ maker + sub 부분일치 (master.sub 가 product.sub_model 을 포함, 혹은 그 반대)
+      if (!best && p.maker && p.sub_model) {
+        const nSub = norm(p.sub_model);
+        const cands = master.filter(m => m.maker === p.maker && nSub && (norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
+        best = pickBest(p, cands);
+      }
+
+      // ④ maker 무시하고 model + sub 로 매칭 (maker 오입력 교정용 — "기아 그랜저" → "현대 그랜저")
+      if (!best && p.model && p.sub_model) {
+        const nSub = norm(p.sub_model);
+        const cands = master.filter(m => m.model === p.model && (norm(m.sub) === nSub || norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
+        best = pickBest(p, cands);
       }
     }
 
-    // ③ maker + sub 부분일치 (master.sub 가 product.sub_model 을 포함, 혹은 그 반대)
-    if (!best && p.maker && p.sub_model) {
-      const nSub = norm(p.sub_model);
-      const cands = master.filter(m => m.maker === p.maker && nSub && (norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
-      best = pickBest(p, cands);
-    }
-
-    // ④ maker 무시하고 model + sub 로 매칭 (maker 오입력 교정용 — "기아 그랜저" → "현대 그랜저")
-    if (!best && p.model && p.sub_model) {
-      const nSub = norm(p.sub_model);
-      const cands = master.filter(m => m.model === p.model && (norm(m.sub) === nSub || norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
-      best = pickBest(p, cands);
-    }
-
-    // ⑤ generic sub (sub_model 이 model 과 동일 "쏘나타") — maker+model 로 후보 모아 연식+트림으로 세대 특정
-    if (!best && p.maker && p.model && p.sub_model === p.model) {
+    // ⑤ generic 또는 지금까지 실패 — maker+model 후보에서 연식·트림으로 세대 자동 특정
+    //  · "현대/쏘나타/쏘나타" + year=2022 + trim="1.6 터보 인스퍼레이션" → DN8 세대 매칭
+    //  · 1세대 "쏘나타" 같은 옛 세대가 stage ② 에서 잘못 잡히는 것 방지
+    if (!best && p.maker && p.model) {
       const cands = master.filter(m => m.maker === p.maker && m.model === p.model);
       if (cands.length) best = pickBest(p, cands);
     }
