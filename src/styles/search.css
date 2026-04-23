@@ -156,6 +156,19 @@
     min-height: 28px;
     line-height: 28px;
   }
+  /* 비활성 placeholder — 칩 없을 때도 버튼 모양으로 공간 유지 */
+  .srch-active-empty {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 var(--sp-2);
+    border-radius: var(--ctrl-r);
+    background: var(--c-bg-sub);
+    color: var(--c-text-muted);
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    line-height: 1;
+  }
 
   /* ── Resize Handle ── */
   .srch-resize {

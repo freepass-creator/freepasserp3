@@ -361,9 +361,17 @@
     padding: var(--sp-2) var(--sp-4);
     margin-bottom: var(--sp-2);
   }
+  /* 비활성 placeholder — 칩 없을 때도 공간 잡아둠 (버튼 모양) */
   .m-search-active-empty {
-    font-size: var(--fs-xs);
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 var(--sp-3);
+    border-radius: var(--ctrl-r);
+    background: var(--c-bg-sub);
     color: var(--c-text-muted);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
   }
   .m-active-chip {
     display: inline-flex;

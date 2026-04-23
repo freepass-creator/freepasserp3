@@ -52,7 +52,7 @@ export function mount() {
         </div>
         <div class="srch-filter-search">
           <input class="input input-sm" id="srchText" placeholder="차량번호, 모델명, 금액, 무심사 등...">
-          <div class="srch-active" id="srchActive"><span style="font-size:var(--fs-2xs);color:var(--c-text-muted);">전체해제</span></div>
+          <div class="srch-active" id="srchActive"><span class="srch-active-empty">전체해제</span></div>
         </div>
         <div class="srch-filters" id="srchFilters"></div>
       </div>
@@ -782,7 +782,7 @@ function renderActiveChips() {
   }
 
   if (!total) {
-    el.innerHTML = `<span style="font-size:var(--fs-2xs);color:var(--c-text-muted);">전체해제</span>`;
+    el.innerHTML = `<span class="srch-active-empty">전체해제</span>`;
     return;
   }
 
