@@ -255,7 +255,7 @@ export function pushMobileView(html, opts = {}) {
   view.className = 'm-view m-page-enter';
   view.innerHTML = `
     <div class="m-topbar">
-      <button class="m-topbar-back" aria-label="뒤로"><i class="ph ph-caret-left"></i></button>
+      <button class="m-topbar-back" aria-label="뒤로"><i class="ph ph-caret-right"></i></button>
       <span class="m-topbar-title">${title}</span>
       <span class="m-topbar-actions">${headerRight}</span>
     </div>
