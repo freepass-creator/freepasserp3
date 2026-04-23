@@ -443,7 +443,7 @@ function setupChatInput(roomId) {
     input.value = '';
     input.focus();
     const user = store.currentUser;
-    const senderCode = user.user_code || user.agent_code || user.partner_code || user.company_code || '';
+    const senderCode = user.user_code || '';
     await pushRecord(`messages/${roomId}`, { text, sender_uid: user.uid, sender_role: user.role, sender_code: senderCode, sender_name: user.name||'', created_at: Date.now() });
     const room = (store.rooms || []).find(r => r._key === roomId) || {};
     const roomUpdate = { last_message: text, last_message_at: Date.now(), last_sender_role: user.role, last_sender_uid: user.uid, last_sender_code: senderCode };
@@ -488,7 +488,7 @@ function setupChatInput(roomId) {
           const path = `chat-files/${roomId}/${Date.now()}_${file.name}`;
           const { url } = await uploadFile(path, file);
           const isImage = file.type.startsWith('image/');
-          const senderCode = user.user_code || user.agent_code || user.partner_code || user.company_code || '';
+          const senderCode = user.user_code || '';
           await pushRecord(`messages/${roomId}`, { text: isImage ? '' : file.name, sender_uid: user.uid, sender_role: user.role, sender_code: senderCode, sender_name: user.name||'', created_at: Date.now(), ...(isImage ? { image_url: url } : { file_url: url }) });
           const room2 = (store.rooms || []).find(r => r._key === roomId) || {};
           const fileUpdate = { last_message: isImage ? '📷 사진' : `📎 ${file.name}`, last_message_at: Date.now(), last_sender_role: user.role, last_sender_uid: user.uid, last_sender_code: senderCode };

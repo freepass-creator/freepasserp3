@@ -295,8 +295,8 @@ function bindChatInput(roomId, room) {
     if (!text) return;
     input.value = '';
     const user = store.currentUser;
-    // 개인 코드 우선 (영업자코드 / 공급사직원코드 — S0005 같은 개인 식별자)
-    const senderCode = user.user_code || user.agent_code || user.company_code || '';
+    // 개인 식별자만 허용 — company_code 폴백 금지 (SP999 같은 공유 임시채널 노출 방지)
+    const senderCode = user.user_code || '';
     await pushRecord(`messages/${roomId}`, {
       text, sender_uid: user.uid, sender_role: user.role,
       sender_code: senderCode, sender_name: user.name || '', created_at: Date.now(),

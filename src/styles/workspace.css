@@ -378,8 +378,8 @@
   .chat-row.is-mine { align-self: flex-end; flex-direction: row-reverse; }
   .chat-row.is-other { align-self: flex-start; }
   /* 간격 소스 단일화: margin-top 만 사용 (ws4-chat-msgs의 gap 제거됨) */
-  .chat-row + .chat-row { margin-top: 2px; }                  /* 같은 그룹 연속 */
-  .chat-row + .chat-row.is-start { margin-top: var(--sp-3); } /* 다른 그룹으로 전환 */
+  .chat-row + .chat-row { margin-top: 1px; }                  /* 같은 그룹 연속 — 더 밀착 */
+  .chat-row + .chat-row.is-start { margin-top: var(--sp-2); } /* 다른 그룹으로 전환 — 톤 다운 */
   .chat-row + .chat-date-sep,
   .chat-date-sep + .chat-row { margin-top: var(--sp-2); }
   .chat-sender {

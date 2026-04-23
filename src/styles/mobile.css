@@ -750,7 +750,13 @@
     border-bottom: 1px solid var(--c-border-soft);
   }
   .m-info-row-split:last-child { border-bottom: 0; }
-  .m-info-row-split .m-info-row-edit { border-bottom: 0; gap: var(--sp-2); }
+  .m-info-row-split .m-info-row-edit {
+    border-bottom: 0;
+    gap: var(--sp-2);
+    min-width: 0;          /* grid item intrinsic size 방지 — 1fr 1fr 강제 */
+    padding: var(--sp-2);  /* 좁은 폭이라 좌우 패딩 축소 */
+    overflow: hidden;
+  }
   .m-info-row-split .m-info-row-edit + .m-info-row-edit {
     border-left: 1px solid var(--c-border-soft);
   }
