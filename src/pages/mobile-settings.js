@@ -273,15 +273,29 @@ function _render() {
             <span class="m-info-label">빌드</span>
             <span class="m-info-value" style="color:var(--c-text-muted);font-weight:var(--fw-normal);">${new Date(lastSync).getFullYear()}.${String(new Date(lastSync).getMonth()+1).padStart(2,'0')}.${String(new Date(lastSync).getDate()).padStart(2,'0')}</span>
           </div>
+          ${role === 'admin' ? `
+            <button class="m-info-row" data-path="/admin/dev">
+              <span class="m-info-label"><i class="ph ph-code"></i> 개발자 도구</span>
+              <span class="m-info-value" style="color:var(--c-text-muted);font-weight:var(--fw-normal);"><i class="ph ph-caret-right"></i></span>
+            </button>
+            <button class="m-info-row" data-path="/admin/stats">
+              <span class="m-info-label"><i class="ph ph-chart-line"></i> 영업자 통계</span>
+              <span class="m-info-value" style="color:var(--c-text-muted);font-weight:var(--fw-normal);"><i class="ph ph-caret-right"></i></span>
+            </button>
+          ` : ''}
         </section>
 
-        ${role === 'admin' || role === 'provider' ? `
+        ${providerMenu.length ? `
           <section class="m-info-section">
-            <div class="m-info-section-head"><span class="m-info-section-title">관리 (PC 전용)</span></div>
-            <div class="m-info-row" style="color:var(--c-text-muted);font-size:var(--fs-xs);padding:var(--sp-3);">
-              <i class="ph ph-info"></i>
-              <span style="margin-left:var(--sp-2);">재고·정책·사용자·파트너·계약서 관리는 PC에서 접속하세요</span>
-            </div>
+            <div class="m-info-section-head"><span class="m-info-section-title">관리</span></div>
+            ${providerMenu.map(menuRow).join('')}
+          </section>
+        ` : ''}
+
+        ${adminMenu.length ? `
+          <section class="m-info-section">
+            <div class="m-info-section-head"><span class="m-info-section-title">관리자</span></div>
+            ${adminMenu.map(menuRow).join('')}
           </section>
         ` : ''}
 

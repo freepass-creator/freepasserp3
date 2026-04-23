@@ -13,7 +13,6 @@ import { initWs4Resize } from '../core/resize.js';
 import { saveNotice, updateNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
 import { renderExcelTable } from '../core/excel-table.js';
-import { isMobile } from '../core/mobile-shell.js';
 
 let unsubs = [];
 let activeKey = null;
@@ -33,19 +32,6 @@ export function mount(subPath) {
   else mode = 'users';
 
   const main = document.getElementById('mainContent');
-
-  // 모바일에선 PC 안내만 표시 (admin 화면은 복잡해서 모바일 미최적화)
-  if (isMobile()) {
-    main.innerHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:var(--sp-6);text-align:center;gap:var(--sp-3);">
-        <i class="ph ph-desktop" style="font-size:48px;color:var(--c-text-muted);"></i>
-        <div style="font-size:var(--fs-md);font-weight:var(--fw-semibold);">PC에서 접속해주세요</div>
-        <div style="color:var(--c-text-muted);font-size:var(--fs-sm);line-height:1.5;">
-          관리자 기능은<br>PC 화면에 최적화되어 있습니다.
-        </div>
-      </div>`;
-    return;
-  }
 
   if (mode === 'dev') { mountDev(main); return; }
   if (mode === 'sign') { mountSignInbox(main); return; }
@@ -1180,10 +1166,8 @@ function renderVmActions(vm) {
         ${_vmShowArchived ? '전체 보기' : `단종 숨김${archivedCount ? ` (${archivedCount})` : ''}`}
       </button>
       <button class="btn btn-sm btn-outline" style="color:var(--c-err);" id="vmDeleteAll" title="vehicle_master 전체 soft-delete (개발용)"><i class="ph ph-trash"></i> 전체 삭제</button>
-      <button class="btn btn-sm btn-outline" id="vmSeed" title="한국 차종 263종 일괄 등록"><i class="ph ph-flag"></i> 차종 시드</button>
-      <button class="btn btn-sm btn-primary" id="vmEncar" title="엔카 마스터 1092건 (production_start/end · maker_code · popularity 포함)"><i class="ph ph-download-simple"></i> 엔카 마스터</button>
-      <button class="btn btn-sm btn-outline" id="vmEnrich" title="기존 레코드의 빈 스펙을 시드 데이터로 보완"><i class="ph ph-wrench"></i> 기존 보완</button>
-      <button class="btn btn-sm btn-outline" id="vmPrep" title="products 에서 미등록 차종 조합 추출"><i class="ph ph-table"></i> 데이터 준비</button>
+      <button class="btn btn-sm btn-primary" id="vmEncar" title="엔카 마스터 1092건 (production_start/end · maker_code · popularity 포함) — 멱등 재실행 가능"><i class="ph ph-download-simple"></i> 엔카 마스터 가져오기</button>
+      <button class="btn btn-sm btn-outline" id="vmNormalize" title="products 의 maker/model/sub_model 을 엔카 마스터 표준 명칭으로 정규화"><i class="ph ph-magic-wand"></i> 상품 정규화</button>
       <button class="btn btn-sm btn-primary" id="vmNew" style="margin-left:auto;"><i class="ph ph-plus"></i> 차종 추가</button>
     `;
   }
@@ -1193,10 +1177,8 @@ function renderVmActions(vm) {
     _vmShowArchived = !_vmShowArchived;
     renderVmActions(vm); renderVmList(vm);
   });
-  document.getElementById('vmSeed')?.addEventListener('click', () => vmSeedAction(vm));
   document.getElementById('vmEncar')?.addEventListener('click', () => vmEncarImportAction(vm));
-  document.getElementById('vmEnrich')?.addEventListener('click', () => vmEnrichAction(vm));
-  document.getElementById('vmPrep')?.addEventListener('click', () => vmStartPrep(vm));
+  document.getElementById('vmNormalize')?.addEventListener('click', () => vmNormalizeProductsAction(vm));
   document.getElementById('vmDeleteAll')?.addEventListener('click', () => vmDeleteAllAction(vm));
   document.getElementById('vmNew')?.addEventListener('click', () => {
     _vmMode = 'new'; _vmSelectedKey = null; _vmForm = { ...VM_EMPTY_FORM };
@@ -1518,6 +1500,118 @@ async function vmSaveAction(vm) {
   }
 }
 
+/** products 의 maker/model/sub_model 을 vehicle_master 의 표준 명칭으로 정규화
+ *  매칭: (maker|model|sub_model) exact → (sub_model normalized) → (maker+sub_model 부분일치) */
+async function vmNormalizeProductsAction(vm) {
+  const products = (store.products || []).filter(p => p.status !== 'deleted' && !p._deleted);
+  if (!products.length) { showToast('상품 없음'); return; }
+
+  const master = _vmModels.filter(m => m.maker && m.model && m.sub && !m.archived);
+  if (!master.length) { showToast('엔카 마스터가 비어있음 — 먼저 import', 'error'); return; }
+
+  const norm = s => String(s || '').toLowerCase().replace(/[\s()\/\-.,~·_]/g, '');
+  const idxExact = new Map();        // "maker|model|sub" → row
+  const idxBySub = new Map();        // normSub → [row, ...]
+  for (const m of master) {
+    idxExact.set(`${m.maker}|${m.model}|${m.sub}`, m);
+    const n = norm(m.sub);
+    if (n) {
+      if (!idxBySub.has(n)) idxBySub.set(n, []);
+      idxBySub.get(n).push(m);
+    }
+  }
+
+  let unchanged = 0, unmatched = 0;
+  const changes = [];
+  const unmatchedSamples = [];
+  for (const p of products) {
+    if (!p.maker && !p.sub_model) { unmatched++; continue; }
+    let best = null;
+
+    // 1) 완전일치
+    const exactKey = `${p.maker || ''}|${p.model || ''}|${p.sub_model || ''}`;
+    if (idxExact.has(exactKey)) best = idxExact.get(exactKey);
+
+    // 2) sub 정규화 일치 (maker 우선)
+    if (!best && p.sub_model) {
+      const list = idxBySub.get(norm(p.sub_model)) || [];
+      if (list.length === 1) best = list[0];
+      else if (list.length > 1) {
+        best = list.find(m => m.maker === p.maker && m.model === p.model)
+            || list.find(m => m.maker === p.maker)
+            || list[0];
+      }
+    }
+
+    // 3) maker + sub 부분일치 (master.sub가 product.sub_model 포함)
+    if (!best && p.maker && p.sub_model) {
+      const nSub = norm(p.sub_model);
+      const cands = master.filter(m => m.maker === p.maker && (norm(m.sub).includes(nSub) || nSub.includes(norm(m.sub))));
+      if (cands.length === 1) best = cands[0];
+      else if (cands.length > 1) {
+        // model 일치 우선
+        best = cands.find(m => m.model === p.model) || null;
+      }
+    }
+
+    if (!best) {
+      unmatched++;
+      if (unmatchedSamples.length < 8) unmatchedSamples.push(`  · ${p.maker || '?'} / ${p.model || '?'} / ${p.sub_model || '?'}`);
+      continue;
+    }
+
+    if (best.maker === p.maker && best.model === p.model && best.sub === p.sub_model) {
+      unchanged++;
+    } else {
+      changes.push({
+        key: p._key,
+        from: { maker: p.maker, model: p.model, sub_model: p.sub_model },
+        to:   { maker: best.maker, model: best.model, sub_model: best.sub },
+      });
+    }
+  }
+
+  const sampleChanges = changes.slice(0, 6).map(c =>
+    `  ${c.from.maker || '-'} / ${c.from.model || '-'} / ${c.from.sub_model || '-'}\n    → ${c.to.maker} / ${c.to.model} / ${c.to.sub_model}`
+  ).join('\n');
+
+  if (!confirm(
+    `상품 ${products.length}건 분석 결과\n`
+    + `  변경 필요: ${changes.length}건\n`
+    + `  이미 표준: ${unchanged}건\n`
+    + `  매칭 실패: ${unmatched}건\n\n`
+    + (changes.length ? `변경 예시 (최대 6건):\n${sampleChanges}\n\n` : '')
+    + (unmatched ? `매칭 실패 예시:\n${unmatchedSamples.join('\n')}\n\n` : '')
+    + `${changes.length}건 적용?`)) return;
+
+  if (!changes.length) { showToast('변경 사항 없음'); return; }
+
+  const { ref: dbRef, update: dbUpdate } = await import('firebase/database');
+  const { db } = await import('../firebase/config.js');
+  const updates = {};
+  const now = Date.now();
+  for (const c of changes) {
+    updates[`products/${c.key}/maker`] = c.to.maker;
+    updates[`products/${c.key}/model`] = c.to.model;
+    updates[`products/${c.key}/sub_model`] = c.to.sub_model;
+    updates[`products/${c.key}/updated_at`] = now;
+  }
+  const keys = Object.keys(updates);
+  const CHUNK = 400;
+  try {
+    for (let i = 0; i < keys.length; i += CHUNK) {
+      const slice = {};
+      for (const k of keys.slice(i, i + CHUNK)) slice[k] = updates[k];
+      await dbUpdate(dbRef(db), slice);
+      devLog(`[vmNormalize] ${Math.min(i + CHUNK, keys.length)}/${keys.length} 패스`);
+    }
+    devLog(`[vmNormalize] 완료 · ${changes.length}건 정규화`);
+    showToast(`${changes.length}건 정규화 완료`);
+  } catch (e) {
+    showToast(`실패: ${e.message}`, 'error');
+  }
+}
+
 async function vmSeedAction(vm) {
   const { KOREAN_CAR_MODELS, subWithYear } = await import('../core/car-models-seed.js');
   const existing = new Set(_vmModels.map(m => `${m.maker}|${m.model}|${m.sub}`));
@@ -1578,36 +1672,41 @@ async function vmEncarImportAction(vm) {
     + `진행?`)) return;
 
   devLog(`[vmEncar] 시작 · 추가 ${toAdd.length} · 병합 ${toMerge.length}`);
-  const { ref: dbRef, update: dbUpdate, set: dbSet, push: dbPush, serverTimestamp }
-    = await import('firebase/database');
+  const { ref: dbRef, update: dbUpdate } = await import('firebase/database');
   const { db } = await import('../firebase/config.js');
 
+  // 멀티패스 update로 배치 처리 — 청크당 200건씩 1 라운드트립
+  const MERGE_FIELDS = ['production_start','production_end','car_name','maker_eng','maker_code','popularity','model_popularity','category','archived','source'];
+  const updates = {};
+  const now = Date.now();
+  for (const r of toAdd) {
+    const { _key, ...payload } = r;
+    updates[`vehicle_master/${_key}`] = { ...payload, created_at: now, updated_at: now };
+  }
+  for (const { key, row } of toMerge) {
+    for (const f of MERGE_FIELDS) {
+      if (row[f] !== undefined && row[f] !== null && row[f] !== '') {
+        updates[`vehicle_master/${key}/${f}`] = row[f];
+      }
+    }
+    updates[`vehicle_master/${key}/updated_at`] = now;
+  }
+
+  const keys = Object.keys(updates);
+  const CHUNK = 400;
   let ok = 0, fail = 0;
   try {
-    for (const r of toAdd) {
+    for (let i = 0; i < keys.length; i += CHUNK) {
+      const slice = {};
+      for (const k of keys.slice(i, i + CHUNK)) slice[k] = updates[k];
       try {
-        const payload = { ...r, created_at: Date.now(), updated_at: Date.now() };
-        // _key는 내부용 — 저장 path 자체에 쓰지 않음 (encar_xxx key로 저장)
-        const key = r._key;
-        delete payload._key;
-        await dbSet(dbRef(db, `vehicle_master/${key}`), payload);
-        ok++;
-        if (ok % 50 === 0) devLog(`[vmEncar] ${ok}/${toAdd.length} 추가`);
-      } catch (e) { fail++; console.error('[vmEncar] add 실패', r._key, e); }
+        await dbUpdate(dbRef(db), slice);
+        ok += Object.keys(slice).length;
+        devLog(`[vmEncar] 배치 ${Math.min(i + CHUNK, keys.length)}/${keys.length}`);
+      } catch (e) { fail += Object.keys(slice).length; console.error('[vmEncar] 배치 실패', e); }
     }
-    for (const { key, row } of toMerge) {
-      try {
-        const patch = { updated_at: Date.now() };
-        // 엔카 고유 필드만 병합 (기존 데이터 보존)
-        for (const f of ['production_start','production_end','car_name','maker_eng','maker_code','popularity','model_popularity','category','archived','source']) {
-          if (row[f] !== undefined && row[f] !== null && row[f] !== '') patch[f] = row[f];
-        }
-        await dbUpdate(dbRef(db, `vehicle_master/${key}`), patch);
-        ok++;
-      } catch (e) { fail++; console.error('[vmEncar] merge 실패', key, e); }
-    }
-    devLog(`[vmEncar] 완료 · 성공 ${ok} · 실패 ${fail}`);
-    showToast(`엔카 import 완료: ${ok}건${fail ? ` (실패 ${fail})` : ''}`);
+    devLog(`[vmEncar] 완료 · 패스 ${ok} · 실패 ${fail}`);
+    showToast(`엔카 import 완료 (신규 ${toAdd.length} · 병합 ${toMerge.length})`);
   } catch (e) {
     showToast(`import 실패: ${e.message}`, 'error');
   }

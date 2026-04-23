@@ -13,7 +13,6 @@ import { firstProductImage, supportedDriveSource } from '../core/product-photos.
 import { topBadgesHtml, reviewOverlayHtml } from '../core/product-badges.js';
 import { getMakers, getModelsByMaker, getSubModels, findCarModel } from '../core/car-models.js';
 import { renderExcelTable } from '../core/excel-table.js';
-import { isMobile } from '../core/mobile-shell.js';
 
 let unsubProducts = null;
 let allProducts = [];
@@ -25,24 +24,9 @@ const DRAFT_KEY = '__draft__';
 
 const WS_KEY = 'fp.prod.widths';
 
-function renderDesktopOnlyNotice(label) {
-  const main = document.getElementById('mainContent');
-  main.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:var(--sp-6);text-align:center;gap:var(--sp-3);">
-      <i class="ph ph-desktop" style="font-size:48px;color:var(--c-text-muted);"></i>
-      <div style="font-size:var(--fs-md);font-weight:var(--fw-semibold);">PC에서 접속해주세요</div>
-      <div style="color:var(--c-text-muted);font-size:var(--fs-sm);line-height:1.5;">${label}은<br>PC 화면에 최적화되어 있습니다.</div>
-    </div>`;
-}
-
 export function mount() {
   unsubProducts?.();
   activeKey = null;
-
-  if (isMobile()) {
-    renderDesktopOnlyNotice('재고 관리');
-    return;
-  }
 
   const shell = document.querySelector('.shell');
 
