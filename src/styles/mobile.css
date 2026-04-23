@@ -389,15 +389,26 @@
     cursor: pointer;
   }
   .m-search-clear-all {
-    border: 0;
-    background: transparent;
-    color: var(--c-accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    height: 26px;
+    padding: 0 10px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    background: var(--c-bg-sub);
+    color: var(--c-text-muted);
     font-size: var(--fs-xs);
     font-weight: var(--fw-medium);
-    padding: 0 var(--sp-2);
     cursor: pointer;
-    flex-shrink: 0;
   }
+  .m-search-clear-all.is-active {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+  .m-search-clear-all:active { background: var(--c-bg-hover); }
+  .m-search-clear-all[disabled] { cursor: default; opacity: 0.7; }
 
   /* 필터 버튼 상단 도트 (적용된 필터 개수 표시) */
   .m-search-bar .m-topbar-action { position: relative; }
