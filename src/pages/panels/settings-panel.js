@@ -16,7 +16,7 @@ export function renderSettings(container) {
   container.innerHTML = `
     <div style="max-width: 480px; margin: 0 auto; padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-4);">
 
-      <div style="text-align: center; font-size: var(--fs-lg); font-weight: var(--fw-bold); margin-bottom: var(--sp-2);">내 정보</div>
+      <div style="text-align: center; font-size: var(--fs-lg); font-weight: var(--fw-semibold); margin-bottom: var(--sp-2);">내 정보</div>
 
       <!-- 명함 미리보기 -->
       <div style="background: var(--c-bg-sub); border-radius: var(--ctrl-r); padding: var(--sp-4); display: flex; align-items: center; gap: var(--sp-4);">
@@ -24,7 +24,7 @@ export function renderSettings(container) {
           ${user.avatar_url ? `<img src="${user.avatar_url}" style="width:100%;height:100%;object-fit:cover;">` : '👤'}
         </div>
         <div>
-          <div style="font-weight:var(--fw-bold);">${user.name || '이름 없음'}</div>
+          <div style="font-weight:var(--fw-semibold);">${user.name || '이름 없음'}</div>
           <div style="font-size:var(--fs-xs);color:var(--c-text-sub);">${user.company_name || ''} ${user.position || ''}</div>
           <div style="font-size:var(--fs-xs);color:var(--c-text-muted);">${user.email || ''}</div>
         </div>

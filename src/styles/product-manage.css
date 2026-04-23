@@ -117,7 +117,7 @@
   .pd-hero-carno {
     width: 100%;
     font-size: var(--fs-lg);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     padding: 6px 10px;
     letter-spacing: 0.5px;
     text-align: left;

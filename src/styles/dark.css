@@ -8,26 +8,27 @@
   }
 
   :root[data-theme="dark"] {
-    /* ── Background & Surface ── */
-    --c-bg:           #111114;
-    --c-bg-sub:       #18181b;
-    --c-bg-hover:     #1f1f23;
+    /* ── Background & Surface — surface 를 bg 보다 한 단계 밝혀 카드 부상감 확보 ── */
+    --c-bg:           #0e0e11;
+    --c-bg-zebra:     #131317;
+    --c-bg-sub:       #17171b;
+    --c-bg-hover:     #1f1f24;
     --c-bg-active:    #28282d;
-    --c-surface:      #141416;
-    --c-border-soft:  #1f1f23;
-    --c-border:       #2a2a2e;
-    --c-border-strong:#3f3f45;
+    --c-surface:      #17171b;   /* bg 와 확실히 구분되게 */
+    --c-border-soft:  #25252a;   /* 행 divider 가 보이도록 살짝 밝게 */
+    --c-border:       #2f2f35;
+    --c-border-strong:#45454c;
 
-    /* ── Text ── */
-    --c-text:         #b8b8be;
-    --c-text-sub:     #8a8a92;
-    --c-text-muted:   #55555d;
+    /* ── Text — 메인 텍스트 밝기 조정 (#b8b8be → #c8c8cd) ── */
+    --c-text:         #c8c8cd;
+    --c-text-sub:     #9599a0;
+    --c-text-muted:   #5f5f67;
     --c-text-inv:     #0d0d0f;
 
-    /* ── Brand — CI 유지, 다크 배경용 밝기 보정 ── */
-    --c-accent:       #8aa4c8;
-    --c-accent-hover: #9db4d4;
-    --c-accent-soft:  rgba(138, 164, 200, .12);
+    /* ── Brand — 다크 배경용 채도 up, 가독성 확보 ── */
+    --c-accent:       #9db4d4;
+    --c-accent-hover: #b0c4de;
+    --c-accent-soft:  rgba(157, 180, 212, .16);
     --c-brand-base:   #7f8ea8;
     --c-brand-sky:    #9ec5f3;
 
@@ -86,6 +87,26 @@
   :root[data-theme="dark"] .badge.is-filled.badge-cyan   { background: rgba(34, 211, 238, .18); color: var(--c-cyan);   border-color: rgba(34, 211, 238, .3); }
   :root[data-theme="dark"] .badge.is-filled.badge-muted  { background: rgba(99, 99, 107, .18); color: var(--c-text-muted); border-color: rgba(99, 99, 107, .3); }
 
+  /* ── 모바일 overlays/pills 다크 보정 — solid 포화색 금지, muted bg + 컬러 텍스트 ── */
+  :root[data-theme="dark"] .m-card-thumb-credit.is-ok   { background: rgba(52, 211, 153, .18);  color: var(--c-ok); }
+  :root[data-theme="dark"] .m-card-thumb-credit.is-warn { background: rgba(251, 191, 36, .18); color: var(--c-warn); }
+  :root[data-theme="dark"] .m-card-thumb-credit.is-info { background: rgba(96, 165, 250, .18); color: var(--c-info); }
+  :root[data-theme="dark"] .m-card-thumb-credit         { background: rgba(255, 255, 255, .08); color: var(--c-text-sub); }
+
+  /* m-card-pill 은 이미 *-bg 사용 중이지만 신차 is-type-new 만 solid 라 보정 */
+  :root[data-theme="dark"] .m-card-pill.is-type-new {
+    background: rgba(96, 165, 250, .20);
+    color: var(--c-info);
+  }
+  :root[data-theme="dark"] .m-card-pill.is-type-used {
+    background: rgba(96, 165, 250, .10);
+    color: var(--c-info);
+  }
+
+  /* 대여료 accent 색 — 다크에서도 읽히도록 (이미 --c-accent 가 밝게 보정됨) */
+
+  /* 토글 켜진 상태 — 밝은 네이비라 그대로 유지 */
+
   /* ── 로그인 카드 다크 보정 ── */
   :root[data-theme="dark"] .login-card {
     border-color: var(--c-border);
@@ -106,6 +127,93 @@
   :root[data-theme="dark"] .room-item-avatar,
   :root[data-theme="dark"] .pd-photo-item {
     background: var(--c-bg-active);
+  }
+
+  /* ── 모바일 info-section 경계 강화 (다크에서 섹션 분리 명확히) ── */
+  :root[data-theme="dark"] .m-info-section,
+  :root[data-theme="dark"] .m-settings-hero {
+    background: var(--c-surface);
+    border-color: var(--c-border);
+  }
+  :root[data-theme="dark"] .m-info-section-head {
+    background: var(--c-bg-sub);
+    border-bottom-color: var(--c-border-soft);
+  }
+
+  /* ── 모바일 카드 아바타/썸네일 배경 — bg-sub 유지하되 경계 추가 ── */
+  :root[data-theme="dark"] .m-card-product .m-card-thumb,
+  :root[data-theme="dark"] .m-card-icon-wrap,
+  :root[data-theme="dark"] .m-room-item .m-chat-avatar {
+    background: var(--c-bg-sub);
+  }
+
+  /* ── 채팅 버블 — accent-soft 로는 부족, 뚜렷한 톤 ── */
+  :root[data-theme="dark"] .chat-row.is-mine .chat-bubble {
+    background: rgba(157, 180, 212, .20);
+    border-color: rgba(157, 180, 212, .28);
+    color: var(--c-text);
+  }
+
+  /* ── 토글 OFF 상태 — 레일이 bg 와 섞여 사라지지 않게 ── */
+  :root[data-theme="dark"] .m-toggle { background: var(--c-border-strong); }
+  :root[data-theme="dark"] .m-toggle-knob {
+    background: var(--c-text-sub);
+    box-shadow: 0 1px 2px rgba(0,0,0,.5);
+  }
+  :root[data-theme="dark"] .m-toggle.is-on { background: var(--c-accent); }
+  :root[data-theme="dark"] .m-toggle.is-on .m-toggle-knob { background: var(--c-bg); }
+
+  /* ── 칩/필터 active 상태 — accent 배경 + 반전 텍스트 ── */
+  :root[data-theme="dark"] .chip.is-active {
+    background: var(--c-accent);
+    color: var(--c-bg);
+  }
+
+  /* ── 세그먼트 탭 active — 확실히 눌린 느낌 ── */
+  :root[data-theme="dark"] .m-tab-btn.is-active {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+    color: var(--c-bg);
+  }
+  :root[data-theme="dark"] .m-tab-btn {
+    background: var(--c-bg-sub);
+    border-color: var(--c-border);
+  }
+
+  /* ── 대여료 accent 색 카드 숫자 — 기본 --c-accent 가 연함, 살짝 강조 ── */
+  :root[data-theme="dark"] .m-card-price-rent { color: var(--c-accent-hover); }
+
+  /* ── 검색창 / 챗 인풋 배경 — bg-sub 유지, 보더 살짝 강조 ── */
+  :root[data-theme="dark"] .m-search-bar,
+  :root[data-theme="dark"] .m-chat-input {
+    background: var(--c-bg-sub);
+    border-color: var(--c-border);
+  }
+
+  /* ── 상단바(m-topbar / m-settings-header) — bg 와 분리 ── */
+  :root[data-theme="dark"] .m-topbar,
+  :root[data-theme="dark"] .m-settings-header,
+  :root[data-theme="dark"] .m-search-head {
+    background: var(--c-surface);
+    border-bottom-color: var(--c-border);
+  }
+
+  /* ── 모바일 탭바 — 배경 명확히 ── */
+  :root[data-theme="dark"] .mobile-tab {
+    background: var(--c-surface);
+    border-top-color: var(--c-border);
+  }
+
+  /* ── 업로드 dropzone — 점선 보더 가독성 ── */
+  :root[data-theme="dark"] .m-upload-dropzone { border-top-color: var(--c-border); }
+
+  /* ── 문서 행 배경 ── */
+  :root[data-theme="dark"] .m-doc-item { border-bottom-color: var(--c-border-soft); }
+  :root[data-theme="dark"] .m-doc-thumb { background: var(--c-bg-active); }
+
+  /* ── FAB 그림자 강화 ── */
+  :root[data-theme="dark"] .m-fab {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .6);
   }
 
   /* ── 스크롤바 다크 ── */

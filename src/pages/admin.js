@@ -12,10 +12,12 @@ import { fieldInput as ffi, fieldSelect as ffs, fieldView as ffv, fieldTextarea 
 import { initWs4Resize } from '../core/resize.js';
 import { saveNotice, updateNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
+import { renderExcelTable } from '../core/excel-table.js';
 
 let unsubs = [];
 let activeKey = null;
 let mode = 'users'; // users | partners | sign | dev
+let viewMode = 'card';
 
 export function mount(subPath) {
   unsubs.forEach(u => u?.());
@@ -38,8 +40,8 @@ export function mount(subPath) {
     <div class="ws4">
       <div class="ws4-panel" data-panel="list">
         <div class="ws4-head">
-          <span>${mode === 'users' ? '사용자' : '파트너'}</span>
-          ${mode === 'partners' ? '<button class="btn btn-xs btn-primary" id="admNewPartner"><i class="ph ph-plus"></i> 새 파트너</button>' : ''}
+          <span>${mode === 'users' ? '사용자 목록' : '파트너 목록'}</span>
+          <span style="display:flex;gap:var(--sp-1);"><button class="btn btn-sm btn-outline" id="admViewToggle"><i class="ph ph-table"></i> 엑셀보기</button>${mode === 'partners' ? '<button class="btn btn-sm btn-primary" id="admNewPartner"><i class="ph ph-plus"></i> 새 파트너</button>' : ''}</span>
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="admSearch" placeholder="검색..." >
@@ -54,18 +56,18 @@ export function mount(subPath) {
       </div>
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="form">
-        <div class="ws4-head"><span>정보</span><div style="display:flex;gap:var(--sp-1);" id="admFormActions"></div></div>
+        <div class="ws4-head"><span>${mode === 'users' ? '사용자 정보' : '파트너 정보'}</span><div style="display:flex;gap:var(--sp-1);" id="admFormActions"></div></div>
         <div class="ws4-body" id="admForm">${empty('선택하세요')}</div>
       </div>
       <div class="ws4-resize" data-idx="1"></div>
       <div class="ws4-panel" data-panel="detail">
-        <div class="ws4-head">상세</div>
+        <div class="ws4-head">${mode === 'users' ? '사용자 상세' : '파트너 상세'}</div>
         <div class="ws4-body" id="admDetail">${empty('상세')}</div>
       </div>
       <div class="ws4-resize" data-idx="2"></div>
       <div class="ws4-panel" data-panel="sub">
-        <div class="ws4-head">보조</div>
-        <div class="ws4-body" id="admSub">${empty('보조')}</div>
+        <div class="ws4-head">활동 이력</div>
+        <div class="ws4-body" id="admSub">${empty('이력')}</div>
       </div>
     </div>
   `;
@@ -80,6 +82,13 @@ export function mount(subPath) {
     });
   });
   document.getElementById('admSearch')?.addEventListener('input', () => renderList());
+
+  document.getElementById('admViewToggle')?.addEventListener('click', () => {
+    viewMode = viewMode === 'excel' ? 'card' : 'excel';
+    const btn = document.getElementById('admViewToggle');
+    if (btn) btn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
+    renderList();
+  });
 
   document.getElementById('admNewPartner')?.addEventListener('click', () => {
     const fa = document.getElementById('admFormActions');
@@ -151,12 +160,42 @@ function renderList() {
 
   list.sort((a,b) => (b.created_at||0) - (a.created_at||0));
 
+  if (viewMode === 'excel') {
+    const cols = mode === 'users' ? [
+      { key: 'name', label: '이름', width: 90, pin: 'left', filter: 'search' },
+      { key: 'email', label: '이메일', width: 160, filter: 'search' },
+      { key: 'role', label: '역할', width: 80, filter: 'check' },
+      { key: 'company_name', label: '회사명', width: 120, filter: 'search' },
+      { key: 'phone', label: '연락처', width: 110 },
+      { key: 'status', label: '상태', width: 70, filter: 'check' },
+    ] : [
+      { key: 'partner_name', label: '파트너명', width: 120, pin: 'left', filter: 'search' },
+      { key: 'partner_code', label: '코드', width: 100, filter: 'search' },
+      { key: 'partner_type', label: '유형', width: 80, filter: 'check' },
+      { key: 'manager_name', label: '담당자', width: 90, filter: 'search' },
+      { key: 'manager_phone', label: '연락처', width: 110 },
+      { key: 'status', label: '상태', width: 70, filter: 'check' },
+    ];
+    renderExcelTable(el, {
+      cols,
+      data: list,
+      activeKey: activeKey,
+      keyField: '_key',
+      onRowClick: async (it) => {
+        activeKey = it._key;
+        loadItem(it._key);
+        const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
+        const nm = mode === 'users' ? (it.name || it.email) : (it.partner_name || it.partner_code);
+        const icon = mode === 'users' ? 'ph ph-user' : 'ph ph-buildings';
+        setBreadcrumbTail({ icon, label: nm, sub: mode === 'users' ? (it.role || '') : (it.partner_code || '') });
+      },
+    });
+    return;
+  }
+
+  // Card view
   const STATUS_TONE = { active: 'ok', pending: 'warn', rejected: 'err', inactive: 'muted' };
   const tone = st => STATUS_TONE[st] || 'muted';
-  const statusBadge = st => {
-    const labels = { active: '승인', pending: '대기', rejected: '반려', inactive: '비활' };
-    return st ? `<span class="badge badge-${tone(st)}">${labels[st] || st}</span>` : '';
-  };
 
   el.innerHTML = list.map(item => {
     const key = item._key;
@@ -165,7 +204,7 @@ function renderList() {
       : [item.partner_name, item.ceo_name, item.manager_name].filter(Boolean).join(' ');
     const statusLabel = { active: '승인', pending: '대기', rejected: '반려', inactive: '비활' }[item.status] || '';
     const avatarIcon = mode === 'users' ? 'ph-user' : 'ph-buildings';
-    const roleLabel = { admin: '관리자', provider: '공급사', agent: '영업자', manager: '영업관리자' }[item.role] || item.role || '';
+    const roleLabel = { admin: '관리자', provider: '공급사', agent: '영업자', agent_admin: '영업관리자' }[item.role] || item.role || '';
     const sub = mode === 'users'
       ? [roleLabel, item.company_name, item.phone].filter(Boolean).join(' · ')
       : [item.partner_type, item.business_number, item.manager_phone || item.company_phone].filter(Boolean).join(' · ');
@@ -243,7 +282,7 @@ function loadUser(key) {
         <div class="form-section-body">
           ${ffi('이름','name',u)}
           ${ffv('이메일', u.email)}
-          ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'},{value:'manager',label:'영업관리자'}])}
+          ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'},{value:'agent_admin',label:'영업관리자'}])}
           ${ffv('소속코드', u.company_code)}
           ${ffi('소속명','company_name',u)}
           ${ffv('계정코드', u.user_code)}
@@ -263,7 +302,7 @@ function loadUser(key) {
         <div class="form-section-body">
           ${ffv('UID', u.uid)}
           ${ffv('상태', { active: '승인', pending: '대기', rejected: '반려', inactive: '비활', deleted: '삭제' }[u.status] || u.status)}
-          ${ffv('역할', { admin: '관리자', provider: '공급사', agent: '영업자', manager: '영업관리자' }[u.role] || u.role)}
+          ${ffv('역할', { admin: '관리자', provider: '공급사', agent: '영업자', agent_admin: '영업관리자' }[u.role] || u.role)}
           ${ffv('가입일', u.created_at ? new Date(u.created_at).toLocaleDateString('ko') : '-')}
         </div>
       </div>
@@ -275,11 +314,22 @@ function loadUser(key) {
     <div style="padding:var(--sp-3);color:var(--c-text-muted);font-size:var(--fs-xs);">사용자 관련 로그/활동</div>
   `;
 
-  // 상태 토글 이벤트 (헤드)
+  // 상태 토글 이벤트 (헤드) — 승인자/시각 기록
   document.querySelectorAll('#admFormActions .status-toggle').forEach(tog => {
     tog.addEventListener('click', async () => {
-      await updateRecord(`users/${key}`, { status: tog.dataset.status });
-      showToast(`→ ${tog.dataset.status}`);
+      const me = store.currentUser || {};
+      const newStatus = tog.dataset.status;
+      const updates = { status: newStatus };
+      if (newStatus === 'active') {
+        updates.approved_at = Date.now();
+        updates.approved_by = me.uid || '';
+      } else if (newStatus === 'rejected') {
+        updates.rejected_at = Date.now();
+        updates.rejected_by = me.uid || '';
+      }
+      await updateRecord(`users/${key}`, updates);
+      const labels = { pending: '대기', active: '승인', rejected: '반려' };
+      showToast(`${u.name || u.email} → ${labels[newStatus]}`);
     });
   });
 }
@@ -366,15 +416,16 @@ function loadPartner(key) {
 }
 
 /* ── 개발모드 (구 관리자 통합) ── */
+/** JPKerp DEV_LABELS/DEV_SUBS/DEV_ICONS 규격 — 좌측 리스트에서 아이콘+제목+부제 표시 */
 const DEV_TABS = [
-  { id: 'tools',   icon: 'ph ph-wrench',      label: '도구' },
-  { id: 'stock',   icon: 'ph ph-trash',       label: '재고삭제' },
-  { id: 'notice',  icon: 'ph ph-megaphone',   label: '공지' },
-  { id: 'vehicle', icon: 'ph ph-car-simple',  label: '차종' },
-  { id: 'color',   icon: 'ph ph-palette',     label: '색상' },
-  { id: 'upload',  icon: 'ph ph-upload-simple', label: '업로드' },
-  { id: 'sync',    icon: 'ph ph-google-drive-logo', label: '시트동기화' },
-  { id: 'data',    icon: 'ph ph-database',    label: '데이터' },
+  { id: 'vehicle', icon: 'ph ph-car-profile',         label: '차종 마스터',   sub: 'vehicle_master — 제조사·모델·세부모델 CRUD' },
+  { id: 'notice',  icon: 'ph ph-megaphone',           label: '공지',         sub: '대시보드 공지 CRUD' },
+  { id: 'color',   icon: 'ph ph-palette',             label: '색상 옵션',    sub: '외장·내장 색상 마스터' },
+  { id: 'data',    icon: 'ph ph-database',            label: 'RTDB 현황',     sub: '컬렉션별 레코드 수·용량' },
+  { id: 'upload',  icon: 'ph ph-upload-simple',       label: '일괄 업로드',  sub: 'CSV · Excel · Google Sheets 임포트' },
+  { id: 'sync',    icon: 'ph ph-google-drive-logo',   label: '시트 동기화',  sub: 'Google Sheets ↔ Firebase' },
+  { id: 'stock',   icon: 'ph ph-trash',               label: '데이터 삭제',  sub: '재고·계약·정산 일괄 삭제 (soft/hard)' },
+  { id: 'tools',   icon: 'ph ph-wrench',              label: '시스템 도구',  sub: '버전·캐시·Store·일회성 마이그레이션' },
 ];
 
 const devLog = (msg) => {
@@ -584,41 +635,97 @@ async function sendSignLink(c) {
 
 function mountDev(main) {
   main.innerHTML = `
-    <div class="ws4" style="grid-template-columns:180px 1fr 6px 320px;">
+    <div class="ws4">
+      <!-- Panel 1: 도구 목록 -->
       <div class="ws4-panel" data-panel="nav">
-        <div class="ws4-head">개발 · 관리</div>
-        <div class="ws4-body" id="devNav" style="padding:var(--sp-2);display:flex;flex-direction:column;gap:2px;">
-          ${DEV_TABS.map((t,i) => `
-            <button class="sb-item ${i===0?'is-active':''}" data-dev-tab="${t.id}" style="width:100%;">
-              <i class="${t.icon}"></i><span>${t.label}</span>
+        <div class="ws4-head"><i class="ph ph-code"></i> <span>개발도구</span></div>
+        <div class="ws4-body" id="devNav" style="padding:var(--sp-2);display:flex;flex-direction:column;gap:2px;overflow-y:auto;">
+          ${DEV_TABS.map((t, i) => `
+            <button class="dev-tool-item ${i === 0 ? 'is-active' : ''}" data-dev-tab="${t.id}">
+              <i class="${t.icon}"></i>
+              <span class="dev-tool-text">
+                <span class="dev-tool-label">${t.label}</span>
+                <span class="dev-tool-sub">${t.sub || ''}</span>
+              </span>
             </button>
           `).join('')}
         </div>
       </div>
-      <div class="ws4-panel" data-panel="content">
-        <div class="ws4-head" id="devTitle">도구</div>
+      <div class="ws4-resize" data-idx="0"></div>
+
+      <!-- Panel 2+3 (병합): 선택된 도구 — 내부에 목록+상세 자체 배치 -->
+      <div class="ws4-panel" data-panel="content" style="flex:2 1 50%;">
+        <div class="ws4-head">
+          <i class="ph" id="devTitleIcon"></i>
+          <span id="devTitle" style="font-weight:var(--fw-semibold);"></span>
+          <span id="devTitleSub" style="margin-left:var(--sp-2);color:var(--c-text-muted);font-size:var(--fs-xs);font-weight:normal;"></span>
+        </div>
         <div class="ws4-body" id="devContent" style="padding:var(--sp-3);overflow-y:auto;"></div>
       </div>
-      <div class="ws4-resize" data-idx="0"></div>
+      <div class="ws4-resize" data-idx="1"></div>
+
+      <!-- Panel 4: 로그 -->
       <div class="ws4-panel" data-panel="log">
-        <div class="ws4-head">로그</div>
+        <div class="ws4-head"><i class="ph ph-terminal"></i> 로그</div>
         <div class="ws4-body" id="devLog" style="padding:var(--sp-3);font-family:monospace;font-size:11px;color:var(--c-text-sub);white-space:pre-wrap;overflow-y:auto;"></div>
       </div>
     </div>
+    <style>
+      .dev-tool-item {
+        display: flex; align-items: flex-start; gap: var(--sp-2);
+        padding: var(--sp-2) var(--sp-3);
+        border-radius: var(--ctrl-r);
+        background: transparent;
+        border: 1px solid transparent;
+        text-align: left;
+        cursor: pointer;
+        transition: all var(--dur) var(--ease);
+      }
+      .dev-tool-item:hover { background: var(--c-bg-hover); }
+      .dev-tool-item.is-active {
+        background: var(--c-accent-soft);
+        border-color: var(--c-accent);
+      }
+      .dev-tool-item > i {
+        flex-shrink: 0;
+        font-size: var(--fs-lg);
+        color: var(--c-text-sub);
+        margin-top: 2px;
+      }
+      .dev-tool-item.is-active > i { color: var(--c-accent); }
+      .dev-tool-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+      .dev-tool-label {
+        font-size: var(--fs-sm); font-weight: var(--fw-medium);
+        color: var(--c-text);
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      }
+      .dev-tool-item.is-active .dev-tool-label { color: var(--c-accent); font-weight: var(--fw-semibold); }
+      .dev-tool-sub {
+        font-size: var(--fs-2xs);
+        color: var(--c-text-muted);
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        line-height: 1.3;
+      }
+    </style>
   `;
 
-  main.querySelectorAll('[data-dev-tab]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      main.querySelectorAll('[data-dev-tab]').forEach(b => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      const id = btn.dataset.devTab;
-      const tab = DEV_TABS.find(t => t.id === id);
-      document.getElementById('devTitle').textContent = tab?.label || '';
-      renderDevTab(id);
+  const selectTab = (id) => {
+    main.querySelectorAll('[data-dev-tab]').forEach(b => {
+      b.classList.toggle('is-active', b.dataset.devTab === id);
     });
+    const tab = DEV_TABS.find(t => t.id === id);
+    document.getElementById('devTitle').textContent = tab?.label || '';
+    document.getElementById('devTitleSub').textContent = tab?.sub || '';
+    const ic = document.getElementById('devTitleIcon');
+    if (ic && tab) ic.className = tab.icon;
+    renderDevTab(id);
+  };
+
+  main.querySelectorAll('[data-dev-tab]').forEach(btn => {
+    btn.addEventListener('click', () => selectTab(btn.dataset.devTab));
   });
 
-  renderDevTab('tools');
+  selectTab(DEV_TABS[0].id);
 }
 
 function renderDevTab(id) {
@@ -931,61 +1038,705 @@ function renderNoticeTab(el) {
 }
 
 /* 차종 마스터 CRUD */
+let _vmUnsub = null;
+let _vmModels = [];
+let _vmFilterMaker = '';
+let _vmSearch = '';
+let _vmMode = 'idle'; // idle | view | edit | new | prep
+let _vmSelectedKey = null;
+let _vmForm = null;
+let _vmShowArchived = false;
+let _vmPrepRows = [];
+
+// JPKerp2 lib/data/vehicle-constants.ts 기준 (엔카 2026 택소노미)
+const VM_CATEGORIES = [
+  '경차', '경형 SUV', '경형 EV',
+  '소형 SUV', '소형 EV SUV', '소형 EV', '소형 트럭', '소형 EV 트럭',
+  '준중형 세단', '준중형 SUV', '준중형 EV', '준중형 EV SUV',
+  '중형 세단', '중형 SUV', '중형 EV 세단', '중형 EV SUV',
+  '준대형 세단', '준대형 SUV',
+  '대형 세단', '대형 SUV', '대형 MPV', '대형 EV SUV',
+  '스포츠 세단', '수소 SUV', '픽업트럭',
+];
+const VM_FUELS = ['가솔린', '디젤', '하이브리드', '전기', 'LPG'];
+const VM_ORIGINS = ['국산', '수입'];
+const VM_POWERTRAINS = ['내연', '하이브리드', '전기', '수소'];
+const VM_BODY_SHAPES = ['세단', '해치백', 'SUV', 'RV/MPV', '쿠페', '컨버터블', '왜건', '트럭', '승합', '기타'];
+const VM_SIZE_CLASSES = ['경차', '소형', '준중형', '중형', '준대형', '대형'];
+
+const VM_EMPTY_FORM = {
+  maker: '', model: '', sub: '', code: '',
+  year_start: '', year_end: '현재',
+  category: '', fuel_type: '',
+  origin: '', powertrain: '',
+  seats: '', displacement: '', battery_kwh: '',
+  // 엔카 확장 필드 (JPKerp2 RtdbCarModel)
+  body_type: '', size_class: '',
+  type_number_pattern: '', engine_type: '',
+  car_name: '',
+  maker_code: '', maker_eng: '',
+  popularity: '', model_popularity: '',
+};
+
 function renderVehicleTab(el) {
   el.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:var(--sp-3);">
-      <div class="form-section"><div class="form-section-title">차종 추가</div>
-        <div class="form-section-body">
-          <input class="input input-sm" id="vmMaker" placeholder="제조사" >
-          <input class="input input-sm" id="vmModel" placeholder="모델명" >
-          <input class="input input-sm" id="vmSub" placeholder="세부모델" >
-          <input class="input input-sm" id="vmCat" placeholder="분류(선택)" >
-          <button class="btn btn-primary btn-sm" id="vmSave" style="grid-column:span 2;"><i class="ph ph-plus"></i> 추가</button>
+    <div id="vmRoot" style="display:flex;flex-direction:column;height:100%;gap:var(--sp-2);">
+      <!-- 상단 액션바 -->
+      <div id="vmActions" style="display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;"></div>
+
+      <!-- 메인: 좌측 그리드 + 우측 상세 -->
+      <div style="display:flex;gap:var(--sp-2);flex:1;min-height:0;">
+        <!-- 좌측 리스트 -->
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;border:1px solid var(--c-border-soft);border-radius:var(--ctrl-r);overflow:hidden;">
+          <div style="display:flex;gap:var(--sp-2);padding:var(--sp-2);border-bottom:1px solid var(--c-border-soft);align-items:center;">
+            <input class="input input-sm" id="vmSearch" placeholder="모델·세부모델·코드" style="flex:1;">
+            <select class="input input-sm" id="vmMakerFilter" style="width:120px;"><option value="">전체</option></select>
+            <span id="vmStats" style="font-size:var(--fs-2xs);color:var(--c-text-muted);"></span>
+          </div>
+          <div id="vmList" style="flex:1;overflow-y:auto;"></div>
         </div>
-      </div>
-      <div class="form-section"><div class="form-section-title">차종 목록 <span id="vmCount" style="color:var(--c-text-muted);font-weight:normal;font-size:var(--fs-xs);"></span></div>
-        <div class="form-section-body">
-          <input class="input input-sm" id="vmQ" placeholder="검색" style="margin-bottom:var(--sp-1);">
-          <div id="vmList" style="max-height:400px;overflow-y:auto;"></div>
-        </div>
+
+        <!-- 우측 상세/편집 패널 (모드 전환) -->
+        <aside id="vmDetail" style="width:360px;flex-shrink:0;border:1px solid var(--c-border-soft);border-radius:var(--ctrl-r);overflow-y:auto;display:none;"></aside>
       </div>
     </div>
   `;
-  const refresh = async () => {
-    const items = await fetchCollection('vehicle_master/entries');
-    const q = document.getElementById('vmQ').value.toLowerCase().trim();
-    const list = items.filter(i => !q || `${i.maker} ${i.model} ${i.sub_model}`.toLowerCase().includes(q))
-      .sort((a,b) => (a.maker||'').localeCompare(b.maker||'') || (a.model||'').localeCompare(b.model||''));
-    document.getElementById('vmCount').textContent = `${list.length}건`;
-    document.getElementById('vmList').innerHTML = list.slice(0, 300).map(it => `
-      <div style="display:flex;gap:var(--sp-2);align-items:center;padding:4px 8px;border-bottom:1px solid var(--c-border);font-size:var(--fs-xs);">
-        <span style="width:80px;">${it.maker||''}</span>
-        <span style="width:120px;">${it.model||''}</span>
-        <span style="flex:1;">${it.sub_model||''}</span>
-        <span style="width:80px;color:var(--c-text-muted);">${it.vehicle_category||''}</span>
-        <button class="btn btn-xs" style="background:var(--c-err);color:var(--c-text-inv);" data-vmd="${it._key}"><i class="ph ph-x"></i></button>
-      </div>
-    `).join('') || empty('없음');
-    document.querySelectorAll('[data-vmd]').forEach(b => b.addEventListener('click', async () => {
-      if (!confirm('삭제?')) return;
-      await softDelete(`vehicle_master/entries/${b.dataset.vmd}`);
-      showToast('삭제 완료'); refresh();
-    }));
-  };
-  document.getElementById('vmQ').addEventListener('input', refresh);
-  document.getElementById('vmSave').addEventListener('click', async () => {
-    const maker = document.getElementById('vmMaker').value.trim();
-    const model = document.getElementById('vmModel').value.trim();
-    const sub_model = document.getElementById('vmSub').value.trim();
-    const vehicle_category = document.getElementById('vmCat').value.trim();
-    if (!maker || !model) return showToast('제조사/모델 필수', 'error');
-    const key = await pushRecord('vehicle_master/entries', { maker, model, sub_model, vehicle_category });
-    devLog(`✓ 차종 추가: ${maker} ${model} ${sub_model} (${key})`);
-    showToast('추가 완료');
-    ['vmMaker','vmModel','vmSub','vmCat'].forEach(id => document.getElementById(id).value = '');
-    refresh();
+
+  _vmUnsub?.();
+  _vmMode = 'idle';
+  _vmSelectedKey = null;
+  _vmForm = { ...VM_EMPTY_FORM };
+
+  import('../core/vehicle-master.js').then((vm) => {
+    _vmUnsub = vm.watchVehicleMaster((list) => {
+      _vmModels = list;
+      renderVmActions(vm);
+      renderVmList(vm);
+      renderVmDetail(vm);
+    });
+
+    document.getElementById('vmSearch').addEventListener('input', (e) => {
+      _vmSearch = e.target.value.trim();
+      renderVmList(vm);
+    });
+    document.getElementById('vmMakerFilter').addEventListener('change', (e) => {
+      _vmFilterMaker = e.target.value;
+      renderVmList(vm);
+    });
   });
-  refresh();
+}
+
+function renderVmActions(vm) {
+  const el = document.getElementById('vmActions');
+  if (!el) return;
+  const selected = _vmModels.find(v => v._key === _vmSelectedKey);
+  const archivedCount = _vmModels.filter(m => m.archived).length;
+  const editable = _vmMode === 'edit' || _vmMode === 'new';
+
+  if (_vmMode === 'prep') {
+    const checked = _vmPrepRows.filter(r => r.checked && !r.in_jpkerp).length;
+    el.innerHTML = `
+      <button class="btn btn-sm btn-ghost" id="vmPrepCancel"><i class="ph ph-x"></i> 취소</button>
+      <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${_vmPrepRows.length}건 발견 · 선택 ${checked}건</span>
+      <button class="btn btn-sm btn-primary" id="vmPrepCommit" style="margin-left:auto;"><i class="ph ph-check"></i> 선택 ${checked}건 등록</button>
+    `;
+    document.getElementById('vmPrepCancel')?.addEventListener('click', () => {
+      _vmMode = 'idle'; _vmPrepRows = [];
+      renderVmActions(vm); renderVmList(vm); renderVmDetail(vm);
+    });
+    document.getElementById('vmPrepCommit')?.addEventListener('click', () => vmPrepCommit(vm));
+    return;
+  }
+
+  if (editable) {
+    el.innerHTML = `
+      <button class="btn btn-sm btn-ghost" id="vmCancel"><i class="ph ph-x"></i> 취소</button>
+      <button class="btn btn-sm btn-primary" id="vmSave" style="margin-left:auto;"><i class="ph ph-check"></i> ${_vmMode === 'edit' ? '수정 저장' : '등록'}</button>
+    `;
+  } else if (_vmMode === 'view' && selected) {
+    el.innerHTML = `
+      <button class="btn btn-sm btn-outline" id="vmEdit"><i class="ph ph-pencil"></i> 수정</button>
+      <button class="btn btn-sm btn-outline" style="color:var(--c-err);" id="vmDelete"><i class="ph ph-trash"></i> 삭제</button>
+      <button class="btn btn-sm btn-primary" id="vmNew" style="margin-left:auto;"><i class="ph ph-plus"></i> 차종 추가</button>
+    `;
+  } else {
+    el.innerHTML = `
+      <button class="btn btn-sm ${_vmShowArchived ? 'btn-primary' : 'btn-outline'}" id="vmToggleArchived" title="15년 초과 단종 모델 포함/제외">
+        <i class="ph ${_vmShowArchived ? 'ph-eye' : 'ph-eye-slash'}"></i>
+        ${_vmShowArchived ? '전체 보기' : `단종 숨김${archivedCount ? ` (${archivedCount})` : ''}`}
+      </button>
+      <button class="btn btn-sm btn-outline" style="color:var(--c-err);" id="vmDeleteAll" title="vehicle_master 전체 soft-delete (개발용)"><i class="ph ph-trash"></i> 전체 삭제</button>
+      <button class="btn btn-sm btn-outline" id="vmSeed" title="한국 차종 263종 일괄 등록"><i class="ph ph-flag"></i> 차종 시드</button>
+      <button class="btn btn-sm btn-outline" id="vmEnrich" title="기존 레코드의 빈 스펙을 시드 데이터로 보완"><i class="ph ph-wrench"></i> 기존 보완</button>
+      <button class="btn btn-sm btn-outline" id="vmPrep" title="products 에서 미등록 차종 조합 추출"><i class="ph ph-table"></i> 데이터 준비</button>
+      <button class="btn btn-sm btn-primary" id="vmNew" style="margin-left:auto;"><i class="ph ph-plus"></i> 차종 추가</button>
+    `;
+  }
+
+  // 핸들러 바인딩
+  document.getElementById('vmToggleArchived')?.addEventListener('click', () => {
+    _vmShowArchived = !_vmShowArchived;
+    renderVmActions(vm); renderVmList(vm);
+  });
+  document.getElementById('vmSeed')?.addEventListener('click', () => vmSeedAction(vm));
+  document.getElementById('vmEnrich')?.addEventListener('click', () => vmEnrichAction(vm));
+  document.getElementById('vmPrep')?.addEventListener('click', () => vmStartPrep(vm));
+  document.getElementById('vmDeleteAll')?.addEventListener('click', () => vmDeleteAllAction(vm));
+  document.getElementById('vmNew')?.addEventListener('click', () => {
+    _vmMode = 'new'; _vmSelectedKey = null; _vmForm = { ...VM_EMPTY_FORM };
+    renderVmActions(vm); renderVmDetail(vm);
+  });
+  document.getElementById('vmEdit')?.addEventListener('click', () => {
+    if (!selected) return;
+    _vmMode = 'edit'; _vmForm = vmFormFromRow(selected);
+    renderVmActions(vm); renderVmDetail(vm);
+  });
+  document.getElementById('vmDelete')?.addEventListener('click', async () => {
+    if (!selected) return;
+    if (!confirm(`${selected.maker} ${selected.sub} 삭제?`)) return;
+    await vm.deleteVehicleModel(selected._key);
+    devLog(`[vm] 삭제: ${selected.maker} ${selected.sub}`);
+    showToast('삭제됨');
+    _vmMode = 'idle'; _vmSelectedKey = null;
+    renderVmActions(vm); renderVmDetail(vm);
+  });
+  document.getElementById('vmCancel')?.addEventListener('click', () => {
+    if (_vmMode === 'edit' && selected) {
+      _vmMode = 'view'; _vmForm = vmFormFromRow(selected);
+    } else {
+      _vmMode = 'idle'; _vmSelectedKey = null; _vmForm = { ...VM_EMPTY_FORM };
+    }
+    renderVmActions(vm); renderVmDetail(vm);
+  });
+  document.getElementById('vmSave')?.addEventListener('click', () => vmSaveAction(vm));
+}
+
+function vmFormFromRow(r) {
+  return {
+    maker: r.maker || '', model: r.model || '', sub: r.sub || '', code: r.code || '',
+    year_start: String(r.year_start ?? ''), year_end: String(r.year_end ?? '현재'),
+    category: r.category || '', fuel_type: r.fuel_type || '',
+    origin: r.origin || '', powertrain: r.powertrain || '',
+    seats: r.seats ? String(r.seats) : '',
+    displacement: r.displacement ? String(r.displacement) : '',
+    battery_kwh: r.battery_kwh ? String(r.battery_kwh) : '',
+    body_type: r.body_type || '', size_class: r.size_class || '',
+    type_number_pattern: r.type_number_pattern || '',
+    engine_type: r.engine_type || '',
+    car_name: r.car_name || '',
+    maker_code: r.maker_code || '', maker_eng: r.maker_eng || '',
+    popularity: r.popularity ? String(r.popularity) : '',
+    model_popularity: r.model_popularity ? String(r.model_popularity) : '',
+  };
+}
+
+function renderVmList(vm) {
+  const listEl = document.getElementById('vmList');
+  const makerSel = document.getElementById('vmMakerFilter');
+  if (!listEl || !makerSel) return;
+
+  // prep 모드: 체크박스 테이블
+  if (_vmMode === 'prep') {
+    makerSel.disabled = true;
+    document.getElementById('vmSearch').disabled = true;
+    listEl.innerHTML = `
+      <div style="display:grid;grid-template-columns:30px 30px 80px 110px 1fr 60px 50px;gap:6px;padding:6px var(--sp-2);border-bottom:1px solid var(--c-border);background:var(--c-bg-sub);font-size:var(--fs-2xs);color:var(--c-text-muted);position:sticky;top:0;z-index:1;">
+        <span><input type="checkbox" id="vmPrepAll" ${_vmPrepRows.every(r => r.checked || r.in_jpkerp) ? 'checked' : ''}></span>
+        <span>#</span><span>제조사</span><span>모델</span><span>세부모델</span><span style="text-align:right;">보유</span><span>상태</span>
+      </div>
+      ${_vmPrepRows.map((r, i) => `
+        <div style="display:grid;grid-template-columns:30px 30px 80px 110px 1fr 60px 50px;gap:6px;padding:6px var(--sp-2);border-bottom:1px solid var(--c-border-soft);font-size:var(--fs-xs);align-items:center;${r.in_jpkerp ? 'opacity:0.5;' : ''}">
+          <span><input type="checkbox" data-prep-idx="${i}" ${r.checked ? 'checked' : ''} ${r.in_jpkerp ? 'disabled' : ''}></span>
+          <span style="color:var(--c-text-muted);">${i + 1}</span>
+          <span>${r.maker}</span>
+          <span>${r.model}</span>
+          <span style="font-weight:var(--fw-medium);">${r.sub}</span>
+          <span style="text-align:right;color:var(--c-accent);">${r.product_count || 0}</span>
+          <span style="font-size:var(--fs-2xs);color:${r.in_jpkerp ? 'var(--c-ok)' : 'var(--c-warn)'};">${r.in_jpkerp ? '등록됨' : '미등록'}</span>
+        </div>
+      `).join('')}
+    `;
+    document.getElementById('vmPrepAll')?.addEventListener('change', (e) => {
+      _vmPrepRows.forEach(r => { if (!r.in_jpkerp) r.checked = e.target.checked; });
+      renderVmList(vm); renderVmActions(vm);
+    });
+    listEl.querySelectorAll('[data-prep-idx]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        _vmPrepRows[Number(cb.dataset.prepIdx)].checked = cb.checked;
+        renderVmActions(vm);
+      });
+    });
+    return;
+  }
+
+  // 일반 모드
+  makerSel.disabled = false;
+  document.getElementById('vmSearch').disabled = false;
+
+  const makers = vm.uniqueMakers(_vmModels);
+  const cur = makerSel.value;
+  makerSel.innerHTML = `<option value="">전체 (${_vmModels.length})</option>` +
+    makers.map(m => `<option value="${m.maker}" ${cur === m.maker ? 'selected' : ''}>${m.maker} (${m.count})</option>`).join('');
+
+  // asset_count 계산 — products 에서 maker+model+sub 매칭 수
+  const countByKey = new Map();
+  for (const p of (store.products || [])) {
+    if (p._deleted || p.status === 'deleted') continue;
+    const k = [p.maker, p.model, p.sub_model].filter(Boolean).join('|');
+    countByKey.set(k, (countByKey.get(k) || 0) + 1);
+  }
+
+  let list = _vmModels.map(v => ({
+    ...v,
+    asset_count: countByKey.get([v.maker, v.model, v.sub].filter(Boolean).join('|')) || 0,
+  }));
+
+  // 불량 레코드 제외 (maker·model·sub 모두 비어있는 것)
+  list = list.filter(v => v.maker || v.model || v.sub);
+
+  if (!_vmShowArchived) list = list.filter(v => !v.archived);
+  if (_vmFilterMaker) list = list.filter(v => v.maker === _vmFilterMaker);
+  if (_vmSearch) {
+    const q = _vmSearch.toLowerCase();
+    list = list.filter(v => [v.maker, v.model, v.sub, v.car_name, v.code, v.type_number_pattern]
+      .some(s => s && String(s).toLowerCase().includes(q)));
+  }
+  // JPKerp 기본 정렬: 보유 내림차순
+  list.sort((a, b) => b.asset_count - a.asset_count);
+
+  document.getElementById('vmStats').textContent = `${list.length}/${_vmModels.length}종`;
+
+  if (!list.length) {
+    listEl.innerHTML = `<div style="padding:var(--sp-6);text-align:center;color:var(--c-text-muted);font-size:var(--fs-xs);">${_vmModels.length === 0 ? '차종 없음 — "차종 시드" 로 일괄등록 시작' : '결과 없음'}</div>`;
+    return;
+  }
+
+  listEl.innerHTML = `
+    <div style="display:grid;grid-template-columns:30px 70px 90px 1fr 50px 90px 75px 75px 50px;gap:6px;padding:6px var(--sp-2);border-bottom:1px solid var(--c-border);background:var(--c-bg-sub);font-size:var(--fs-2xs);color:var(--c-text-muted);position:sticky;top:0;z-index:1;">
+      <span>#</span><span>제조사</span><span>모델</span><span>세부모델</span><span>제조국</span><span>차종구분</span><span>생산시작</span><span>생산종료</span><span style="text-align:right;">보유</span>
+    </div>
+    ${list.map((v, i) => `
+      <div class="vm-row ${v._key === _vmSelectedKey ? 'is-active' : ''}" data-key="${v._key}"
+           style="display:grid;grid-template-columns:30px 70px 90px 1fr 50px 90px 75px 75px 50px;gap:6px;padding:6px var(--sp-2);border-bottom:1px solid var(--c-border-soft);cursor:pointer;font-size:var(--fs-xs);align-items:center;${v._key === _vmSelectedKey ? 'background:var(--c-accent-soft);' : ''}">
+        <span style="color:var(--c-text-muted);">${i + 1}</span>
+        <span style="font-weight:var(--fw-semibold);">${v.maker || '-'}</span>
+        <span>${v.model || '-'}</span>
+        <span style="font-weight:var(--fw-medium);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${v.sub || '-'}</span>
+        <span style="color:${v.origin === '수입' ? 'var(--c-accent)' : 'var(--c-text-sub)'};font-weight:${v.origin === '수입' ? 'var(--fw-semibold)' : 'normal'};">${v.origin || '-'}</span>
+        <span style="color:var(--c-text-sub);">${v.category || '-'}</span>
+        <span style="color:var(--c-text-sub);font-size:var(--fs-2xs);">${v.year_start || '-'}</span>
+        <span style="color:${v.year_end === '현재' ? 'var(--c-ok)' : 'var(--c-text-sub)'};font-size:var(--fs-2xs);font-weight:${v.year_end === '현재' ? 'var(--fw-semibold)' : 'normal'};">${v.year_end || '-'}</span>
+        <span style="text-align:right;color:${v.asset_count > 0 ? 'var(--c-accent)' : 'var(--c-text-muted)'};font-weight:${v.asset_count > 0 ? 'var(--fw-semibold)' : 'normal'};">${v.asset_count}</span>
+      </div>
+    `).join('')}
+  `;
+
+  listEl.querySelectorAll('.vm-row').forEach(row => {
+    row.addEventListener('click', () => {
+      _vmSelectedKey = row.dataset.key;
+      _vmMode = 'view';
+      _vmForm = vmFormFromRow(_vmModels.find(v => v._key === _vmSelectedKey));
+      renderVmActions(vm); renderVmList(vm); renderVmDetail(vm);
+    });
+  });
+}
+
+function renderVmDetail(vm) {
+  const el = document.getElementById('vmDetail');
+  if (!el) return;
+  if (_vmMode === 'idle') { el.style.display = 'none'; return; }
+  el.style.display = 'block';
+
+  const selected = _vmModels.find(v => v._key === _vmSelectedKey);
+
+  if (_vmMode === 'view' && selected) {
+    const kv = (k, v, style = '') => v ? `<dt style="color:var(--c-text-muted);">${k}</dt><dd style="margin:0;${style}">${v}</dd>` : '';
+    el.innerHTML = `
+      <div style="padding:var(--sp-4);">
+        <div style="font-size:var(--fs-lg);font-weight:var(--fw-semibold);margin-bottom:2px;">${selected.maker} <span style="color:var(--c-text-sub);font-weight:var(--fw-medium);">${selected.model}</span></div>
+        <div style="font-size:var(--fs-md);color:var(--c-text-sub);margin-bottom:var(--sp-3);">${selected.sub}</div>
+        <dl style="display:grid;grid-template-columns:auto 1fr;gap:6px var(--sp-3);margin:0;font-size:var(--fs-sm);">
+          ${kv('구분', selected.origin ? `<b style="color:${selected.origin === '수입' ? 'var(--c-accent)' : 'var(--c-text)'};">${selected.origin}</b>` : '')}
+          ${kv('동력', selected.powertrain ? `<b style="color:${selected.powertrain === '전기' ? 'var(--c-ok)' : selected.powertrain === '하이브리드' ? 'var(--c-warn)' : 'var(--c-text)'};">${selected.powertrain}</b>` : '')}
+          ${kv('코드', selected.code)}
+          ${kv('연식', `${selected.year_start || '?'} ~ ${selected.year_end || '현재'}`)}
+          ${kv('분류', selected.category)}
+          ${kv('차체', selected.body_type)}
+          ${kv('크기', selected.size_class)}
+          ${kv('연료', selected.fuel_type)}
+          ${kv('승차정원', selected.seats ? `${selected.seats}인승` : '')}
+          ${kv('배기량', selected.displacement ? `${selected.displacement.toLocaleString()}cc` : '')}
+          ${kv('배터리', selected.battery_kwh ? `${selected.battery_kwh} kWh` : '')}
+          ${kv('차명(등록증)', selected.car_name)}
+          ${kv('형식번호', selected.type_number_pattern ? `<code style="font-family:monospace;">${selected.type_number_pattern}</code>` : '')}
+          ${kv('엔진형식', selected.engine_type)}
+          ${kv('제조사 코드', selected.maker_code)}
+          ${kv('제조사 영문', selected.maker_eng)}
+          ${kv('인기도', selected.popularity ?? '')}
+        </dl>
+      </div>
+    `;
+    return;
+  }
+
+  if (_vmMode === 'edit' || _vmMode === 'new') {
+    const row = (label, key, val, opts = {}) => {
+      const type = opts.type || 'text';
+      const ph = opts.placeholder || '';
+      return `
+        <div style="display:flex;flex-direction:column;gap:3px;">
+          <label style="font-size:var(--fs-2xs);color:var(--c-text-muted);">${label}</label>
+          <input class="input input-sm" data-vmf="${key}" type="${type}" value="${val ?? ''}" placeholder="${ph}">
+        </div>
+      `;
+    };
+    const sel = (label, key, val, opts) => `
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <label style="font-size:var(--fs-2xs);color:var(--c-text-muted);">${label}</label>
+        <select class="input input-sm" data-vmf="${key}">
+          <option value="">-</option>
+          ${opts.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+        </select>
+      </div>
+    `;
+    const f = _vmForm;
+    el.innerHTML = `
+      <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-2);">
+        <div style="font-size:var(--fs-md);font-weight:var(--fw-semibold);">
+          <i class="ph ${_vmMode === 'edit' ? 'ph-pencil' : 'ph-plus-circle'}"></i>
+          ${_vmMode === 'edit' ? '차종 수정' : '새 차종 추가'}
+        </div>
+        ${row('제조사 *', 'maker', f.maker, { placeholder: '현대' })}
+        ${row('모델명 *', 'model', f.model, { placeholder: '아반떼' })}
+        ${row('세부모델 *', 'sub', f.sub, { placeholder: '아반떼 CN7 23-' })}
+        ${row('내부코드', 'code', f.code, { placeholder: 'CN7' })}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);">
+          ${row('생산시작', 'year_start', f.year_start, { placeholder: '2023' })}
+          ${row('생산종료', 'year_end', f.year_end, { placeholder: '현재' })}
+        </div>
+        ${sel('분류', 'category', f.category, VM_CATEGORIES)}
+        ${sel('제조국', 'origin', f.origin, VM_ORIGINS)}
+        ${sel('동력', 'powertrain', f.powertrain, VM_POWERTRAINS)}
+        ${sel('연료', 'fuel_type', f.fuel_type, VM_FUELS)}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);">
+          ${row('배기량 (cc)', 'displacement', f.displacement, { type: 'number' })}
+          ${row('승차정원', 'seats', f.seats, { type: 'number' })}
+        </div>
+        ${row('배터리 (kWh)', 'battery_kwh', f.battery_kwh, { type: 'number' })}
+
+        <div style="margin-top:var(--sp-2);padding-top:var(--sp-2);border-top:1px solid var(--c-border-soft);font-size:var(--fs-2xs);color:var(--c-text-muted);font-weight:var(--fw-semibold);">엔카 확장</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);">
+          ${sel('차체', 'body_type', f.body_type, VM_BODY_SHAPES)}
+          ${sel('크기', 'size_class', f.size_class, VM_SIZE_CLASSES)}
+        </div>
+        ${row('차명 (등록증)', 'car_name', f.car_name, { placeholder: '아반떼(CN7)' })}
+        ${row('형식번호 패턴', 'type_number_pattern', f.type_number_pattern, { placeholder: 'CN7* 또는 정규식' })}
+        ${row('엔진형식', 'engine_type', f.engine_type, { placeholder: 'G4FL, D4HB' })}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);">
+          ${row('제조사 코드', 'maker_code', f.maker_code, { placeholder: '예: 101' })}
+          ${row('제조사 영문', 'maker_eng', f.maker_eng, { placeholder: 'Hyundai' })}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-2);">
+          ${row('인기도', 'popularity', f.popularity, { type: 'number' })}
+          ${row('모델 인기도', 'model_popularity', f.model_popularity, { type: 'number' })}
+        </div>
+      </div>
+    `;
+    // 폼 입력 → _vmForm 동기화
+    el.querySelectorAll('[data-vmf]').forEach(inp => {
+      inp.addEventListener('input', () => { _vmForm[inp.dataset.vmf] = inp.value; });
+      inp.addEventListener('change', () => { _vmForm[inp.dataset.vmf] = inp.value; });
+    });
+  }
+}
+
+/* ── 차종 시드 · 기존 보완 · 전체 삭제 · 저장 · 삭제 액션 ── */
+
+async function vmSaveAction(vm) {
+  const f = _vmForm;
+  if (!f.maker || !f.model || !f.sub) { showToast('제조사·모델·세부모델 필수', 'error'); return; }
+  const payload = {
+    maker: f.maker.trim(), model: f.model.trim(), sub: f.sub.trim(),
+    code: f.code.trim() || undefined,
+    year_start: f.year_start.trim() || undefined,
+    year_end: f.year_end.trim() || '현재',
+    category: f.category || undefined,
+    fuel_type: f.fuel_type || undefined,
+    origin: f.origin || undefined,
+    powertrain: f.powertrain || undefined,
+    seats: f.seats ? Number(f.seats) : undefined,
+    displacement: f.displacement ? Number(f.displacement) : undefined,
+    battery_kwh: f.battery_kwh ? Number(f.battery_kwh) : undefined,
+    body_type: f.body_type || undefined,
+    size_class: f.size_class || undefined,
+    car_name: f.car_name?.trim() || undefined,
+    type_number_pattern: f.type_number_pattern?.trim() || undefined,
+    engine_type: f.engine_type?.trim() || undefined,
+    maker_code: f.maker_code?.trim() || undefined,
+    maker_eng: f.maker_eng?.trim() || undefined,
+    popularity: f.popularity ? Number(f.popularity) : undefined,
+    model_popularity: f.model_popularity ? Number(f.model_popularity) : undefined,
+  };
+  Object.keys(payload).forEach(k => payload[k] === undefined && delete payload[k]);
+  try {
+    if (_vmMode === 'edit' && _vmSelectedKey) {
+      await vm.updateVehicleModel(_vmSelectedKey, payload);
+      devLog(`[vm] 수정: ${payload.maker} ${payload.sub}`);
+      showToast('수정됨');
+      _vmMode = 'view';
+    } else {
+      const exists = _vmModels.some(m => m.maker === payload.maker && m.model === payload.model && m.sub === payload.sub);
+      if (exists) { showToast('이미 등록된 세부모델', 'error'); return; }
+      const key = await vm.createVehicleModel(payload);
+      devLog(`[vm] 추가: ${payload.maker} ${payload.sub} (${key})`);
+      showToast('추가됨');
+      _vmSelectedKey = key;
+      _vmMode = 'view';
+    }
+    renderVmActions(vm); renderVmDetail(vm);
+  } catch (e) {
+    showToast(`저장 실패: ${e?.message}`, 'error');
+  }
+}
+
+async function vmSeedAction(vm) {
+  const { KOREAN_CAR_MODELS, subWithYear } = await import('../core/car-models-seed.js');
+  const existing = new Set(_vmModels.map(m => `${m.maker}|${m.model}|${m.sub}`));
+  const toAdd = KOREAN_CAR_MODELS.filter(s => !existing.has(`${s.maker}|${s.model}|${subWithYear(s.sub, s.year_start)}`));
+  if (!toAdd.length) { showToast(`차종 ${KOREAN_CAR_MODELS.length}종 모두 이미 등록됨`); return; }
+  if (!confirm(`차종 ${toAdd.length}종 등록 (이미 ${KOREAN_CAR_MODELS.length - toAdd.length}종 존재). 진행?`)) return;
+  devLog(`[vmSeed] ${toAdd.length}종 등록 시작...`);
+  try {
+    const result = await vm.seedVehicleMaster(({ i, total, added, skipped }) => {
+      if (i % 30 === 0 || i === total) devLog(`[vmSeed] ${i}/${total} (추가 ${added} · 스킵 ${skipped})`);
+    });
+    devLog(`[vmSeed] 완료: 추가 ${result.added} · 스킵 ${result.skipped}`);
+    showToast(`${result.added}종 시드 완료`);
+  } catch (e) { showToast(`시드 실패: ${e?.message}`, 'error'); }
+}
+
+async function vmEnrichAction(vm) {
+  const { KOREAN_CAR_MODELS, inferOrigin, inferPowertrain, inferFuel, subWithYear } = await import('../core/car-models-seed.js');
+  const seedByKey = new Map();
+  for (const s of KOREAN_CAR_MODELS) seedByKey.set(`${s.maker}|${s.model}|${subWithYear(s.sub, s.year_start)}`, s);
+
+  const targets = _vmModels.filter(m => {
+    const isEv = m.powertrain === '전기' || /EV|전기/i.test(m.category || '');
+    return !m.category || !m.origin || !m.powertrain || !m.displacement || !m.seats
+      || !m.code || !m.year_start
+      || (isEv && !m.battery_kwh)
+      || (!isEv && !m.fuel_type);
+  });
+  if (!targets.length) { showToast('모든 레코드 스펙 완성 상태'); return; }
+  const matchedBySeed = targets.filter(m => seedByKey.has(`${m.maker}|${m.model}|${m.sub}`)).length;
+  if (!confirm(`${targets.length}개 보완 대상:\n· 시드 매칭 ${matchedBySeed}개 (스펙 전부 채움)\n· 매칭 실패 ${targets.length - matchedBySeed}개 (제조사로 구분만 추정)\n\n진행?`)) return;
+  devLog(`[vm] enrich 시작: ${targets.length}건`);
+  let ok = 0, fail = 0;
+  for (const m of targets) {
+    try {
+      const seed = seedByKey.get(`${m.maker}|${m.model}|${m.sub}`);
+      const patch = {};
+      if (seed) {
+        if (!m.category && seed.category) patch.category = seed.category;
+        if (!m.code && seed.code) patch.code = seed.code;
+        if (!m.year_start && seed.year_start) patch.year_start = seed.year_start;
+        if (!m.year_end && seed.year_end) patch.year_end = seed.year_end;
+        if (!m.origin) patch.origin = inferOrigin(seed.maker);
+        if (!m.powertrain) patch.powertrain = inferPowertrain(seed.category);
+        if (!m.fuel_type) patch.fuel_type = seed.fuel_type || inferFuel(seed.category);
+        if (!m.displacement && seed.displacement) patch.displacement = seed.displacement;
+        if (!m.seats && seed.seats) patch.seats = seed.seats;
+        if (!m.battery_kwh && seed.battery_kwh) patch.battery_kwh = seed.battery_kwh;
+      } else {
+        if (!m.origin && m.maker) patch.origin = inferOrigin(m.maker);
+        if (!m.powertrain && m.category) patch.powertrain = inferPowertrain(m.category);
+        if (!m.fuel_type && m.category) patch.fuel_type = inferFuel(m.category);
+      }
+      if (Object.keys(patch).length) {
+        await vm.updateVehicleModel(m._key, patch);
+        ok++;
+      }
+    } catch (e) { fail++; }
+  }
+  devLog(`[vm] enrich 완료: ${ok}건 성공 / ${fail}건 실패`);
+  showToast(`${ok}건 보완 완료${fail ? ` (${fail}건 실패)` : ''}`);
+}
+
+function vmStartPrep(vm) {
+  // products 에서 고유 차종 조합 추출
+  const merged = new Map();
+  for (const p of (store.products || [])) {
+    if (p._deleted || p.status === 'deleted') continue;
+    const maker = (p.maker || '').trim();
+    const model = (p.model || '').trim();
+    const sub = (p.sub_model || '').trim();
+    if (!maker && !model && !sub) continue;
+    const id = [maker, model, sub].filter(Boolean).join('|');
+    let cur = merged.get(id);
+    if (!cur) {
+      cur = { id, maker: maker || '미지정', model: model || '—', sub: sub || model || '—', product_count: 0, in_jpkerp: false, checked: true };
+      merged.set(id, cur);
+    }
+    cur.product_count++;
+  }
+  // 이미 vehicle_master 에 있는지 확인
+  const existing = new Set(_vmModels.map(m => [m.maker, m.model, m.sub].filter(Boolean).join('|')));
+  merged.forEach(r => {
+    if (existing.has(r.id)) { r.in_jpkerp = true; r.checked = false; }
+  });
+  _vmPrepRows = [...merged.values()].sort((a, b) => {
+    if (a.in_jpkerp !== b.in_jpkerp) return a.in_jpkerp ? 1 : -1;
+    return b.product_count - a.product_count;
+  });
+  if (!_vmPrepRows.length) { showToast('products 에서 추출할 차종 없음'); return; }
+  _vmMode = 'prep';
+  renderVmActions(vm); renderVmList(vm); renderVmDetail(vm);
+}
+
+async function vmPrepCommit(vm) {
+  const toAdd = _vmPrepRows.filter(r => r.checked && !r.in_jpkerp);
+  if (!toAdd.length) { showToast('등록 대상 없음'); return; }
+  if (!confirm(`${toAdd.length}종 vehicle_master 에 등록?`)) return;
+  devLog(`[vmPrep] ${toAdd.length}건 등록 시작...`);
+  let ok = 0, fail = 0;
+  for (const r of toAdd) {
+    try {
+      await vm.createVehicleModel({
+        maker: r.maker, model: r.model, sub: r.sub,
+        year_end: '현재', status: 'active', seeded_from: 'products_prep',
+      });
+      ok++;
+    } catch (e) { fail++; }
+  }
+  devLog(`[vmPrep] 완료: ${ok}건 성공 / ${fail}건 실패`);
+  showToast(`${ok}종 등록 완료${fail ? ` (${fail} 실패)` : ''}`);
+  _vmMode = 'idle'; _vmPrepRows = [];
+  renderVmActions(vm); renderVmList(vm); renderVmDetail(vm);
+}
+
+async function vmDeleteAllAction(vm) {
+  const { ref, remove } = await import('firebase/database');
+  const { db } = await import('../firebase/config.js');
+  const active = _vmModels.length;
+  if (!active) { showToast('삭제할 레코드 없음'); return; }
+
+  // 불량 레코드 (maker/model/sub 모두 비어있는 것) 자동 감지
+  const broken = _vmModels.filter(m => !m.maker && !m.model && !m.sub);
+  if (broken.length && broken.length < active) {
+    if (confirm(`불량 레코드 ${broken.length}건을 찾았습니다 (빈 데이터). 먼저 정리?\n· 확인: 불량만 하드 삭제\n· 취소: 전체 삭제로 진행`)) {
+      let ok = 0;
+      for (const m of broken) {
+        try { await remove(ref(db, `vehicle_master/${m._key}`)); ok++; } catch {}
+      }
+      devLog(`[vm] 불량 ${ok}건 정리 완료`);
+      showToast(`불량 ${ok}건 정리 완료`);
+      return;
+    }
+  }
+
+  if (!confirm(`⚠ vehicle_master ${active}건 전체 하드 삭제.\n복구 불가. 진행?`)) return;
+  if (!confirm(`마지막 확인: ${active}건 전체 하드 삭제`)) return;
+  devLog(`[vm] 전체 삭제 시작: ${active}건`);
+  try {
+    await remove(ref(db, 'vehicle_master'));
+    devLog(`[vm] 전체 삭제 완료`);
+    showToast(`${active}건 삭제 완료`);
+  } catch (e) {
+    showToast(`삭제 실패: ${e?.message}`, 'error');
+  }
+}
+
+function openVmEditor(v, updateFn, deleteFn, createFn) {
+  const isEdit = !!v?._key;
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.style.cssText = 'position:fixed;inset:0;background:var(--c-overlay-dark);z-index:9999;display:flex;align-items:center;justify-content:center;padding:var(--sp-4);';
+  modal.innerHTML = `
+    <div style="background:var(--c-surface);border-radius:var(--ctrl-r);width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;">
+      <header style="display:flex;align-items:center;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--c-border);">
+        <span style="font-size:var(--fs-md);font-weight:var(--fw-semibold);flex:1;">${isEdit ? '차종 수정' : '신규 차종'}</span>
+        <button id="vmCancel" class="btn btn-sm btn-ghost"><i class="ph ph-x"></i></button>
+      </header>
+      <div style="flex:1;overflow-y:auto;padding:var(--sp-4);display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);">
+        ${vmFld('제조사', 'maker', v?.maker)}
+        ${vmFld('모델', 'model', v?.model)}
+        ${vmFld('세부모델', 'sub', v?.sub, { full: true, hint: '예: 그랜저 GN7 22-' })}
+        ${vmFld('트림', 'trim', v?.trim)}
+        ${vmFld('차명 (등록증)', 'car_name', v?.car_name)}
+        ${vmFld('형식번호 패턴', 'type_number_pattern', v?.type_number_pattern, { hint: '예: CN7*' })}
+        ${vmFld('생산 시작', 'year_start', v?.year_start, { placeholder: 'YYYY 또는 YYYY-MM' })}
+        ${vmFld('생산 종료', 'year_end', v?.year_end, { placeholder: '현재 또는 YYYY' })}
+        ${vmSel('카테고리', 'category', v?.category, VM_CATEGORIES)}
+        ${vmSel('연료', 'fuel_type', v?.fuel_type, VM_FUELS)}
+        ${vmFld('배기량 (cc)', 'displacement', v?.displacement, { type: 'number' })}
+        ${vmFld('승차정원', 'seats', v?.seats, { type: 'number' })}
+        ${vmFld('구동방식', 'drive_type', v?.drive_type, { placeholder: '전륜/후륜/4륜' })}
+        ${vmFld('변속기', 'transmission', v?.transmission)}
+        ${vmFld('엔진형식', 'engine_type', v?.engine_type)}
+        ${vmFld('배터리 (kWh)', 'battery_kwh', v?.battery_kwh, { type: 'number' })}
+        ${vmFld('EV 주행거리 (km)', 'ev_range', v?.ev_range, { type: 'number' })}
+        ${vmFld('내부코드', 'code', v?.code)}
+      </div>
+      <footer style="display:flex;gap:var(--sp-2);padding:var(--sp-3) var(--sp-4);border-top:1px solid var(--c-border);">
+        ${isEdit ? `<button id="vmDel" class="btn btn-sm btn-outline" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>` : ''}
+        <button id="vmSave" class="btn btn-sm btn-primary" style="margin-left:auto;"><i class="ph ph-check"></i> 저장</button>
+      </footer>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  const close = () => modal.remove();
+  modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  document.getElementById('vmCancel').addEventListener('click', close);
+  document.getElementById('vmSave').addEventListener('click', async () => {
+    const data = Object.fromEntries(
+      [...modal.querySelectorAll('[data-f]')].map(inp => {
+        const key = inp.dataset.f;
+        let val = inp.value.trim();
+        if (inp.type === 'number') val = val ? Number(val) : undefined;
+        return [key, val || undefined];
+      })
+    );
+    if (!data.maker || !data.model || !data.sub) { showToast('제조사·모델·세부모델 필수', 'error'); return; }
+    try {
+      if (isEdit) await updateFn(v._key, data);
+      else await createFn(data);
+      devLog(`[vmEdit] ${isEdit ? '수정' : '신규'}: ${data.maker} ${data.model} ${data.sub}`);
+      showToast(isEdit ? '수정됨' : '추가됨');
+      close();
+    } catch (e) {
+      showToast(`실패: ${e?.code || e?.message}`, 'error');
+    }
+  });
+  document.getElementById('vmDel')?.addEventListener('click', async () => {
+    if (!confirm(`"${v.sub}" 삭제?`)) return;
+    await deleteFn(v._key);
+    devLog(`[vmEdit] 삭제: ${v.maker} ${v.model} ${v.sub}`);
+    showToast('삭제됨');
+    close();
+  });
+}
+
+function vmFld(label, key, val, opts = {}) {
+  const type = opts.type || 'text';
+  const ph = opts.placeholder || opts.hint || '';
+  const full = opts.full ? 'grid-column:1/-1;' : '';
+  return `
+    <label style="display:flex;flex-direction:column;gap:4px;${full}">
+      <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${label}</span>
+      <input class="input input-sm" data-f="${key}" type="${type}" value="${val ?? ''}" placeholder="${ph}">
+    </label>
+  `;
+}
+function vmSel(label, key, val, options) {
+  return `
+    <label style="display:flex;flex-direction:column;gap:4px;">
+      <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${label}</span>
+      <select class="input input-sm" data-f="${key}">
+        <option value="">-</option>
+        ${options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+      </select>
+    </label>
+  `;
 }
 
 /* 색상 마스터 CRUD */

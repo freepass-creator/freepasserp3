@@ -54,8 +54,9 @@
 - 페이지별 CSS는 **크기·정렬만** 덮어씀 (색·테두리 재정의 금지)
 
 ### 타이포 계층
-- 굵기: `--fw-normal(400)` · `--fw-medium(500)` · `--fw-semibold(600)` · `--fw-bold(600 alias)` · `--fw-heavy(700)`
-- heavy는 hero만. 일반 제목은 semibold. "쨍"하지 않게
+- 굵기 4단: `--fw-normal(400)` · `--fw-medium(500)` · `--fw-semibold(600)` · `--fw-heavy(700)`
+- heavy는 hero만. 일반 제목·숫자 강조는 semibold. "쨍"하지 않게
+- `--fw-bold` 토큰은 제거됨 (semibold와 동일, 혼동 방지) — 신규 코드에서 쓰지 말 것
 - Canonical 클래스: `.title-lg / .title-md / .title-sm / .title-xs` (controls.css)
 
 ### 섹션

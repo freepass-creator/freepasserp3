@@ -92,7 +92,7 @@ export function mount(contractCode) {
         <aside class="cs-form-panel">
           <div class="cs-form-head">
             <div>
-              <div style="font-weight:var(--fw-bold);font-size:var(--fs-md);">계약 정보 입력</div>
+              <div style="font-weight:var(--fw-semibold);font-size:var(--fs-md);">계약 정보 입력</div>
               <div style="font-size:var(--fs-xs);color:var(--c-text-muted);margin-top:2px;">입력하면 좌측에 실시간 반영</div>
             </div>
             <button class="btn btn-sm" id="csReset">초기화</button>
@@ -182,17 +182,64 @@ export function mount(contractCode) {
     showToast('초기화됨');
   });
 
-  // PDF
-  document.getElementById('csPdf')?.addEventListener('click', () => {
-    const doc = $iframe?.contentDocument;
-    if (!doc) return;
-    const win = $iframe.contentWindow;
-    win.print();
+  // PDF 다운로드
+  document.getElementById('csPdf')?.addEventListener('click', async () => {
+    if (!$iframe) return;
+    const btn = document.getElementById('csPdf');
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="ph ph-spinner"></i> 생성중...';
+    btn.disabled = true;
+    try {
+      const { generatePdfFromIframe, downloadPdf } = await import('../core/contract-pdf.js');
+      const blob = await generatePdfFromIframe($iframe);
+      const name = state.customer_name || 'contract';
+      downloadPdf(blob, `${name}_계약서.pdf`);
+      showToast('PDF 다운로드 완료');
+    } catch (e) {
+      console.error(e);
+      showToast('PDF 생성 실패', 'error');
+    } finally {
+      btn.innerHTML = original;
+      btn.disabled = false;
+    }
   });
 
-  // Send (placeholder)
-  document.getElementById('csSend')?.addEventListener('click', () => {
-    showToast('발송 기능 준비 중');
+  // 서명 요청 — PDF 생성 → Storage 업로드 → 서명 토큰 생성
+  document.getElementById('csSend')?.addEventListener('click', async () => {
+    if (!$iframe) return;
+    const code = new URLSearchParams(location.search).get('contract');
+    if (!code) { showToast('계약코드 없음'); return; }
+    const btn = document.getElementById('csSend');
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="ph ph-spinner"></i> 발송중...';
+    btn.disabled = true;
+    try {
+      const { generatePdfFromIframe, uploadContractPdf } = await import('../core/contract-pdf.js');
+      const { setRecord, updateRecord } = await import('../firebase/db.js');
+      const blob = await generatePdfFromIframe($iframe);
+      const { url } = await uploadContractPdf(code, blob, { suffix: 'unsigned' });
+      // 서명 토큰 생성
+      const token = 'sign_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
+      await setRecord(`contract_sign/${token}`, {
+        contract_code: code,
+        unsigned_pdf_url: url,
+        customer_name: state.customer_name || '',
+        customer_phone: state.customer_phone || '',
+        contract_data: { ...state },
+        created_at: Date.now(),
+        expires_at: Date.now() + 7 * 86400 * 1000,
+      });
+      await updateRecord(`contracts/${code}`, { sign_token: token, sign_requested_at: Date.now(), unsigned_pdf_url: url });
+      const link = `${location.origin}/sign.html?t=${token}`;
+      await navigator.clipboard.writeText(link).catch(() => {});
+      showToast(`서명 링크 복사됨 — 고객에게 전달하세요`);
+    } catch (e) {
+      console.error(e);
+      showToast('발송 실패', 'error');
+    } finally {
+      btn.innerHTML = original;
+      btn.disabled = false;
+    }
   });
 }
 

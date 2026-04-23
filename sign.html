@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>전자서명 · freepass</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: system-ui, -apple-system, 'Pretendard', sans-serif; background: #f5f5f5; color: #222; }
+    html, body { height: 100%; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; background: #f5f5f5; color: #222; }
     body { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
     .wrap { max-width: 560px; margin: 0 auto; padding: 16px; }
     .head { font-size: 20px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
@@ -155,12 +157,55 @@
         submitBtn.textContent = '제출 중...';
         try {
           const signaturePng = canvas.toDataURL('image/png');
+          // 1) 서명 PNG 저장
           await update(ref(db, `contract_sign/${token}`), {
             signed_at: Date.now(),
             signature_png: signaturePng,
             user_agent: navigator.userAgent.slice(0, 200),
           });
-          // 계약 상태도 '계약완료'로 best-effort 전환 (Rules 허용 시에만)
+          // 2) unsigned PDF가 있으면 서명 임베딩 → signed PDF 업로드
+          if (data.unsigned_pdf_url && data.contract_code) {
+            try {
+              submitBtn.textContent = '서명 임베딩 중...';
+              // pdf-lib CDN 로드
+              if (!window.PDFLib) {
+                await new Promise((res, rej) => {
+                  const s = document.createElement('script');
+                  s.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+                  s.onload = res; s.onerror = rej; document.head.appendChild(s);
+                });
+              }
+              const { PDFDocument } = window.PDFLib;
+              const res = await fetch(data.unsigned_pdf_url);
+              const pdfBytes = await res.arrayBuffer();
+              const pdf = await PDFDocument.load(pdfBytes);
+              const base64 = signaturePng.replace(/^data:image\/\w+;base64,/, '');
+              const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+              const pngImage = await pdf.embedPng(bytes);
+              const lastPage = pdf.getPage(pdf.getPageCount() - 1);
+              const { width: pw } = lastPage.getSize();
+              const mm = 2.834645;
+              const sigW = 60 * mm, sigH = 25 * mm;
+              lastPage.drawImage(pngImage, { x: pw - sigW - 20 * mm, y: 30 * mm, width: sigW, height: sigH });
+              const signedBytes = await pdf.save();
+              // Firebase Storage 업로드 (modular SDK로 fetch 경로 이용 — 간소화: data URL로 Realtime에 저장)
+              // 용량 크면 실패 가능성 있으므로 best-effort
+              const signedBlob = new Blob([signedBytes], { type: 'application/pdf' });
+              const signedDataUrl = await new Promise((r) => {
+                const fr = new FileReader();
+                fr.onload = () => r(fr.result);
+                fr.readAsDataURL(signedBlob);
+              });
+              // 토큰 레코드에 signed data URL 저장 (agent 측에서 Storage로 옮김)
+              await update(ref(db, `contract_sign/${token}`), {
+                signed_pdf_data_url: signedDataUrl.length < 5_000_000 ? signedDataUrl : null,
+                signed_pdf_size: signedBytes.byteLength,
+              });
+            } catch (embedErr) {
+              console.warn('[sign] PDF 임베딩 실패 (서명은 저장됨)', embedErr);
+            }
+          }
+          // 3) 계약 상태 '계약완료' (Rules 허용 시)
           if (data.contract_code) {
             try {
               await update(ref(db, `contracts/${data.contract_code}`), {

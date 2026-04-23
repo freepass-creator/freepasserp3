@@ -5,184 +5,6 @@
     overflow: hidden;
   }
 
-  /* ── Excel View ── */
-  .srch-excel-table {
-    width: max(100%, 1100px);
-    border-collapse: collapse;
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-    table-layout: fixed;
-  }
-  .srch-excel-table td,
-  .srch-excel-table th { overflow: hidden; text-overflow: ellipsis; }
-  /* 컬럼 폭 — 70~80% 데이터 기준 */
-  .srch-excel-table th:nth-child(1)  { width: 85px; }  /* 차량번호 */
-  .srch-excel-table th:nth-child(2)  { width: 58px; }  /* 상태 */
-  .srch-excel-table th:nth-child(3)  { width: 52px; }  /* 구분 */
-  .srch-excel-table th:nth-child(4)  { width: 38px; }  /* 제조사 */
-  .srch-excel-table th:nth-child(5)  { width: 52px; }  /* 모델명 */
-  .srch-excel-table th:nth-child(6)  { width: 110px; } /* 세부모델 */
-  .srch-excel-table th:nth-child(7)  { width: 100px; } /* 세부트림 */
-  .srch-excel-table th:nth-child(8)  { width: 36px; }  /* 연식 */
-  .srch-excel-table th:nth-child(9)  { width: 52px; }  /* 주행 */
-  .srch-excel-table th:nth-child(10) { width: 38px; }  /* 연료 */
-  .srch-excel-table th:nth-child(11) { width: 56px; }  /* 색상 */
-  .srch-excel-table th:nth-child(12) { width: 45px; }  /* 심사 */
-  .srch-excel-table th:nth-child(13) { width: 60px; }  /* 연령 */
-  .srch-excel-table th:nth-child(14),
-  .srch-excel-table th:nth-child(15),
-  .srch-excel-table th:nth-child(16),
-  .srch-excel-table th:nth-child(17) { width: 55px; }  /* 24/36/48/60 */
-
-  /* 틀고정 — 차량번호(좌), 대여료 24/36/48/60(우) */
-  .srch-excel-table th:nth-child(1),
-  .srch-excel-table td:nth-child(1) {
-    position: sticky;
-    left: 0;
-    z-index: 2;
-    background: var(--c-surface);
-    border-right: 2px solid var(--c-border);
-  }
-  .srch-excel-table thead th:nth-child(1) {
-    z-index: 3;
-    background: var(--c-bg-sub);
-  }
-  .srch-excel-table th:nth-child(14),
-  .srch-excel-table td:nth-child(14) { position: sticky; right: calc(55px * 3); z-index: 2; background: var(--c-surface); }
-  .srch-excel-table th:nth-child(15),
-  .srch-excel-table td:nth-child(15) { position: sticky; right: calc(55px * 2); z-index: 2; background: var(--c-surface); }
-  .srch-excel-table th:nth-child(16),
-  .srch-excel-table td:nth-child(16) { position: sticky; right: 55px; z-index: 2; background: var(--c-surface); }
-  .srch-excel-table th:nth-child(17),
-  .srch-excel-table td:nth-child(17) { position: sticky; right: 0; z-index: 2; background: var(--c-surface); }
-  .srch-excel-table td:nth-child(14) { border-left: 2px solid var(--c-border); }
-  .srch-excel-table thead th:nth-child(14),
-  .srch-excel-table thead th:nth-child(15),
-  .srch-excel-table thead th:nth-child(16),
-  .srch-excel-table thead th:nth-child(17) { z-index: 3; background: var(--c-bg-sub); }
-  .srch-excel-row:hover td:nth-child(1),
-  .srch-excel-row:hover td:nth-child(14),
-  .srch-excel-row:hover td:nth-child(15),
-  .srch-excel-row:hover td:nth-child(16),
-  .srch-excel-row:hover td:nth-child(17) { background: var(--c-bg-hover); }
-  .srch-excel-row.is-active td:nth-child(1),
-  .srch-excel-row.is-active td:nth-child(14),
-  .srch-excel-row.is-active td:nth-child(15),
-  .srch-excel-row.is-active td:nth-child(16),
-  .srch-excel-row.is-active td:nth-child(17) { background: var(--c-bg-hover); }
-  .srch-excel-table th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background: var(--c-bg-sub);
-    height: var(--panel-head-h);
-    padding: 0 6px;
-    box-sizing: border-box;
-    font-weight: var(--fw-medium);
-    color: var(--c-text-muted);
-    border-bottom: 1px solid var(--c-border);
-    border-right: 1px solid var(--c-border-soft);
-    text-align: left;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-  .srch-excel-table td {
-    padding: 4px 6px;
-    border-bottom: 1px solid var(--c-border-soft);
-    white-space: nowrap;
-    vertical-align: middle;
-  }
-  .srch-excel-row { cursor: pointer; transition: background var(--dur); }
-  .srch-excel-row:hover { background: var(--c-bg-hover); }
-  .srch-excel-row.is-active { background: var(--c-bg-hover); }
-  .srch-excel-th { cursor: pointer; user-select: none; transition: background var(--dur); }
-  .srch-excel-th:hover { background: var(--c-bg-hover); }
-  .srch-excel-th.is-sort-asc { color: var(--c-info); background: var(--c-info-bg); }
-  .srch-excel-th.is-sort-desc { color: var(--c-err); background: var(--c-err-bg); }
-  .srch-excel-th.is-sort-asc::after { content: ' ↑'; }
-  .srch-excel-th.is-sort-desc::after { content: ' ↓'; }
-  /* 엑셀 헤드바 — 패널헤드가 컬럼 헤더 역할 */
-  .srch-excel-head-bar {
-    flex-shrink: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    height: var(--panel-head-h);
-    box-sizing: border-box;
-  }
-  .srch-excel-head-bar table { height: 100%; }
-  .srch-excel-head-bar th {
-    background: var(--c-bg-sub);
-    padding: 0 4px;
-    font-size: 12px;
-    font-weight: var(--fw-medium);
-    color: var(--c-text-muted);
-    text-align: center;
-    white-space: nowrap;
-    border-bottom: 1px solid var(--c-border);
-    border-right: 1px solid var(--c-border-soft);
-    cursor: pointer;
-  }
-  .srch-excel-head-bar th:last-child { border-right: none; }
-  .srch-excel-head-bar th:hover { background: var(--c-bg-hover); }
-  .srch-excel-head-bar th.is-sort-asc { color: var(--c-info); background: var(--c-info-bg); }
-  .srch-excel-head-bar th.is-sort-desc { color: var(--c-err); background: var(--c-err-bg); }
-  .srch-excel-head-bar th.is-sort-asc::after { content: ' ↑'; }
-  .srch-excel-head-bar th.is-sort-desc::after { content: ' ↓'; }
-
-  /* 엑셀 컬럼 필터 드롭다운 */
-  .srch-col-filter {
-    position: absolute;
-    z-index: 20;
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--ctrl-r);
-    box-shadow: 0 4px 12px rgba(0,0,0,.1);
-    padding: var(--sp-2);
-    min-width: 140px;
-    font-size: var(--fs-xs);
-  }
-  .srch-col-check {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-1);
-    padding: 2px 0;
-    cursor: pointer;
-    font-size: var(--fs-xs);
-  }
-  .srch-col-check input { accent-color: var(--c-accent); }
-
-  .srch-excel-table td { border-right: 1px solid var(--c-border-soft); }
-  .srch-excel-table td:last-child { border-right: none; }
-  .srch-excel-price { text-align: right; font-weight: var(--fw-medium); color: var(--c-accent); }
-  .srch-excel-dep { font-size: 10px; color: var(--c-text-muted); font-weight: var(--fw-normal); }
-
-  /* 상세 팝업 */
-  .srch-excel-popup {
-    position: absolute;
-    z-index: 30;
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--ctrl-r);
-    box-shadow: 0 4px 12px rgba(0,0,0,.12);
-    padding: var(--sp-2) var(--sp-3);
-    font-size: var(--fs-xs);
-    white-space: nowrap;
-    pointer-events: none;
-  }
-  .srch-excel-popup > div { padding: 1px 0; }
-
-  /* 행 높이 고정 (대여료 유무 상관없이) */
-  .srch-excel-row td { height: 36px; }
-  .srch-excel-row:hover td { background: var(--c-bg-hover); }
-  .srch-excel-cols {
-    font-size: var(--fs-2xs);
-    color: var(--c-text-muted);
-    font-weight: var(--fw-medium);
-    padding: 0 4px;
-    border-right: 1px solid var(--c-border-soft);
-    white-space: nowrap;
-  }
-  .srch-excel-cols:last-child { border-right: none; }
 
   /* 패널 접기 — 얇은 바로 축소, 클릭하면 열기 */
   .srch-filter-panel.is-collapsed,
@@ -258,7 +80,7 @@
     gap: var(--sp-2);
     padding: var(--sp-2) var(--sp-3);
     font-size: var(--fs-xs);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-text-sub);
     cursor: pointer;
     user-select: none;
@@ -277,6 +99,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+  }
+  .srch-acc-label .sb-badge {
+    margin-left: 0;
   }
   .srch-acc-caret {
     font-size: 11px;
@@ -360,7 +185,7 @@
 
   .srch-count {
     font-size: var(--fs-xs);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-text-muted);
   }
 
@@ -408,7 +233,7 @@
   }
   .srch-item-name .badge { flex-shrink: 0; }
   .srch-item-price {
-    font-size: var(--fs-md); font-weight: var(--fw-bold); color: var(--c-accent);
+    font-size: var(--fs-md); font-weight: var(--fw-semibold); color: var(--c-accent);
     flex-shrink: 0; font-variant-numeric: tabular-nums;
   }
   .srch-item-period { font-size: var(--fs-xs); font-weight: var(--fw-normal); color: var(--c-text-muted); }
@@ -464,7 +289,7 @@
   .srch-price-col > div { display: block; text-align: right; }
   .srch-price-rent {
     font-size: var(--fs-sm);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-accent);
     line-height: 1.2;
   }
@@ -666,7 +491,7 @@
   }
   .cat-title {
     font-size: var(--fs-md);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     margin: 0;
     display: flex;
     align-items: baseline;
@@ -759,7 +584,7 @@
     background: var(--c-bg-sub);
   }
   .cat-table tbody td:first-child { color: var(--c-text-muted); }
-  .cat-price-cell { font-weight: var(--fw-bold); color: var(--c-accent); }
+  .cat-price-cell { font-weight: var(--fw-semibold); color: var(--c-accent); }
 
   .cat-rows {
     display: grid;
@@ -814,7 +639,7 @@
 
   .srch-detail-title {
     font-size: var(--fs-md);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
   }
 
   .srch-detail-sub {
@@ -830,7 +655,7 @@
 
   .srch-detail-section-title {
     font-size: var(--fs-xs);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-text-muted);
     padding: var(--sp-2) var(--sp-4);
     background: var(--c-bg-sub);
@@ -891,18 +716,25 @@
   }
 
   .srch-price-table .accent {
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-accent);
   }
 
   .srch-detail-actions {
-    display: flex;
-    gap: var(--sp-2);
-    padding: var(--sp-3) var(--sp-4);
-    background: var(--c-surface);
+    display: inline-flex;
+    gap: var(--sp-1);
+    align-items: center;
   }
-
-  .srch-detail-actions .btn { flex: 1; }
+  .srch-detail-btn {
+    color: var(--c-text-inv) !important;
+    border: none !important;
+    font-weight: var(--fw-medium);
+  }
+  .srch-detail-btn:hover { filter: brightness(1.15); }
+  /* 남색/파랑 무게감 3단계 (CI → 딥블루 → 인디고) */
+  .srch-detail-btn--navy    { background: #1B2A4A !important; }  /* CI 메인 네이비 */
+  .srch-detail-btn--emerald { background: #1E3A8A !important; }  /* 딥 블루 */
+  .srch-detail-btn--rose    { background: #3730A3 !important; }  /* 인디고 */
 
   /* ── 모바일(≤768px): 3분할 → 세로 스택, 상세는 선택 시 full-screen overlay ── */
   @media (max-width: 768px) {
@@ -1088,4 +920,199 @@
     background: var(--c-bg-sub);
   }
   .pd-zip-selinfo { font-size: var(--fs-xs); color: var(--c-text-muted); }
+
+  /* ── 커스텀 엑셀 테이블 ── */
+  .srch-list:has(.excl-wrap) {
+    overflow: hidden;
+    scrollbar-gutter: auto;
+  }
+  .excl-wrap {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-border) transparent;
+  }
+  .excl-wrap::-webkit-scrollbar { width: 8px; height: 8px; }
+  .excl-wrap::-webkit-scrollbar-track { background: transparent; }
+  .excl-wrap::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 4px; }
+  .excl-wrap::-webkit-scrollbar-thumb:hover { background: var(--c-border-strong); }
+  .excl-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum", "ss01";
+    letter-spacing: -0.015em;
+    table-layout: fixed;
+  }
+  .excl-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--c-bg-sub);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    color: var(--c-text);
+    letter-spacing: -0.02em;
+    padding: 0 var(--sp-3);
+    height: calc(var(--panel-head-h) - 1px);
+    line-height: calc(var(--panel-head-h) - 1px);
+    white-space: nowrap;
+    border-right: 1px solid var(--c-border-soft);
+    border-bottom: 1px solid var(--c-border);
+    text-align: left;
+    user-select: none;
+    box-sizing: border-box;
+  }
+  .excl-table th:last-child { border-right: none; }
+  .excl-table td {
+    padding: 0 8px;
+    height: 32px;
+    font-weight: var(--fw-normal);
+    color: var(--c-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid var(--c-border-soft);
+    border-right: 1px solid var(--c-border-soft);
+    max-width: 200px;
+    vertical-align: middle;
+  }
+  .excl-table td.excl-sticky-left {
+    font-weight: var(--fw-semibold);
+    color: var(--c-accent);
+  }
+  .excl-table tbody tr:nth-child(even) td {
+    background-color: var(--c-bg-zebra);
+  }
+  .excl-table tbody tr:nth-child(even) td.excl-sticky-left {
+    background-color: var(--c-bg-zebra);
+  }
+  .excl-table tbody tr:nth-child(even) td.excl-pin-r {
+    background-color: var(--c-bg-zebra);
+  }
+  .excl-table td:last-child { border-right: none; }
+  .excl-wide { min-width: 120px; }
+  .excl-row { cursor: pointer; }
+  .excl-row:hover { background: var(--c-bg-hover); }
+  .excl-row.is-active { background: var(--c-accent-soft); }
+  /* 틀고정 — 좌측 차량번호 */
+  .excl-sticky-left {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: var(--c-bg);
+    background-clip: border-box;
+    box-shadow: 1px 0 0 0 var(--c-border);
+  }
+  th.excl-sticky-left { z-index: 4; background-color: var(--c-bg-sub); }
+  .excl-row:hover .excl-sticky-left { background-color: var(--c-bg-hover); }
+  .excl-row.is-active .excl-sticky-left { background-color: var(--c-accent-soft); }
+
+  /* 틀고정 — 우측 대여료 (62px 기준) */
+  .excl-pin-r {
+    position: sticky;
+    z-index: 1;
+    background-color: var(--c-bg);
+    background-clip: border-box;
+    text-align: right;
+    box-shadow: 1px 0 0 0 var(--c-border-soft);
+  }
+  .excl-pin-r:last-child { box-shadow: none; }
+  th.excl-pin-r { z-index: 4; background-color: var(--c-bg-sub); text-align: right; }
+  /* pinned right 오프셋은 JS가 inline으로 관리 — 첫 pin-r만 좌측 구분선 */
+  .excl-pin-r:first-of-type {
+    box-shadow: 1px 0 0 0 var(--c-border-soft), -1px 0 0 0 var(--c-border);
+  }
+  .excl-row:hover .excl-pin-r { background-color: var(--c-bg-hover); }
+  .excl-row.is-active .excl-pin-r { background-color: var(--c-accent-soft); }
+
+  .excl-price { text-align: right; }
+  .excl-rent {
+    font-weight: var(--fw-semibold);
+    color: var(--c-accent);
+    letter-spacing: -0.02em;
+  }
+  .excl-dep {
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-normal);
+    color: var(--c-text-muted);
+  }
+
+  /* 헤더 필터 팝업 — 디자인 규격 통일 */
+  .excl-filter {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    box-shadow: 0 4px 16px rgba(0,0,0,.12);
+    font-family: var(--font);
+    font-size: var(--fs-sm);
+    color: var(--c-text);
+  }
+  .excl-filter label:hover { background: var(--c-bg-hover); }
+  .excl-filter input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--c-accent);
+  }
+  [data-theme="dark"] .excl-filter {
+    background: var(--c-bg);
+    border-color: var(--c-border);
+    box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  }
+
+  /* 헤더 필터 태그 — sb-badge 규격과 동일 */
+  .excl-filter-tag {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 1px 4px;
+    min-width: 14px;
+    max-width: 80px;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    line-height: 1.2;
+    color: var(--c-text-inv);
+    background: var(--c-accent);
+    border-radius: var(--ctrl-r);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+  }
+
+
+  /* 컬럼 리사이즈 핸들 */
+  .excl-resize {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    cursor: col-resize;
+    z-index: 3;
+  }
+  .excl-resize:hover { background: var(--c-accent); }
+
+  /* 셀 hover 툴팁 */
+  .excl-tooltip {
+    position: fixed;
+    z-index: 9999;
+    padding: 4px 8px;
+    background: var(--c-accent);
+    color: var(--c-text-inv);
+    font-size: var(--fs-xs);
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 }
+

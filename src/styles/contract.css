@@ -87,7 +87,7 @@
 
   .kanban-col-title {
     font-size: var(--fs-xs);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-text-sub);
   }
 
@@ -176,7 +176,7 @@
 
   .contract-detail-title {
     font-size: var(--fs-md);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
   }
 
   .contract-detail-sub {
@@ -393,7 +393,7 @@
 
   .settle-amount-value {
     font-size: var(--fs-2xl);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-accent);
   }
 

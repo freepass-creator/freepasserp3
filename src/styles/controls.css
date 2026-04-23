@@ -124,7 +124,7 @@
     bottom: 0;
     padding: 1px 0;
     font-size: var(--fs-2xs);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     text-align: center;
     color: var(--c-text-inv);
     letter-spacing: 1px;
@@ -158,12 +158,12 @@
   }
   .list-row-title {
     font-size: var(--fs-sm);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-text);
   }
   .list-row-value {
     font-size: var(--fs-md);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     color: var(--c-accent);
     flex-shrink: 0;
     font-variant-numeric: tabular-nums;
@@ -366,6 +366,10 @@
     transition: background var(--dur) var(--ease);
   }
   .ctx-item:hover { background: var(--c-bg-hover); }
+  .ctx-item:focus,
+  .ctx-item:focus-visible { outline: none !important; background: transparent; box-shadow: none; }
+  .ctx-item:focus:hover,
+  .ctx-item:focus-visible:hover { background: var(--c-bg-hover); }
   .ctx-item i { font-size: 14px; color: var(--c-text-muted); }
   .ctx-item.is-danger { color: var(--c-err); }
   .ctx-item.is-danger i { color: var(--c-err); }

@@ -63,16 +63,24 @@
   .m-topbar-title {
     flex: 1;
     font-size: var(--fs-md);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .m-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    flex-shrink: 0;
   }
 
   .m-topbar-action {
     width: 32px;
     height: 32px;
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     font-size: 18px;
@@ -92,51 +100,6 @@
   }
 
   /* ── Bottom Tab Bar ── */
-  .m-tabbar {
-    display: flex;
-    height: calc(56px + env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
-    background: var(--c-surface);
-    border-top: 1px solid var(--c-border);
-    flex-shrink: 0;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .m-tab {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    font-size: var(--fs-2xs);
-    color: var(--c-text-muted);
-    position: relative;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .m-tab i { font-size: 22px; }
-
-  .m-tab.is-active {
-    color: var(--c-accent);
-  }
-
-  .m-tab-badge {
-    position: absolute;
-    top: 4px;
-    right: calc(50% - 18px);
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
-    font-size: 9px;
-    font-weight: var(--fw-bold);
-    line-height: 16px;
-    text-align: center;
-    color: var(--c-text-inv);
-    background: var(--c-err);
-    border-radius: 8px;
-  }
 
   /* ── Page Slide Transitions ── */
   .m-page-enter {
@@ -178,7 +141,7 @@
     right: 0;
     z-index: calc(var(--z-overlay) + 1);
     background: var(--c-surface);
-    border-radius: 12px 12px 0 0;
+    border-radius: 8px 8px 0 0;
     max-height: 90dvh;
     display: flex;
     flex-direction: column;
@@ -194,7 +157,7 @@
   .m-sheet-handle {
     width: 36px;
     height: 4px;
-    border-radius: 2px;
+    border-radius: var(--ctrl-r);
     background: var(--c-border-strong);
     margin: var(--sp-2) auto var(--sp-1);
     flex-shrink: 0;
@@ -210,7 +173,7 @@
 
   .m-sheet-title {
     font-size: var(--fs-md);
-    font-weight: var(--fw-bold);
+    font-weight: var(--fw-semibold);
   }
 
   .m-sheet-close {
@@ -221,7 +184,7 @@
     justify-content: center;
     border-radius: 50%;
     background: var(--c-bg-sub);
-    font-size: 14px;
+    font-size: var(--fs-md);
     color: var(--c-text-sub);
   }
 
@@ -232,14 +195,11 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* ── Chat List (Mobile) ── */
-  /* .m-chat-item 본체는 controls.css list-row 규격 사용 */
-  .m-chat-item { -webkit-tap-highlight-color: transparent; }
-
+  /* ── Chat 아바타 (room-item 내부에서 재활용) ── */
   .m-chat-avatar {
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: var(--ctrl-r);
     background: var(--c-bg-sub);
     display: flex;
     align-items: center;
@@ -247,52 +207,6 @@
     font-size: 18px;
     color: var(--c-text-muted);
     flex-shrink: 0;
-  }
-
-  .m-chat-body { flex: 1; min-width: 0; }
-
-  .m-chat-name {
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-medium);
-  }
-
-  .m-chat-preview {
-    font-size: var(--fs-xs);
-    color: var(--c-text-sub);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .m-chat-tags {
-    display: flex;
-    gap: var(--sp-1);
-    margin-top: 2px;
-  }
-
-  .m-chat-meta {
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .m-chat-time {
-    font-size: var(--fs-2xs);
-    color: var(--c-text-muted);
-  }
-
-  .m-chat-unread {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
-    font-size: var(--fs-2xs);
-    font-weight: var(--fw-bold);
-    color: var(--c-text-inv);
-    background: var(--c-accent);
-    border-radius: 9px;
-    margin-top: 4px;
   }
 
   /* ── Chat Room (Mobile) ── */
@@ -322,7 +236,7 @@
     padding: var(--sp-2) var(--sp-3);
     font-size: var(--fs-sm);
     border: 1px solid var(--c-border);
-    border-radius: 20px;
+    border-radius: var(--ctrl-r);
     outline: none;
     background: var(--c-bg-sub);
   }
@@ -341,7 +255,7 @@
     padding: 0 var(--sp-4);
     background: var(--c-bg-sub);
     border: 1px solid var(--c-border);
-    border-radius: 10px;
+    border-radius: var(--ctrl-r);
     gap: var(--sp-2);
   }
 
@@ -368,28 +282,566 @@
 
   .m-filter-chips::-webkit-scrollbar { display: none; }
 
-  /* ── List row (Mobile, flat) ── */
-  /* .m-card 본체/썸네일은 controls.css의 list-row 규격 사용 (모바일 패딩·썸네일 자동 스케일) */
-  .m-card { background: var(--c-surface); -webkit-tap-highlight-color: transparent; }
+  /* 활성 필터 strip — 많아지면 줄바꿈, 전체해제는 칩 뒤에 바로 */
+  .m-search-active {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-1);
+    min-height: 28px;
+    padding: var(--sp-2) var(--sp-4);
+    margin-bottom: var(--sp-2);
+  }
+  .m-search-active-empty {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+  .m-active-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    flex-shrink: 0;
+    height: 26px;
+    padding: 0 6px 0 10px;
+  }
+  .m-active-chip .chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: var(--fs-md);
+    line-height: 1;
+    cursor: pointer;
+  }
+  .m-search-clear-all {
+    border: 0;
+    background: transparent;
+    color: var(--c-accent);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    padding: 0 var(--sp-2);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
 
+  /* 필터 버튼 상단 도트 (적용된 필터 개수 표시) */
+  .m-search-bar .m-topbar-action { position: relative; }
+  .m-filter-dot {
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 8px; height: 8px;
+    background: var(--c-accent);
+    border-radius: 50%;
+    border: 2px solid var(--c-bg-sub);
+  }
+
+  /* 필터 바텀시트 */
+  .m-filter-sheet {
+    display: flex; flex-direction: column; gap: var(--sp-4);
+    padding-bottom: var(--sp-4);
+  }
+  .m-filter-section-title {
+    display: flex; align-items: center; gap: var(--sp-2);
+    font-size: var(--fs-sm); font-weight: var(--fw-medium);
+    color: var(--c-text); margin-bottom: var(--sp-2);
+  }
+  /* 섹션 제목/리스트 행 내 뱃지 — 우측정렬 해제 (sb-badge 의 margin-left:auto 무시) */
+  .m-filter-section-title .sb-badge,
+  .m-info-section-title .sb-badge,
+  .m-sheet-title .sb-badge,
+  .m-room-item-sub .sb-badge,
+  .m-room-item-msg .sb-badge {
+    margin-left: 0;
+    font-size: var(--fs-2xs);
+    background: var(--c-accent); color: var(--c-text-inv);
+    border-radius: var(--ctrl-r); padding: 0 6px; min-width: 16px;
+    text-align: center; line-height: 16px;
+  }
+  .m-filter-sheet .m-filter-chips {
+    padding: 0; flex-wrap: wrap; overflow: visible;
+  }
+  .m-filter-more {
+    border: 0; background: transparent;
+    color: var(--c-accent); font-size: var(--fs-xs);
+    padding: 0 var(--sp-2); height: 28px;
+    cursor: pointer;
+  }
+  .m-filter-more:hover { text-decoration: underline; }
+
+  /* ════════════════════════════════════════════════
+     모바일 정보 섹션/리스트 규격 (설정·계약·정산 공통)
+     - 섹션은 bordered 카드, 상단에 gray 헤더(타이틀)
+     - 본문은 40px 행들이 얇은 divider 로 구분
+     ════════════════════════════════════════════════ */
+  .m-info-page {
+    padding: var(--sp-3);
+    padding-bottom: var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+  .m-info-section {
+    flex-shrink: 0;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    overflow: hidden;
+  }
+  .m-info-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    min-height: 32px;
+    padding: 6px var(--sp-3);
+    background: var(--c-bg-sub);
+    border-bottom: 1px solid var(--c-border-soft);
+  }
+  .m-info-section-title {
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-muted);
+  }
+  .m-info-body { /* 이전 별도 카드 래퍼 → 섹션 내부 컨테이너 */
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .m-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    min-height: 40px;
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--c-border-soft);
+  }
+  .m-info-row:last-child { border-bottom: 0; }
+  .m-info-label {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    flex-shrink: 0;
+  }
+  .m-info-value {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    text-align: right;
+    word-break: break-word;
+    font-variant-numeric: tabular-nums;
+  }
+  .m-info-value.is-empty { color: var(--c-text-muted); font-weight: var(--fw-normal); }
+
+  /* ── 토글 스위치 (accent 색, iOS style) ── */
+  .m-toggle {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    flex-shrink: 0;
+    background: var(--c-border);
+    border-radius: 10px;
+    transition: background var(--dur) var(--ease);
+    cursor: pointer;
+  }
+  .m-toggle-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--c-surface);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: transform var(--dur) var(--ease);
+  }
+  .m-toggle.is-on { background: var(--c-accent); }
+  .m-toggle.is-on .m-toggle-knob { transform: translateX(16px); }
+
+  /* ── 설정 페이지 collapsing header (sticky 상단바) ── */
+  .m-settings-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: 0 var(--sp-3);
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+  }
+  .m-settings-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* 아이콘 영역 — 기어 ↔ 아바타 크로스페이드 (같은 32×32 슬롯) */
+  .m-settings-header-icon {
+    position: relative;
+    width: 32px; height: 32px;
+    flex-shrink: 0;
+  }
+  .m-settings-header-icon-gear,
+  .m-settings-header-icon-avatar {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
+  }
+  .m-settings-header-icon-gear {
+    font-size: 20px;
+    color: var(--c-text-sub);
+    opacity: 1;
+    transform: scale(1);
+  }
+  .m-settings-header-icon-avatar {
+    border-radius: var(--ctrl-r);
+    background: var(--c-accent-soft, var(--c-bg-sub));
+    color: var(--c-accent);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-sm);
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  .m-settings-header-icon-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .m-settings-header.is-condensed .m-settings-header-icon-gear {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  .m-settings-header.is-condensed .m-settings-header-icon-avatar {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* 텍스트 영역 — "설정" ↔ 이름+메타 크로스페이드 */
+  .m-settings-header-text {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+  }
+  .m-settings-header-title,
+  .m-settings-header-profile {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    transition: opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease);
+  }
+  .m-settings-header-title {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--c-text);
+    opacity: 1;
+  }
+  .m-settings-header-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    opacity: 0;
+    transform: translateY(calc(-50% + 4px));
+    pointer-events: none;
+  }
+  .m-settings-header.is-condensed .m-settings-header-title {
+    opacity: 0;
+    transform: translateY(calc(-50% - 4px));
+    pointer-events: none;
+  }
+  .m-settings-header.is-condensed .m-settings-header-profile {
+    opacity: 1;
+    transform: translateY(-50%);
+    pointer-events: auto;
+  }
+  .m-settings-header-name {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--c-text);
+    line-height: 1.2;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .m-settings-header-meta {
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    line-height: 1.2;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* 히어로 프로필 — 정보 섹션과 동일한 카드 규격 (margin 0, 상위 gap 으로 간격) */
+  .m-settings-hero {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+  }
+  .m-settings-hero-avatar {
+    position: relative;
+    width: 64px; height: 64px;
+    flex-shrink: 0;
+    border: 0; padding: 0;
+    border-radius: var(--ctrl-r);
+    background: var(--c-accent-soft, var(--c-bg-sub));
+    color: var(--c-accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-2xl);
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .m-settings-hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  /* 회사 CI 로고는 잘리지 않게 contain + 작은 패딩으로 여백 확보 */
+  .m-settings-hero-avatar img.is-ci,
+  .m-settings-header-icon-avatar img.is-ci {
+    object-fit: contain;
+    padding: 6px;
+    background: var(--c-surface);
+  }
+  .m-settings-header-icon-avatar img.is-ci { padding: 3px; }
+  .m-settings-hero-avatar-overlay {
+    position: absolute; inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-overlay-soft);
+    color: var(--c-text-inv);
+    font-size: var(--fs-xl);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .m-settings-hero-avatar:active .m-settings-hero-avatar-overlay { opacity: 1; }
+  .m-settings-hero-body { flex: 1; min-width: 0; }
+  .m-settings-hero-name {
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-semibold);
+    color: var(--c-text);
+    line-height: 1.25;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .m-settings-hero-affiliation {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-sub);
+    line-height: 1.35;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .m-settings-hero-meta {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    line-height: 1.35;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  /* 편집 가능한 정보 행 — info-row 와 동일 규격 + 우측 input */
+  .m-info-row-edit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    min-height: 40px;
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--c-border-soft);
+  }
+  .m-info-row-edit:last-child { border-bottom: 0; }
+  .m-info-row-edit .m-info-label { flex-shrink: 0; }
+  .m-info-row-edit .m-info-input {
+    flex: 1;
+    min-width: 0;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    outline: none;
+    text-align: right;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .m-info-row-edit .m-info-input::placeholder { color: var(--c-text-muted); font-weight: var(--fw-normal); }
+  .m-info-row-edit .m-info-input:focus {
+    background: var(--c-bg-sub);
+    border-radius: var(--ctrl-r);
+    padding: 0 6px;
+  }
+  .m-info-row-edit .m-info-input[readonly] { color: var(--c-text-muted); }
+  .m-info-row-edit .m-state {
+    flex-shrink: 0;
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    min-width: 16px;
+  }
+  .m-info-row-edit .m-state.is-saved { color: var(--c-ok); }
+  .m-info-row-edit .m-state.is-error { color: var(--c-err); }
+
+  /* 문서 업로드 인라인 버튼 (설정 서류 행) */
+  .m-doc-inline-btn {
+    width: 28px; height: 28px;
+    border: 1px solid var(--c-border);
+    background: var(--c-surface);
+    border-radius: var(--ctrl-r);
+    color: var(--c-text-muted);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .m-doc-inline-btn:active { background: var(--c-bg-hover); color: var(--c-text); }
+  .m-doc-inline-btn i { font-size: var(--fs-md); }
+
+  /* info-row 를 button 으로 쓸 때 (settings menu 행) */
+  button.m-info-row {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--c-border-soft);
+    cursor: pointer;
+    font: inherit;
+  }
+  button.m-info-row:last-child { border-bottom: 0; }
+  button.m-info-row:active { background: var(--c-bg-hover); }
+  .m-info-row .m-info-label i {
+    margin-right: 6px;
+    color: var(--c-text-muted);
+  }
+
+  /* ── 첨부/자료 업로드 UI ── */
+  .m-upload-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-1);
+    width: 100%;
+    margin: 0;
+    padding: var(--sp-4);
+    background: transparent;
+    border: 0;
+    border-top: 1px dashed var(--c-border);
+    text-align: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    font: inherit;
+    color: inherit;
+  }
+  .m-info-section > .m-upload-dropzone { border-top: 1px solid var(--c-border-soft); }
+  .m-upload-dropzone:active { background: var(--c-bg-hover); }
+  .m-upload-dropzone i {
+    font-size: 22px;
+    color: var(--c-text-muted);
+  }
+  .m-upload-dropzone .m-upload-primary {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-accent);
+  }
+  .m-upload-dropzone .m-upload-hint {
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+  }
+
+  .m-doc-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .m-doc-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--c-border-soft);
+    font-size: var(--fs-xs);
+  }
+  .m-doc-item:last-child { border-bottom: 0; }
+  .m-doc-thumb {
+    width: 32px; height: 32px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-bg-sub);
+    border-radius: var(--ctrl-r);
+    color: var(--c-text-muted);
+    font-size: var(--fs-lg);
+    overflow: hidden;
+  }
+  .m-doc-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .m-doc-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .m-doc-link {
+    color: var(--c-text);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .m-doc-link:hover { text-decoration: underline; color: var(--c-accent); }
+  .m-doc-meta {
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+  }
+  .m-doc-del {
+    width: 28px; height: 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; background: transparent; color: var(--c-text-muted);
+    border-radius: var(--ctrl-r); cursor: pointer; flex-shrink: 0;
+  }
+  .m-doc-del:active { background: var(--c-err-bg); color: var(--c-err); }
+  .m-doc-add-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 40px;
+    padding: var(--sp-2) var(--sp-3);
+    border-top: 1px solid var(--c-border-soft);
+    background: var(--c-bg-sub);
+    color: var(--c-accent);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    border: 0;
+    width: 100%;
+    cursor: pointer;
+  }
+  .m-doc-add-row:active { background: var(--c-bg-hover); }
+  .m-filter-actions {
+    display: flex; gap: var(--sp-2);
+    padding-top: var(--sp-3); margin-top: var(--sp-2);
+    border-top: 1px solid var(--c-border-soft);
+    position: sticky; bottom: 0;
+    background: var(--c-surface);
+  }
+  .m-filter-actions .btn { flex: 1; height: 44px; font-size: var(--fs-md); }
+
+  /* ── 카드 본문 공용 (상품·계약·정산·소통 공용) ── */
   .m-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .m-card-top, .m-card-mid {
-    display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-2);
-  }
-  .m-card-top > span:first-child,
-  .m-card-mid > span:first-child {
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
-  }
   .m-card-title {
-    font-size: var(--fs-sm); font-weight: var(--fw-bold); color: var(--c-text);
+    font-size: var(--fs-base); font-weight: var(--fw-semibold); color: var(--c-text);
   }
-  .m-card-price {
-    font-size: var(--fs-md); font-weight: var(--fw-bold); color: var(--c-accent);
-    flex-shrink: 0; font-variant-numeric: tabular-nums;
-  }
-  .m-card-period { font-size: var(--fs-xs); font-weight: var(--fw-normal); color: var(--c-text-muted); }
-  .m-card-mid    { font-size: var(--fs-xs); color: var(--c-text-sub); }
-  .m-card-deposit { flex-shrink: 0; color: var(--c-text-muted); font-variant-numeric: tabular-nums; }
 
   /* ── Empty State ── */
   .m-empty {
@@ -405,37 +857,9 @@
   .m-empty i { font-size: 40px; }
   .m-empty p { font-size: var(--fs-sm); }
 
-  /* ── Section ── */
-  .m-section {
-    background: var(--c-surface);
-    border-top: 1px solid var(--c-border);
-    border-bottom: 1px solid var(--c-border);
-    margin-bottom: var(--sp-3);
-  }
-
-  .m-section-title {
-    font-size: var(--fs-xs);
-    font-weight: var(--fw-bold);
-    color: var(--c-text-muted);
-    padding: var(--sp-3) var(--sp-4) var(--sp-1);
-  }
-
-  .m-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--sp-2) var(--sp-4);
-    min-height: 44px;
-    font-size: var(--fs-sm);
-  }
-
-  .m-row-label { color: var(--c-text-sub); }
-  .m-row-value { font-weight: var(--fw-medium); text-align: right; }
-
   /* ── 정산(settle) 모바일 전용 ── */
-  .m-settle-card-body { width: 100%; }
   .m-settle-card-head { display: flex; justify-content: space-between; align-items: center; }
-  .m-settle-card-amount { font-weight: var(--fw-bold); color: var(--c-accent); }
+  .m-settle-card-amount { font-weight: var(--fw-semibold); color: var(--c-accent); }
 
   .m-settle-hero {
     text-align: center;
@@ -445,10 +869,519 @@
     margin-bottom: var(--sp-3);
   }
   .m-settle-hero-label  { font-size: var(--fs-xs); color: var(--c-text-muted); }
-  .m-settle-hero-amount { font-size: var(--fs-2xl); font-weight: var(--fw-bold); color: var(--c-accent); }
+  .m-settle-hero-amount { font-size: var(--fs-2xl); font-weight: var(--fw-semibold); color: var(--c-accent); }
 
   .m-settle-confirms { display: flex; gap: var(--sp-2); margin-top: var(--sp-4); }
   .settle-confirm { flex: 1; padding: var(--sp-3); text-align: center; }
   .settle-confirm i    { font-size: 20px; display: block; margin-bottom: 4px; }
   .settle-confirm span { font-size: var(--fs-xs); }
+
+  /* ════════════════════════════════════════════════
+     모바일 페이지 전용 (2026 스타일)
+     ════════════════════════════════════════════════ */
+
+  /* ── 모바일: topbar 숨김, 탭바는 shell grid 에서 자리 차지 (padding 트릭 불필요) ── */
+  @media (max-width: 768px) {
+    .topbar { display: none; }
+    .main-content { padding-bottom: 0; }
+  }
+
+  /* ── 모바일 페이지 쉘 (m-shell-page) — 풀스크린 + 스티키 헤더 ── */
+  .m-shell-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    background: var(--c-bg);
+  }
+
+  /* ── 검색 헤더 (sticky) ── */
+  .m-search-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding-top: var(--sp-2);
+  }
+
+  /* ── 검색 리스트 / 일반 페이지 body ── */
+  .m-search-list,
+  .m-shell-page > .m-page {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 0 var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  /* 정보 페이지를 shell 루트로 쓸 때(설정 등): 내부 스크롤만 활성 (탭바 여백은 shell grid) */
+  .m-shell-page > .m-info-page {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* 검색창 우측 내부 카운트 (건수) */
+  .m-search-bar .m-search-count {
+    flex-shrink: 0;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-muted);
+    font-variant-numeric: tabular-nums;
+    padding: 0 var(--sp-1);
+    white-space: nowrap;
+  }
+  .m-search-bar .m-search-count:empty { display: none; }
+
+  /* ── 상품 카드 (검색 결과) ── */
+  /* ── 모바일 목록 카드 공통 규격 (상품/계약/정산/소통) ── */
+  .m-card-product,
+  .m-card-contract,
+  .m-card-settle,
+  .m-room-item {
+    display: flex;
+    align-items: center;  /* 썸네일/아이콘과 텍스트 수직 센터 정렬 */
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);  /* 8px 상하 · 12px 좌우 — 조밀하게 */
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border-soft);
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+  .m-card-product:active,
+  .m-card-contract:active,
+  .m-card-settle:active,
+  .m-room-item:active { background: var(--c-bg-hover); }
+
+  /* 좌측 아이콘/썸네일 영역 — 64×64 · radius 4px · flex column · icon 24px + 2xs label */
+  .m-card-product .m-card-thumb,
+  .m-card-icon-wrap,
+  .m-room-item .m-chat-avatar {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: var(--ctrl-r);
+    background: var(--c-bg-sub);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--c-text-muted);
+    font-size: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .m-card-product .m-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  /* 심사기준 overlay — 썸네일 하단 */
+  .m-card-thumb-credit {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 1px 4px;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    line-height: 1.3;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+    background: var(--c-overlay-chip);
+  }
+  .m-card-thumb-credit.is-ok   { background: var(--c-ok); }
+  .m-card-thumb-credit.is-warn { background: var(--c-warn); }
+  .m-card-thumb-credit.is-info { background: var(--c-info); }
+
+  .m-card-product .m-card-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+  }
+  /* 1줄 (메인·강조): 월대여료 · 보증금 · 대여기간 · 차량번호 */
+  .m-card-product .m-card-main-line {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .m-card-price-rent {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--c-accent);
+  }
+  .m-card-price-dep {
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+  }
+  .m-card-price-period {
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+  }
+  .m-card-price-ask {
+    font-size: var(--fs-sm);
+    color: var(--c-text-muted);
+  }
+  .m-card-carno {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-sub);
+    flex-shrink: 0;
+  }
+  /* 차량상태 · 상품구분 2개 뱃지 (메인 라인 뒤) */
+  .m-card-pill {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 6px;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    border-radius: var(--ctrl-r);
+    background: var(--c-bg-sub);
+    color: var(--c-text-sub);
+    line-height: 1;
+    margin-left: 4px;
+  }
+  .m-card-pill.is-ok          { background: var(--c-ok-bg);   color: var(--c-ok); }
+  .m-card-pill.is-warn        { background: var(--c-warn-bg); color: var(--c-warn); }
+  .m-card-pill.is-info        { background: var(--c-info-bg); color: var(--c-info); }
+  .m-card-pill.is-err         { background: var(--c-err-bg);  color: var(--c-err); }
+  .m-card-pill.is-muted       { background: var(--c-bg-sub);  color: var(--c-text-muted); }
+  /* 상품구분 계열 — 신차는 진하게, 중고는 동일 파랑 계열로 연하게 */
+  .m-card-pill.is-type-new    { background: var(--c-info);    color: var(--c-text-inv); }
+  .m-card-pill.is-type-used   {
+    background: color-mix(in srgb, var(--c-info) 12%, transparent);
+    color: var(--c-info);
+  }
+  /* 2줄: 세부모델 + 트림 */
+  .m-card-product .m-card-model {
+    font-size: var(--fs-base);
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.35;
+  }
+  /* 3줄: 연식 · 주행 · 연료 · 색상 */
+  .m-card-product .m-card-spec {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .m-load-more {
+    text-align: center;
+    padding: var(--sp-3);
+    color: var(--c-text-muted);
+    font-size: var(--fs-xs);
+  }
+
+  /* ── 계약/정산 카드 — 당근 스타일 (좌 아이콘/상태, 우 정보) ── */
+  .m-card-contract-body,
+  .m-card-settle-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .m-card-icon-wrap.is-ok { background: var(--c-ok-bg); color: var(--c-ok); }
+  .m-card-icon-wrap.is-info { background: var(--c-info-bg); color: var(--c-info); }
+  .m-card-icon-wrap.is-warn { background: var(--c-warn-bg); color: var(--c-warn); }
+  .m-card-icon-wrap.is-err { background: var(--c-err-bg); color: var(--c-err); }
+
+  .m-card-contract-head,
+  .m-card-settle-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-2);
+  }
+
+  .m-card-sub {
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+  }
+
+  .m-card-status {
+    display: inline-flex;
+    padding: 2px 8px;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    border-radius: var(--ctrl-r);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .m-card-status-ok   { background: var(--c-ok-bg,   color-mix(in srgb, var(--c-ok)   15%, transparent)); color: var(--c-ok); }
+  .m-card-status-info { background: var(--c-info-bg, color-mix(in srgb, var(--c-info) 15%, transparent)); color: var(--c-info); }
+  .m-card-status-warn { background: var(--c-warn-bg, color-mix(in srgb, var(--c-warn) 15%, transparent)); color: var(--c-warn); }
+  .m-card-status-err  { background: var(--c-err-bg,  color-mix(in srgb, var(--c-err)  15%, transparent)); color: var(--c-err); }
+  .m-card-status-muted { background: var(--c-bg-sub); color: var(--c-text-muted); }
+
+  /* ── 업무소통 방 리스트 — 공통 아바타에 색상 변형만 ── */
+  .m-room-item .m-chat-avatar.is-accent {
+    background: var(--c-accent-soft);
+    color: var(--c-accent);
+  }
+  .m-avatar-label {
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    line-height: 1;
+  }
+
+  /* 웹 room-item-body 규격 공통 (소통/계약) */
+  .m-room-item-body,
+  .m-card-contract-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+    justify-content: center;
+  }
+  .m-room-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--sp-2);
+  }
+  .m-room-item-name {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--fs-base);
+    font-weight: var(--fw-semibold);
+    color: var(--c-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .m-room-item-time {
+    flex-shrink: 0;
+    font-size: var(--fs-2xs);
+    color: var(--c-text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .m-room-item-msg {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+  }
+  .m-room-item-msg > span:first-child {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* 계약자명 강조 (meta 내부) */
+  .m-customer {
+    color: var(--c-text);
+    font-weight: var(--fw-medium);
+  }
+  /* 3번째 라인 (계약자명/생년월일/연락처 · 뱃지 or 발신자코드 · 마지막메세지)
+     — 2번째 라인과 동일 font-size 로 규격 통일 */
+  .m-room-item-sub {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+  /* 텍스트 span — 뱃지 좌/우 어디에 있든 텍스트가 flex-grow + ellipsis */
+  .m-room-item-sub > span:not(.sb-badge):not(.chat-sender) {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .m-room-item-sub > .sb-badge,
+  .m-room-item-sub > .chat-sender {
+    flex-shrink: 0;
+  }
+  /* 리스트 내 발신자 뱃지 — 채팅 뷰보다 컴팩트 */
+  .m-room-item-sub .chat-sender {
+    flex-shrink: 0;
+    height: 16px;
+    margin: 0;
+    padding: 0 var(--sp-1);
+    font-size: var(--fs-2xs);
+    max-width: 60px;
+  }
+  .m-room-item-msg .sb-badge {
+    flex-shrink: 0;
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    padding: 0 6px;
+    min-width: 16px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    background: var(--c-accent);
+    color: var(--c-text-inv);
+    border-radius: var(--ctrl-r);
+  }
+
+  /* ── 풀스크린 뷰 (pushMobileView) ── */
+  .m-view {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg);
+    will-change: transform;
+  }
+
+  .m-view-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @keyframes m-slide-out-right {
+    from { transform: translateX(0); }
+    to   { transform: translateX(100%); }
+  }
+
+  /* ── 모바일 채팅 뷰 ── */
+  .m-chat-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .m-chat-attach, .m-chat-send {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--c-accent);
+    background: none;
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+  }
+  .m-chat-send { color: var(--c-accent); }
+  .m-chat-attach { color: var(--c-text-muted); }
+
+  /* ── FAB ── */
+  .m-fab {
+    position: fixed;
+    right: 16px;
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    z-index: var(--z-sticky);
+    min-width: 56px;
+    height: 56px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    background: var(--c-accent);
+    color: var(--c-text-inv, #fff);
+    border: none;
+    border-radius: var(--ctrl-r);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .m-fab i { font-size: 22px; }
+  .m-fab:active { transform: scale(0.94); box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+
+  /* ── 탭 (계약 뷰 등) ── */
+  /* 계약 상세 레이아웃 — 상단 topbar(view) + 중간 스크롤 panels + 하단 tabs */
+  .m-view-body:has(> .m-ct-layout) { overflow: hidden; }
+  .m-ct-layout {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-ct-layout > .m-tab-panels {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .m-ct-layout > .m-tab-panels > .m-tab-panel.is-active { display: block; }
+  .m-ct-layout > .m-tab-panels > .m-tab-panel { display: none; }
+
+  /* 세그먼트 컨트롤 스타일 탭 — 눌린 버튼 느낌 */
+  .m-tabs {
+    display: flex;
+    gap: var(--sp-1);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  /* 하단 고정 탭바 스타일 (계약 상세) — 하단 탭바 위치처럼 */
+  .m-tabs.m-tabs-bottom {
+    position: static;
+    top: auto;
+    border-bottom: 0;
+    border-top: 1px solid var(--c-border);
+    padding: var(--sp-2) var(--sp-3) calc(var(--sp-2) + env(safe-area-inset-bottom));
+    flex-shrink: 0;
+  }
+  .m-tab-btn {
+    flex: 1;
+    height: 36px;
+    padding: 0 var(--sp-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-1);
+    background: var(--c-bg-sub);
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-sub);
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .m-tab-btn i { font-size: var(--fs-lg); }
+  .m-tab-btn:active { transform: scale(0.98); }
+  .m-tab-btn.is-active {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+    color: var(--c-text-inv);
+    font-weight: var(--fw-semibold);
+  }
+  .m-tab-panels { flex: 1; min-height: 0; }
+  .m-tab-panel { display: none; }
+  .m-tab-panel.is-active { display: block; }
+
 }
