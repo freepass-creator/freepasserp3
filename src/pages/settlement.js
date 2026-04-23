@@ -38,7 +38,7 @@ export function mount() {
         <div class="ws4-head"><span>정산 목록</span><button class="btn btn-sm btn-outline" id="stViewToggle"><i class="ph ph-table"></i> 엑셀보기</button></div>
         <div class="ws4-search">
           <input class="input input-sm" id="stSearch" placeholder="검색..." >
-          <div style="display:flex;gap:3px;">
+          <div class="ws4-search-chips">
             <button class="chip is-active" data-f="all">전체</button>
             <button class="chip" data-f="pending">미완료</button>
             <button class="chip" data-f="done">완료</button>

@@ -48,7 +48,7 @@ export function mount() {
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="pdSearch" placeholder="차량번호, 모델..." >
-          <div class="pd-status-chips" id="pdStatusChips"></div>
+          <div class="ws4-search-chips" id="pdStatusChips"></div>
         </div>
         <div class="ws4-body" id="pdList"></div>
       </div>

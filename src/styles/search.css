@@ -53,14 +53,7 @@
     background: var(--c-surface);
   }
 
-  .srch-filter-search {
-    padding: var(--sp-2) var(--sp-3) var(--sp-1);
-    flex-shrink: 0;
-    border-bottom: 1px solid var(--c-border);
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-1);
-  }
+  /* .srch-filter-search 규격은 workspace.css 의 .ws4-search 와 공유 */
 
   .srch-filters {
     flex: 1;

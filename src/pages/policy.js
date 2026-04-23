@@ -65,7 +65,7 @@ export function mount() {
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="plSearch" placeholder="정책명, 공급사..." >
-          <div style="display:flex;gap:3px;">
+          <div class="ws4-search-chips">
             <button class="chip is-active" data-f="active">활성</button>
             <button class="chip" data-f="all">전체</button>
           </div>

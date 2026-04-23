@@ -170,13 +170,7 @@
   }
   .ws4-head-actions .pd-delete { color: var(--c-err); }
 
-  /* 차량상태 필터 칩 */
-  .pd-status-chips {
-    display: flex;
-    gap: 3px;
-    margin-top: var(--sp-1);
-    flex-wrap: wrap;
-  }
+  /* .pd-status-chips — .ws4-search-chips 로 마이그레이션됨 */
 
   /* ── 패널 3: 기간별 가격 표 ── */
   .pd-price-table {

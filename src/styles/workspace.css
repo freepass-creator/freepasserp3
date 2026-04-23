@@ -46,7 +46,10 @@
 
   .ws4-head-toggle:hover { color: var(--c-text); }
 
-  .ws4-search {
+  /* 웹 검색창 영역 — 패널 헤더 바로 아래
+     모든 여백은 이 컨테이너가 관리, 자식(input·chips)은 margin 0 */
+  .ws4-search,
+  .srch-filter-search {
     padding: var(--sp-2) var(--sp-3) var(--sp-1);
     border-bottom: 1px solid var(--c-border);
     flex-shrink: 0;
@@ -54,6 +57,16 @@
     flex-direction: column;
     gap: var(--sp-1);
   }
+  /* 입력창 아래 칩 row — 전 페이지 공통 규격 (fixed height · flex nowrap · 가로스크롤) */
+  .ws4-search-chips {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 24px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  .ws4-search-chips::-webkit-scrollbar { display: none; }
 
   .ws4-body {
     flex: 1;
