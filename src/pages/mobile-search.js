@@ -201,13 +201,15 @@ function openFilterSheet() {
     if (!chipsHtml) return '';
     const activeCount = set?.size || 0;
     const collapsed = mSecCollapsed[key] ? 'is-collapsed' : '';
+    // 펼침 = 아래 ∨ (내용 보이는 중) / 접힘 = 오른쪽 > (펼치려면 클릭)
+    const toggleIcon = mSecCollapsed[key] ? 'ph-caret-right' : 'ph-caret-down';
     return `
       <div class="m-filter-section ${activeCount ? 'has-active' : ''} ${collapsed}" data-sec="${key}">
         <div class="m-filter-section-title" data-sec-toggle="${key}">
           <i class="${f.icon}"></i>
           <span>${f.label}</span>
           ${activeCount ? `<span class="sb-badge is-visible">${activeCount}</span>` : ''}
-          <i class="ph ph-caret-down"></i>
+          <i class="ph ${toggleIcon}"></i>
         </div>
         <div class="m-filter-chips" data-g="${key}">${chipsHtml}</div>
       </div>
@@ -240,7 +242,14 @@ function openFilterSheet() {
         if (e.target.closest('[data-c], [data-more]')) return;
         const key = toggleTitle.dataset.secToggle;
         mSecCollapsed[key] = !mSecCollapsed[key];
-        toggleTitle.closest('.m-filter-section')?.classList.toggle('is-collapsed');
+        const section = toggleTitle.closest('.m-filter-section');
+        section?.classList.toggle('is-collapsed');
+        // caret 아이콘 스왑 — 펼침 ∨ / 접힘 >
+        const caret = toggleTitle.querySelector('.ph-caret-down, .ph-caret-right');
+        if (caret) {
+          caret.classList.toggle('ph-caret-down');
+          caret.classList.toggle('ph-caret-right');
+        }
       });
 
       const bindGroups = () => {
