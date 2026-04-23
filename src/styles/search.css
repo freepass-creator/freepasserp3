@@ -1005,11 +1005,12 @@
     vertical-align: middle;
   }
   .excl-table td.excl-sticky-left {
-    font-weight: var(--fw-normal);
+    font-weight: var(--fw-semibold);
     color: var(--c-accent);
   }
-  /* zebra — :where() 로 specificity 0 : hover/active 가 확실히 덮도록 */
-  .excl-table tbody tr:nth-child(even) :where(td) {
+  /* zebra — :where() 로 specificity 0 : hover/active/sticky 가 확실히 덮도록
+     (:where 를 selector 전체에 적용해야 total specificity 가 0 이 됨) */
+  :where(.excl-table tbody tr:nth-child(even) td) {
     background-color: var(--c-bg-zebra);
   }
   .excl-table td:last-child { border-right: none; }

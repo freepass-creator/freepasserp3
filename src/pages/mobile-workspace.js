@@ -19,6 +19,7 @@ let unsubContracts = null;
 let activeRoomId = null;
 let activeView = null; // {view, close}
 let chatMessages = [];
+let chatKeyboardCleanup = null;
 
 export function mount() {
   cleanup();
@@ -210,11 +211,29 @@ function openRoom(roomId) {
       document.getElementById('mwsShowContract')?.addEventListener('click', () => openContractSheet(room));
       // 입력칸 자동 포커스 — slide-in 중 focus 하면 iOS 가 스크롤 점프 발생, 완료 후 올림
       setTimeout(() => document.getElementById('mwsChatText')?.focus(), 120);
+
+      // 키보드가 올라와 viewport 가 축소될 때 마지막 대화가 항상 보이도록 하단 스크롤 유지
+      // (interactive-widget=resizes-content 로 .m-chat-view 가 축소되면 기존 scrollTop 이
+      //  남아 최신 메시지가 잘림 — resize·focus 시점에 다시 bottom 으로 당겨줌)
+      const msgsEl = document.getElementById('mwsChatMsgs');
+      const inputEl = document.getElementById('mwsChatText');
+      const scrollBottom = () => {
+        if (!msgsEl) return;
+        requestAnimationFrame(() => { msgsEl.scrollTop = msgsEl.scrollHeight; });
+      };
+      inputEl?.addEventListener('focus', scrollBottom);
+      window.visualViewport?.addEventListener('resize', scrollBottom);
+      chatKeyboardCleanup = () => {
+        inputEl?.removeEventListener('focus', scrollBottom);
+        window.visualViewport?.removeEventListener('resize', scrollBottom);
+      };
     },
     onClose: () => {
       activeRoomId = null;
       unsubMessages?.();
       unsubMessages = null;
+      chatKeyboardCleanup?.();
+      chatKeyboardCleanup = null;
     },
   });
 }
