@@ -380,7 +380,9 @@
   /* 카톡 규격 간격 — 3/5/7 스케일 */
   .chat-row + .chat-row { margin-top: 3px; }                /* 같은 사람, 같은 분 */
   .chat-row + .chat-row.is-minute-start { margin-top: 5px; }/* 같은 사람, 분 바뀜 */
-  .chat-row + .chat-row.is-sender-start { margin-top: 7px; }/* 발신자 바뀜 */
+  /* 발신자 바뀜 — 신규 클래스(모바일) + 레거시 is-start(웹) 모두 호환 */
+  .chat-row + .chat-row.is-sender-start,
+  .chat-row + .chat-row.is-start:not(.is-minute-start) { margin-top: 7px; }
   .chat-row + .chat-date-sep,
   .chat-date-sep + .chat-row { margin-top: var(--sp-2); }
   .chat-sender {
