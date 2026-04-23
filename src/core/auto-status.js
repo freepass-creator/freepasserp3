@@ -61,6 +61,27 @@ export function initAutoStatus() {
         }
         notifyContractDoneBoth(c).catch(() => {});
       }
+
+      // 계약취소 → 기지급 정산 환수 처리
+      if (c.contract_status === '계약취소' && prev !== '계약취소') {
+        const settlement = (store.settlements || []).find(s => s.contract_code === c.contract_code);
+        if (settlement?.settlement_status === 'paid' || settlement?.settlement_status === '완료') {
+          (async () => {
+            try {
+              const { calculateClawback } = await import('./settlement-rules.js');
+              const clawbackAmount = calculateClawback(settlement, c);
+              if (clawbackAmount > 0) {
+                await updateRecord(`settlements/${settlement._key}`, {
+                  settlement_status: 'clawback',
+                  clawback_amount: clawbackAmount,
+                  clawback_at: Date.now(),
+                });
+                console.warn(`[auto-clawback] ${c.contract_code}: ${clawbackAmount}원 환수`);
+              }
+            } catch (e) { console.warn('[auto-clawback] 실패', e); }
+          })();
+        }
+      }
     }
 
     // Update prev state

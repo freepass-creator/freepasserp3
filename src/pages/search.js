@@ -12,6 +12,8 @@ import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS } from '..
 import { first, parsePol, findPolicy, enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { topBadgesHtml, reviewOverlayHtml, creditOverlayHtml, needsReview } from '../core/product-badges.js';
 import { productImages, productExternalImages, firstProductImage, supportedDriveSource } from '../core/product-photos.js';
+import { renderProductDetail, colorToHex, colorTextContrast } from '../core/product-detail-render.js';
+import { FILTERS, TOP_N, matchFilter, getField, buildDynamicChips } from '../core/product-filters.js';
 
 let unsubProducts = null;
 let allProducts = [];
@@ -23,87 +25,8 @@ const LIST_PERIODS = [36, 48, 60];
 let sortCol = null;
 let sortDir = null;
 let viewMode = 'excel';
-let excelSortField = null;
-let excelSortDir = null; // 'asc' | 'desc' | null
 
-const FILTERS = {
-  rent: {
-    label: '대여료', icon: 'ph ph-currency-krw', chips: [
-      { id: 'r_d50', label: '50만↓',  match: v => v > 0       && v <= 500000  },
-      { id: 'r50',   label: '50만~',  match: v => v > 500000  && v <= 600000  },
-      { id: 'r60',   label: '60만~',  match: v => v > 600000  && v <= 700000  },
-      { id: 'r70',   label: '70만~',  match: v => v > 700000  && v <= 800000  },
-      { id: 'r80',   label: '80만~',  match: v => v > 800000  && v <= 900000  },
-      { id: 'r90',   label: '90만~',  match: v => v > 900000  && v <= 1000000 },
-      { id: 'r100',  label: '100만~', match: v => v > 1000000 && v <= 1500000 },
-      { id: 'r150',  label: '150만~', match: v => v > 1500000 && v <= 2000000 },
-      { id: 'r200',  label: '200만↑', match: v => v > 2000000 },
-    ]
-  },
-  deposit: {
-    label: '보증금', icon: 'ph ph-coins', chips: [
-      { id: 'd_d100', label: '100만↓', match: v => v > 0       && v <= 1000000 },
-      { id: 'd100',   label: '100만~', match: v => v > 1000000 && v <= 2000000 },
-      { id: 'd200',   label: '200만~', match: v => v > 2000000 && v <= 3000000 },
-      { id: 'd300',   label: '300만~', match: v => v > 3000000 && v <= 5000000 },
-      { id: 'd500',   label: '500만↑', match: v => v > 5000000 },
-    ]
-  },
-  period: {
-    label: '기간', icon: 'ph ph-calendar-blank',
-    chips: ['1','12','24','36','48','60'].map(m => ({
-      id: `p${m}`, label: `${m}개월`, match: (_, p) => Number(p?.[m]?.rent || 0) > 0
-    }))
-  },
-  maker:    { label: '제조사',  icon: 'ph ph-factory',      chips: [], dynamic: true, field: 'maker' },
-  model:    { label: '모델명',  icon: 'ph ph-car-simple',   chips: [], dynamic: true, field: 'model' },
-  submodel: { label: '세부모델', icon: 'ph ph-car-profile',  chips: [], dynamic: true, field: 'sub_model' },
-  year:     { label: '연식',    icon: 'ph ph-calendar',     chips: [], dynamic: true, field: 'year' },
-  mileage: {
-    label: '주행거리', icon: 'ph ph-gauge', chips: [
-      { id: 'km1',  label: '1만km↓',   match: v => v > 0 && v <= 10000 },
-      { id: 'km3',  label: '1~3만',    match: v => v > 10000 && v <= 30000 },
-      { id: 'km5',  label: '3~5만',    match: v => v > 30000 && v <= 50000 },
-      { id: 'km10', label: '5~10만',   match: v => v > 50000 && v <= 100000 },
-      { id: 'km15', label: '10~15만',  match: v => v > 100000 && v <= 150000 },
-      { id: 'km99', label: '15만↑',    match: v => v > 150000 },
-    ]
-  },
-  fuel: {
-    label: '연료', icon: 'ph ph-gas-pump', chips: [
-      { id: 'gas',    label: '가솔린',    match: v => v === '가솔린' || v === 'gasoline' },
-      { id: 'diesel', label: '디젤',      match: v => v === '디젤' || v === 'diesel' },
-      { id: 'hybrid', label: '하이브리드', match: v => (v||'').includes('하이브리드') || (v||'').includes('hybrid') },
-      { id: 'ev',     label: '전기',      match: v => v === '전기' || v === 'electric' },
-    ]
-  },
-  color:    { label: '외부색상', icon: 'ph ph-palette', chips: [], dynamic: true, field: 'ext_color' },
-  int_color: { label: '내부색상', icon: 'ph ph-palette', chips: [], dynamic: true, field: 'int_color' },
-  vehicle_status: {
-    label: '출고상태', icon: 'ph ph-truck',
-    chips: ['즉시출고','출고가능','상품화중','출고협의','출고불가'].map(s => ({
-      id: `vs_${s}`, label: s, match: v => v === s
-    }))
-  },
-  product_type: {
-    label: '상품구분', icon: 'ph ph-tag',
-    chips: ['중고렌트','신차렌트','중고구독','신차구독'].map(s => ({
-      id: `pt_${s}`, label: s, match: v => v === s
-    }))
-  },
-  vehicle_class: { label: '차종구분', icon: 'ph ph-car', chips: [], dynamic: true, field: 'vehicle_class' },
-  review: {
-    label: '심사여부', icon: 'ph ph-clipboard-text',
-    chips: [
-      { id: 'rv_no',  label: '무심사',   match: (_, p) => !needsReview(p) },
-      { id: 'rv_yes', label: '심사필요', match: (_, p) => needsReview(p) },
-    ]
-  },
-  age_lowering:    { label: '운전연령하향', icon: 'ph ph-arrow-down', chips: [], dynamic: true, field: '_policy.driver_age_lowering' },
-  credit_grade:    { label: '심사기준', icon: 'ph ph-chart-bar', chips: [], dynamic: true, field: '_policy.credit_grade' },
-  annual_mileage:  { label: '연간약정주행거리', icon: 'ph ph-road-horizon', chips: [], dynamic: true, field: '_policy.annual_mileage' },
-  provider: { label: '공급코드', icon: 'ph ph-buildings', chips: [], dynamic: true, field: 'provider_company_code' },
-};
+// FILTERS / TOP_N / matchFilter / getField / buildDynamicChips — src/core/product-filters.js 로 이관됨
 
 export function mount() {
   unsubProducts?.();
@@ -120,9 +43,9 @@ export function mount() {
         <div class="srch-panel-head">
           <span style="display:flex;align-items:center;gap:var(--sp-1);"><span>조건</span><span class="sb-badge" id="srchFilterCount"></span></span>
           <span style="display:flex;gap:var(--sp-1);">
-            <button class="btn btn-xs btn-outline" id="srchExcel" title="Excel 다운로드"><i class="ph ph-download-simple"></i> Excel</button>
-            <button class="btn btn-xs btn-outline" id="srchPhotoZip" title="사진 ZIP"><i class="ph ph-file-zip"></i> 사진</button>
-            <button class="btn btn-xs btn-outline" id="srchViewToggle2" title="엑셀형식 보기"><i class="ph ph-table"></i> 엑셀보기</button>
+            <button class="btn btn-sm btn-outline" id="srchExcel" title="Excel 다운로드"><i class="ph ph-download-simple"></i> Excel</button>
+            <button class="btn btn-sm btn-outline" id="srchPhotoZip" title="사진 ZIP"><i class="ph ph-file-zip"></i> 사진</button>
+            <button class="btn btn-sm btn-outline" id="srchViewToggle2" title="${viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환'}"><i class="ph ph-${viewMode === 'excel' ? 'cards' : 'table'}"></i> ${viewMode === 'excel' ? '카드보기' : '엑셀보기'}</button>
             <span class="ws4-head-toggle" id="srchFilterToggle" title="조건 접기"><i class="ph ph-caret-left"></i></span>
           </span>
         </div>
@@ -136,7 +59,7 @@ export function mount() {
       <div class="srch-resize" id="srchResize1"></div>
 
       <div class="srch-list-wrap">
-        <div class="srch-panel-head" id="srchListHead">
+        <div class="srch-panel-head" id="srchListHead" style="${viewMode === 'excel' ? 'display:none;' : ''}">
           <span style="display:flex;align-items:center;gap:var(--sp-2);flex:1;min-width:0;" id="srchListLeft">
             <span>목록</span>
             <span class="srch-count" id="srchCount">0대</span>
@@ -159,11 +82,16 @@ export function mount() {
       <div class="srch-resize" id="srchResize2"></div>
 
       <div class="srch-detail" id="srchDetail">
-        <div class="srch-panel-head"><span>상세</span><span class="ws4-head-toggle" id="srchDetailToggle" title="상세 접기"><i class="ph ph-caret-right"></i></span></div>
+        <div class="srch-panel-head">
+          <span>상품 상세</span>
+          <span style="display:flex;align-items:center;gap:var(--sp-1);">
+            <span class="srch-detail-actions" id="srchDetailActions"></span>
+            <span class="ws4-head-toggle" id="srchDetailToggle" title="상품 상세 접기"><i class="ph ph-caret-right"></i></span>
+          </span>
+        </div>
         <div class="srch-detail-content">
           <div class="srch-empty"><i class="ph ph-car-simple"></i><p>차량을 선택하세요</p></div>
         </div>
-        <div class="srch-detail-actions" id="srchDetailActions" hidden></div>
       </div>
     </div>
   `;
@@ -210,11 +138,7 @@ export function mount() {
     const listHead = document.getElementById('srchListHead');
     if (listHead) {
       if (viewMode === 'excel') {
-        listHead.style.display = '';
-        listHead.className = 'srch-excel-head-bar';
-        listHead.innerHTML = `<table class="srch-excel-table"><colgroup>${'<col>'.repeat(17)}</colgroup><tr>
-          <th>차량번호</th><th>상태</th><th>구분</th><th>제조사</th><th>모델명</th><th>세부모델</th><th>세부트림</th><th>연식</th><th>주행</th><th>연료</th><th>색상</th><th>심사</th><th>연령</th><th>24</th><th>36</th><th>48</th><th>60</th>
-        </tr></table>`;
+        listHead.style.display = 'none';
       } else {
         listHead.className = 'srch-panel-head';
         listHead.style.display = '';
@@ -713,22 +637,6 @@ function updateBrief() {
   setBreadcrumbBrief(parts.join(' > '));
 }
 
-const TOP_N = { maker: 8, model: 12, submodel: 12, year: 10, color: 10, int_color: 10, vehicle_class: 11, provider: 10, policy: 10 };
-
-function matchFilter(p, g, chip) {
-  const f = FILTERS[g];
-  if (g === 'rent') return Object.values(p.price||{}).some(pr => chip.match(Number(pr.rent)||0));
-  if (g === 'deposit') return Object.values(p.price||{}).some(pr => chip.match(Number(pr.deposit)||0));
-  if (g === 'period') return chip.match(null, p.price);
-  if (g === 'mileage') return chip.match(Number(p.mileage)||0);
-  if (g === 'fuel') return chip.match(p.fuel_type);
-  if (g === 'vehicle_status') return chip.match(p.vehicle_status);
-  if (g === 'product_type') return chip.match(p.product_type);
-  if (g === 'review') return chip.match(null, p);
-  if (f.dynamic && f.field) return chip.match(getField(p, f.field));
-  return true;
-}
-
 function passesFiltersExcept(p, skipKey) {
   const q = (document.getElementById('srchText')?.value || '').toLowerCase();
   if (q && !matchesText(p, q)) return false;
@@ -741,36 +649,6 @@ function passesFiltersExcept(p, skipKey) {
     if (!chips.some(chip => matchFilter(p, g, chip))) return false;
   }
   return true;
-}
-
-const COLOR_MAP = {
-  '흰':'#f0f0f0','백':'#f0f0f0','화이트':'#f0f0f0','white':'#f0f0f0','아이보리':'#fffff0',
-  '검':'#222','블랙':'#222','black':'#222',
-  '은':'#b0b0b0','실버':'#b0b0b0','silver':'#b0b0b0',
-  '회':'#808080','그레이':'#808080','grey':'#808080','gray':'#808080',
-  '빨':'#e03e3e','레드':'#e03e3e','red':'#e03e3e',
-  '파':'#3b82f6','블루':'#3b82f6','blue':'#3b82f6',
-  '남':'#1e3a5f','네이비':'#1e3a5f','navy':'#1e3a5f',
-  '초':'#22c55e','그린':'#22c55e','green':'#22c55e',
-  '노':'#eab308','옐로':'#eab308','yellow':'#eab308','골드':'#d4a017',
-  '갈':'#8b5e3c','브라운':'#8b5e3c','brown':'#8b5e3c',
-  '주':'#f97316','오렌지':'#f97316','orange':'#f97316',
-  '분':'#ec4899','핑크':'#ec4899','pink':'#ec4899',
-  '베':'#d2c6a5','베이지':'#d2c6a5','beige':'#d2c6a5',
-  '하늘':'#87ceeb','스카이':'#87ceeb','sky':'#87ceeb',
-  '보라':'#8b5cf6','퍼플':'#8b5cf6','purple':'#8b5cf6',
-  '청':'#2563eb','진주':'#e8e0d0','티탄':'#7a7a7a','카키':'#6b6b40',
-};
-function colorToHex(name) {
-  if (!name) return '#ddd';
-  const n = name.toLowerCase().replace(/색$/, '');
-  for (const [k, v] of Object.entries(COLOR_MAP)) { if (n.includes(k)) return v; }
-  return '#ccc';
-}
-function colorTextContrast(name) {
-  const hex = colorToHex(name);
-  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-  return (r*0.299 + g*0.587 + b*0.114) > 150 ? '#222' : '#fff';
 }
 
 function matchesText(p, q) {
@@ -808,29 +686,9 @@ function matchesText(p, q) {
   return fields.some(v => v && String(v).toLowerCase().includes(q));
 }
 
-function getField(obj, path) {
-  return path.split('.').reduce((o, k) => o?.[k], obj);
-}
-
 function buildDynamicFilters() {
-  Object.entries(FILTERS).forEach(([key, f]) => {
-    if (!f.dynamic) return;
-    const scope = allProducts.filter(p => passesFiltersExcept(p, key));
-    const counts = {};
-    scope.forEach(p => {
-      const v = getField(p, f.field);
-      if (v !== undefined && v !== null && v !== '') counts[String(v)] = (counts[String(v)]||0) + 1;
-    });
-    let sorted;
-    if (key === 'year') sorted = Object.entries(counts).sort((a,b) => Number(b[0]) - Number(a[0]));
-    else sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-
-    const mkChip = ([v, cnt]) => ({ id: `${key}_${v}`, label: `${v}(${cnt})`, match: x => String(x) === v });
-    const limit = TOP_N[key] || 10;
-    f.popular = sorted.slice(0, limit).map(mkChip);
-    f.others  = sorted.slice(limit).map(mkChip);
-    f.chips   = [...f.popular, ...f.others];
-  });
+  // 활성 필터 제외 상호배제 집계 — passesFiltersExcept 를 passFn 으로 전달
+  buildDynamicChips(allProducts, (p, key) => passesFiltersExcept(p, key));
 }
 
 const dynExpanded = {};
@@ -866,7 +724,7 @@ function renderFilters() {
       <details class="srch-accordion ${activeCount ? 'has-active' : ''}" open>
         <summary class="srch-accordion-sum">
           <i class="${f.icon || 'ph ph-funnel'} srch-acc-icon"></i>
-          <span class="srch-acc-label">${f.label}</span><span class="sb-badge ${activeCount ? 'is-visible' : ''}">${activeCount || ''}</span>
+          <span class="srch-acc-label">${f.label}<span class="sb-badge ${activeCount ? 'is-visible' : ''}">${activeCount || ''}</span></span>
           <i class="ph ph-caret-down srch-acc-caret"></i>
         </summary>
         <div class="srch-accordion-body">${chipsHtml}</div>
@@ -974,24 +832,6 @@ function applyFilters() {
     });
   }
 
-  // 엑셀뷰 정렬
-  if (excelSortField && excelSortDir) {
-    const getVal = p => {
-      if (excelSortField.startsWith('rent_')) {
-        const m = excelSortField.replace('rent_', '');
-        return Number(p.price?.[m]?.rent || 0);
-      }
-      if (excelSortField === 'mileage' || excelSortField === 'year') return Number(p[excelSortField] || 0);
-      return String(p[excelSortField] || '').toLowerCase();
-    };
-    results.sort((a, b) => {
-      const av = getVal(a), bv = getVal(b);
-      if (av === bv) return 0;
-      const cmp = typeof av === 'number' ? av - bv : av < bv ? -1 : 1;
-      return excelSortDir === 'asc' ? cmp : -cmp;
-    });
-  }
-
   filteredProducts = results;
   renderList();
 }
@@ -1005,181 +845,348 @@ function renderList() {
   const PERIODS = [36, 48, 60];
 
   if (viewMode === 'excel') {
+    const priceCell = (p, m, cls = '', rightPx = 0) => {
+      const v = p.price?.[m] || {};
+      const rent = Number(v.rent) || 0;
+      const dep = Number(v.deposit) || 0;
+      const style = `right:${rightPx}px`;
+      if (!rent) return `<td class="excl-price ${cls}" style="${style}">-</td>`;
+      return `<td class="excl-price ${cls}" style="${style}"><span class="excl-rent">${fmtMoney(rent)}</span>${dep ? `<br><span class="excl-dep">${fmtMoney(dep)}</span>` : ''}</td>`;
+    };
+    const pol = p => p._policy || {};
+    const cols = [88,64,64,52,76,160,160,140,52,68,52,72,52,52,62,62,62,62];
+    const totalW = cols.reduce((s,w) => s+w, 0);
+    const colgroup = `<colgroup>${cols.map(w => `<col style="width:${w}px">`).join('')}</colgroup>`;
     el.innerHTML = `
-      <table class="srch-excel-table"><colgroup>${'<col>'.repeat(17)}</colgroup>
-        <tbody>${filteredProducts.map(p => {
-          const price = p.price || {};
-          const priceCell = m => {
-            const v = price[m] || {};
-            const rent = Number(v.rent) || 0;
-            const dep = Number(v.deposit) || 0;
-            return `<td class="srch-excel-price">${rent ? fmtMoney(rent) : '-'}${dep ? `<div class="srch-excel-dep">${fmtMoney(dep)}</div>` : ''}</td>`;
-          };
-          const pol = p._policy || {};
-          const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
-          const credit = pol.credit_grade || pol.screening_criteria || p.credit_grade || '';
-          const minAge = pol.basic_driver_age || '';
-          const t = v => v ? `title="${String(v).replace(/"/g,'&quot;')}"` : '';
-          return `<tr class="srch-excel-row ${selectedProductKey === p._key ? 'is-active' : ''}" data-key="${p._key}">
-            <td ${t(p.car_number)}>${p.car_number || ''}</td>
-            <td ${t(p.vehicle_status)}>${p.vehicle_status || ''}</td>
-            <td ${t(p.product_type)}>${p.product_type || ''}</td>
-            <td ${t(p.maker)}>${p.maker || ''}</td>
-            <td ${t(p.model)}>${p.model || ''}</td>
-            <td class="srch-excel-detail-cell" data-info="${encodeURIComponent(JSON.stringify({n:p.car_number,mk:p.maker,md:p.model,sm:p.sub_model,tr:p.trim_name||p.trim,op:p.options,y:p.year,km:p.mileage,f:p.fuel_type,ec:p.ext_color,ic:p.int_color}))}">${p.sub_model || ''}</td>
-            <td class="srch-excel-detail-cell" data-info="${encodeURIComponent(JSON.stringify({n:p.car_number,mk:p.maker,md:p.model,sm:p.sub_model,tr:p.trim_name||p.trim,op:p.options,y:p.year,km:p.mileage,f:p.fuel_type,ec:p.ext_color,ic:p.int_color}))}">${p.trim_name || p.trim || ''}</td>
-            <td ${t(p.year)}>${p.year || ''}</td>
-            <td ${t(p.mileage ? Number(p.mileage).toLocaleString() : '')}>${p.mileage ? Number(p.mileage).toLocaleString() : ''}</td>
-            <td ${t(p.fuel_type)}>${p.fuel_type || ''}</td>
-            <td ${t(color)}>${color}</td>
-            <td>${credit}</td>
-            <td>${minAge}</td>
-            ${priceCell('24')}${priceCell('36')}${priceCell('48')}${priceCell('60')}
-          </tr>`;
-        }).join('')}</tbody>
-      </table>` || `<div class="srch-empty"><i class="ph ph-magnifying-glass"></i><p>조건에 맞는 차량이 없습니다</p></div>`;
-    bindListDelegation(el);
+      <div class="excl-wrap"><table class="excl-table" style="width:${totalW}px">${colgroup}
+      <thead><tr>
+        <th data-ft="search" data-ci="0" class="excl-sticky-left">차량번호</th><th data-ft="check" data-ci="1">상태</th><th data-ft="check" data-ci="2">구분</th><th data-ft="check" data-ci="3">제조사</th><th data-ft="check" data-ci="4">모델명</th>
+        <th data-ft="search" data-ci="5">세부모델</th><th data-ft="search" data-ci="6">세부트림</th><th data-ft="search" data-ci="7">선택옵션</th>
+        <th data-ft="check" data-ci="8">연식</th><th data-ft="range" data-rt="mileage" data-ci="9">주행</th><th data-ft="check" data-ci="10">연료</th><th data-ft="check" data-ci="11">색상</th><th data-ft="check" data-ci="12">심사</th><th data-ft="check" data-ci="13">연령</th>
+        <th data-ft="range" data-rt="rent" data-ci="14" class="excl-pin-r" style="right:${cols[15]+cols[16]+cols[17]}px">24개월</th><th data-ft="range" data-rt="rent" data-ci="15" class="excl-pin-r" style="right:${cols[16]+cols[17]}px">36개월</th><th data-ft="range" data-rt="rent" data-ci="16" class="excl-pin-r" style="right:${cols[17]}px">48개월</th><th data-ft="range" data-rt="rent" data-ci="17" class="excl-pin-r" style="right:0">60개월</th>
+      </tr></thead>
+      <tbody>${filteredProducts.map(p => {
+        const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
+        const credit = pol(p).credit_grade || pol(p).screening_criteria || p.credit_grade || '';
+        const age = pol(p).basic_driver_age || '';
+        return `<tr class="excl-row ${selectedProductKey === p._key ? 'is-active' : ''}" data-key="${p._key}">
+          <td class="excl-sticky-left">${p.car_number || ''}</td>
+          <td>${p.vehicle_status || ''}</td>
+          <td>${p.product_type || ''}</td>
+          <td>${p.maker || ''}</td>
+          <td>${p.model || ''}</td>
+          <td>${p.sub_model || ''}</td>
+          <td>${p.trim_name || p.trim || ''}</td>
+          <td>${p.options || ''}</td>
+          <td>${p.year || ''}</td>
+          <td>${p.mileage ? Number(p.mileage).toLocaleString() : ''}</td>
+          <td>${p.fuel_type || ''}</td>
+          <td>${color}</td>
+          <td>${credit}</td>
+          <td>${age}</td>
+          ${priceCell(p, '24', 'excl-pin-r', cols[15]+cols[16]+cols[17])}${priceCell(p, '36', 'excl-pin-r', cols[16]+cols[17])}${priceCell(p, '48', 'excl-pin-r', cols[17])}${priceCell(p, '60', 'excl-pin-r', 0)}
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
 
-    // 행 hover → 차량 상세 팝업
-    el.querySelectorAll('.srch-excel-row').forEach(row => {
-      row.addEventListener('mousemove', (e) => {
-        let popup = document.querySelector('.srch-excel-popup');
-        if (popup && popup._rowKey === row.dataset.key) {
-          const parentRect = el.getBoundingClientRect();
-          popup.style.left = `${e.clientX - parentRect.left + 12}px`;
-          popup.style.top = `${e.clientY - parentRect.top + 12}px`;
-          return;
+    // 셀 hover 툴팁
+    let tooltip = null;
+
+    // 행 클릭/우클릭 — 이벤트 위임 (재렌더링 후에도 유지)
+    if (!el._exclBound) {
+      el._exclBound = true;
+      el.addEventListener('click', (e) => {
+        const row = e.target.closest('.excl-row');
+        if (!row || !el.contains(row)) return;
+        if (tooltip) { tooltip.remove(); tooltip = null; }
+        el.querySelector('.excl-row.is-active')?.classList.remove('is-active');
+        row.classList.add('is-active');
+        selectedProductKey = row.dataset.key;
+        renderDetail(row.dataset.key);
+        const p = allProducts.find(x => x._key === row.dataset.key);
+        if (p) {
+          const name = [p.maker, p.sub_model, p.trim_name || p.trim].filter(Boolean).join(' ');
+          setBreadcrumbTail({ icon: 'ph ph-car-simple', label: name || '차량', sub: p.car_number || '' });
         }
-        popup?.remove();
-        const cell = row.querySelector('.srch-excel-detail-cell');
-        if (!cell?.dataset.info) return;
-        const d = JSON.parse(decodeURIComponent(cell.dataset.info));
-        const color = [d.ec, d.ic].filter(Boolean).join(' / ');
-        const spec = [d.y ? d.y+'년' : '', d.km ? Number(d.km).toLocaleString()+'km' : '', d.f, color].filter(Boolean).join(' · ');
-        popup = document.createElement('div');
-        popup.className = 'srch-excel-popup';
-        popup._rowKey = row.dataset.key;
-        popup.innerHTML = `
-          <div style="font-weight:var(--fw-medium);color:var(--c-text);">${d.n || ''}</div>
-          <div>${d.mk || ''} / ${d.md || ''}</div>
-          <div>${d.sm || '-'}</div>
-          <div>${d.tr || '-'}</div>
-          ${d.op ? `<div style="color:var(--c-text-sub);">${d.op}</div>` : ''}
-          <div style="color:var(--c-text-muted);font-size:var(--fs-2xs);margin-top:2px;">${spec}</div>`;
-        const parentRect = el.getBoundingClientRect();
-        popup.style.left = `${e.clientX - parentRect.left + 12}px`;
-        popup.style.top = `${e.clientY - parentRect.top + 12}px`;
-        el.appendChild(popup);
       });
-      row.addEventListener('mouseleave', () => {
-        document.querySelector('.srch-excel-popup')?.remove();
+      el.addEventListener('contextmenu', (e) => {
+        const row = e.target.closest('.excl-row');
+        if (!row || !el.contains(row)) return;
+        e.preventDefault();
+        const p = allProducts.find(x => x._key === row.dataset.key);
+        if (p) openContextMenu(e, getActionsFor(p));
       });
-    });
+    }
 
-    // 헤드-바디 가로스크롤 동기화
-    const headBar = document.getElementById('srchListHead');
-    el.addEventListener('scroll', () => { if (headBar) headBar.scrollLeft = el.scrollLeft; });
+    const exclBody = el.querySelector('.excl-wrap');
 
-    // 패널헤드 th 클릭 → 드롭다운 필터
-    const colDefs = [
-      { key: 'car_number', label: '차량번호', type: 'search' },
-      { key: 'vehicle_status', label: '상태', type: 'check' },
-      { key: 'product_type', label: '구분', type: 'check' },
-      { key: 'maker', label: '제조사', type: 'check' },
-      { key: 'model', label: '모델명', type: 'check' },
-      { key: 'sub_model', label: '세부모델', type: 'search' },
-      { key: 'trim_name', label: '세부트림', type: 'search' },
-      { key: 'year', label: '연식', type: 'check' },
-      { key: 'mileage', label: '주행', type: 'sort' },
-      { key: 'fuel_type', label: '연료', type: 'check' },
-      { key: 'color', label: '색상', type: 'check', getter: p => [p.ext_color, p.int_color].filter(Boolean).join('/') },
-      { key: 'credit', label: '심사', type: 'check', getter: p => p._policy?.credit_grade || p._policy?.screening_criteria || p.credit_grade || '' },
-      { key: 'age', label: '연령', type: 'check', getter: p => p._policy?.basic_driver_age || '' },
-      { key: 'rent_24', label: '24', type: 'sort' },
-      { key: 'rent_36', label: '36', type: 'sort' },
-      { key: 'rent_48', label: '48', type: 'sort' },
-      { key: 'rent_60', label: '60', type: 'sort' },
-    ];
-    document.querySelectorAll('#srchListHead th').forEach((th, i) => {
-      const def = colDefs[i];
-      th.addEventListener('click', (e) => {
-        // 기존 드롭다운 닫기
-        document.querySelector('.srch-col-filter')?.remove();
+    // 헤더 클릭 → 필터 팝업
+    let _openFilterTh = null;
+    const closeFilter = () => { document.querySelector('.excl-filter')?.remove(); _openFilterTh = null; };
 
-        if (def.type === 'sort') {
-          // 숫자 컬럼: 정렬 토글
-          if (excelSortField === def.key) {
-            if (excelSortDir === 'asc') excelSortDir = 'desc';
-            else { excelSortField = null; excelSortDir = null; }
-          } else { excelSortField = def.key; excelSortDir = 'asc'; }
-          applyFilters();
-          return;
-        }
+    // 헤더에 필터값 표시
+    const setFilterLabel = (th, label) => {
+      let tag = th.querySelector('.excl-filter-tag');
+      if (!label) { tag?.remove(); return; }
+      if (!tag) {
+        tag = document.createElement('span');
+        tag.className = 'excl-filter-tag';
+        th.appendChild(tag);
+      }
+      tag.textContent = label;
+    };
 
-        // 체크박스/검색 드롭다운
+    el.querySelectorAll('th[data-ft]').forEach(th => {
+      th.style.cursor = 'pointer';
+      th.addEventListener('click', () => {
+        const ft = th.dataset.ft;
+        const ci = Number(th.dataset.ci);
+        if (ft === 'sort') return;
+
+        // 토글: 같은 헤더 다시 클릭하면 닫기
+        if (_openFilterTh === th) { closeFilter(); return; }
+        closeFilter();
+        _openFilterTh = th;
+
         const rect = th.getBoundingClientRect();
-        const listRect = document.querySelector('.srch-list-wrap')?.getBoundingClientRect();
-        const dropdown = document.createElement('div');
-        dropdown.className = 'srch-col-filter';
-        dropdown.style.left = `${rect.left - (listRect?.left || 0)}px`;
-        dropdown.style.top = `${rect.bottom - (listRect?.top || 0)}px`;
+        const popup = document.createElement('div');
+        popup.className = 'excl-filter';
+        popup.style.cssText = `position:fixed;top:${rect.bottom+2}px;left:${rect.left}px;z-index:9999;min-width:${Math.max(rect.width,160)}px;max-height:320px;`;
 
-        if (def.type === 'search') {
-          dropdown.innerHTML = `<input class="input input-sm" placeholder="${def.label} 검색..." id="srchColSearch" autofocus>`;
-          document.querySelector('.srch-list-wrap')?.appendChild(dropdown);
-          dropdown.querySelector('#srchColSearch')?.addEventListener('input', (ev) => {
-            const q = ev.target.value.toLowerCase();
-            document.querySelectorAll('.srch-excel-row').forEach(row => {
-              const cell = row.children[i]?.textContent?.toLowerCase() || '';
+        if (ft === 'search') {
+          popup.innerHTML = `<div style="padding:6px 8px;"><input class="input input-sm" placeholder="검색..." autofocus style="width:100%;"></div>
+            <div style="display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--c-border-soft);">
+              <button class="btn btn-xs btn-outline" data-a="reset" style="flex:1;">초기화</button>
+              <button class="btn btn-xs btn-primary" data-a="apply" style="flex:1;">적용</button>
+            </div>`;
+          const input = popup.querySelector('input');
+          setTimeout(() => input?.focus(), 50);
+          input?.addEventListener('keydown', ev => { if (ev.key === 'Enter') popup.querySelector('[data-a="apply"]')?.click(); });
+          popup.querySelector('[data-a="reset"]')?.addEventListener('click', () => {
+            exclBody.querySelectorAll('.excl-row').forEach(row => { row.style.display = ''; });
+            setFilterLabel(th, '');
+            closeFilter();
+          });
+          popup.querySelector('[data-a="apply"]')?.addEventListener('click', () => {
+            const q = input?.value?.toLowerCase() || '';
+            exclBody.querySelectorAll('.excl-row').forEach(row => {
+              const cell = row.children[ci]?.textContent?.toLowerCase() || '';
               row.style.display = !q || cell.includes(q) ? '' : 'none';
             });
+            setFilterLabel(th, q ? '1' : '');
+            closeFilter();
           });
-        } else {
-          // 체크박스: 고유값 목록
+
+        } else if (ft === 'check') {
           const vals = {};
-          filteredProducts.forEach(p => {
-            const v = String(def.getter ? def.getter(p) : (p[def.key] || '')).trim();
-            if (v) vals[v] = (vals[v] || 0) + 1;
+          exclBody.querySelectorAll('.excl-row').forEach(row => {
+            const v = row.children[ci]?.textContent?.trim() || '';
+            if (v) vals[v] = (vals[v]||0) + 1;
           });
-          const sorted = Object.entries(vals).sort((a, b) => b[1] - a[1]);
-          dropdown.innerHTML = `
-            <div style="max-height:200px;overflow-y:auto;">
-              ${sorted.map(([v, cnt]) => `<label class="srch-col-check"><input type="checkbox" value="${v}" checked> ${v} (${cnt})</label>`).join('')}
-            </div>
-            <div style="display:flex;gap:var(--sp-1);padding-top:var(--sp-1);">
-              <button class="btn btn-xs btn-outline" id="srchColAll">전체</button>
-              <button class="btn btn-xs btn-outline" id="srchColNone">해제</button>
-              <button class="btn btn-xs btn-outline" id="srchColClose">닫기</button>
+          const sorted = Object.entries(vals).sort((a,b) => b[1]-a[1]);
+          popup.innerHTML = `
+            <div style="flex:1;overflow:auto;padding:4px 0;">${sorted.map(([v,cnt]) => `<label style="display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;"><input type="checkbox" value="${v}" style="accent-color:var(--c-accent);"> ${v} <span style="color:var(--c-text-muted);font-size:10px;margin-left:auto;">${cnt}</span></label>`).join('')}</div>
+            <div style="display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--c-border-soft);">
+              <button class="btn btn-xs btn-outline" data-a="reset" style="flex:1;">초기화</button>
+              <button class="btn btn-xs btn-primary" data-a="apply" style="flex:1;">적용</button>
             </div>`;
-          document.querySelector('.srch-list-wrap')?.appendChild(dropdown);
-          const updateFilter = () => {
-            const checked = new Set([...dropdown.querySelectorAll('input:checked')].map(c => c.value));
-            document.querySelectorAll('.srch-excel-row').forEach(row => {
-              const cell = row.children[i]?.textContent?.trim() || '';
-              row.style.display = checked.has(cell) || checked.size === sorted.length ? '' : 'none';
+          const applyCheck = () => {
+            const checkedArr = [...popup.querySelectorAll('input:checked')].map(c => c.value);
+            const checked = new Set(checkedArr);
+            exclBody.querySelectorAll('.excl-row').forEach(row => {
+              const cell = row.children[ci]?.textContent?.trim() || '';
+              row.style.display = !checked.size || checked.has(cell) ? '' : 'none';
             });
+            setFilterLabel(th, checkedArr.length ? String(checkedArr.length) : '');
           };
-          dropdown.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', updateFilter));
-          dropdown.querySelector('#srchColAll')?.addEventListener('click', () => { dropdown.querySelectorAll('input').forEach(c => c.checked = true); updateFilter(); });
-          dropdown.querySelector('#srchColNone')?.addEventListener('click', () => { dropdown.querySelectorAll('input').forEach(c => c.checked = false); updateFilter(); });
-          dropdown.querySelector('#srchColClose')?.addEventListener('click', () => dropdown.remove());
+          // 체크박스 변경 즉시 필터 적용
+          popup.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', applyCheck));
+          popup.querySelector('[data-a="reset"]')?.addEventListener('click', () => {
+            popup.querySelectorAll('input:checked').forEach(c => { c.checked = false; });
+            exclBody.querySelectorAll('.excl-row').forEach(row => { row.style.display = ''; });
+            setFilterLabel(th, '');
+          });
+          popup.querySelector('[data-a="apply"]')?.addEventListener('click', () => { applyCheck(); closeFilter(); });
+        } else if (ft === 'range') {
+          const rt = th.dataset.rt;
+          const RANGES = rt === 'rent' ? [
+            { label: '50만원 미만', min: 0, max: 500000 },
+            { label: '50만~60만원', min: 500000, max: 600000 },
+            { label: '60만~70만원', min: 600000, max: 700000 },
+            { label: '70만~80만원', min: 700000, max: 800000 },
+            { label: '80만~90만원', min: 800000, max: 900000 },
+            { label: '90만~100만원', min: 900000, max: 1000000 },
+            { label: '100만~150만원', min: 1000000, max: 1500000 },
+            { label: '150만~200만원', min: 1500000, max: 2000000 },
+            { label: '200만원 이상', min: 2000000, max: Infinity },
+          ] : [
+            { label: '1만Km 미만', min: 0, max: 10000 },
+            { label: '1만~2만Km', min: 10000, max: 20000 },
+            { label: '2만~3만Km', min: 20000, max: 30000 },
+            { label: '3만~5만Km', min: 30000, max: 50000 },
+            { label: '5만~7만Km', min: 50000, max: 70000 },
+            { label: '7만~10만Km', min: 70000, max: 100000 },
+            { label: '10만~15만Km', min: 100000, max: 150000 },
+            { label: '15만Km 이상', min: 150000, max: Infinity },
+          ];
+          // 각 구간별 건수 — 대여료는 row의 실제 데이터에서 값 가져오기
+          const rentMonth = rt === 'rent' ? ({14:'24',15:'36',16:'48',17:'60'})[ci] : null;
+          const getVal = (row) => {
+            const key = row.dataset.key;
+            const p = allProducts.find(x => x._key === key);
+            if (!p) return 0;
+            if (rentMonth) return Number(p.price?.[rentMonth]?.rent || 0);
+            return Number(p.mileage || 0);
+          };
+          const counts = RANGES.map(r => {
+            let cnt = 0;
+            exclBody.querySelectorAll('.excl-row').forEach(row => {
+              const v = getVal(row);
+              if (v >= r.min && v < r.max) cnt++;
+            });
+            return { ...r, cnt };
+          }).filter(r => r.cnt > 0);
+
+          popup.innerHTML = `
+            <div style="flex:1;overflow:auto;padding:4px 0;">${counts.map((r,i) => `<label style="display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;"><input type="checkbox" data-min="${r.min}" data-max="${r.max}" style="accent-color:var(--c-accent);"> ${r.label} <span style="color:var(--c-text-muted);font-size:10px;margin-left:auto;">${r.cnt}</span></label>`).join('')}</div>
+            <div style="display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--c-border-soft);">
+              <button class="btn btn-xs btn-outline" data-a="reset" style="flex:1;">초기화</button>
+              <button class="btn btn-xs btn-primary" data-a="apply" style="flex:1;">적용</button>
+            </div>`;
+          const applyRange = () => {
+            const checkedInputs = [...popup.querySelectorAll('input:checked')];
+            const selected = checkedInputs.map(c => ({ min: Number(c.dataset.min), max: Number(c.dataset.max) }));
+            exclBody.querySelectorAll('.excl-row').forEach(row => {
+              if (!selected.length) { row.style.display = ''; return; }
+              const v = getVal(row);
+              row.style.display = selected.some(r => v >= r.min && v < r.max) ? '' : 'none';
+            });
+            setFilterLabel(th, selected.length ? String(selected.length) : '');
+          };
+          popup.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', applyRange));
+          popup.querySelector('[data-a="reset"]')?.addEventListener('click', () => {
+            popup.querySelectorAll('input:checked').forEach(c => { c.checked = false; });
+            exclBody.querySelectorAll('.excl-row').forEach(row => { row.style.display = ''; });
+            setFilterLabel(th, '');
+          });
+          popup.querySelector('[data-a="apply"]')?.addEventListener('click', () => { applyRange(); closeFilter(); });
         }
 
+        document.body.appendChild(popup);
+        // 팝업 내부 클릭 이벤트 버블링 차단 (바깥 클릭 감지 리스너가 잡지 않도록)
+        popup.addEventListener('pointerdown', (ev) => ev.stopPropagation());
+        popup.addEventListener('click', (ev) => ev.stopPropagation());
+        // 위치 보정
+        requestAnimationFrame(() => {
+          const pr = popup.getBoundingClientRect();
+          if (pr.right > window.innerWidth) popup.style.left = `${window.innerWidth - pr.width - 8}px`;
+          if (pr.bottom > window.innerHeight) popup.style.top = `${rect.top - pr.height - 2}px`;
+        });
+        // ESC 닫기
+        const onKey = ev => { if (ev.key === 'Escape') { closeFilter(); document.removeEventListener('keydown', onKey); } };
+        document.addEventListener('keydown', onKey);
         // 바깥 클릭 닫기
         setTimeout(() => {
-          const close = (ev) => { if (!dropdown.contains(ev.target) && ev.target !== th) { dropdown.remove(); document.removeEventListener('click', close); } };
-          document.addEventListener('click', close);
+          const onOut = ev => { if (!popup.contains(ev.target) && ev.target !== th) { closeFilter(); document.removeEventListener('pointerdown', onOut); document.removeEventListener('keydown', onKey); } };
+          document.addEventListener('pointerdown', onOut);
         });
       });
-
-      // 정렬 표시 (숫자 컬럼)
-      th.classList.remove('is-sort-asc', 'is-sort-desc');
-      if (def.type === 'sort' && excelSortField === def.key && excelSortDir) {
-        th.classList.add(excelSortDir === 'asc' ? 'is-sort-asc' : 'is-sort-desc');
-      }
-      // 필터 활성 표시
-      if (def.type === 'check') th.style.cursor = 'pointer';
     });
+
+    // 컬럼 리사이즈 — th 우측 경계 드래그
+    el.querySelectorAll('.excl-head th').forEach((th, i) => {
+      const handle = document.createElement('div');
+      handle.className = 'excl-resize';
+      th.style.position = 'relative';
+      th.appendChild(handle);
+      // 더블클릭 → 내용에 맞춰 넓히기 / 다시 더블클릭 → 원래 폭 복원
+      const defaultW = cols[i];
+      let isExpanded = false;
+      handle.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        if (!isExpanded) {
+          let maxW = th.scrollWidth;
+          exclBody.querySelectorAll(`.excl-row td:nth-child(${i+1})`).forEach(td => {
+            maxW = Math.max(maxW, td.scrollWidth + 16);
+          });
+          cols[i] = Math.max(defaultW, maxW);
+          isExpanded = true;
+        } else {
+          cols[i] = defaultW;
+          isExpanded = false;
+        }
+        const tw = cols.reduce((s,w) => s+w, 0);
+        el.querySelectorAll('.excl-table').forEach(t => { t.style.width = `${tw}px`; });
+        el.querySelectorAll(`.excl-table col:nth-child(${i+1})`).forEach(col => { col.style.width = `${cols[i]}px`; });
+      });
+      handle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const startX = e.clientX;
+        const startW = cols[i];
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+        let rafId = 0;
+        const tables = el.querySelectorAll('.excl-table');
+        const colEls = el.querySelectorAll(`.excl-table col:nth-child(${i+1})`);
+        const onMove = (ev) => {
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(() => {
+            const newW = Math.max(30, startW + ev.clientX - startX);
+            cols[i] = newW;
+            const tw = cols.reduce((s,w) => s+w, 0);
+            tables.forEach(t => { t.style.width = `${tw}px`; });
+            colEls.forEach(col => { col.style.width = `${newW}px`; });
+          });
+        };
+        const onUp = () => {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+        };
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    });
+
+    // 세부트림(6) · 선택옵션(7) 셀 hover → 차량 상세 툴팁
+    let tooltipKey = null;
+    const TOOLTIP_COLS = new Set([6, 7]); // 세부트림, 선택옵션 컬럼 인덱스
+    exclBody.addEventListener('mouseover', (e) => {
+      const td = e.target.closest('td');
+      if (!td) return;
+      const row = td.closest('.excl-row');
+      if (!row) return;
+      const ci = [...row.children].indexOf(td);
+      if (!TOOLTIP_COLS.has(ci)) { if (tooltip) { tooltip.remove(); tooltip = null; tooltipKey = null; } return; }
+      if (row.dataset.key === tooltipKey) return;
+      if (tooltip) { tooltip.remove(); tooltip = null; }
+      tooltipKey = row.dataset.key;
+      const p = allProducts.find(x => x._key === tooltipKey);
+      if (!p) return;
+      const trim = p.trim_name || p.trim || '-';
+      const opts = p.options || '-';
+      const spec = [p.year ? `${p.year}년식` : '', p.mileage ? `${Number(p.mileage).toLocaleString()}km` : '', p.fuel_type, [p.ext_color, p.int_color].filter(Boolean).join('/')].filter(Boolean).join(' · ');
+      tooltip = document.createElement('div');
+      tooltip.className = 'excl-tooltip';
+      tooltip.innerHTML = `<div style="font-weight:var(--fw-medium);">${trim}</div><div>${opts}</div><div style="color:var(--c-text-muted);margin-top:2px;">${spec}</div>`;
+      document.body.appendChild(tooltip);
+    });
+    exclBody.addEventListener('mousemove', (e) => {
+      if (tooltip) { tooltip.style.left = `${e.clientX + 12}px`; tooltip.style.top = `${e.clientY + 16}px`; }
+    });
+    exclBody.addEventListener('mouseout', (e) => {
+      const td = e.target.closest('td');
+      const related = e.relatedTarget?.closest?.('td');
+      if (td && related) {
+        const row = related.closest('.excl-row');
+        const ci = row ? [...row.children].indexOf(related) : -1;
+        if (TOOLTIP_COLS.has(ci) && row?.dataset.key === tooltipKey) return;
+      }
+      if (tooltip) { tooltip.remove(); tooltip = null; tooltipKey = null; }
+    });
+
     return;
   }
 
@@ -1293,13 +1300,15 @@ function bindListDelegation(el) {
 function getActionsFor(product) {
   const role = store.currentUser?.role;
   const acts = [];
-  if (role === 'agent' || role === 'admin') {
-    acts.push({ icon: 'ph ph-chat-circle', label: '소통', primary: true, action: () => startInquiryContract(product) });
+  // 영업자(영업관리자): 소통 · 계약 · 공유
+  if (role === 'agent' || role === 'agent_admin') {
+    acts.push({ icon: 'ph ph-chat-circle', label: '소통', tone: 'navy', action: () => startInquiryContract(product) });
+    acts.push({ icon: 'ph ph-file-text', label: '계약', tone: 'emerald', action: () => startContractFromProduct(product) });
+    acts.push({ icon: 'ph ph-share-network', label: '공유', tone: 'rose', action: () => shareProduct(product) });
+    return acts;
   }
-  if (role === 'admin') {
-    acts.push({ icon: 'ph ph-pencil-simple', label: '수정', action: () => editProduct(product) });
-  }
-  acts.push({ icon: 'ph ph-share-network', label: '공유', action: () => shareProduct(product) });
+  // 관리자·공급사·기타: 공유만
+  acts.push({ icon: 'ph ph-share-network', label: '공유', tone: 'rose', action: () => shareProduct(product) });
   return acts;
 }
 
@@ -1337,6 +1346,13 @@ function editProduct(p) {
   navigate('/product');
 }
 
+function startContractFromProduct(p) {
+  // 계약 페이지로 이동 — 선택된 차량 전달
+  store.pendingContractProduct = p._key;
+  navigate('/contract');
+  showToast(`${p.car_number || p.model} 계약 시작`);
+}
+
 function shareProduct(p) {
   // ERP 엑셀 링크와 동일한 포맷 — 받은 사람이 로그인하면 해당 차량 문의 자동 시작
   const car = p.car_number || '';
@@ -1346,381 +1362,16 @@ function shareProduct(p) {
   navigator.clipboard?.writeText(url).then(() => showToast('링크 복사됨'));
 }
 
-let galleryIdx = 0;
-
 function renderDetail(key) {
   const el = document.querySelector('.srch-detail-content') || document.getElementById('srchDetail');
   if (!el) return;
   const p = allProducts.find(x => x._key === key);
   if (!p) return;
 
-  galleryIdx = 0;
-
-  const price = p.price || {};
-  // 이미지 — 공용 헬퍼 (업로드 + 외부 URL, Drive 폴더는 별도 비동기 해석)
-  const imgList = [...new Set([...productImages(p), ...productExternalImages(p)])];
-  const driveSource = supportedDriveSource(p);
-
-  // Drive 폴더/지원 사이트면 서버 API로 해석 후 재렌더
-  if (driveSource && !p._drive_folder_virtual) {
-    import('../core/drive-photos.js').then(m => {
-      m.fetchDriveFolderImages(driveSource).then(urls => {
-        if (urls?.length && selectedProductKey === key) {
-          p.image_urls = urls;
-          p._drive_folder_virtual = true;
-          renderDetail(key);
-          renderList();
-        }
-      }).catch(() => {});
-    });
-  }
-
-  // 뱃지 — 공용 헬퍼
-  const overlayBadges = topBadgesHtml(p);
-  const reviewTag = reviewOverlayHtml(p);
-
-  // 기간별 가격 행 (대여료 + 보증금)
-  const priceRows = Object.entries(price)
-    .map(([m, v]) => ({ m: Number(m), rent: v?.rent, dep: v?.deposit }))
-    .filter(e => Number.isFinite(e.m) && e.m >= 1 && e.m <= 60 && Number(e.rent || 0) > 0)
-    .sort((a, b) => a.m - b.m);
-
-  // 영업수수료 (맨 아래 별도 섹션 — 카탈로그 배포 시 제외할 것)
-  const feeRows = Object.entries(price)
-    .map(([m, v]) => ({ m: Number(m), fee: v?.fee || v?.commission }))
-    .filter(e => Number.isFinite(e.m) && e.m >= 1 && e.m <= 60 && Number(e.fee || 0) > 0)
-    .sort((a, b) => a.m - b.m);
-
-  // 보험/조건은 product.policy, product.condition, 정책 문서가 있을 수 있음
-  const pol = p.policy || {};
-  const cond = p.condition || {};
-  const policy = findPolicy(p, store.policies || []); // 정책 문서에서 병합할 수 있는 값
-  const bodily   = parsePol(first(policy.injury_limit_deductible,          pol.bodily));
-  const property = parsePol(first(policy.property_limit_deductible,        pol.property));
-  const selfB    = parsePol(first(policy.personal_injury_limit_deductible, pol.selfBodily));
-  const unins    = parsePol(first(policy.uninsured_limit_deductible,       pol.uninsured));
-  const own      = parsePol(first(policy.own_damage_limit_deductible,      pol.ownDamage));
-  const insRows = [
-    ['대인',         first(policy.injury_compensation_limit,          bodily.limit),   first(policy.injury_deductible,          bodily.deductible)],
-    ['대물',         first(policy.property_compensation_limit,        property.limit), first(policy.property_deductible,        property.deductible)],
-    ['자기신체사고', first(policy.personal_injury_compensation_limit, selfB.limit),    first(policy.personal_injury_deductible, selfB.deductible)],
-    ['무보험차상해', first(policy.uninsured_compensation_limit,       unins.limit),    first(policy.uninsured_deductible,       unins.deductible)],
-    ['자기차량손해', first(policy.own_damage_compensation,            own.limit),      first(policy.own_damage_min_deductible,  own.deductible)],
-    ['긴급출동',     first(policy.roadside_assistance, cond.emergency),                '-'],
-  ];
-
-  const condRows = [
-    ['1만Km추가비용',     first(policy.mileage_upcharge_per_10000km)],
-    ['보증금분납',         first(policy.deposit_installment)],
-    ['결제방식',           first(policy.payment_method, pol.paymentMethod)],
-    ['위약금',             first(policy.penalty_condition, cond.penaltyRate)],
-    ['보증금카드결제',     first(policy.deposit_card_payment)],
-    ['대여지역',           first(policy.rental_region, cond.rentalRegion)],
-    ['탁송비',             first(policy.delivery_fee, cond.deliveryFee)],
-    ['운전연령하향',       first(policy.driver_age_lowering, pol.ageLowering)],
-    ['운전연령하향비용',   first(policy.age_lowering_cost, pol.ageLoweringCost)],
-    ['개인운전자범위',     first(policy.personal_driver_scope)],
-    ['사업자운전자범위',   first(policy.business_driver_scope)],
-    ['추가운전자수',       first(policy.additional_driver_allowance_count)],
-    ['추가운전자비용',     first(policy.additional_driver_cost)],
-    ['정비서비스',         first(policy.maintenance_service, cond.maintenance)],
-    ['최소운전연령',       first(policy.basic_driver_age, p.ageText)],
-    ['운전연령상한',       first(policy.driver_age_upper_limit, pol.ageUpperLimit)],
-    ['연간약정주행거리',   first(policy.annual_mileage, pol.annualMileage)],
-  ].filter(([, v]) => v && v !== '-');
-
-  // 대여 기본 (가격표 밑): 연령 / 연간약정주행거리 / 보험포함여부
-  const basicRows = [
-    ['기본 운전연령',     first(policy.basic_driver_age, p.base_age, p.min_age)],
-    ['연간약정주행거리', first(policy.annual_mileage, p.annual_mileage, pol.annualMileage)],
-    ['보험 포함 여부',   first(policy.insurance_included, p.insurance_included)],
-  ].filter(([, v]) => v && v !== '-');
-
-  // 심사/신용 (심사여부 + 신용등급)
-  const reviewRows = [
-    ['심사여부',  needsReview(p) ? '심사필요' : '무심사'],
-    ['심사기준',  first(policy.credit_grade, policy.screening_criteria, p.credit_grade)],
-  ].filter(([, v]) => v && v !== '-');
-
-  const fmtDate = v => { const d = String(v ?? '').replace(/[^\d]/g,''); if (!d) return ''; if (d.length === 8) return `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`; if (d.length === 6) return `20${d.slice(0,2)}.${d.slice(2,4)}.${d.slice(4,6)}`; return String(v ?? '').trim() || ''; };
-
-  // 정책 상세
-  const policyDetailRows = [
-    ['정책코드',     policy.policy_code || p.policy_code],
-    ['정책명',       policy.policy_name || p.policy_name],
-    ['정책유형',     policy.policy_type],
-    ['심사기준',     first(policy.credit_grade, policy.screening_criteria, p.credit_grade)],
-    ['연간약정주행거리', first(policy.annual_mileage, p.annual_mileage)],
-    ['운전연령하향', first(policy.driver_age_lowering)],
-  ].filter(([, v]) => v && v !== '-');
-
-  // 공급사·코드
-  const providerRows = [
-    ['공급사',   p.provider_company_code],
-    ['파트너',   p.partner_code],
-    ['상품코드', p.product_code],
-    ...(store.currentUser?.role === 'admin' ? [['상품UID', p._key]] : []),
-  ].filter(([, v]) => v && v !== '-');
-
-  // 차량 메타
-  const metaRows = [
-    ['차종구분',   p.vehicle_class],
-    ['인승',       p.seats ? p.seats + '인승' : ''],
-    ['배기량',     p.engine_cc ? Number(p.engine_cc).toLocaleString() + 'cc' : ''],
-    ['용도',       p.usage],
-    ['차대번호',   p.vin],
-    ['최초등록일', fmtDate(p.first_registration_date)],
-    ['차령만료일', fmtDate(p.vehicle_age_expiry_date)],
-    ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
-    ['위치',       p.location],
-  ].filter(([, v]) => v && v !== '-');
-
-  // 특이사항
-  const memoText = (p.partner_memo || p.note || '').trim();
-
-  const modelText = [p.maker, p.model].filter(v => v && v !== '-').join(' ');
-  const subText   = [p.sub_model, p.trim || p.trim_name].filter(v => v && v !== '-').join(' > ');
-  const tags      = [p.fuel_type, p.year ? `${p.year}년식` : '', p.mileage ? Number(p.mileage).toLocaleString()+'km' : ''].filter(Boolean);
-
-  // 대여조건 — 정책에서 싹 다 가져오기
-  const allCondRows = [
-    ['심사여부',           needsReview(p) ? '심사필요' : '무심사'],
-    ['심사기준',           first(policy.credit_grade, policy.screening_criteria, p.credit_grade)],
-    ['정책코드',           policy.policy_code || p.policy_code],
-    ['정책명',             policy.policy_name || p.policy_name],
-    ['정책유형',           policy.policy_type],
-    ['기본 운전연령',      first(policy.basic_driver_age, p.base_age, p.min_age)],
-    ['운전연령상한',       first(policy.driver_age_upper_limit)],
-    ['운전연령하향',       first(policy.driver_age_lowering)],
-    ['운전연령하향비용',   first(policy.age_lowering_cost)],
-    ['연간약정주행거리',   first(policy.annual_mileage, p.annual_mileage)],
-    ['1만Km추가비용',      first(policy.mileage_upcharge_per_10000km)],
-    ['보험 포함 여부',     first(policy.insurance_included, p.insurance_included)],
-    ['보증금분납',         first(policy.deposit_installment)],
-    ['보증금카드결제',     first(policy.deposit_card_payment)],
-    ['결제방식',           first(policy.payment_method)],
-    ['위약금',             first(policy.penalty_condition)],
-    ['대여지역',           first(policy.rental_region)],
-    ['탁송비',             first(policy.delivery_fee)],
-    ['개인운전자범위',     first(policy.personal_driver_scope)],
-    ['사업자운전자범위',   first(policy.business_driver_scope)],
-    ['추가운전자수',       first(policy.additional_driver_allowance_count)],
-    ['추가운전자비용',     first(policy.additional_driver_cost)],
-    ['정비서비스',         first(policy.maintenance_service)],
-  ];
-
-  // 기타사항
-  const etcRows = [
-    ['차량상태',   p.vehicle_status],
-    ['상품구분',   p.product_type],
-    ['차종구분',   p.vehicle_class],
-    ['인승',       p.seats ? p.seats + '인승' : ''],
-    ['배기량',     p.engine_cc ? Number(p.engine_cc).toLocaleString() + 'cc' : ''],
-    ['용도',       p.usage],
-    ['차대번호',   p.vin],
-    ['최초등록일', fmtDate(p.first_registration_date)],
-    ['차령만료일', fmtDate(p.vehicle_age_expiry_date)],
-    ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
-    ['위치',       p.location],
-    ['공급사',     p.provider_company_code],
-    ['파트너',     p.partner_code],
-    ['상품코드',   p.product_code],
-    ...(store.currentUser?.role === 'admin' ? [['상품UID', p._key]] : []),
-  ].filter(([, v]) => v && v !== '-');
-
-  el.innerHTML = `
-    <div class="srch-detail-inner">
-      ${renderGallery(imgList, { overlayBadges, reviewTag })}
-
-      <!-- 1. 차량정보 -->
-      <div class="cat-hero">
-        <div class="cat-section-title"><i class="ph ph-car-simple"></i> ${modelText || '차량'}${p.car_number ? `<span class="cat-carno">${p.car_number}</span>` : ''}</div>
-        <div class="cat-rows">
-          <div class="cat-row"><span class="cat-row-label">세부모델</span><span class="cat-row-value">${p.sub_model || '-'}</span></div>
-          <div class="cat-row"><span class="cat-row-label">세부트림</span><span class="cat-row-value">${((p.trim || p.trim_name || '') && p.sub_model) ? (p.trim || p.trim_name || '').replace(p.sub_model, '').trim() || '-' : (p.trim || p.trim_name || '-')}</span></div>
-          <div class="cat-row"><span class="cat-row-label">선택옵션</span><span class="cat-row-value">${p.options || '-'}</span></div>
-        </div>
-        <div class="cat-spec">
-          <span class="cat-spec-item"><i class="ph ph-calendar"></i> ${p.year ? p.year + '년' : '-'}</span>
-          <span class="cat-spec-item"><i class="ph ph-gauge"></i> ${p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '-'}</span>
-          <span class="cat-spec-item"><i class="ph ph-gas-pump"></i> ${p.fuel_type || '-'}</span>
-          <span class="cat-spec-item"><i class="ph ph-palette"></i>
-            ${p.ext_color ? `<span class="cat-color-badge" style="background:${colorToHex(p.ext_color)};color:${colorTextContrast(p.ext_color)};">외 ${p.ext_color}</span>` : ''}
-            ${p.int_color ? `<span class="cat-color-badge" style="background:${colorToHex(p.int_color)};color:${colorTextContrast(p.int_color)};">내 ${p.int_color}</span>` : ''}
-          </span>
-          <span class="cat-spec-item"><i class="ph ph-jeep"></i> ${p.drive_type || '-'}</span>
-        </div>
-      </div>
-
-      <!-- 2. 기간별 대여료, 보증금 -->
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-currency-krw"></i> 기간별 대여료, 보증금</div>
-        ${priceRows.length ? `
-        <table class="cat-table">
-          <thead><tr><th>기간</th><th>대여료</th><th>보증금</th></tr></thead>
-          <tbody>${priceRows.map(r => `<tr>
-            <td>${r.m}개월</td>
-            <td class="cat-price-cell">${fmtMoney(r.rent)}</td>
-            <td>${fmtMoney(r.dep)}</td>
-          </tr>`).join('')}</tbody>
-        </table>` : `<div style="font-size:var(--fs-xs);color:var(--c-text-muted);padding:var(--sp-2) 0;">가격 미입력</div>`}
-      </div>
-
-      <!-- 3. 보험한도 및 면책금 -->
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험한도 및 면책금</div>
-        <table class="cat-table">
-          <thead><tr><th>항목</th><th>한도</th><th>면책금</th></tr></thead>
-          <tbody>${insRows.map(([l, lim, ded]) => `<tr><td>${l}</td><td>${lim || '-'}</td><td>${ded || '-'}</td></tr>`).join('')}</tbody>
-        </table>
-      </div>
-
-      <!-- 4. 대여조건 -->
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-list-checks"></i> 대여조건</div>
-        <div class="cat-rows">${allCondRows.map(([l, v]) => `<div class="cat-row"><span class="cat-row-label">${l}</span><span class="cat-row-value">${v || '-'}</span></div>`).join('')}</div>
-      </div>
-
-      <!-- 5. 기타사항 -->
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-note"></i> 기타사항</div>
-        ${etcRows.length ? `<div class="cat-rows">${etcRows.map(([l, v]) => `<div class="cat-row"><span class="cat-row-label">${l}</span><span class="cat-row-value">${v}</span></div>`).join('')}</div>` : ''}
-        ${memoText ? `<div class="cat-memo" style="margin-top:var(--sp-2);">${memoText.replace(/</g, '&lt;').replace(/\n/g, '<br>')}</div>` : ''}
-        ${!etcRows.length && !memoText ? `<div style="font-size:var(--fs-xs);color:var(--c-text-muted);">-</div>` : ''}
-      </div>
-
-      <!-- 6. 수수료 -->
-      <div class="cat-section cat-section-fee">
-        <div class="cat-section-title"><i class="ph ph-percent"></i> 수수료 <span class="cat-section-hint">(내부용)</span></div>
-        ${feeRows.length ? `
-        <table class="cat-table">
-          <thead><tr><th>기간</th><th>수수료</th></tr></thead>
-          <tbody>${feeRows.map(r => `<tr>
-            <td>${r.m}개월</td>
-            <td class="cat-price-cell">${fmtMoney(r.fee)}</td>
-          </tr>`).join('')}</tbody>
-        </table>` : `<div style="font-size:var(--fs-xs);color:var(--c-text-muted);padding:var(--sp-2) 0;">준비중</div>`}
-      </div>
-
-    </div>
-  `;
-
-  bindGallery(el, imgList);
-
-  // 하단 고정 액션바 — content 밖 별도 컨테이너에 주입
-  const actions = getActionsFor(p);
-  const actionsEl = document.getElementById('srchDetailActions');
-  if (actionsEl) {
-    actionsEl.hidden = false;
-    actionsEl.innerHTML = actions.map((a, i) => `
-      <button class="btn ${a.primary ? 'btn-primary' : 'btn-outline'} btn-sm" data-act="${i}">
-        <i class="${a.icon}"></i> ${a.label}
-      </button>`).join('');
-    actionsEl.querySelectorAll('[data-act]').forEach(btn => {
-      btn.addEventListener('click', () => actions[+btn.dataset.act]?.action());
-    });
-  }
-}
-
-function renderGallery(imgList, { overlayBadges = '', reviewTag = '' } = {}) {
-  const total = imgList.length;
-  if (!total) {
-    return `
-      <div class="srch-gallery-empty">
-        <i class="ph ph-image"></i>
-        ${overlayBadges ? `<div class="srch-gallery-badges">${overlayBadges}</div>` : ''}
-        ${reviewTag}
-      </div>`;
-  }
-  return `
-    <div class="srch-gallery" id="srchGallery">
-      <img src="${imgList[0]}" class="srch-gallery-img" id="srchGalleryImg" alt="">
-      ${overlayBadges ? `<div class="srch-gallery-badges">${overlayBadges}</div>` : ''}
-      ${reviewTag}
-      ${total > 1 ? `
-        <button class="srch-gallery-nav srch-gallery-prev" id="srchGalleryPrev" aria-label="이전"><i class="ph ph-caret-left"></i></button>
-        <button class="srch-gallery-nav srch-gallery-next" id="srchGalleryNext" aria-label="다음"><i class="ph ph-caret-right"></i></button>
-        <div class="srch-gallery-counter" id="srchGalleryCtr">1 / ${total}</div>
-      ` : ''}
-    </div>
-  `;
-}
-
-function bindGallery(root, imgList) {
-  const img = root.querySelector('#srchGalleryImg');
-  // 메인 이미지 클릭 → 풀스크린 (단일 이미지여도 확대 가능)
-  img?.addEventListener('click', () => openFullscreen(imgList, galleryIdx));
-  if (imgList.length <= 1) return;
-  const ctr = root.querySelector('#srchGalleryCtr');
-  const update = () => {
-    if (img) img.src = imgList[galleryIdx];
-    if (ctr) ctr.textContent = `${galleryIdx + 1} / ${imgList.length}`;
-  };
-  root.querySelector('#srchGalleryPrev')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    galleryIdx = (galleryIdx - 1 + imgList.length) % imgList.length;
-    update();
+  renderProductDetail(el, p, {
+    shouldRerender: () => selectedProductKey === key,
+    actionButtons: getActionsFor(p),
   });
-  root.querySelector('#srchGalleryNext')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    galleryIdx = (galleryIdx + 1) % imgList.length;
-    update();
-  });
-}
-
-function openFullscreen(imgList, startIdx = 0) {
-  // 전체 이미지 즉시 병렬 prefetch — 스크롤할 때 끊김 제거
-  imgList.forEach(url => { const i = new Image(); i.decoding = 'async'; i.src = url; });
-
-  // 네이티브 <dialog> — Escape 처리·backdrop·포커스 트랩 자동
-  const overlay = document.createElement('dialog');
-  overlay.className = 'srch-fullscreen srch-fullscreen--scroll';
-  overlay.innerHTML = `
-    <button class="srch-fs-close" aria-label="닫기"><i class="ph ph-x"></i></button>
-    <div class="srch-fs-counter" id="srchFsCounter">${startIdx + 1} / ${imgList.length}</div>
-    <div class="srch-fs-scroll" id="srchFsScroll">
-      ${imgList.map((u, i) => `<img class="srch-fs-img" src="${u}" data-idx="${i}" loading="eager" decoding="async">`).join('')}
-    </div>
-  `;
-  document.body.appendChild(overlay);
-  overlay.showModal();  // 모달 모드 — 자동 backdrop + 포커스 트랩 + Escape 지원
-
-  const scroller = overlay.querySelector('#srchFsScroll');
-  const counter = overlay.querySelector('#srchFsCounter');
-
-  // 시작 이미지로 즉시 스크롤
-  requestAnimationFrame(() => {
-    const imgs = scroller.querySelectorAll('.srch-fs-img');
-    if (imgs[startIdx]) scroller.scrollTop = imgs[startIdx].offsetTop;
-  });
-
-  // viewport 중앙에 걸친 이미지가 곧 현재 이미지 → IntersectionObserver가 직접 감지
-  //  scroll 이벤트보다 월등히 효율적 (브라우저 네이티브 관찰, CPU/배터리 절감)
-  const observer = new IntersectionObserver((entries) => {
-    for (const e of entries) {
-      if (e.isIntersecting) {
-        const idx = Number(e.target.dataset.idx) || 0;
-        counter.textContent = `${idx + 1} / ${imgList.length}`;
-      }
-    }
-  }, {
-    root: scroller,
-    rootMargin: '-50% 0px -50% 0px',  // viewport 중앙 가로선에 닿는 이미지
-    threshold: 0,
-  });
-  scroller.querySelectorAll('.srch-fs-img').forEach(img => observer.observe(img));
-
-  // <dialog>가 Escape 처리 → 'close' 이벤트만 듣고 정리
-  const ac = new AbortController();
-  const close = () => { if (overlay.open) overlay.close(); };
-  overlay.addEventListener('close', () => {
-    ac.abort();
-    observer.disconnect();
-    overlay.remove();
-  }, { once: true });
-  overlay.querySelector('.srch-fs-close').addEventListener('click', close, { signal: ac.signal });
-  // backdrop 클릭 시 닫기 (dialog 자체를 클릭하면 e.target === overlay)
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); }, { signal: ac.signal });
 }
 
 function updateFoot() {
@@ -1825,7 +1476,6 @@ export function unmount() {
   unsubProducts?.();
   selected.clear();
   activeFilters = {};
-  _listDelegated = null;  // 이벤트 위임 리스너는 DOM과 함께 사라짐
-  // 중분류 패널 복원
+  _listDelegated = null;
   const shell = document.querySelector('.shell');
 }

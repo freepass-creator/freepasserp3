@@ -20,11 +20,14 @@ function recompute() {
   const user = store.currentUser;
   if (!user) return;
 
-  // 업무 소통: 안읽은 메시지 총 수
-  const rooms = filterByRole(store.rooms || [], 'rooms');
-  const totalUnread = rooms.reduce((sum, r) => {
-    const unread = r.unread?.[user.uid] || 0;
-    return sum + unread;
+  // 업무 소통: 안읽은 메시지 총 수 (역할별)
+  const rooms = filterByRole(store.rooms || [], 'rooms').filter(r => !r._deleted);
+  const hiddenField = user.role === 'agent' ? 'hidden_for_agent' : user.role === 'provider' ? 'hidden_for_provider' : 'hidden_for_admin';
+  const totalUnread = rooms.filter(r => !r[hiddenField]).reduce((sum, r) => {
+    const n = user.role === 'agent' ? (r.unread_for_agent || 0)
+            : user.role === 'provider' ? (r.unread_for_provider || 0)
+            : 0;
+    return sum + n;
   }, 0);
   setBadge('home', totalUnread);
 

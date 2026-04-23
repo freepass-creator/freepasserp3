@@ -12,10 +12,12 @@ import { openContextMenu } from '../core/context-menu.js';
 import { firstProductImage, supportedDriveSource } from '../core/product-photos.js';
 import { topBadgesHtml, reviewOverlayHtml } from '../core/product-badges.js';
 import { getMakers, getModelsByMaker, getSubModels, findCarModel } from '../core/car-models.js';
+import { renderExcelTable } from '../core/excel-table.js';
 
 let unsubProducts = null;
 let allProducts = [];
 let activeKey = null;
+let viewMode = 'card';
 // 신규 상품 draft — 저장 버튼 눌러야 Firebase 커밋, 그 전까진 메모리만
 let draftProduct = null;
 const DRAFT_KEY = '__draft__';
@@ -33,8 +35,14 @@ export function mount() {
     <div class="ws4">
       <div class="ws4-panel" data-panel="list">
         <div class="ws4-head">
-          <span>목록</span>
-          <button class="btn btn-xs btn-primary" id="pdNew"><i class="ph ph-plus"></i> 새 상품</button>
+          <span>상품 목록</span>
+          <span style="display:flex;gap:var(--sp-1);">
+            <button class="btn btn-sm btn-outline" id="pdViewToggle"><i class="ph ph-table"></i> 엑셀보기</button>
+            <input type="file" id="pdRegQuickFile" accept="image/*,application/pdf" hidden>
+            <button class="btn btn-sm btn-outline" id="pdRegUpload" title="차량등록증으로 자동 등록"><i class="ph ph-identification-card"></i> 등록증</button>
+            <button class="btn btn-sm btn-outline" id="pdImport" title="Google Sheets 일괄 임포트"><i class="ph ph-google-logo"></i> 시트</button>
+            <button class="btn btn-sm btn-primary" id="pdNew"><i class="ph ph-plus"></i> 새 상품</button>
+          </span>
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="pdSearch" placeholder="차량번호, 모델..." >
@@ -45,7 +53,7 @@ export function mount() {
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="asset">
         <div class="ws4-head">
-          <span>차량 자산</span>
+          <span>상품 등록</span>
           <div class="ws4-head-actions" id="pdAssetActions"></div>
         </div>
         <div class="ws4-body" id="pdAsset">
@@ -61,7 +69,7 @@ export function mount() {
       </div>
       <div class="ws4-resize" data-idx="2"></div>
       <div class="ws4-panel" data-panel="photos">
-        <div class="ws4-head">사진</div>
+        <div class="ws4-head">상품 사진</div>
         <div class="ws4-body" id="pdPhotos">
           <div class="srch-empty"><i class="ph ph-image"></i><p>사진</p></div>
         </div>
@@ -81,9 +89,120 @@ export function mount() {
   });
   document.getElementById('pdSearch')?.addEventListener('input', () => renderList());
 
+  document.getElementById('pdViewToggle')?.addEventListener('click', () => {
+    viewMode = viewMode === 'excel' ? 'card' : 'excel';
+    const btn = document.getElementById('pdViewToggle');
+    if (btn) btn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
+    renderList();
+  });
+
   // 새 상품 등록 (빈 카드)
   document.getElementById('pdNew')?.addEventListener('click', async () => {
     await createProduct({});
+  });
+
+  // Google Sheets 일괄 임포트
+  document.getElementById('pdImport')?.addEventListener('click', async () => {
+    const url = prompt('Google Sheets URL을 붙여넣으세요\n(시트는 "링크 있는 사용자 보기" 이상 권한 필요)\n\n헤더 예시: 차량번호, 제조사, 모델명, 세부모델, 연식, 주행, 연료, 24개월대여료, 24개월보증금...');
+    if (!url) return;
+    const btn = document.getElementById('pdImport');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="ph ph-spinner"></i> 가져오는 중...';
+    btn.disabled = true;
+    try {
+      const { parseProductsFromSheets } = await import('../core/product-import.js');
+      const rows = await parseProductsFromSheets(url);
+      if (!rows.length) { showToast('차량번호가 있는 행이 없습니다'); return; }
+      if (!confirm(`${rows.length}건의 상품을 등록하시겠습니까?`)) return;
+      const me = store.currentUser || {};
+      let ok = 0, skip = 0;
+      for (const row of rows) {
+        try {
+          const uid = `P_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+          const payload = {
+            ...row,
+            product_uid: uid,
+            product_code: row.product_code || (row.car_number && (row.provider_company_code || me.company_code) ? `${row.car_number}_${row.provider_company_code || me.company_code}` : uid),
+            vehicle_status: row.vehicle_status || '출고가능',
+            product_type: row.product_type || '중고렌트',
+            provider_company_code: row.provider_company_code || me.company_code || '',
+            created_at: Date.now(),
+            created_by: me.uid || '',
+          };
+          await setRecord(`products/${uid}`, payload);
+          ok++;
+        } catch (e) { skip++; console.error('[import]', e); }
+      }
+      showToast(`✓ ${ok}건 등록, ${skip}건 실패`);
+    } catch (e) {
+      console.error(e);
+      showToast(e.message || '임포트 실패', 'error');
+    } finally {
+      btn.innerHTML = orig;
+      btn.disabled = false;
+    }
+  });
+
+  // 차량등록증 업로드 → OCR → 자동 등록
+  const regFileInput = document.getElementById('pdRegQuickFile');
+  document.getElementById('pdRegUpload')?.addEventListener('click', () => regFileInput?.click());
+  regFileInput?.addEventListener('change', async () => {
+    const file = regFileInput.files?.[0];
+    if (!file) return;
+    regFileInput.value = '';
+    const btn = document.getElementById('pdRegUpload');
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="ph ph-spinner"></i> 분석 중...';
+    btn.disabled = true;
+    try {
+      const { ocrVehicleRegistration } = await import('../core/vehicle-ocr.js');
+      const { matchFromRegistration } = await import('../core/vehicle-master.js');
+      const result = await ocrVehicleRegistration(file);
+      const { car_number, year, vin, fuel_type, displacement, registration_date,
+              owner, type_number, engine_type, seats, usage_type, matched } = result;
+      if (!car_number) {
+        showToast('차량번호를 인식하지 못했습니다');
+        return;
+      }
+      // 차종 마스터 매칭 (type_number → car_name → maker+model+기간)
+      const masterHit = matchFromRegistration({
+        maker: matched?.maker,
+        model: matched?.model,
+        sub_model: matched?.sub_model,
+        type_number,
+        engine_type,
+        first_registration_date: registration_date,
+      }, store.carModels || []);
+      await createProduct({
+        car_number,
+        // 제조사스펙 (매칭된 마스터 우선, 없으면 OCR 결과)
+        maker:        masterHit?.maker || matched?.maker || '',
+        model:        masterHit?.model || matched?.model || '',
+        sub_model:    masterHit?.sub_model || masterHit?.sub || matched?.sub_model || '',
+        vehicle_class: masterHit?.vehicle_class || masterHit?.category || '',
+        fuel_type:    masterHit?.fuel_type || fuel_type || '',
+        engine_cc:    masterHit?.displacement || displacement || '',
+        seats:        masterHit?.seats || seats || '',
+        drive_type:   masterHit?.drive_type || '',
+        transmission: masterHit?.transmission || '',
+        // 등록증스펙
+        year:         year || '',
+        vin:          vin || '',
+        registration_date: registration_date || '',
+        first_registration_date: registration_date || '',
+        model_code:   type_number || masterHit?.type_number_pattern || masterHit?.code || '',
+        engine_code:  engine_type || masterHit?.engine_type || '',
+        usage:        usage_type || '',
+        owner_name:   owner || '',
+      });
+      showToast(`${car_number} 자동 입력${masterHit ? ` · 차종 매칭: ${masterHit.sub || masterHit.sub_model}` : ''}`);
+    } catch (e) {
+      console.error(e);
+      showToast('OCR 실패 — 수동 입력하세요', 'error');
+    } finally {
+      btn.innerHTML = original;
+      btn.disabled = false;
+    }
   });
 
   // 현재 선택된 상품 복제 — 식별·사진 제외한 모든 필드 복사
@@ -224,6 +343,56 @@ function renderList() {
   ].some(v => v && String(v).toLowerCase().includes(q)));
   list.sort((a,b) => (b.created_at||0) - (a.created_at||0));
 
+  if (viewMode === 'excel') {
+    renderExcelTable(el, {
+      cols: [
+        { key: 'car_number', label: '차량번호', width: 90, pin: 'left', filter: 'search' },
+        { key: 'vehicle_status', label: '상태', width: 72, filter: 'check' },
+        { key: 'product_type', label: '구분', width: 72, filter: 'check' },
+        { key: 'maker', label: '제조사', width: 62, filter: 'check' },
+        { key: 'model', label: '모델명', width: 90, filter: 'check' },
+        { key: 'sub_model', label: '세부모델', width: 140, filter: 'search' },
+        { key: 'trim_name', label: '세부트림', width: 140, filter: 'search', render: (r) => r.trim_name || r.trim || '' },
+        { key: 'year', label: '연식', width: 52, filter: 'check' },
+        { key: 'mileage', label: '주행', width: 70, align: 'right', render: (r) => r.mileage ? Number(r.mileage).toLocaleString() : '' },
+        { key: 'fuel_type', label: '연료', width: 52, filter: 'check' },
+        { key: 'ext_color', label: '색상', width: 72, filter: 'check', render: (r) => [r.ext_color, r.int_color].filter(Boolean).join('/') },
+        { key: 'provider_company_code', label: '공급코드', width: 90, filter: 'check' },
+      ],
+      data: list,
+      activeKey: activeKey,
+      keyField: '_key',
+      onRowClick: async (p) => {
+        activeKey = p._key;
+        loadAll(p._key);
+        const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
+        const name = [p.maker, p.sub_model, p.trim_name || p.trim].filter(Boolean).join(' ');
+        setBreadcrumbTail({ icon: 'ph ph-car-simple', label: name || p.car_number || '차량', sub: p.car_number || '' });
+      },
+      onContextMenu: (p, e) => {
+        const role = store.currentUser?.role;
+        const items = [
+          { icon: 'ph ph-copy', label: '복제', action: () => createProduct(p).then(() => showToast(`${p.model || '상품'} 복제됨`)) },
+        ];
+        if (role === 'admin' || p.created_by === store.currentUser?.user_code) {
+          items.push({ icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+            if (!confirm('이 상품을 삭제하시겠습니까?')) return;
+            await softDelete(`products/${p._key}`);
+            if (activeKey === p._key) activeKey = null;
+            showToast('삭제됨');
+          }});
+        }
+        openContextMenu(e, items);
+      },
+    });
+    return;
+  }
+
+  renderListCards(el, list);
+}
+
+/** 카드 뷰 렌더링 */
+function renderListCards(el, list) {
   const tone = s => s === '즉시출고' ? 'info' : s === '출고가능' ? 'green' : s === '상품화중' ? 'muted' : s === '출고협의' ? 'purple' : s === '출고불가' ? 'err' : 'muted';
 
   el.innerHTML = list.map(p => {
@@ -368,7 +537,7 @@ function pickerSubs(maker, model) {
   return [...s].filter(Boolean).sort();
 }
 
-/** 제조사·모델·세부모델 연결 드롭다운 (상위 선택 시 하위 옵션 필터링) */
+/** 제조사·모델·세부모델 연결 드롭다운 — bindAutoSave 가 아니라 bindPicker 가 직접 제어 */
 function renderPicker(p) {
   const curMk = p.maker || '';
   const curMd = p.model || '';
@@ -377,12 +546,23 @@ function renderPicker(p) {
   const models = pickerModels(curMk);
   const subs = pickerSubs(curMk, curMd);
   const isAdmin = store.currentUser?.role === 'admin';
-  const addOpt = isAdmin ? '<option value="__new__">+ 직접 입력</option>' : '';
 
   const sel = (label, field, cur, list) => {
     const opts = [...list];
-    if (isAdmin) opts.push('+ 직접 입력');
-    return fs(label, field, { [field]: cur }, opts);
+    // 현재 값이 리스트에 없으면 (직접 입력된 값 등) 추가해서 선택 유지
+    if (cur && !opts.includes(cur)) opts.unshift(cur);
+    return `
+      <div class="form-row">
+        <span class="form-row-label">${label}</span>
+        <div class="form-row-control">
+          <select class="contract-field-input pd-picker-select" data-picker-field="${field}">
+            <option value="">-</option>
+            ${opts.map(o => `<option value="${o}" ${o === cur ? 'selected' : ''}>${o}</option>`).join('')}
+            ${isAdmin ? `<option value="__new__">+ 직접 입력</option>` : ''}
+          </select>
+        </div>
+      </div>
+    `;
   };
 
   return `
@@ -423,33 +603,35 @@ function renderAsset(p, key) {
       </div>
 
       <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-car-simple"></i> 제조사 및 차량사양</div>
+        <div class="form-section-title"><i class="ph ph-car-simple"></i> 제조사스펙 <span class="form-section-hint">차종 마스터에서 자동 채움</span></div>
         <div class="form-section-body">
           ${renderPicker(p)}
           ${fi('세부트림','trim_name',p,{ autocomplete: true })}
           ${fi('선택옵션','options',p,{ full: true })}
           ${fs('차종구분','vehicle_class',p,CLASS_OPTS)}
-          ${fs('연식','year',p,YEAR_OPTS)}
           ${fs('연료(동력)','fuel_type',p,FUEL_OPTS)}
+          ${fs('구동방식','drive_type',p,['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'])}
+          ${fi('변속기','transmission',p)}
           ${fi('외장색','ext_color',p,{ autocomplete: true })}
           ${fi('내장색','int_color',p,{ autocomplete: true })}
-          ${fs('구동방식','drive_type',p,['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'])}
           ${fi('차량가격 (원)','vehicle_price',p,{ num: true })}
         </div>
       </div>
 
       <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-file-text"></i> 등록증 정보</div>
+        <div class="form-section-title"><i class="ph ph-file-text"></i> 등록증스펙 <span class="form-section-hint">차량등록증 OCR 로 자동 입력 가능</span></div>
         <div class="form-section-body">
-          ${fi('등록증 차종','reg_vehicle_type',p)}
+          ${fs('연식','year',p,YEAR_OPTS)}
           ${fs('용도','usage',p,['자가용','영업용','관용'])}
           ${fi('배기량 (cc)','engine_cc',p,{ num: true })}
           ${fi('승차정원','seats',p,{ num: true })}
           ${fi('최초등록일','first_registration_date',p)}
           ${fi('제작연월','manufacture_date',p)}
           ${fi('차령만료일','vehicle_age_expiry_date',p)}
-          ${fi('형식','model_code',p)}
+          ${fi('형식번호','model_code',p)}
           ${fi('원동기형식','engine_code',p)}
+          ${fi('차대번호(VIN)','vin',p)}
+          ${fi('소유자명','owner_name',p)}
           ${fi('연비 (km/L)','fuel_efficiency',p,{ num: true })}
           ${fi('총중량 (kg)','total_weight',p,{ num: true })}
           ${fi('길이 (mm)','length',p,{ num: true })}
@@ -748,20 +930,22 @@ function renderPhotos(p, key) {
         </div>
       </div>
 
-      <!-- 등록증 (OCR) -->
+      <!-- 차량등록증 (OCR) -->
       <div class="form-section">
-        <div class="form-section-title">자동차등록증 <span class="form-section-hint">업로드 시 OCR로 기본정보 자동 채움</span></div>
+        <div class="form-section-title">차량등록증 <span class="form-section-hint">이미지 또는 PDF · Claude Vision OCR 자동 입력</span></div>
         <div class="form-section-body" style="grid-template-columns:1fr;">
           ${regImg
             ? `<div style="position:relative;display:inline-block;">
-                 <img src="${regImg}" class="pd-reg-image" style="max-width:100%;border-radius:var(--ctrl-r);border:1px solid var(--c-border);">
+                 ${regImg.toLowerCase().endsWith('.pdf') || (p.registration_type === 'pdf')
+                   ? `<a href="${regImg}" target="_blank" style="display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-3);border:1px solid var(--c-border);border-radius:var(--ctrl-r);background:var(--c-bg-sub);"><i class="ph ph-file-pdf" style="font-size:32px;color:var(--c-err);"></i>차량등록증.pdf</a>`
+                   : `<img src="${regImg}" class="pd-reg-image" style="max-width:100%;border-radius:var(--ctrl-r);border:1px solid var(--c-border);">`}
                  <button class="btn btn-xs btn-outline pd-reg-del" id="pdRegDel" style="position:absolute;top:4px;right:4px;"><i class="ph ph-x"></i> 제거</button>
                </div>`
             : `<label class="pd-dropzone" id="pdRegDropzone" for="pdRegFile">
-                 <i class="ph ph-scan" aria-hidden="true"></i>
-                 <div class="pd-dropzone-text">등록증 사진을 끌어놓거나 클릭해서 업로드</div>
-                 <div class="pd-dropzone-hint">OCR로 차량번호 · 제조사 · 모델 · 연식 자동 채움</div>
-                 <input type="file" id="pdRegFile" hidden accept="image/*">
+                 <i class="ph ph-identification-card" aria-hidden="true"></i>
+                 <div class="pd-dropzone-text">차량등록증을 끌어놓거나 클릭해서 업로드</div>
+                 <div class="pd-dropzone-hint">이미지(JPG/PNG) 또는 PDF · OCR로 차량번호·제조사·모델·연식 자동 채움</div>
+                 <input type="file" id="pdRegFile" hidden accept="image/*,application/pdf">
                </label>`}
         </div>
       </div>
@@ -917,10 +1101,11 @@ async function tryOCR(_url, file) {
 
 /** 제조사/모델/세부모델 select — change 시 저장 + 하위 레벨 초기화 */
 function bindPicker(el, p, key) {
-  el.querySelectorAll('.pd-hero-select').forEach(sel => {
+  el.querySelectorAll('.pd-picker-select').forEach(sel => {
     sel.addEventListener('change', async () => {
-      const field = sel.dataset.field;
+      const field = sel.dataset.pickerField;
       let value = sel.value;
+      // "+ 직접 입력" 선택 시 prompt
       if (value === '__new__') {
         const labels = { maker: '제조사', model: '모델', sub_model: '세부모델' };
         const input = prompt(`새 ${labels[field]} 이름:`);
@@ -931,15 +1116,26 @@ function bindPicker(el, p, key) {
       if (field === 'maker') { patch.model = ''; patch.sub_model = ''; }
       else if (field === 'model') { patch.sub_model = ''; }
 
-      // 세부모델 선택 시 car_models 마스터에서 vehicle_class(category)·fuel_type auto-derive
-      //  (이미 값이 있으면 덮어쓰지 않음)
+      // 세부모델 선택 시 vehicle_master 스펙 auto-fill (빈 필드만)
       if (field === 'sub_model' && value) {
         const master = findCarModel({ maker: p.maker, model: p.model, sub_model: value });
         if (master) {
-          if (!p.vehicle_class && master.category) patch.vehicle_class = master.category;
-          if (!p.fuel_type && master.fuel_type) patch.fuel_type = master.fuel_type;
+          // 제조사스펙 필드 일괄 자동 채움 — 이미 값이 있는 필드는 보존
+          const autoFields = {
+            vehicle_class: master.vehicle_class || master.category,
+            fuel_type:     master.fuel_type,
+            engine_cc:     master.displacement,
+            seats:         master.seats,
+            drive_type:    master.drive_type,
+            transmission:  master.transmission,
+            engine_code:   master.engine_type,
+            model_code:    master.type_number_pattern || master.code,
+            year:          p.year || (master.year_start ? String(master.year_start) : ''),
+          };
+          for (const [k, v] of Object.entries(autoFields)) {
+            if (v && !p[k]) patch[k] = v;
+          }
         } else if (p.maker && p.model) {
-          // 마스터에 없는 조합 → stub 등록 (category 등 나머지는 jpkerp car-master에서 보완)
           registerCarModelStub(p.maker, p.model, value);
         }
       }

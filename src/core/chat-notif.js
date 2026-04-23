@@ -18,7 +18,10 @@ export function initChatNotif() {
 
   subscribe('rooms', (rooms) => {
     if (!rooms?.length) return;
-    const uid = store.currentUser?.uid;
+    const me = store.currentUser;
+    const uid = me?.uid;
+    const userCode = me?.user_code;
+    const role = me?.role;
     if (!uid) return;
 
     for (const room of rooms) {
@@ -30,7 +33,12 @@ export function initChatNotif() {
 
       // New message detected
       if (curTs > prevTs) {
-        const isMine = room.last_sender_role === store.currentUser?.role;
+        // 본인이 보낸 메시지는 알림 제외 — uid / user_code / role 다중 체크
+        const isMine =
+          (room.last_sender_uid && room.last_sender_uid === uid) ||
+          (room.last_sender_code && userCode && room.last_sender_code === userCode) ||
+          // fallback: sender_uid/code 없는 옛 데이터 — role 기반
+          (!room.last_sender_uid && !room.last_sender_code && room.last_sender_role === role);
         if (!isMine) {
           onNewMessage(room);
         }
@@ -40,14 +48,6 @@ export function initChatNotif() {
     // Update prev states
     prevRoomStates = new Map(rooms.map(r => [r._key, r.last_message_at || 0]));
     updateBadge(rooms);
-  });
-
-  // Init prev states on first load
-  subscribe('rooms', (rooms) => {
-    if (!rooms?.length) return;
-    if (prevRoomStates.size === 0) {
-      prevRoomStates = new Map(rooms.map(r => [r._key, r.last_message_at || 0]));
-    }
   });
 }
 

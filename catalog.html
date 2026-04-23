@@ -300,12 +300,48 @@
 
           <div class="cat-detail-cta">
             ${agent?.phone ? `<a class="cat-cta-btn cat-cta-phone" href="tel:${agent.phone}">📞 전화문의</a>` : ''}
+            <button class="cat-cta-btn cat-cta-inquiry" id="inquiryBtn">💬 상담요청</button>
+          </div>
+          <div id="inquiryForm" style="display:none;padding:16px;border-top:1px solid #e5e5e5;">
+            <input id="inqName" placeholder="성함" style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #e5e5e5;border-radius:4px;">
+            <input id="inqPhone" placeholder="연락처 010-0000-0000" style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #e5e5e5;border-radius:4px;">
+            <textarea id="inqMsg" placeholder="문의내용" rows="3" style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #e5e5e5;border-radius:4px;resize:vertical;"></textarea>
+            <button id="inqSend" class="cat-cta-btn cat-cta-phone" style="width:100%;">문의 보내기</button>
           </div>
         </div>
       `;
 
       document.getElementById('closeDetail').addEventListener('click', () => el.classList.remove('open'));
       el.addEventListener('click', (e) => { if (e.target === el) el.classList.remove('open'); });
+
+      // 상담 요청 토글 + 전송
+      document.getElementById('inquiryBtn')?.addEventListener('click', () => {
+        document.getElementById('inquiryForm').style.display = 'block';
+      });
+      document.getElementById('inqSend')?.addEventListener('click', async () => {
+        const name = document.getElementById('inqName').value.trim();
+        const phone = document.getElementById('inqPhone').value.trim();
+        const msg = document.getElementById('inqMsg').value.trim();
+        if (!name || !phone) { alert('성함과 연락처를 입력해주세요'); return; }
+        const { push, ref: dbRef, set } = await import('https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js');
+        const inquiryKey = `INQ_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+        await set(dbRef(db, `inquiries/${inquiryKey}`), {
+          product_uid: p._key,
+          product_code: p.product_code || '',
+          car_number: p.car_number || '',
+          model: p.model_name || '',
+          sub_model: p.sub_model || '',
+          agent_code: agentCode || '',
+          provider_company_code: p.provider_company_code || '',
+          visitor_name: name,
+          visitor_phone: phone,
+          message: msg,
+          source: 'catalog',
+          created_at: Date.now(),
+          status: 'new',
+        });
+        document.getElementById('inquiryForm').innerHTML = '<div style="padding:20px;text-align:center;color:#059669;">✓ 문의가 전송되었습니다. 곧 연락드리겠습니다.</div>';
+      });
     }
 
     function dRow(l, v) { return `<div class="cat-detail-row"><span class="cat-detail-label">${l}</span><span class="cat-detail-value">${v||'-'}</span></div>`; }

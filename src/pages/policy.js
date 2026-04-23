@@ -8,10 +8,12 @@ import { cField, fmtWon, empty } from '../core/format.js';
 import { fieldInput as fi, fieldSelect as fs, fieldView, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
+import { renderExcelTable } from '../core/excel-table.js';
 
 let unsubPolicies = null;
 let allPolicies = [];
 let activeCode = null;
+let viewMode = 'card';
 
 const WS_KEY = 'fp.policy.widths';
 
@@ -58,8 +60,8 @@ export function mount() {
     <div class="ws4">
       <div class="ws4-panel" data-panel="list">
         <div class="ws4-head">
-          <span>목록</span>
-          <button class="btn btn-xs btn-primary" id="plNewBtn"><i class="ph ph-plus"></i> 새 정책</button>
+          <span>정책 목록</span>
+          <span style="display:flex;gap:var(--sp-1);"><button class="btn btn-sm btn-outline" id="plViewToggle"><i class="ph ph-table"></i> 엑셀보기</button><button class="btn btn-sm btn-primary" id="plNewBtn"><i class="ph ph-plus"></i> 새 정책</button></span>
         </div>
         <div class="ws4-search">
           <input class="input input-sm" id="plSearch" placeholder="정책명, 공급사..." >
@@ -73,7 +75,7 @@ export function mount() {
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="form">
         <div class="ws4-head">
-          <span style="display:flex;align-items:center;gap:var(--sp-1);">기본정책 <span id="plStatusToggles"></span></span>
+          <span style="display:flex;align-items:center;gap:var(--sp-1);">정책 기본정보 <span id="plStatusToggles"></span></span>
           <div style="display:flex;gap:var(--sp-1);" id="plFormActions"></div>
         </div>
         <div class="ws4-body" id="plForm">
@@ -82,21 +84,21 @@ export function mount() {
       </div>
       <div class="ws4-resize" data-idx="1"></div>
       <div class="ws4-panel" data-panel="insurance">
-        <div class="ws4-head">보험 · 운전자</div>
+        <div class="ws4-head">정책 보험·운전자</div>
         <div class="ws4-body" id="plInsurance">
           <div class="srch-empty"><i class="ph ph-shield-check"></i><p>보험/운전자 조건</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="2"></div>
       <div class="ws4-panel" data-panel="etc">
-        <div class="ws4-head">기타 대여조건</div>
+        <div class="ws4-head">정책 기타조건</div>
         <div class="ws4-body" id="plEtc">
           <div class="srch-empty"><i class="ph ph-note"></i><p>기타 대여조건</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="3"></div>
       <div class="ws4-panel" data-panel="linked">
-        <div class="ws4-head">연결 상품</div>
+        <div class="ws4-head">정책 연결상품</div>
         <div class="ws4-body" id="plLinked">
           <div class="srch-empty"><i class="ph ph-car-simple"></i><p>연결 상품</p></div>
         </div>
@@ -115,6 +117,13 @@ export function mount() {
   });
   document.getElementById('plSearch')?.addEventListener('input', () => renderList());
   document.getElementById('plNewBtn')?.addEventListener('click', () => renderNewForm());
+
+  document.getElementById('plViewToggle')?.addEventListener('click', () => {
+    viewMode = viewMode === 'excel' ? 'card' : 'excel';
+    const btn = document.getElementById('plViewToggle');
+    if (btn) btn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
+    renderList();
+  });
 
   unsubPolicies = watchCollection('policies', (data) => {
     // v1 필드명 폴백 (term_* → policy_*)
@@ -148,10 +157,34 @@ function renderList() {
   ].some(v => v && String(v).toLowerCase().includes(q)));
   list.sort((a,b) => (b.created_at||0) - (a.created_at||0));
 
+  if (viewMode === 'excel') {
+    renderExcelTable(el, {
+      cols: [
+        { key: 'policy_name', label: '정책명', width: 140, pin: 'left', filter: 'search' },
+        { key: 'policy_code', label: '정책코드', width: 100, filter: 'search' },
+        { key: 'provider_company_code', label: '공급코드', width: 90, filter: 'check' },
+        { key: 'policy_type', label: '유형', width: 80, filter: 'check' },
+        { key: 'status', label: '상태', width: 60, filter: 'check', render: (r) => r.status === 'active' ? '활성' : '비활' },
+        { key: 'credit_grade', label: '심사기준', width: 80, filter: 'check' },
+        { key: 'basic_driver_age', label: '운전연령', width: 100, filter: 'check' },
+        { key: 'annual_mileage', label: '연간주행', width: 100, filter: 'check' },
+      ],
+      data: list,
+      activeKey: activeCode,
+      keyField: '_key',
+      onRowClick: async (p) => {
+        activeCode = p._key;
+        loadAll(p._key);
+        const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
+        setBreadcrumbTail({ icon: 'ph ph-scroll', label: p.policy_name || p.policy_code || '정책', sub: p.provider_company_code || '' });
+      },
+    });
+    return;
+  }
+
+  /* ── 카드뷰 ── */
   el.innerHTML = list.map(p => {
     const tone = p.status === 'active' ? 'ok' : 'muted';
-    const badge = p.status !== 'active' && p.status ? `<span class="badge is-filled badge-muted">${p.status}</span>` : '';
-    // 파트너명 조회
     const partner = (store.partners || []).find(pt => pt.partner_code === p.provider_company_code);
     const providerName = partner?.partner_name || p.provider_company_code || '';
     const fmtDate = p.created_at ? new Date(p.created_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '';

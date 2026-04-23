@@ -45,8 +45,10 @@ export function openContextMenu(event, items) {
   activeMenu = menu;
   activeMenuAC = ac;
   setTimeout(() => {
-    document.addEventListener('click', closeContextMenu, { once: true });
-    document.addEventListener('contextmenu', closeContextMenu, { once: true });
+    document.addEventListener('click', closeContextMenu, { signal: ac.signal });
+    document.addEventListener('contextmenu', (ev) => {
+      if (!menu.contains(ev.target)) closeContextMenu();
+    }, { signal: ac.signal });
     document.addEventListener('keydown', onKey, { signal: ac.signal });
   }, 0);
 }

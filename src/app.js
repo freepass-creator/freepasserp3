@@ -17,8 +17,11 @@ import { store, subscribe } from './core/store.js';
 import { navigate, defineRoutes, setNavigateCallback, resetRoute } from './core/router.js';
 import { initAuth } from './firebase/auth.js';
 import { renderBreadcrumb } from './core/breadcrumb.js';
+import { isMobile, onMobileChange } from './core/mobile-shell.js';
 // Drive 썸네일 자동 하이드레이션 옵저버 — 최초 로드부터 상시 활성화
 import './core/drive-photos.js';
+/* mobile.css 는 항상 로드 — .m-* 규격은 앱 어디서나 재사용 */
+import './styles/mobile.css';
 
 /* ── Quick Menu Definition (role-based) ── */
 const MENU_ALL = [
@@ -40,17 +43,13 @@ function getMenu(role) {
   return MENU_ALL.filter(m => m.roles.includes(role || 'agent'));
 }
 
-/* 모바일 하단 탭바 — 4개 핵심 플로우, 역할별 중앙 라벨만 다름
- *  영업자(agent): 문의 / 공급사(provider): 응대 / 관리자(admin): 소통 */
-function getMobileTabs(role) {
-  const chatLabel = role === 'agent' ? '문의'
-                 : role === 'provider' ? '응대'
-                 : '소통';
+/* 모바일 하단 탭바 — 4개 핵심 플로우, 라벨 통일 (찾기/소통/계약/설정) */
+function getMobileTabs(_role) {
   return [
-    { icon: 'ph ph-magnifying-glass', label: '검색',     path: '/search' },
-    { icon: 'ph ph-chat-circle',      label: chatLabel,  path: '/' },
-    { icon: 'ph ph-file-text',        label: '계약',     path: '/contract' },
-    { icon: 'ph ph-gear',             label: '설정',     path: '/settings' },
+    { icon: 'ph ph-magnifying-glass', label: '찾기', path: '/search' },
+    { icon: 'ph ph-chat-circle',      label: '소통', path: '/' },
+    { icon: 'ph ph-file-text',        label: '계약', path: '/contract' },
+    { icon: 'ph ph-gear',             label: '설정', path: '/settings' },
   ];
 }
 
@@ -498,32 +497,33 @@ async function init() {
     await loader();
   };
 
+  // 모바일/데스크톱 분기 loader — 뷰포트 기준 다른 모듈 선택
+  const pageLoader = (desktopImport, mobileImport) => async () => {
+    currentCleanup?.();
+    const loader = (mobileImport && isMobile()) ? mobileImport : desktopImport;
+    const { mount, unmount } = await loader();
+    mount();
+    currentCleanup = unmount;
+  };
+
   // Define routes
   defineRoutes({
-    '/': async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/workspace.js');
-      mount();
-      currentCleanup = unmount;
-    },
-    '/search': async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/search.js');
-      mount();
-      currentCleanup = unmount;
-    },
-    '/contract': async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/contract.js');
-      mount();
-      currentCleanup = unmount;
-    },
-    '/settle': async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/settlement.js');
-      mount();
-      currentCleanup = unmount;
-    },
+    '/': pageLoader(
+      () => import('./pages/workspace.js'),
+      () => import('./pages/mobile-workspace.js'),
+    ),
+    '/search': pageLoader(
+      () => import('./pages/search.js'),
+      () => import('./pages/mobile-search.js'),
+    ),
+    '/contract': pageLoader(
+      () => import('./pages/contract.js'),
+      () => import('./pages/mobile-contract.js'),
+    ),
+    '/settle': pageLoader(
+      () => import('./pages/settlement.js'),
+      () => import('./pages/mobile-settlement.js'),
+    ),
     '/dash': async () => {
       currentCleanup?.();
       const { mount, unmount } = await import('./pages/dashboard.js');
@@ -542,12 +542,10 @@ async function init() {
       mount();
       currentCleanup = unmount;
     }),
-    '/settings': async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/settings-page.js');
-      mount();
-      currentCleanup = unmount;
-    },
+    '/settings': pageLoader(
+      () => import('./pages/settings-page.js'),
+      () => import('./pages/mobile-settings.js'),
+    ),
     '/account': async () => {
       currentCleanup?.();
       const { mount, unmount } = await import('./pages/account.js');
@@ -581,6 +579,13 @@ async function init() {
   });
 
   setNavigateCallback(updateActiveMenu);
+
+  // 뷰포트이 브레이크포인트를 넘어가면 현재 라우트 재진입(데스크톱↔모바일 스왑)
+  onMobileChange(() => {
+    const cur = location.pathname || '/';
+    resetRoute();
+    navigate(cur, { transition: false });
+  });
 
   // 로딩 화면 표시 (jpkerp-next 규격)
   const app = document.getElementById('app');

@@ -9,10 +9,12 @@ import { fieldInput as ffi, fieldView as ffv, bindAutoSave as bindFormAutoSave }
 import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
+import { renderExcelTable } from '../core/excel-table.js';
 
 let unsubContracts = null;
 let allContracts = [];
 let activeCode = null;
+let viewMode = 'card';
 
 const WS_KEY = 'fp.ct.widths';
 
@@ -26,7 +28,7 @@ export function mount() {
   main.innerHTML = `
     <div class="ws4">
       <div class="ws4-panel" data-panel="list">
-        <div class="ws4-head">목록</div>
+        <div class="ws4-head"><span>계약 목록</span><button class="btn btn-sm btn-outline" id="ctViewToggle"><i class="ph ph-table"></i> 엑셀보기</button></div>
         <div class="ws4-search">
           <input class="input input-sm" id="ctSearch" placeholder="검색..." >
           <div style="display:flex;gap:3px;">
@@ -39,21 +41,21 @@ export function mount() {
       </div>
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="progress">
-        <div class="ws4-head"><span>진행상황</span><div style="display:flex;gap:var(--sp-1);" id="ctWorkActions"></div></div>
+        <div class="ws4-head"><span>계약 진행상황</span><div style="display:flex;gap:var(--sp-1);" id="ctWorkActions"></div></div>
         <div class="ws4-body" id="ctWork">
           <div class="srch-empty"><i class="ph ph-clipboard-text"></i><p>계약을 선택하세요</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="1"></div>
       <div class="ws4-panel" data-panel="detail">
-        <div class="ws4-head">고객 · 서류</div>
+        <div class="ws4-head">계약 상세</div>
         <div class="ws4-body" id="ctDetail">
           <div class="srch-empty"><i class="ph ph-user"></i><p>고객정보 · 첨부서류</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="2"></div>
       <div class="ws4-panel" data-panel="sub">
-        <div class="ws4-head">계약조건</div>
+        <div class="ws4-head">계약 조건</div>
         <div class="ws4-body" id="ctSub">
           <div class="srch-empty"><i class="ph ph-info"></i><p>차량 · 대여 · 관계자</p></div>
         </div>
@@ -71,6 +73,13 @@ export function mount() {
     });
   });
   document.getElementById('ctSearch')?.addEventListener('input', () => renderList());
+
+  document.getElementById('ctViewToggle')?.addEventListener('click', () => {
+    viewMode = viewMode === 'excel' ? 'card' : 'excel';
+    const btn = document.getElementById('ctViewToggle');
+    if (btn) btn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
+    renderList();
+  });
 
   unsubContracts = watchCollection('contracts', (data) => {
     allContracts = data;
@@ -94,6 +103,34 @@ function updateBrief() {
   setBreadcrumbBrief(parts.length ? parts.join(' > ') : `총 ${allContracts.length}건`);
 }
 
+const CT_DATE_FMT = (params) => {
+  const v = params.value;
+  if (!v) return '';
+  if (typeof v === 'string') return v;
+  return new Date(v).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' });
+};
+
+const CT_COL_DEFS = [
+  { field: 'contract_code', headerName: '계약코드', width: 90, pinned: 'left', _ft: 'search' },
+  { field: 'car_number_snapshot', headerName: '차량번호', width: 90, _ft: 'search' },
+  { field: 'model_snapshot', headerName: '모델명', width: 90, _ft: 'set' },
+  { field: 'sub_model_snapshot', headerName: '세부모델', width: 130, _ft: 'search' },
+  { field: 'contract_status', headerName: '상태', width: 72, _ft: 'set' },
+  { field: 'customer_name', headerName: '고객명', width: 80, _ft: 'search' },
+  { field: 'agent_code', headerName: '영업코드', width: 80, _ft: 'set' },
+  { field: 'provider_company_code', headerName: '공급코드', width: 80, _ft: 'set' },
+  { field: 'contract_date', headerName: '계약일', width: 80, _ft: false, valueFormatter: CT_DATE_FMT },
+  { field: 'created_at', headerName: '등록일', width: 80, _ft: false, valueFormatter: CT_DATE_FMT },
+];
+
+async function onContractRowClicked(data) {
+  if (!data) return;
+  activeCode = data.contract_code;
+  loadAll(data.contract_code);
+  const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
+  setBreadcrumbTail({ icon: 'ph ph-file-text', label: `${data.car_number_snapshot || ''} ${data.sub_model_snapshot || data.model_snapshot || ''}`.trim() || data.contract_code, sub: data.customer_name || '' });
+}
+
 function renderList() {
   const el = document.getElementById('ctList');
   if (!el) return;
@@ -101,6 +138,18 @@ function renderList() {
   const f = document.querySelector('.chip[data-f].is-active')?.dataset.f || 'all';
 
   let list = [...allContracts];
+
+  // 영업자: 본인 계약만 / 영업관리자: 본인 채널 전체 / 공급사: 본인 소속 계약만
+  const me = store.currentUser || {};
+  const myChannel = me.agent_channel_code || me.channel_code || '';
+  if (me.role === 'agent') {
+    list = list.filter(c => c.agent_uid === me.uid || c.agent_code === me.user_code);
+  } else if (me.role === 'agent_admin') {
+    list = list.filter(c => c.agent_channel_code === myChannel);
+  } else if (me.role === 'provider') {
+    list = list.filter(c => c.provider_uid === me.uid || c.provider_company_code === me.company_code);
+  }
+
   if (f === 'active') list = list.filter(c => c.contract_status !== '계약완료' && c.contract_status !== '계약취소');
   else if (f === 'done') list = list.filter(c => c.contract_status === '계약완료');
 
@@ -112,49 +161,76 @@ function renderList() {
   ].some(v => v && String(v).toLowerCase().includes(q)));
   list.sort((a,b) => (b.created_at||0) - (a.created_at||0));
 
-  const STATUS_TONE = { '계약대기':'warn', '계약요청':'info', '계약발송':'info', '계약완료':'ok', '계약취소':'err' };
-  const tone = s => STATUS_TONE[s] || 'muted';
-  const statusBadge = s => s ? `<span class="badge badge-${tone(s)}">${s.replace('계약','')}</span>` : '';
-
-  el.innerHTML = list.map(c => {
-    const done = c.contract_status === '계약완료';
-    const avatarTone = done ? 'ok' : 'muted';
-    const avatarLabel = done ? '완료' : '미완료';
-    // 진행률
-    const prog = getProgress(c);
-    const stepsDone = prog.done;
-    const stepsTotal = prog.total;
-    const progressColor = stepsDone === stepsTotal ? 'var(--c-ok)' : stepsDone > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
-    const fmtDate = c.contract_date || (c.created_at ? new Date(c.created_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '');
-    return `
-      <div class="room-item ${activeCode === c.contract_code ? 'is-active' : ''}" data-code="${c.contract_code}">
-        <div class="room-item-avatar is-${avatarTone}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ph-file-text"></i>${avatarLabel}</div>
-        <div class="room-item-body">
-          <div class="room-item-top">
-            <span class="room-item-name">${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}</span>
-            <span class="room-item-time">${fmtDate}</span>
-          </div>
-          <div class="room-item-msg">
-            <span>${[c.provider_company_code, c.agent_channel_code, c.agent_code].filter(Boolean).join(' · ')}</span>
-            <span style="font-size:var(--fs-2xs);font-weight:var(--fw-medium);color:${progressColor};">${stepsDone}/${stepsTotal}</span>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('') || empty('계약 없음');
-
-  el.querySelectorAll('.room-item').forEach(item => {
-    item.addEventListener('click', async () => {
-      activeCode = item.dataset.code;
-      renderList();
-      loadAll(item.dataset.code);
-      const c = list.find(x => x.contract_code === item.dataset.code);
-      if (c) {
+  if (viewMode === 'excel') {
+    renderExcelTable(el, {
+      cols: [
+        { key: 'contract_status', label: '계약상태', width: 80, filter: 'check' },
+        { key: 'car_number_snapshot', label: '차량번호', width: 100, pin: 'left', filter: 'search' },
+        { key: 'sub_model_snapshot', label: '세부모델', width: 160, filter: 'search' },
+        { key: 'customer_name', label: '고객명', width: 90, filter: 'search' },
+        { key: 'provider_company_code', label: '공급사', width: 80, filter: 'check' },
+        { key: 'agent_channel_code', label: '영업채널', width: 90, filter: 'check' },
+        { key: 'agent_code', label: '영업자', width: 90, filter: 'check' },
+        { key: 'contract_code', label: '계약코드', width: 110, filter: 'search' },
+        { key: 'updated_at', label: '업데이트', width: 120, render: (r) => r.updated_at || r.created_at ? new Date(r.updated_at || r.created_at).toLocaleString('ko', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '' },
+      ],
+      data: list,
+      activeKey: activeCode,
+      keyField: 'contract_code',
+      onRowClick: async (c) => {
+        activeCode = c.contract_code;
+        loadAll(c.contract_code);
         const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
         setBreadcrumbTail({ icon: 'ph ph-file-text', label: `${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}`.trim() || c.contract_code, sub: c.customer_name || '' });
-      }
+      },
     });
-  });
+    return;
+  }
+
+  {
+    // 카드뷰
+    const STATUS_TONE = { '계약대기':'warn', '계약요청':'info', '계약발송':'info', '계약완료':'ok', '계약취소':'err' };
+    const tone = s => STATUS_TONE[s] || 'muted';
+
+    el.innerHTML = list.map(c => {
+      const done = c.contract_status === '계약완료';
+      const avatarTone = done ? 'ok' : 'muted';
+      const avatarLabel = done ? '완료' : '미완료';
+      const prog = getProgress(c);
+      const stepsDone = prog.done;
+      const stepsTotal = prog.total;
+      const progressColor = stepsDone === stepsTotal ? 'var(--c-ok)' : stepsDone > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
+      const fmtDate = c.contract_date || (c.created_at ? new Date(c.created_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '');
+      return `
+        <div class="room-item ${activeCode === c.contract_code ? 'is-active' : ''}" data-code="${c.contract_code}">
+          <div class="room-item-avatar is-${avatarTone}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ph-file-text"></i>${avatarLabel}</div>
+          <div class="room-item-body">
+            <div class="room-item-top">
+              <span class="room-item-name">${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}</span>
+              <span class="room-item-time">${fmtDate}</span>
+            </div>
+            <div class="room-item-msg">
+              <span>${[c.provider_company_code, c.agent_channel_code, c.agent_code].filter(Boolean).join(' · ')}</span>
+              <span style="font-size:var(--fs-2xs);font-weight:var(--fw-medium);color:${progressColor};">${stepsDone}/${stepsTotal}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('') || empty('계약 없음');
+
+    el.querySelectorAll('.room-item').forEach(item => {
+      item.addEventListener('click', async () => {
+        activeCode = item.dataset.code;
+        renderList();
+        loadAll(item.dataset.code);
+        const c = list.find(x => x.contract_code === item.dataset.code);
+        if (c) {
+          const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
+          setBreadcrumbTail({ icon: 'ph ph-file-text', label: `${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}`.trim() || c.contract_code, sub: c.customer_name || '' });
+        }
+      });
+    });
+  }
 }
 
 function loadAll(code) {

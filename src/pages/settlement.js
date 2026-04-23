@@ -8,6 +8,7 @@ import { fmtWon, fmtMoney, empty, cField } from '../core/format.js';
 import { fieldView as ffv } from '../core/form-fields.js';
 import { initWs4Resize } from '../core/resize.js';
 import { setBreadcrumbBrief } from '../core/breadcrumb.js';
+import { renderExcelTable } from '../core/excel-table.js';
 import {
   SETTLEMENT_STATUS as SS,
   SETTLEMENT_STATUSES_FULL,
@@ -20,6 +21,7 @@ import {
 let unsubSettlements = null;
 let allSettlements = [];
 let activeKey = null;
+let viewMode = 'card';
 
 const WS_KEY = 'fp.st.widths';
 
@@ -33,7 +35,7 @@ export function mount() {
   main.innerHTML = `
     <div class="ws4">
       <div class="ws4-panel" data-panel="list">
-        <div class="ws4-head">목록</div>
+        <div class="ws4-head"><span>정산 목록</span><button class="btn btn-sm btn-outline" id="stViewToggle"><i class="ph ph-table"></i> 엑셀보기</button></div>
         <div class="ws4-search">
           <input class="input input-sm" id="stSearch" placeholder="검색..." >
           <div style="display:flex;gap:3px;">
@@ -46,21 +48,21 @@ export function mount() {
       </div>
       <div class="ws4-resize" data-idx="0"></div>
       <div class="ws4-panel" data-panel="work">
-        <div class="ws4-head"><span>작업</span><div style="display:flex;gap:var(--sp-1);" id="stWorkActions"></div></div>
+        <div class="ws4-head"><span>정산 작업</span><div style="display:flex;gap:var(--sp-1);" id="stWorkActions"></div></div>
         <div class="ws4-body" id="stWork">
           <div class="srch-empty"><i class="ph ph-coins"></i><p>정산을 선택하세요</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="1"></div>
       <div class="ws4-panel" data-panel="detail">
-        <div class="ws4-head">상세</div>
+        <div class="ws4-head">정산 상세</div>
         <div class="ws4-body" id="stDetail">
           <div class="srch-empty"><i class="ph ph-info"></i><p>상세 정보</p></div>
         </div>
       </div>
       <div class="ws4-resize" data-idx="2"></div>
       <div class="ws4-panel" data-panel="sub">
-        <div class="ws4-head">보조</div>
+        <div class="ws4-head">정산 메모</div>
         <div class="ws4-body" id="stSub">
           <div class="srch-empty"><i class="ph ph-note"></i><p>메모/이력</p></div>
         </div>
@@ -78,6 +80,13 @@ export function mount() {
     });
   });
   document.getElementById('stSearch')?.addEventListener('input', () => renderList());
+
+  document.getElementById('stViewToggle')?.addEventListener('click', () => {
+    viewMode = viewMode === 'excel' ? 'card' : 'excel';
+    const btn = document.getElementById('stViewToggle');
+    if (btn) btn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
+    renderList();
+  });
 
   unsubSettlements = watchCollection('settlements', (data) => {
     allSettlements = data;
@@ -107,6 +116,18 @@ function renderList() {
   const f = document.querySelector('.chip[data-f].is-active')?.dataset.f || 'all';
 
   let list = [...allSettlements];
+
+  // 영업자: 본인 정산만 / 영업관리자: 본인 채널 전체 / 공급사: 본인 소속 정산만
+  const me = store.currentUser || {};
+  const myChannel = me.agent_channel_code || me.channel_code || '';
+  if (me.role === 'agent') {
+    list = list.filter(s => s.agent_uid === me.uid || s.agent_code === me.user_code);
+  } else if (me.role === 'agent_admin') {
+    list = list.filter(s => s.agent_channel_code === myChannel);
+  } else if (me.role === 'provider') {
+    list = list.filter(s => s.provider_uid === me.uid || s.provider_company_code === me.company_code || s.partner_code === me.company_code);
+  }
+
   if (f === 'pending') list = list.filter(s => getSettlementStatus(s) !== SS.DONE);
   else if (f === 'done') list = list.filter(s => getSettlementStatus(s) === SS.DONE);
 
@@ -117,34 +138,62 @@ function renderList() {
   ].some(v => v && String(v).toLowerCase().includes(q)));
   list.sort((a,b) => (b.created_at||0) - (a.created_at||0));
 
-  el.innerHTML = list.map(s => `
-    <div class="room-item ${activeKey === s._key ? 'is-active' : ''}" data-key="${s._key}">
-      <div class="room-item-avatar is-${settlementStatusTone(s)}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ph-coins"></i>${getSettlementStatus(s) === SS.DONE ? '완료' : '미완료'}</div>
-      <div class="room-item-body">
-        <div class="room-item-top">
-          <span class="room-item-name">${s.car_number || ''} ${s.sub_model_snapshot || s.model_snapshot || ''}</span>
-          <span class="room-item-time">${gs(s)}</span>
-        </div>
-        <div class="room-item-msg">
-          <span>${[s.provider_company_code, s.agent_code, s.customer_name].filter(Boolean).join(' · ')}</span>
-          <span class="list-row-value">${fmtWon(s.fee_amount)}</span>
-        </div>
-      </div>
-    </div>
-  `).join('') || empty('정산 없음');
-
-  el.querySelectorAll('.room-item').forEach(item => {
-    item.addEventListener('click', async () => {
-      activeKey = item.dataset.key;
-      renderList();
-      loadAll(item.dataset.key);
-      const s = list.find(x => x._key === item.dataset.key);
-      if (s) {
+  if (viewMode === 'excel') {
+    renderExcelTable(el, {
+      cols: [
+        { key: 'settlement_status', label: '정산상태', width: 80, filter: 'check' },
+        { key: 'car_number', label: '차량번호', width: 100, pin: 'left', filter: 'search' },
+        { key: 'sub_model_snapshot', label: '세부모델', width: 160, filter: 'search', render: (r) => r.sub_model_snapshot || r.model_snapshot || '' },
+        { key: 'customer_name', label: '고객명', width: 90, filter: 'search' },
+        { key: 'provider_company_code', label: '공급사', width: 80, filter: 'check' },
+        { key: 'agent_channel_code', label: '영업채널', width: 90, filter: 'check' },
+        { key: 'agent_code', label: '영업자', width: 90, filter: 'check' },
+        { key: 'fee_amount', label: '정산금', width: 100, align: 'right', render: (r) => r.fee_amount ? fmtWon(r.fee_amount) : '-' },
+        { key: 'updated_at', label: '업데이트', width: 120, render: (r) => r.updated_at || r.created_at ? new Date(r.updated_at || r.created_at).toLocaleString('ko', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '' },
+      ],
+      data: list,
+      activeKey: activeKey,
+      keyField: '_key',
+      onRowClick: async (s) => {
+        activeKey = s._key;
+        loadAll(s._key);
         const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
         setBreadcrumbTail({ icon: 'ph ph-coins', label: s.vehicle_name_snapshot || s.car_number || s.settlement_code, sub: s.customer_name || '' });
-      }
+      },
     });
-  });
+    return;
+  }
+
+  {
+    // card view
+    el.innerHTML = list.map(s => `
+      <div class="room-item ${activeKey === s._key ? 'is-active' : ''}" data-key="${s._key}">
+        <div class="room-item-avatar is-${settlementStatusTone(s)}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ph-coins"></i>${getSettlementStatus(s) === SS.DONE ? '완료' : '미완료'}</div>
+        <div class="room-item-body">
+          <div class="room-item-top">
+            <span class="room-item-name">${s.car_number || ''} ${s.sub_model_snapshot || s.model_snapshot || ''}</span>
+          </div>
+          <div class="room-item-msg">
+            <span>${[s.provider_company_code, s.agent_channel_code, s.agent_code, s.customer_name].filter(Boolean).join(' · ')}</span>
+            <span class="list-row-value">${fmtWon(s.fee_amount)}</span>
+          </div>
+        </div>
+      </div>
+    `).join('') || empty('정산 없음');
+
+    el.querySelectorAll('.room-item').forEach(item => {
+      item.addEventListener('click', async () => {
+        activeKey = item.dataset.key;
+        renderList();
+        loadAll(item.dataset.key);
+        const s2 = list.find(x => x._key === item.dataset.key);
+        if (s2) {
+          const { setBreadcrumbTail } = await import('../core/breadcrumb.js');
+          setBreadcrumbTail({ icon: 'ph ph-coins', label: s2.vehicle_name_snapshot || s2.car_number || s2.settlement_code, sub: s2.customer_name || '' });
+        }
+      });
+    });
+  }
 }
 
 function loadAll(key) {

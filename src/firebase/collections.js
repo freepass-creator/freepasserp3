@@ -59,12 +59,20 @@ export async function createSettlement(contract) {
   const code = `ST${dateStr}${String(seq).padStart(2,'0')}`;
 
   const { settlementStatusPayload, SETTLEMENT_STATUS_DEFAULT } = await import('../core/settlement-status.js');
-  const feeAmount = contract.price?.fee || contract.fee_amount || 0;
+  const { getFeeRate } = await import('../core/settlement-rules.js');
+  const { store } = await import('../core/store.js');
+
+  // 수수료: 명시값 > 자동계산 (월대여료 × 파트너 수수료율)
+  const rentAmount = Number(contract.rent_amount_snapshot || 0);
+  const feeRate = getFeeRate(contract.provider_company_code || contract.partner_code, store.partners || []);
+  const feeAmount = contract.price?.fee || contract.fee_amount || Math.round(rentAmount * feeRate);
+
   await setRecord(`settlements/${code}`, {
     settlement_code: code,
     contract_code: contract.contract_code,
     ...settlementStatusPayload(SETTLEMENT_STATUS_DEFAULT),
     partner_code: contract.partner_code || contract.provider_company_code,
+    provider_company_code: contract.provider_company_code || contract.partner_code,
     agent_uid: contract.agent_uid,
     agent_code: contract.agent_code,
     agent_channel_code: contract.agent_channel_code,
@@ -72,9 +80,11 @@ export async function createSettlement(contract) {
     car_number: contract.car_number_snapshot,
     vehicle_name_snapshot: contract.vehicle_name_snapshot,
     model_snapshot: contract.model_snapshot,
+    sub_model_snapshot: contract.sub_model_snapshot,
     rent_month: contract.rent_month_snapshot,
-    rent_amount: contract.rent_amount_snapshot,
+    rent_amount: rentAmount,
     deposit_amount: contract.deposit_amount_snapshot,
+    fee_rate: feeRate,
     fee_amount: feeAmount,
     confirms: { provider: false, agent: false, admin: false },
     created_at: Date.now(),
@@ -131,11 +141,21 @@ export async function ensureRoom({ productUid, productCode, agentUid, agentCode,
 }
 
 /* ── 읽음 처리 ── */
-export async function markRoomRead(roomId, role, uid) {
+export async function markRoomRead(roomId, role, uid, room) {
+  // 관리자는 당사자 아님 → 읽음 상태 관여 X
+  if (role !== 'agent' && role !== 'provider' && role !== 'agent_admin') return;
+  // 영업관리자는 본인이 당사자(agent_uid)인 방일 때만 읽음 처리
+  if (role === 'agent_admin' && room && room.agent_uid !== uid) return;
   const updates = {};
-  updates[`read_by/${uid}`] = Date.now();
-  if (role === 'agent') updates.unread_for_agent = 0;
-  else if (role === 'provider') updates.unread_for_provider = 0;
+  const now = Date.now();
+  updates[`read_by/${uid}`] = now;
+  if (role === 'agent' || (role === 'agent_admin' && room?.agent_uid === uid)) {
+    updates.unread_for_agent = 0;
+    updates.read_at_agent = now;
+  } else if (role === 'provider') {
+    updates.unread_for_provider = 0;
+    updates.read_at_provider = now;
+  }
   await updateRecord(`rooms/${roomId}`, updates);
 }
 

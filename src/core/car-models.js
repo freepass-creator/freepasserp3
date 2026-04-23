@@ -1,10 +1,9 @@
 /**
- * car-models.js — 차종 마스터 (jpkerp-next와 공유)
+ * car-models.js — 차종 마스터 API 호환 레이어
  *
- * RTDB `car_models/{key}` 를 구독해서 store.carModels에 캐시.
- * picker, 신규 상품 입력, OCR 보정 등에서 단일 진실 소스로 사용.
- *
- * 스키마: project_car_models_master.md 참조.
+ * JPKerp2 와 동일한 `vehicle_master` 컬렉션을 사용.
+ * 구 API (`sub_model` 키) 를 유지하기 위해 `vehicle_master` 의 `sub` 를
+ * `sub_model` 로 매핑해서 store.carModels 에 캐시.
  */
 
 import { watchCollection } from '../firebase/db.js';
@@ -15,9 +14,14 @@ let _unsub = null;
 /** 최초 1회 구독 시작. 이미 구독 중이면 기존 구독 유지 */
 export function subscribeCarModels() {
   if (_unsub) return _unsub;
-  _unsub = watchCollection('car_models', (data) => {
-    // 소프트 삭제(status === 'deleted') 제외
-    store.carModels = (data || []).filter(m => m && m.status !== 'deleted');
+  _unsub = watchCollection('vehicle_master', (data) => {
+    store.carModels = (data || [])
+      .filter(m => m && m.status !== 'deleted')
+      .map(m => ({
+        ...m,
+        sub_model: m.sub_model || m.sub || '',   // sub → sub_model 호환
+        vehicle_class: m.vehicle_class || m.category || '',
+      }));
   });
   return _unsub;
 }
