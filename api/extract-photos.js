@@ -26,9 +26,11 @@ async function fetchDriveImages(folderId, size, apiKey) {
   }
   const data = await r.json();
   const files = Array.isArray(data.files) ? data.files : [];
+  // drive.google.com/thumbnail 형식 — lh3.googleusercontent.com 대비 모바일 브라우저 호환성 우수.
+  // 일부 모바일(특히 Samsung Internet) 의 cross-site tracking prevention 이 lh3 호스트 차단.
   return files
     .filter(f => f && f.id)
-    .map(f => `https://lh3.googleusercontent.com/d/${f.id}=w${size}`);
+    .map(f => `https://drive.google.com/thumbnail?id=${f.id}&sz=w${size}`);
 }
 
 export default async function handler(req, res) {
