@@ -1,0 +1,58 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // 상품 이미지: 공개 읽기 (카탈로그/제안서 공개 링크 지원)
+    match /product-images/{userId}/{fileName} {
+      allow read: if true;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == userId
+                            && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 계약 서류 (신분증, 면허증 등): 업로드한 본인만 읽기/쓰기
+    match /contract-files/{userId}/{fileName} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == userId
+                            && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 공지 이미지: 로그인 사용자 읽기
+    match /notice-images/{userId}/{fileName} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == userId
+                            && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 사용자 서류 (사업자등록증 등): 업로드한 본인만 읽기/쓰기
+    match /user-docs/{userId}/{fileName} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == userId
+                            && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 서명된 계약서 PDF: 공개 읽기 (sign.html 서명 완료 후 다운로드)
+    match /contract-signed/{token}/{fileName} {
+      allow read: if true;
+      allow create, update: if request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // 서명용 원본 계약서 PDF: 공개 읽기 (sign.html 에서 표시)
+    match /contract-unsigned/{token}/{fileName} {
+      allow read: if true;
+      allow create, update: if request.auth != null && request.resource.size < 20 * 1024 * 1024;
+    }
+
+    // 기본 거부
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
