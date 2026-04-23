@@ -9,6 +9,7 @@ import { showToast } from '../../core/toast.js';
 import { fieldInput as ffi, bindAutoSave as bindFormAutoSave } from '../../core/form-fields.js';
 import { requestNotificationPermission } from '../../firebase/messaging.js';
 import { logout } from '../../firebase/auth.js';
+import { canInstall, isIOS, isStandalone, promptInstall, onInstallStateChange } from '../../core/pwa-install.js';
 
 export function renderSettings(container) {
   const user = store.currentUser || {};
@@ -53,6 +54,18 @@ export function renderSettings(container) {
         </div>
       </div>
 
+      ${!isStandalone() && canInstall() ? `
+      <!-- 앱 설치 (Chrome/Edge 데스크톱) -->
+      <div class="form-section">
+        <div class="form-section-title">앱 설치</div>
+        <div class="form-section-body" style="grid-template-columns:1fr;">
+          <button class="btn btn-outline btn-sm" id="installAppBtn">
+            <i class="ph ph-download-simple"></i> ${isIOS() ? '홈 화면에 추가 (iOS Safari)' : '앱으로 설치'}
+          </button>
+        </div>
+      </div>
+      ` : ''}
+
       <!-- 계정 -->
       <div style="display: flex; gap: var(--sp-2);">
         <button class="btn btn-outline btn-sm" id="logoutBtn" style="flex:1;color:var(--c-err);">
@@ -95,5 +108,21 @@ export function renderSettings(container) {
 
   // Logout
   container.querySelector('#logoutBtn')?.addEventListener('click', () => logout());
+
+  // 앱 설치
+  container.querySelector('#installAppBtn')?.addEventListener('click', async () => {
+    if (isIOS()) {
+      alert('iOS 설치 방법:\n1) Safari 에서 이 페이지 열기\n2) 하단 공유(□↑) 버튼 탭\n3) "홈 화면에 추가" 선택');
+      return;
+    }
+    const res = await promptInstall();
+    if (res.outcome === 'accepted') showToast('설치 중...');
+    else if (res.outcome === 'unavailable') showToast('브라우저가 설치를 지원하지 않거나 이미 설치됨', 'error');
+  });
+  // 설치 상태 변경 시 섹션 갱신 — 재렌더는 패널 오너가 해야 해서 일단 버튼 상태만 토글
+  onInstallStateChange(() => {
+    const btn = container.querySelector('#installAppBtn');
+    if (btn && (isStandalone() || !canInstall())) btn.closest('.form-section')?.remove();
+  });
 }
 

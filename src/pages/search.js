@@ -660,7 +660,7 @@ function matchesText(p, q) {
     p.fuel_type, p.ext_color, p.int_color, p.year,
     p.location, p.provider_company_code, p.policy_code,
     p.partner_code, p.vin, p.usage, p.product_code, p._key,
-    p.partner_memo, p.options,
+    p.partner_memo, p.options, p.memo, p.notes, p.mission, p.drive_type,
   ];
   // 정책
   const pol = p._policy || {};

@@ -153,12 +153,24 @@ function renderList() {
   if (f === 'active') list = list.filter(c => c.contract_status !== '계약완료' && c.contract_status !== '계약취소');
   else if (f === 'done') list = list.filter(c => c.contract_status === '계약완료');
 
-  if (q) list = list.filter(c => [
-    c.car_number_snapshot, c.vehicle_name_snapshot, c.customer_name,
-    c.contract_code, c.contract_status, c.agent_code,
-    c.provider_company_code, c.customer_phone, c.model_snapshot,
-    c.sub_model_snapshot, c.policy_code, c._key,
-  ].some(v => v && String(v).toLowerCase().includes(q)));
+  if (q) {
+    const qDigits = q.replace(/\D/g, '');
+    list = list.filter(c => {
+      const fields = [
+        c.car_number_snapshot, c.vehicle_name_snapshot, c.customer_name, c.customer_birth,
+        c.delivery_region, c.contract_code, c.contract_status, c.agent_code,
+        c.provider_company_code, c.model_snapshot, c.sub_model_snapshot, c.maker_snapshot,
+        c.policy_code, c._key,
+      ];
+      if (fields.some(v => v && String(v).toLowerCase().includes(q))) return true;
+      // 전화번호: 하이픈 무시하고 숫자만 매칭
+      if (qDigits) {
+        const phoneDigits = String(c.customer_phone || '').replace(/\D/g, '');
+        if (phoneDigits && phoneDigits.includes(qDigits)) return true;
+      }
+      return false;
+    });
+  }
   list.sort((a,b) => (b.created_at||0) - (a.created_at||0));
 
   if (viewMode === 'excel') {

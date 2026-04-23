@@ -189,10 +189,11 @@ function renderRoomList() {
     rooms = rooms.filter(r => r.provider_uid === uid || r.provider_company_code === store.currentUser?.company_code);
   }
 
-  // Text search
+  // Text search — 제목/코드 + 마지막 메시지 내용까지
   if (q) rooms = rooms.filter(r => [
-    r.agent_name, r.provider_name, r.vehicle_number, r.model,
-    r.contract_status, r.agent_code, r.provider_code, r._key,
+    r.agent_name, r.provider_name, r.vehicle_number, r.model, r.sub_model, r.maker,
+    r.contract_status, r.agent_code, r.provider_code, r.provider_company_code, r._key,
+    r.last_message, r.last_sender_code,
   ].some(v => v && String(v).toLowerCase().includes(q)));
 
   // Filter
