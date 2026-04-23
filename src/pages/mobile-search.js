@@ -15,6 +15,7 @@ import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
 import { openBottomSheet, openFab, pushMobileView } from '../core/mobile-shell.js';
 import { FILTERS, matchFilter, buildDynamicChips } from '../core/product-filters.js';
+import { normalizeYear } from '../core/normalize.js';
 
 let unsub = null;
 let allProducts = [];
@@ -33,7 +34,9 @@ export function mount() {
       <div class="m-search-head">
         <div class="m-search-bar">
           <i class="ph ph-magnifying-glass"></i>
-          <input type="search" id="mSearchInput" placeholder="차량번호, 모델명 검색...">
+          <input type="search" id="mSearchInput" placeholder="차량번호, 모델명 검색..."
+                 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                 enterkeyhint="search">
           <span class="m-search-count" id="mSearchCount"></span>
           <button class="m-topbar-action" id="mSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
           <button class="m-topbar-action" id="mSearchFilterBtn" aria-label="필터"><i class="ph ph-sliders-horizontal"></i><span class="m-filter-dot" id="mSearchFilterDot" hidden></span></button>
@@ -408,7 +411,7 @@ function renderCard(p) {
   const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
   const specLine = [
     p.car_number,
-    p.year ? `${p.year}년` : '',
+    normalizeYear(p.year),
     p.mileage ? `${Number(p.mileage).toLocaleString()}km` : '',
     p.fuel_type,
     color,

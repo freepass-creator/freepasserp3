@@ -12,6 +12,7 @@ import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS } from '..
 import { first, parsePol, findPolicy, enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { topBadgesHtml, reviewOverlayHtml, creditOverlayHtml, needsReview } from '../core/product-badges.js';
 import { productImages, productExternalImages, firstProductImage, supportedDriveSource } from '../core/product-photos.js';
+import { normalizeYear, normalizeProductType } from '../core/normalize.js';
 import { renderProductDetail, colorToHex, colorTextContrast } from '../core/product-detail-render.js';
 import { FILTERS, TOP_N, matchFilter, getField, buildDynamicChips } from '../core/product-filters.js';
 
@@ -872,13 +873,13 @@ function renderList() {
         return `<tr class="excl-row ${selectedProductKey === p._key ? 'is-active' : ''}" data-key="${p._key}">
           <td class="excl-sticky-left">${p.car_number || ''}</td>
           <td>${p.vehicle_status || ''}</td>
-          <td>${p.product_type || ''}</td>
+          <td>${normalizeProductType(p.product_type)}</td>
           <td>${p.maker || ''}</td>
           <td>${p.model || ''}</td>
           <td>${p.sub_model || ''}</td>
           <td>${p.trim_name || p.trim || ''}</td>
           <td>${p.options || ''}</td>
-          <td>${p.year || ''}</td>
+          <td>${normalizeYear(p.year)}</td>
           <td>${p.mileage ? Number(p.mileage).toLocaleString() : ''}</td>
           <td>${p.fuel_type || ''}</td>
           <td>${color}</td>
@@ -1167,7 +1168,7 @@ function renderList() {
       if (!p) return;
       const trim = p.trim_name || p.trim || '-';
       const opts = p.options || '-';
-      const spec = [p.year ? `${p.year}년식` : '', p.mileage ? `${Number(p.mileage).toLocaleString()}km` : '', p.fuel_type, [p.ext_color, p.int_color].filter(Boolean).join('/')].filter(Boolean).join(' · ');
+      const spec = [normalizeYear(p.year), p.mileage ? `${Number(p.mileage).toLocaleString()}km` : '', p.fuel_type, [p.ext_color, p.int_color].filter(Boolean).join('/')].filter(Boolean).join(' · ');
       tooltip = document.createElement('div');
       tooltip.className = 'excl-tooltip';
       tooltip.innerHTML = `<div style="font-weight:var(--fw-medium);">${trim}</div><div>${opts}</div><div style="color:var(--c-text-muted);margin-top:2px;">${spec}</div>`;
@@ -1213,7 +1214,7 @@ function renderList() {
       p.provider_company_code,
       p.car_number,
       p.maker,
-      p.year ? `${p.year}년` : '',
+      normalizeYear(p.year),
       p.mileage ? Number(p.mileage).toLocaleString()+'km' : '',
       p.fuel_type,
       color,

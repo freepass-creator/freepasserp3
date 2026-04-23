@@ -13,6 +13,7 @@ import { firstProductImage, supportedDriveSource } from '../core/product-photos.
 import { topBadgesHtml, reviewOverlayHtml } from '../core/product-badges.js';
 import { getMakers, getModelsByMaker, getSubModels, findCarModel } from '../core/car-models.js';
 import { renderExcelTable } from '../core/excel-table.js';
+import { normalizeYear, normalizeProductType } from '../core/normalize.js';
 
 let unsubProducts = null;
 let allProducts = [];
@@ -348,12 +349,12 @@ function renderList() {
       cols: [
         { key: 'car_number', label: '차량번호', width: 90, pin: 'left', filter: 'search' },
         { key: 'vehicle_status', label: '상태', width: 72, filter: 'check' },
-        { key: 'product_type', label: '구분', width: 72, filter: 'check' },
+        { key: 'product_type', label: '구분', width: 72, filter: 'check', render: (r) => normalizeProductType(r.product_type) },
         { key: 'maker', label: '제조사', width: 62, filter: 'check' },
         { key: 'model', label: '모델명', width: 90, filter: 'check' },
         { key: 'sub_model', label: '세부모델', width: 140, filter: 'search' },
         { key: 'trim_name', label: '세부트림', width: 140, filter: 'search', render: (r) => r.trim_name || r.trim || '' },
-        { key: 'year', label: '연식', width: 52, filter: 'check' },
+        { key: 'year', label: '연식', width: 60, filter: 'check', render: (r) => normalizeYear(r.year) },
         { key: 'mileage', label: '주행', width: 70, align: 'right', render: (r) => r.mileage ? Number(r.mileage).toLocaleString() : '' },
         { key: 'fuel_type', label: '연료', width: 52, filter: 'check' },
         { key: 'ext_color', label: '색상', width: 72, filter: 'check', render: (r) => [r.ext_color, r.int_color].filter(Boolean).join('/') },
@@ -438,7 +439,7 @@ function renderListCards(el, list) {
       p.provider_company_code,
       p.car_number,
       p.maker,
-      p.year ? `${p.year}년` : '',
+      normalizeYear(p.year),
       p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '',
       p.fuel_type,
       color,

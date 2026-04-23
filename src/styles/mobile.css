@@ -267,11 +267,13 @@
     background: var(--c-surface);
   }
 
+  /* 높이는 내부 padding + 폰트로 자동 — 폰마다 다른 뷰포트 대응 */
   .m-chat-input {
     flex: 1;
-    height: 40px;
+    min-width: 0;
     padding: var(--sp-2) var(--sp-3);
-    font-size: var(--fs-sm);
+    font-size: var(--fs-base);          /* 16px 근처 — iOS 자동줌 방지 */
+    line-height: 1.4;
     border: 1px solid var(--c-border);
     border-radius: var(--ctrl-r);
     outline: none;
@@ -283,30 +285,60 @@
     background: var(--c-surface);
   }
 
+  /* 첨부·전송 버튼 — 정사각형, 입력칸과 align */
+  .m-chat-input-area .m-chat-attach,
+  .m-chat-input-area .m-chat-send {
+    flex-shrink: 0;
+    width: var(--ctrl-h);
+    height: var(--ctrl-h);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: var(--c-text-sub);
+    font-size: var(--fs-lg);
+    border-radius: var(--ctrl-r);
+  }
+  .m-chat-input-area .m-chat-send { color: var(--c-accent); }
+  .m-chat-input-area .m-chat-attach:active,
+  .m-chat-input-area .m-chat-send:active { background: var(--c-bg-hover); }
+
   /* ── Search (Mobile) ── */
   .m-search-bar {
     display: flex;
     align-items: center;
     margin: var(--sp-3) var(--sp-4);
-    height: 44px;
-    padding: 0 var(--sp-4);
+    /* 높이는 내부 버튼(m-topbar-action 32px) + 상하 여백으로 자동 결정 */
+    padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
     background: var(--c-bg-sub);
     border: 1px solid var(--c-border);
     border-radius: var(--ctrl-r);
     gap: var(--sp-2);
   }
 
+  /* 입력창이 남는 공간 모두 차지 → 카운트·버튼은 자동으로 우측으로 밀림 */
   .m-search-bar input {
     flex: 1;
+    min-width: 0;             /* flex item 줄바꿈 방지 */
     border: none;
     background: none;
     outline: none;
     font-size: var(--fs-sm);
+    line-height: 1;
   }
 
-  .m-search-bar i {
+  .m-search-bar > i:first-child {
     color: var(--c-text-muted);
-    font-size: 18px;
+    font-size: var(--fs-lg);
+    flex-shrink: 0;
+  }
+
+  /* 검색창 내부 버튼 — 동일 정사각형, 우측 정렬 그룹 */
+  .m-search-bar .m-topbar-action {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
   }
 
   .m-filter-chips {
@@ -962,17 +994,22 @@
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  /* 검색창 우측 내부 카운트 (건수) */
+  /* 검색창 내부 카운트 — input 뒤 / 버튼 앞에 우측 정렬 */
   .m-search-bar .m-search-count {
     flex-shrink: 0;
-    font-size: var(--fs-2xs);
+    margin-left: auto;                    /* input 이 flex:1 이라 자연스레 우측 */
+    font-size: var(--fs-xs);
     font-weight: var(--fw-medium);
     color: var(--c-text-muted);
     font-variant-numeric: tabular-nums;
-    padding: 0 var(--sp-1);
     white-space: nowrap;
   }
   .m-search-bar .m-search-count:empty { display: none; }
+
+  /* 활성 필터 strip — 전체해제는 우측 정렬 (검색바 카운트와 세로선상 일치) */
+  .m-search-active { justify-content: flex-start; }
+  .m-search-active .m-search-active-empty,
+  .m-search-active .m-search-clear-all { margin-left: auto; }
 
   /* ── 상품 카드 (검색 결과) ── */
   /* ── 모바일 목록 카드 공통 규격 (상품/계약/정산/소통) ── */

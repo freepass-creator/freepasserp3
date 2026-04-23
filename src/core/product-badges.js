@@ -4,6 +4,7 @@
  * search(카드/상세), mobile/m-search, catalog 등에서 동일하게 쓰는
  * 차량상태·렌트구독·신차중고·심사여부 뱃지 문자열 생성.
  */
+import { normalizeProductType } from './normalize.js';
 
 /* ── 차량상태 → tone (라벨은 원래 이름 그대로 사용) ── */
 const VS_TONE = {
@@ -25,9 +26,10 @@ function vehicleStatusBadge(product) {
   return tone ? badgeHtml(vs, tone) : '';
 }
 
-/* ── 상품구분 뱃지 (신차렌트/중고렌트/신차구독/중고구독) — 한 개로 합침 ── */
+/* ── 상품구분 뱃지 (신차렌트/중고렌트/신차구독/중고구독) — 한 개로 합침
+ *    재렌트/재구독 같은 레거시 값은 중고렌트/중고구독으로 정규화 */
 function productTypeBadge(product) {
-  const pt = (product?.product_type || '').trim();
+  const pt = normalizeProductType(product?.product_type);
   if (!pt) return '';
   const isNew = /^신차/.test(pt);
   return badgeHtml(pt, isNew ? 'info' : 'rose');

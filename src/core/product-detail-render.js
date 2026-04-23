@@ -7,6 +7,7 @@ import { fmtMoney, trimMinusSub } from './format.js';
 import { first, parsePol, findPolicy } from './policy-utils.js';
 import { topBadgesHtml, reviewOverlayHtml, needsReview } from './product-badges.js';
 import { productImages, productExternalImages, supportedDriveSource } from './product-photos.js';
+import { normalizeYear } from './normalize.js';
 
 const COLOR_MAP = {
   '흰':'#f0f0f0','백':'#f0f0f0','화이트':'#f0f0f0','white':'#f0f0f0','아이보리':'#fffff0',
@@ -288,7 +289,7 @@ function _renderProductDetail(container, product, options = {}) {
           <div class="cat-row"><span class="cat-row-label">선택옵션</span><span class="cat-row-value">${p.options || '-'}</span></div>
         </div>
         <div class="cat-spec">
-          <span class="cat-spec-item"><i class="ph ph-calendar"></i> ${p.year ? p.year + '년' : '-'}</span>
+          <span class="cat-spec-item"><i class="ph ph-calendar"></i> ${normalizeYear(p.year) || '-'}</span>
           <span class="cat-spec-item"><i class="ph ph-gauge"></i> ${p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '-'}</span>
           <span class="cat-spec-item"><i class="ph ph-gas-pump"></i> ${p.fuel_type || '-'}</span>
           <span class="cat-spec-item"><i class="ph ph-palette"></i>

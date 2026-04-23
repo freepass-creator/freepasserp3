@@ -27,7 +27,9 @@ export function mount() {
       <div class="m-search-head">
         <div class="m-search-bar">
           <i class="ph ph-magnifying-glass"></i>
-          <input type="search" id="mwsSearch" placeholder="차량번호, 모델명 검색...">
+          <input type="search" id="mwsSearch" placeholder="차량번호, 모델명 검색..."
+                 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                 enterkeyhint="search">
           <span class="m-search-count" id="mwsCount"></span>
         </div>
         <div class="m-filter-chips">
@@ -172,7 +174,10 @@ function openRoom(roomId) {
       <div class="m-chat-input-area">
         <input type="file" id="mwsChatFile" multiple hidden accept="image/*,.pdf,.doc,.docx">
         <button class="m-chat-attach" id="mwsChatAttach" aria-label="파일 첨부"><i class="ph ph-paperclip"></i></button>
-        <input class="m-chat-input" id="mwsChatText" placeholder="메시지 입력...">
+        <input class="m-chat-input" id="mwsChatText" type="text" name="chat_message"
+               placeholder="메시지 입력..."
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+               enterkeyhint="send" inputmode="text">
         <button class="m-chat-send" id="mwsChatSend" aria-label="보내기"><i class="ph ph-paper-plane-tilt"></i></button>
       </div>
     </div>
