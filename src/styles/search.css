@@ -1003,11 +1003,6 @@
     border-right: 1px solid var(--c-border-soft);
     max-width: 200px;
     vertical-align: middle;
-    /* 명시적 stacking 경계 — sticky 컬럼(.excl-sticky-left/.excl-pin-r) 이 확실히 위에
-       오도록 모든 일반 td 에 position:relative + z-index:0 부여. 없으면 스크롤 중 일반 td
-       내부 글리프가 sticky 배경을 뚫고 올라오는 compositing 버그 발생 */
-    position: relative;
-    z-index: 0;
   }
   .excl-table td.excl-sticky-left {
     font-weight: var(--fw-semibold);
