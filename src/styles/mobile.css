@@ -1009,8 +1009,7 @@
 
   /* 활성 필터 strip — 전체해제는 우측 정렬 (검색바 카운트와 세로선상 일치) */
   .m-search-active { justify-content: flex-start; }
-  .m-search-active .m-search-active-empty,
-  .m-search-active .m-search-clear-all { margin-left: auto; }
+  .m-search-active .m-search-clear-all { margin-left: 0; }
 
   /* ── 상품 카드 (검색 결과) ── */
   /* ── 모바일 목록 카드 공통 규격 (상품/계약/정산/소통) ── */
