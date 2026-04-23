@@ -309,12 +309,20 @@
     display: flex;
     align-items: center;
     margin: 0;
-    min-height: 40px;              /* 내부 버튼 유무와 무관하게 전 페이지 동일 높이 */
+    min-height: 40px;
     padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
     background: var(--c-bg-sub);
     border: 1px solid var(--c-border);
     border-radius: var(--ctrl-r);
     gap: var(--sp-2);
+  }
+  /* 내부 자식 중 가장 큰 요소가 페이지마다 달라도 (필터 버튼 유무) 동일한
+     내부 기준 높이를 갖도록 32px 팬텀 스페이서로 고정 — flex centering 베이스라인 일치 */
+  .m-search-bar::after {
+    content: "";
+    width: 0;
+    height: 32px;
+    flex-shrink: 0;
   }
 
   /* 입력창이 남는 공간 모두 차지 → 카운트·버튼은 자동으로 우측으로 밀림 */
