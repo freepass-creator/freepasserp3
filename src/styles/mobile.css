@@ -420,16 +420,21 @@
     border: 2px solid var(--c-bg-sub);
   }
 
-  /* 필터 바텀시트 — 스크롤 영역 + 고정 하단 액션 */
+  /* 필터 바텀시트가 들어있는 sheet-body 는 padding 제거 + overflow 해제 —
+   * 내부에서 자체 스크롤 영역 + 고정 하단 액션 을 가질 수 있게 */
+  .m-sheet-body:has(.m-filter-sheet) {
+    padding: 0;
+    overflow: hidden;
+  }
   .m-filter-sheet {
     display: flex; flex-direction: column;
     height: 100%;
   }
   .m-filter-sheet-scroll {
-    flex: 1;
+    flex: 1; min-height: 0;
     overflow-y: auto;
     display: flex; flex-direction: column; gap: var(--sp-4);
-    padding-bottom: var(--sp-3);
+    padding: 0 var(--sp-4) var(--sp-3);
     -webkit-overflow-scrolling: touch;
   }
   .m-filter-section {
@@ -968,10 +973,11 @@
   .m-doc-add-row:active { background: var(--c-bg-hover); }
   .m-filter-actions {
     display: flex; gap: var(--sp-2);
-    padding: var(--sp-3) 0 0;
+    padding: var(--sp-3) var(--sp-4);
     border-top: 1px solid var(--c-border-soft);
     background: var(--c-surface);
     flex-shrink: 0;  /* 하단 고정 — .m-filter-sheet 의 flex column 에서 축소 금지 */
+    padding-bottom: calc(var(--sp-3) + env(safe-area-inset-bottom));
   }
   .m-filter-actions .btn { flex: 1; height: 44px; font-size: var(--fs-md); }
 
