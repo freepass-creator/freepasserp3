@@ -11,6 +11,7 @@ import { showToast } from '../core/toast.js';
 import { STEPS as CONTRACT_STEPS, getProgress } from '../core/contract-steps.js';
 import { pushMobileView, openBottomSheet } from '../core/mobile-shell.js';
 import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
+import { mEmpty, mLoading } from '../core/format.js';
 
 let unsubRooms = null;
 let unsubMessages = null;
@@ -126,7 +127,7 @@ function renderRooms() {
   if (countEl) countEl.textContent = rooms.length ? `${rooms.length}건` : '';
 
   if (!rooms.length) {
-    el.innerHTML = `<div class="m-empty"><i class="ph ph-chat-circle"></i><p>대화 없음</p></div>`;
+    el.innerHTML = mEmpty('대화 없음', 'ph-chat-circle');
     return;
   }
 
@@ -184,7 +185,7 @@ function openRoom(roomId) {
   const body = `
     <div class="m-chat-view">
       <div class="m-chat-messages" id="mwsChatMsgs">
-        <div class="m-empty"><i class="ph ph-spinner ph-spin"></i></div>
+        ${mLoading()}
       </div>
       <div class="m-chat-input-area">
         <input class="m-chat-input" id="mwsChatText" type="text"
@@ -237,7 +238,7 @@ function renderMessages() {
   const me = store.currentUser || {};
   const sorted = chatMessages; // 이미 subscribeMessages 에서 정렬됨
   if (!sorted.length) {
-    el.innerHTML = `<div class="m-empty"><i class="ph ph-chat-circle"></i><p>메시지 없음</p></div>`;
+    el.innerHTML = mEmpty('메시지 없음', 'ph-chat-circle');
     return;
   }
   const room = (store.rooms || []).find(r => r._key === activeRoomId);

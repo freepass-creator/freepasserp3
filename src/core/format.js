@@ -76,6 +76,16 @@ export function empty(t, icon = 'ph-tray') {
   return `<div class="empty-state"><i class="ph ${icon}"></i><p>${t}</p></div>`;
 }
 
+/** 모바일 빈 상태 HTML (.m-empty — 큰 padding/아이콘) */
+export function mEmpty(t, icon = 'ph-tray') {
+  return `<div class="m-empty"><i class="ph ${icon}"></i><p>${t}</p></div>`;
+}
+
+/** 모바일 로딩 스피너 (.m-empty 활용) */
+export function mLoading() {
+  return `<div class="m-empty"><i class="ph ph-spinner ph-spin"></i></div>`;
+}
+
 /** 읽기전용 계약 필드 HTML */
 export function cField(l, v) {
   return `<div class="contract-field"><span class="contract-field-label">${l}</span><span class="contract-field-value">${v || '-'}</span></div>`;

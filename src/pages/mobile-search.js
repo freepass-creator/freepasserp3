@@ -9,7 +9,7 @@
 import { store } from '../core/store.js';
 import { watchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
-import { fmtMoney, trimMinusSub } from '../core/format.js';
+import { fmtMoney, trimMinusSub, mEmpty } from '../core/format.js';
 import { firstProductImage, supportedDriveSource } from '../core/product-photos.js';
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
@@ -354,7 +354,7 @@ function render() {
   if (countEl) countEl.textContent = filtered.length ? `${filtered.length}대` : '';
 
   if (!shown.length) {
-    el.innerHTML = `<div class="m-empty"><i class="ph ph-magnifying-glass"></i><p>일치하는 차량이 없습니다</p></div>`;
+    el.innerHTML = mEmpty('일치하는 차량이 없습니다', 'ph-magnifying-glass');
     return;
   }
 

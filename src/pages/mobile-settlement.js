@@ -5,7 +5,7 @@
 import { store } from '../core/store.js';
 import { watchCollection, updateRecord } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
-import { fmtWon } from '../core/format.js';
+import { fmtWon, mEmpty } from '../core/format.js';
 
 function iRow(label, value) {
   const v = value === 0 || value ? String(value) : '';
@@ -108,7 +108,7 @@ function renderList() {
   if (countEl) countEl.textContent = list.length ? `${list.length}건` : '';
 
   if (!list.length) {
-    el.innerHTML = `<div class="m-empty"><i class="ph ph-coins"></i><p>정산 없음</p></div>`;
+    el.innerHTML = mEmpty('정산 없음', 'ph-coins');
     return;
   }
 

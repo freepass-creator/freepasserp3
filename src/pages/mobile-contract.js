@@ -6,7 +6,7 @@
 import { store } from '../core/store.js';
 import { watchCollection, updateRecord } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
-import { fmtWon } from '../core/format.js';
+import { fmtWon, mEmpty } from '../core/format.js';
 import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { pushMobileView } from '../core/mobile-shell.js';
 import { filterByRole } from '../core/roles.js';
@@ -184,7 +184,7 @@ function renderList() {
   if (countEl) countEl.textContent = list.length ? `${list.length}건` : '';
 
   if (!list.length) {
-    el.innerHTML = `<div class="m-empty"><i class="ph ph-file-text"></i><p>계약 없음</p></div>`;
+    el.innerHTML = mEmpty('계약 없음', 'ph-file-text');
     return;
   }
 
