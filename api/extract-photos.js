@@ -141,16 +141,15 @@ export default async function handler(req, res) {
   const sizeRaw = parseInt(req.query.size || '1920', 10);
   const size = Math.max(200, Math.min(4000, Number.isFinite(sizeRaw) ? sizeRaw : 1920));
 
-  const apiKey = process.env.DRIVE_API_KEY;
-  if (!apiKey) {
-    res.status(500).json({ ok: false, message: 'DRIVE_API_KEY 미설정' });
-    return;
-  }
-
   const folderId = extractDriveFolderId(url);
 
   // Drive 폴더 분기
   if (folderId && url.includes('drive.google.com')) {
+    const apiKey = process.env.DRIVE_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ ok: false, message: 'DRIVE_API_KEY 미설정' });
+      return;
+    }
     const cacheKey = `drive:${folderId}:${size}`;
     try {
       let promise = _inflight.get(cacheKey);
