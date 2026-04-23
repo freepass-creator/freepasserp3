@@ -1561,7 +1561,16 @@ function vmAuditAction(vm) {
   const products = (store.products || []).filter(p => p.status !== 'deleted' && !p._deleted);
   if (!products.length) { showToast('상품 없음'); return; }
 
-  const master = _vmModels.filter(m => m.maker && m.sub && !m.archived);
+  // 15년 이상 단종 master 제외 — normalize 와 동일 정책
+  const thisYear = new Date().getFullYear();
+  const minEndYear = thisYear - 15;
+  const tooOld = m => {
+    const ye = m?.production_end;
+    if (!ye || ye === '현재') return false;
+    const y = Number(String(ye).match(/^(\d{4})/)?.[1]);
+    return y && y < minEndYear;
+  };
+  const master = _vmModels.filter(m => m.maker && m.sub && !m.archived && !tooOld(m));
 
   // 매칭 도우미 — normalize 와 동일 로직을 연산
   const stripYear = s => String(s || '')
@@ -1801,7 +1810,16 @@ async function vmNormalizeProductsAction(vm) {
   const products = (store.products || []).filter(p => p.status !== 'deleted' && !p._deleted);
   if (!products.length) { showToast('상품 없음'); return; }
 
-  const master = _vmModels.filter(m => m.maker && m.model && m.sub && !m.archived);
+  // 15년 이상 단종된 master 는 후보 풀에서 제외 (사용자 정책: 15년 전 모델은 없다고 간주)
+  const thisYear = new Date().getFullYear();
+  const minEndYear = thisYear - 15;
+  const tooOld = m => {
+    const ye = m?.production_end;
+    if (!ye || ye === '현재') return false;
+    const y = Number(String(ye).match(/^(\d{4})/)?.[1]);
+    return y && y < minEndYear;
+  };
+  const master = _vmModels.filter(m => m.maker && m.model && m.sub && !m.archived && !tooOld(m));
   if (!master.length) { showToast('엔카 마스터가 비어있음 — 먼저 import', 'error'); return; }
 
   // 1) 연식 suffix 제거 ("쏘렌토 MQ4 20-" → "쏘렌토 MQ4", "아반떼 CN7 2023-" → "아반떼 CN7")

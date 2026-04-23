@@ -308,7 +308,7 @@
   .m-search-bar {
     display: flex;
     align-items: center;
-    margin: var(--sp-2) var(--sp-4) var(--sp-1);
+    margin: var(--sp-2) var(--sp-3) var(--sp-1);
     min-height: 40px;              /* 내부 버튼 유무와 무관하게 전 페이지 동일 높이 */
     padding: var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
     background: var(--c-bg-sub);
@@ -345,7 +345,7 @@
   .m-filter-chips {
     display: flex;
     gap: var(--sp-1);
-    padding: 0 var(--sp-4) var(--sp-1);
+    padding: 0 var(--sp-3) var(--sp-1);
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -359,7 +359,7 @@
     align-items: center;
     gap: var(--sp-1);
     min-height: 24px;
-    padding: 0 var(--sp-4) var(--sp-1);
+    padding: 0 var(--sp-3) var(--sp-1);
     margin-bottom: 0;
   }
   .m-search-active-empty {
