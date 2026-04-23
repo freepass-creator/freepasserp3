@@ -106,10 +106,21 @@
     --ctrl-h-sm:      28px;
     --ctrl-h:         32px;
     --ctrl-h-lg:      40px;
-    --ctrl-r:         4px;
+    --ctrl-r:         4px;     /* 기본 라운드 — 버튼·입력·칩 */
+    --card-r:         8px;     /* 카드·섹션 */
+    --bubble-r:       16px;    /* 말풍선·리치 카드 */
+    --pill-r:         999px;   /* 동그란 버튼·태그 */
     --ctrl-pad:       6px 10px;
     --panel-head-h:   40px;
     --topbar-h:       48px;
+    /* 아이콘 크기 — 기존 14/16/18/20px 하드코딩 산재 통일용 */
+    --icon-sm:        14px;
+    --icon-base:      16px;
+    --icon-lg:        20px;
+    --icon-xl:        24px;
+    /* 칩 높이 — .chip 기본(24px) / .chip-xs 소형(22px) 모두 여기서 관리 */
+    --chip-h:         24px;
+    --chip-h-xs:      22px;
 
     /* ── Sidebar ── */
     --sb-w:           200px;

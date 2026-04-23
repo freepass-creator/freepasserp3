@@ -61,7 +61,7 @@
 
   /* ── Chips ── */
   .chip-xs {
-    height: var(--ctrl-h-xs);
+    height: var(--chip-h-xs);
     font-size: var(--fs-2xs);
     padding: 0 6px;
   }
@@ -477,7 +477,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--sp-1);
-    height: 24px;
+    height: var(--chip-h);
     padding: 0 10px;
     font-size: var(--fs-xs);
     font-weight: var(--fw-medium);
@@ -550,7 +550,7 @@
   .badge.is-filled.badge-rose  { color: var(--c-text-inv); background: var(--c-rose);       border-color: var(--c-rose); }
   .badge.is-filled.badge-cyan  { color: var(--c-text-inv); background: var(--c-cyan);       border-color: var(--c-cyan); }
   .badge.is-filled.badge-muted { color: var(--c-text-inv); background: var(--c-text-muted); border-color: var(--c-text-muted); }
-  .badge.is-pill { border-radius: 999px; min-width: 18px; justify-content: center; font-variant-numeric: tabular-nums; }
+  .badge.is-pill { border-radius: var(--pill-r); min-width: 18px; justify-content: center; font-variant-numeric: tabular-nums; }
 
   /* ── Status Dot ── */
   .dot {
@@ -606,7 +606,7 @@
     padding: 6px 12px;
     background: var(--c-bg);
     border: 1px solid var(--c-border);
-    border-radius: 999px;
+    border-radius: var(--pill-r);
     font-size: var(--fs-xs); color: var(--c-text-sub);
     box-shadow: var(--shadow-sm);
     z-index: 9000;

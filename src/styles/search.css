@@ -377,7 +377,7 @@
     transform: translateY(-50%);
     width: 32px;
     height: 32px;
-    border-radius: 999px;
+    border-radius: var(--pill-r);
     background: var(--c-overlay-med);
     color: var(--c-text-inv);
     border: none;
@@ -398,7 +398,7 @@
     padding: 2px 8px;
     background: var(--c-overlay-chip);
     color: var(--c-text-inv);
-    border-radius: 999px;
+    border-radius: var(--pill-r);
     font-size: var(--fs-xs);
     font-variant-numeric: tabular-nums;
   }
@@ -472,7 +472,7 @@
     right: 16px;
     width: 36px;
     height: 36px;
-    border-radius: 999px;
+    border-radius: var(--pill-r);
     background: rgba(255,255,255,0.15);
     color: var(--c-text-inv);
     border: none;
@@ -491,7 +491,7 @@
     padding: 4px 14px;
     background: rgba(255,255,255,0.15);
     color: var(--c-text-inv);
-    border-radius: 999px;
+    border-radius: var(--pill-r);
     font-size: var(--fs-sm);
     font-variant-numeric: tabular-nums;
     z-index: 2;
