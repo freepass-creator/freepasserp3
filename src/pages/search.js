@@ -46,6 +46,7 @@ export function mount() {
           <span style="display:flex;gap:var(--sp-1);">
             <button class="btn btn-sm btn-outline" id="srchExcel" title="Excel 다운로드"><i class="ph ph-download-simple"></i> Excel</button>
             <button class="btn btn-sm btn-outline" id="srchPhotoZip" title="사진 ZIP"><i class="ph ph-file-zip"></i> 사진</button>
+            <button class="btn btn-sm btn-outline" id="srchCatalogShare" title="카탈로그 공유" style="display:${store.currentUser?.role === 'admin' ? 'inline-flex' : 'none'};"><i class="ph ph-share-network"></i> 카탈로그</button>
             <button class="btn btn-sm btn-outline" id="srchViewToggle2" title="${viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환'}"><i class="ph ph-${viewMode === 'excel' ? 'cards' : 'table'}"></i> ${viewMode === 'excel' ? '카드보기' : '엑셀보기'}</button>
             <span class="ws4-head-toggle" id="srchFilterToggle" title="조건 접기"><i class="ph ph-caret-left"></i></span>
           </span>
@@ -129,6 +130,9 @@ export function mount() {
       showToast('차량 목록을 갱신하지 못했습니다');
     }
   });
+
+  // 카탈로그 공유 (관리자만)
+  document.getElementById('srchCatalogShare')?.addEventListener('click', openShareCatalog);
 
   // 뷰 전환 (목록만 카드/엑셀)
   document.getElementById('srchViewToggle2')?.addEventListener('click', () => {
@@ -747,26 +751,21 @@ function renderFilters() {
     `;
   }).join('');
 
-  // Chip clicks — toggle without full re-render
+  // Chip clicks — toggle + 다른 필터 후보 재계산 (양방향 연동)
+  //   제조사 선택 시 → 모델/세부모델은 그 제조사 것만
+  //   세부모델 선택 시 → 제조사도 자동으로 좁혀짐
   el.querySelectorAll('.chip').forEach(chipEl => {
     chipEl.addEventListener('click', () => {
       const g = chipEl.dataset.g, c = chipEl.dataset.c;
       if (!activeFilters[g]) activeFilters[g] = new Set();
       const s = activeFilters[g];
-      if (s.has(c)) { s.delete(c); chipEl.classList.remove('is-active'); }
-      else { s.add(c); chipEl.classList.add('is-active'); }
+      if (s.has(c)) s.delete(c);
+      else s.add(c);
       if (!s.size) delete activeFilters[g];
 
-      // 해당 아코디언 뱃지만 업데이트
-      const accordion = chipEl.closest('.srch-accordion');
-      const badge = accordion?.querySelector('.sb-badge');
-      const cnt = s?.size || 0;
-      if (badge) {
-        if (cnt) { badge.textContent = cnt; badge.classList.add('is-visible'); }
-        else { badge.textContent = ''; badge.classList.remove('is-visible'); }
-      }
-      if (accordion) accordion.classList.toggle('has-active', cnt > 0);
-
+      // 다른 필터들 chip 후보·카운트 업데이트 → 전체 재렌더
+      buildDynamicFilters();
+      renderFilters();
       renderActiveChips();
       applyFilters();
     });
@@ -926,7 +925,7 @@ function renderList() {
         if (!row || !el.contains(row)) return;
         e.preventDefault();
         const p = allProducts.find(x => x._key === row.dataset.key);
-        if (p) openContextMenu(e, getActionsFor(p));
+        if (p) openContextMenu(e, getActionsFor(p, { forContextMenu: true }));
       });
     }
 
@@ -1299,7 +1298,7 @@ function bindListDelegation(el) {
     if (!item) return;
     const p = allProducts.find(x => x._key === item.dataset.key);
     if (!p) return;
-    openContextMenu(e, getActionsFor(p));
+    openContextMenu(e, getActionsFor(p, { forContextMenu: true }));
   });
 }
 
@@ -1308,7 +1307,7 @@ function bindListDelegation(el) {
  * 공급사: 공유만
  * 관리자: 수정 + 공유
  */
-function getActionsFor(product) {
+function getActionsFor(product, { forContextMenu = false } = {}) {
   const role = store.currentUser?.role;
   const acts = [];
   // 영업자(영업관리자): 소통 · 계약 · 공유
@@ -1318,9 +1317,12 @@ function getActionsFor(product) {
     acts.push({ icon: 'ph ph-share-network', label: '공유', tone: 'rose', action: () => shareProduct(product) });
     return acts;
   }
-  // 관리자: 계약생성(대리입력) + 공유 — 회원사 대신 ERP 에 계약 만들어 유도
+  // 관리자: 계약생성(대리입력) + 공유 (+ 컨텍스트메뉴에서만 세부모델 변경)
   if (role === 'admin') {
     acts.push({ icon: 'ph ph-file-plus', label: '계약생성', tone: 'emerald', action: () => startContractFromProduct(product) });
+    if (forContextMenu) {
+      acts.push({ icon: 'ph ph-pencil-simple', label: '세부모델 변경', tone: 'navy', action: () => editSubModel(product) });
+    }
     acts.push({ icon: 'ph ph-share-network', label: '공유', tone: 'rose', action: () => shareProduct(product) });
     return acts;
   }
@@ -1370,13 +1372,132 @@ function startContractFromProduct(p) {
   showToast(`${p.car_number || p.model} 계약 시작`);
 }
 
+/** 관리자 전용 — 상품의 세부모델만 변경 (maker/model 은 유지). 차종마스터에서 옵션 목록 가져옴. */
+async function editSubModel(p) {
+  const { getSubModels } = await import('../core/car-models.js');
+  const { updateRecord } = await import('../firebase/db.js');
+  const options = getSubModels(p.maker || '', p.model || '');
+  if (!options.length && !p.sub_model) {
+    showToast('차종마스터에 해당 모델 등록 안됨', 'error');
+    return;
+  }
+  const currentSub = p.sub_model || '';
+  const dlg = document.createElement('dialog');
+  dlg.className = 'submodel-dialog';
+  dlg.innerHTML = `
+    <div class="submodel-head">
+      <span><i class="ph ph-pencil-simple"></i> 세부모델 변경</span>
+      <button class="submodel-close" aria-label="닫기"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="submodel-body">
+      <div class="submodel-label">차량</div>
+      <div class="submodel-context">${p.car_number || ''} · ${p.maker || ''} ${p.model || ''}</div>
+      <div class="submodel-label">현재 세부모델</div>
+      <div class="submodel-current">${currentSub || '<em>미지정</em>'}</div>
+      <div class="submodel-label">변경할 세부모델</div>
+      <div class="submodel-options">
+        ${options.map(s => `
+          <button class="submodel-opt ${s === currentSub ? 'is-current' : ''}" data-sub="${s.replace(/"/g, '&quot;')}">${s}</button>
+        `).join('')}
+      </div>
+      ${options.length === 0 ? '<div class="submodel-empty">차종마스터에 등록된 세부모델 없음</div>' : ''}
+    </div>
+    <div class="submodel-foot">
+      <button class="btn btn-sm btn-outline" data-act="cancel">취소</button>
+    </div>
+  `;
+  document.body.appendChild(dlg);
+  dlg.showModal();
+
+  const close = () => { if (dlg.open) dlg.close(); dlg.remove(); };
+  dlg.querySelector('.submodel-close').addEventListener('click', close);
+  dlg.querySelector('[data-act="cancel"]').addEventListener('click', close);
+  dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+
+  dlg.querySelectorAll('.submodel-opt').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const sub = btn.dataset.sub;
+      if (sub === currentSub) { close(); return; }
+      try {
+        await updateRecord(`products/${p._key}`, { sub_model: sub });
+        showToast(`세부모델 변경: ${sub}`);
+        close();
+      } catch (e) {
+        console.error('[editSubModel]', e);
+        showToast('변경 실패', 'error');
+      }
+    });
+  });
+}
+
+/** 상품 1건 → 카탈로그 단일상품 링크 (보낸사람 user_code 포함) */
 function shareProduct(p) {
-  // ERP 엑셀 링크와 동일한 포맷 — 받은 사람이 로그인하면 해당 차량 문의 자동 시작
+  const me = store.currentUser || {};
+  const agentQS = me.user_code ? `&a=${encodeURIComponent(me.user_code)}` : '';
   const car = p.car_number || '';
   const url = car
-    ? `${location.origin}/?car=${encodeURIComponent(car)}`
-    : `${location.origin}/?p=${p._key}`;
+    ? `${location.origin}/catalog.html?car=${encodeURIComponent(car)}${agentQS}`
+    : `${location.origin}/catalog.html?pid=${encodeURIComponent(p._key)}${agentQS}`;
   navigator.clipboard?.writeText(url).then(() => showToast('링크 복사됨'));
+}
+
+/** 관리자 전용 — 카탈로그 공유 3가지 모드 선택 다이얼로그 */
+function openShareCatalog() {
+  const me = store.currentUser || {};
+  const agentQS = me.user_code ? `?a=${encodeURIComponent(me.user_code)}` : '';
+  // 현재 활성 필터에서 provider 선택 1개면 공급사 모드 옵션 제공
+  const providerSet = activeFilters.provider_company_code;
+  const providerCode = providerSet && providerSet.size === 1 ? [...providerSet][0] : '';
+
+  const dlg = document.createElement('dialog');
+  dlg.className = 'submodel-dialog';
+  dlg.innerHTML = `
+    <div class="submodel-head">
+      <span><i class="ph ph-share-network"></i> 카탈로그 공유</span>
+      <button class="submodel-close" aria-label="닫기"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="submodel-body">
+      <div class="submodel-label">공유 범위</div>
+      <div class="submodel-options">
+        <button class="submodel-opt" data-mode="all">
+          <strong>전체 상품</strong>
+          <div style="font-size:var(--fs-xs);color:var(--c-text-muted);margin-top:2px;">모든 차량을 한 페이지로</div>
+        </button>
+        ${providerCode ? `
+          <button class="submodel-opt" data-mode="provider">
+            <strong>이 공급사 상품만</strong>
+            <div style="font-size:var(--fs-xs);color:var(--c-text-muted);margin-top:2px;">현재 필터 공급사(${providerCode}) 상품만</div>
+          </button>
+        ` : `
+          <div class="submodel-empty" style="padding:var(--sp-2) var(--sp-3);font-size:var(--fs-xs);">공급사 단일 선택 시 "공급사 상품만" 공유 옵션이 활성화됩니다</div>
+        `}
+      </div>
+    </div>
+    <div class="submodel-foot">
+      <button class="btn btn-sm btn-outline" data-act="cancel">취소</button>
+    </div>
+  `;
+  document.body.appendChild(dlg);
+  dlg.showModal();
+
+  const close = () => { if (dlg.open) dlg.close(); dlg.remove(); };
+  dlg.querySelector('.submodel-close').addEventListener('click', close);
+  dlg.querySelector('[data-act="cancel"]').addEventListener('click', close);
+  dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+
+  dlg.querySelectorAll('[data-mode]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const m = btn.dataset.mode;
+      let url = `${location.origin}/catalog.html${agentQS}`;
+      if (m === 'provider' && providerCode) {
+        url += (agentQS ? '&' : '?') + `provider=${encodeURIComponent(providerCode)}`;
+      }
+      navigator.clipboard?.writeText(url).then(() => {
+        showToast(`${m === 'all' ? '전체' : '공급사'} 카탈로그 링크 복사됨`);
+        close();
+      });
+    });
+  });
 }
 
 function renderDetail(key) {

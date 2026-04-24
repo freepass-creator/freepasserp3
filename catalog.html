@@ -8,97 +8,330 @@
   <meta property="og:type" content="website">
   <title>freepass erp</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Pretendard', -apple-system, system-ui, sans-serif; background: #fafafa; color: #171717; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    :root {
+      --c-bg: #fafafa;
+      --c-surface: #fff;
+      --c-text: #171717;
+      --c-sub: #525252;
+      --c-muted: #a3a3a3;
+      --c-border: #e5e5e5;
+      --c-border-soft: #f0f0f0;
+      --c-accent: #1B2A4A;
+      --c-accent-soft: rgba(27,42,74,.06);
+      --c-ok: #0d9488;
+      --c-info: #2563eb;
+    }
+    body {
+      font-family: 'Pretendard', -apple-system, system-ui, sans-serif;
+      background: var(--c-bg);
+      color: var(--c-text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 96px;  /* sticky CTA 영역 여백 */
+    }
 
     .catalog { max-width: 960px; margin: 0 auto; min-height: 100vh; }
 
-    /* Header / Branding */
-    .cat-header { padding: 24px; background: #fff; border-bottom: 1px solid #e5e5e5; }
-    .cat-brand { display: flex; align-items: center; gap: 12px; }
-    .cat-brand-logo { width: 40px; height: 40px; border-radius: 50%; background: #eef2ff; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #6366f1; flex-shrink: 0; }
-    .cat-brand-name { font-size: 18px; font-weight: 600; }
-    .cat-brand-sub { font-size: 12px; color: #525252; }
+    /* Header — 보낸사람 정보 노출 */
+    .cat-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 14px 20px;
+      background: var(--c-surface);
+      border-bottom: 1px solid var(--c-border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cat-brand { font-size: 15px; font-weight: 700; color: var(--c-accent); letter-spacing: -0.03em; }
+    .cat-title-group { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+    .cat-title { font-size: 13px; font-weight: 600; color: var(--c-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cat-subtitle { font-size: 11px; color: var(--c-muted); }
 
-    /* Agent profile card */
-    .cat-agent { display: flex; align-items: center; gap: 16px; padding: 20px 24px; background: #fff; border-bottom: 1px solid #e5e5e5; }
-    .cat-agent-avatar { width: 48px; height: 48px; border-radius: 50%; background: #eef2ff; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #6366f1; }
-    .cat-agent-name { font-size: 15px; font-weight: 600; }
-    .cat-agent-company { font-size: 12px; color: #525252; }
-    .cat-agent-actions { margin-left: auto; display: flex; gap: 8px; }
-    .cat-agent-btn { padding: 6px 14px; font-size: 12px; border-radius: 4px; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; text-decoration: none; color: #171717; display: inline-flex; align-items: center; gap: 4px; }
+    /* Agent card — 보낸 사람 (핵심!) */
+    .cat-agent {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--c-surface);
+      border-bottom: 1px solid var(--c-border);
+    }
+    .cat-agent-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--c-accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--c-accent);
+      flex-shrink: 0;
+    }
+    .cat-agent-info { flex: 1; min-width: 0; }
+    .cat-agent-name { font-size: 15px; font-weight: 600; color: var(--c-text); }
+    .cat-agent-company { font-size: 12px; color: var(--c-sub); margin-top: 2px; }
+    .cat-agent-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .cat-agent-btn {
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 6px;
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--c-text);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
     .cat-agent-btn:hover { background: #f5f5f5; }
+    .cat-agent-btn--primary { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
+    .cat-agent-btn--primary:hover { background: #0F1B35; }
 
     /* Filters */
-    .cat-filters { padding: 12px 24px; background: #fff; border-bottom: 1px solid #e5e5e5; display: flex; flex-direction: column; gap: 8px; }
+    .cat-filters {
+      padding: 12px 20px;
+      background: var(--c-surface);
+      border-bottom: 1px solid var(--c-border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
     .cat-filter-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .cat-filter-label { font-size: 12px; color: #888; font-weight: 500; min-width: 40px; }
-    .cat-chip { padding: 6px 14px; font-size: 12px; border-radius: 4px; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; white-space: nowrap; transition: all .15s; }
+    .cat-filter-label { font-size: 11px; color: var(--c-muted); font-weight: 500; min-width: 40px; }
+    .cat-chip {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid var(--c-border);
+      background: var(--c-surface);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .15s;
+    }
     .cat-chip:hover { background: #f5f5f5; }
-    .cat-chip.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+    .cat-chip.active { background: var(--c-accent); color: #fff; border-color: var(--c-accent); }
 
     /* Grid */
-    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 24px; }
-    .cat-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 4px; overflow: hidden; cursor: pointer; transition: all .15s; }
-    .cat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
-    .cat-card-img { aspect-ratio: 16/10; background: #f5f5f5; overflow: hidden; }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      padding: 16px 20px;
+    }
+    .cat-card {
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .15s, transform .15s;
+    }
+    .cat-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+      transform: translateY(-1px);
+    }
+    .cat-card-img { aspect-ratio: 16/10; background: #f5f5f5; overflow: hidden; position: relative; }
     .cat-card-img img { width: 100%; height: 100%; object-fit: cover; }
-    .cat-card-noimg { display: flex; align-items: center; justify-content: center; height: 100%; color: #a3a3a3; font-size: 32px; }
-    .cat-card-body { padding: 14px; }
-    .cat-card-title { font-size: 14px; font-weight: 600; }
-    .cat-card-specs { font-size: 11px; color: #525252; margin-top: 4px; }
+    .cat-card-noimg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--c-muted);
+      font-size: 32px;
+    }
+    .cat-card-body { padding: 12px 14px 14px; }
+    .cat-card-title { font-size: 14px; font-weight: 600; line-height: 1.3; }
+    .cat-card-specs { font-size: 11px; color: var(--c-sub); margin-top: 4px; }
     .cat-card-price { display: flex; align-items: baseline; gap: 4px; margin-top: 10px; }
-    .cat-card-rent { font-size: 18px; font-weight: 700; color: #6366f1; }
-    .cat-card-period { font-size: 11px; color: #a3a3a3; }
-    .cat-card-deposit { font-size: 11px; color: #525252; margin-top: 2px; }
+    .cat-card-rent { font-size: 18px; font-weight: 700; color: var(--c-accent); }
+    .cat-card-period { font-size: 11px; color: var(--c-muted); }
+    .cat-card-deposit { font-size: 11px; color: var(--c-sub); margin-top: 2px; }
+
+    /* Single product view (공유링크 진입 시) */
+    .cat-single { padding: 16px 20px; }
+    .cat-single-gallery { aspect-ratio: 16/10; background: #f5f5f5; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+    .cat-single-gallery img { width: 100%; height: 100%; object-fit: cover; }
+    .cat-single-title { font-size: 18px; font-weight: 700; line-height: 1.3; }
+    .cat-single-sub { font-size: 12px; color: var(--c-sub); margin-top: 4px; }
+    .cat-keypoints {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 14px 0;
+    }
+    .cat-keypoint {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--c-accent-soft);
+      color: var(--c-accent);
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .cat-section-back {
+      margin-top: 24px;
+      text-align: center;
+    }
+    .cat-back-btn {
+      padding: 10px 18px;
+      font-size: 13px;
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cat-back-btn:hover { background: #f5f5f5; }
 
     /* Detail overlay */
     .cat-detail { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.5); }
     .cat-detail.open { display: flex; align-items: flex-end; justify-content: center; }
-    .cat-detail-inner { background: #fff; width: 100%; max-width: 640px; max-height: 90vh; border-radius: 8px 8px 0 0; overflow-y: auto; animation: slideUp .2s ease; }
+    .cat-detail-inner {
+      background: var(--c-surface);
+      width: 100%;
+      max-width: 640px;
+      max-height: 90vh;
+      border-radius: 12px 12px 0 0;
+      overflow-y: auto;
+      animation: slideUp .2s ease;
+    }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    .cat-detail-close { position: sticky; top: 0; display: flex; justify-content: flex-end; padding: 12px 16px; background: #fff; z-index: 1; }
-    .cat-detail-close button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #e5e5e5; background: #fff; cursor: pointer; font-size: 16px; }
+    .cat-detail-close {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px 16px;
+      background: var(--c-surface);
+      z-index: 1;
+    }
+    .cat-detail-close button {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--c-border); background: var(--c-surface);
+      cursor: pointer; font-size: 16px;
+    }
     .cat-detail-img { width: 100%; aspect-ratio: 16/9; background: #f5f5f5; }
     .cat-detail-img img { width: 100%; height: 100%; object-fit: cover; }
-    .cat-detail-body { padding: 20px 24px; }
-    .cat-detail-title { font-size: 18px; font-weight: 700; }
-    .cat-detail-sub { font-size: 12px; color: #525252; margin-top: 4px; }
+    .cat-detail-body { padding: 16px 24px 24px; }
+    .cat-detail-title { font-size: 18px; font-weight: 700; line-height: 1.3; }
+    .cat-detail-sub { font-size: 12px; color: var(--c-sub); margin-top: 4px; }
     .cat-detail-section { margin-top: 20px; }
-    .cat-detail-section-title { font-size: 11px; font-weight: 600; color: #a3a3a3; margin-bottom: 8px; }
-    .cat-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-    .cat-detail-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 13px; }
-    .cat-detail-label { color: #a3a3a3; font-size: 12px; }
-    .cat-detail-value { font-weight: 500; }
-    .cat-detail-cta { display: flex; gap: 12px; padding: 20px 24px; border-top: 1px solid #e5e5e5; }
-    .cat-cta-btn { flex: 1; padding: 12px; text-align: center; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; text-decoration: none; display: block; }
-    .cat-cta-phone { background: #171717; color: #fff; }
+    .cat-detail-section-title { font-size: 11px; font-weight: 600; color: var(--c-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .cat-detail-row { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 13px; border-bottom: 1px solid var(--c-border-soft); }
+    .cat-detail-row:last-child { border-bottom: none; }
+    .cat-detail-label { color: var(--c-sub); }
+    .cat-detail-value { font-weight: 500; text-align: right; }
+    .cat-price-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+    .cat-price-table th, .cat-price-table td { padding: 8px; text-align: center; border-bottom: 1px solid var(--c-border-soft); }
+    .cat-price-table th { font-size: 11px; color: var(--c-muted); font-weight: 500; background: #fafafa; }
+    .cat-price-table td:first-child, .cat-price-table th:first-child { text-align: left; color: var(--c-muted); font-size: 11px; }
+    .cat-price-rent { font-weight: 700; color: var(--c-accent); }
+    .cat-detail-summary {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: var(--c-accent-soft);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--c-sub);
+      line-height: 1.5;
+      text-align: center;
+    }
+    .cat-detail-summary b { color: var(--c-accent); font-weight: 600; }
 
-    .cat-empty { text-align: center; padding: 60px; color: #a3a3a3; }
-    .cat-footer { text-align: center; padding: 24px; font-size: 11px; color: #a3a3a3; border-top: 1px solid #e5e5e5; }
+    /* Sticky bottom CTA — 담당자 전화 */
+    .cat-bottom-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--c-surface);
+      border-top: 1px solid var(--c-border);
+      padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
+      display: flex;
+      gap: 8px;
+      z-index: 50;
+      box-shadow: 0 -2px 12px rgba(0,0,0,.04);
+    }
+    .cat-bottom-cta-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      flex: 1;
+      width: 100%;
+    }
+    .cat-cta-btn {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .cat-cta-phone { background: var(--c-accent); color: #fff; }
+    .cat-cta-phone:hover { background: #0F1B35; }
+    .cat-cta-inquiry {
+      background: var(--c-surface);
+      color: var(--c-text);
+      border: 1px solid var(--c-border);
+    }
+    .cat-cta-inquiry:hover { background: #f5f5f5; }
+
+    .cat-empty { text-align: center; padding: 60px 20px; color: var(--c-muted); }
+    .cat-footer { text-align: center; padding: 20px; font-size: 11px; color: var(--c-muted); }
 
     @media (max-width: 640px) {
       .cat-grid { grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
       .cat-card-body { padding: 10px; }
       .cat-card-rent { font-size: 15px; }
-      .cat-agent-actions { flex-direction: column; }
+      .cat-agent { flex-wrap: wrap; }
+      .cat-agent-actions { width: 100%; justify-content: flex-end; margin-top: 4px; }
     }
   </style>
 </head>
 <body>
   <div class="catalog" id="catalog">
-    <div class="cat-header"><div class="cat-brand"><div class="cat-brand-name">freepass erp</div></div></div>
+    <div class="cat-header">
+      <span class="cat-brand">freepass</span>
+      <div class="cat-title-group">
+        <span class="cat-title" id="headerTitle">상품 안내</span>
+        <span class="cat-subtitle" id="headerSubtitle"></span>
+      </div>
+    </div>
     <div id="agentCard"></div>
-    <div class="cat-filters" id="filters"></div>
-    <div class="cat-grid" id="grid"></div>
-    <div class="cat-footer">freepass erp</div>
+    <div id="mainContent"></div>
+    <div class="cat-footer">freepass erp · 장기렌트 · 구독</div>
     <div class="cat-detail" id="detail"></div>
+  </div>
+
+  <!-- Sticky bottom CTA — 담당자 전화/문의 -->
+  <div class="cat-bottom-cta" id="bottomCta" style="display:none;">
+    <div class="cat-bottom-cta-inner" id="bottomCtaInner"></div>
   </div>
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
-    import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js';
+    import { getDatabase, ref, get, set } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js';
 
     const app = initializeApp({
       apiKey: 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY',
@@ -107,63 +340,108 @@
     });
     const db = getDatabase(app);
     const params = new URLSearchParams(location.search);
-    const providerCode = params.get('p');
-    const agentCode = params.get('a');
+
+    // 3가지 공유 모드 판정:
+    //   pid/car → 단일 상품
+    //   provider → 공급사 전체
+    //   (없음) → 전체 상품
+    const pidParam = params.get('pid') || params.get('key') || '';
+    const carParam = params.get('car') || '';
+    const providerParam = params.get('provider') || params.get('p') || '';  // 구 버전 'p' 호환
+    const agentCode = params.get('a') || '';
+    const mode = (pidParam || carParam) ? 'single' : (providerParam ? 'provider' : 'all');
 
     let allProducts = [];
     let agent = null;
+    let partner = null;  // 공급사 정보
 
-    init();
+    init().catch(err => console.error('[catalog init]', err));
 
     async function init() {
-      // Load agent
+      // 보낸 사람 (영업자/관리자) 로드
       if (agentCode) {
         const snap = await get(ref(db, 'users'));
         const users = snap.val() || {};
-        agent = Object.values(users).find(u => u.user_code === agentCode);
-        renderAgent();
+        agent = Object.values(users).find(u => u.user_code === agentCode) || null;
       }
 
-      // Load products
+      // 공급사 정보 (providerParam 있거나 single mode 에서 product 의 provider_company_code 기반)
+      // 전체 상품 로드
       const snap = await get(ref(db, 'products'));
       const raw = snap.val() || {};
       allProducts = Object.entries(raw)
         .map(([k, v]) => ({ _key: k, ...v }))
-        .filter(p => !p._deleted && (p.status !== 'deleted'))
-        .filter(p => !providerCode || p.provider_company_code === providerCode);
+        .filter(p => !p._deleted && p.status !== 'deleted')
+        .filter(p => !providerParam || p.provider_company_code === providerParam);
 
-      // Update OG tags
-      if (providerCode) {
+      if (providerParam) {
         const pSnap = await get(ref(db, 'partners'));
         const partners = pSnap.val() || {};
-        const partner = Object.values(partners).find(p => p.partner_code === providerCode);
-        if (partner) {
-          document.querySelector('.cat-brand-name').textContent = partner.partner_name || 'freepass erp';
-          document.title = partner.partner_name || 'freepass erp';
-        }
+        partner = Object.values(partners).find(x => x.partner_code === providerParam) || null;
       }
 
-      renderFilters();
-      renderGrid(allProducts);
+      updateHeader();
+      renderAgent();
+      renderBottomCta();
+
+      // 모드별 렌더
+      if (mode === 'single') {
+        const p = findSingleProduct();
+        if (p) renderSingle(p);
+        else renderMissing();
+      } else {
+        renderList();
+      }
+    }
+
+    function findSingleProduct() {
+      if (pidParam) return allProducts.find(p => p._key === pidParam);
+      if (carParam) return allProducts.find(p => (p.car_number || '') === carParam);
+      return null;
+    }
+
+    function updateHeader() {
+      const titleEl = document.getElementById('headerTitle');
+      const subEl = document.getElementById('headerSubtitle');
+      if (mode === 'single') {
+        titleEl.textContent = '차량 안내';
+        subEl.textContent = agent ? `${agent.company_name || ''} ${agent.name || ''}` : '';
+      } else if (mode === 'provider') {
+        titleEl.textContent = partner ? `${partner.partner_name} 상품` : '공급사 상품';
+        subEl.textContent = agent ? `${agent.company_name || ''} ${agent.name || ''}` : '';
+      } else {
+        titleEl.textContent = '전체 상품';
+        subEl.textContent = agent ? `${agent.company_name || ''} ${agent.name || ''}` : '';
+      }
+      document.title = titleEl.textContent;
     }
 
     function renderAgent() {
-      if (!agent) return;
-      document.getElementById('agentCard').innerHTML = `
+      const el = document.getElementById('agentCard');
+      if (!agent) { el.innerHTML = ''; return; }
+      el.innerHTML = `
         <div class="cat-agent">
-          <div class="cat-agent-avatar">👤</div>
-          <div>
-            <div class="cat-agent-name">${agent.name || ''}</div>
-            <div class="cat-agent-company">${agent.company_name || ''} ${agent.position || ''}</div>
+          <div class="cat-agent-avatar"><i class="ph ph-user"></i></div>
+          <div class="cat-agent-info">
+            <div class="cat-agent-name">${agent.name || '담당자'}${agent.position ? ` · <span style="font-weight:400;color:var(--c-sub);font-size:12px;">${agent.position}</span>` : ''}</div>
+            <div class="cat-agent-company">${agent.company_name || ''}</div>
           </div>
           <div class="cat-agent-actions">
-            ${agent.phone ? `<a class="cat-agent-btn" href="tel:${agent.phone}">📞 전화</a>` : ''}
-            <button class="cat-agent-btn" id="saveVcf">📇 저장</button>
+            ${agent.phone ? `<a class="cat-agent-btn cat-agent-btn--primary" href="tel:${agent.phone}"><i class="ph ph-phone"></i> 전화</a>` : ''}
+            <button class="cat-agent-btn" id="saveVcf"><i class="ph ph-address-book"></i> 저장</button>
           </div>
         </div>
       `;
       document.getElementById('saveVcf')?.addEventListener('click', () => {
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${agent.name||''}\nORG:${agent.company_name||''}\nTITLE:${agent.position||''}\nTEL:${agent.phone||''}\nEMAIL:${agent.email||''}\nEND:VCARD`;
+        const vcard = [
+          'BEGIN:VCARD','VERSION:3.0',
+          `FN:${agent.name||''}`,
+          `ORG:${agent.company_name||''}`,
+          `TITLE:${agent.position||''}`,
+          `TEL:${agent.phone||''}`,
+          `EMAIL:${agent.email||''}`,
+          'END:VCARD',
+        ].join('\n');
         const blob = new Blob([vcard], { type: 'text/vcard' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -172,7 +450,95 @@
       });
     }
 
+    function renderBottomCta() {
+      const el = document.getElementById('bottomCta');
+      const inner = document.getElementById('bottomCtaInner');
+      if (!agent || !agent.phone) { el.style.display = 'none'; return; }
+      el.style.display = 'flex';
+      inner.innerHTML = `
+        <a class="cat-cta-btn cat-cta-phone" href="tel:${agent.phone}">
+          <i class="ph ph-phone"></i> ${agent.name || '담당자'}에게 전화
+        </a>
+        <button class="cat-cta-btn cat-cta-inquiry" id="ctaInquiry">
+          <i class="ph ph-chat-circle"></i> 상담요청
+        </button>
+      `;
+      document.getElementById('ctaInquiry')?.addEventListener('click', openInquiry);
+    }
+
+    // ── 단일 상품 ──
+    function renderSingle(p) {
+      const imgs = normalizeImages(p);
+      const price = p.price || {};
+      const best = price['36'] || price['24'] || price['12'] || price['48'] || {};
+      const keypoints = extractKeypoints(p);
+
+      const main = document.getElementById('mainContent');
+      main.innerHTML = `
+        <div class="cat-single">
+          <div class="cat-single-gallery">
+            ${imgs[0] ? `<img src="${imgs[0]}" alt="">` : '<div class="cat-card-noimg" style="height:100%;"><i class="ph ph-car-simple"></i></div>'}
+          </div>
+          <div class="cat-single-title">${[p.maker, p.model, p.sub_model].filter(Boolean).join(' ')}</div>
+          <div class="cat-single-sub">${p.car_number || ''} · ${normalizeYear(p.year)} · ${p.fuel_type || ''}</div>
+          ${keypoints.length ? `<div class="cat-keypoints">${keypoints.map(k => `<span class="cat-keypoint">${k}</span>`).join('')}</div>` : ''}
+
+          <div class="cat-detail-section">
+            <div class="cat-detail-section-title">스펙</div>
+            ${row('연식', normalizeYear(p.year))}
+            ${row('주행', p.mileage ? Number(p.mileage).toLocaleString()+'km' : '')}
+            ${row('연료', p.fuel_type)}
+            ${row('색상', [p.ext_color, p.int_color].filter(Boolean).join(' / '))}
+            ${row('구동', p.drive_type)}
+          </div>
+
+          <div class="cat-detail-section">
+            <div class="cat-detail-section-title">기간별 대여료 · 보증금</div>
+            ${priceTable(price)}
+          </div>
+
+          <div class="cat-section-back">
+            <button class="cat-back-btn" id="browseAll">
+              <i class="ph ph-squares-four"></i> 다른 차량 보기
+            </button>
+          </div>
+        </div>
+      `;
+      document.getElementById('browseAll')?.addEventListener('click', () => {
+        // 전체 목록 모드로 전환 (단순 URL 리다이렉트)
+        const u = new URL(location.href);
+        u.searchParams.delete('pid');
+        u.searchParams.delete('key');
+        u.searchParams.delete('car');
+        location.href = u.toString();
+      });
+    }
+
+    function renderMissing() {
+      document.getElementById('mainContent').innerHTML = `
+        <div class="cat-empty">
+          <div style="font-size:40px;margin-bottom:12px;"><i class="ph ph-warning"></i></div>
+          <div>해당 차량을 찾을 수 없습니다.</div>
+          <div style="margin-top:16px;">
+            <button class="cat-back-btn" onclick="location.href = location.pathname + (new URLSearchParams(location.search.replace(/[?&](pid|car|key)=[^&]*/g,'')).toString() ? '?' + new URLSearchParams(location.search.replace(/[?&](pid|car|key)=[^&]*/g,'')).toString() : '')">
+              <i class="ph ph-squares-four"></i> 전체 상품 보기
+            </button>
+          </div>
+        </div>`;
+    }
+
+    // ── 목록 모드 (전체 / 공급사) ──
     const activeFilters = { maker: null, fuel: null, period: null };
+
+    function renderList() {
+      document.getElementById('mainContent').innerHTML = `
+        <div class="cat-filters" id="filters"></div>
+        <div class="cat-grid" id="grid"></div>
+      `;
+      renderFilters();
+      renderGrid();
+    }
+
     function applyFilters() {
       let list = allProducts;
       if (activeFilters.maker)  list = list.filter(p => p.maker === activeFilters.maker);
@@ -180,56 +546,52 @@
       if (activeFilters.period) list = list.filter(p => Number(p.price?.[activeFilters.period]?.rent) > 0);
       return list;
     }
+
     function renderFilters() {
       const makers = [...new Set(allProducts.map(p => p.maker).filter(Boolean))].sort();
       const fuels  = [...new Set(allProducts.map(p => p.fuel_type).filter(Boolean))].sort();
-      const periods = ['12','24','36','48','60'].filter(m =>
-        allProducts.some(p => Number(p.price?.[m]?.rent) > 0)
-      );
-      const row = (key, label, values) => values.length ? `
+      const periods = ['12','24','36','48','60'].filter(m => allProducts.some(p => Number(p.price?.[m]?.rent) > 0));
+      const row = (key, label, values, labelMap) => values.length ? `
         <div class="cat-filter-row">
           <span class="cat-filter-label">${label}</span>
           <button class="cat-chip ${!activeFilters[key] ? 'active' : ''}" data-group="${key}" data-filter="">전체</button>
-          ${values.map(v => {
-            const display = key === 'period' ? `${v}개월` : v;
-            return `<button class="cat-chip ${activeFilters[key] === v ? 'active' : ''}" data-group="${key}" data-filter="${v}">${display}</button>`;
-          }).join('')}
+          ${values.map(v => `<button class="cat-chip ${activeFilters[key] === v ? 'active' : ''}" data-group="${key}" data-filter="${v}">${labelMap ? labelMap(v) : v}</button>`).join('')}
         </div>` : '';
 
       const el = document.getElementById('filters');
       el.innerHTML = `
-        ${row('maker',  '제조사', makers)}
-        ${row('fuel',   '연료',   fuels)}
-        ${row('period', '기간',   periods)}
+        ${row('maker', '제조사', makers)}
+        ${row('fuel', '연료', fuels)}
+        ${row('period', '기간', periods, v => `${v}개월`)}
       `;
       el.querySelectorAll('.cat-chip').forEach(c => {
         c.addEventListener('click', () => {
           const g = c.dataset.group;
           activeFilters[g] = c.dataset.filter || null;
           renderFilters();
-          renderGrid(applyFilters());
+          renderGrid();
         });
       });
     }
 
-    function renderGrid(products) {
+    function renderGrid() {
+      const products = applyFilters();
       const el = document.getElementById('grid');
       if (!products.length) { el.innerHTML = '<div class="cat-empty">등록된 차량이 없습니다</div>'; return; }
 
       el.innerHTML = products.map(p => {
-        const imgs = p.image_urls || p.images || [];
-        const imgList = Array.isArray(imgs) ? imgs : Object.values(imgs);
+        const imgs = normalizeImages(p);
         const price = p.price || {};
-        const best = price['24'] || price['12'] || price['36'] || {};
+        const best = price['36'] || price['24'] || price['12'] || {};
 
         return `
           <div class="cat-card" data-key="${p._key}">
             <div class="cat-card-img">
-              ${imgList.length ? `<img src="${imgList[0]}" alt="" loading="lazy">` : '<div class="cat-card-noimg">🚗</div>'}
+              ${imgs[0] ? `<img src="${imgs[0]}" alt="" loading="lazy">` : '<div class="cat-card-noimg"><i class="ph ph-car-simple"></i></div>'}
             </div>
             <div class="cat-card-body">
-              <div class="cat-card-title">${p.year||''} ${p.model_name||''}</div>
-              <div class="cat-card-specs">${p.sub_model||''} · ${p.fuel_type||''} · ${p.mileage ? Number(p.mileage).toLocaleString()+'km' : ''}</div>
+              <div class="cat-card-title">${[p.maker, p.model].filter(Boolean).join(' ')}</div>
+              <div class="cat-card-specs">${[p.sub_model, normalizeYear(p.year), p.fuel_type].filter(Boolean).join(' · ')}</div>
               <div class="cat-card-price">
                 <span class="cat-card-rent">${fmtMoney(best.rent)}</span>
                 <span class="cat-card-period">/월</span>
@@ -248,104 +610,131 @@
     function openDetail(key) {
       const p = allProducts.find(x => x._key === key);
       if (!p) return;
-
-      const imgs = p.image_urls || p.images || [];
-      const imgList = Array.isArray(imgs) ? imgs : Object.values(imgs);
+      const imgs = normalizeImages(p);
       const price = p.price || {};
+      const keypoints = extractKeypoints(p);
 
       const el = document.getElementById('detail');
       el.classList.add('open');
       el.innerHTML = `
         <div class="cat-detail-inner">
-          <div class="cat-detail-close"><button id="closeDetail">✕</button></div>
-          ${imgList.length ? `<div class="cat-detail-img"><img src="${imgList[0]}"></div>` : ''}
+          <div class="cat-detail-close"><button id="closeDetail"><i class="ph ph-x"></i></button></div>
+          ${imgs[0] ? `<div class="cat-detail-img"><img src="${imgs[0]}"></div>` : ''}
           <div class="cat-detail-body">
-            <div class="cat-detail-title">${p.year||''} ${p.model_name||''} ${p.sub_model||''}</div>
-            <div class="cat-detail-sub">${p.car_number||''} · ${p.maker||''}</div>
+            <div class="cat-detail-title">${[p.maker, p.model, p.sub_model].filter(Boolean).join(' ')}</div>
+            <div class="cat-detail-sub">${p.car_number || ''} · ${normalizeYear(p.year)} · ${p.fuel_type || ''}</div>
+            ${keypoints.length ? `<div class="cat-keypoints">${keypoints.map(k => `<span class="cat-keypoint">${k}</span>`).join('')}</div>` : ''}
 
             <div class="cat-detail-section">
               <div class="cat-detail-section-title">스펙</div>
-              <div class="cat-detail-grid">
-                ${dRow('연식', p.year)} ${dRow('연료', p.fuel_type)}
-                ${dRow('주행', p.mileage ? Number(p.mileage).toLocaleString()+'km' : '-')}
-                ${dRow('색상', p.ext_color || p.exterior_color)}
-                ${dRow('위치', p.location)}
-              </div>
+              ${row('연식', normalizeYear(p.year))}
+              ${row('주행', p.mileage ? Number(p.mileage).toLocaleString()+'km' : '')}
+              ${row('연료', p.fuel_type)}
+              ${row('색상', [p.ext_color, p.int_color].filter(Boolean).join(' / '))}
+              ${row('구동', p.drive_type)}
             </div>
 
             <div class="cat-detail-section">
-              <div class="cat-detail-section-title">대여료</div>
-              <table style="width:100%;border-collapse:collapse;font-size:13px;">
-                <tr style="border-bottom:1px solid #e5e5e5;">
-                  <th style="padding:8px;text-align:left;color:#a3a3a3;font-size:11px;"></th>
-                  <th style="padding:8px;text-align:center;font-size:11px;">12개월</th>
-                  <th style="padding:8px;text-align:center;font-size:11px;">24개월</th>
-                  <th style="padding:8px;text-align:center;font-size:11px;">36개월</th>
-                </tr>
-                <tr style="border-bottom:1px solid #e5e5e5;">
-                  <td style="padding:8px;color:#a3a3a3;font-size:11px;">월납입</td>
-                  <td style="padding:8px;text-align:center;font-weight:700;color:#6366f1;">${fmtMoney(price['12']?.rent)}</td>
-                  <td style="padding:8px;text-align:center;font-weight:700;color:#6366f1;">${fmtMoney(price['24']?.rent)}</td>
-                  <td style="padding:8px;text-align:center;font-weight:700;color:#6366f1;">${fmtMoney(price['36']?.rent)}</td>
-                </tr>
-                <tr>
-                  <td style="padding:8px;color:#a3a3a3;font-size:11px;">보증금</td>
-                  <td style="padding:8px;text-align:center;">${fmtMoney(price['12']?.deposit)}</td>
-                  <td style="padding:8px;text-align:center;">${fmtMoney(price['24']?.deposit)}</td>
-                  <td style="padding:8px;text-align:center;">${fmtMoney(price['36']?.deposit)}</td>
-                </tr>
-              </table>
+              <div class="cat-detail-section-title">기간별 대여료 · 보증금</div>
+              ${priceTable(price)}
             </div>
-          </div>
-
-          <div class="cat-detail-cta">
-            ${agent?.phone ? `<a class="cat-cta-btn cat-cta-phone" href="tel:${agent.phone}">📞 전화문의</a>` : ''}
-            <button class="cat-cta-btn cat-cta-inquiry" id="inquiryBtn">💬 상담요청</button>
-          </div>
-          <div id="inquiryForm" style="display:none;padding:16px;border-top:1px solid #e5e5e5;">
-            <input id="inqName" placeholder="성함" style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #e5e5e5;border-radius:4px;">
-            <input id="inqPhone" placeholder="연락처 010-0000-0000" style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #e5e5e5;border-radius:4px;">
-            <textarea id="inqMsg" placeholder="문의내용" rows="3" style="width:100%;padding:10px;margin-bottom:8px;border:1px solid #e5e5e5;border-radius:4px;resize:vertical;"></textarea>
-            <button id="inqSend" class="cat-cta-btn cat-cta-phone" style="width:100%;">문의 보내기</button>
           </div>
         </div>
       `;
-
       document.getElementById('closeDetail').addEventListener('click', () => el.classList.remove('open'));
       el.addEventListener('click', (e) => { if (e.target === el) el.classList.remove('open'); });
+    }
 
-      // 상담 요청 토글 + 전송
-      document.getElementById('inquiryBtn')?.addEventListener('click', () => {
-        document.getElementById('inquiryForm').style.display = 'block';
-      });
-      document.getElementById('inqSend')?.addEventListener('click', async () => {
-        const name = document.getElementById('inqName').value.trim();
-        const phone = document.getElementById('inqPhone').value.trim();
-        const msg = document.getElementById('inqMsg').value.trim();
+    async function openInquiry() {
+      const p = mode === 'single' ? findSingleProduct() : null;
+      const overlay = document.createElement('div');
+      overlay.className = 'cat-detail open';
+      overlay.innerHTML = `
+        <div class="cat-detail-inner">
+          <div class="cat-detail-close"><button id="closeInq"><i class="ph ph-x"></i></button></div>
+          <div class="cat-detail-body">
+            <div class="cat-detail-title">상담 요청</div>
+            <div class="cat-detail-sub">${agent?.name || '담당자'}에게 전달됩니다</div>
+            <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;">
+              <input id="inqName" placeholder="성함" style="padding:10px;border:1px solid var(--c-border);border-radius:6px;font-size:14px;">
+              <input id="inqPhone" placeholder="연락처 010-0000-0000" style="padding:10px;border:1px solid var(--c-border);border-radius:6px;font-size:14px;">
+              <textarea id="inqMsg" placeholder="문의내용" rows="4" style="padding:10px;border:1px solid var(--c-border);border-radius:6px;font-size:14px;resize:vertical;font-family:inherit;"></textarea>
+              <button id="inqSend" class="cat-cta-btn cat-cta-phone">문의 보내기</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      overlay.querySelector('#closeInq').addEventListener('click', () => overlay.remove());
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+      overlay.querySelector('#inqSend').addEventListener('click', async () => {
+        const name = overlay.querySelector('#inqName').value.trim();
+        const phone = overlay.querySelector('#inqPhone').value.trim();
+        const msg = overlay.querySelector('#inqMsg').value.trim();
         if (!name || !phone) { alert('성함과 연락처를 입력해주세요'); return; }
-        const { push, ref: dbRef, set } = await import('https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js');
         const inquiryKey = `INQ_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
-        await set(dbRef(db, `inquiries/${inquiryKey}`), {
-          product_uid: p._key,
-          product_code: p.product_code || '',
-          car_number: p.car_number || '',
-          model: p.model_name || '',
-          sub_model: p.sub_model || '',
+        await set(ref(db, `inquiries/${inquiryKey}`), {
+          product_uid: p?._key || '',
+          product_code: p?.product_code || '',
+          car_number: p?.car_number || '',
+          model: p?.model || '',
+          sub_model: p?.sub_model || '',
           agent_code: agentCode || '',
-          provider_company_code: p.provider_company_code || '',
+          provider_company_code: providerParam || p?.provider_company_code || '',
           visitor_name: name,
           visitor_phone: phone,
           message: msg,
           source: 'catalog',
+          mode,
           created_at: Date.now(),
           status: 'new',
         });
-        document.getElementById('inquiryForm').innerHTML = '<div style="padding:20px;text-align:center;color:#059669;">✓ 문의가 전송되었습니다. 곧 연락드리겠습니다.</div>';
+        overlay.querySelector('.cat-detail-body').innerHTML = '<div style="padding:40px 20px;text-align:center;"><div style="font-size:40px;color:var(--c-ok);margin-bottom:12px;"><i class="ph ph-check-circle"></i></div><div style="font-size:15px;font-weight:600;">문의가 전송되었습니다</div><div style="font-size:12px;color:var(--c-sub);margin-top:6px;">곧 연락드리겠습니다</div></div>';
       });
     }
 
-    function dRow(l, v) { return `<div class="cat-detail-row"><span class="cat-detail-label">${l}</span><span class="cat-detail-value">${v||'-'}</span></div>`; }
-    function fmtMoney(v) { if (!v) return '-'; const n = Number(v); if (isNaN(n)) return v; if (n >= 10000) return Math.round(n/10000)+'만원'; return n.toLocaleString()+'원'; }
+    // ── helpers ──
+    function normalizeImages(p) {
+      const raw = p.image_urls || p.images || p.photos || [];
+      const arr = Array.isArray(raw) ? raw : Object.values(raw);
+      return arr.filter(Boolean);
+    }
+    function normalizeYear(v) {
+      if (!v) return '';
+      const s = String(v).replace(/[^\d]/g, '');
+      if (s.length === 4) return s + '년';
+      if (s.length === 2) return '20' + s + '년';
+      return String(v);
+    }
+    function row(l, v) { return `<div class="cat-detail-row"><span class="cat-detail-label">${l}</span><span class="cat-detail-value">${v || '-'}</span></div>`; }
+    function fmtMoney(v) {
+      if (!v) return '-';
+      const n = Number(v);
+      if (!Number.isFinite(n) || n === 0) return '-';
+      if (n >= 10000) return Math.round(n/10000)+'만원';
+      return n.toLocaleString()+'원';
+    }
+    function priceTable(price) {
+      const periods = ['12','24','36','48','60'].filter(m => Number(price?.[m]?.rent) > 0);
+      if (!periods.length) return '<div style="font-size:12px;color:var(--c-muted);padding:12px 0;">가격 미입력</div>';
+      return `
+        <table class="cat-price-table">
+          <thead><tr><th>기간</th>${periods.map(m => `<th>${m}개월</th>`).join('')}</tr></thead>
+          <tbody>
+            <tr><td>대여료</td>${periods.map(m => `<td class="cat-price-rent">${fmtMoney(price[m]?.rent)}</td>`).join('')}</tr>
+            <tr><td>보증금</td>${periods.map(m => `<td>${fmtMoney(price[m]?.deposit)}</td>`).join('')}</tr>
+          </tbody>
+        </table>`;
+    }
+    function extractKeypoints(p) {
+      const out = [];
+      if (p.vehicle_status === '즉시출고') out.push('즉시출고');
+      const review = p.review_status || p.review || '';
+      if (!/필요|필|요청|대기/.test(String(review))) out.push('무심사');
+      const ins = p.insurance_included;
+      if (ins && /^(포함|included|y|o|true|1|가입)$/i.test(String(ins).trim())) out.push('보험 포함');
+      return out;
+    }
   </script>
 </body>
 </html>

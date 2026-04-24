@@ -227,21 +227,95 @@ function _renderProductDetail(container, product, options = {}) {
   const fmtDate = v => { const d = String(v ?? '').replace(/[^\d]/g,''); if (!d) return ''; if (d.length === 8) return `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`; if (d.length === 6) return `20${d.slice(0,2)}.${d.slice(2,4)}.${d.slice(4,6)}`; return String(v ?? '').trim() || ''; };
 
   const modelText = [p.maker, p.model].filter(v => v && v !== '-').join(' ');
+  const role = store.currentUser?.role;
+  const isAdmin = role === 'admin';
+  const canSeeCommission = isAdmin || role === 'agent' || role === 'agent_admin';
 
-  // 대여조건 — 정책에서 전부 가져오기
-  const allCondRows = [
+  // 가격표 하단 요약 — "만 26세 이상 · 연 20,000km · 보험 포함" 같은 한 줄
+  const summaryAge = first(policy.basic_driver_age, p.base_age, p.min_age);
+  const summaryMileage = first(policy.annual_mileage, p.annual_mileage);
+  const summaryInsurance = first(policy.insurance_included, p.insurance_included);
+  const summaryParts = [];
+  if (summaryAge) {
+    const s = String(summaryAge).trim();
+    const n = s.match(/\d+/)?.[0];
+    summaryParts.push(n && /^\d+$/.test(s.replace(/\s/g, '')) ? `만 <b>${n}세</b> 이상` : `<b>${s}</b>`);
+  }
+  if (summaryMileage) {
+    const raw = String(summaryMileage);
+    const n = raw.replace(/[^\d]/g, '');
+    summaryParts.push(n ? `연 <b>${Number(n).toLocaleString()}km</b>` : `연 <b>${raw}</b>`);
+  }
+  if (summaryInsurance) {
+    const s = String(summaryInsurance).trim();
+    if (/^(포함|included|y|o|true|1|가입)$/i.test(s)) summaryParts.push('보험 <b>포함</b>');
+    else if (/^(미포함|별도|불포함|n|x|false|0|미가입)$/i.test(s)) summaryParts.push('보험 <b>별도</b>');
+    else summaryParts.push(`보험 <b>${s}</b>`);
+  }
+  const priceSummaryHtml = summaryParts.length
+    ? `<div class="cat-price-summary">${summaryParts.join(' · ')} 조건입니다</div>`
+    : '';
+
+  // ── 키 포인트 칩 ── 이 차의 셀링포인트 3~5개 (가격표 위에 직관적으로 표시)
+  const keypoints = [];
+  // 출고
+  if (p.vehicle_status === '즉시출고') {
+    keypoints.push({ label: '즉시출고', tone: 'info', icon: 'rocket-launch' });
+  }
+  // 심사
+  if (!needsReview(p)) {
+    keypoints.push({ label: '무심사', tone: 'ok', icon: 'check-circle' });
+  } else {
+    const grade = String(first(policy.credit_grade, policy.screening_criteria, p.credit_grade) || '');
+    if (/전체|무관/.test(grade)) keypoints.push({ label: '전체 가능', tone: 'ok', icon: 'users-three' });
+  }
+  // 보험 포함
+  const insVal = String(first(policy.insurance_included, p.insurance_included) || '').trim();
+  if (/^(포함|included|y|o|true|1|가입)$/i.test(insVal)) {
+    keypoints.push({ label: '보험 포함', tone: 'ok', icon: 'shield-check' });
+  }
+  // 전국 대여
+  const regionVal = String(first(policy.rental_region) || '');
+  if (/전국|all/i.test(regionVal)) {
+    keypoints.push({ label: '전국 대여', tone: 'info', icon: 'globe' });
+  }
+  // 운전연령 하향 (20대 가능 등)
+  const lowerAge = String(first(policy.driver_age_lowering) || '');
+  const lowerN = lowerAge.match(/\d+/)?.[0];
+  if (lowerN && Number(lowerN) < 26) {
+    keypoints.push({ label: `${lowerN}세부터`, tone: 'ok', icon: 'user-plus' });
+  }
+  // 보증금 분납
+  const installVal = String(first(policy.deposit_installment) || '').trim();
+  if (/^(가능|o|y|true|분납|있음)/i.test(installVal)) {
+    keypoints.push({ label: '보증금 분납', tone: 'ok', icon: 'credit-card' });
+  }
+  // 정비 서비스 (의미있는 값만)
+  const maintVal = String(first(policy.maintenance_service) || '').trim();
+  if (maintVal && !/^(없음|없|미제공|-|no|none)$/i.test(maintVal)) {
+    keypoints.push({ label: '정비 포함', tone: 'ok', icon: 'wrench' });
+  }
+  const keypointsHtml = keypoints.length
+    ? `<div class="cat-keypoints">${keypoints.map(k => `<span class="cat-keypoint cat-keypoint--${k.tone}"><i class="ph ph-${k.icon}"></i>${k.label}</span>`).join('')}</div>`
+    : '';
+
+  // ── 공개 섹션 ── 영업자·손님이 차량 조건을 직관적으로 파악하도록 분리
+
+  // 계약조건 — 심사·연령·주행거리·보험포함 (가장 궁금한 것)
+  const contractCondRows = [
     ['심사여부',           needsReview(p) ? '심사필요' : '무심사'],
     ['심사기준',           first(policy.credit_grade, policy.screening_criteria, p.credit_grade)],
-    ['정책코드',           policy.policy_code || p.policy_code],
-    ['정책명',             policy.policy_name || p.policy_name],
-    ['정책유형',           policy.policy_type],
     ['기본 운전연령',      first(policy.basic_driver_age, p.base_age, p.min_age)],
     ['운전연령상한',       first(policy.driver_age_upper_limit)],
     ['운전연령하향',       first(policy.driver_age_lowering)],
     ['운전연령하향비용',   first(policy.age_lowering_cost)],
     ['연간약정주행거리',   first(policy.annual_mileage, p.annual_mileage)],
     ['1만Km추가비용',      first(policy.mileage_upcharge_per_10000km)],
-    ['보험 포함 여부',     first(policy.insurance_included, p.insurance_included)],
+    ['보험 포함',          first(policy.insurance_included, p.insurance_included)],
+  ];
+
+  // 결제·이용 — 보증금/결제/위약/지역/운전자/정비 (한 덩어리)
+  const paymentUsageRows = [
     ['보증금분납',         first(policy.deposit_installment)],
     ['보증금카드결제',     first(policy.deposit_card_payment)],
     ['결제방식',           first(policy.payment_method)],
@@ -255,24 +329,43 @@ function _renderProductDetail(container, product, options = {}) {
     ['정비서비스',         first(policy.maintenance_service)],
   ];
 
-  // 기타사항
-  const etcRows = [
+  // 차량 스펙 — 공개 기타사항
+  const vehicleSpecRows = [
     ['차량상태',   p.vehicle_status],
     ['상품구분',   p.product_type],
     ['차종구분',   p.vehicle_class],
     ['인승',       p.seats ? p.seats + '인승' : ''],
     ['배기량',     p.engine_cc ? Number(p.engine_cc).toLocaleString() + 'cc' : ''],
     ['용도',       p.usage],
-    ['차대번호',   p.vin],
     ['최초등록일', fmtDate(p.first_registration_date)],
     ['차령만료일', fmtDate(p.vehicle_age_expiry_date)],
-    ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
     ['위치',       p.location],
+  ];
+
+  // ── 관리자 전용 섹션 ── 정책·내부 코드 (영업자·손님에겐 노이즈)
+  const internalRows = isAdmin ? [
+    ['정책코드',   policy.policy_code || p.policy_code],
+    ['정책명',     policy.policy_name || p.policy_name],
+    ['정책유형',   policy.policy_type],
+    ['차대번호',   p.vin],
+    ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
     ['공급사',     p.provider_company_code],
     ['파트너',     p.partner_code],
     ['상품코드',   p.product_code],
-    ...(store.currentUser?.role === 'admin' ? [['상품UID', p._key]] : []),
-  ].filter(([, v]) => v && v !== '-');
+    ['상품UID',    p._key],
+  ] : [];
+
+  const filterRows = rows => rows.filter(([, v]) => v && v !== '-');
+  const renderRows = rows => `<div class="cat-rows">${rows.map(([l, v]) => `<div class="cat-row"><span class="cat-row-label">${l}</span><span class="cat-row-value">${v}</span></div>`).join('')}</div>`;
+  const renderSection = (icon, title, rows, extraCls = '') => {
+    const filtered = filterRows(rows);
+    if (!filtered.length) return '';
+    return `
+      <div class="cat-section ${extraCls}">
+        <div class="cat-section-title"><i class="ph ph-${icon}"></i> ${title}</div>
+        ${renderRows(filtered)}
+      </div>`;
+  };
 
   // 특이사항
   const memoText = (p.partner_memo || p.note || '').trim();
@@ -301,6 +394,9 @@ function _renderProductDetail(container, product, options = {}) {
         </div>
       </div>
 
+      <!-- 1b. 키 포인트 칩 — 이 차의 셀링포인트 -->
+      ${keypointsHtml}
+
       <!-- 2. 기간별 대여료, 보증금 -->
       <div class="cat-section">
         <div class="cat-section-title"><i class="ph ph-currency-krw"></i> 기간별 대여료, 보증금</div>
@@ -313,6 +409,7 @@ function _renderProductDetail(container, product, options = {}) {
             <td>${fmtMoney(r.dep)}</td>
           </tr>`).join('')}</tbody>
         </table>` : `<div style="font-size:var(--fs-xs);color:var(--c-text-muted);padding:var(--sp-2) 0;">가격 미입력</div>`}
+        ${priceSummaryHtml}
       </div>
 
       <!-- 3. 보험한도 및 면책금 -->
@@ -324,21 +421,27 @@ function _renderProductDetail(container, product, options = {}) {
         </table>
       </div>
 
-      <!-- 4. 대여조건 -->
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-list-checks"></i> 대여조건</div>
-        <div class="cat-rows">${allCondRows.map(([l, v]) => `<div class="cat-row"><span class="cat-row-label">${l}</span><span class="cat-row-value">${v || '-'}</span></div>`).join('')}</div>
-      </div>
+      <!-- 4. 계약조건 — 심사·연령·주행 (가장 궁금한 정보) -->
+      ${renderSection('list-checks', '계약조건', contractCondRows)}
 
-      <!-- 5. 기타사항 -->
-      <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-note"></i> 기타사항</div>
-        ${etcRows.length ? `<div class="cat-rows">${etcRows.map(([l, v]) => `<div class="cat-row"><span class="cat-row-label">${l}</span><span class="cat-row-value">${v}</span></div>`).join('')}</div>` : ''}
-        ${memoText ? `<div class="cat-memo" style="margin-top:var(--sp-2);">${memoText.replace(/</g, '&lt;').replace(/\n/g, '<br>')}</div>` : ''}
-        ${!etcRows.length && !memoText ? `<div style="font-size:var(--fs-xs);color:var(--c-text-muted);">-</div>` : ''}
-      </div>
+      <!-- 5. 결제·이용 — 보증금·결제·지역·운전자·정비 -->
+      ${renderSection('credit-card', '결제·이용', paymentUsageRows)}
 
-      <!-- 6. 수수료 -->
+      <!-- 6. 차량 스펙 — 타입·배기·등록일 등 -->
+      ${renderSection('note', '차량 스펙', vehicleSpecRows)}
+
+      <!-- 6b. 특이사항 (있을 때만) -->
+      ${memoText ? `
+      <div class="cat-section">
+        <div class="cat-section-title"><i class="ph ph-warning-circle"></i> 특이사항</div>
+        <div class="cat-memo">${memoText.replace(/</g, '&lt;').replace(/\n/g, '<br>')}</div>
+      </div>` : ''}
+
+      <!-- 7. 정책·내부 정보 (관리자만) -->
+      ${isAdmin ? renderSection('lock-key', '정책·내부 정보', internalRows, 'cat-section-internal') : ''}
+
+      <!-- 8. 수수료 — 영업자/관리자만 (손님·공급사 노출 금지) -->
+      ${canSeeCommission ? `
       <div class="cat-section cat-section-fee">
         <div class="cat-section-title"><i class="ph ph-percent"></i> 수수료 <span class="cat-section-hint">(내부용)</span></div>
         ${feeRows.length ? `
@@ -349,7 +452,7 @@ function _renderProductDetail(container, product, options = {}) {
             <td class="cat-price-cell">${fmtMoney(r.fee)}</td>
           </tr>`).join('')}</tbody>
         </table>` : `<div style="font-size:var(--fs-xs);color:var(--c-text-muted);padding:var(--sp-2) 0;">준비중</div>`}
-      </div>
+      </div>` : ''}
 
     </div>
   `;
