@@ -1077,14 +1077,15 @@
     position: relative;
   }
   .excl-car-share-icon {
-    opacity: 0;
-    margin-left: 4px;
+    display: none;          /* 기본 숨김 — 차량번호 공간 확보 */
     font-size: var(--fs-xs);
     color: var(--c-text-muted);
-    transition: opacity var(--dur);
     vertical-align: middle;
   }
-  .excl-car-cell:hover .excl-car-share-icon { opacity: 1; }
+  .excl-car-cell:hover .excl-car-share-icon {
+    display: inline-block;
+    margin-left: 4px;
+  }
   .excl-car-cell:hover .excl-car-number {
     text-decoration: underline;
     text-underline-offset: 2px;
