@@ -64,16 +64,24 @@ export function creditGradeBadge(product) {
   return badgeHtml(grade, tone);
 }
 
-/* ── 심사기준 overlay (썸네일 하단) ── */
-export function creditOverlayHtml(product) {
-  const raw = product?._policy?.credit_grade || product?._policy?.screening_criteria || product?.credit_grade || '';
-  const grade = normalizeCreditGrade(raw);
-  if (!grade) return '';
-  return `<span class="srch-thumb-tag is-credit">${grade}</span>`;
+/* ── 심사기준 overlay — 현재는 reviewOverlayHtml 로 통합되어 빈 문자열 반환
+ *   (reviewOverlay 가 credit_grade 우선 표시하고 없으면 무심사/심사필요 fallback) */
+export function creditOverlayHtml(_product) {
+  return '';
 }
 
-/* ── 심사여부 하단 풀폭 overlay (카드·갤러리 하단) ── */
+/* ── 하단 풀폭 overlay — credit_grade 우선, 없으면 심사여부 ── */
 export function reviewOverlayHtml(product) {
+  // 1) credit_grade 값 있으면 그걸 (신용무관/중신용/일반신용)
+  const credit = normalizeCreditGrade(
+    product?._policy?.credit_grade || product?._policy?.screening_criteria || product?.credit_grade
+  );
+  if (credit) {
+    // "무관" 계열은 초록(safe), 아니면 분홍(caution)
+    const tone = /무관|없음|전체/.test(credit) ? 'is-no-review' : 'is-review-needed';
+    return `<span class="srch-thumb-tag ${tone}">${credit}</span>`;
+  }
+  // 2) fallback — 심사여부
   const need = needsReview(product);
   return `<span class="srch-thumb-tag ${need ? 'is-review-needed' : 'is-no-review'}">${need ? '심사필요' : '무심사'}</span>`;
 }
