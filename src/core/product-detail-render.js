@@ -302,9 +302,12 @@ function _renderProductDetail(container, product, options = {}) {
   // ── 공개 섹션 ── 영업자·손님이 차량 조건을 직관적으로 파악하도록 분리
 
   // 계약조건 — 심사·연령·주행거리·보험포함 (가장 궁금한 것)
+  // 레거시 "저신용" 표기는 "신용무관"으로 치환 표시
+  const creditRaw = first(policy.credit_grade, policy.screening_criteria, p.credit_grade);
+  const creditDisplay = String(creditRaw || '').trim() === '저신용' ? '신용무관' : creditRaw;
   const contractCondRows = [
     ['심사여부',           needsReview(p) ? '심사필요' : '무심사'],
-    ['심사기준',           first(policy.credit_grade, policy.screening_criteria, p.credit_grade)],
+    ['심사기준',           creditDisplay],
     ['기본 운전연령',      first(policy.basic_driver_age, p.base_age, p.min_age)],
     ['운전연령상한',       first(policy.driver_age_upper_limit)],
     ['운전연령하향',       first(policy.driver_age_lowering)],

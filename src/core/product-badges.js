@@ -45,9 +45,18 @@ export function needsReview(product) {
   return /필요|필|요청|대기/.test(raw);
 }
 
+/* ── 레거시 값 치환: "저신용" → "신용무관" (DB 마이그레이션 전이라도 표시부터 반영) ── */
+function normalizeCreditGrade(raw) {
+  if (!raw) return '';
+  const s = String(raw).trim();
+  if (s === '저신용') return '신용무관';
+  return s;
+}
+
 /* ── 심사기준 뱃지 (정책의 credit_grade / screening_criteria) ── */
 export function creditGradeBadge(product) {
-  const grade = product?._policy?.credit_grade || product?._policy?.screening_criteria || product?.credit_grade || '';
+  const raw = product?._policy?.credit_grade || product?._policy?.screening_criteria || product?.credit_grade || '';
+  const grade = normalizeCreditGrade(raw);
   if (!grade) return '';
   let tone = 'accent';
   if (/무관|없음|전체/.test(grade)) tone = 'ok';
@@ -57,7 +66,8 @@ export function creditGradeBadge(product) {
 
 /* ── 심사기준 overlay (썸네일 하단) ── */
 export function creditOverlayHtml(product) {
-  const grade = product?._policy?.credit_grade || product?._policy?.screening_criteria || product?.credit_grade || '';
+  const raw = product?._policy?.credit_grade || product?._policy?.screening_criteria || product?.credit_grade || '';
+  const grade = normalizeCreditGrade(raw);
   if (!grade) return '';
   return `<span class="srch-thumb-tag is-credit">${grade}</span>`;
 }
