@@ -165,6 +165,7 @@ function renderToolsTab(el) {
           <button class="btn btn-outline btn-sm" id="devMigrateModelName"><i class="ph ph-swap"></i> model_name → model (products · contracts · rooms)</button>
           <button class="btn btn-outline btn-sm" id="devMigratePartnerType"><i class="ph ph-swap"></i> partner_type 영어 → 한글 (provider→공급사)</button>
           <button class="btn btn-outline btn-sm" id="devMigrateUserCode"><i class="ph ph-identification-badge"></i> user_code 일괄부여 (미부여자만 · 전역 시퀀스)</button>
+          <button class="btn btn-outline btn-sm" id="devMigrateCreditGrade"><i class="ph ph-swap"></i> credit_grade: 저신용 → 신용무관 (정책·상품)</button>
         </div>
       </div>
     </div>
@@ -364,6 +365,42 @@ function renderToolsTab(el) {
     } finally {
       btn.disabled = false;
       btn.innerHTML = '<i class="ph ph-identification-badge"></i> user_code 일괄부여 (미부여자만 · 전역 시퀀스)';
+    }
+  });
+
+  document.getElementById('devMigrateCreditGrade').addEventListener('click', async () => {
+    if (!confirm('credit_grade 값 "저신용" 을 "신용무관" 으로 일괄 변환합니다.\n대상: policies · products\n멱등(여러 번 실행 OK).\n진행하시겠습니까?')) return;
+    const btn = document.getElementById('devMigrateCreditGrade');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ph ph-spinner"></i> 마이그레이션 중...';
+    try {
+      const { ref, get, update } = await import('firebase/database');
+      const { db } = await import('../../firebase/config.js');
+      const FROM = '저신용';
+      const TO = '신용무관';
+      let totalMoved = 0;
+      for (const path of ['policies', 'products']) {
+        const snap = await get(ref(db, path));
+        const all = snap.val() || {};
+        let moved = 0;
+        for (const [k, v] of Object.entries(all)) {
+          if (v?.credit_grade === FROM) {
+            await update(ref(db, `${path}/${k}`), { credit_grade: TO });
+            moved++;
+          }
+        }
+        devLog(`  ${path}: ${moved}건 변환`);
+        totalMoved += moved;
+      }
+      devLog(`✓ credit_grade "저신용"→"신용무관" ${totalMoved}건 완료`);
+      showToast(`${totalMoved}건 변환 완료`);
+    } catch (e) {
+      console.error(e);
+      devLog(`✗ 실패: ${e.message}`);
+      showToast('마이그레이션 실패', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ph ph-swap"></i> credit_grade: 저신용 → 신용무관 (정책·상품)';
     }
   });
 }
