@@ -3,12 +3,12 @@
     "users": {
       ".read": "auth != null",
       "$uid": {
-        ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'agent_manager' && root.child('users').child($uid).child('company_code').val() === root.child('users').child(auth.uid).child('company_code').val()))",
+        ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'agent_admin' && root.child('users').child($uid).child('company_code').val() === root.child('users').child(auth.uid).child('company_code').val()))",
         "role": {
           ".validate": "!data.exists() || newData.val() === data.val() || root.child('users').child(auth.uid).child('role').val() === 'admin'"
         },
         "status": {
-          ".validate": "root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'agent_manager' && root.child('users').child($uid).child('company_code').val() === root.child('users').child(auth.uid).child('company_code').val()) || newData.val() === data.val() || (!data.exists() && newData.val() === 'pending')"
+          ".validate": "root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'agent_admin' && root.child('users').child($uid).child('company_code').val() === root.child('users').child(auth.uid).child('company_code').val()) || newData.val() === data.val() || (!data.exists() && newData.val() === 'pending')"
         }
       }
     },
@@ -56,7 +56,7 @@
     "rooms": {
       ".read": "auth != null",
       "$room_id": {
-        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || newData.child('agent_uid').val() === auth.uid || newData.child('provider_uid').val() === auth.uid || data.child('agent_uid').val() === auth.uid || data.child('provider_uid').val() === auth.uid || root.child('users').child(auth.uid).child('company_code').val() === data.child('provider_company_code').val() || root.child('users').child(auth.uid).child('company_code').val() === newData.child('provider_company_code').val() || (root.child('users').child(auth.uid).child('role').val() === 'agent_manager' && root.child('users').child(auth.uid).child('company_code').val() === data.child('agent_channel_code').val()))"
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || newData.child('agent_uid').val() === auth.uid || newData.child('provider_uid').val() === auth.uid || data.child('agent_uid').val() === auth.uid || data.child('provider_uid').val() === auth.uid || root.child('users').child(auth.uid).child('company_code').val() === data.child('provider_company_code').val() || root.child('users').child(auth.uid).child('company_code').val() === newData.child('provider_company_code').val() || (root.child('users').child(auth.uid).child('role').val() === 'agent_admin' && root.child('users').child(auth.uid).child('company_code').val() === data.child('agent_channel_code').val()))"
       },
       ".indexOn": ["product_uid", "agent_uid", "provider_uid", "provider_company_code", "last_message_at"]
     },
@@ -65,29 +65,51 @@
         ".read": "auth != null",
         ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
         "$message_id": {
-          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('rooms').child($room_id).child('agent_uid').val() === auth.uid || root.child('rooms').child($room_id).child('provider_uid').val() === auth.uid || root.child('users').child(auth.uid).child('company_code').val() === root.child('rooms').child($room_id).child('provider_company_code').val() || (root.child('users').child(auth.uid).child('role').val() === 'agent_manager' && root.child('users').child(auth.uid).child('company_code').val() === root.child('rooms').child($room_id).child('agent_channel_code').val()))",
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('rooms').child($room_id).child('agent_uid').val() === auth.uid || root.child('rooms').child($room_id).child('provider_uid').val() === auth.uid || root.child('users').child(auth.uid).child('company_code').val() === root.child('rooms').child($room_id).child('provider_company_code').val() || (root.child('users').child(auth.uid).child('role').val() === 'agent_admin' && root.child('users').child(auth.uid).child('company_code').val() === root.child('rooms').child($room_id).child('agent_channel_code').val()))",
           ".validate": "newData.hasChildren(['text', 'sender_uid', 'sender_role', 'created_at'])",
           "sender_uid": { ".validate": "newData.val() === auth.uid" }
         }
       }
     },
     "contracts": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider' || root.child('users').child(auth.uid).child('role').val() === 'agent')",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider' || root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin')",
       ".indexOn": ["product_uid", "partner_code", "contract_status", "agent_uid", "created_at"],
       "$contract_code": {
-        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (root.child('users').child(auth.uid).child('role').val() === 'agent' && (newData.child('agent_uid').val() === auth.uid || (!newData.exists() && data.child('agent_uid').val() === auth.uid))) || (root.child('users').child(auth.uid).child('role').val() === 'provider' && (root.child('users').child(auth.uid).child('company_code').val() === newData.child('partner_code').val() || root.child('users').child(auth.uid).child('company_code').val() === newData.child('provider_company_code').val() || (!newData.exists() && (root.child('users').child(auth.uid).child('company_code').val() === data.child('partner_code').val() || root.child('users').child(auth.uid).child('company_code').val() === data.child('provider_company_code').val())))))",
-        ".validate": "!newData.exists() || newData.hasChildren(['contract_code', 'partner_code', 'created_at'])",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || ((root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin') && (newData.child('agent_uid').val() === auth.uid || (!newData.exists() && data.child('agent_uid').val() === auth.uid))) || (root.child('users').child(auth.uid).child('role').val() === 'provider' && (root.child('users').child(auth.uid).child('company_code').val() === newData.child('partner_code').val() || root.child('users').child(auth.uid).child('company_code').val() === newData.child('provider_company_code').val() || (!newData.exists() && (root.child('users').child(auth.uid).child('company_code').val() === data.child('partner_code').val() || root.child('users').child(auth.uid).child('company_code').val() === data.child('provider_company_code').val())))))",
         "_secure": {
           ".read": "auth != null",
-          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'agent')"
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin')"
         }
       }
     },
     "settlements": {
-      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider' || root.child('users').child(auth.uid).child('role').val() === 'agent')",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider' || root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin')",
       ".indexOn": ["contract_code", "settlement_status"],
       "$settlement_code": {
-        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider' || root.child('users').child(auth.uid).child('role').val() === 'agent')"
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider' || root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin')"
+      }
+    },
+    "customers": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin' || root.child('users').child(auth.uid).child('role').val() === 'provider')",
+      ".indexOn": ["phone", "name", "created_at"],
+      "$customer_uid": {
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin')",
+        ".validate": "newData.hasChildren(['name', 'phone', 'created_at'])",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0" },
+        "phone": { ".validate": "newData.isString() && newData.val().length >= 10" },
+        "created_at": { ".validate": "newData.isNumber()" }
+      }
+    },
+    "inquiries": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'agent' || root.child('users').child(auth.uid).child('role').val() === 'agent_admin' || root.child('users').child(auth.uid).child('role').val() === 'provider')",
+      ".indexOn": ["product_uid", "agent_code", "status", "created_at"],
+      "$id": {
+        ".write": "true",
+        ".validate": "newData.hasChildren(['visitor_name', 'visitor_phone', 'created_at']) && newData.child('visitor_name').isString() && newData.child('visitor_phone').isString() && newData.child('visitor_name').val().length > 0 && newData.child('visitor_phone').val().length >= 10 && newData.child('visitor_phone').val().length <= 13",
+        "created_at": { ".validate": "newData.isNumber() && newData.val() <= now + 5000" },
+        "status": { ".validate": "!newData.exists() || newData.val() === 'new' || newData.val() === 'handled' || newData.val() === 'closed'" },
+        "visitor_name": { ".validate": "newData.val().length <= 30" },
+        "message": { ".validate": "!newData.exists() || (newData.isString() && newData.val().length <= 1000)" }
       }
     },
     "code_sequences": {

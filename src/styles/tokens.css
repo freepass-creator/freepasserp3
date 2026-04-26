@@ -70,7 +70,7 @@
     --c-status-blocked:   #dc2626;
 
     /* ── Typography ── */
-    --font:           'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    /* --font 은 base.css 에서 시스템폰트 단일 로 정의됨 (Claude Style v1.0). 여기 재정의 금지 */
     --fs-2xs:         10px;   /* 뱃지·아주 작은 보조텍스트 */
     --fs-xs:          11px;
     --fs-sm:          12px;

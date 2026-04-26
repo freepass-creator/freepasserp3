@@ -2,21 +2,10 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>freepass ERP v3</title>
+<title>freepasserp v3 — Claude Style v1.0 Prototype</title>
 <meta name="viewport" content="width=1280">
-<link rel="stylesheet" href="/src/styles/base.css">
-<link rel="stylesheet" href="/phosphor/style.css">
-<style>
-  /* Phosphor 아이콘 — light 가중치 (얇고 깔끔) 사용 위해 폰트 override */
-  @font-face {
-    font-family: 'PhosphorLight';
-    src: url('/phosphor/light/Phosphor-Light.woff2') format('woff2'),
-         url('/phosphor/light/Phosphor-Light.woff') format('woff');
-    font-display: block;
-  }
-  .ph, .ph::before { font-family: 'PhosphorLight' !important; }
-</style>
-<script type="module" src="/src/app.js"></script>
+<link rel="stylesheet" href="src/styles/base.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2/src/regular/style.css">
 <style>
   /* ── 내부 ERP 톤 — 모던 ERP (라운드 4 / gap 6 / 카드 호흡) ── */
   :root {
@@ -33,8 +22,6 @@
     --radius-pill: 2px;
   }
   *, *::before, *::after { font-family: var(--font); letter-spacing: 0; }
-  /* ↑ universal 셀렉터가 phosphor 의 .ph::before 까지 시스템폰트로 덮어버림 — 명시 복원 */
-  .ph, .ph::before { font-family: "Phosphor" !important; }
   body { font-size: 11px; }
   kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
 
@@ -57,10 +44,7 @@
   .chip.active em.cnt { color: var(--text-inverse); opacity: 0.7; }
 
   /* 컬럼 헤더 필터 — 모던 데이터 그리드 톤 (평소 hidden, hover 시만 표시) */
-  .table thead th {
-    position: sticky; top: 0; z-index: 10;     /* sticky 유지 (base.css 와 동일) */
-    cursor: pointer; user-select: none;
-  }
+  .table thead th { position: relative; cursor: pointer; user-select: none; }
   .table thead th:hover { background: var(--bg-hover); }
   .table thead th .ft {
     display: inline-flex; align-items: center; justify-content: center;
@@ -75,13 +59,11 @@
   .table thead th:hover .ft { opacity: 1; }
   .table thead th .ft:hover { background: var(--bg-hover); color: var(--text-sub); }
   /* 필터 적용된 컬럼 — opacity 1 + accent 색 (작은 dot indicator) */
-  .table thead th .ft.is-on,
-  .table thead th.has-filter .ft {
+  .table thead th .ft.is-on {
     opacity: 1;
     color: var(--text-link);
   }
-  .table thead th .ft.is-on::after,
-  .table thead th.has-filter .ft::after {
+  .table thead th .ft.is-on::after {
     content: ''; position: absolute;
     top: 4px; right: 4px;
     width: 4px; height: 4px;
@@ -119,10 +101,6 @@
   }
   .detail-photo-thumb.is-active { border-color: var(--text-main); }
   .detail-photo-thumb.more { color: var(--text-weak); }
-  /* img 가 들어오면 컨테이너 가득 채우고, 비율 유지 cover */
-  img.detail-photo-main { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; padding: 0; background: var(--bg-stripe); border: 1px solid var(--border-soft); border-radius: 2px; margin-bottom: 4px; }
-  .detail-photo-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; display: block; }
-  .detail-photo-thumb { padding: 0; overflow: hidden; }
   .detail-actions {
     display: flex; gap: 4px;
     padding: 8px 10px;
@@ -167,16 +145,7 @@
     background: var(--bg-stripe);
   }
   .ft-pop-actions .btn,
-  .ft-pop-actions .btn-primary { flex: 1; height: 22px; display: inline-flex; align-items: center; justify-content: center; text-align: center; }
-  /* 정렬 row 가로 배치 */
-  .ft-pop-sort { display: flex; padding: 0; }
-  .ft-pop-sort .sort-half { flex: 1; justify-content: center; padding: 6px 8px; }
-  .ft-pop-sort .sort-half + .sort-half { border-left: 1px solid var(--border-soft); }
-  .ft-arrow { display: inline-block; width: 10px; text-align: center; color: var(--text-weak); }
-  /* 옵션 row — 라벨 / 카운트 */
-  .ft-pop-list .ft-pop-row { gap: 6px; }
-  .ft-pop-list .ft-pop-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .ft-pop-list .ft-pop-cnt { color: var(--text-weak); font-size: 10px; }
+  .ft-pop-actions .btn-primary { flex: 1; height: 22px; }
 
   /* ── App Shell — 사이드바 | (topbar 30 / main) ── */
   body {
@@ -184,141 +153,12 @@
     grid-template-columns: 180px 1fr;
     grid-template-rows: 30px 1fr;
     height: 100vh; overflow: hidden;
-    transition: grid-template-columns 0.22s cubic-bezier(.4,.0,.2,1);
   }
-  body.is-sb-collapsed { grid-template-columns: 48px 1fr; }
   .pt-sb {
     grid-column: 1; grid-row: 1 / -1;
     background: var(--bg-card); border-right: 1px solid var(--border);
-    overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column;
-    min-width: 0;
+    overflow-y: auto; display: flex; flex-direction: column;
   }
-  /* 펼친 상태 — 아이콘 + 라벨 */
-  .pt-sb a {
-    display: flex; align-items: center; gap: 8px;
-  }
-  .pt-sb a > i:first-child {
-    font-size: 14px; line-height: 1; color: var(--text-sub);
-    width: 16px; flex-shrink: 0; text-align: center;
-  }
-  .pt-sb a .sb-label { flex: 1; }
-  /* 접힌 상태 — 아이콘만 보이고 라벨/카운트/섹션/하단/브랜드텍스트 모두 숨김, 토글만 가운데 */
-  body.is-sb-collapsed .pt-sb a > .sb-label,
-  body.is-sb-collapsed .pt-sb a > .cnt,
-  body.is-sb-collapsed .pt-sb-section,
-  body.is-sb-collapsed .pt-sb-bottom,
-  body.is-sb-collapsed .pt-sb-brand .sb-brand-text { display: none; }
-  body.is-sb-collapsed .pt-sb-brand { justify-content: center; padding: 0 !important; }
-  body.is-sb-collapsed .pt-sb-brand .pt-sb-toggle { margin-left: 0; }
-  body.is-sb-collapsed .pt-sb a {
-    justify-content: center; padding: 6px 0;
-  }
-  body.is-sb-collapsed .pt-sb a > i:first-child { font-size: 16px; }
-  /* 빈 cnt span 자동 숨김 — JS 가 :empty 트리거 안 해도 텍스트 비면 안 보임 */
-  .pt-sb a .cnt:empty { display: none; }
-
-  /* ── input/select/textarea — 3가지 시각 상태 ──
-     1) 보기 모드 (disabled/readonly): 회색 배경, 흐린 텍스트
-     2) 편집 가능 + 미선택: 흰 배경, 옅은 회색 라인 (기본)
-     3) 편집 중 (focus): 파랑 ring
-     4) 저장 직후: 초록 ring 1.5초 (.is-saved 클래스) */
-  .input,
-  input[type="text"], input[type="number"], input[type="email"],
-  input[type="password"], input[type="search"], input[type="tel"],
-  input[type="url"], input[type="date"], input[type="time"],
-  select, textarea {
-    border: 1px solid var(--border) !important;
-    border-radius: 2px;
-    background: var(--bg-card);
-    transition: box-shadow 0.15s, border-color 0.15s;
-  }
-  /* 1) 보기 모드 — disabled / readonly */
-  .input:disabled, input:disabled, select:disabled, textarea:disabled,
-  .input[readonly], input[readonly], textarea[readonly] {
-    background: var(--bg-stripe) !important;
-    color: var(--text-sub);
-    cursor: default;
-    border-color: var(--border-soft) !important;
-  }
-  /* 3) 편집 중 — 라인 색 거의 변화 없음 + 옅은 파랑 배경 틴트 (은은) */
-  .input:focus, input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: rgba(37, 99, 235, 0.3) !important;
-    background: rgba(37, 99, 235, 0.025) !important;
-  }
-  /* 4) 저장 직후 — 옅은 초록 배경 틴트 (1.5초 fade) */
-  .input.is-saved, input.is-saved, select.is-saved, textarea.is-saved {
-    animation: savedFlash 1.5s ease-out;
-  }
-  @keyframes savedFlash {
-    0%   { border-color: rgba(5, 150, 105, 0.4) !important; background: rgba(5, 150, 105, 0.05) !important; }
-    100% { border-color: var(--border) !important; background: var(--bg-card) !important; }
-  }
-
-  /* select — 기본 OS 화살표 제거 + 커스텀 chevron (얇은 line) */
-  select.input, select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    padding-right: 22px !important;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='none' stroke='%2394a3b8' stroke-width='1' d='M1 1l4 4 4-4'/></svg>");
-    background-position: right 8px center;
-    background-repeat: no-repeat;
-    background-size: 10px 6px;
-  }
-  /* select 펼친 상태 (option) — 브라우저 종속이지만 가능한 한 일관성 */
-  select option { padding: 4px 8px; font-size: 11px; }
-
-  /* button 라인도 1px 통일 */
-  .btn, button.btn, button {
-    border: 1px solid var(--border);
-  }
-  .btn-primary { border: 1px solid var(--text-main); }
-  .chip { border: 1px solid var(--border); }
-
-  /* 사진 lightbox (풀스크린 갤러리) */
-  .lightbox-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.92);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 10000; cursor: zoom-out;
-  }
-  .lightbox-stage { max-width: 92vw; max-height: 92vh; cursor: default; }
-  .lightbox-stage img { max-width: 92vw; max-height: 92vh; display: block; }
-  .lightbox-close, .lightbox-prev, .lightbox-next {
-    position: absolute; background: rgba(0,0,0,0.5); color: #fff;
-    width: 40px; height: 40px; border: 0; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px;
-  }
-  .lightbox-close { top: 16px; right: 16px; }
-  .lightbox-prev { left: 16px; top: 50%; transform: translateY(-50%); }
-  .lightbox-next { right: 16px; top: 50%; transform: translateY(-50%); }
-  .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background: rgba(0,0,0,0.8); }
-  .lightbox-count { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; padding: 6px 14px; background: rgba(0,0,0,0.5); border-radius: 12px; }
-  /* 권한별 메뉴/섹션 숨김 — body class 로 토글 */
-  body.role-agent .pt-sb a[data-page="product"],
-  body.role-agent .pt-sb a[data-page="policy"],
-  body.role-agent .pt-sb a[data-page="partners"],
-  body.role-agent .pt-sb a[data-page="users"],
-  body.role-agent .pt-sb-section[data-section="공급사"],
-  body.role-agent .pt-sb-section[data-section="관리자"] { display: none; }
-  body.role-provider .pt-sb a[data-page="partners"],
-  body.role-provider .pt-sb a[data-page="users"],
-  body.role-provider .pt-sb-section[data-section="관리자"] { display: none; }
-  body.role-agent_admin .pt-sb a[data-page="product"],
-  body.role-agent_admin .pt-sb a[data-page="policy"],
-  body.role-agent_admin .pt-sb-section[data-section="공급사"] { display: none; }
-
-  /* 사이드바 토글 버튼 (사이드바 brand 우측 — v2 스타일) */
-  .pt-sb-toggle {
-    width: 22px; height: 22px;
-    display: inline-flex; align-items: center; justify-content: center;
-    border-radius: 2px; cursor: pointer; color: var(--text-sub);
-    flex-shrink: 0; background: transparent; border: 0; padding: 0;
-    margin-left: auto;
-  }
-  .pt-sb-toggle:hover { background: var(--bg-stripe); color: var(--text-main); }
-  .pt-sb-brand { justify-content: space-between; }
 
   /* ══ 모든 "헤드" 띠 — 동일 30px 규격 (타이틀 헤더 / 패널 헤더 / 표 헤더) ══ */
   .pt-sb-brand,
@@ -331,12 +171,6 @@
     border-bottom: 1px solid var(--border) !important;
     color: var(--text-weak);
     box-sizing: border-box;
-  }
-  /* 표 헤더 sticky 강제 (스크롤 시 thead 가 위에 고정) */
-  .table thead th {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 10 !important;
   }
   .pt-sb-brand { color: var(--text-main); }   /* brand 만 메인 */
   .pt-sb-brand,
@@ -428,36 +262,13 @@
   }
   .timeline-row:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
 
-  /* 표 셀 라인 — 가로·세로 미세 라인 (border-soft) + zebra row (bg-stripe, 더 연함) */
+  /* 표 셀 라인 — 더 연하게 + zebra row 살짝 차이 */
   .table tbody td {
-    border-bottom: 1px solid var(--border-soft) !important;
-    border-right: 1px solid var(--border-soft) !important;
+    border-bottom: 1px solid var(--bg-stripe) !important;
+    border-right: 1px solid transparent !important;
   }
   .table tbody tr:nth-child(even) { background: var(--bg-stripe); }
   .table tbody tr:hover { background: var(--bg-hover); }
-  /* 다중 선택된 row (Ctrl+click) — 강조 배경 */
-  .table tbody tr.is-checked { background: var(--alert-blue-bg, #e6f0ff) !important; }
-  .table tbody tr.is-checked td.sticky-col { background: var(--alert-blue-bg, #e6f0ff) !important; }
-
-  /* 고정 컬럼폭 + 단일줄 말줄임 (colgroup 으로 폭 지정) */
-  .table-fixed { table-layout: fixed; }
-  .table-fixed td, .table-fixed th {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  /* 좌우 스크롤 시 sticky-col 은 좌측 고정 (z-index 우선순위 정리) */
-  .table-fixed thead th.sticky-col,
-  .table-fixed tbody td.sticky-col {
-    position: sticky !important;
-    left: 0 !important;
-    z-index: 6 !important;
-  }
-  /* 코너 (thead × sticky-col) — thead z-index 10 + sticky-col z-index 6 보다 모두 위 */
-  .table-fixed thead th.sticky-col {
-    z-index: 12 !important;
-    top: 0 !important;
-  }
   /* 패널 헤드 = 타이틀 헤더(topbar / 사이드바 brand) 동일 30px 규격
      padding 0 8 / 배경 bg-header / 색 text-weak (라벨 톤) */
   .ws4-head {
@@ -480,22 +291,15 @@
     font-weight: 400;
   }
 
-  /* ── 상세 패널 슬라이드 (상품 찾기 split) ──
-     gap 을 패널의 left margin 으로 옮겨, 패널과 여백이 한 덩어리로 우측으로 밀려나감 */
+  /* ── 상세 패널 접기/펼치기 (상품 찾기 split) ── */
   [data-page="search"] .ws4 {
-    transition: grid-template-columns 0.24s cubic-bezier(.4,.0,.2,1);
-  }
-  [data-page="search"] .ws4 > .ws4-card:last-child {
-    overflow: hidden;
-    min-width: 0;
-    margin-left: 6px;
-    transition: margin-left 0.24s cubic-bezier(.4,.0,.2,1);
+    transition: grid-template-columns 0.2s var(--ease, ease);
   }
   [data-page="search"] .ws4.is-collapsed {
-    grid-template-columns: 1fr 0fr !important;
+    grid-template-columns: 1fr 0px !important;
   }
   [data-page="search"] .ws4.is-collapsed > .ws4-card:last-child {
-    margin-left: 0 !important;
+    display: none;
   }
   /* row 클릭으로 자동 펼침 — JS 처리 (별도 reopen 버튼 불필요) */
   .ws4-head > span:first-child,
@@ -510,278 +314,29 @@
     flex-shrink: 0;
   }
 
-  /* info-grid — 한 줄에 한 항목: [라벨 80px][값 1fr] (form-grid 와 통일된 규격) */
   .info-grid {
-    display: grid; grid-template-columns: 80px 1fr;
+    display: grid; grid-template-columns: 80px 1fr 80px 1fr;
     border-top: 1px solid var(--border-soft);
-    min-width: 0;
   }
   .info-grid > div {
     padding: 4px 8px; border-bottom: 1px solid var(--border-soft);
-    min-width: 0; overflow-wrap: break-word;
   }
-  .info-grid > .lab {
-    background: var(--bg-stripe); color: var(--text-weak);
-    word-break: keep-all;       /* 라벨은 한글 단어 단위 줄바꿈 */
-  }
-  .info-grid > div:not(.lab) {
-    word-break: break-word;     /* 값은 강제 끊기 (긴 URL/숫자 대응) */
-  }
-  /* .full 클래스는 더 이상 의미 없지만 호환 위해 유지 (값 셀이 가로로 못 늘어나는 케이스 방지) */
+  .info-grid .lab { background: var(--bg-stripe); color: var(--text-weak); }
   .info-grid .full { grid-column: 2 / -1; }
 
-  /* form-grid — 모든 항목 한 줄에 한 개: [라벨 80px][입력칸 1fr]
-     항목명 5자 규격으로 통일. textarea 만 라벨 윗정렬. 표는 .table 별도 */
   .form-grid {
-    display: flex; flex-direction: column;
-    gap: 6px; min-width: 0;
+    display: grid; grid-template-columns: 80px 1fr 80px 1fr;
+    gap: 4px 8px; align-items: center;
   }
-  /* Dirty 카드 — 헤더 저장 버튼 강조 (미저장 변경) */
-  .ws4-card.is-dirty .ws4-head [data-save-form] {
-    background: var(--accent-orange);
-    color: #fff;
-    border-color: var(--accent-orange);
-  }
-  @keyframes save-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(217,119,6,0.5); }
-    50%      { box-shadow: 0 0 0 4px rgba(217,119,6,0); }
-  }
-  .ws4-card.is-dirty .ws4-head [data-save-form].is-pulse {
-    animation: save-pulse 1.5s ease-in-out infinite;
-  }
-
-  /* 가격 매트릭스 — colgroup width 강제 적용 (대여료/수수료 표 동일 폭) */
-  .pd-price-table { table-layout: fixed; }
-  .pd-price-table input { box-sizing: border-box; }
-
-  /* 사진/등록증 dropzone + 그리드 — v3 토큰으로 새로 작성 */
-  .pd-dropzone {
-    display: block; padding: 18px 12px;
-    border: 1px dashed var(--border);
-    border-radius: 4px;
-    background: var(--bg-stripe);
-    color: var(--text-weak);
-    text-align: center; cursor: pointer;
-    transition: border-color 0.12s, background 0.12s, color 0.12s;
-    margin-bottom: 8px;
-  }
-  .pd-dropzone:hover, .pd-dropzone.is-drop-target {
-    border-color: var(--accent-blue);
-    background: var(--bg-card);
-    color: var(--text-main);
-  }
-  .pd-dropzone.is-uploading {
-    border-color: var(--accent-orange);
-    background: var(--accent-orange-bg);
-    color: var(--accent-orange);
-    cursor: progress; pointer-events: none;
-  }
-  .pd-dropzone > i { font-size: 22px; display: block; margin-bottom: 4px; }
-  .pd-dropzone-text { font-size: 12px; margin-bottom: 2px; }
-  .pd-dropzone-hint { font-size: 11px; color: var(--text-weak); }
-
-  .pd-photo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 4px;
-    border: 1px dashed transparent;
-    padding: 2px; border-radius: 4px;
-  }
-  .pd-photo-item {
-    position: relative; aspect-ratio: 4/3;
-    background: var(--bg-stripe); border-radius: 3px;
-    overflow: hidden; cursor: grab; user-select: none;
-  }
-  .pd-photo-item.is-dragging { opacity: 0.4; }
-  .pd-photo-item.is-drop-over { outline: 2px solid var(--accent-blue); outline-offset: -2px; }
-  .pd-photo-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-  .pd-photo-del {
-    position: absolute; top: 2px; right: 2px;
-    width: 18px; height: 18px; padding: 0; border: 0;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.6); color: #fff;
-    font-size: 10px; display: none;
-    align-items: center; justify-content: center; cursor: pointer;
-  }
-  .pd-photo-item:hover .pd-photo-del { display: flex; }
-  .pd-photo-badge {
-    position: absolute; bottom: 2px; left: 2px;
-    padding: 1px 5px; font-size: 10px;
-    background: var(--accent-blue); color: #fff;
-    border-radius: 2px;
-  }
-  .pd-reg-image {
-    max-width: 100%; max-height: 240px;
-    border-radius: 4px; border: 1px solid var(--border);
-    cursor: zoom-in;
-  }
-  .pd-reg-pdf {
-    display: flex; align-items: center; gap: 8px;
-    padding: 12px;
-    border: 1px solid var(--border); border-radius: 4px;
-    background: var(--bg-stripe);
-    color: var(--text-main); text-decoration: none;
-  }
-  .pd-reg-pdf i { font-size: 28px; color: var(--accent-red); }
-  .pd-reg-del {
-    position: absolute; top: 4px; right: 4px;
-    padding: 2px 8px; font-size: 11px;
-    background: rgba(0,0,0,0.6); color: #fff;
-    border: 0; border-radius: 3px; cursor: pointer;
-  }
-
-  /* 영업자 선택 / 일반 picker 다이얼로그 */
-  .pick-overlay {
-    position: fixed; inset: 0; z-index: 1000;
-    background: rgba(0,0,0,0.5);
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-  }
-  .pick-card {
-    background: var(--bg-card); border-radius: 6px;
-    width: 100%; max-width: 360px; max-height: 80vh;
-    display: flex; flex-direction: column;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-  }
-  .pick-head {
-    padding: 12px 14px; border-bottom: 1px solid var(--border-soft);
-    font-size: 12px; font-weight: 600; color: var(--text-main);
-  }
-  .pick-body { flex: 1; overflow-y: auto; padding: 6px; }
-  .pick-item {
-    display: flex; align-items: center; gap: 8px;
-    width: 100%; padding: 8px 10px;
-    border: 0; background: transparent; text-align: left;
-    border-radius: 4px; cursor: pointer;
-    color: var(--text-main); font-size: 12px;
-  }
-  .pick-item:hover { background: var(--bg-stripe); }
-  .pick-item > i { font-size: 18px; color: var(--text-weak); flex: 0 0 auto; }
-  .pick-item-name { font-weight: 500; }
-  .pick-item-sub { font-size: 11px; color: var(--text-weak); margin-top: 1px; }
-  .pick-foot {
-    padding: 8px 10px; border-top: 1px solid var(--border-soft);
-    display: flex; justify-content: flex-end; gap: 6px;
-  }
-
-  /* 사진 풀스크린 갤러리 — v2 product-detail-render openFullscreen 호환 */
-  dialog.srch-fullscreen {
-    position: fixed; inset: 0; margin: 0;
-    width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh;
-    padding: 0; border: 0;
-    background: rgba(0,0,0,0.95);
-    z-index: 10000; color: #fff;
-  }
-  dialog.srch-fullscreen::backdrop { background: rgba(0,0,0,0.7); }
-  .srch-fs-scroll {
-    width: 100%; height: 100%;
-    overflow-y: auto; overflow-x: hidden;
-    scroll-snap-type: y mandatory;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 12px;
-    padding: 12px 0;
-  }
-  .srch-fs-img {
-    max-width: 96vw; max-height: 96vh;
-    object-fit: contain;
-    scroll-snap-align: center;
-    flex-shrink: 0;
-    content-visibility: auto;
-    contain-intrinsic-size: 96vw 80vh;
-  }
-  .srch-fs-close {
-    position: fixed; top: 16px; right: 16px;
-    width: 36px; height: 36px; border-radius: 999px;
-    background: rgba(255,255,255,0.15); color: #fff;
-    border: none; cursor: pointer; font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 2;
-  }
-  .srch-fs-counter {
-    position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-    padding: 4px 14px;
-    background: rgba(255,255,255,0.15); color: #fff;
-    border-radius: 999px; font-size: 13px;
-    font-variant-numeric: tabular-nums; z-index: 2;
-  }
-  /* 섹션 타이틀 — 같은 패널 안에 여러 form-grid 를 묶을 때 사용
-     경계는 다음 섹션 위 border-top 으로 표시 → 마지막 섹션은 자연스럽게 끝남 */
-  .form-section-title {
-    font-size: 11px; font-weight: 600;
-    color: var(--text-sub);
-    margin-bottom: 8px;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .form-section-title > i { color: var(--accent-blue); font-size: 12px; flex: 0 0 auto; }
-  .form-section-title + .form-grid { margin-bottom: 4px; }
-  .form-section-title:not(:first-child) {
-    margin-top: 18px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-soft);
-  }
-  .ws4-body > .form-section-title:first-of-type {
-    margin-top: 0; padding-top: 0; border-top: 0;
-  }
-  .form-grid .ff {
-    display: grid;
-    grid-template-columns: 70px 1fr;
-    gap: 8px; align-items: center;
-    min-width: 0;
-  }
-  /* textarea 가 들어간 행 — 라벨 위쪽 정렬 */
-  .form-grid .ff:has(textarea) { align-items: start; }
-  .form-grid .ff:has(textarea) > label { padding-top: 4px; }
-  .form-grid .ff > label {
-    color: var(--text-weak); margin: 0;
-    font-size: 11px; line-height: 1.2;
-    word-break: keep-all;       /* 한글 단어 단위 줄바꿈 */
-    overflow-wrap: break-word;  /* 단어 못 끊으면 강제 wrap */
-    /* 길면 자동 줄바꿈 → 행 높이 자연스럽게 늘어남 */
-  }
-  .form-grid .ff > input,
-  .form-grid .ff > select,
-  .form-grid .ff > textarea {
-    width: 100%; min-width: 0;
-  }
-  .form-grid .ff > textarea { resize: vertical; }
-  /* 레거시 (label/input 직접 자식) — 같은 한줄 패턴 */
-  .form-grid > label,
-  .form-grid > input,
-  .form-grid > select,
-  .form-grid > textarea {
-    width: 100%; min-width: 0;
-  }
-
-  /* 패널 박스 범위 강제 — 모든 input/textarea/select/table/img 가 패널 폭 못 벗어남 */
-  .ws4-card {
-    min-width: 0;   /* flex/grid 자식이 부모 폭 따르도록 */
-  }
-  .ws4-body input, .ws4-body textarea, .ws4-body select,
-  .ws4-body .input {
-    max-width: 100%; box-sizing: border-box;
-  }
-  .ws4-body table:not(.table-fixed) {
-    width: 100%; max-width: 100%;
-  }
-  .ws4-body table:not(.table-fixed) td,
-  .ws4-body table:not(.table-fixed) th {
-    word-break: break-word; overflow-wrap: break-word;
-  }
-  .ws4-body img {
-    max-width: 100%; height: auto;
-  }
-  /* 긴 한글/영문 단어 패널 못 벗어남 */
-  .ws4-body { word-wrap: break-word; overflow-wrap: break-word; }
+  .form-grid label { color: var(--text-weak); margin: 0; }
+  .form-grid .full { grid-column: 2 / -1; }
 
   /* 룸 아이템 */
-  /* ── 모든 페이지 공통 목록 카드 (2줄: 메인 / 보조) ── */
   .room-item {
     display: grid; grid-template-columns: 32px 1fr; gap: 8px;
     padding: 6px 10px; border-bottom: 1px solid var(--border-soft);
     cursor: pointer;
-    min-width: 0;   /* 자식 truncate 보장 */
   }
-  .room-item > div:last-child { min-width: 0; overflow: hidden; }
   .room-item:hover { background: var(--bg-hover); }
   .room-item.active { background: var(--bg-selected); }
   .room-item-avatar {
@@ -789,44 +344,15 @@
     justify-content: center; flex-direction: column; gap: 1px;
     background: var(--bg-stripe); border-radius: 2px;
     color: var(--text-weak); font-size: 9px;
-    flex-shrink: 0;
   }
   .room-item-avatar.is-accent { background: var(--alert-blue-bg); color: var(--alert-blue-text); }
-  /* 상태/구분별 톤 컬러 — 2자 뱃지에 의미 색상 입힘 */
-  .room-item-avatar.tone-blue   { background: var(--alert-blue-bg);   color: var(--alert-blue-text); }
-  .room-item-avatar.tone-green  { background: var(--alert-green-bg);  color: var(--alert-green-text); }
-  .room-item-avatar.tone-orange { background: var(--alert-orange-bg); color: var(--alert-orange-text); }
-  .room-item-avatar.tone-red    { background: var(--alert-red-bg);    color: var(--alert-red-text); }
-  .room-item-avatar.tone-gray   { background: var(--bg-stripe);       color: var(--text-weak); }
-  /* 1줄(메인) — 좌측 이름 + 우측 시간/뱃지, 둘 다 말줄임 */
-  .room-item-top {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 6px; min-width: 0;
-  }
-  .room-item-name {
-    color: var(--text-main);
-    flex: 1; min-width: 0;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .room-item-time {
-    color: var(--text-weak); flex-shrink: 0;
-    white-space: nowrap;
-  }
-  /* 2줄(보조) — 좌측 메시지 + 우측 메타 */
-  .room-item-sub {
-    display: flex; justify-content: space-between; align-items: center;
-    gap: 6px; min-width: 0; margin-top: 2px;
-  }
+  .room-item-top, .room-item-bot { display: flex; justify-content: space-between; }
+  .room-item-name { color: var(--text-main); }
+  .room-item-time { color: var(--text-weak); }
   .room-item-msg {
-    color: var(--text-sub); flex: 1; min-width: 0;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: var(--text-sub); overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
   }
-  .room-item-meta {
-    color: var(--text-weak); flex-shrink: 0;
-    white-space: nowrap;
-  }
-  /* 기존 .room-item-bot 사용한 prototype 도 호환 — 숨김 */
-  .room-item-bot { display: none; }
 
   /* ── 채팅 (v2 ws4-chat 규격, v3 톤 — 11px / 라운드 12) ── */
   .ws-chat-msgs {
@@ -862,17 +388,16 @@
   .chat-row + .chat-row.is-sender-start { margin-top: 7px; }
   .chat-sender {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 1px 4px; height: 16px;
+    padding: 2px 4px; width: 52px; height: 20px;
     font-size: 10px; color: var(--text-inverse);
     border-radius: 2px; flex-shrink: 0;
-    margin-top: 2px; align-self: flex-start;
-    white-space: nowrap;
+    margin-top: 2px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .chat-sender-agent    { background: var(--alert-blue-text); }
   .chat-sender-provider { background: var(--alert-green-text); }
   .chat-sender-admin    { background: var(--alert-red-text); }
-  /* 같은 발신자 연속 메시지 정렬 — 뱃지 폭 만큼 빈 공간 (실제 뱃지는 auto 라 평균치 사용) */
-  .chat-sender-spacer { flex-shrink: 0; width: 40px; height: 1px; }
+  .chat-sender-spacer { flex-shrink: 0; width: 52px; height: 1px; }
   .chat-row.is-mine .chat-sender-spacer { display: none; }   /* 내 메시지는 우측 끝까지 */
   .chat-bubble-wrap {
     display: flex; flex-direction: column;
@@ -916,29 +441,6 @@
   }
   .ws-input input { flex: 1; }
 
-  /* v2 계약 진행 7단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
-  .ct-steps-v3 { display: flex; flex-direction: column; gap: 4px; }
-  .ct-step-row {
-    display: grid; grid-template-columns: 1fr 16px 1fr;
-    align-items: center; gap: 4px; font-size: 11px;
-  }
-  .ct-step-row.ct-step-head {
-    color: var(--text-weak); font-size: 10px; padding-bottom: 2px;
-    border-bottom: 1px solid var(--border-soft); margin-bottom: 2px;
-  }
-  .ct-step-row.ct-step-head > div { text-align: center; }
-  .ct-step-cell {
-    display: flex; align-items: center; gap: 4px;
-    padding: 3px 6px; border-radius: 2px;
-    color: var(--text-sub); white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis;
-  }
-  .ct-step-cell.done    { color: var(--alert-green-text); background: var(--alert-green-bg); }
-  .ct-step-cell.pending { color: var(--text-muted); }
-  .ct-step-cell.locked  { color: var(--text-muted); opacity: 0.5; }
-  .ct-step-cell.rejected { color: var(--alert-red-text); background: var(--alert-red-bg); }
-  .ct-step-arrow { color: var(--text-muted); text-align: center; font-size: 10px; }
-
   .step-list { display: flex; flex-direction: column; }
   .step {
     display: flex; align-items: center; gap: 6px;
@@ -962,72 +464,23 @@
   .price-pair .dep { color: var(--text-weak); }
 
   strong { font-weight: 400; color: var(--text-main); }
-
-  /* ── 로그인 overlay (auth 안 됨 → 사이드바·topbar·main 가리고 폼 표시) ── */
-  .login-overlay {
-    position: fixed; inset: 0;
-    display: none;
-    align-items: center; justify-content: center;
-    background: var(--bg-page);
-    z-index: 9999;
-  }
-  body.is-login .login-overlay { display: flex; }
-  body.is-login .pt-sb,
-  body.is-login .pt-tb,
-  body.is-login .pt-main { display: none; }
-  body.is-loading > * { visibility: hidden; }
-  .login-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 24px; width: 320px;
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .login-card h2 {
-    text-align: center; color: var(--text-main);
-    margin-bottom: 8px; font-weight: 400;
-  }
-  .login-card .login-msg {
-    color: var(--alert-red-text); font-size: 11px; min-height: 14px;
-  }
-  .login-card button[type="submit"] {
-    margin-top: 8px;
-  }
-  .login-card .login-sub {
-    text-align: center; font-size: 11px; color: var(--text-weak);
-    margin: -4px 0 8px;
-  }
-  .login-card .login-links {
-    display: flex; align-items: center; justify-content: center;
-    gap: 6px; margin-top: 8px; font-size: 11px;
-  }
-  .login-card .login-links a {
-    color: var(--text-sub); text-decoration: none;
-  }
-  .login-card .login-links a:hover { color: var(--accent-blue); text-decoration: underline; }
-  .login-card .login-links-sep { color: var(--text-muted); }
-  /* 가입/재설정 카드는 로그인 카드와 동시에 안 뜨게 — 모드 토글 */
-  body.is-login .login-card[hidden] { display: none !important; }
 </style>
 </head>
-<body class="is-loading">
+<body>
 
 <aside class="pt-sb">
-  <div class="pt-sb-brand">
-    <span class="sb-brand-text">freepass ERP</span>
-    <button class="pt-sb-toggle" id="sbToggle" title="사이드바 접기/펼치기"><i class="ph ph-sidebar-simple"></i></button>
-  </div>
-  <div class="pt-sb-section" data-section="공통">공통</div>
-  <a href="#search" data-page="search" title="상품 찾기"><i class="ph ph-magnifying-glass"></i><span class="sb-label">상품 찾기</span><span class="cnt"></span></a>
-  <a href="#workspace" data-page="workspace" title="업무 소통"><i class="ph ph-chat-circle"></i><span class="sb-label">업무 소통</span><span class="cnt"></span></a>
-  <a href="#contract" data-page="contract" title="계약 관리"><i class="ph ph-file-text"></i><span class="sb-label">계약 관리</span><span class="cnt"></span></a>
-  <a href="#settle" data-page="settle" title="정산 관리"><i class="ph ph-coins"></i><span class="sb-label">정산 관리</span><span class="cnt"></span></a>
-  <div class="pt-sb-section" data-section="공급사">공급사·관리자</div>
-  <a href="#product" data-page="product" title="재고 관리"><i class="ph ph-package"></i><span class="sb-label">재고 관리</span><span class="cnt"></span></a>
-  <a href="#policy" data-page="policy" title="정책 관리"><i class="ph ph-shield-check"></i><span class="sb-label">정책 관리</span><span class="cnt"></span></a>
-  <div class="pt-sb-section" data-section="관리자">관리자</div>
-  <a href="#partners" data-page="partners" title="파트너 관리"><i class="ph ph-handshake"></i><span class="sb-label">파트너 관리</span><span class="cnt"></span></a>
-  <a href="#users" data-page="users" title="사용자 관리"><i class="ph ph-users-three"></i><span class="sb-label">사용자 관리</span><span class="cnt"></span></a>
+  <div class="pt-sb-brand">freepass ERP</div>
+  <div class="pt-sb-section">공통</div>
+  <a href="#search" data-page="search" class="active">상품 찾기 <span class="cnt">3</span></a>
+  <a href="#workspace" data-page="workspace">업무 소통 <span class="cnt">4</span></a>
+  <a href="#contract" data-page="contract">계약 관리</a>
+  <a href="#settle" data-page="settle">정산 관리</a>
+  <div class="pt-sb-section">공급사·관리자</div>
+  <a href="#product" data-page="product">재고 관리</a>
+  <a href="#policy" data-page="policy">정책 관리</a>
+  <div class="pt-sb-section">관리자</div>
+  <a href="#partners" data-page="partners">파트너 관리</a>
+  <a href="#users" data-page="users">사용자 관리</a>
   <div class="pt-sb-bottom">홍길동 · 영업자</div>
 </aside>
 
@@ -1037,7 +490,7 @@
 
   <!-- 페이지별 동적 영역 — chip + 액션 (검색은 글로벌) -->
   <!-- ① 상품 찾기 -->
-  <div class="pt-tb-inner" data-tb="search" hidden>
+  <div class="pt-tb-inner" data-tb="search">
     <span class="chip active">전체 <em class="cnt">606</em></span>
     <span class="chip">즉시 <em class="cnt">87</em></span>
     <span class="chip">출고가능 <em class="cnt">266</em></span>
@@ -1123,35 +576,37 @@
 <main class="pt-main">
 
 <!-- ① 상품 찾기 — 좌 표 / 우 차량 상세 (split 2패널, A안) -->
-<div class="pt-page" data-page="search">
-  <div class="ws4" style="display: grid; grid-template-columns: 3fr 1fr; gap: 0;">
+<div class="pt-page active" data-page="search">
+  <div class="ws4" style="display: grid; grid-template-columns: 3fr 1fr; gap: 6px;">
     <!-- 좌: 차량 표 (3) -->
     <div class="ws4-card">
       <div class="ws4-body no-pad" style="overflow: auto;">
-      <table class="table table-fixed">
-        <colgroup>
-          <col style="width: 80px"><!-- 차량번호 000가0000 (sticky) -->
-          <col style="width: 56px"><!-- 상태 점+2자 -->
-          <col style="width: 56px"><!-- 구분 2-3자 -->
-          <col style="width: 60px"><!-- 제조사 (현대/기아/BMW 80% fit) -->
-          <col style="width: 90px"><!-- 모델명 (3-4자 common, 팰리세이드 trunc) -->
-          <col style="width: 100px"><!-- 세부모델 (MQ4 2.2D 등) -->
-          <col style="width: 90px"><!-- 세부트림 (시그니처/프리미엄) -->
-          <col style="width: 130px"><!-- 선택옵션 (긴 건 trunc) -->
-          <col style="width: 50px"><!-- 연식 -->
-          <col style="width: 70px"><!-- 주행 -->
-          <col style="width: 60px"><!-- 연료 -->
-          <col style="width: 50px"><!-- 색상 -->
-          <col style="width: 60px"><!-- 심사 -->
-          <col style="width: 50px"><!-- 연령 -->
-          <col style="width: 88px"><!-- 24개월 -->
-          <col style="width: 88px"><!-- 36개월 -->
-          <col style="width: 88px"><!-- 48개월 -->
-          <col style="width: 88px"><!-- 60개월 -->
-        </colgroup>
+      <table class="table">
         <thead><tr>
           <th class="sticky-col">차량번호</th>
-          <th class="center">상태 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
+          <th class="center">상태 <span class="ft is-on"><i class="ph-fill ph-funnel"></i></span>
+            <div class="ft-pop">
+              <div class="ft-pop-section">
+                <div class="ft-pop-row"><i class="ph ph-arrow-up"></i> 오름차순</div>
+                <div class="ft-pop-row"><i class="ph ph-arrow-down"></i> 내림차순</div>
+              </div>
+              <div class="ft-pop-search">
+                <input type="search" class="input" placeholder="검색...">
+              </div>
+              <div class="ft-pop-section ft-pop-list">
+                <label class="ft-pop-row"><input type="checkbox" checked> 전체</label>
+                <label class="ft-pop-row"><input type="checkbox" checked> 즉시</label>
+                <label class="ft-pop-row"><input type="checkbox"> 가능</label>
+                <label class="ft-pop-row"><input type="checkbox"> 협의</label>
+                <label class="ft-pop-row"><input type="checkbox" checked> 상품화</label>
+                <label class="ft-pop-row"><input type="checkbox"> 불가</label>
+              </div>
+              <div class="ft-pop-actions">
+                <button class="btn">초기화</button>
+                <button class="btn-primary">적용</button>
+              </div>
+            </div>
+          </th>
           <th class="center">구분 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
           <th>제조사 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
           <th>모델명 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
@@ -1395,6 +850,7 @@
       </div>
       <div class="ws-input">
         <input type="text" class="input" placeholder="메시지 입력... ( / 명령어)">
+        <button class="btn"><i class="ph ph-paperclip"></i></button>
         <button class="btn-primary">전송 <kbd>Enter</kbd></button>
       </div>
     </div>
@@ -1422,7 +878,13 @@
 
     <div class="ws4-card">
       <div class="ws4-head"><span>차량 정보</span></div>
-      <div class="ws4-body"></div>
+      <div class="info-grid">
+        <div class="lab">차량번호</div><div>56다 1234</div>
+        <div class="lab">차종</div><div>쏘렌토 MQ4 2.2D 시그니처</div>
+        <div class="lab">연식</div><div>2024</div>
+        <div class="lab">주행</div><div>12,580 km</div>
+        <div class="lab">옵션</div><div class="full">7인승 · HUD · 파노라마 · 통풍시트</div>
+      </div>
     </div>
   </div>
 </div>
@@ -2120,54 +1582,6 @@
 
 </main>
 
-<!-- 로그인 overlay (auth 안 됨일 때만 보임 — body.is-login) -->
-<div class="login-overlay">
-  <form class="login-card" id="loginForm">
-    <h2>freepass ERP</h2>
-    <input type="email" class="input" id="loginEmail" placeholder="이메일" required autocomplete="username">
-    <input type="password" class="input" id="loginPw" placeholder="비밀번호" required autocomplete="current-password">
-    <button type="submit" class="btn-primary">로그인</button>
-    <div class="login-links">
-      <a href="#" id="signupLink">계정 만들기</a>
-      <span class="login-links-sep">·</span>
-      <a href="#" id="resetLink">비밀번호 재설정</a>
-    </div>
-    <div class="login-msg" id="loginMsg"></div>
-  </form>
-
-  <!-- 회원가입 카드 (signup-mode 일 때만 보임) -->
-  <form class="login-card login-card-signup" id="signupForm" hidden>
-    <h2>계정 만들기</h2>
-    <p class="login-sub">가입 후 관리자 승인이 필요합니다.</p>
-    <input type="email" class="input" id="suEmail" placeholder="이메일" required autocomplete="username">
-    <input type="password" class="input" id="suPw" placeholder="비밀번호 (6자 이상)" required autocomplete="new-password">
-    <input type="text" class="input" id="suName" placeholder="이름" required>
-    <input type="tel" class="input" id="suPhone" placeholder="연락처 010-0000-0000">
-    <input type="text" class="input" id="suCompany" placeholder="소속 회사명">
-    <select class="input" id="suRole">
-      <option value="agent">영업자</option>
-      <option value="provider">공급사</option>
-    </select>
-    <button type="submit" class="btn-primary">가입하기</button>
-    <div class="login-links">
-      <a href="#" id="suBackLink">로그인으로 돌아가기</a>
-    </div>
-    <div class="login-msg" id="signupMsg"></div>
-  </form>
-
-  <!-- 비밀번호 재설정 카드 -->
-  <form class="login-card login-card-reset" id="resetForm" hidden>
-    <h2>비밀번호 재설정</h2>
-    <p class="login-sub">가입한 이메일로 재설정 링크를 보내드립니다.</p>
-    <input type="email" class="input" id="rpEmail" placeholder="이메일" required autocomplete="username">
-    <button type="submit" class="btn-primary">재설정 메일 전송</button>
-    <div class="login-links">
-      <a href="#" id="rpBackLink">로그인으로 돌아가기</a>
-    </div>
-    <div class="login-msg" id="resetMsg"></div>
-  </form>
-</div>
-
 <script>
   // 페이지별 검색 placeholder
   const SEARCH_PH = {
@@ -2180,41 +1594,21 @@
     partners:  '파트너명·코드·담당자...',
     users:     '이름·이메일·회사·연락처...',
   };
-  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users'];
   function showPage(name) {
-    if (!VALID_PAGES.includes(name)) name = 'search';
     document.querySelectorAll('.pt-page').forEach(p => p.classList.toggle('active', p.dataset.page === name));
     document.querySelectorAll('.pt-sb a').forEach(a => a.classList.toggle('active', a.dataset.page === name));
+    // 페이지별 동적 topbar 토글
     document.querySelectorAll('.pt-tb-inner').forEach(t => t.hidden = t.dataset.tb !== name);
+    // 검색창 placeholder 페이지 컨텍스트로 변경
     const ph = SEARCH_PH[name];
     const sb = document.getElementById('ptTbSearch');
     if (sb && ph) sb.placeholder = ph;
   }
-  // 사이드바 클릭 — hash 업데이트만 (hashchange 가 showPage 호출)
   document.querySelectorAll('.pt-sb a[data-page]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const target = a.dataset.page;
-      if (location.hash.replace('#','') === target) {
-        showPage(target);   // 같은 hash 면 hashchange 안 떠서 직접 호출
-      } else {
-        location.hash = target;   // hashchange 가 showPage 호출
-      }
-    });
+    a.addEventListener('click', e => { e.preventDefault(); showPage(a.dataset.page); });
   });
-  window.addEventListener('hashchange', () => {
-    showPage(location.hash.replace('#', '') || 'search');
-  });
-  // 초기 페이지 — hash 우선, 없으면 search
-  showPage(location.hash.replace('#', '') || 'search');
-
-  // 사이드바 토글 (localStorage 영속)
-  const SB_KEY = 'sb-collapsed';
-  if (localStorage.getItem(SB_KEY) === '1') document.body.classList.add('is-sb-collapsed');
-  document.getElementById('sbToggle')?.addEventListener('click', () => {
-    const collapsed = document.body.classList.toggle('is-sb-collapsed');
-    localStorage.setItem(SB_KEY, collapsed ? '1' : '0');
-  });
+  const hashPage = location.hash.replace('#', '');
+  if (hashPage) showPage(hashPage);
 
   // 상품 찾기 — 상세 패널 접기/펼치기 (X 닫기 / 표 row 클릭으로 다시 열기)
   const searchWs4 = document.querySelector('[data-page="search"] .ws4');

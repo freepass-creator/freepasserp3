@@ -26,7 +26,7 @@ const state = {
   currentPage: '',
   activeRoomId: null,
   sidebarCollapsed: false,
-  theme: localStorage.getItem('fp.theme') || 'light',
+  theme: (typeof localStorage !== 'undefined' ? localStorage.getItem('fp.theme') : null) || 'light',
 };
 
 export const store = new Proxy(state, {

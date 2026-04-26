@@ -1,611 +1,398 @@
 /**
- * Workspace — 대화 중심 작업 공간
- * 4패널 가로: 대화목록 | 대화창 | 계약진행 | 차량상세
- * 각 패널 사이 드래그 리사이즈
+ * pages/workspace.js — 업무 소통 (대화 중심) 페이지 (v3 ERP)
+ *
+ * 4패널: 대화목록 | 대화창(채팅) | 계약진행 | 차량상세
+ *
+ * Export:
+ *   - renderRoomList(rooms)
+ *   - selectRoom(roomId)
+ *   - renderRoomDetail(room)        // contract.bindContractWorkV2 reRender 콜백에서 호출
+ *   - renderChatMessages(msgs, room)
+ *   - bindChatInput()
+ *   - bindRoomCreate()
+ *   - createRoomFromProduct(product)  // search 의 setSearchCallbacks 로 주입됨
+ *
+ * 의존: store, firebase/db, core/collections, core/chat-render, core/ui-helpers,
+ *      core/notify, pages/contract, pages/search
  */
 import { store } from '../core/store.js';
-import { watchCollection, updateRecord, pushRecord, fetchRecord, incrementAtomic } from '../firebase/db.js';
-import { showToast } from '../core/toast.js';
-import { uploadFile } from '../firebase/storage-helper.js';
+import { watchCollection, pushRecord, updateRecord, fetchRecord } from '../firebase/db.js';
 import { markRoomRead } from '../firebase/collections.js';
-import { setBreadcrumbTail, setBreadcrumbBrief } from '../core/breadcrumb.js';
-import { fmtMoney, fmtWon, fmtTime, cField } from '../core/format.js';
-import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
-import { fieldInput as ffi, fieldView as ffv, bindAutoSave as bindFormAutoSave } from '../core/form-fields.js';
-import { initWs4Resize } from '../core/resize.js';
-import { getSettlementStatus, SETTLEMENT_STATUSES_BASIC } from '../core/settlement-status.js';
-import { STEPS as CONTRACT_STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
-import { renderExcelTable } from '../core/excel-table.js';
-import { renderProductDetail } from '../core/product-detail-render.js';
+import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from '../core/chat-render.js';
+import { showToast } from '../core/toast.js';
+import { notifyProviderAndAdmin } from '../core/notify.js';
+import {
+  esc, fmtTime,
+  listBody, emptyState, renderRoomItem,
+  isMobileViewport,
+} from '../core/ui-helpers.js';
+import {
+  renderContractWorkV2, bindContractWorkV2,
+  createContractFromRoomLocal,
+} from './contract.js';
+import { renderSearchDetail } from './search.js';
 
-let unsubs = [];
-let activeRoomId = null;
-let activeContract = null;
-let viewMode = 'card';
+/* ── 모듈 state ── */
+let _activeRoomId = null;
+let _msgUnsub = null;       // 현재 룸 메시지 구독 해제 함수
+let _currentMessages = [];  // 활성 룸 메시지 캐시
+let _prevPeerReadAt = 0;    // 상대 마지막 읽음 시각 (변경 감지)
 
-/* ── Mount ── */
-export function mount() {
-  unsubs.forEach(u => u?.());
-  unsubs = [];
-  activeRoomId = null;
-  activeContract = null;
+export function getActiveRoomId() { return _activeRoomId; }
+export function getCurrentMessages() { return _currentMessages; }
+export function getPrevPeerReadAt() { return _prevPeerReadAt; }
+export function setPrevPeerReadAt(v) { _prevPeerReadAt = v; }
 
-  // 중분류 패널 숨기기
-  const shell = document.querySelector('.shell');
-
-  const main = document.getElementById('mainContent');
-  main.innerHTML = `
-    <div class="ws4">
-      <div class="ws4-panel ws4-rooms" data-panel="rooms">
-        <div class="ws4-head"><span>업무 목록</span><button class="btn btn-sm btn-outline" id="wsViewToggle"><i class="ph ph-table"></i> 엑셀보기</button></div>
-        <div class="ws4-search">
-          <input class="input input-sm" id="wsRoomSearch" placeholder="검색..." >
-          <div style="display:flex;gap:3px;">
-            <button class="chip is-active" data-rf="all">전체</button>
-            <button class="chip" data-rf="unread">안읽음</button>
-            <button class="chip" data-rf="read">읽음</button>
-          </div>
-        </div>
-        <div class="ws4-body" id="wsRoomList"></div>
-      </div>
-
-      <div class="ws4-resize" data-idx="0"></div>
-
-      <div class="ws4-panel ws4-chat" data-panel="chat">
-        <div class="ws4-head">
-          <span id="wsChatHead">소통 채팅</span>
-          <span style="display:flex;gap:var(--sp-1);" id="wsChatActions"></span>
-        </div>
-        <div class="ws4-body ws4-chat-msgs" id="wsChatMsgs">
-          <div class="srch-empty"><i class="ph ph-chat-circle"></i><p>대화를 선택하세요</p></div>
-        </div>
-        <div class="ws4-chat-input" id="wsChatInput" style="display:none;">
-          <input type="file" id="wsChatFile" multiple hidden accept="image/*,.pdf,.doc,.docx">
-          <button class="ws4-input-btn" id="wsChatAttach"><i class="ph ph-paperclip"></i></button>
-          <input class="ws4-input" id="wsChatText" placeholder="메시지 입력...">
-          <button class="ws4-input-btn" id="wsChatSend"><i class="ph ph-paper-plane-tilt"></i></button>
-        </div>
-      </div>
-
-      <div class="ws4-resize" data-idx="1"></div>
-
-      <div class="ws4-panel ws4-contract" data-panel="contract">
-        <div class="ws4-head">계약 진행상황</div>
-        <div class="ws4-body" id="wsContractBody">
-          <div class="srch-empty"><i class="ph ph-file-text"></i><p>계약 정보</p></div>
-        </div>
-      </div>
-
-      <div class="ws4-resize" data-idx="2"></div>
-
-      <div class="ws4-panel ws4-detail" data-panel="detail">
-        <div class="ws4-head">상품 상세</div>
-        <div class="ws4-body" id="wsDetailBody">
-          <div class="srch-empty"><i class="ph ph-car-simple"></i><p>차량 상세</p></div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Resize handles
-  initWs4Resize('fp.ws4.widths');
-
-  // 룸 필터 칩 이벤트 위임
-  main.addEventListener('click', (e) => {
-    const chip = e.target.closest('.chip[data-rf]');
-    if (chip) {
-      main.querySelectorAll('.chip[data-rf]').forEach(x => x.classList.remove('is-active'));
-      chip.classList.add('is-active');
-      renderRoomList();
-    }
-  });
-
-  // Watch rooms
-  let _prevActiveRoomReadAt = null;
-  unsubs.push(watchCollection('rooms', (data) => {
-    store.rooms = data;
-    renderRoomList();
-    updateBrief();
-    // 활성 방의 상대방 read_at 변경 시 메시지 재렌더 (읽음 표시 갱신)
-    if (activeRoomId) {
-      const activeRoom = data.find(r => r._key === activeRoomId);
-      const role = store.currentUser?.role;
-      const peerReadAt = role === 'agent' ? (activeRoom?.read_at_provider || 0) : role === 'provider' ? (activeRoom?.read_at_agent || 0) : 0;
-      if (peerReadAt !== _prevActiveRoomReadAt) {
-        _prevActiveRoomReadAt = peerReadAt;
-        if (currentMessages.length) renderMessages(currentMessages);
-      }
-    }
-    // 엑셀 "문의" 링크로 진입한 경우 해당 방 자동 오픈
-    if (store.pendingOpenRoom) {
-      const target = store.pendingOpenRoom;
-      if (data.find(r => r._key === target)) {
-        store.pendingOpenRoom = null;
-        openRoom(target);
-      }
-    }
-  }, { limit: 200 }));
-
-  unsubs.push(watchCollection('contracts', (data) => { store.contracts = data; }));
-  unsubs.push(watchCollection('settlements', (data) => { store.settlements = data; }));
-  unsubs.push(watchCollection('products', (data) => { store.products = data; }));
-
-  // Room search
-  document.getElementById('wsRoomSearch')?.addEventListener('input', () => renderRoomList());
-
-  document.getElementById('wsViewToggle')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    viewMode = viewMode === 'excel' ? 'card' : 'excel';
-    const btn = document.getElementById('wsViewToggle');
-    if (btn) btn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
-    renderRoomList();
-  });
-}
-
-function updateBrief() {
-  const rooms = store.rooms || [];
+export function renderRoomList(rooms) {
+  const body = listBody('workspace');
+  if (!body) return;
   const role = store.currentUser?.role;
-  const unread = rooms.filter(r => {
-    const n = role === 'agent' ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : 0;
-    return (n || 0) > 0;
-  }).length;
-  const active = rooms.length;
-  const parts = [];
-  if (unread) parts.push(`미읽음 ${unread}`);
-  parts.push(`전체 대화 ${active}`);
-  setBreadcrumbBrief(parts.join(' > '));
-}
-
-/* ── Room List ── */
-function renderRoomList() {
-  const el = document.getElementById('wsRoomList');
-  if (!el) return;
-
-  const q = (document.getElementById('wsRoomSearch')?.value || '').toLowerCase();
-  const rf = document.querySelector('.chip[data-rf].is-active')?.dataset.rf || 'all';
-  let rooms = store.rooms || [];
-
   const uid = store.currentUser?.uid;
-  const role = store.currentUser?.role;
+  const myCompany = store.currentUser?.company_code;
+  const myChannel = store.currentUser?.agent_channel_code || store.currentUser?.channel_code;
 
-  // 삭제된 대화 제외
-  rooms = rooms.filter(r => !r._deleted);
+  // v2 필터링 — 삭제·숨김·역할별 가시성
+  let visible = (rooms || []).filter(r => !r._deleted);
+  if (role === 'agent') visible = visible.filter(r => !r.hidden_for_agent && r.agent_uid === uid);
+  else if (role === 'agent_admin') visible = visible.filter(r => !r.hidden_for_admin && r.agent_channel_code === myChannel);
+  else if (role === 'provider') visible = visible.filter(r => !r.hidden_for_provider && (r.provider_uid === uid || r.provider_company_code === myCompany));
+  else if (role === 'admin') visible = visible.filter(r => !r.hidden_for_admin);
 
-  // 역할별 숨김 처리
-  if (role === 'agent') {
-    rooms = rooms.filter(r => !r.hidden_for_agent);
-  } else if (role === 'provider') {
-    rooms = rooms.filter(r => !r.hidden_for_provider);
-  } else if (role === 'admin') {
-    rooms = rooms.filter(r => !r.hidden_for_admin);
-  }
-
-  // 영업자: 본인 관련 대화만 / 영업관리자: 본인 채널 전체 / 공급사: 본인 소속 대화만
-  const myChannelCode = store.currentUser?.agent_channel_code || store.currentUser?.channel_code || '';
-  if (role === 'agent') {
-    rooms = rooms.filter(r => r.agent_uid === uid);
-  } else if (role === 'agent_admin') {
-    rooms = rooms.filter(r => r.agent_channel_code === myChannelCode);
-  } else if (role === 'provider') {
-    rooms = rooms.filter(r => r.provider_uid === uid || r.provider_company_code === store.currentUser?.company_code);
-  }
-
-  // Text search — 제목/코드 + 마지막 메시지 내용까지
-  if (q) rooms = rooms.filter(r => [
-    r.agent_name, r.provider_name, r.vehicle_number, r.model, r.sub_model, r.maker,
-    r.contract_status, r.agent_code, r.provider_code, r.provider_company_code, r._key,
-    r.last_message, r.last_sender_code,
-  ].some(v => v && String(v).toLowerCase().includes(q)));
-
-  // Filter
-  if (rf === 'unread') {
-    rooms = rooms.filter(r => {
-      if (role === 'agent') return r.unread_for_agent > 0;
-      if (role === 'provider') return r.unread_for_provider > 0;
-      return false;
-    });
-  } else if (rf === 'read') {
-    rooms = rooms.filter(r => {
-      const unread = role === 'agent' ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : 0;
-      return !unread || unread <= 0;
-    });
-  }
-
-  const sorted = [...rooms].sort((a,b) => (b.last_message_at||0) - (a.last_message_at||0));
-
-  if (viewMode === 'excel') {
-    renderExcelTable(el, {
-      cols: [
-        { key: 'vehicle_number', label: '차량번호', width: 90, pin: 'left', filter: 'search' },
-        { key: '_status', label: '소통상태', width: 80, filter: 'check', render: (r) => {
-          const myRole = store.currentUser?.role;
-          const unread = myRole === 'agent' ? r.unread_for_agent : myRole === 'provider' ? r.unread_for_provider : 0;
-          return (unread || 0) > 0 ? '안읽음' : '읽음';
-        }},
-        { key: 'vehicle_number', label: '차량번호', width: 100, pin: 'left', filter: 'search' },
-        { key: 'sub_model', label: '세부모델', width: 160, filter: 'search', render: (r) => r.sub_model || r.model || '' },
-        { key: 'agent_channel_code', label: '영업채널', width: 90, filter: 'check' },
-        { key: 'agent_code', label: '영업자', width: 90, filter: 'check' },
-        { key: 'last_message_at', label: '메시지시간', width: 120, render: (r) => r.last_message_at ? new Date(r.last_message_at).toLocaleString('ko', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '' },
-        { key: 'last_message', label: '마지막메시지', width: 240, render: (r) => r.last_message || '' },
-      ],
-      data: sorted,
-      activeKey: activeRoomId,
-      keyField: '_key',
-      onRowClick: (room) => openRoom(room._key),
-    });
+  if (!visible.length) {
+    body.innerHTML = emptyState('대화방이 없습니다');
+    _activeRoomId = null;
+    selectRoom(null);
     return;
   }
 
-  // Card view
-  el.innerHTML = sorted.map(room => {
-    const unread = role === 'agent' ? room.unread_for_agent : role === 'provider' ? room.unread_for_provider : 0;
-    const active = activeRoomId === room._key;
-    const fmtDate = room.last_message_at ? new Date(room.last_message_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '';
-    const fmtHM = room.last_message_at ? new Date(room.last_message_at).toLocaleTimeString('ko', { hour: '2-digit', minute: '2-digit' }) : '';
+  const unreadOf = (r) => Number((role === 'agent' ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : (r.unread_for_admin || r.unread)) || 0);
+  const sorted = [...visible].sort((a, b) => (b.last_message_at || 0) - (a.last_message_at || 0));
 
-    return `
-      <div class="room-item ${active ? 'is-active' : ''}" data-id="${room._key}">
-        <div class="room-item-avatar ${unread > 0 ? 'is-accent' : 'is-muted'}" style="flex-direction:column;gap:1px;font-size:var(--fs-2xs);"><i class="ph ${unread > 0 ? 'ph-chat-circle-dots' : 'ph-chat-circle'}"></i>${unread > 0 ? '안읽음' : '읽음'}</div>
-        <div class="room-item-body">
-          <div class="room-item-top">
-            <span class="room-item-name">${[room.vehicle_number, room.sub_model || room.model].filter(Boolean).join(' ') || '-'}</span>
-            <span class="room-item-time">${fmtDate}</span>
-          </div>
-          <div class="room-item-msg">
-            <span>${[room.provider_company_code || room.provider_code, room.agent_channel_code, room.agent_code, fmtHM, room.last_message].filter(Boolean).join(' · ')}</span>
-            ${unread > 0 ? `<span class="sb-badge is-visible">${unread > 99 ? '99+' : unread}</span>` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('') || '<div style="padding:var(--sp-4);color:var(--c-text-muted);font-size:var(--fs-xs);text-align:center;">대화 없음</div>';
+  if (_activeRoomId && !sorted.find(r => r._key === _activeRoomId)) _activeRoomId = null;
 
-  el.querySelectorAll('.room-item').forEach(item => {
-    item.addEventListener('click', () => openRoom(item.dataset.id));
-  });
+  body.innerHTML = sorted.map((r, i) => {
+    const unread = unreadOf(r);
+    return renderRoomItem({
+      id: r._key,
+      icon: unread > 0 ? 'chat-circle-dots' : 'chat-circle',
+      badge: unread > 0 ? '안읽' : '읽음',
+      tone: unread > 0 ? 'blue' : 'gray',
+      name: [r.vehicle_number || r.car_number, r.sub_model || r.model].filter(Boolean).join(' '),
+      time: fmtTime(r.last_message_at),
+      msg: r.last_message || [r.provider_company_code || r.provider_code, r.agent_code].filter(Boolean).join(' · ') || '-',
+      meta: unread > 0 ? String(unread) : '',
+      metaClass: unread > 0 ? 'cnt' : '',
+      active: r._key === _activeRoomId || (i === 0 && !_activeRoomId),
+    });
+  }).join('');
+  if (!_activeRoomId && sorted[0]) selectRoom(sorted[0]._key);
 }
 
-/* ── Open Room → 채팅 + 계약 + 상세 ── */
-let unsubMessages = null;
-let chatInputAC = null;  // setupChatInput 이벤트 정리용
-let currentMessages = [];  // 최근 렌더 메시지 캐시 (room 업데이트 시 재렌더용)
+/* 룸 선택 — 메시지 구독 교체 + 우측 패널 갱신 */
+export function selectRoom(roomId) {
+  _activeRoomId = roomId;
+  if (_msgUnsub) { try { _msgUnsub(); } catch (_) {} _msgUnsub = null; }
+  if (!roomId) {
+    const msgWrap = document.querySelector('[data-page="workspace"] .ws-chat-msgs');
+    if (msgWrap) msgWrap.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-chat-circle" style="font-size:24px;display:block;margin-bottom:6px;"></i>대화방을 선택하세요</div>`;
+    renderRoomDetail(null);
+    return;
+  }
+  const room = (store.rooms || []).find(r => r._key === roomId);
+  // 채팅 헤더 갱신 (대화코드)
+  const chatHead = document.querySelector('[data-page="workspace"] .ws4-card:nth-child(2) .ws4-head span');
+  if (chatHead && room) {
+    const code = room.chat_code || room.room_code || room.room_id || room._key.slice(0, 8);
+    chatHead.textContent = `채팅 · ${code}`;
+  }
+  renderRoomDetail(room);
 
-function openRoom(roomId) {
-  activeRoomId = roomId;
-  store.activeRoomId = roomId;
-  renderRoomList();
+  // 채팅 영역 — 일단 로딩 표시
+  const msgWrap = document.querySelector('[data-page="workspace"] .ws-chat-msgs');
+  if (msgWrap) msgWrap.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);">대화 불러오는 중...</div>';
 
-  const room = (store.rooms||[]).find(r => r._key === roomId);
-  const role = store.currentUser?.role;
-  const uid = store.currentUser?.uid;
-  // 상대방 코드 (역할별)
-  const peerCode = role === 'agent' ? (room?.provider_code || room?.provider_company_code || '') : (room?.agent_code || '');
-  const peerRole = role === 'agent' ? '공급' : role === 'provider' ? '영업' : '';
-  const roomCode = room?.chat_code || room?.room_code || room?.room_id || room?._key || '';
-
-  // 상단바 작업 컨텍스트 갱신
-  setBreadcrumbTail({ icon: 'ph ph-chat-circle', label: peerCode || '대화', sub: room?.vehicle_number || '' });
+  // 메시지 구독 — messages/{roomId} (v2 구조)
+  let received = false;
+  const me = store.currentUser;
+  try {
+    _msgUnsub = watchCollection(`messages/${roomId}`, (msgs) => {
+      received = true;
+      _currentMessages = msgs || [];
+      // 활성 룸 + 탭 visible 시 즉시 읽음 처리
+      if (_activeRoomId === roomId && !document.hidden && me?.uid && me?.role) {
+        const r = (store.rooms || []).find(x => x._key === roomId);
+        markRoomRead(roomId, me.role, me.uid, r).catch(() => {});
+      }
+      try {
+        renderChatMessages(_currentMessages, (store.rooms || []).find(x => x._key === roomId));
+      } catch (re) {
+        console.error('[chat] render fail', re);
+        const w = document.querySelector('[data-page="workspace"] .ws-chat-msgs');
+        if (w) w.innerHTML = `<div style="padding:24px;text-align:center;color:var(--alert-red-text);">렌더 에러: ${esc(re.message || re)}</div>`;
+      }
+    });
+  } catch (e) {
+    console.error('[chat] messages subscribe fail', e);
+    if (msgWrap) msgWrap.innerHTML = `<div style="padding:24px;text-align:center;color:var(--alert-red-text);">메시지 로드 실패: ${esc(e.message || e)}</div>`;
+    received = true;
+  }
+  // 1.5초 안에 콜백 못 받으면 — Firebase 권한/연결/데이터 없음
+  setTimeout(() => {
+    if (!received && _activeRoomId === roomId) {
+      console.warn(`[chat] no callback within 1.5s for messages/${roomId}`);
+      const w = document.querySelector('[data-page="workspace"] .ws-chat-msgs');
+      if (w && w.textContent.includes('대화 불러오는 중')) {
+        w.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);">메시지가 없거나 Firebase 권한 거부<br><span style="font-size:10px;">(브라우저 콘솔 확인)</span></div>';
+      }
+    }
+  }, 1500);
 
   // 읽음 처리
-  if (uid && role) markRoomRead(roomId, role, uid, room).catch(() => {});
-
-  // Chat head — 대화코드 표시
-  document.getElementById('wsChatHead').textContent = roomCode ? `소통 채팅 · ${roomCode}` : '소통 채팅';
-  document.getElementById('wsChatInput').style.display = '';
-
-  // 채팅 액션 버튼 — 역할별
-  const actionsEl = document.getElementById('wsChatActions');
-  if (actionsEl) {
-    const canDelete = role === 'provider' || role === 'admin';
-    actionsEl.innerHTML = `
-      <button class="btn btn-xs btn-outline" id="wsChatHide" title="이 대화 목록에서 숨기기"><i class="ph ph-eye-slash"></i> 숨김</button>
-      ${canDelete ? '<button class="btn btn-xs btn-outline" id="wsChatDelete" title="이 대화 삭제" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>' : ''}
-    `;
-    document.getElementById('wsChatHide')?.addEventListener('click', async () => {
-      if (!confirm('이 대화를 목록에서 숨기시겠습니까? (메시지는 유지됩니다)')) return;
-      const field = role === 'agent' ? 'hidden_for_agent' : role === 'provider' ? 'hidden_for_provider' : 'hidden_for_admin';
-      await updateRecord(`rooms/${roomId}`, { [field]: true });
-      showToast('대화 숨김');
-      activeRoomId = null;
-      document.getElementById('wsChatMsgs').innerHTML = '<div class="srch-empty"><i class="ph ph-chat-circle"></i><p>대화를 선택하세요</p></div>';
-      document.getElementById('wsChatInput').style.display = 'none';
-      document.getElementById('wsChatHead').textContent = '소통 채팅';
-      actionsEl.innerHTML = '';
-    });
-    document.getElementById('wsChatDelete')?.addEventListener('click', async () => {
-      if (!confirm('이 대화를 완전히 삭제하시겠습니까?\n(메시지 포함 전체 삭제 — 되돌릴 수 없음)')) return;
-      await updateRecord(`rooms/${roomId}`, { _deleted: true, deleted_at: Date.now(), deleted_by: uid });
-      showToast('대화 삭제됨');
-      activeRoomId = null;
-      document.getElementById('wsChatMsgs').innerHTML = '<div class="srch-empty"><i class="ph ph-chat-circle"></i><p>대화를 선택하세요</p></div>';
-      document.getElementById('wsChatInput').style.display = 'none';
-      document.getElementById('wsChatHead').textContent = '소통 채팅';
-      actionsEl.innerHTML = '';
-    });
+  if (me?.uid && me?.role && room) {
+    markRoomRead(roomId, me.role, me.uid, room).catch(() => {});
   }
 
-  // Watch messages
-  unsubMessages?.();
-  unsubMessages = watchCollection(`messages/${roomId}`, (msgs) => {
-    currentMessages = msgs;
-    renderMessages(msgs);
-    // 활성 방이고 탭이 보이는 상태면 새 메시지 도착 즉시 읽음 처리
-    if (activeRoomId === roomId && !document.hidden && uid && role) {
-      markRoomRead(roomId, role, uid, room).catch(() => {});
-    }
-  });
-
-  // Setup send
-  setupChatInput(roomId);
-
-  // Load contract
-  loadContract(room);
-
-  // Load vehicle detail
-  if (room?.product_uid) loadVehicleDetail(room.product_uid);
+  // 입력창 자동 포커스 — 데스크톱만
+  if (!isMobileViewport()) {
+    setTimeout(() => {
+      const chatInput = document.querySelector('[data-page="workspace"] .ws-input input, [data-page="workspace"] .ws-input textarea');
+      chatInput?.focus();
+    }, 30);
+  }
 }
 
-function renderMessages(messages) {
-  const el = document.getElementById('wsChatMsgs');
-  if (!el) return;
+/* 채팅 메시지 렌더 — v2 chat-render.js 위임 */
+export function renderChatMessages(msgs, room) {
+  const msgWrap = document.querySelector('[data-page="workspace"] .ws-chat-msgs');
+  if (!msgWrap) return;
+  if (!msgs || !msgs.length) {
+    msgWrap.innerHTML = '<div style="padding:24px; text-align:center; color:var(--text-muted);">메시지가 없습니다</div>';
+    return;
+  }
   const me = store.currentUser || {};
-  const room = (store.rooms || []).find(r => r._key === activeRoomId);
-  const sorted = [...messages].sort((a,b) => (a.created_at||0) - (b.created_at||0));
-  el.innerHTML = renderChatMessages(sorted, {
+  const sorted = [...msgs].sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
+  msgWrap.innerHTML = v2RenderChatMessages(sorted, {
     uid: me.uid,
     peerReadAt: getPeerReadAt(room, me.role),
   });
-  el.scrollTop = el.scrollHeight;
+  alignChatSpacers(msgWrap);
+  msgWrap.scrollTop = msgWrap.scrollHeight;
 }
 
-function setupChatInput(roomId) {
-  // AbortController로 이전 리스너 전부 해제 (cloneNode 해킹 없이 깔끔)
-  chatInputAC?.abort();
-  chatInputAC = new AbortController();
-  const { signal } = chatInputAC;
+/* 발신자 뱃지(.chat-sender) 폭 측정 → 같은 발신자 연속 메시지 spacer 폭 일치 */
+function alignChatSpacers(msgWrap) {
+  const rows = [...msgWrap.querySelectorAll('.chat-row.is-other')];
+  let lastBadgeW = 0;
+  rows.forEach(row => {
+    const badge = row.querySelector('.chat-sender');
+    const spacer = row.querySelector('.chat-sender-spacer');
+    if (badge) {
+      lastBadgeW = badge.offsetWidth;
+    } else if (spacer && lastBadgeW) {
+      spacer.style.width = lastBadgeW + 'px';
+    }
+  });
+}
 
-  const input = document.getElementById('wsChatText');
-  const sendBtn = document.getElementById('wsChatSend');
-  const fileInput = document.getElementById('wsChatFile');
-  const attachBtn = document.getElementById('wsChatAttach');
+/* 패널 3 (계약 진행) + 패널 4 (차량 정보) 갱신 */
+export function renderRoomDetail(room) {
+  const page = document.querySelector('.pt-page[data-page="workspace"]');
+  if (!page) return;
+  const cards = page.querySelectorAll('.ws4-card');
+  // [목록(0), 채팅(1), 계약진행(2), 차량상세(3)]
+  const stepCard = cards[2];
+  const carCard = cards[3];
+
+  if (!room) {
+    if (stepCard) stepCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-chat-circle" style="font-size:24px;display:block;margin-bottom:6px;"></i>대화방을 선택하세요</div>`;
+    if (carCard) carCard.querySelector('.ws4-body').innerHTML = '';
+    return;
+  }
+  const role = store.currentUser?.role;
+
+  // 계약 진행 — contracts 다층 lookup
+  const productUid = room.product_uid || room.product_id;
+  const carNumberRoom = room.vehicle_number || room.car_number;
+  const linkedContract = room.linked_contract;
+  const normCar = s => String(s || '').replace(/\s/g, '');
+  const contract = (store.contracts || []).filter(c => !c._deleted).find(c =>
+    c.product_uid === productUid ||
+    c.seed_product_key === productUid ||
+    (linkedContract && c.contract_code === linkedContract) ||
+    (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom))
+  );
+  if (stepCard) {
+    if (!contract) {
+      stepCard.querySelector('.ws4-body').innerHTML = `
+        <div style="padding: 12px; text-align: center; color: var(--text-muted);">
+          <i class="ph ph-file-text" style="font-size:24px; display:block; margin-bottom:6px;"></i>
+          <div style="margin-bottom: 8px;">연결된 계약 없음</div>
+          ${(role === 'agent' || role === 'agent_admin' || role === 'admin') ? `<button class="btn btn-sm btn-primary" id="wsCreateContract"><i class="ph ph-plus"></i> 계약 생성</button>` : ''}
+        </div>
+      `;
+      stepCard.querySelector('#wsCreateContract')?.addEventListener('click', () => createContractFromRoomLocal(room));
+    } else {
+      stepCard.querySelector('.ws4-body').innerHTML = renderContractWorkV2(contract);
+      bindContractWorkV2(stepCard, contract, {
+        reRender: () => {
+          const r = (store.rooms || []).find(x => x._key === _activeRoomId);
+          if (r) renderRoomDetail(r);
+        },
+      });
+    }
+  }
+
+  // 차량 정보 — search detail 재사용 (skipHead)
+  if (carCard) {
+    const carNumber = room.vehicle_number || room.car_number;
+    const norm = s => String(s || '').replace(/\s/g, '');
+    let p = (store.products || []).find(x =>
+      x._key === productUid ||
+      x.product_uid === productUid ||
+      norm(x.car_number) === norm(carNumber) ||
+      x.product_code === productUid
+    );
+    const body = carCard.querySelector('.ws4-body');
+    if (!body) return;
+    if (!p && productUid) {
+      // store 에 없으면 firebase 직접 fetch
+      body.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">불러오는 중...</div>`;
+      const _enriched = (store.policies || []);
+      fetchRecord(`products/${productUid}`).then(raw => {
+        if (raw) {
+          p = { _key: productUid, ...raw };
+          if (p.policy_code) p._policy = _enriched.find(pol => pol.policy_code === p.policy_code) || {};
+          renderSearchDetail(p, carCard, { skipHead: true });
+        } else {
+          body.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${esc(carNumber || productUid)} — 상품 정보 없음</div>`;
+        }
+      }).catch(() => {
+        body.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">상품 정보 로드 실패</div>`;
+      });
+      return;
+    }
+    if (!p) {
+      body.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${carNumber ? esc(carNumber) + ' — 상품 정보 없음' : '차량 정보 없음'}</div>`;
+      return;
+    }
+    renderSearchDetail(p, carCard, { skipHead: true });
+  }
+}
+
+/* 채팅 입력 — Enter 또는 전송 클릭 */
+export function bindChatInput() {
+  const page = document.querySelector('.pt-page[data-page="workspace"]');
+  if (!page) return;
+  const inputBar = page.querySelector('.ws-input');
+  if (!inputBar) return;
+  const input = inputBar.querySelector('input.input');
+  const sendBtn = inputBar.querySelector('.btn-primary');
   if (!input || !sendBtn) return;
 
   const send = async () => {
     const text = input.value.trim();
-    if (!text) return;
+    if (!text || !_activeRoomId) return;
+    input.focus();           // PWA 키보드 유지 — await 전에 동기 focus
     input.value = '';
-    input.focus();
-    const user = store.currentUser;
-    const senderCode = user.user_code || '';
-    await pushRecord(`messages/${roomId}`, { text, sender_uid: user.uid, sender_role: user.role, sender_code: senderCode, sender_name: user.name||'', created_at: Date.now() });
-    const roomUpdate = { last_message: text, last_message_at: Date.now(), last_sender_role: user.role, last_sender_uid: user.uid, last_sender_code: senderCode };
-    await updateRecord(`rooms/${roomId}`, roomUpdate);
-    // 상대방 미읽음 카운트 — 원자적 증가 (동시 송신 경합 방지)
-    const unreadField = user.role === 'agent' ? 'unread_for_provider'
-                      : user.role === 'provider' ? 'unread_for_agent' : null;
-    if (unreadField) incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(err => console.warn('[chat] unread 증가 실패:', err));
-  };
-
-  sendBtn.addEventListener('click', send, { signal });
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
-  }, { signal });
-  // 입력 포커스 → 읽음 처리
-  input.addEventListener('focus', () => {
-    const me = store.currentUser;
-    if (me?.uid && me?.role) markRoomRead(roomId, me.role, me.uid, (store.rooms||[]).find(r => r._key === roomId)).catch(() => {});
-  }, { signal });
-  // 탭 복귀 → 읽음 처리
-  const onVisible = () => {
-    if (!document.hidden && activeRoomId === roomId) {
-      const me = store.currentUser;
-      if (me?.uid && me?.role) markRoomRead(roomId, me.role, me.uid, (store.rooms||[]).find(r => r._key === roomId)).catch(() => {});
-    }
-  };
-  document.addEventListener('visibilitychange', onVisible, { signal });
-  attachBtn?.addEventListener('click', () => fileInput.click(), { signal });
-  fileInput?.addEventListener('change', async () => {
-    const MAX_BYTES = 10 * 1024 * 1024;  // 10MB
-    const files = Array.from(fileInput.files);
-    const user = store.currentUser;
-    const oversize = files.filter(f => f.size > MAX_BYTES);
-    if (oversize.length) {
-      showToast(`${oversize.length}개 파일이 10MB 초과 — 제외됨`, 'error');
-    }
-    const ok = files.filter(f => f.size <= MAX_BYTES);
-    const prevLabel = attachBtn?.innerHTML;
-    if (attachBtn && ok.length) attachBtn.innerHTML = '<i class="ph ph-spinner"></i>';
     try {
-      for (const file of ok) {
-        try {
-          const path = `chat-files/${roomId}/${Date.now()}_${file.name}`;
-          const { url } = await uploadFile(path, file);
-          const isImage = file.type.startsWith('image/');
-          const senderCode = user.user_code || '';
-          await pushRecord(`messages/${roomId}`, { text: isImage ? '' : file.name, sender_uid: user.uid, sender_role: user.role, sender_code: senderCode, sender_name: user.name||'', created_at: Date.now(), ...(isImage ? { image_url: url } : { file_url: url }) });
-          const fileUpdate = { last_message: isImage ? '📷 사진' : `📎 ${file.name}`, last_message_at: Date.now(), last_sender_role: user.role, last_sender_uid: user.uid, last_sender_code: senderCode };
-          await updateRecord(`rooms/${roomId}`, fileUpdate);
-          const unreadField = user.role === 'agent' ? 'unread_for_provider'
-                            : user.role === 'provider' ? 'unread_for_agent' : null;
-          if (unreadField) incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(err => console.warn('[chat-upload] unread 증가 실패:', err));
-        } catch (e) {
-          console.warn('[chat-upload] 실패', file.name, e);
-          showToast(`"${file.name}" 업로드 실패`, 'error');
-        }
+      await pushRecord(`messages/${_activeRoomId}`, {
+        text,
+        sender_uid: store.currentUser?.uid || '',
+        sender_role: store.currentUser?.role || '',
+        sender_code: store.currentUser?.user_code || store.currentUser?.company_code || '',
+        sender_name: store.currentUser?.name || '',
+        sender_email: store.currentUser?.email || '',
+        created_at: Date.now(),
+      });
+      // 룸 메타 갱신
+      const role = store.currentUser?.role;
+      const senderCode = store.currentUser?.user_code || store.currentUser?.company_code || '';
+      const update = {
+        last_message: text,
+        last_message_at: Date.now(),
+        last_sender_code: senderCode,
+        last_sender_role: role,
+      };
+      const room = (store.rooms || []).find(r => r._key === _activeRoomId);
+      if (room) {
+        if (role === 'agent' || role === 'agent_admin') update.unread_for_provider = (Number(room.unread_for_provider) || 0) + 1;
+        else if (role === 'provider') update.unread_for_agent = (Number(room.unread_for_agent) || 0) + 1;
       }
-    } finally {
-      if (attachBtn && prevLabel) attachBtn.innerHTML = prevLabel;
-      fileInput.value = '';
+      updateRecord(`rooms/${_activeRoomId}`, update).catch(() => {});
+    } catch (e) {
+      console.error('[chat] send fail', e);
+      input.value = text;     // 실패 시 텍스트 복구
     }
-  }, { signal });
+  };
 
-  // 방 오픈 직후 입력창으로 바로 커서 (엑셀 문의하기 진입 포함)
-  input.focus();
-}
-
-/* ── Contract Panel ── */
-function loadContract(room) {
-  const el = document.getElementById('wsContractBody');
-  if (!el || !room) return;
-
-  const contracts = store.contracts || [];
-  const c = contracts.find(x => x.product_uid === room.product_uid || x.seed_product_key === room.product_uid) || (room.linked_contract && contracts.find(x => x.contract_code === room.linked_contract));
-
-  if (!c) {
-    const myRole = store.currentUser?.role;
-    const canCreate = myRole === 'agent' || myRole === 'agent_admin';
-    el.innerHTML = `
-      <div style="padding:var(--sp-4);display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);">
-        <i class="ph ph-file-text" style="font-size:36px;color:var(--c-text-muted);"></i>
-        <p style="color:var(--c-text-muted);font-size:var(--fs-xs);">연결된 계약 없음</p>
-        ${canCreate
-          ? '<button class="btn btn-primary btn-sm" id="wsCreateContract" style="width:100%;"><i class="ph ph-plus"></i> 계약 생성하기</button>'
-          : '<p style="color:var(--c-text-muted);font-size:var(--fs-2xs);">영업자만 계약 생성 가능</p>'}
-      </div>`;
-    el.querySelector('#wsCreateContract')?.addEventListener('click', async () => {
-      const { createContractFromRoom } = await import('../firebase/collections.js');
-      try {
-        const code = await createContractFromRoom(room, store.currentUser);
-        showToast('계약 생성됨');
-        loadContract(room);
-      } catch (e) { showToast('생성 실패', 'error'); console.error(e); }
-    });
-    return;
-  }
-
-  activeContract = c;
-  const role = store.currentUser?.role || 'agent';
-  const isAgent = role === 'agent' || role === 'agent_admin';
-  const prog = getProgress(c);
-
-  el.innerHTML = `
-    <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-3);overflow-y:auto;height:100%;">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div style="font-weight:var(--fw-semibold);font-size:var(--fs-sm);">${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}</div>
-        <span style="font-size:var(--fs-2xs);color:${prog.done === prog.total ? 'var(--c-ok)' : 'var(--c-info)'};">${prog.done}/${prog.total}</span>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-list-checks"></i> 진행상황</div>
-        <div class="ct-steps">
-          <div class="ct-step-row" style="font-size:var(--fs-2xs);color:var(--c-text-muted);font-weight:var(--fw-medium);">
-            <div style="text-align:center;">영업자</div><div></div><div style="text-align:center;">공급사</div>
-          </div>
-          ${CONTRACT_STEPS.map(step => {
-            const agentKey = step.agent?.key;
-            const respKey = step.provider?.key || step.admin?.key;
-            const agentDone = agentKey ? (c[agentKey] === true || c[agentKey] === 'yes') : false;
-            const respVal = respKey ? c[respKey] : null;
-            const respDone = respVal === true || respVal === 'yes' || respVal === '출고 가능' || respVal === '출고 협의' || respVal === '서류 승인';
-            const rejected = respVal === '출고 불가' || respVal === '서류 부결';
-            const agentClass = agentDone ? 'is-done' : 'is-pending';
-            const respClass = rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
-            return `<div class="ct-step-row">
-              <div class="ct-step-cell ${agentClass}"><i class="ph ${agentDone ? 'ph-check-circle' : 'ph-circle'}"></i><span>${step.agent?.label || ''}</span></div>
-              <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
-              <div class="ct-step-cell ${respClass}"><i class="ph ${rejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : 'ph-circle'}"></i><span>${respDone && respVal && respVal !== 'yes' && respVal !== true ? respVal : rejected ? respVal : step.provider?.label || step.admin?.label || ''}</span></div>
-            </div>`;
-          }).join('')}
-        </div>
-      </div>
-
-      <button class="btn btn-outline btn-sm" style="width:100%;" onclick="location.hash='';import('./contract.js').then(()=>{});window.__nav?.('/contract');">
-        <i class="ph ph-arrow-square-out"></i> 계약관리에서 상세보기
-      </button>
-    </div>
-  `;
-  bindFormAutoSave(el, (field, value) => updateRecord(`contracts/${c.contract_code}`, { [field]: value }));
-}
-
-/* ── Vehicle Detail Panel ── */
-let activeDetailProductKey = null;
-
-async function loadVehicleDetail(productKey) {
-  const el = document.getElementById('wsDetailBody');
-  if (!el) return;
-
-  activeDetailProductKey = productKey;
-  el.innerHTML = '<div style="padding:var(--sp-4);color:var(--c-text-muted);font-size:var(--fs-xs);">로딩...</div>';
-
-  // store.products에서 먼저 찾고, 없으면 Firebase에서 fetch
-  let p = (store.products || []).find(x => x._key === productKey);
-  if (!p) p = await fetchRecord(`products/${productKey}`);
-  if (!p) {
-    el.innerHTML = '<div style="padding:var(--sp-4);color:var(--c-text-muted);font-size:var(--fs-xs);">차량 없음</div>';
-    return;
-  }
-  // search.js의 detail과 렌더러는 _key 기반으로 움직임 — 없으면 주입
-  if (!p._key) p._key = productKey;
-
-  renderProductDetail(el, p, {
-    shouldRerender: () => activeDetailProductKey === productKey,
-    showActions: false,
+  sendBtn.addEventListener('click', send);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
   });
 }
 
-/* ── Settlement Section (계약 패널 안) ── */
-function renderSettlementSection(contract) {
-  if (!contract) return '';
+/* 상품 → 대화방 생성 — 상품찾기 상세 / 업무소통 + 버튼 공용
+ *  기존 룸 있으면 그쪽으로 이동 (중복 방지). 없으면 새로 생성. */
+export async function createRoomFromProduct(product) {
+  if (!product) return;
+  // 동일 상품의 기존 룸 재사용
+  const existing = (store.rooms || []).find(r =>
+    r.product_uid === product._key ||
+    r.product_id === product._key ||
+    (r.car_number && r.car_number === product.car_number)
+  );
+  if (existing) {
+    location.hash = 'workspace';
+    selectRoom(existing._key);
+    showToast('기존 대화방으로 이동', 'info');
+    return;
+  }
+  try {
+    const ref = await pushRecord('rooms', {
+      car_number: product.car_number,
+      maker: product.maker,
+      model: product.model,
+      sub_model: product.sub_model,
+      product_id: product._key,
+      product_uid: product._key,
+      provider_company_code: product.provider_company_code,
+      partner_code: product.partner_code,
+      unread: 0,
+      created_at: Date.now(),
+      created_by: store.currentUser?.uid || '',
+    });
+    const newKey = ref?.key || ref;
+    location.hash = 'workspace';
+    if (typeof newKey === 'string') selectRoom(newKey);
 
-  const settlements = store.settlements || [];
-  const s = settlements.find(x => x.contract_code === contract.contract_code);
+    // 알림 — 공급사 + 관리자에게 신규 대화 알림
+    const me = store.currentUser;
+    notifyProviderAndAdmin({
+      template: 'new_inquiry',
+      providerCode: product.provider_company_code,
+      subject: '신규 대화',
+      message: `[Freepass]\n${me?.name || '영업자'}님이 ${product.car_number || ''} ${product.maker || ''} ${product.sub_model || product.model || ''} 대화를 시작했습니다.`,
+    }).catch(() => null);
 
-  if (!s) return `
-    <div style="padding:var(--sp-3);color:var(--c-text-muted);font-size:var(--fs-xs);text-align:center;border-top:1px solid var(--c-border);margin-top:var(--sp-2);padding-top:var(--sp-3);">
-      정산 정보 없음
-    </div>
-  `;
-
-  const status = getSettlementStatus(s);
-  const confirms = s.confirms || {};
-
-  return `
-    <div style="border-top:2px solid var(--c-border);margin-top:var(--sp-2);padding-top:var(--sp-3);">
-      <div style="font-weight:var(--fw-semibold);font-size:var(--fs-sm);margin-bottom:var(--sp-2);">정산</div>
-
-      <div style="text-align:center;padding:var(--sp-3);background:var(--c-bg-sub);border-radius:var(--ctrl-r);margin-bottom:var(--sp-2);">
-        <div style="font-size:var(--fs-xs);color:var(--c-text-muted);">수수료</div>
-        <div style="font-size:var(--fs-xl);font-weight:var(--fw-heavy);color:var(--c-accent);">${fmtWon(s.fee_amount)}</div>
-      </div>
-
-      <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:var(--sp-2);">
-        ${SETTLEMENT_STATUSES_BASIC.map(st => {
-          const active = status === st;
-          return `<div class="status-toggle ws4-settle-status" data-settle-key="${s._key}" data-status="${st}" style="font-size:var(--fs-2xs);padding:3px 8px;${active ? 'background:var(--c-accent-soft);color:var(--c-accent);' : ''}">${st.replace('정산','')}</div>`;
-        }).join('')}
-      </div>
-
-      <div style="display:flex;gap:var(--sp-1);margin-bottom:var(--sp-2);">
-        ${['공급사','영업자','관리자'].map((label, i) => {
-          const roles = ['provider','agent','admin'];
-          const confirmed = confirms[roles[i]];
-          return `<div class="settle-confirm ws4-settle-confirm ${confirmed ? 'is-confirmed' : ''}" data-settle-key="${s._key}" data-role="${roles[i]}" style="padding:var(--sp-2);font-size:var(--fs-2xs);">
-            <i class="ph ${confirmed ? 'ph-check-circle' : 'ph-circle'}" style="font-size:16px;"></i>
-            <span>${label}</span>
-          </div>`;
-        }).join('')}
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title">정산정보</div>
-        <div class="form-section-body">
-          ${ffv('월대여료', fmtWon(s.rent_amount))}${ffv('보증금', fmtWon(s.deposit_amount))}
-          ${ffv('정산일', s.settled_date||'-')}${ffv('상태', status)}
-        </div>
-      </div>
-    </div>
-  `;
+    showToast('대화방 생성됨', 'success');
+  } catch (e) {
+    console.error('[room create]', e);
+    showToast('생성 실패 — ' + (e.message || e), 'error');
+  }
 }
 
-/* ── Helpers ── */
-
-/* ── Unmount ── */
-export function unmount() {
-  unsubs.forEach(u => u?.());
-  unsubs = [];
-  unsubMessages?.();
-  unsubMessages = null;
-  chatInputAC?.abort();
-  chatInputAC = null;
+/* 새 대화방 — 업무소통 페이지 헤드 "+" 버튼 → 차량번호 prompt */
+export function bindRoomCreate() {
+  const btn = document.querySelector('[data-page="workspace"] .ws4-list .ws4-head button.btn-sm');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    const carNumber = prompt('차량번호 (예: 56다 1234):');
+    if (!carNumber?.trim()) return;
+    const product = (store.products || []).find(p => p.car_number === carNumber.trim() || p.car_number?.replace(/\s/g, '') === carNumber.trim().replace(/\s/g, ''));
+    if (!product) return alert('해당 차량번호 상품이 없습니다');
+    await createRoomFromProduct(product);
+  });
 }

@@ -765,7 +765,7 @@
   .login-page select { user-select: text; }
 
   .login-brand {
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: var(--font);
     font-size: 22px;
     letter-spacing: -0.035em;   /* 모던 워드마크 — 살짝 타이트 */
     display: flex;

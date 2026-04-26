@@ -18,7 +18,7 @@
 export async function sendAlimtalk({ template, tel, message, subject = '', variables = {} } = {}) {
   if (!template || !tel || !message) return { ok: false, error: 'required: template, tel, message' };
   try {
-    const res = await fetch('/api/alimtalk/send', {
+    const res = await fetch('/api/alimtalk', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -38,7 +38,7 @@
     --fs-xl:   20px;
     --fs-2xl:  26px;
 
-    /* Pretendard 타이포 기본값 — 한글 최적화 */
+    /* 타이포 기본값 — Claude Style v1.0 시스템폰트 (base.css 의 --font) */
     font-family: var(--font);
     font-size: var(--fs-base);
     line-height: 1.45;

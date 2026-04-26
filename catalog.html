@@ -1,21 +1,300 @@
 <!DOCTYPE html>
-<html lang="ko" data-theme="light">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="referrer" content="no-referrer">
-  <meta property="og:title" content="상품 안내">
-  <meta property="og:description" content="장기렌트·구독 상품 안내">
-  <meta property="og:type" content="website">
-  <title>상품 안내</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2/src/regular/style.css">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>freepass — 상품 안내</title>
+<meta property="og:title" content="freepass — 상품 안내">
+<meta property="og:description" content="다양한 장기렌트 차량을 만나보세요">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="/phosphor/style.css">
+<style>
+  :root {
+    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+    --text-main: #0f172a;
+    --text-sub: #475569;
+    --text-weak: #94a3b8;
+    --text-muted: #cbd5e1;
+    --text-inverse: #fff;
+    --bg-page: #fafbfc;
+    --bg-card: #fff;
+    --bg-stripe: #f5f7fa;
+    --bg-hover: #eff3f6;
+    --border: #d1d8e0;
+    --border-soft: #e6ebf0;
+    --accent-blue: #2563eb;
+    --accent-blue-bg: #dbeafe;
+    --accent-green: #059669;
+    --accent-green-bg: #d1fae5;
+    --accent-orange: #d97706;
+    --accent-orange-bg: #fed7aa;
+    --accent-red: #dc2626;
+    --accent-red-bg: #fee2e2;
+  }
+  *, *::before, *::after { box-sizing: border-box; font-family: var(--font); letter-spacing: 0; }
+  .ph, .ph::before { font-family: 'Phosphor' !important; }
+  body {
+    margin: 0; padding: 0;
+    font-size: 13px; color: var(--text-main);
+    background: var(--bg-page);
+  }
+  /* 헤더 */
+  .cat-head {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .cat-brand {
+    font-size: 16px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .cat-brand i { color: var(--accent-blue); font-size: 20px; }
+  .cat-search {
+    flex: 1; max-width: 480px;
+    position: relative;
+  }
+  .cat-search input {
+    width: 100%; padding: 8px 12px 8px 32px;
+    border: 1px solid var(--border); border-radius: 4px;
+    font-size: 13px; background: var(--bg-page);
+  }
+  .cat-search i {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--text-weak);
+  }
+  .cat-cta {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 8px 12px; background: var(--accent-blue); color: #fff;
+    border: 0; border-radius: 4px; cursor: pointer; font-size: 13px;
+    text-decoration: none;
+  }
+  .cat-cta:hover { background: #1d4ed8; }
+
+  /* 필터 chips */
+  .cat-filters {
+    padding: 10px 16px;
+    background: var(--bg-card); border-bottom: 1px solid var(--border-soft);
+    display: flex; gap: 6px; overflow-x: auto;
+  }
+  .cat-chip {
+    padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px;
+    font-size: 12px; cursor: pointer; white-space: nowrap;
+    background: var(--bg-card); color: var(--text-sub);
+  }
+  .cat-chip:hover { background: var(--bg-stripe); }
+  .cat-chip.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+
+  /* 그리드 */
+  .cat-grid {
+    padding: 16px;
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .cat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft); border-radius: 6px;
+    overflow: hidden; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex; flex-direction: column;
+  }
+  .cat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .cat-card-img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover;
+    background: var(--bg-stripe);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-size: 36px;
+  }
+  .cat-card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .cat-card-body { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .cat-card-title { font-size: 13px; font-weight: 600; color: var(--text-main); }
+  .cat-card-sub { font-size: 12px; color: var(--text-sub); }
+  .cat-card-status {
+    align-self: flex-start;
+    font-size: 11px; padding: 2px 6px; border-radius: 3px;
+    margin-bottom: 2px;
+  }
+  .cat-card-status.즉시 { background: var(--accent-green-bg); color: var(--accent-green); }
+  .cat-card-status.가능 { background: var(--accent-blue-bg); color: var(--accent-blue); }
+  .cat-card-status.협의 { background: var(--accent-orange-bg); color: var(--accent-orange); }
+  .cat-card-status.상품 { background: var(--bg-stripe); color: var(--text-weak); }
+  .cat-card-price {
+    margin-top: 4px;
+    font-size: 14px; font-weight: 600; color: var(--accent-blue);
+  }
+  .cat-card-price small { color: var(--text-weak); font-weight: 400; font-size: 11px; }
+
+  /* 영업자 카드 */
+  .cat-agent {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-card); border-bottom: 1px solid var(--border-soft);
+  }
+  .cat-agent-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--accent-blue-bg); color: var(--accent-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .cat-agent-info { flex: 1; min-width: 0; }
+  .cat-agent-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
+  .cat-agent-sub { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+  .cat-agent-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .cat-agent-btn {
+    padding: 6px 12px; font-size: 12px;
+    border: 1px solid var(--border); border-radius: 4px;
+    background: var(--bg-card); color: var(--text-main);
+    cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .cat-agent-btn:hover { background: var(--bg-stripe); }
+
+  /* 단일 차량 모드 — 그리드/필터 숨김 */
+  body.is-single .cat-filters,
+  body.is-single .cat-grid { display: none; }
+
+  /* 상담 요청 폼 */
+  .cat-inquiry {
+    padding: 14px 18px; border-top: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .cat-inquiry input, .cat-inquiry textarea {
+    width: 100%; padding: 8px 10px;
+    border: 1px solid var(--border); border-radius: 4px;
+    font-size: 13px; background: var(--bg-page);
+    font-family: inherit; box-sizing: border-box;
+  }
+  .cat-inquiry textarea { resize: vertical; min-height: 60px; }
+  .cat-inquiry-cta {
+    padding: 10px; border: 0; border-radius: 4px;
+    background: var(--accent-blue); color: #fff;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+  .cat-inquiry-cta:hover { background: #1d4ed8; }
+  .cat-inquiry-done {
+    padding: 14px; text-align: center;
+    color: var(--accent-green); font-size: 13px;
+  }
+
+  /* 빈 상태 */
+  .cat-empty {
+    grid-column: 1 / -1;
+    text-align: center; padding: 60px 20px;
+    color: var(--text-muted);
+  }
+  .cat-empty i { font-size: 48px; display: block; margin-bottom: 8px; }
+
+  /* 상세 모달 */
+  .cat-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .cat-modal-card {
+    background: var(--bg-card); border-radius: 8px;
+    max-width: 760px; max-height: 92vh; width: 100%;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  }
+  .cat-modal-head {
+    padding: 14px 18px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg-card);
+  }
+  .cat-modal-title { font-size: 15px; font-weight: 600; }
+  .cat-modal-close {
+    background: none; border: 0; cursor: pointer;
+    width: 32px; height: 32px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 20px; color: var(--text-sub);
+  }
+  .cat-modal-close:hover { background: var(--bg-stripe); }
+  .cat-modal-body { flex: 1; overflow-y: auto; padding: 16px 18px; }
+
+  /* 상세 섹션 */
+  .cat-section { margin-bottom: 18px; }
+  .cat-section-title {
+    font-size: 13px; font-weight: 600; color: var(--text-main);
+    padding-bottom: 6px; border-bottom: 1px solid var(--border-soft);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .cat-section-title i { color: var(--accent-blue); }
+  .cat-info-grid {
+    display: grid; grid-template-columns: 100px 1fr;
+    gap: 4px 12px; font-size: 12px;
+  }
+  .cat-info-grid .lab { color: var(--text-weak); padding: 4px 0; }
+  .cat-info-grid .val { color: var(--text-main); padding: 4px 0; }
+  .cat-info-grid .full { grid-column: 1 / -1; }
+
+  /* 사진 갤러리 */
+  .cat-gallery-main { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 6px; background: var(--bg-stripe); }
+  .cat-gallery-thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 6px; }
+  .cat-gallery-thumb { aspect-ratio: 1; cursor: pointer; border-radius: 4px; overflow: hidden; border: 2px solid transparent; }
+  .cat-gallery-thumb.active { border-color: var(--accent-blue); }
+  .cat-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* 가격/보험 표 */
+  .cat-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .cat-table th, .cat-table td {
+    padding: 6px 10px; border-bottom: 1px solid var(--border-soft);
+    text-align: left;
+  }
+  .cat-table th { background: var(--bg-stripe); color: var(--text-sub); font-weight: 500; font-size: 11px; }
+  .cat-table td.num { text-align: right; }
+  .cat-table .price-rent { color: var(--accent-blue); font-weight: 600; }
+
+  /* 옵션 chips */
+  .cat-chips-wrap { display: flex; flex-wrap: wrap; gap: 4px; }
+  .cat-option-chip {
+    background: var(--accent-blue-bg); color: var(--accent-blue);
+    padding: 3px 8px; border-radius: 12px; font-size: 11px;
+  }
+
+  /* 모바일 반응형 */
+  @media (max-width: 600px) {
+    .cat-head { padding: 10px 12px; }
+    .cat-brand { font-size: 14px; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); padding: 10px; gap: 8px; }
+    .cat-card-title { font-size: 12px; }
+    .cat-modal { padding: 0; }
+    .cat-modal-card { border-radius: 0; max-height: 100vh; }
+  }
+</style>
 </head>
-<body data-mode="catalog">
-  <div id="app"></div>
-  <script type="module" src="/src/app.js"></script>
+<body>
+  <header class="cat-head">
+    <div class="cat-brand" id="catBrand"><i class="ph ph-car-profile"></i> <span id="catBrandText">freepass 카탈로그</span></div>
+    <div class="cat-search">
+      <i class="ph ph-magnifying-glass"></i>
+      <input type="search" id="catSearch" placeholder="차량번호·제조사·모델 검색...">
+    </div>
+    <a class="cat-cta" id="catContact" href="tel:1588-0000"><i class="ph ph-phone"></i> 문의</a>
+  </header>
+  <div id="catAgent"></div>
+  <div class="cat-filters" id="catFilters">
+    <span class="cat-chip active" data-f="all">전체</span>
+    <span class="cat-chip" data-f="즉시">즉시 출고</span>
+    <span class="cat-chip" data-f="협의">출고 협의</span>
+    <span class="cat-chip" data-f="가솔린">가솔린</span>
+    <span class="cat-chip" data-f="디젤">디젤</span>
+    <span class="cat-chip" data-f="하이브리드">하이브리드</span>
+    <span class="cat-chip" data-f="전기">전기</span>
+  </div>
+  <main class="cat-grid" id="catGrid">
+    <div class="cat-empty"><i class="ph ph-car-simple"></i>상품을 불러오는 중...</div>
+  </main>
+  <script type="module" src="/src/catalog-app.js"></script>
 </body>
 </html>

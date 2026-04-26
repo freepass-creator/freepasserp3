@@ -1,1775 +1,487 @@
 /**
- * 차량 검색 — 전체 목록 + 조건 필터로 추려짐 + 상세 + 복수 공유
+ * pages/search.js — 상품 찾기 페이지 (v3 ERP)
+ *
+ * Export:
+ *   - calibrateSearchCols(products)
+ *   - renderSearchTable(products)
+ *   - renderSearchDetail(p, targetCard, options)  // workspace 등 다른 페이지도 호출
+ *   - bindSearchInteractions()  // 헤더 필터 popover, row 클릭, chip 필터
+ *   - bindSearchSelection()     // Ctrl/Shift 다중 선택 (toggleSearchSelection 은 별도 모듈)
+ *   - applySearchFilter()       // 외부에서 검색어 갱신 후 호출
+ *   - setSearchCallbacks({ onCreateRoom })  // 의존성 주입 — workspace 가 createRoomFromProduct 주입
+ *
+ *   - _searchFilter (외부 모듈에서 검색 input → 필터 갱신용 export)
  */
 import { store } from '../core/store.js';
-import { watchCollection, fetchCollection } from '../firebase/db.js';
-import { showToast } from '../core/toast.js';
-import { fmtMoney, trimMinusSub } from '../core/format.js';
-import { setBreadcrumbTail, setBreadcrumbBrief } from '../core/breadcrumb.js';
-import { openContextMenu } from '../core/context-menu.js';
-import { navigate } from '../core/router.js';
-import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS } from '../core/excel-export.js';
-import { first, parsePol, findPolicy, enrichProductsWithPolicy } from '../core/policy-utils.js';
-import { topBadgesHtml, reviewOverlayHtml, creditOverlayHtml, needsReview } from '../core/product-badges.js';
-import { productImages, productExternalImages, firstProductImage, supportedDriveSource } from '../core/product-photos.js';
-import { normalizeYear, normalizeProductType } from '../core/normalize.js';
-import { renderProductDetail, colorToHex, colorTextContrast } from '../core/product-detail-render.js';
-import { FILTERS, TOP_N, matchFilter, getField, buildDynamicChips } from '../core/product-filters.js';
+import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from '../core/product-photos.js';
+import { extractProductDetailRows } from '../core/product-detail-rows.js';
+import {
+  esc, shortStatus, mapStatusDot, fmtMileage,
+} from '../core/ui-helpers.js';
 
-let unsubProducts = null;
-let allProducts = [];
-let filteredProducts = [];
-let selected = new Set();
-let activeFilters = {};
-let selectedProductKey = null;
-const LIST_PERIODS = [36, 48, 60];
-let sortCol = null;
-let sortDir = null;
-// 카탈로그 모드(손님용)는 카드뷰 강제 — 엑셀뷰 / 우측 상세패널 없음
-let viewMode = store.catalogMode ? 'card' : 'excel';
-
-// FILTERS / TOP_N / matchFilter / getField / buildDynamicChips — src/core/product-filters.js 로 이관됨
-
-export function mount() {
-  unsubProducts?.();
-  selected.clear();
-  activeFilters = {};
-  selectedProductKey = null;
-
-  const main = document.getElementById('mainContent');
-
-  main.innerHTML = `
-    <div class="srch">
-      <!-- 필터(좌) | 목록(중) | 상세(우) 가로 3패널 -->
-      <div class="srch-filter-panel" id="srchFilterPanel">
-        <div class="srch-panel-head">
-          <span style="display:flex;align-items:center;gap:var(--sp-1);"><span>조건</span><span class="sb-badge" id="srchFilterCount"></span></span>
-          <span style="display:flex;gap:var(--sp-1);">
-            ${store.catalogMode ? '' : `
-              <button class="btn btn-sm btn-outline" id="srchExcel" title="Excel 다운로드"><i class="ph ph-download-simple"></i> Excel</button>
-              <button class="btn btn-sm btn-outline" id="srchPhotoZip" title="사진 ZIP"><i class="ph ph-file-zip"></i> 사진</button>
-              <button class="btn btn-sm btn-outline" id="srchCatalogShare" title="카탈로그 공유" style="display:${store.currentUser?.role === 'admin' ? 'inline-flex' : 'none'};"><i class="ph ph-share-network"></i> 카탈로그</button>
-              <button class="btn btn-sm btn-outline" id="srchViewToggle2" title="${viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환'}"><i class="ph ph-${viewMode === 'excel' ? 'cards' : 'table'}"></i> ${viewMode === 'excel' ? '카드보기' : '엑셀보기'}</button>
-            `}
-            <span class="ws4-head-toggle" id="srchFilterToggle" title="조건 접기"><i class="ph ph-caret-left"></i></span>
-          </span>
-        </div>
-        <div class="srch-filter-search">
-          <input class="input input-sm" id="srchText" placeholder="차량번호, 모델명, 금액, 무심사 등...">
-          <div class="srch-active" id="srchActive"><span class="srch-active-empty">전체해제</span></div>
-        </div>
-        <div class="srch-filters" id="srchFilters"></div>
-      </div>
-
-      <div class="srch-resize" id="srchResize1"></div>
-
-      <div class="srch-list-wrap">
-        <div class="srch-panel-head" id="srchListHead" style="${viewMode === 'excel' ? 'display:none;' : ''}">
-          <span style="display:flex;align-items:center;gap:var(--sp-2);flex:1;min-width:0;" id="srchListLeft">
-            <span>목록</span>
-            <span class="srch-count" id="srchCount">0대</span>
-          </span>
-          <span style="display:flex;align-items:center;gap:var(--sp-1);">
-            <div class="srch-period-head" id="srchPeriodHead">
-              <span class="srch-sort-hint" id="srchSortHint">${localStorage.getItem('fp.sort.used') ? '' : '개월수 클릭하면 대여료 정렬'}</span>
-              <span class="srch-sort-col" data-sort="36" title="클릭: 낮은순 → 높은순 → 해제">36개월</span><span class="srch-sort-col" data-sort="48" title="클릭: 낮은순 → 높은순 → 해제">48개월</span><span class="srch-sort-col" data-sort="60" title="클릭: 낮은순 → 높은순 → 해제">60개월</span>
-            </div>
-            <button class="btn btn-xs btn-outline" id="srchDetailOpen" style="display:none;" title="상세 열기"><i class="ph ph-sidebar-simple"></i></button>
-          </span>
-        </div>
-        <div class="srch-list" id="srchList"></div>
-        <div class="srch-list-foot" id="srchFoot" style="display:none;">
-          <span id="srchSelected">0대 선택</span>
-          <button class="btn btn-primary btn-sm" id="srchShare"><i class="ph ph-share-network"></i> 공유</button>
-        </div>
-      </div>
-
-      <div class="srch-resize" id="srchResize2"></div>
-
-      <div class="srch-detail" id="srchDetail">
-        <div class="srch-panel-head">
-          <span>상품 상세</span>
-          <span style="display:flex;align-items:center;gap:var(--sp-1);">
-            <span class="srch-detail-actions" id="srchDetailActions"></span>
-            <span class="ws4-head-toggle" id="srchDetailToggle" title="상품 상세 접기"><i class="ph ph-caret-right"></i></span>
-          </span>
-        </div>
-        <div class="srch-detail-content">
-          <div class="srch-empty"><i class="ph ph-car-simple"></i><p>차량을 선택하세요</p></div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  // Resize handle
-  initResize();
-
-  // Load — 콜백 내 오류가 전체 페이지를 깨뜨리지 않도록 보호
-  // 정책 미리 로드
-  if (!store.policies) {
-    fetchCollection('policies').then(p => {
-      store.policies = p.map(x => { if (!x.policy_name && x.term_name) x.policy_name = x.term_name; if (!x.policy_code && x.term_code) x.policy_code = x.term_code; return x; });
-    }).catch(() => { store.policies = []; });
-  }
-
-  unsubProducts = watchCollection('products', (data) => {
-    try {
-      const policies = store.policies || [];
-      allProducts = enrichProductsWithPolicy(
-        data.filter(p => !p._deleted && p.status !== 'deleted').map(p => {
-          if (!p.model && p.model_name) p.model = p.model_name;
-          return p;
-        }),
-        policies
-      );
-      store.products = allProducts;
-      buildDynamicFilters();
-      renderFilters();
-      renderActiveChips();
-      applyFilters();
-      updateBrief();
-    } catch (err) {
-      console.error('[search] watchCollection(products) 콜백 오류', err);
-      showToast('차량 목록을 갱신하지 못했습니다');
-    }
-  });
-
-  // 카탈로그 공유 (관리자만)
-  document.getElementById('srchCatalogShare')?.addEventListener('click', openShareCatalog);
-
-  // 뷰 전환 (목록만 카드/엑셀)
-  document.getElementById('srchViewToggle2')?.addEventListener('click', () => {
-    viewMode = viewMode === 'card' ? 'excel' : 'card';
-    const toggleBtn = document.getElementById('srchViewToggle2');
-    toggleBtn.innerHTML = viewMode === 'excel' ? '<i class="ph ph-cards"></i> 카드보기' : '<i class="ph ph-table"></i> 엑셀보기';
-    toggleBtn.title = viewMode === 'excel' ? '카드뷰로 전환' : '엑셀뷰로 전환';
-    const listHead = document.getElementById('srchListHead');
-    if (listHead) {
-      if (viewMode === 'excel') {
-        listHead.style.display = 'none';
-      } else {
-        listHead.className = 'srch-panel-head';
-        listHead.style.display = '';
-        listHead.innerHTML = `
-          <span style="display:flex;align-items:center;gap:var(--sp-2);flex:1;min-width:0;" id="srchListLeft">
-            <span>목록</span><span class="srch-count" id="srchCount">${filteredProducts.length}대</span>
-          </span>
-          <div class="srch-period-head" id="srchPeriodHead">
-            <span class="srch-sort-hint" id="srchSortHint"></span>
-            <span class="srch-sort-col" data-sort="36">36개월</span><span class="srch-sort-col" data-sort="48">48개월</span><span class="srch-sort-col" data-sort="60">60개월</span>
-          </div>`;
-      }
-    }
-    renderList();
-  });
-
-  // 조건/상세 패널 접기/열기
-  const updatePanelBtns = () => {
-    const filterCollapsed = document.getElementById('srchFilterPanel')?.classList.contains('is-collapsed');
-    const detailCollapsed = document.getElementById('srchDetail')?.classList.contains('is-collapsed');
-    const fb = document.getElementById('srchFilterToggle');
-    const db = document.getElementById('srchDetailToggle');
-    const fo = document.getElementById('srchFilterOpen');
-    const do2 = document.getElementById('srchDetailOpen');
-    if (fb) fb.innerHTML = `<i class="ph ph-caret-left"></i>`;
-    if (db) db.innerHTML = `<i class="ph ph-caret-right"></i>`;
-    if (fo) fo.style.display = filterCollapsed ? '' : 'none';
-    if (do2) do2.style.display = detailCollapsed ? '' : 'none';
-  };
-  document.getElementById('srchFilterToggle')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const panel = document.getElementById('srchFilterPanel');
-    panel?.classList.toggle('is-collapsed');
-    const icon = document.querySelector('#srchFilterToggle i');
-    if (icon) icon.className = panel?.classList.contains('is-collapsed') ? 'ph ph-caret-right' : 'ph ph-caret-left';
-  });
-  document.getElementById('srchDetailToggle')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const panel = document.getElementById('srchDetail');
-    const resize = document.getElementById('srchResize2');
-    panel?.classList.toggle('is-collapsed');
-    if (resize) resize.style.display = panel?.classList.contains('is-collapsed') ? 'none' : '';
-    const icon = document.querySelector('#srchDetailToggle i');
-    if (icon) icon.className = panel?.classList.contains('is-collapsed') ? 'ph ph-caret-left' : 'ph ph-caret-right';
-  });
-  // 접힌 패널 클릭 시 열기
-  document.getElementById('srchFilterPanel')?.addEventListener('click', (e) => {
-    const panel = document.getElementById('srchFilterPanel');
-    if (panel?.classList.contains('is-collapsed')) {
-      panel.classList.remove('is-collapsed');
-      const icon = document.querySelector('#srchFilterToggle i');
-      if (icon) icon.className = 'ph ph-caret-left';
-    }
-  });
-  document.getElementById('srchDetail')?.addEventListener('click', (e) => {
-    const panel = document.getElementById('srchDetail');
-    if (panel?.classList.contains('is-collapsed')) {
-      panel.classList.remove('is-collapsed');
-      const resize = document.getElementById('srchResize2');
-      if (resize) resize.style.display = '';
-      const icon = document.querySelector('#srchDetailToggle i');
-      if (icon) icon.className = 'ph ph-caret-right';
-    }
-  });
-
-  // Text search
-  document.getElementById('srchText')?.addEventListener('input', () => { buildDynamicFilters(); renderFilters(); applyFilters(); });
-
-  // 기간별 정렬
-  document.querySelectorAll('.srch-sort-col').forEach(col => {
-    col.style.cursor = 'pointer';
-    col.addEventListener('click', () => {
-      const m = col.dataset.sort;
-      if (sortCol === m) {
-        if (sortDir === 'asc') sortDir = 'desc';
-        else if (sortDir === 'desc') { sortCol = null; sortDir = null; }
-      } else {
-        sortCol = m; sortDir = 'asc';
-      }
-      // 색상 + tooltip 업데이트
-      document.querySelectorAll('.srch-sort-col').forEach(c => {
-        c.classList.remove('is-sort-asc', 'is-sort-desc');
-        c.title = '클릭: 낮은순 → 높은순 → 해제';
-      });
-      if (sortCol === m && sortDir) {
-        col.classList.add(sortDir === 'asc' ? 'is-sort-asc' : 'is-sort-desc');
-        col.title = sortDir === 'asc' ? `${m}개월 낮은순 정렬 중 (클릭: 높은순)` : `${m}개월 높은순 정렬 중 (클릭: 해제)`;
-      }
-      // 힌트 한번 쓰면 영구 제거
-      const hint = document.getElementById('srchSortHint');
-      if (hint) { hint.textContent = ''; localStorage.setItem('fp.sort.used', '1'); }
-      applyFilters();
-    });
-  });
-
-  // Share
-  document.getElementById('srchShare')?.addEventListener('click', openShare);
-
-  // Excel (현재 필터된 결과 + 정책 병합 다운로드 — 보험/조건 전부 포함)
-  document.getElementById('srchExcel')?.addEventListener('click', async () => {
-    const list = filteredProducts.length ? filteredProducts : allProducts;
-    if (!list.length) { showToast('다운로드할 차량이 없습니다'); return; }
-    try {
-      // policies 없으면 한번 로드
-      if (!store.policies || !store.policies.length) {
-        const { fetchCollection } = await import('../firebase/db.js');
-        store.policies = await fetchCollection('policies');
-      }
-      const enriched = enrichProductsWithPolicy(list, store.policies);
-      await downloadExcelWithFilter('차량목록', PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
-        baseUrl: location.origin,
-      });
-      showToast(`${list.length}대 Excel 다운로드 · ERP 목록(좌측 필터) + 원본 2탭 구조`);
-    } catch (e) {
-      console.error(e);
-      showToast('다운로드 실패', 'error');
-    }
-  });
-
-  // 사진 ZIP — 공급사별·차량번호별 선택 팝업
-  document.getElementById('srchPhotoZip')?.addEventListener('click', () => openPhotoZipDialog());
+/* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
+let _onCreateRoom = null;
+export function setSearchCallbacks({ onCreateRoom }) {
+  _onCreateRoom = onCreateRoom;
 }
 
-/** 파일/폴더 이름에 쓸 수 없는 문자 제거 (Windows 기준) */
-function fsSafe(s) {
-  return String(s || '').replace(/[\\/:*?"<>|]/g, '_').trim() || '_';
-}
+/* search 페이지 필터 상태 — bindGlobalSearch 등 외부 모듈에서 search 만 갱신 */
+export const _searchFilter = { chip: 'all', search: '', column: {} };
+let _activeFtTh = null;
 
-/** 사진 다운로드 선택 팝업 — 탭(자체/외부) + 검색 + 공급사코드·차량번호 트리 */
-function openPhotoZipDialog() {
-  const list = filteredProducts.length ? filteredProducts : allProducts;
-  if (!list.length) { showToast('현재 목록에 차량이 없습니다'); return; }
+/* ──────── A. 표 렌더 + 컬럼 폭 자동 산출 ──────── */
 
-  // 자체(uploaded) · 외부(external) 두 데이터셋을 각각 빌드 (공급사는 코드 only)
-  const buildDataset = (entries) => {
-    const groups = {};
-    let totalPhotos = 0;
-    let totalCars = 0;
-    for (const entry of entries) {
-      const provider = entry.p.provider_company_code || '미지정';
-      groups[provider] ??= [];
-      groups[provider].push(entry);
-      totalPhotos += entry.imgs.length;
-      totalCars++;
-    }
-    return { groups, totalPhotos, totalCars, withPhotos: entries };
+/* 컬럼 폭 자동 — 한글 11px, ASCII 6.5px (11px system font 추정) */
+export function calibrateSearchCols(products) {
+  const cols = document.querySelectorAll('[data-page="search"] table.table-fixed colgroup col');
+  if (!cols.length || !products.length) return;
+
+  const charPx = (s) => {
+    if (s == null || s === '') return 0;
+    let w = 0;
+    for (const c of String(s)) w += /[가-힣]/.test(c) ? 11 : 6.5;
+    return w;
   };
 
-  // 자체사진: productImages만
-  const ownEntries = list
-    .map(p => ({ p, imgs: productImages(p) }))
-    .filter(e => e.imgs.length > 0);
-
-  // 외부사진: productExternalImages(직접URL) + 스크래핑 소스(아직 해석 안됨)
-  //  팝업 열린 후 백그라운드로 해석 → 완료되는 대로 각 row count 업데이트
-  const extEntries = list.map(p => {
-    const direct = productExternalImages(p);
-    const driveSrc = supportedDriveSource(p);
-    return { p, imgs: direct.slice(), driveSrc, resolved: !driveSrc };
-  }).filter(e => e.imgs.length > 0 || e.driveSrc);
-
-  const datasets = {
-    own: buildDataset(ownEntries),
-    ext: buildDataset(extEntries),
-  };
-
-  const dlg = document.createElement('dialog');
-  dlg.className = 'pd-zip-dialog';
-  dlg.innerHTML = `
-    <div class="pd-zip-head">
-      <span><i class="ph ph-file-zip"></i> 사진 다운로드</span>
-      <button class="pd-zip-close" aria-label="닫기"><i class="ph ph-x"></i></button>
-    </div>
-    <div class="pd-zip-tabs" role="tablist">
-      <button class="pd-zip-tab is-active" data-tab="own" role="tab"><span data-tablabel="own">자체사진 (${datasets.own.totalCars}대 · ${datasets.own.totalPhotos}장)</span></button>
-      <button class="pd-zip-tab" data-tab="ext" role="tab"><span data-tablabel="ext">외부사진 (${datasets.ext.totalCars}대 · ${datasets.ext.totalPhotos}장)</span></button>
-    </div>
-    <div class="pd-zip-toolbar">
-      <input type="search" class="input input-sm" id="zipSearch" placeholder="차량번호·공급사코드 검색" autocomplete="off">
-      <label class="pd-zip-allcb"><input type="checkbox" id="zipAll"> 전체 선택</label>
-    </div>
-    <div class="pd-zip-sub-progress" hidden></div>
-    <div class="pd-zip-tree" id="zipTree"></div>
-    <div class="pd-zip-foot">
-      <span class="pd-zip-selinfo" id="zipSelInfo"></span>
-      <span style="flex:1;"></span>
-      <button class="btn btn-sm btn-outline" id="zipCancel">취소</button>
-      <button class="btn btn-sm btn-primary" id="zipDownload"><i class="ph ph-download-simple"></i> 다운로드</button>
-    </div>
-  `;
-  document.body.appendChild(dlg);
-  dlg.showModal();
-
-  const ac = new AbortController();
-  let activeTab = 'own';
-
-  const currentDataset = () => datasets[activeTab];
-  const byKey = () => new Map(currentDataset().withPhotos.map(x => [x.p._key, x]));
-
-  // 트리 렌더 (현재 탭 기준)
-  const renderTree = () => {
-    const { groups } = currentDataset();
-    const providers = Object.keys(groups).sort();
-    const tree = dlg.querySelector('#zipTree');
-    if (!providers.length) {
-      tree.innerHTML = `<div class="pd-zip-empty">표시할 사진이 없습니다</div>`;
-      return;
-    }
-    tree.innerHTML = providers.map(prov => {
-      const cars = groups[prov];
-      const provPhotos = cars.reduce((s, c) => s + c.imgs.length, 0);
-      return `
-        <details class="pd-zip-provider" open data-search="${prov.toLowerCase().replace(/"/g,'&quot;')}">
-          <summary>
-            <input type="checkbox" class="zip-prov-cb" data-prov="${prov.replace(/"/g,'&quot;')}">
-            <span class="pd-zip-prov-name">${prov}</span>
-            <span class="pd-zip-prov-meta">${cars.length}대 · ${provPhotos}장</span>
-          </summary>
-          <div class="pd-zip-cars">
-            ${cars.map(({ p, imgs }) => {
-              const carNo = p.car_number || p._key;
-              const searchKey = (carNo + ' ' + prov).toLowerCase();
-              return `
-                <label class="pd-zip-car" data-search="${searchKey.replace(/"/g,'&quot;')}">
-                  <input type="checkbox" class="zip-car-cb" data-key="${p._key}" data-prov="${prov.replace(/"/g,'&quot;')}">
-                  <span class="pd-zip-car-no">${carNo}</span>
-                  <span class="pd-zip-car-meta">${imgs.length}장</span>
-                </label>
-              `;
-            }).join('')}
-          </div>
-        </details>
-      `;
-    }).join('');
-    bindTreeEvents();
-    applyFilter();
-    updateSelInfo();
-  };
-
-  const bindTreeEvents = () => {
-    dlg.querySelectorAll('.zip-prov-cb').forEach(provCb => {
-      provCb.addEventListener('click', (e) => e.stopPropagation(), { signal: ac.signal });
-      provCb.addEventListener('change', (e) => {
-        const prov = e.target.dataset.prov;
-        dlg.querySelectorAll(`.zip-car-cb[data-prov="${CSS.escape(prov)}"]`).forEach(cb => { cb.checked = e.target.checked; });
-        updateSelInfo();
-      }, { signal: ac.signal });
-    });
-    dlg.querySelectorAll('.zip-car-cb').forEach(carCb => {
-      carCb.addEventListener('change', () => {
-        const prov = carCb.dataset.prov;
-        const siblings = [...dlg.querySelectorAll(`.zip-car-cb[data-prov="${CSS.escape(prov)}"]`)];
-        const checkedCnt = siblings.filter(c => c.checked).length;
-        const provCb = dlg.querySelector(`.zip-prov-cb[data-prov="${CSS.escape(prov)}"]`);
-        if (provCb) {
-          provCb.checked = checkedCnt === siblings.length;
-          provCb.indeterminate = checkedCnt > 0 && checkedCnt < siblings.length;
-        }
-        const allCars = [...dlg.querySelectorAll('.zip-car-cb')];
-        const allChecked = allCars.filter(c => c.checked).length;
-        const allCb = dlg.querySelector('#zipAll');
-        allCb.checked = allChecked === allCars.length;
-        allCb.indeterminate = allChecked > 0 && allChecked < allCars.length;
-        updateSelInfo();
-      }, { signal: ac.signal });
-    });
-  };
-
-  // 검색 — 차량번호·공급사(이름/코드) 기준으로 항목 show/hide
-  const applyFilter = () => {
-    const q = (dlg.querySelector('#zipSearch')?.value || '').trim().toLowerCase();
-    dlg.querySelectorAll('.pd-zip-provider').forEach(prov => {
-      const cars = [...prov.querySelectorAll('.pd-zip-car')];
-      let matched = 0;
-      cars.forEach(car => {
-        const hit = !q || car.dataset.search.includes(q) || prov.dataset.search.includes(q);
-        car.style.display = hit ? '' : 'none';
-        if (hit) matched++;
-      });
-      prov.style.display = (matched > 0 || !q) ? '' : 'none';
-    });
-  };
-
-  const updateSelInfo = () => {
-    const selected = [...dlg.querySelectorAll('.zip-car-cb:checked')];
-    const map = byKey();
-    let cars = selected.length;
-    let photos = 0;
-    for (const cb of selected) photos += (map.get(cb.dataset.key)?.imgs.length || 0);
-    dlg.querySelector('#zipSelInfo').textContent = `선택: ${cars}대 · ${photos}장`;
-    dlg.querySelector('#zipDownload').disabled = cars === 0;
-  };
-
-  // 탭 전환
-  dlg.querySelectorAll('.pd-zip-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      if (tab.dataset.tab === activeTab) return;
-      activeTab = tab.dataset.tab;
-      dlg.querySelectorAll('.pd-zip-tab').forEach(t => t.classList.toggle('is-active', t === tab));
-      dlg.querySelector('#zipAll').checked = false;
-      dlg.querySelector('#zipAll').indeterminate = false;
-      renderTree();
-    }, { signal: ac.signal });
-  });
-
-  // 전체 선택
-  dlg.querySelector('#zipAll').addEventListener('change', (e) => {
-    const checked = e.target.checked;
-    dlg.querySelectorAll('.zip-prov-cb, .zip-car-cb').forEach(cb => { cb.checked = checked; cb.indeterminate = false; });
-    updateSelInfo();
-  }, { signal: ac.signal });
-
-  // 검색
-  dlg.querySelector('#zipSearch').addEventListener('input', applyFilter, { signal: ac.signal });
-
-  const close = () => { if (dlg.open) dlg.close(); };
-  dlg.querySelector('.pd-zip-close').addEventListener('click', close, { signal: ac.signal });
-  dlg.querySelector('#zipCancel').addEventListener('click', close, { signal: ac.signal });
-  dlg.addEventListener('click', (e) => { if (e.target === dlg) close(); }, { signal: ac.signal });
-  dlg.addEventListener('close', () => { ac.abort(); dlg.remove(); }, { once: true });
-
-  renderTree();
-
-  // 외부 폴더 백그라운드 해석 — 팝업 열린 상태에서 진행, 완료분부터 카운트 업데이트
-  const toResolve = extEntries.filter(e => !e.resolved);
-  if (toResolve.length) {
-    (async () => {
-      const { fetchDriveFolderImages } = await import('../core/drive-photos.js');
-      const subEl = dlg.querySelector('.pd-zip-sub-progress');
-      let done = 0;
-      const updateProgress = () => {
-        if (!subEl) return;
-        if (done < toResolve.length) {
-          subEl.innerHTML = `<i class="ph ph-spinner"></i> 외부 폴더 분석 중... ${done}/${toResolve.length}`;
-          subEl.hidden = false;
-        } else {
-          subEl.hidden = true;
-        }
-      };
-      updateProgress();
-
-      const CONCURRENCY = 6;
-      let idx = 0;
-      const refreshRow = (entry) => {
-        // 탭 라벨(외부사진 합계)은 항상 업데이트
-        datasets.ext.totalPhotos = datasets.ext.withPhotos.reduce((s, e) => s + e.imgs.length, 0);
-        const tabLabel = dlg.querySelector('[data-tablabel="ext"]');
-        if (tabLabel) tabLabel.textContent = `외부사진 (${datasets.ext.totalCars}대 · ${datasets.ext.totalPhotos}장)`;
-
-        // 차량 row · 공급사 합계 DOM 업데이트는 "현재 탭이 ext"일 때만
-        //  (자체 탭에 렌더된 같은 차량 row를 덮어쓰지 않도록)
-        if (activeTab !== 'ext') return;
-
-        const carCb = dlg.querySelector(`.zip-car-cb[data-key="${CSS.escape(entry.p._key)}"]`);
-        if (carCb) {
-          const metaEl = carCb.closest('.pd-zip-car')?.querySelector('.pd-zip-car-meta');
-          if (metaEl) metaEl.textContent = `${entry.imgs.length}장`;
-        }
-        const prov = entry.p.provider_company_code || '미지정';
-        const provEntries = datasets.ext.groups[prov] || [];
-        const provPhotos = provEntries.reduce((s, c) => s + c.imgs.length, 0);
-        const provMeta = dlg.querySelector(`.zip-prov-cb[data-prov="${CSS.escape(prov)}"]`)?.closest('summary')?.querySelector('.pd-zip-prov-meta');
-        if (provMeta) provMeta.textContent = `${provEntries.length}대 · ${provPhotos}장`;
-
-        updateSelInfo();
-      };
-
-      const workers = Array.from({ length: Math.min(CONCURRENCY, toResolve.length) }, async () => {
-        while (idx < toResolve.length) {
-          const e = toResolve[idx++];
-          try {
-            const urls = await fetchDriveFolderImages(e.driveSrc);
-            if (Array.isArray(urls)) for (const u of urls) if (!e.imgs.includes(u)) e.imgs.push(u);
-          } catch { /* skip */ }
-          e.resolved = true;
-          done++;
-          if (!ac.signal.aborted) {
-            refreshRow(e);
-            updateProgress();
-          }
-        }
-      });
-      await Promise.all(workers);
-    })();
-  }
-
-  // 다운로드
-  dlg.querySelector('#zipDownload').addEventListener('click', async () => {
-    const map = byKey();
-    const selected = [...dlg.querySelectorAll('.zip-car-cb:checked')]
-      .map(cb => map.get(cb.dataset.key))
-      .filter(Boolean);
-    if (!selected.length) return;
-    const btn = dlg.querySelector('#zipDownload');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="ph ph-spinner"></i> 준비 중...';
-    const resetBtn = () => { btn.disabled = false; btn.innerHTML = '<i class="ph ph-download-simple"></i> 다운로드'; };
-
-    try {
-      const JSZip = (await import('jszip')).default;
-      const zip = new JSZip();
-
-      // 모든 (car, url, index) 튜플을 만들고 concurrency 8로 병렬 fetch
-      const tasks = [];
-      for (const entry of selected) {
-        if (!entry.imgs.length) continue;
-        const provider = fsSafe(entry.p.provider_company_code || '미지정');
-        const carNo = fsSafe(entry.p.car_number || entry.p._key);
-        const folder = zip.folder(provider).folder(carNo);
-        entry.imgs.forEach((u, i) => tasks.push({ entry, folder, url: u, idx: i }));
-      }
-      const totalTasks = tasks.length;
-      if (!totalTasks) { showToast('선택한 차량에 사진이 없습니다'); resetBtn(); return; }
-
-      let done = 0, ok = 0, fail = 0;
-      const carSucceeded = new Set();
-      const updateProgress = () => { btn.innerHTML = `<i class="ph ph-spinner"></i> 다운로드 ${done}/${totalTasks}`; };
-      updateProgress();
-
-      let taskIdx = 0;
-      const CONCURRENCY = 8;
-      const workers = Array.from({ length: Math.min(CONCURRENCY, totalTasks) }, async () => {
-        while (taskIdx < totalTasks) {
-          if (ac.signal.aborted) return;  // 취소 감지 → worker 종료
-          const t = tasks[taskIdx++];
-          try {
-            const res = await fetch(t.url, { signal: ac.signal });
-            if (!res.ok) throw new Error('http ' + res.status);
-            const blob = await res.blob();
-            const ext = blob.type.includes('png') ? '.png'
-                     : blob.type.includes('webp') ? '.webp'
-                     : blob.type.includes('gif') ? '.gif' : '.jpg';
-            t.folder.file(`photo_${String(t.idx+1).padStart(2,'0')}${ext}`, blob);
-            ok++;
-            carSucceeded.add(t.entry.p._key);
-          } catch (e) {
-            if (e?.name === 'AbortError' || ac.signal.aborted) return;  // 취소로 인한 실패는 집계 제외
-            fail++;
-            console.warn('[photo-zip] fetch fail', t.url, e?.message || e);
-          }
-          done++;
-          if (!ac.signal.aborted) updateProgress();
-        }
-      });
-      await Promise.all(workers);
-
-      // 취소됐으면 여기서 중단 (압축·저장 스킵)
-      if (ac.signal.aborted) return;
-
-      if (!ok) {
-        showToast(`사진 ${fail}장 모두 다운로드 실패 (CORS/네트워크) — 콘솔 확인`, 'error');
-        resetBtn();
-        return;
-      }
-
-      btn.innerHTML = '<i class="ph ph-spinner"></i> 압축 중...';
-      const content = await zip.generateAsync({ type: 'blob' });
-      if (ac.signal.aborted) return;  // 압축 중에도 취소됐으면 저장 스킵
-      const url = URL.createObjectURL(content);
-      const a = document.createElement('a');
-      a.href = url;
-      const tag = activeTab === 'own' ? 'own' : 'ext';
-      a.download = `freepass_photos_${tag}_${new Date().toISOString().slice(0,10)}.zip`;
-      a.click();
-      URL.revokeObjectURL(url);
-      const msg = fail
-        ? `${carSucceeded.size}대 · ${ok}장 다운로드 (${fail}장 실패)`
-        : `${carSucceeded.size}대 · ${ok}장 다운로드 완료`;
-      showToast(msg);
-      close();
-    } catch (e) {
-      if (ac.signal.aborted) return;  // 취소로 인한 예외는 무시
-      console.error(e);
-      showToast('ZIP 생성 실패', 'error');
-      resetBtn();
-    }
-  }, { signal: ac.signal });
-}
-
-function updateBrief() {
-  if (!allProducts.length) { setBreadcrumbBrief('차량 없음'); return; }
-
-  // 상태별 카운트 (출고불가는 총수에서 제외)
-  const counts = {};
-  allProducts.forEach(p => {
-    const s = p.vehicle_status || '-';
-    counts[s] = (counts[s] || 0) + 1;
-  });
-  const totalActive = allProducts.length - (counts['출고불가'] || 0);
-
-  const parts = [`상품차량 ${totalActive}대`];
-  if (counts['즉시출고']) parts.push(`즉시출고 ${counts['즉시출고']}`);
-  if (counts['출고가능']) parts.push(`출고가능 ${counts['출고가능']}`);
-  if (counts['출고협의']) parts.push(`출고협의 ${counts['출고협의']}`);
-
-  setBreadcrumbBrief(parts.join(' > '));
-}
-
-function passesFiltersExcept(p, skipKey) {
-  const q = (document.getElementById('srchText')?.value || '').toLowerCase();
-  if (q && !matchesText(p, q)) return false;
-  for (const [g, set] of Object.entries(activeFilters)) {
-    if (g === skipKey) continue;
-    if (!set || !set.size) continue;
-    // OR within a group — any selected chip matches passes this group
-    const chips = [...set].map(cid => FILTERS[g].chips.find(c => c.id === cid)).filter(Boolean);
-    if (!chips.length) continue;
-    if (!chips.some(chip => matchFilter(p, g, chip))) return false;
-  }
-  return true;
-}
-
-function matchesText(p, q) {
-  const fields = [
-    // 상품 기본
-    p.car_number, p.maker, p.model, p.sub_model, p.trim_name,
-    p.vehicle_status, p.product_type, p.vehicle_class,
-    p.fuel_type, p.ext_color, p.int_color, p.year,
-    p.location, p.provider_company_code, p.policy_code,
-    p.partner_code, p.vin, p.usage, p.product_code, p._key,
-    p.partner_memo, p.options, p.memo, p.notes, p.mission, p.drive_type,
+  const getters = [
+    p => p.car_number,
+    p => shortStatus(p.vehicle_status || ''),
+    p => p.product_type,
+    p => p.maker,
+    p => p.model,
+    p => p.sub_model,
+    p => p.trim_name || p.trim,
+    p => Array.isArray(p.options) ? p.options.join('·') : p.options,
+    p => String(p.year || ''),
+    p => fmtMileage(p.mileage),
+    p => p.fuel_type,
+    p => p.ext_color,
+    p => (p._policy && (p._policy.credit_grade || p._policy.screening_criteria)) || p.credit_grade,
+    p => p._policy && p._policy.basic_driver_age,
   ];
-  // 정책
-  const pol = p._policy || {};
-  fields.push(
-    pol.policy_name, pol.policy_code, pol.credit_grade, pol.annual_mileage,
-    pol.basic_driver_age, pol.driver_age_lowering,
-    pol.screening_criteria, pol.payment_method, pol.provider_company_code,
-  );
-  // 파트너/사용자 이름·회사명 매칭
-  const partner = (store.partners || []).find(pt => pt.partner_code === p.partner_code || pt.partner_code === p.provider_company_code);
-  if (partner) fields.push(partner.partner_name, partner.manager_name, partner.manager_phone);
-  const user = (store.users || []).find(u => u.company_code === p.provider_company_code || u.partner_code === p.partner_code);
-  if (user) fields.push(user.name, user.company_name, user.phone, user.email);
-  // 심사여부
-  fields.push(needsReview(p) ? '심사필요' : '무심사');
-  // 금액
-  if (p.price) {
-    Object.values(p.price).forEach(pr => {
-      if (pr.rent) fields.push(String(pr.rent), String(Math.round(pr.rent / 10000)) + '만');
-      if (pr.deposit) fields.push(String(pr.deposit), String(Math.round(pr.deposit / 10000)) + '만');
+  const HEADER_LABELS = ['차량번호','상태','구분','제조사','모델명','세부모델','세부트림','선택옵션','연식','주행','연료','색상','심사','연령'];
+  const HAS_FILTER = [false, true, true, true, true, true, true, true, true, true, true, true, true, true];
+  const STATUS_DOT = 10;
+  const MIN_WIDTHS = [70, 48, 44, 44, 56, 60, 56, 80, 40, 48, 48, 40, 44, 40];
+
+  const widths = getters.map((get, idx) => {
+    let sum = 0, n = 0;
+    products.forEach(p => {
+      const v = get(p);
+      if (v == null || v === '') return;
+      sum += charPx(v);
+      n++;
     });
-  }
-  if (p.mileage) fields.push(String(p.mileage), String(Math.round(p.mileage / 10000)) + '만km', String(Math.round(p.mileage / 10000)) + '만');
-  return fields.some(v => v && String(v).toLowerCase().includes(q));
-}
-
-function buildDynamicFilters() {
-  // 활성 필터 제외 상호배제 집계 — passesFiltersExcept 를 passFn 으로 전달
-  buildDynamicChips(allProducts, (p, key) => passesFiltersExcept(p, key));
-}
-
-const dynExpanded = {};
-
-function renderFilters() {
-  const el = document.getElementById('srchFilters');
-  if (!el) return;
-
-  el.innerHTML = Object.entries(FILTERS).map(([key, f]) => {
-    const set = activeFilters[key];
-    const isColor = key === 'color' || key === 'int_color';
-    const chip = c => {
-      if (isColor) {
-        // dynamic chip label 형식: "화이트(12)" → 이름과 카운트 분리
-        const m = c.label.match(/^(.+?)\((\d+)\)$/);
-        const name = m ? m[1] : c.label;
-        const cnt  = m ? m[2] : '';
-        const hex  = colorToHex(name);
-        return `<button class="chip chip-color ${set && set.has(c.id) ? 'is-active' : ''}" data-g="${key}" data-c="${c.id}" title="${name}">
-          <span class="chip-swatch" style="background:${hex};"></span>
-          <span>${name}${cnt ? ` (${cnt})` : ''}</span>
-        </button>`;
-      }
-      return `<button class="chip ${set && set.has(c.id) ? 'is-active' : ''}" data-g="${key}" data-c="${c.id}">${c.label}</button>`;
-    };
-    let chipsHtml = '';
-
-    if (f.dynamic) {
-      const popular = f.popular || [];
-      const others  = f.others  || [];
-      const open    = !!dynExpanded[key];
-      chipsHtml = popular.map(chip).join('');
-      if (others.length) {
-        chipsHtml += `<div class="srch-maker-more ${open ? 'is-open' : ''}">
-          ${open ? others.map(chip).join('') : ''}
-          <button class="btn btn-sm srch-more-btn" data-more="${key}" style="font-size:var(--fs-2xs);color:var(--c-text-muted);width:100%;margin-top:2px;">
-            ${open ? '접기' : `더보기 (${others.length})`}
-          </button>
-        </div>`;
-      }
-    } else {
-      chipsHtml = f.chips.map(chip).join('');
-    }
-
-    const activeCount = set ? set.size : 0;
-    return `
-      <details class="srch-accordion ${activeCount ? 'has-active' : ''}" open>
-        <summary class="srch-accordion-sum">
-          <i class="${f.icon || 'ph ph-funnel'} srch-acc-icon"></i>
-          <span class="srch-acc-label">${f.label}<span class="sb-badge ${activeCount ? 'is-visible' : ''}">${activeCount || ''}</span></span>
-          <i class="ph ph-caret-down srch-acc-caret"></i>
-        </summary>
-        <div class="srch-accordion-body">${chipsHtml}</div>
-      </details>
-    `;
-  }).join('');
-
-  // Chip clicks — toggle + 다른 필터 후보 재계산 (양방향 연동)
-  //   제조사 선택 시 → 모델/세부모델은 그 제조사 것만
-  //   세부모델 선택 시 → 제조사도 자동으로 좁혀짐
-  el.querySelectorAll('.chip').forEach(chipEl => {
-    chipEl.addEventListener('click', () => {
-      const g = chipEl.dataset.g, c = chipEl.dataset.c;
-      if (!activeFilters[g]) activeFilters[g] = new Set();
-      const s = activeFilters[g];
-      if (s.has(c)) s.delete(c);
-      else s.add(c);
-      if (!s.size) delete activeFilters[g];
-
-      // 다른 필터들 chip 후보·카운트 업데이트 → 전체 재렌더
-      buildDynamicFilters();
-      renderFilters();
-      renderActiveChips();
-      applyFilters();
-    });
+    const avgContent = n ? sum / n : 0;
+    const headerW = charPx(HEADER_LABELS[idx]);
+    const baseW = Math.max(avgContent, headerW);
+    const extra = 16 + (HAS_FILTER[idx] ? 14 : 0) + (idx === 1 ? STATUS_DOT : 0);
+    return Math.max(MIN_WIDTHS[idx], Math.ceil(baseW + extra));
   });
-
-  // Dynamic filter "더보기" toggles
-  el.querySelectorAll('[data-more]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const k = btn.dataset.more;
-      dynExpanded[k] = !dynExpanded[k];
-      renderFilters();
-    });
-  });
+  // 옵션 (idx 7) — outlier 영향 줄이려고 세부트림(6) × 1.3 강제
+  widths[7] = Math.round(widths[6] * 1.3);
+  widths.forEach((w, idx) => cols[idx]?.style.setProperty('width', w + 'px'));
 }
 
-function renderActiveChips() {
-  const el = document.getElementById('srchActive');
-  if (!el) return;
-  const entries = Object.entries(activeFilters);
-  const total = entries.reduce((n, [, s]) => n + (s?.size || 0), 0);
-
-  // 조건 헤더 뱃지 업데이트
-  const countEl = document.getElementById('srchFilterCount');
-  if (countEl) {
-    if (total) { countEl.textContent = total; countEl.classList.add('is-visible'); }
-    else { countEl.textContent = ''; countEl.classList.remove('is-visible'); }
-  }
-
-  el.innerHTML = entries.flatMap(([g, set]) =>
-    [...set].map(cid => {
-      const c = FILTERS[g].chips.find(x => x.id === cid);
-      return `<span class="chip is-active">${c?.label || cid} <span class="chip-remove" data-g="${g}" data-c="${cid}">&times;</span></span>`;
-    })
-  ).join('') + `<button class="srch-clear-all ${total ? 'is-active' : ''}" id="srchClear" ${total ? '' : 'disabled'}>전체해제</button>`;
-
-  if (!total) return;
-
-  el.querySelectorAll('.chip-remove').forEach(x => {
-    x.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const g = x.dataset.g, c = x.dataset.c;
-      activeFilters[g]?.delete(c);
-      if (!activeFilters[g]?.size) delete activeFilters[g];
-      buildDynamicFilters(); renderFilters(); renderActiveChips(); applyFilters();
-    });
-  });
-  document.getElementById('srchClear')?.addEventListener('click', () => { activeFilters = {}; buildDynamicFilters(); renderFilters(); renderActiveChips(); applyFilters(); });
-}
-
-function applyFilters() {
-  const q = (document.getElementById('srchText')?.value || '').toLowerCase();
-  let results = [...allProducts];
-
-  // Text
-  if (q) results = results.filter(p => matchesText(p, q)
-  );
-
-  // Chips (OR within group, AND across groups)
-  for (const [g, set] of Object.entries(activeFilters)) {
-    if (!set || !set.size) continue;
-    const chips = [...set].map(cid => FILTERS[g].chips.find(c => c.id === cid)).filter(Boolean);
-    if (!chips.length) continue;
-    results = results.filter(p => chips.some(chip => matchFilter(p, g, chip)));
-  }
-
-  // 기간별 정렬 (카드뷰)
-  if (sortCol && sortDir) {
-    const getRent = p => Number(p.price?.[sortCol]?.rent || 0);
-    results.sort((a, b) => {
-      const av = getRent(a), bv = getRent(b);
-      if (!av && !bv) return 0;
-      if (!av) return 1;
-      if (!bv) return -1;
-      return sortDir === 'asc' ? av - bv : bv - av;
-    });
-  }
-
-  filteredProducts = results;
-  renderList();
-}
-
-function renderList() {
-  const el = document.getElementById('srchList');
-  const countEl = document.getElementById('srchCount');
-  if (!el) return;
-  if (countEl) countEl.textContent = `${filteredProducts.length}대`;
-
-  const PERIODS = [36, 48, 60];
-
-  if (viewMode === 'excel') {
-    const priceCell = (p, m, cls = '', rightPx = 0) => {
-      const v = p.price?.[m] || {};
-      const rent = Number(v.rent) || 0;
-      const dep = Number(v.deposit) || 0;
-      const style = `right:${rightPx}px`;
-      if (!rent) return `<td class="excl-price ${cls}" style="${style}">-</td>`;
-      return `<td class="excl-price ${cls}" style="${style}"><span class="excl-rent">${fmtMoney(rent)}</span>${dep ? `<br><span class="excl-dep">${fmtMoney(dep)}</span>` : ''}</td>`;
-    };
-    const pol = p => p._policy || {};
-    const cols = [88,76,76,52,76,140,140,140,52,68,52,72,52,52,62,62,62,62];
-    const totalW = cols.reduce((s,w) => s+w, 0);
-    const colgroup = `<colgroup>${cols.map(w => `<col style="width:${w}px">`).join('')}</colgroup>`;
-    el.innerHTML = `
-      <div class="excl-wrap"><table class="excl-table" style="width:${totalW}px">${colgroup}
-      <thead><tr>
-        <th data-ft="search" data-ci="0" class="excl-sticky-left">차량번호</th><th data-ft="check" data-ci="1">상태</th><th data-ft="check" data-ci="2">구분</th><th data-ft="check" data-ci="3">제조사</th><th data-ft="check" data-ci="4">모델명</th>
-        <th data-ft="search" data-ci="5">세부모델</th><th data-ft="search" data-ci="6">세부트림</th><th data-ft="search" data-ci="7">선택옵션</th>
-        <th data-ft="check" data-ci="8">연식</th><th data-ft="range" data-rt="mileage" data-ci="9">주행</th><th data-ft="check" data-ci="10">연료</th><th data-ft="check" data-ci="11">색상</th><th data-ft="check" data-ci="12">심사</th><th data-ft="check" data-ci="13">연령</th>
-        <th data-ft="range" data-rt="rent" data-ci="14" class="excl-pin-r" style="right:${cols[15]+cols[16]+cols[17]}px">24개월</th><th data-ft="range" data-rt="rent" data-ci="15" class="excl-pin-r" style="right:${cols[16]+cols[17]}px">36개월</th><th data-ft="range" data-rt="rent" data-ci="16" class="excl-pin-r" style="right:${cols[17]}px">48개월</th><th data-ft="range" data-rt="rent" data-ci="17" class="excl-pin-r" style="right:0">60개월</th>
-      </tr></thead>
-      <tbody>${filteredProducts.map(p => {
-        const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
-        const credit = pol(p).credit_grade || pol(p).screening_criteria || p.credit_grade || '';
-        const age = pol(p).basic_driver_age || '';
-        return `<tr class="excl-row ${selectedProductKey === p._key ? 'is-active' : ''}" data-key="${p._key}">
-          <td class="excl-sticky-left excl-car-cell" title="클릭하면 공유 링크 복사">
-            <span class="excl-car-number">${p.car_number || ''}</span>
-            <i class="ph ph-share-network excl-car-share-icon"></i>
-          </td>
-          <td>${p.vehicle_status || ''}</td>
-          <td>${normalizeProductType(p.product_type)}</td>
-          <td>${p.maker || ''}</td>
-          <td>${p.model || ''}</td>
-          <td>${p.sub_model || ''}</td>
-          <td>${p.trim_name || p.trim || ''}</td>
-          <td>${p.options || ''}</td>
-          <td>${normalizeYear(p.year)}</td>
-          <td>${p.mileage ? Number(p.mileage).toLocaleString() : ''}</td>
-          <td>${p.fuel_type || ''}</td>
-          <td>${color}</td>
-          <td>${credit}</td>
-          <td>${age}</td>
-          ${priceCell(p, '24', 'excl-pin-r', cols[15]+cols[16]+cols[17])}${priceCell(p, '36', 'excl-pin-r', cols[16]+cols[17])}${priceCell(p, '48', 'excl-pin-r', cols[17])}${priceCell(p, '60', 'excl-pin-r', 0)}
-        </tr>`;
-      }).join('')}</tbody>
-    </table></div>`;
-
-    // 셀 hover 툴팁
-    let tooltip = null;
-
-    // 행 클릭/우클릭 — 이벤트 위임 (재렌더링 후에도 유지)
-    if (!el._exclBound) {
-      el._exclBound = true;
-      el.addEventListener('click', (e) => {
-        // 차량번호 셀 클릭 — 공유 링크 다이얼로그 (행 선택과 별도)
-        const carCell = e.target.closest('.excl-car-cell');
-        if (carCell) {
-          const row = carCell.closest('.excl-row');
-          const p = allProducts.find(x => x._key === row?.dataset.key);
-          if (p) {
-            e.stopPropagation();
-            shareProduct(p);
-            return;
-          }
-        }
-        const row = e.target.closest('.excl-row');
-        if (!row || !el.contains(row)) return;
-        if (tooltip) { tooltip.remove(); tooltip = null; }
-        el.querySelector('.excl-row.is-active')?.classList.remove('is-active');
-        row.classList.add('is-active');
-        selectedProductKey = row.dataset.key;
-        renderDetail(row.dataset.key);
-        const p = allProducts.find(x => x._key === row.dataset.key);
-        if (p) {
-          const name = [p.maker, p.sub_model, p.trim_name || p.trim].filter(Boolean).join(' ');
-          setBreadcrumbTail({ icon: 'ph ph-car-simple', label: name || '차량', sub: p.car_number || '' });
-        }
-      });
-      el.addEventListener('contextmenu', (e) => {
-        const row = e.target.closest('.excl-row');
-        if (!row || !el.contains(row)) return;
-        e.preventDefault();
-        const p = allProducts.find(x => x._key === row.dataset.key);
-        if (p) openContextMenu(e, getActionsFor(p, { forContextMenu: true }));
-      });
-    }
-
-    const exclBody = el.querySelector('.excl-wrap');
-
-    // 헤더 클릭 → 필터 팝업
-    let _openFilterTh = null;
-    const closeFilter = () => { document.querySelector('.excl-filter')?.remove(); _openFilterTh = null; };
-
-    // 헤더에 필터값 표시
-    const setFilterLabel = (th, label) => {
-      let tag = th.querySelector('.excl-filter-tag');
-      if (!label) { tag?.remove(); return; }
-      if (!tag) {
-        tag = document.createElement('span');
-        tag.className = 'excl-filter-tag';
-        th.appendChild(tag);
-      }
-      tag.textContent = label;
-    };
-
-    el.querySelectorAll('th[data-ft]').forEach(th => {
-      th.style.cursor = 'pointer';
-      th.addEventListener('click', () => {
-        const ft = th.dataset.ft;
-        const ci = Number(th.dataset.ci);
-        if (ft === 'sort') return;
-
-        // 토글: 같은 헤더 다시 클릭하면 닫기
-        if (_openFilterTh === th) { closeFilter(); return; }
-        closeFilter();
-        _openFilterTh = th;
-
-        const rect = th.getBoundingClientRect();
-        const popup = document.createElement('div');
-        popup.className = 'excl-filter';
-        popup.style.cssText = `position:fixed;top:${rect.bottom+2}px;left:${rect.left}px;z-index:9999;min-width:${Math.max(rect.width,160)}px;max-height:320px;`;
-
-        if (ft === 'search') {
-          popup.innerHTML = `<div style="padding:6px 8px;"><input class="input input-sm" placeholder="검색..." autofocus style="width:100%;"></div>
-            <div style="display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--c-border-soft);">
-              <button class="btn btn-xs btn-outline" data-a="reset" style="flex:1;">초기화</button>
-              <button class="btn btn-xs btn-primary" data-a="apply" style="flex:1;">적용</button>
-            </div>`;
-          const input = popup.querySelector('input');
-          setTimeout(() => input?.focus(), 50);
-          input?.addEventListener('keydown', ev => { if (ev.key === 'Enter') popup.querySelector('[data-a="apply"]')?.click(); });
-          popup.querySelector('[data-a="reset"]')?.addEventListener('click', () => {
-            exclBody.querySelectorAll('.excl-row').forEach(row => { row.style.display = ''; });
-            setFilterLabel(th, '');
-            closeFilter();
-          });
-          popup.querySelector('[data-a="apply"]')?.addEventListener('click', () => {
-            const q = input?.value?.toLowerCase() || '';
-            exclBody.querySelectorAll('.excl-row').forEach(row => {
-              const cell = row.children[ci]?.textContent?.toLowerCase() || '';
-              row.style.display = !q || cell.includes(q) ? '' : 'none';
-            });
-            setFilterLabel(th, q ? '1' : '');
-            closeFilter();
-          });
-
-        } else if (ft === 'check') {
-          const vals = {};
-          exclBody.querySelectorAll('.excl-row').forEach(row => {
-            const v = row.children[ci]?.textContent?.trim() || '';
-            if (v) vals[v] = (vals[v]||0) + 1;
-          });
-          const sorted = Object.entries(vals).sort((a,b) => b[1]-a[1]);
-          popup.innerHTML = `
-            <div style="flex:1;overflow:auto;padding:4px 0;">${sorted.map(([v,cnt]) => `<label style="display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;"><input type="checkbox" value="${v}" style="accent-color:var(--c-accent);"> ${v} <span style="color:var(--c-text-muted);font-size:10px;margin-left:auto;">${cnt}</span></label>`).join('')}</div>
-            <div style="display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--c-border-soft);">
-              <button class="btn btn-xs btn-outline" data-a="reset" style="flex:1;">초기화</button>
-              <button class="btn btn-xs btn-primary" data-a="apply" style="flex:1;">적용</button>
-            </div>`;
-          const applyCheck = () => {
-            const checkedArr = [...popup.querySelectorAll('input:checked')].map(c => c.value);
-            const checked = new Set(checkedArr);
-            exclBody.querySelectorAll('.excl-row').forEach(row => {
-              const cell = row.children[ci]?.textContent?.trim() || '';
-              row.style.display = !checked.size || checked.has(cell) ? '' : 'none';
-            });
-            setFilterLabel(th, checkedArr.length ? String(checkedArr.length) : '');
-          };
-          // 체크박스 변경 즉시 필터 적용
-          popup.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', applyCheck));
-          popup.querySelector('[data-a="reset"]')?.addEventListener('click', () => {
-            popup.querySelectorAll('input:checked').forEach(c => { c.checked = false; });
-            exclBody.querySelectorAll('.excl-row').forEach(row => { row.style.display = ''; });
-            setFilterLabel(th, '');
-          });
-          popup.querySelector('[data-a="apply"]')?.addEventListener('click', () => { applyCheck(); closeFilter(); });
-        } else if (ft === 'range') {
-          const rt = th.dataset.rt;
-          const RANGES = rt === 'rent' ? [
-            { label: '50만원 미만', min: 0, max: 500000 },
-            { label: '50만~60만원', min: 500000, max: 600000 },
-            { label: '60만~70만원', min: 600000, max: 700000 },
-            { label: '70만~80만원', min: 700000, max: 800000 },
-            { label: '80만~90만원', min: 800000, max: 900000 },
-            { label: '90만~100만원', min: 900000, max: 1000000 },
-            { label: '100만~150만원', min: 1000000, max: 1500000 },
-            { label: '150만~200만원', min: 1500000, max: 2000000 },
-            { label: '200만원 이상', min: 2000000, max: Infinity },
-          ] : [
-            { label: '1만Km 미만', min: 0, max: 10000 },
-            { label: '1만~2만Km', min: 10000, max: 20000 },
-            { label: '2만~3만Km', min: 20000, max: 30000 },
-            { label: '3만~5만Km', min: 30000, max: 50000 },
-            { label: '5만~7만Km', min: 50000, max: 70000 },
-            { label: '7만~10만Km', min: 70000, max: 100000 },
-            { label: '10만~15만Km', min: 100000, max: 150000 },
-            { label: '15만Km 이상', min: 150000, max: Infinity },
-          ];
-          // 각 구간별 건수 — 대여료는 row의 실제 데이터에서 값 가져오기
-          const rentMonth = rt === 'rent' ? ({14:'24',15:'36',16:'48',17:'60'})[ci] : null;
-          const getVal = (row) => {
-            const key = row.dataset.key;
-            const p = allProducts.find(x => x._key === key);
-            if (!p) return 0;
-            if (rentMonth) return Number(p.price?.[rentMonth]?.rent || 0);
-            return Number(p.mileage || 0);
-          };
-          const counts = RANGES.map(r => {
-            let cnt = 0;
-            exclBody.querySelectorAll('.excl-row').forEach(row => {
-              const v = getVal(row);
-              if (v >= r.min && v < r.max) cnt++;
-            });
-            return { ...r, cnt };
-          }).filter(r => r.cnt > 0);
-
-          popup.innerHTML = `
-            <div style="flex:1;overflow:auto;padding:4px 0;">${counts.map((r,i) => `<label style="display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;"><input type="checkbox" data-min="${r.min}" data-max="${r.max}" style="accent-color:var(--c-accent);"> ${r.label} <span style="color:var(--c-text-muted);font-size:10px;margin-left:auto;">${r.cnt}</span></label>`).join('')}</div>
-            <div style="display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--c-border-soft);">
-              <button class="btn btn-xs btn-outline" data-a="reset" style="flex:1;">초기화</button>
-              <button class="btn btn-xs btn-primary" data-a="apply" style="flex:1;">적용</button>
-            </div>`;
-          const applyRange = () => {
-            const checkedInputs = [...popup.querySelectorAll('input:checked')];
-            const selected = checkedInputs.map(c => ({ min: Number(c.dataset.min), max: Number(c.dataset.max) }));
-            exclBody.querySelectorAll('.excl-row').forEach(row => {
-              if (!selected.length) { row.style.display = ''; return; }
-              const v = getVal(row);
-              row.style.display = selected.some(r => v >= r.min && v < r.max) ? '' : 'none';
-            });
-            setFilterLabel(th, selected.length ? String(selected.length) : '');
-          };
-          popup.querySelectorAll('input[type=checkbox]').forEach(cb => cb.addEventListener('change', applyRange));
-          popup.querySelector('[data-a="reset"]')?.addEventListener('click', () => {
-            popup.querySelectorAll('input:checked').forEach(c => { c.checked = false; });
-            exclBody.querySelectorAll('.excl-row').forEach(row => { row.style.display = ''; });
-            setFilterLabel(th, '');
-          });
-          popup.querySelector('[data-a="apply"]')?.addEventListener('click', () => { applyRange(); closeFilter(); });
-        }
-
-        document.body.appendChild(popup);
-        // 팝업 내부 클릭 이벤트 버블링 차단 (바깥 클릭 감지 리스너가 잡지 않도록)
-        popup.addEventListener('pointerdown', (ev) => ev.stopPropagation());
-        popup.addEventListener('click', (ev) => ev.stopPropagation());
-        // 위치 보정
-        requestAnimationFrame(() => {
-          const pr = popup.getBoundingClientRect();
-          if (pr.right > window.innerWidth) popup.style.left = `${window.innerWidth - pr.width - 8}px`;
-          if (pr.bottom > window.innerHeight) popup.style.top = `${rect.top - pr.height - 2}px`;
-        });
-        // ESC 닫기
-        const onKey = ev => { if (ev.key === 'Escape') { closeFilter(); document.removeEventListener('keydown', onKey); } };
-        document.addEventListener('keydown', onKey);
-        // 바깥 클릭 닫기
-        setTimeout(() => {
-          const onOut = ev => { if (!popup.contains(ev.target) && ev.target !== th) { closeFilter(); document.removeEventListener('pointerdown', onOut); document.removeEventListener('keydown', onKey); } };
-          document.addEventListener('pointerdown', onOut);
-        });
-      });
-    });
-
-    // 컬럼 리사이즈 — th 우측 경계 드래그
-    el.querySelectorAll('.excl-head th').forEach((th, i) => {
-      const handle = document.createElement('div');
-      handle.className = 'excl-resize';
-      th.style.position = 'relative';
-      th.appendChild(handle);
-      // 더블클릭 → 내용에 맞춰 넓히기 / 다시 더블클릭 → 원래 폭 복원
-      const defaultW = cols[i];
-      let isExpanded = false;
-      handle.addEventListener('dblclick', (e) => {
-        e.stopPropagation();
-        if (!isExpanded) {
-          let maxW = th.scrollWidth;
-          exclBody.querySelectorAll(`.excl-row td:nth-child(${i+1})`).forEach(td => {
-            maxW = Math.max(maxW, td.scrollWidth + 16);
-          });
-          cols[i] = Math.max(defaultW, maxW);
-          isExpanded = true;
-        } else {
-          cols[i] = defaultW;
-          isExpanded = false;
-        }
-        const tw = cols.reduce((s,w) => s+w, 0);
-        el.querySelectorAll('.excl-table').forEach(t => { t.style.width = `${tw}px`; });
-        el.querySelectorAll(`.excl-table col:nth-child(${i+1})`).forEach(col => { col.style.width = `${cols[i]}px`; });
-      });
-      handle.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const startX = e.clientX;
-        const startW = cols[i];
-        document.body.style.cursor = 'col-resize';
-        document.body.style.userSelect = 'none';
-        let rafId = 0;
-        const tables = el.querySelectorAll('.excl-table');
-        const colEls = el.querySelectorAll(`.excl-table col:nth-child(${i+1})`);
-        const onMove = (ev) => {
-          cancelAnimationFrame(rafId);
-          rafId = requestAnimationFrame(() => {
-            const newW = Math.max(30, startW + ev.clientX - startX);
-            cols[i] = newW;
-            const tw = cols.reduce((s,w) => s+w, 0);
-            tables.forEach(t => { t.style.width = `${tw}px`; });
-            colEls.forEach(col => { col.style.width = `${newW}px`; });
-          });
-        };
-        const onUp = () => {
-          document.removeEventListener('mousemove', onMove);
-          document.removeEventListener('mouseup', onUp);
-          document.body.style.cursor = '';
-          document.body.style.userSelect = '';
-        };
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('mouseup', onUp);
-      });
-    });
-
-    // 세부트림(6) · 선택옵션(7) 셀 hover → 차량 상세 툴팁
-    let tooltipKey = null;
-    const TOOLTIP_COLS = new Set([6, 7]); // 세부트림, 선택옵션 컬럼 인덱스
-    exclBody.addEventListener('mouseover', (e) => {
-      const td = e.target.closest('td');
-      if (!td) return;
-      const row = td.closest('.excl-row');
-      if (!row) return;
-      const ci = [...row.children].indexOf(td);
-      if (!TOOLTIP_COLS.has(ci)) { if (tooltip) { tooltip.remove(); tooltip = null; tooltipKey = null; } return; }
-      if (row.dataset.key === tooltipKey) return;
-      if (tooltip) { tooltip.remove(); tooltip = null; }
-      tooltipKey = row.dataset.key;
-      const p = allProducts.find(x => x._key === tooltipKey);
-      if (!p) return;
-      const trim = p.trim_name || p.trim || '-';
-      const opts = p.options || '-';
-      const spec = [normalizeYear(p.year), p.mileage ? `${Number(p.mileage).toLocaleString()}km` : '', p.fuel_type, [p.ext_color, p.int_color].filter(Boolean).join('/')].filter(Boolean).join(' · ');
-      tooltip = document.createElement('div');
-      tooltip.className = 'excl-tooltip';
-      tooltip.innerHTML = `<div style="font-weight:var(--fw-medium);">${trim}</div><div>${opts}</div><div style="color:var(--c-text-muted);margin-top:2px;">${spec}</div>`;
-      document.body.appendChild(tooltip);
-    });
-    exclBody.addEventListener('mousemove', (e) => {
-      if (tooltip) { tooltip.style.left = `${e.clientX + 12}px`; tooltip.style.top = `${e.clientY + 16}px`; }
-    });
-    exclBody.addEventListener('mouseout', (e) => {
-      const td = e.target.closest('td');
-      const related = e.relatedTarget?.closest?.('td');
-      if (td && related) {
-        const row = related.closest('.excl-row');
-        const ci = row ? [...row.children].indexOf(related) : -1;
-        if (TOOLTIP_COLS.has(ci) && row?.dataset.key === tooltipKey) return;
-      }
-      if (tooltip) { tooltip.remove(); tooltip = null; tooltipKey = null; }
-    });
-
+export function renderSearchTable(products) {
+  const tbody = document.querySelector('[data-page="search"] .table tbody');
+  if (!tbody) return;
+  if (!products || !products.length) {
+    tbody.innerHTML = '<tr><td colspan="18" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
     return;
   }
-
-  el.innerHTML = filteredProducts.map(p => {
-    const price = p.price || {};
-    const isActive = selectedProductKey === p._key;
-    // 메인: 세부모델 + 트림 (한글/영문/숫자 단어 단위로 중복 제거 — 띄어쓰기·대소문자 무관)
-    const subModel = (p.sub_model || '').trim();
-    const trimRaw  = (p.trim_name || p.trim || '').trim();
-    const trimClean = trimMinusSub(subModel, trimRaw);
-    const title = [subModel, trimClean].filter(Boolean).join(' ');
-
-    // 뱃지 — 공용 헬퍼
-    const topBadges = topBadgesHtml(p);
-    const reviewTag = reviewOverlayHtml(p);
-    const creditTag = creditOverlayHtml(p);
-    // 이미지 — 공용 헬퍼
-    const thumb = firstProductImage(p);
-    const driveFolderUrl = !thumb ? supportedDriveSource(p) : '';
-
-    // 보조: 차량번호 · 제조사 · 연식 · 주행 · 연료 · 색상(외/내)
-    const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
-    const sub = [
-      p.provider_company_code,
-      p.car_number,
-      p.maker,
-      normalizeYear(p.year),
-      p.mileage ? Number(p.mileage).toLocaleString()+'km' : '',
-      p.fuel_type,
-      color,
-      p.drive_type,
-    ].filter(Boolean).join(' · ');
-
-    // 기간별 대여료 (36/48/60) — rent + deposit
-    const priceGrid = `<div class="srch-price-grid">${PERIODS.map(m => {
-      const v = price[m] || {};
-      const rent = Number(v.rent) || 0;
-      const dep  = Number(v.deposit) || 0;
-      return `<div class="srch-price-col">
-        <div class="srch-price-rent">${rent ? fmtMoney(rent) : '-'}</div>
-        <div class="srch-price-dep">${dep ? fmtMoney(dep) : ''}</div>
-      </div>`;
-    }).join('')}</div>`;
-
-    return `
-      <div class="srch-item ${isActive ? 'is-active' : ''}" data-key="${p._key}">
-        <div class="srch-item-thumb">
-          ${thumb
-            ? `<img src="${thumb}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`
-            : driveFolderUrl
-              ? `<i class="ph ph-car-simple srch-thumb-placeholder"></i><img data-drive-folder="${driveFolderUrl}" data-drive-mode="thumb" alt="" loading="lazy" decoding="async" hidden onerror="this.remove()">`
-              : `<i class="ph ph-car-simple"></i>`}
-          ${reviewTag}
-          ${creditTag}
-        </div>
-        <div class="srch-item-body">
-          <div class="srch-item-name">
-            ${topBadges}<span>${title || '-'}</span>
-          </div>
-          <div class="srch-item-mid"><span>${sub}</span></div>
-        </div>
-        ${priceGrid}
-      </div>
-    `;
-  }).join('') || `<div class="srch-empty"><i class="ph ph-magnifying-glass"></i><p>조건에 맞는 차량이 없습니다</p></div>`;
-
-  // 이벤트 위임 — 컨테이너 하나의 리스너로 전체 카드 처리
-  //  카드 수백 개마다 리스너 바인딩하던 방식 제거 → 렌더 빠르고 GC 부담 감소
-  bindListDelegation(el);
+  tbody.innerHTML = products.map(renderSearchRow).join('');
+  const first = tbody.querySelector('tr');
+  if (first) {
+    first.classList.add('selected');
+    const p = products.find(x => x._key === first.dataset.id);
+    if (p) renderSearchDetail(p);
+  }
 }
 
-let _listDelegated = null;
-function bindListDelegation(el) {
-  if (_listDelegated === el) return;
-  _listDelegated = el;
-
-  el.addEventListener('click', (e) => {
-    const item = e.target.closest('.srch-item');
-    if (!item) return;
-    selectedProductKey = item.dataset.key;
-    // 전체 재렌더 대신 is-active 클래스만 토글 (img 태그 유지 — 썸네일 번쩍임 방지)
-    el.querySelector('.srch-item.is-active')?.classList.remove('is-active');
-    item.classList.add('is-active');
-    renderDetail(item.dataset.key);
-    const p = allProducts.find(x => x._key === item.dataset.key);
-    if (p) {
-      const name = [p.maker, p.sub_model, p.trim_name || p.trim].filter(Boolean).join(' ');
-      setBreadcrumbTail({
-        icon: 'ph ph-car-simple',
-        label: name || '차량',
-        sub: p.car_number || '',
-      });
-    }
-  });
-
-  el.addEventListener('contextmenu', (e) => {
-    const item = e.target.closest('.srch-item');
-    if (!item) return;
-    const p = allProducts.find(x => x._key === item.dataset.key);
-    if (!p) return;
-    openContextMenu(e, getActionsFor(p, { forContextMenu: true }));
-  });
+function renderSearchRow(p) {
+  const status = p.vehicle_status || '대기';
+  const dot = mapStatusDot(status);
+  const stShort = shortStatus(status);
+  const credit = (p._policy && (p._policy.credit_grade || p._policy.screening_criteria)) || p.credit_grade || '-';
+  const age = (p._policy && p._policy.basic_driver_age) ? p._policy.basic_driver_age : '';
+  const opts = Array.isArray(p.options) ? p.options.join('·') : (p.options || '-');
+  const maker = p.maker || '-';
+  const model = p.model || '-';
+  const subModel = p.sub_model || '-';
+  const trim = p.trim_name || p.trim || '-';
+  return `
+    <tr data-id="${p._key}">
+      <td class="sticky-col" title="${esc(p.car_number || '')}">${p.car_number || '-'}</td>
+      <td class="center" title="${esc(status)}"><span class="status-dot ${dot}"></span>${stShort}</td>
+      <td class="center" title="${esc(p.product_type || '')}">${p.product_type || '-'}</td>
+      <td title="${esc(maker)}">${maker}</td>
+      <td title="${esc(model)}">${model}</td>
+      <td title="${esc(subModel)}">${subModel}</td>
+      <td title="${esc(trim)}">${trim}</td>
+      <td class="dim" title="${esc(opts)}">${opts}</td>
+      <td class="center">${p.year || '-'}</td>
+      <td class="num">${fmtMileage(p.mileage)}</td>
+      <td class="center" title="${esc(p.fuel_type || '')}">${p.fuel_type || '-'}</td>
+      <td class="center" title="${esc(p.ext_color || '')}">${p.ext_color || '-'}</td>
+      <td class="center" title="${esc(credit)}">${credit}</td>
+      <td class="center">${age || '-'}</td>
+      <td class="num">${fmtPricePair(p.price?.['24'])}</td>
+      <td class="num">${fmtPricePair(p.price?.['36'])}</td>
+      <td class="num">${fmtPricePair(p.price?.['48'])}</td>
+      <td class="num">${fmtPricePair(p.price?.['60'])}</td>
+    </tr>`;
 }
 
-/* ── 역할별 액션 ──
- * 영업자: 문의·계약 + 공유
- * 공급사: 공유만
- * 관리자: 수정 + 공유
- */
-function getActionsFor(product, { forContextMenu = false } = {}) {
+function fmtPricePair(v) {
+  if (!v || !Number(v.rent)) return '<span style="color:var(--text-muted);">-</span>';
+  const r = Math.round(Number(v.rent) / 10000);
+  const d = Math.round(Number(v.deposit || 0) / 10000);
+  return `<span class="price-pair"><span class="rent">${r}만</span><span class="sep">/</span><span class="dep">${d || 0}만</span></span>`;
+}
+
+/* ──────── B. 상세 패널 (다른 페이지에서도 호출됨) ──────── */
+
+/* options.skipHead — 헤드 건드리지 않음 (워크스페이스 차량정보 카드 등) */
+export function renderSearchDetail(p, targetCard, options = {}) {
+  const card = targetCard || document.querySelectorAll('.pt-page[data-page="search"] .ws4-card')[1];
+  if (!card) return;
   const role = store.currentUser?.role;
-  // 카탈로그 모드 (손님) — 액션 없음 (하단 전화 CTA 로 대체)
-  if (store.catalogMode) return [];
-  const acts = [];
-  // 영업자(영업관리자): 소통 · 계약 · 공유
-  if (role === 'agent' || role === 'agent_admin') {
-    acts.push({ icon: 'ph ph-chat-circle', label: '소통', tone: 'navy', action: () => startInquiryContract(product) });
-    acts.push({ icon: 'ph ph-file-text', label: '계약', tone: 'emerald', action: () => startContractFromProduct(product) });
-    acts.push({ icon: 'ph ph-share-network', label: '공유', tone: 'rose', action: () => shareProduct(product) });
-    return acts;
-  }
-  // 관리자: 계약생성(대리입력) + 공유 (+ 컨텍스트메뉴에서만 세부모델 변경)
-  if (role === 'admin') {
-    acts.push({ icon: 'ph ph-file-plus', label: '계약생성', tone: 'emerald', action: () => startContractFromProduct(product) });
-    if (forContextMenu) {
-      acts.push({ icon: 'ph ph-pencil-simple', label: '세부모델 변경', tone: 'navy', action: () => editSubModel(product) });
+  const isAdmin = role === 'admin';
+  const canSeeFee = isAdmin || role === 'agent' || role === 'agent_admin';
+  const pol = p._policy || p.policy || {};
+  const policyName = pol.policy_name || p.policy_name || '';
+
+  // 헤더 — search 페이지에서만 갱신
+  if (!options.skipHead) {
+    const head = card.querySelector('.ws4-head');
+    if (head) {
+      const canCreateRoom = role === 'agent' || role === 'agent_admin' || isAdmin;
+      head.innerHTML = `
+        <span style="color: var(--text-main);">${esc(p.car_number || '-')} 상세페이지</span>
+        <div class="spacer" style="flex:1;"></div>
+        ${canCreateRoom ? `<button class="btn btn-sm btn-primary" id="srchCreateRoom"><i class="ph ph-chat-circle-plus"></i> 대화 생성</button>` : ''}
+        <button class="btn btn-sm" id="detailClose" title="패널 닫기"><i class="ph ph-x"></i></button>
+      `;
+      head.querySelector('#srchCreateRoom')?.addEventListener('click', () => _onCreateRoom?.(p));
     }
-    acts.push({ icon: 'ph ph-share-network', label: '공유', tone: 'rose', action: () => shareProduct(product) });
-    return acts;
   }
-  // 공급사·기타: 공유만
-  acts.push({ icon: 'ph ph-share-network', label: '공유', tone: 'rose', action: () => shareProduct(product) });
-  return acts;
-}
 
-async function startInquiryContract(p) {
-  // 대화방 생성/열기 → 워크스페이스로 이동 (계약 진행도 같은 페이지에서)
-  try {
-    const { ensureRoom } = await import('../firebase/collections.js');
-    const me = store.currentUser || {};
-    const roomId = await ensureRoom({
-      productUid: p._key,
-      productCode: p.product_code || p._key,
-      agentUid: me.uid,
-      agentCode: me.company_code || me.user_code || '',
-      agentName: me.company_name || me.name || '',
-      agentChannelCode: me.channel_code || '',
-      providerUid: p.provider_uid || '',
-      providerName: p.provider_name || p.provider_company_code || '',
-      providerCompanyCode: p.provider_company_code || '',
-      vehicleNumber: p.car_number || '',
-      modelName: p.model || '',
-      subModel: p.sub_model || '',
-      providerCode: p.provider_company_code || '',
-    });
-    store.pendingOpenRoom = roomId;
-    navigate('/');
-    showToast(`${p.car_number || p.model} 문의·계약 시작`);
-  } catch (e) {
-    console.error('[startInquiryContract]', e);
-    showToast('대화방 생성 실패');
-  }
-}
+  const imgs = [...new Set([...productImages(p), ...productExternalImages(p)])].map(toProxiedImage);
+  const driveSrc = supportedDriveSource(p);
 
-function editProduct(p) {
-  store.editProductId = p._key;
-  navigate('/product');
-}
+  // 6섹션 row 데이터 — 공통 헬퍼
+  const rows = extractProductDetailRows(p, { canSeeFee, isAdmin, policies: store.policies });
+  const basicRows = rows.basic;
+  const specRows  = rows.spec;
+  const insRows   = rows.ins;
+  const condRows  = rows.cond;
+  const adminRows = rows.etc;
+  const priceRows = rows.price;
+  const feeRows   = rows.fee;
+  const opts      = rows.options;
 
-function startContractFromProduct(p) {
-  // 계약 페이지로 이동 — 선택된 차량 전달
-  store.pendingContractProduct = p._key;
-  navigate('/contract');
-  showToast(`${p.car_number || p.model} 계약 시작`);
-}
+  const filterRows = (r) => r.filter(([, v]) => v != null && v !== '' && v !== '-');
+  const renderGrid = (r) => filterRows(r).map(([l, v]) => `<div class="lab">${esc(l)}</div><div>${esc(v)}</div>`).join('');
 
-/** 관리자 전용 — 상품의 세부모델만 변경 (maker/model 은 유지). 차종마스터에서 옵션 목록 가져옴. */
-async function editSubModel(p) {
-  const { getSubModels } = await import('../core/car-models.js');
-  const { updateRecord } = await import('../firebase/db.js');
-  const options = getSubModels(p.maker || '', p.model || '');
-  if (!options.length && !p.sub_model) {
-    showToast('차종마스터에 해당 모델 등록 안됨', 'error');
-    return;
-  }
-  const currentSub = p.sub_model || '';
-  const dlg = document.createElement('dialog');
-  dlg.className = 'submodel-dialog';
-  dlg.innerHTML = `
-    <div class="submodel-head">
-      <span><i class="ph ph-pencil-simple"></i> 세부모델 변경</span>
-      <button class="submodel-close" aria-label="닫기"><i class="ph ph-x"></i></button>
-    </div>
-    <div class="submodel-body">
-      <div class="submodel-label">차량</div>
-      <div class="submodel-context">${p.car_number || ''} · ${p.maker || ''} ${p.model || ''}</div>
-      <div class="submodel-label">현재 세부모델</div>
-      <div class="submodel-current">${currentSub || '<em>미지정</em>'}</div>
-      <div class="submodel-label">변경할 세부모델</div>
-      <div class="submodel-options">
-        ${options.map(s => `
-          <button class="submodel-opt ${s === currentSub ? 'is-current' : ''}" data-sub="${s.replace(/"/g, '&quot;')}">${s}</button>
-        `).join('')}
-      </div>
-      ${options.length === 0 ? '<div class="submodel-empty">차종마스터에 등록된 세부모델 없음</div>' : ''}
-    </div>
-    <div class="submodel-foot">
-      <button class="btn btn-sm btn-outline" data-act="cancel">취소</button>
-    </div>
+  const photoHtml = imgs.length ? `
+    <img class="detail-photo-main" id="dtlMainImg" src="${esc(imgs[0])}" alt="" loading="lazy"
+         onerror="this.style.display='none'; this.parentElement.querySelector('.dtl-photo-fallback').style.display='flex';">
+    <div class="dtl-photo-fallback" style="display:none; align-items:center; justify-content:center; width:100%; height:180px; background:var(--bg-stripe); color:var(--text-muted);"><i class="ph ph-image"></i></div>
+    ${imgs.length > 1 ? `<div class="detail-photo-thumbs">
+      ${imgs.slice(0, 5).map((u, i) => `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" data-img="${esc(u)}"><img src="${esc(u)}" alt="" loading="lazy" onerror="this.style.display='none';"></div>`).join('')}
+      ${imgs.length > 5 ? `<div class="detail-photo-thumb more">+${imgs.length - 5}</div>` : ''}
+    </div>` : ''}
+  ` : `
+    <div class="detail-photo-main" style="display:flex; align-items:center; justify-content:center;"><i class="ph ph-image" style="font-size:32px; color:var(--text-muted);"></i></div>
+    ${driveSrc ? `<div style="padding:8px; text-align:center; color:var(--text-muted); font-size:11px;">사진 불러오는 중...</div>` : ''}
   `;
-  document.body.appendChild(dlg);
-  dlg.showModal();
 
-  const close = () => { if (dlg.open) dlg.close(); dlg.remove(); };
-  dlg.querySelector('.submodel-close').addEventListener('click', close);
-  dlg.querySelector('[data-act="cancel"]').addEventListener('click', close);
-  dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+  const body = card.querySelector('.ws4-body');
+  body.innerHTML = `
+    <div class="detail-section">${photoHtml}</div>
 
-  dlg.querySelectorAll('.submodel-opt').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const sub = btn.dataset.sub;
-      if (sub === currentSub) { close(); return; }
-      try {
-        await updateRecord(`products/${p._key}`, { sub_model: sub });
-        showToast(`세부모델 변경: ${sub}`);
-        close();
-      } catch (e) {
-        console.error('[editSubModel]', e);
-        showToast('변경 실패', 'error');
-      }
+    <!-- 1. 기본정보 -->
+    <div class="detail-section">
+      <div class="detail-section-label">1. 기본정보</div>
+      <div class="info-grid">${renderGrid(basicRows)}</div>
+    </div>
+
+    <!-- 2. 제조사 스펙 -->
+    ${filterRows(specRows).length || opts.length ? `<div class="detail-section">
+      <div class="detail-section-label">2. 제조사 스펙</div>
+      <div class="info-grid">
+        ${renderGrid(specRows)}
+        ${opts.length ? `<div class="lab">옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>` : ''}
+
+    <!-- 3. 기간별 대여료 -->
+    ${priceRows.length ? `<div class="detail-section">
+      <div class="detail-section-label">3. 기간별 대여료 / 보증금</div>
+      <table class="table">
+        <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
+        <tbody>${priceRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${r.rent ? Math.round(r.rent/10000) + '만' : '-'}</td><td class="num">${r.dep ? Math.round(r.dep/10000) + '만' : '-'}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>` : ''}
+
+    <!-- 4. 보험 정보 -->
+    ${insRows.length ? `<div class="detail-section">
+      <div class="detail-section-label">4. 보험 정보</div>
+      <table class="table">
+        <thead><tr><th>구분</th><th>보장한도</th><th>자기부담금</th></tr></thead>
+        <tbody>${insRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${esc(r[2] || '-')}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>` : ''}
+
+    <!-- 5. 기타 계약 조건 -->
+    ${filterRows(condRows).length ? `<div class="detail-section">
+      <div class="detail-section-label">5. 기타 계약 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
+      <div class="info-grid">${renderGrid(condRows)}</div>
+    </div>` : ''}
+
+    <!-- 6. 영업 수수료 (agent / admin / agent_admin 만) -->
+    ${(canSeeFee && feeRows.length) ? `<div class="detail-section">
+      <div class="detail-section-label">6. 영업 수수료</div>
+      <table class="table">
+        <thead><tr><th>기간</th><th class="num">수수료</th></tr></thead>
+        <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${Math.round(r.fee/10000)}만</td></tr>`).join('')}</tbody>
+      </table>
+    </div>` : ''}
+
+    <!-- 관리자 정보 (admin only) -->
+    ${adminRows.length && filterRows(adminRows).length ? `<div class="detail-section">
+      <div class="detail-section-label">관리자 정보</div>
+      <div class="info-grid">${renderGrid(adminRows)}</div>
+    </div>` : ''}
+  `;
+
+  // 썸네일 클릭 → 메인 이미지 교체
+  body.querySelectorAll('.detail-photo-thumb[data-img]').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const url = thumb.dataset.img;
+      const main = body.querySelector('img.detail-photo-main');
+      if (main && url) main.src = url;
+      body.querySelectorAll('.detail-photo-thumb').forEach(t => t.classList.remove('is-active'));
+      thumb.classList.add('is-active');
     });
   });
-}
 
-/** 상품 1건 → 카탈로그 단일상품 링크 (보낸사람 user_code 포함) */
-function shareProduct(p) {
-  const me = store.currentUser || {};
-  const agentQS = me.user_code ? `&a=${encodeURIComponent(me.user_code)}` : '';
-  const car = p.car_number || '';
-  const url = car
-    ? `${location.origin}/catalog.html?car=${encodeURIComponent(car)}${agentQS}`
-    : `${location.origin}/catalog.html?pid=${encodeURIComponent(p._key)}${agentQS}`;
-  openShareDialog('상품 공유 링크', `${p.car_number || ''} ${[p.maker, p.model].filter(Boolean).join(' ')}`, url);
-}
-
-/** 공유 URL 다이얼로그 — MarkAny 등 clipboard 차단 환경 대응.
- *  QR 스캔 / 문자 전송 / 새 탭 / 복사 시도 제공. */
-function openShareDialog(title, subtitle, url) {
-  const dlg = document.createElement('dialog');
-  dlg.className = 'share-dialog';
-  dlg.innerHTML = `
-    <div class="share-head">
-      <span><i class="ph ph-share-network"></i> ${title}</span>
-      <button class="share-close" aria-label="닫기" data-act="close"><i class="ph ph-x"></i></button>
-    </div>
-    <div class="share-body">
-      ${subtitle ? `<div class="share-sub">${subtitle}</div>` : ''}
-      <div class="share-hint-top">아래 URL 선택해서 카톡·문자에 붙여넣으세요</div>
-      <textarea class="share-url" readonly rows="2">${url}</textarea>
-      <div class="share-actions">
-        <button class="btn btn-sm btn-primary" data-act="copy"><i class="ph ph-copy"></i> 복사</button>
-        <a class="btn btn-sm btn-outline" href="${url}" target="_blank" rel="noopener"><i class="ph ph-arrow-square-out"></i> 새 탭에서 열기</a>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(dlg);
-  dlg.showModal();
-
-  const close = () => { if (dlg.open) dlg.close(); dlg.remove(); };
-  const input = dlg.querySelector('.share-url');
-
-  setTimeout(() => {
-    try { input.focus(); input.select(); input.setSelectionRange(0, url.length); } catch {}
-  }, 100);
-  input.addEventListener('focus', () => input.setSelectionRange(0, url.length));
-  input.addEventListener('click', () => input.setSelectionRange(0, url.length));
-
-  dlg.addEventListener('click', async (e) => {
-    const btn = e.target.closest('[data-act]');
-    if (btn) {
-      const act = btn.dataset.act;
-      if (act === 'close') { close(); return; }
-      if (act === 'copy') {
-        let ok = false;
-        try { await navigator.clipboard.writeText(url); ok = true; }
-        catch {
-          try { input.focus(); input.select(); ok = document.execCommand('copy'); }
-          catch { ok = false; }
+  // Drive 폴더면 백그라운드 fetch 후 재렌더
+  if (driveSrc && !p._drive_folder_virtual) {
+    import('../core/drive-photos.js').then(m => {
+      m.fetchDriveFolderImages(driveSrc).then(urls => {
+        if (!urls?.length) return;
+        const stillCurrent = card.querySelector('.ws4-head span')?.textContent === (p.car_number || '-');
+        if (stillCurrent) {
+          p.image_urls = urls;
+          p._drive_folder_virtual = true;
+          renderSearchDetail(p);
         }
-        if (ok) { showToast('링크 복사됨'); close(); }
-        else { showToast('자동 복사 차단 — QR 스캔 또는 문자 전송 이용', 'error'); input.focus(); input.select(); }
-        return;
-      }
-    }
-    if (e.target === dlg) close();
-  });
+      }).catch(() => {});
+    });
+  }
 }
 
-/** 관리자 전용 — 카탈로그 공유 (모드 선택 + URL 복사 통합 다이얼로그) */
-function openShareCatalog() {
-  const me = store.currentUser || {};
-  const agentQS = me.user_code ? `?a=${encodeURIComponent(me.user_code)}` : '';
-  // 현재 활성 필터에서 공급사 1개만 선택됐으면 공급사 모드 옵션 제공
-  const providerSet = activeFilters.provider;
-  let providerCode = '';
-  if (providerSet && providerSet.size === 1) {
-    const chipId = [...providerSet][0];
-    providerCode = String(chipId).replace(/^provider_/, '');
-  }
+/* ──────── C. 인터랙션 (row 클릭 / 닫기 / 헤더 필터 popover / chip 필터) ──────── */
 
-  const buildUrl = (mode) => {
-    let url = `${location.origin}/catalog.html${agentQS}`;
-    if (mode === 'provider' && providerCode) {
-      url += (agentQS ? '&' : '?') + `provider=${encodeURIComponent(providerCode)}`;
-    }
-    return url;
-  };
+const SEARCH_COL_FIELD = [
+  null,                       // 0 차량번호 (sticky-col, 필터 X)
+  'vehicle_status',
+  'product_type',
+  'maker',
+  'model',
+  'sub_model',
+  'trim_name',
+  'options',
+  'year',
+  'mileage',
+  'fuel_type',
+  'ext_color',
+  '_policy.credit_grade',
+  '_policy.basic_driver_age',
+  null, null, null, null,     // 가격 4컬럼 (range 미구현)
+];
 
-  let currentMode = 'all';
-  const dlg = document.createElement('dialog');
-  dlg.className = 'share-dialog';
-  dlg.innerHTML = `
-    <div class="share-head">
-      <span><i class="ph ph-share-network"></i> 카탈로그 공유</span>
-      <button class="share-close" aria-label="닫기" data-act="close"><i class="ph ph-x"></i></button>
-    </div>
-    <div class="share-body">
-      <div class="share-mode-row">
-        <button class="share-mode-btn is-active" data-mode="all">
-          <i class="ph ph-grid-four"></i>
-          <div>
-            <div class="share-mode-title">전체 상품</div>
-            <div class="share-mode-desc">모든 차량을 한 페이지로</div>
-          </div>
-        </button>
-        <button class="share-mode-btn ${providerCode ? '' : 'is-disabled'}" data-mode="provider" ${providerCode ? '' : 'disabled'}>
-          <i class="ph ph-buildings"></i>
-          <div>
-            <div class="share-mode-title">공급사 상품만</div>
-            <div class="share-mode-desc">${providerCode ? `공급사 ${providerCode} 기준` : '필터에서 공급사 1개 선택 필요'}</div>
-          </div>
-        </button>
-      </div>
-      <div class="share-hint-top">아래 URL 선택해서 카톡·문자에 붙여넣으세요</div>
-      <textarea class="share-url" readonly rows="2">${buildUrl('all')}</textarea>
-      <div class="share-actions">
-        <button class="btn btn-sm btn-primary" data-act="copy"><i class="ph ph-copy"></i> 복사</button>
-        <a class="btn btn-sm btn-outline" data-act="open" target="_blank" rel="noopener"><i class="ph ph-arrow-square-out"></i> 새 탭에서 열기</a>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(dlg);
-  dlg.showModal();
+function getColumnVal(p, field) {
+  if (!field) return null;
+  if (field.startsWith('_policy.')) return p._policy?.[field.slice(8)];
+  if (field === 'options' && Array.isArray(p.options)) return p.options.join('·');
+  return p[field];
+}
 
-  const input = dlg.querySelector('.share-url');
-  const openLink = dlg.querySelector('[data-act="open"]');
-  const updateUrl = () => {
-    const url = buildUrl(currentMode);
-    input.value = url;
-    openLink.href = url;
-    setTimeout(() => { input.focus(); input.select(); input.setSelectionRange(0, url.length); }, 30);
-  };
-  updateUrl();
+export function bindSearchInteractions() {
+  const ws4 = document.querySelector('[data-page="search"] .ws4');
+  if (!ws4) return;
 
-  input.addEventListener('focus', () => input.setSelectionRange(0, input.value.length));
-  input.addEventListener('click', () => input.setSelectionRange(0, input.value.length));
-
-  const close = () => { if (dlg.open) dlg.close(); dlg.remove(); };
-
-  dlg.addEventListener('click', async (e) => {
-    // 모드 전환
-    const modeBtn = e.target.closest('[data-mode]');
-    if (modeBtn && !modeBtn.disabled) {
-      currentMode = modeBtn.dataset.mode;
-      dlg.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('is-active', b === modeBtn));
-      updateUrl();
+  ws4.addEventListener('click', (e) => {
+    if (e.target.closest('#detailClose')) {
+      ws4.classList.add('is-collapsed');
       return;
     }
-    // 액션 버튼
-    const btn = e.target.closest('[data-act]');
-    if (btn) {
-      const act = btn.dataset.act;
-      if (act === 'close') { close(); return; }
-      if (act === 'copy') {
-        const url = input.value;
-        let ok = false;
-        try { await navigator.clipboard.writeText(url); ok = true; }
-        catch {
-          try { input.focus(); input.select(); ok = document.execCommand('copy'); }
-          catch { ok = false; }
-        }
-        if (ok) { showToast('링크 복사됨'); close(); }
-        else { showToast('자동 복사 차단 — 위 URL 선택 후 Ctrl+C', 'error'); input.focus(); input.select(); }
-        return;
+    const th = e.target.closest('.table thead th');
+    if (th && !e.target.closest('.ft-pop')) {
+      e.stopPropagation();
+      if (th.classList.contains('sticky-col')) return;
+      if (_activeFtTh === th) {
+        th.querySelector('.ft-pop')?.remove();
+        _activeFtTh = null;
+      } else {
+        _activeFtTh?.querySelector('.ft-pop')?.remove();
+        th.appendChild(buildFtPop(th));
+        _activeFtTh = th;
       }
-      if (act === 'share') {
-        try { await navigator.share({ title: '카탈로그', url: input.value }); close(); } catch {}
-        return;
+      return;
+    }
+    const tr = e.target.closest('.table tbody tr');
+    if (tr && tr.dataset.id) {
+      const wasSelected = tr.classList.contains('selected');
+      const wasOpen = !ws4.classList.contains('is-collapsed');
+      if (wasSelected && wasOpen) {
+        ws4.classList.add('is-collapsed');
+      } else {
+        ws4.querySelectorAll('.table tbody tr').forEach(r => r.classList.remove('selected'));
+        tr.classList.add('selected');
+        ws4.classList.remove('is-collapsed');
+        const p = (store.products || []).find(x => x._key === tr.dataset.id);
+        if (p) renderSearchDetail(p);
       }
     }
-    if (e.target === dlg) close();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (_activeFtTh && !e.target.closest('.table thead th')) {
+      _activeFtTh.querySelector('.ft-pop')?.remove();
+      _activeFtTh = null;
+    }
+  });
+
+  const tbInner = document.querySelector('.pt-tb-inner[data-tb="search"]');
+  tbInner?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    tbInner.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const label = chip.textContent.trim().split(/\s/)[0];
+    _searchFilter.chip = { '전체': 'all', '즉시': '즉시', '출고가능': '가능', '출고협의': '협의' }[label] || 'all';
+    applySearchFilter();
   });
 }
 
-function renderDetail(key) {
-  // 카탈로그 모드: 우측 상세 패널 대신 모달로
-  if (store.catalogMode) {
-    openCatalogDetailModal(key);
-    return;
+/* search 표 row 클릭 시 Ctrl/Shift 면 선택 모드 (단순 버전 — toggleSearchSelection 은 향후) */
+export function bindSearchSelection() {
+  const ws4 = document.querySelector('[data-page="search"] .ws4');
+  if (!ws4) return;
+  ws4.addEventListener('click', (e) => {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    const tr = e.target.closest('.table tbody tr');
+    if (!tr || !tr.dataset.id) return;
+    e.stopPropagation();
+    e.preventDefault();
+    // toggleSearchSelection — 추후 구현
+  }, true);
+}
+
+function buildFtPop(th) {
+  const idx = Array.from(th.parentElement.children).indexOf(th);
+  const field = SEARCH_COL_FIELD[idx];
+  const wrap = document.createElement('div');
+  wrap.className = 'ft-pop';
+  if (!field) {
+    wrap.innerHTML = '<div style="padding:12px; color:var(--text-muted); text-align:center;">필터 미지원</div>';
+    return wrap;
   }
-  const el = document.querySelector('.srch-detail-content') || document.getElementById('srchDetail');
-  if (!el) return;
-  const p = allProducts.find(x => x._key === key);
-  if (!p) return;
-
-  renderProductDetail(el, p, {
-    shouldRerender: () => selectedProductKey === key,
-    actionButtons: getActionsFor(p),
+  const products = filterProductsExcept(field);
+  const counts = new Map();
+  products.forEach(p => {
+    const v = getColumnVal(p, field);
+    if (v === undefined || v === null || v === '') return;
+    const k = String(v);
+    counts.set(k, (counts.get(k) || 0) + 1);
   });
-}
+  const allEntries = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ko'));
+  const selected = _searchFilter.column[field];
 
-/** 카탈로그(손님용) 상품 상세 모달 — 중앙 dialog, 액션 버튼 없음 */
-function openCatalogDetailModal(key) {
-  const p = allProducts.find(x => x._key === key);
-  if (!p) return;
-
-  // 기존 모달 닫기
-  document.querySelector('.catalog-detail-modal')?.remove();
-
-  const dlg = document.createElement('dialog');
-  dlg.className = 'catalog-detail-modal';
-  dlg.innerHTML = `
-    <div class="catalog-detail-head">
-      <span class="catalog-detail-title">${[p.maker, p.model, p.sub_model].filter(Boolean).join(' ')} ${p.car_number ? `<span class="catalog-detail-carno">${p.car_number}</span>` : ''}</span>
-      <button class="catalog-detail-close" aria-label="닫기"><i class="ph ph-x"></i></button>
+  wrap.innerHTML = `
+    <div class="ft-pop-section ft-pop-sort">
+      <div class="ft-pop-row sort-half" data-act="sort-asc"><span class="ft-arrow">↑</span> 오름차순</div>
+      <div class="ft-pop-row sort-half" data-act="sort-desc"><span class="ft-arrow">↓</span> 내림차순</div>
     </div>
-    <div class="catalog-detail-body" id="catalogDetailContent"></div>
+    <div class="ft-pop-search">
+      <input type="search" class="input" placeholder="옵션 검색...">
+    </div>
+    <div class="ft-pop-section ft-pop-list">
+      ${allEntries.map(([k, cnt]) => `<label class="ft-pop-row"><input type="checkbox" data-v="${k.replace(/"/g, '&quot;')}" ${(selected && selected.has(k)) ? 'checked' : ''}> <span class="ft-pop-label">${k}</span><span class="ft-pop-cnt">${cnt}</span></label>`).join('')}
+    </div>
+    <div class="ft-pop-actions">
+      <button class="btn" data-act="reset">초기화</button>
+      <button class="btn-primary" data-act="close">닫기</button>
+    </div>
   `;
-  document.body.appendChild(dlg);
-  dlg.showModal();
 
-  const content = dlg.querySelector('#catalogDetailContent');
-  renderProductDetail(content, p, {
-    shouldRerender: () => selectedProductKey === key,
-    actionButtons: null,    // 카탈로그엔 내부 액션 없음 — 하단 전화 CTA 만
-    showActions: false,
+  wrap.querySelectorAll('input[type="checkbox"][data-v]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const checked = [...wrap.querySelectorAll('input[type="checkbox"][data-v]:checked')].map(i => i.dataset.v);
+      if (checked.length === 0) {
+        delete _searchFilter.column[field];
+        th.classList.remove('has-filter');
+      } else {
+        _searchFilter.column[field] = new Set(checked);
+        th.classList.add('has-filter');
+      }
+      applySearchFilter();
+    });
+  });
+  wrap.querySelector('.ft-pop-search input').addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    wrap.querySelectorAll('.ft-pop-list label').forEach(label => {
+      const cb = label.querySelector('input[data-v]');
+      if (!cb) return;
+      label.style.display = cb.dataset.v.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+  wrap.querySelector('[data-act="reset"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    delete _searchFilter.column[field];
+    th.classList.remove('has-filter');
+    wrap.querySelectorAll('input[type="checkbox"][data-v]').forEach(i => i.checked = false);
+    applySearchFilter();
+  });
+  wrap.querySelector('[data-act="close"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    wrap.remove();
+    _activeFtTh = null;
   });
 
-  const close = () => { if (dlg.open) dlg.close(); dlg.remove(); };
-  dlg.querySelector('.catalog-detail-close').addEventListener('click', close);
-  dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+  return wrap;
 }
 
-function updateFoot() {
-  const foot = document.getElementById('srchFoot');
-  const selEl = document.getElementById('srchSelected');
-  if (selected.size > 0) {
-    foot.style.display = '';
-    selEl.textContent = `${selected.size}대 선택`;
-  } else {
-    foot.style.display = 'none';
-  }
-}
-
-async function openShare() {
-  if (selected.size === 0) { showToast('차량을 선택하세요'); return; }
-  const products = allProducts.filter(p => selected.has(p._key));
-  const id = 'prop_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
-  const data = {
-    products: products.map(p => p._key),
-    agent: store.currentUser?.user_code || '',
-    agent_uid: store.currentUser?.uid || '',
-    created: Date.now(),
-  };
-  try {
-    const { setRecord } = await import('../firebase/db.js');
-    await setRecord(`proposals/${id}`, data);
-    window.open(`/proposal.html?id=${id}`, '_blank');
-  } catch (e) {
-    console.error('[proposal] 저장 실패', e);
-    showToast('제안서 저장 실패', 'error');
-  }
-}
-
-const SRCH_STORAGE_KEY = 'fp.srch.widths';
-
-function saveSrchWidths(panels) {
-  const widths = panels.map(p => p.style.width || '');
-  localStorage.setItem(SRCH_STORAGE_KEY, JSON.stringify(widths));
-}
-
-function restoreSrchWidths(panels) {
-  try {
-    const saved = JSON.parse(localStorage.getItem(SRCH_STORAGE_KEY));
-    if (!saved || !Array.isArray(saved)) return;
-    saved.forEach((w, i) => {
-      if (w && panels[i]) { panels[i].style.width = w; panels[i].style.flex = 'none'; }
-    });
-  } catch (e) { /* ignore */ }
-}
-
-function initResize() {
-  const container = document.querySelector('.srch');
-  if (!container) return;
-
-  const panels = [
-    container.querySelector('.srch-filter-panel'),
-    container.querySelector('.srch-list-wrap'),
-    container.querySelector('.srch-detail'),
-  ];
-
-  // 저장된 폭 복원
-  restoreSrchWidths(panels);
-
-  [document.getElementById('srchResize1'), document.getElementById('srchResize2')].forEach((handle, idx) => {
-    if (!handle) return;
-
-    // 더블클릭 → 원래 비율 복원 (1:2:1) + 저장 삭제
-    handle.addEventListener('dblclick', () => {
-      panels.forEach(p => { p.style.width = ''; p.style.flex = ''; });
-      localStorage.removeItem(SRCH_STORAGE_KEY);
-    });
-
-    handle.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      const startX = e.clientX;
-      const leftPanel = panels[idx];
-      const startW = leftPanel.offsetWidth;
-      document.body.style.cursor = 'col-resize';
-      document.body.style.userSelect = 'none';
-
-      const onMove = (ev) => {
-        const dx = ev.clientX - startX;
-        const newW = Math.max(160, Math.min(startW + dx, container.offsetWidth - 400));
-        leftPanel.style.width = `${newW}px`;
-        leftPanel.style.flex = 'none';
-      };
-      const onUp = () => {
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup', onUp);
-        document.body.style.cursor = '';
-        document.body.style.userSelect = '';
-        saveSrchWidths(panels);
-      };
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
-    });
+/* exceptField 컬럼만 제외하고 나머지 모든 필터 적용한 products */
+function filterProductsExcept(exceptField) {
+  const all = store.products || [];
+  const f = _searchFilter;
+  return all.filter(p => {
+    if (f.chip !== 'all') {
+      const s = p.vehicle_status || '';
+      if (f.chip === '즉시' && !/즉시/.test(s)) return false;
+      if (f.chip === '가능' && !/가능/.test(s)) return false;
+      if (f.chip === '협의' && !/협의/.test(s)) return false;
+    }
+    for (const [field, sel] of Object.entries(f.column)) {
+      if (field === exceptField) continue;
+      const v = getColumnVal(p, field);
+      if (!sel.has(String(v))) return false;
+    }
+    if (f.search) {
+      const opts = Array.isArray(p.options) ? p.options.join(' ') : (p.options || '');
+      const hay = [p.car_number, p.maker, p.model, p.sub_model, p.trim_name, p.fuel_type, p.ext_color, opts].filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(f.search)) return false;
+    }
+    return true;
   });
 }
 
-
-export function unmount() {
-  unsubProducts?.();
-  selected.clear();
-  activeFilters = {};
-  _listDelegated = null;
-  const shell = document.querySelector('.shell');
+export function applySearchFilter() {
+  const filtered = filterProductsExcept(null);
+  renderSearchTable(filtered);
 }

@@ -1,422 +1,705 @@
-/* ── Styles ── */
-import './styles/layers.css';
-import './styles/tokens.css';
-import './styles/reset.css';
-import './styles/layout.css';
-import './styles/controls.css';
-import './styles/workspace.css';
-import './styles/search.css';
-import './styles/contract.css';
-import './styles/contract-send.css';
-import './styles/dashboard.css';
-import './styles/product-manage.css';
-import './styles/dark.css';
+/**
+ * freepasserp v3 — 진입점
+ * UI: index.html (prototype 마크업)
+ * 기능: Firebase auth + 사용자 hydration (필요 시 점진 추가)
+ */
 
-/* ── Core ── */
-import { store, subscribe } from './core/store.js';
-import { navigate, defineRoutes, setNavigateCallback, resetRoute } from './core/router.js';
-import { initAuth } from './firebase/auth.js';
-import { renderBreadcrumb } from './core/breadcrumb.js';
-import { isMobile, onMobileChange, bindGlobalHaptic } from './core/mobile-shell.js';
-// Drive 썸네일 자동 하이드레이션 옵저버 — 최초 로드부터 상시 활성화
-import './core/drive-photos.js';
-// PWA 설치 프롬프트 캡처 — import 만 해도 리스너 등록됨
-import './core/pwa-install.js';
-/* mobile.css 는 항상 로드 — .m-* 규격은 앱 어디서나 재사용 */
-import './styles/mobile.css';
+/* CSS — index.html 의 <link> + 인라인 <style> 만 사용 (Vite override 방지)
+   phosphor 폰트는 public/phosphor/ 에 복사한 파일을 <link> 로 직접 로드 (vite 의존 X) */
 
-/* ── Quick Menu Definition (role-based) ── */
-const MENU_ALL = [
-  { id: 'search',   icon: 'ph ph-magnifying-glass',  label: '상품 찾기',   path: '/search',   roles: ['admin','provider','agent'] },
-  { id: 'home',     icon: 'ph ph-chat-circle',       label: '업무 소통',   path: '/',         roles: ['admin','provider','agent'] },
-  { id: 'contract', icon: 'ph ph-file-text',         label: '계약 관리',   path: '/contract', roles: ['admin','provider','agent'] },
-  { id: 'settle',   icon: 'ph ph-coins',             label: '정산 관리',   path: '/settle',   roles: ['admin','provider','agent'] },
-  { id: 'product',  icon: 'ph ph-car-simple',        label: '재고 관리',   path: '/product',  roles: ['admin','provider'] },
-  { id: 'policy',   icon: 'ph ph-scroll',            label: '정책 관리',   path: '/policy',   roles: ['admin','provider'] },
-  // 관리자
-  { id: 'mgmt',     icon: 'ph ph-crown',             label: '관리자', group: true,       roles: ['admin'] },
-  { id: 'users',    icon: 'ph ph-users',             label: '사용자 관리', path: '/admin/users',   parent: 'mgmt', roles: ['admin'] },
-  { id: 'partners', icon: 'ph ph-buildings',          label: '파트너 관리', path: '/admin/partners', parent: 'mgmt', roles: ['admin'] },
-  { id: 'sign',     icon: 'ph ph-paper-plane-tilt',  label: '계약서 관리', path: '/admin/sign',    parent: 'mgmt', roles: ['admin'] },
-  { id: 'dev',      icon: 'ph ph-code',              label: '개발 도구',   path: '/admin/dev',     parent: 'mgmt', roles: ['admin'] },
-];
+import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';
+import { watchCollection, pushRecord, updateRecord, softDelete, fetchRecord, setRecord } from './firebase/db.js';
+import { store } from './core/store.js';
+import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from './core/product-photos.js';
+import { openFullscreen } from './core/product-detail-render.js';
+import { extractProductDetailRows } from './core/product-detail-rows.js';
+import { uploadImage } from './firebase/storage-helper.js';
+import { showToast } from './core/toast.js';
+import { ocrFile } from './core/ocr.js';
+import { parseVehicleRegistration } from './core/ocr-parsers/vehicle-registration.js';
+import { sendAlimtalk } from './core/alimtalk.js';
+import {
+  esc, shortStatus, mapStatusDot, needsReview,
+  fmtMileage, fmtDate, fmtMoney, fmtTime, fmtFullTime,
+  listBody, emptyState, renderRoomItem,
+  ffi, ffs, setHeadSave, flashSaved, bindFormSave,
+} from './core/ui-helpers.js';
+import { POLICY_OPTS, renderPolicyList, renderPolicyDetail, bindPolicyCreate } from './pages/policy.js';
+import { renderPartnerList, renderPartnerDetail, bindPartnerCreate } from './pages/partner.js';
+import { renderUserList, renderUserDetail } from './pages/user.js';
+import { renderSettlementList, renderSettlementDetail, bindSettlementCreate } from './pages/settlement.js';
+import {
+  CONTRACT_STATUSES, renderContractList, renderContractDetail,
+  renderContractWorkV2, bindContractWorkV2,
+  createContractFromRoomLocal, makeTempContractCode, allocateRealContractCode,
+} from './pages/contract.js';
+import { pickAgent, pickPartner, pickOrCreateCustomer, normalizePhone } from './core/dialogs.js';
+import { getProviderTel, getAdminTels, notifyProviderAndAdmin } from './core/notify.js';
+import {
+  calibrateSearchCols, renderSearchTable, renderSearchDetail,
+  bindSearchInteractions, bindSearchSelection, applySearchFilter,
+  setSearchCallbacks, _searchFilter,
+} from './pages/search.js';
+import {
+  renderRoomList, selectRoom, renderRoomDetail, renderChatMessages,
+  bindChatInput, bindRoomCreate, createRoomFromProduct,
+  getActiveRoomId, getCurrentMessages, getPrevPeerReadAt, setPrevPeerReadAt,
+} from './pages/workspace.js';
+import {
+  PRODUCT_OPTS, PRODUCT_TERMS,
+  renderProductList, renderProductDetail, bindProductCreate,
+} from './pages/product.js';
+import { enrichProductsWithPolicy } from './core/policy-utils.js';
+import { filterByRole } from './core/roles.js';
+import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from './core/chat-render.js';
+import { markRoomRead } from './firebase/collections.js';
+import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
+import { getMakers, getModelsByMaker, getSubModels, findCarModel } from './core/car-models.js';
+import { inferCarModel } from './core/car-model-infer.js';
 
-function getMenu(role) {
-  return MENU_ALL.filter(m => m.roles.includes(role || 'agent'));
-}
+/* ── Boot ── */
+async function boot() {
+  // v2 잔존 Service Worker 강제 정리 — stale 캐시(폰트/CSS) 가로채기 방지
+  cleanupStaleServiceWorkers();
+  // 샘플 데이터 즉시 정리 — auth/hydration 동안에도 샘플이 보이지 않게
+  clearSampleData();
 
-/* 모바일 하단 탭바 — 4개 핵심 플로우, 라벨 통일 (찾기/소통/계약/설정) */
-function getMobileTabs(_role) {
-  return [
-    { icon: 'ph ph-magnifying-glass', label: '찾기', path: '/search' },
-    { icon: 'ph ph-chat-circle',      label: '소통', path: '/' },
-    { icon: 'ph ph-file-text',        label: '계약', path: '/contract' },
-    { icon: 'ph ph-gear',             label: '설정', path: '/settings' },
-  ];
-}
+  let user = null;
+  try {
+    user = await initAuth();
+  } catch (e) {
+    console.error('[auth] init failed', e);
+  }
 
-function renderMenuItems(role) {
-  const menu = getMenu(role);
-  const groups = menu.filter(m => m.group);
-  const topItems = menu.filter(m => !m.group && !m.parent);
-  const openGroups = JSON.parse(localStorage.getItem('fp.sb.open') || '[]');
-
-  let html = '';
-
-  // Top items (현황, 찾기, 작업)
-  topItems.forEach(m => {
-    if (!m.path) return;
-    html += `<button class="sb-item" data-path="${m.path}" data-menu="${m.id}"><i class="${m.icon}"></i><span>${m.label}</span><span class="sb-badge" data-badge="${m.id}"></span></button>`;
-  });
-
-  // Groups (조회, 등록, 관리자)
-  groups.forEach(g => {
-    const children = menu.filter(m => m.parent === g.id);
-    const isOpen = openGroups.includes(g.id);
-    html += `
-      <div class="sb-group ${isOpen ? 'is-open' : ''}" data-group="${g.id}">
-        <button class="sb-item sb-group-head">
-          <i class="${g.icon}"></i><span>${g.label}</span>
-          <i class="ph ph-caret-down sb-chevron"></i>
-        </button>
-        <div class="sb-group-body">
-          ${children.map(c => `
-            <button class="sb-item sb-child" data-path="${c.path}" data-menu="${c.id}"><i class="${c.icon}"></i><span>${c.label}</span><span class="sb-badge" data-badge="${c.id}"></span></button>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  });
-
-  return html;
-}
-
-/* ── catalog 모드 하단 "담당자 전화" CTA ── */
-function renderCatalogCallCta() {
-  const agent = store.catalogAgent;
-  if (!agent || !agent.phone) return '';
-  const name = agent.name || '담당자';
-  const pos = agent.position ? ' · ' + agent.position : '';
-  return `
-    <a class="catalog-call-cta" href="tel:${agent.phone}">
-      <i class="ph ph-phone-call"></i>
-      <span class="catalog-call-cta-label">${name}${pos}에게 전화</span>
-      <span class="catalog-call-cta-num">${agent.phone}</span>
-    </a>
-  `;
-}
-
-/* ── App Shell ── */
-function renderShell() {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="shell">
-      <nav class="sidebar" id="sidebar" aria-label="주 메뉴">
-        <div class="sb-top">
-          <div class="sb-brand">${store.currentUser?.company_name || ''}</div>
-          <button class="sb-collapse-btn" id="sbCollapse" title="접기" aria-label="사이드바 접기"><i class="ph ph-caret-left" aria-hidden="true"></i></button>
-        </div>
-        <div class="sb-menu" id="sbMenu">
-          ${renderMenuItems(store.currentUser?.role)}
-        </div>
-        <div class="sb-bottom">
-          <button class="sb-item" id="qmTheme">
-            <i class="ph ph-moon"></i><span>다크모드</span>
-          </button>
-          <button class="sb-item" data-path="/settings">
-            <i class="ph ph-gear"></i><span>설정</span>
-          </button>
-        </div>
-      </nav>
-      <main class="main" id="mainArea">
-        <header class="topbar">
-          <div class="breadcrumb" id="breadcrumb" role="navigation" aria-label="현재 위치"></div>
-          <div class="topbar-user" id="topbarUser"></div>
-        </header>
-        <div class="main-content" id="mainContent"></div>
-      </main>
-      <nav class="mobile-tab" id="mobileTab" aria-label="모바일 탐색">
-        ${getMobileTabs(store.currentUser?.role).map(m => `
-          <button class="mobile-tab-item" data-path="${m.path}">
-            <i class="${m.icon}"></i>
-            <span>${m.label}</span>
-          </button>
-        `).join('')}
-      </nav>
-      ${store.catalogMode ? renderCatalogCallCta() : ''}
-    </div>
-  `;
-
-  // Sidebar click
-  document.getElementById('sidebar').addEventListener('click', (e) => {
-    // Navigate
-    const btn = e.target.closest('[data-path]');
-    if (btn) {
-      navigate(btn.dataset.path);
-      // Update active
-      document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      return;
-    }
-    // Group toggle
-    const groupHead = e.target.closest('.sb-group-head');
-    if (groupHead) {
-      const group = groupHead.closest('.sb-group');
-      group.classList.toggle('is-open');
-      // Save open state
-      const openGroups = Array.from(document.querySelectorAll('.sb-group.is-open')).map(g => g.dataset.group);
-      localStorage.setItem('fp.sb.open', JSON.stringify(openGroups));
-    }
-  });
-
-  // Mobile tab click
-  document.getElementById('mobileTab').addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-path]');
-    if (btn) navigate(btn.dataset.path);
-  });
-
-  // Sidebar collapse/expand
-  document.getElementById('sbCollapse')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const sidebar = document.getElementById('sidebar');
-    const shell = document.querySelector('.shell');
-    sidebar.classList.toggle('is-collapsed');
-    if (sidebar.classList.contains('is-collapsed')) {
-      shell.style.gridTemplateColumns = '48px 1fr';
-      document.querySelector('#sbCollapse i').className = 'ph ph-caret-right';
+  if (user) {
+    // 승인 대기 / 거부 / 비활성 사용자 진입 차단
+    const status = user.status || 'active';
+    if (user.is_active === false || status === 'pending' || status === 'rejected') {
+      const reason = status === 'rejected' ? '가입이 거부되었습니다' : (user.is_active === false ? '비활성 계정입니다' : '관리자 승인 대기 중입니다');
+      await fbLogout();
+      document.body.classList.add('is-login');
+      // 로그인 폼 메시지에 안내 표시
+      setTimeout(() => {
+        const msg = document.getElementById('loginMsg');
+        if (msg) msg.textContent = reason;
+      }, 50);
     } else {
-      shell.style.gridTemplateColumns = '';
-      document.querySelector('#sbCollapse i').className = 'ph ph-caret-left';
+      document.body.classList.remove('is-login');
+      hydrateUser(user);
+      startHydration();
     }
-    localStorage.setItem('fp.sb.collapsed', sidebar.classList.contains('is-collapsed') ? '1' : '');
-  });
-
-  // Restore collapsed state
-  if (localStorage.getItem('fp.sb.collapsed') === '1') {
-    document.getElementById('sidebar')?.classList.add('is-collapsed');
-    document.querySelector('.shell').style.gridTemplateColumns = '48px 1fr';
-    const icon = document.querySelector('#sbCollapse i');
-    if (icon) icon.className = 'ph ph-caret-right';
+  } else {
+    document.body.classList.add('is-login');
   }
 
-  // Dark mode toggle
-  document.getElementById('qmTheme')?.addEventListener('click', () => {
-    const next = store.theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.classList.add('theme-switching');
-    store.theme = next;
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem('fp.theme', next);
-    const btn = document.getElementById('qmTheme');
-    const icon = btn?.querySelector('i');
-    const label = btn?.querySelector('span');
-    if (icon) icon.className = next === 'dark' ? 'ph ph-sun' : 'ph ph-moon';
-    if (label) label.textContent = next === 'dark' ? '라이트모드' : '다크모드';
-    requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.remove('theme-switching')));
-  });
-  // Set initial icon + label
-  const themeBtn = document.getElementById('qmTheme');
-  if (themeBtn && store.theme === 'dark') {
-    const i = themeBtn.querySelector('i'); if (i) i.className = 'ph ph-sun';
-    const s = themeBtn.querySelector('span'); if (s) s.textContent = '라이트모드';
-  }
+  bindLoginForm();
+  bindLogout();
 
-  // 상단바 사용자 메뉴
-  renderTopbarUser();
+  // search 페이지 → "대화 생성" 버튼 콜백 주입 (workspace 의 createRoomFromProduct)
+  setSearchCallbacks({ onCreateRoom: createRoomFromProduct });
+
+  // 모든 초기 셋업 끝난 후 visibility 해제 (한 프레임 양보 — paint 가 동기적으로 끝나도록)
+  requestAnimationFrame(() => document.body.classList.remove('is-loading'));
 }
 
-function renderTopbarUser() {
-  const el = document.getElementById('topbarUser');
-  if (!el) return;
-  const u = store.currentUser || {};
-  const initial = (u.name || u.email || '?').trim().charAt(0).toUpperCase();
+/* v2 시절 등록된 sw.js 가 v3 요청 가로채는 문제 해결 — 모두 unregister + 캐시 삭제.
+   v3 는 SW 안 씀. localStorage 플래그로 1회만 실행 (재방문 시 매번 안 돌게) */
+function cleanupStaleServiceWorkers() {
+  if (typeof navigator === 'undefined' || !navigator.serviceWorker) return;
+  if (localStorage.getItem('v3-sw-cleaned') === '1') return;
+  navigator.serviceWorker.getRegistrations?.().then(regs => {
+    if (!regs.length) { localStorage.setItem('v3-sw-cleaned', '1'); return; }
+    Promise.all(regs.map(r => r.unregister())).then(() => {
+      if (typeof caches !== 'undefined') {
+        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
+          .finally(() => {
+            localStorage.setItem('v3-sw-cleaned', '1');
+            location.reload();   // 캐시 비운 후 1회 새로고침 — 폰트/CSS 신선하게
+          });
+      } else {
+        localStorage.setItem('v3-sw-cleaned', '1');
+        location.reload();
+      }
+    });
+  }).catch(() => {});
+}
 
-  el.innerHTML = `
-    <button class="topbar-user-btn" id="topbarUserBtn">
-      <div class="topbar-user-avatar">${u.avatar_url ? `<img src="${u.avatar_url}">` : initial}</div>
-      <span class="topbar-user-name">${u.name || u.email || '사용자'}</span>
-      <i class="ph ph-caret-down icon-hint" aria-hidden="true"></i>
-    </button>
-    <div class="topbar-user-menu" id="topbarUserMenu" hidden>
-      <div class="topbar-user-head">
-        <div class="topbar-user-head-name">${u.name || '이름 없음'}</div>
-        <div class="topbar-user-head-email">${u.email || ''}</div>
-        <div class="topbar-user-head-meta">${[u.company_name, u.role, u.user_code].filter(Boolean).join(' · ')}</div>
-      </div>
-      <button class="topbar-user-item" data-path="/account"><i class="ph ph-user"></i> 계정 정보</button>
-      <button class="topbar-user-item" data-path="/settings"><i class="ph ph-gear"></i> 설정</button>
-      <div class="topbar-user-divider"></div>
-      <button class="topbar-user-item is-danger" id="topbarLogout"><i class="ph ph-sign-out"></i> 로그아웃</button>
-    </div>
+/* prototype 샘플 비움 — head/입력바 외 자식의 INNER 만 비움 */
+function clearSampleData() {
+  document.querySelectorAll('[data-page="search"] .table tbody').forEach(tb => tb.innerHTML = '');
+  // 보존해야 할 자식 (입력창·헤더는 비우면 안 됨)
+  const KEEP = new Set(['ws4-head', 'ws-input']);
+  ['workspace','contract','settle','product','policy','partners','users'].forEach(page => {
+    document.querySelectorAll(`[data-page="${page}"] .ws4-card`).forEach(card => {
+      [...card.children].forEach(ch => {
+        if ([...ch.classList].some(c => KEEP.has(c))) return;
+        ch.innerHTML = '';
+      });
+    });
+  });
+}
+
+/* ── Firestore 데이터 → 페이지 hydration ── */
+function startHydration() {
+  // 정책 — products enrich + 정책 페이지 렌더
+  watchCollection('policies', (list) => {
+    store.policies = list || [];
+    if (store.products?.length) {
+      store.products = enrichProductsWithPolicy(store.products, store.policies);
+      renderSearchTable(store.products);
+      renderProductList(store.products);
+    }
+    renderPolicyList(store.policies);
+    updateSidebarCounts();
+  });
+  // 상품 — search + 재고관리 양쪽 갱신
+  watchCollection('products', (list) => {
+    store.products = enrichProductsWithPolicy(list || [], store.policies || []);
+    calibrateSearchCols(store.products);
+    renderSearchTable(store.products);
+    renderProductList(store.products);
+    updateSidebarCounts();
+  });
+  // 대화방 (업무소통) + 계약 + 정산 + 파트너 + 사용자
+  watchCollection('rooms',       (list) => {
+    store.rooms = list || [];
+    renderRoomList(store.rooms);
+    updateSidebarCounts();
+    // 활성 룸의 상대 read_at 변경 시 메시지 재렌더 → 읽음 표시 자동 갱신 (v2 패턴)
+    const activeId = getActiveRoomId();
+    if (activeId) {
+      const activeRoom = store.rooms.find(r => r._key === activeId);
+      const role = store.currentUser?.role;
+      const peerReadAt = (role === 'agent' || role === 'agent_admin')
+        ? (activeRoom?.read_at_provider || 0)
+        : role === 'provider' ? (activeRoom?.read_at_agent || 0) : 0;
+      if (peerReadAt !== getPrevPeerReadAt()) {
+        setPrevPeerReadAt(peerReadAt);
+        const msgs = getCurrentMessages();
+        if (msgs.length) renderChatMessages(msgs, activeRoom);
+      }
+    }
+  });
+  watchCollection('contracts',   (list) => { store.contracts   = list || []; renderContractList(store.contracts);     updateSidebarCounts(); });
+  watchCollection('settlements', (list) => { store.settlements = list || []; renderSettlementList(store.settlements); updateSidebarCounts(); });
+  watchCollection('partners',    (list) => { store.partners    = list || []; renderPartnerList(store.partners);       updateSidebarCounts(); });
+  watchCollection('users',       (list) => { store.users       = list || []; renderUserList(store.users);             updateSidebarCounts(); });
+  watchCollection('customers',   (list) => { store.customers   = list || []; });
+  // 차종 마스터 (vehicle_master) — 제조사·모델·세부모델 cascade picker 데이터원
+  watchCollection('vehicle_master', (data) => {
+    store.carModels = (data || [])
+      .filter(m => m && m.status !== 'deleted')
+      .map(m => ({
+        ...m,
+        sub_model: m.sub_model || m.sub || '',
+        vehicle_class: m.vehicle_class || m.category || '',
+      }));
+    // 재고 페이지가 활성이면 picker 옵션 갱신 위해 자산정보 재렌더
+    if (document.querySelector('.pt-page.active')?.dataset.page === 'product') {
+      const activeId = document.querySelector('.pt-page[data-page="product"] .room-item.is-active')?.dataset.id;
+      const target = (store.products || []).find(x => x._key === activeId) || (store.products || [])[0];
+      if (target) renderProductDetail(target);
+    }
+  });
+
+  bindSearchInteractions();
+  bindGenericListInteractions();
+  bindChatInput();
+  bindGlobalSearch();
+  bindPolicyCreate();
+  bindRoomCreate();
+  bindPartnerCreate();
+  bindProductCreate();
+  bindSettlementCreate();
+  bindDirtyTracking();
+  bindDeleteButtons();
+  bindPhotoClicks();
+  bindSearchSelection();
+  setupAutoFitObserver();
+}
+
+/* 패널 안의 라벨 길이 변화 감지 → 자동 폰트 축소 (모든 페이지 일괄) */
+function setupAutoFitObserver() {
+  let scheduled = false;
+  const sweep = () => {
+    scheduled = false;
+    document.querySelectorAll('.pt-page.active').forEach(p => autoFitLabels(p));
+  };
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(sweep);
+  };
+  const obs = new MutationObserver(() => schedule());
+  document.querySelectorAll('.pt-page .ws4-body').forEach(b => {
+    obs.observe(b, { childList: true, subtree: true, characterData: false });
+  });
+  // 페이지 전환 시에도 한 번 실행
+  window.addEventListener('hashchange', () => requestAnimationFrame(sweep));
+  schedule();
+}
+
+
+/* 라벨 호버 툴팁만 — 폰트 축소 X (CSS word-break 가 자연스럽게 줄바꿈 처리) */
+function autoFitLabels(root) {
+  if (!root) return;
+  root.querySelectorAll('.form-grid .ff > label, .info-grid > .lab').forEach(el => {
+    el.title = el.textContent.trim();
+  });
+}
+
+/* POLICY_OPTS → pages/policy.js (import) */
+
+
+
+/* fmtDate/fmtMoney/fmtTime/renderRoomItem/listBody/emptyState/needsReview → ui-helpers.js (import) */
+
+
+/* ── Dirty 입력 추적 — 헤더 저장 패턴 패널에서 미저장 변경 경고 ── */
+function bindDirtyTracking() {
+  // form-grid 안 [data-f] input 변경 시 가장 가까운 .ws4-card 에 .is-dirty 마크
+  document.body.addEventListener('input', (e) => {
+    const el = e.target;
+    if (!el.matches('.form-grid [data-f]')) return;
+    const card = el.closest('.ws4-card');
+    if (!card) return;
+    // 헤더 저장 버튼이 있는 카드만 추적 (panel-scoped 헤더 저장 패턴 = setHeadSave 호출된 카드)
+    if (!card.querySelector('[data-save-form]')) return;
+    card.classList.add('is-dirty');
+    // 헤더 저장 버튼에 강조 (저장하라는 시각 신호)
+    card.querySelector('[data-save-form]')?.classList.add('is-pulse');
+  });
+
+  // 페이지 전환 시 dirty 카드 있으면 경고
+  window.addEventListener('hashchange', (e) => {
+    if (!hasDirty()) return;
+    if (confirm('저장하지 않은 변경이 있습니다. 페이지를 이동할까요?')) {
+      clearDirty();
+    } else {
+      // hashchange 는 cancel 불가 → 원래 hash 로 복귀
+      const oldUrl = e.oldURL;
+      const oldHash = oldUrl.split('#')[1] || '';
+      history.replaceState(null, '', '#' + oldHash);
+    }
+  });
+
+  // 브라우저 닫기 / 새로고침 시 경고 (브라우저 표준 다이얼로그)
+  window.addEventListener('beforeunload', (e) => {
+    if (hasDirty()) {
+      e.preventDefault();
+      e.returnValue = '';
+    }
+  });
+}
+
+function hasDirty() {
+  return !!document.querySelector('.ws4-card.is-dirty');
+}
+function clearDirty(card) {
+  const targets = card ? [card] : document.querySelectorAll('.ws4-card.is-dirty');
+  targets.forEach(c => {
+    c.classList.remove('is-dirty');
+    c.querySelectorAll('[data-save-form]').forEach(b => b.classList.remove('is-pulse'));
+  });
+}
+
+
+
+
+
+/* ⑥ 정책 관리 — pages/policy.js 로 분리 (renderPolicyList / renderPolicyDetail / bindPolicyCreate) */
+
+
+/* 항목 삭제 — admin only, soft delete (deleted_at 만 표시) */
+async function deleteRecord(collection, key) {
+  if (store.currentUser?.role !== 'admin') return alert('관리자만 삭제할 수 있습니다');
+  if (!confirm('정말 삭제하시겠습니까?')) return;
+  try {
+    await softDelete(`${collection}/${key}`);
+  } catch (e) {
+    alert('삭제 실패 — ' + (e.message || e));
+  }
+}
+
+
+
+
+
+/* ──────── D. 사진 풀스크린 갤러리 (lightbox) ──────── */
+function openLightbox(imgs, startIdx = 0) {
+  if (!imgs?.length) return;
+  document.querySelector('.lightbox-overlay')?.remove();
+  let idx = startIdx;
+  const wrap = document.createElement('div');
+  wrap.className = 'lightbox-overlay';
+  wrap.innerHTML = `
+    <div class="lightbox-stage"><img src="${esc(imgs[idx])}" alt=""></div>
+    <button class="lightbox-close" title="닫기"><i class="ph ph-x"></i></button>
+    ${imgs.length > 1 ? `
+      <button class="lightbox-prev" title="이전"><i class="ph ph-caret-left"></i></button>
+      <button class="lightbox-next" title="다음"><i class="ph ph-caret-right"></i></button>
+      <div class="lightbox-count">${idx + 1} / ${imgs.length}</div>
+    ` : ''}
   `;
+  document.body.appendChild(wrap);
 
-  const btn = document.getElementById('topbarUserBtn');
-  const menu = document.getElementById('topbarUserMenu');
-  btn?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    menu.hidden = !menu.hidden;
-  });
-  document.addEventListener('click', (e) => {
-    if (!el.contains(e.target)) menu.hidden = true;
-  });
-  menu?.querySelectorAll('[data-path]').forEach(b => {
-    b.addEventListener('click', () => { menu.hidden = true; navigate(b.dataset.path); });
-  });
-  document.getElementById('topbarLogout')?.addEventListener('click', async () => {
-    menu.hidden = true;
-    const { logout } = await import('./firebase/auth.js');
-    await logout();
+  const update = () => {
+    wrap.querySelector('img').src = imgs[idx];
+    const cnt = wrap.querySelector('.lightbox-count');
+    if (cnt) cnt.textContent = `${idx + 1} / ${imgs.length}`;
+  };
+  const close = () => { wrap.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = (e) => {
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft' && imgs.length > 1) { idx = (idx - 1 + imgs.length) % imgs.length; update(); }
+    else if (e.key === 'ArrowRight' && imgs.length > 1) { idx = (idx + 1) % imgs.length; update(); }
+  };
+  document.addEventListener('keydown', onKey);
+  wrap.querySelector('.lightbox-close').addEventListener('click', close);
+  wrap.addEventListener('click', (e) => { if (e.target === wrap) close(); });
+  wrap.querySelector('.lightbox-prev')?.addEventListener('click', () => { idx = (idx - 1 + imgs.length) % imgs.length; update(); });
+  wrap.querySelector('.lightbox-next')?.addEventListener('click', () => { idx = (idx + 1) % imgs.length; update(); });
+}
+
+/* 사진 클릭 → 풀스크린 (search detail / product detail 양쪽) — body 위임 */
+function bindPhotoClicks() {
+  document.body.addEventListener('click', (e) => {
+    // 메인 사진 또는 썸네일 클릭
+    const img = e.target.closest('img.detail-photo-main, .detail-photo-thumb img');
+    if (!img) return;
+    if (img.closest('.lightbox-overlay')) return;   // lightbox 안의 이미지 무시
+    // 현재 열린 detail 의 모든 사진 수집
+    const card = img.closest('.ws4-card, .ws4-body');
+    if (!card) return;
+    const all = [...card.querySelectorAll('.detail-photo-thumb img, img.detail-photo-main')]
+      .map(i => i.src).filter(Boolean);
+    const unique = [...new Set(all)];
+    const startIdx = unique.indexOf(img.src);
+    openLightbox(unique, Math.max(0, startIdx));
   });
 }
 
-function updateActiveMenu(path) {
-  document.querySelectorAll('.sb-item[data-path]').forEach(el => {
-    const active = el.dataset.path === path;
-    el.classList.toggle('is-active', active);
-    if (active) el.setAttribute('aria-current', 'page');
-    else el.removeAttribute('aria-current');
+/* ──────── E. 다중 선택 + 제안서 / 비교 / 엑셀 ──────── */
+const _searchSelected = new Set();   // selected product keys (search 페이지)
+
+function toggleSearchSelection(key, exclusive = false) {
+  if (exclusive) _searchSelected.clear();
+  if (_searchSelected.has(key)) _searchSelected.delete(key);
+  else _searchSelected.add(key);
+  document.querySelectorAll('[data-page="search"] .table tbody tr').forEach(tr => {
+    tr.classList.toggle('is-checked', _searchSelected.has(tr.dataset.id));
   });
-  document.querySelectorAll('.mobile-tab-item[data-path]').forEach(el => {
-    const active = el.dataset.path === path;
-    el.classList.toggle('is-active', active);
-    if (active) el.setAttribute('aria-current', 'page');
-    else el.removeAttribute('aria-current');
-  });
-  // Auto-open parent group
-  const menuItem = MENU_ALL.find(m => m.path === path);
-  if (menuItem?.parent) {
-    const group = document.querySelector(`.sb-group[data-group="${menuItem.parent}"]`);
-    if (group) group.classList.add('is-open');
+  renderSelectionBar();
+}
+
+function renderSelectionBar() {
+  let bar = document.getElementById('selBar');
+  const count = _searchSelected.size;
+  if (count === 0) { bar?.remove(); return; }
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'selBar';
+    bar.style.cssText = 'position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:1000; background:var(--text-main); color:var(--text-inverse); padding:6px 12px; border-radius:4px; display:flex; align-items:center; gap:8px; font-size:11px; box-shadow:0 2px 8px rgba(0,0,0,0.2);';
+    document.body.appendChild(bar);
   }
-  renderBreadcrumb(path);
+  bar.innerHTML = `
+    <span><b id="selCount">0</b>대 선택</span>
+    <button class="btn btn-sm" data-act="proposal"><i class="ph ph-paper-plane-tilt"></i> 제안서</button>
+    <button class="btn btn-sm" data-act="compare"><i class="ph ph-rows"></i> 비교</button>
+    <button class="btn btn-sm" data-act="excel"><i class="ph ph-microsoft-excel-logo"></i> 엑셀</button>
+    <button class="btn btn-sm" data-act="clear" title="선택 해제"><i class="ph ph-x"></i></button>
+  `;
+  bar.querySelector('#selCount').textContent = count;
+  bar.querySelectorAll('button[data-act]').forEach(btn => {
+    btn.onclick = () => onSelectionAction(btn.dataset.act);
+  });
 }
 
-/* ── Login Page ── */
-function renderLogin() {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="login-page">
-      <div class="login-brand"><span class="login-brand-main">freepass</span> <span class="login-brand-base">erp</span></div>
-      <section class="login-card">
-        <header class="login-head">
-          <h2 class="login-title">로그인</h2>
-          <p class="login-sub">이메일과 비밀번호를 입력해주세요.</p>
-        </header>
-        <form class="login-form" id="loginForm" novalidate>
-          <div class="login-field">
-            <label for="loginEmail">이메일</label>
-            <input id="loginEmail" type="email" placeholder="name@company.com" autocomplete="username" required>
-          </div>
-          <div class="login-field">
-            <label for="loginPw">비밀번호</label>
-            <input id="loginPw" type="password" placeholder="비밀번호 입력" autocomplete="current-password" required>
-          </div>
-          <button type="submit" class="login-submit" id="loginBtn">로그인</button>
-        </form>
-        <div class="login-links">
-          <a href="#" id="signupLink">계정 만들기</a>
-          <span class="login-links-sep">·</span>
-          <a href="#" id="resetLink">비밀번호 재설정</a>
-        </div>
-        <p class="login-msg" id="loginMsg" aria-live="polite"></p>
-      </section>
-      <div class="login-copy">&copy; 2026 freepassmobility. All Rights Reserved.</div>
-    </div>
-  `;
-
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const pw = document.getElementById('loginPw').value;
-    if (!email || !pw) return;
-
-    const btn = document.getElementById('loginBtn');
-    const card = btn.closest('.login-card');
-    btn.disabled = true;
-    card.classList.add('is-loading');
-
+async function onSelectionAction(act) {
+  const products = (store.products || []).filter(p => _searchSelected.has(p._key));
+  if (!products.length) return;
+  if (act === 'clear') {
+    _searchSelected.clear();
+    document.querySelectorAll('[data-page="search"] .table tbody tr.is-checked').forEach(tr => tr.classList.remove('is-checked'));
+    renderSelectionBar();
+  } else if (act === 'proposal') {
+    // /proposal.html 에 선택 키 전달 — Firebase 에 임시 proposal 레코드 생성
     try {
-      const { login } = await import('./firebase/auth.js');
-      await login(email, pw);
+      const ref = await pushRecord('proposals', {
+        products: products.map(p => p._key),
+        agent_uid: store.currentUser?.uid || '',
+        agent_code: store.currentUser?.user_code || '',
+        created_at: Date.now(),
+      });
+      const id = ref?.key || ref;
+      window.open(`/proposal.html?id=${id}`, '_blank');
     } catch (e) {
-      btn.disabled = false;
-      card.classList.remove('is-loading');
-      const { showToast } = await import('./core/toast.js');
-      showToast('로그인 실패: 이메일 또는 비밀번호를 확인하세요', 'error');
+      alert('제안서 생성 실패 — ' + (e.message || e));
     }
-  });
+  } else if (act === 'compare') {
+    openCompareModal(products);
+  } else if (act === 'excel') {
+    try {
+      const { downloadExcel, PRODUCT_COLS } = await import('./core/excel-export.js');
+      await downloadExcel('차량목록', PRODUCT_COLS, products);
+    } catch (e) {
+      alert('엑셀 내보내기 실패 — ' + (e.message || e));
+    }
+  }
+}
 
-  document.getElementById('signupLink')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    renderSignup();
-  });
+/* 차량 비교 모달 — 핵심 스펙 + 가격 옆으로 나열 */
+function openCompareModal(products) {
+  document.querySelector('.compare-modal')?.remove();
+  const dlg = document.createElement('dialog');
+  dlg.className = 'compare-modal';
+  dlg.style.cssText = 'border:1px solid var(--border); border-radius:4px; padding:0; max-width:90vw; max-height:90vh;';
+  const SPEC_ROWS = [
+    ['차량번호', p => p.car_number],
+    ['제조사', p => p.maker],
+    ['모델', p => [p.model, p.sub_model].filter(Boolean).join(' ')],
+    ['트림', p => p.trim_name || p.trim],
+    ['연식', p => p.year],
+    ['주행', p => p.mileage ? Number(p.mileage).toLocaleString() + 'km' : ''],
+    ['연료', p => p.fuel_type],
+    ['색상', p => p.ext_color],
+    ['상태', p => p.vehicle_status],
+    ['24개월', p => p.price?.['24']?.rent ? Math.round(p.price['24'].rent/10000) + '만/' + Math.round((p.price['24'].deposit||0)/10000) + '만' : '-'],
+    ['36개월', p => p.price?.['36']?.rent ? Math.round(p.price['36'].rent/10000) + '만/' + Math.round((p.price['36'].deposit||0)/10000) + '만' : '-'],
+    ['48개월', p => p.price?.['48']?.rent ? Math.round(p.price['48'].rent/10000) + '만/' + Math.round((p.price['48'].deposit||0)/10000) + '만' : '-'],
+    ['60개월', p => p.price?.['60']?.rent ? Math.round(p.price['60'].rent/10000) + '만/' + Math.round((p.price['60'].deposit||0)/10000) + '만' : '-'],
+    ['심사', p => p._policy?.credit_grade || p.credit_grade || '-'],
+    ['연주행', p => p._policy?.annual_mileage || p.annual_mileage || '-'],
+  ];
+  dlg.innerHTML = `
+    <div style="padding:8px 12px; border-bottom:1px solid var(--border); background:var(--bg-header); display:flex; align-items:center;">
+      <span style="color:var(--text-main);">차량 비교 (${products.length}대)</span>
+      <div class="spacer" style="flex:1;"></div>
+      <button class="btn btn-sm" id="compareClose"><i class="ph ph-x"></i></button>
+    </div>
+    <div style="overflow:auto; max-height:80vh;">
+      <table class="table" style="margin:0;">
+        <thead><tr>
+          <th style="width:90px; position:sticky; left:0; background:var(--bg-header); z-index:1;">항목</th>
+          ${products.map(p => `<th style="min-width:120px;">${esc(p.car_number || '-')}</th>`).join('')}
+        </tr></thead>
+        <tbody>
+          ${SPEC_ROWS.map(([label, getter]) => `<tr>
+            <td class="lab" style="background:var(--bg-stripe); position:sticky; left:0;">${esc(label)}</td>
+            ${products.map(p => `<td>${esc(String(getter(p) || '-'))}</td>`).join('')}
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+  document.body.appendChild(dlg);
+  dlg.showModal();
+  dlg.querySelector('#compareClose').addEventListener('click', () => { dlg.close(); dlg.remove(); });
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) { dlg.close(); dlg.remove(); } });
+}
 
-  document.getElementById('resetLink')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    renderResetPassword();
+
+/* 우측 detail 카드 헤드에 삭제 버튼 추가 — admin only, 페이지/key 는 위임 클릭 시 결정 */
+function bindDeleteButtons() {
+  // hover 시 .ws4-detail .ws4-head 우측에 X 버튼 표시 (admin)
+  if (store.currentUser?.role !== 'admin') return;
+  document.querySelectorAll('.ws4-detail .ws4-head').forEach(head => {
+    if (head.querySelector('.dtl-delete')) return;
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-sm dtl-delete';
+    btn.title = '삭제';
+    btn.style.cssText = 'margin-left:auto; color: var(--alert-red-text);';
+    btn.innerHTML = '<i class="ph ph-trash"></i>';
+    head.appendChild(btn);
+    btn.addEventListener('click', () => {
+      const page = head.closest('.pt-page')?.dataset.page;
+      const activeItem = head.closest('.pt-page')?.querySelector('.ws4-list .room-item.active');
+      const id = activeItem?.dataset.id;
+      if (!page || !id) return;
+      const collectionMap = { contract: 'contracts', settle: 'settlements', product: 'products', policy: 'policies', partners: 'partners', users: 'users', workspace: 'rooms' };
+      const collection = collectionMap[page];
+      if (collection) deleteRecord(collection, id);
+    });
   });
 }
 
-function renderSignup() {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="login-page">
-      <div class="login-brand"><span class="login-brand-main">freepass</span> <span class="login-brand-base">erp</span></div>
-      <section class="login-card">
-        <header class="login-head">
-          <h2 class="login-title">계정 만들기</h2>
-          <p class="login-sub">가입 후 관리자 승인이 필요합니다.</p>
-        </header>
-        <form class="login-form" id="suForm" novalidate>
-          <div class="login-field">
-            <label for="suEmail">이메일</label>
-            <input id="suEmail" type="email" placeholder="name@company.com" autocomplete="username" required>
-          </div>
-          <div class="login-field">
-            <label for="suPw">비밀번호</label>
-            <input id="suPw" type="password" placeholder="6자 이상" autocomplete="new-password" required>
-          </div>
-          <div class="login-field">
-            <label for="suName">이름</label>
-            <input id="suName" placeholder="홍길동" required>
-          </div>
-          <div class="login-field">
-            <label for="suPhone">연락처</label>
-            <input id="suPhone" type="tel" placeholder="010-0000-0000">
-          </div>
-          <div class="login-field">
-            <label for="suCompany">소속 회사명</label>
-            <input id="suCompany" placeholder="회사명">
-          </div>
-          <div class="login-field">
-            <label for="suRole">역할</label>
-            <select id="suRole">
-              <option value="agent">영업자</option>
-              <option value="provider">공급사</option>
-            </select>
-          </div>
-          <button type="submit" class="login-submit" id="suBtn">가입하기</button>
-        </form>
-        <div class="login-links">
-          <a href="#" id="suBack">로그인으로 돌아가기</a>
-        </div>
-      </section>
-      <div class="login-copy">&copy; 2026 freepassmobility. All Rights Reserved.</div>
-    </div>
-  `;
+/* bindFormSave → ui-helpers.js (import) */
 
-  document.getElementById('suForm')?.addEventListener('submit', async (e) => {
+/* 글로벌 검색 — 토픽바 input → 현재 페이지 list 필터 (search 페이지는 별도 처리) */
+let _globalSearch = '';
+function applyGlobalSearch() {
+  const q = _globalSearch.trim().toLowerCase();
+  const page = document.querySelector('.pt-page.active')?.dataset.page;
+  if (!page) return;
+
+  // search 페이지는 _searchFilter.search 로 별도 처리 (이미 작동)
+  if (page === 'search') {
+    _searchFilter.search = q;
+    applySearchFilter();
+    return;
+  }
+
+  // 다른 페이지 — store 데이터 필터 후 재렌더
+  const matches = (haystack) => !q || haystack.toLowerCase().includes(q);
+  if (page === 'workspace') {
+    const filtered = (store.rooms || []).filter(r => matches([r.car_number, r.maker, r.model, r.last_message_text, r.partner_name].filter(Boolean).join(' ')));
+    renderRoomList(filtered);
+  } else if (page === 'contract') {
+    const filtered = (store.contracts || []).filter(c => matches([c.contract_id, c.customer_name, c.car_number, c.maker, c.model, c.agent_name].filter(Boolean).join(' ')));
+    renderContractList(filtered);
+  } else if (page === 'settle') {
+    const filtered = (store.settlements || []).filter(s => matches([s.contract_id, s.customer_name, s.car_number, s.maker, s.model, s.agent_name].filter(Boolean).join(' ')));
+    renderSettlementList(filtered);
+  } else if (page === 'product') {
+    const filtered = (store.products || []).filter(p => matches([p.car_number, p.maker, p.model, p.sub_model, p.trim_name, Array.isArray(p.options) ? p.options.join(' ') : p.options].filter(Boolean).join(' ')));
+    renderProductList(filtered);
+  } else if (page === 'policy') {
+    const filtered = (store.policies || []).filter(p => matches([p.policy_name, p.policy_code, p.provider_company_code, p.provider_name, p.credit_grade].filter(Boolean).join(' ')));
+    renderPolicyList(filtered);
+  } else if (page === 'partners') {
+    const filtered = (store.partners || []).filter(p => matches([p.partner_name, p.partner_code, p.company_name, p.company_code, p.contact_name, p.phone, p.email, p.partner_type].filter(Boolean).join(' ')));
+    renderPartnerList(filtered);
+  } else if (page === 'users') {
+    const filtered = (store.users || []).filter(u => matches([u.name, u.email, u.company_name, u.role, u.phone].filter(Boolean).join(' ')));
+    renderUserList(filtered);
+  }
+}
+
+function bindGlobalSearch() {
+  const sb = document.getElementById('ptTbSearch');
+  if (!sb) return;
+  sb.addEventListener('input', (e) => {
+    _globalSearch = e.target.value || '';
+    applyGlobalSearch();
+  });
+  // 페이지 전환 시 검색어 초기화 — 이전 페이지 필터가 새 페이지에 잘못 적용되지 않게
+  window.addEventListener('hashchange', () => {
+    _globalSearch = '';
+    sb.value = '';
+    _searchFilter.search = '';
+  });
+}
+
+/* 모든 페이지 .room-item 클릭 → 활성 토글 + 페이지별 상세 갱신 */
+function bindGenericListInteractions() {
+  document.body.addEventListener('click', (e) => {
+    const item = e.target.closest('.ws4-list .room-item');
+    if (!item) return;
+    const list = item.parentElement;
+    list.querySelectorAll('.room-item').forEach(r => r.classList.remove('active'));
+    item.classList.add('active');
+
+    const id = item.dataset.id;
+    const page = item.closest('.pt-page')?.dataset.page;
+    if (!id || !page) return;
+
+    if (page === 'contract') {
+      const c = (store.contracts || []).find(x => x.contract_code === id || x._key === id);
+      if (c) renderContractDetail(c);
+    } else if (page === 'workspace') {
+      selectRoom(id);
+    } else if (page === 'settle') {
+      const s = (store.settlements || []).find(x => x._key === id);
+      if (s) renderSettlementDetail(s);
+    } else if (page === 'product') {
+      const pr = (store.products || []).find(x => x._key === id);
+      if (pr) renderProductDetail(pr);
+    } else if (page === 'policy') {
+      const pol = (store.policies || []).find(x => x._key === id);
+      if (pol) renderPolicyDetail(pol);
+    } else if (page === 'partners') {
+      const pa = (store.partners || []).find(x => x._key === id);
+      if (pa) renderPartnerDetail(pa);
+    } else if (page === 'users') {
+      const u = (store.users || []).find(x => x._key === id);
+      if (u) renderUserDetail(u);
+    }
+  });
+}
+
+
+/* ── 사용자 정보 → 사이드바 brand · bottom + 역할 클래스 ── */
+function hydrateUser(user) {
+  const brandText = document.querySelector('.pt-sb-brand .sb-brand-text');
+  if (brandText) brandText.textContent = user.company_name || 'freepass ERP';
+  const bottom = document.querySelector('.pt-sb-bottom');
+  if (bottom) {
+    const roleBase = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업' }[user.role] || user.role || '';
+    // 영업관리자는 "영업 · 관리자" 처럼 두 가지 다 표시
+    const role = user.role === 'agent_admin' ? `${roleBase} · 관리자` : roleBase;
+    bottom.textContent = `${user.name || user.email || ''}${role ? ' · ' + role : ''}`;
+  }
+  // body 에 role 클래스 — CSS 가 권한별 메뉴 가시성 처리
+  document.body.classList.remove('role-admin', 'role-provider', 'role-agent', 'role-agent_admin');
+  if (user.role) document.body.classList.add(`role-${user.role}`);
+}
+
+/* ── 사이드바 카운트 자동 갱신 — 모든 watchCollection 후 호출 ── */
+function updateSidebarCounts() {
+  const setCnt = (page, n) => {
+    const el = document.querySelector(`.pt-sb a[data-page="${page}"] .cnt`);
+    if (el) el.textContent = n > 0 ? String(n) : '';
+  };
+  // 상품 찾기 — 즉시 출고 가능
+  setCnt('search', (store.products || []).filter(p => /즉시/.test(p.vehicle_status || '')).length);
+  // 업무 소통 — 안읽음 룸
+  setCnt('workspace', (store.rooms || []).filter(r => r.unread > 0).length);
+  // 계약 관리 — 진행중 (만기 제외)
+  setCnt('contract', (store.contracts || []).filter(c => (c.stage || c.status || '접수') !== '만기').length);
+  // 정산 관리 — 미정산
+  setCnt('settle', (store.settlements || []).filter(s => (s.settlement_status || s.status || '미정산') === '미정산').length);
+  // 재고/정책/파트너/사용자 — 전체 수
+  setCnt('product', (store.products || []).length);
+  setCnt('policy', (store.policies || []).length);
+  setCnt('partners', (store.partners || []).length);
+  setCnt('users', (store.users || []).length);
+}
+
+/* ── 로그인 / 가입 / 재설정 폼 — v2 패턴 그대로 ── */
+function bindLoginForm() {
+  const loginForm  = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const resetForm  = document.getElementById('resetForm');
+
+  // 카드 토글 — login / signup / reset 한 번에 하나만 표시
+  const showCard = (which) => {
+    [loginForm, signupForm, resetForm].forEach(el => { if (el) el.hidden = true; });
+    const target = { login: loginForm, signup: signupForm, reset: resetForm }[which];
+    if (target) target.hidden = false;
+  };
+
+  // 로그인
+  loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('suEmail').value;
+    const email = document.getElementById('loginEmail').value.trim();
+    const pw = document.getElementById('loginPw').value;
+    const msg = document.getElementById('loginMsg');
+    if (msg) msg.textContent = '';
+    try {
+      await fbLogin(email, pw);
+      location.reload();
+    } catch (err) {
+      if (msg) msg.textContent = '로그인 실패 — ' + (err.code || err.message || err);
+    }
+  });
+
+  document.getElementById('signupLink')?.addEventListener('click', (e) => { e.preventDefault(); showCard('signup'); });
+  document.getElementById('resetLink')?.addEventListener('click', (e) => { e.preventDefault(); showCard('reset'); });
+  document.getElementById('suBackLink')?.addEventListener('click', (e) => { e.preventDefault(); showCard('login'); });
+  document.getElementById('rpBackLink')?.addEventListener('click', (e) => { e.preventDefault(); showCard('login'); });
+
+  // 가입
+  signupForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('suEmail').value.trim();
     const pw = document.getElementById('suPw').value;
-    if (!email || !pw || pw.length < 6) { showToast('이메일과 비밀번호(6자+) 필수', 'error'); return; }
-    const btn = document.getElementById('suBtn');
-    const card = btn.closest('.login-card');
-    btn.disabled = true;
-    card.classList.add('is-loading');
+    const msg = document.getElementById('signupMsg');
+    if (msg) msg.textContent = '';
+    if (!email || !pw || pw.length < 6) { if (msg) msg.textContent = '이메일·비밀번호(6자 이상) 필수'; return; }
     try {
       const { signup } = await import('./firebase/auth.js');
-      const user = await signup(email, pw);
       const { saveUserProfile } = await import('./firebase/collections.js');
+      const user = await signup(email, pw);
       await saveUserProfile(user.uid, {
         email,
         name: document.getElementById('suName').value.trim(),
@@ -424,373 +707,40 @@ function renderSignup() {
         company_name: document.getElementById('suCompany').value.trim(),
         role: document.getElementById('suRole').value,
       });
-      card.classList.remove('is-loading');
-      showToast('가입 완료. 관리자 승인 후 이용 가능합니다.');
-    } catch (e) {
-      btn.disabled = false;
-      card.classList.remove('is-loading');
-      showToast('가입 실패: ' + (e.message || ''), 'error');
+      showToast('가입 완료. 관리자 승인 후 이용 가능합니다.', 'success');
+      // 로그아웃 후 로그인 화면으로 (대기 상태라 ERP 진입 차단)
+      const { logout } = await import('./firebase/auth.js');
+      await logout();
+      showCard('login');
+    } catch (err) {
+      console.error('[signup]', err);
+      if (msg) msg.textContent = '가입 실패 — ' + (err.code || err.message || err);
     }
   });
 
-  document.getElementById('suBack')?.addEventListener('click', (e) => { e.preventDefault(); renderLogin(); });
-}
-
-function renderResetPassword() {
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="login-page">
-      <div class="login-brand"><span class="login-brand-main">freepass</span> <span class="login-brand-base">erp</span></div>
-      <section class="login-card">
-        <header class="login-head">
-          <h2 class="login-title">비밀번호 재설정</h2>
-          <p class="login-sub">가입한 이메일로 재설정 링크를 보내드립니다.</p>
-        </header>
-        <form class="login-form" id="rpForm" novalidate>
-          <div class="login-field">
-            <label for="rpEmail">이메일</label>
-            <input id="rpEmail" type="email" placeholder="name@company.com" autocomplete="username" required>
-          </div>
-          <button type="submit" class="login-submit" id="rpBtn">재설정 메일 전송</button>
-        </form>
-        <div class="login-links">
-          <a href="#" id="rpBack">로그인으로 돌아가기</a>
-        </div>
-      </section>
-      <div class="login-copy">&copy; 2026 freepassmobility. All Rights Reserved.</div>
-    </div>
-  `;
-
-  document.getElementById('rpForm')?.addEventListener('submit', async (e) => {
+  // 비밀번호 재설정
+  resetForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = document.getElementById('rpEmail').value;
+    const email = document.getElementById('rpEmail').value.trim();
+    const msg = document.getElementById('resetMsg');
+    if (msg) msg.textContent = '';
     if (!email) return;
     try {
       const { resetPassword } = await import('./firebase/auth.js');
       await resetPassword(email);
-      showToast('재설정 메일 전송됨');
-    } catch (e) {
-      showToast('전송 실패', 'error');
+      if (msg) { msg.style.color = 'var(--accent-green)'; msg.textContent = '재설정 메일 전송됨. 이메일을 확인하세요.'; }
+    } catch (err) {
+      if (msg) msg.textContent = '전송 실패 — ' + (err.code || err.message || err);
     }
-  });
-
-  document.getElementById('rpBack')?.addEventListener('click', (e) => { e.preventDefault(); renderLogin(); });
-}
-
-/* ── Page Placeholders ── */
-function placeholder(name) {
-  return () => {
-    const sub = document.getElementById('subBody');
-    const main = document.getElementById('mainContent');
-    if (sub) sub.innerHTML = `<div class="sub-notice">${name} 목록</div>`;
-    if (main) main.innerHTML = `
-      <div class="page-placeholder">
-        <div>
-          <i class="ph ph-hammer" aria-hidden="true"></i>
-          <p>${name} 페이지 준비 중</p>
-        </div>
-      </div>
-    `;
-  };
-}
-
-/* ── Init ── */
-async function init() {
-  // Apply saved theme
-  document.documentElement.dataset.theme = store.theme;
-
-  // Current page cleanup
-  let currentCleanup = null;
-
-  /** 역할 가드 — 허용 역할이 아니면 /search로 리다이렉트 + 안내 토스트 */
-  const guard = (allowedRoles, loader) => async () => {
-    const role = store.currentUser?.role;
-    if (!allowedRoles.includes(role)) {
-      const { showToast } = await import('./core/toast.js');
-      showToast('접근 권한이 없습니다', 'error');
-      // 다음 tick에 /search로 (현재 route 가드 진입 중이라 즉시 navigate는 무시됨)
-      setTimeout(() => navigate('/search', { transition: false }), 0);
-      return;
-    }
-    await loader();
-  };
-
-  // 모바일/데스크톱 분기 loader — 뷰포트 기준 다른 모듈 선택
-  // catalog 모드는 데스크톱에서도 모바일 UI 강제 (손님용 단일 레이아웃)
-  const pageLoader = (desktopImport, mobileImport) => async () => {
-    currentCleanup?.();
-    const useMobile = mobileImport && (isMobile() || store.catalogMode);
-    const loader = useMobile ? mobileImport : desktopImport;
-    const { mount, unmount } = await loader();
-    mount();
-    currentCleanup = unmount;
-  };
-
-  // Define routes
-  defineRoutes({
-    '/': pageLoader(
-      () => import('./pages/workspace.js'),
-      () => import('./pages/mobile-workspace.js'),
-    ),
-    '/search': pageLoader(
-      () => import('./pages/search.js'),
-      () => import('./pages/mobile-search.js'),
-    ),
-    '/contract': pageLoader(
-      () => import('./pages/contract.js'),
-      () => import('./pages/mobile-contract.js'),
-    ),
-    '/settle': pageLoader(
-      () => import('./pages/settlement.js'),
-      () => import('./pages/mobile-settlement.js'),
-    ),
-    '/dash': async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/dashboard.js');
-      mount();
-      currentCleanup = unmount;
-    },
-    '/product': guard(['admin', 'provider'], async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/product-manage.js');
-      mount();
-      currentCleanup = unmount;
-    }),
-    '/policy': guard(['admin', 'provider'], async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/policy.js');
-      mount();
-      currentCleanup = unmount;
-    }),
-    '/settings': pageLoader(
-      () => import('./pages/settings-page.js'),
-      () => import('./pages/mobile-settings.js'),
-    ),
-    '/account': async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/account.js');
-      mount();
-      currentCleanup = unmount;
-    },
-    '/admin/sign': guard(['admin'], async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/admin.js');
-      mount();
-      currentCleanup = unmount;
-    }),
-    '/admin/users': guard(['admin'], async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/admin.js');
-      mount();
-      currentCleanup = unmount;
-    }),
-    '/admin/partners': guard(['admin'], async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/admin.js');
-      mount();
-      currentCleanup = unmount;
-    }),
-    '/admin/dev': guard(['admin'], async () => {
-      currentCleanup?.();
-      const { mount, unmount } = await import('./pages/admin.js');
-      mount();
-      currentCleanup = unmount;
-    }),
-  });
-
-  setNavigateCallback(updateActiveMenu);
-
-  // 뷰포트이 브레이크포인트를 넘어가면 현재 라우트 재진입(데스크톱↔모바일 스왑)
-  onMobileChange(() => {
-    const cur = location.pathname || '/';
-    resetRoute();
-    navigate(cur, { transition: false });
-  });
-
-  // 로딩 화면 표시 (jpkerp-next 규격)
-  const app = document.getElementById('app');
-  app.innerHTML = `
-    <div class="auth-splash">
-      <i class="ph ph-spinner ph-spin"></i>
-      <span>인증 확인 중...</span>
-    </div>
-  `;
-
-  // 현재 URL 기억 (새로고침 복원용)
-  const savedPath = location.pathname || '/search';
-  const landingPage = localStorage.getItem('fp.landing') || '/search';
-
-  // ── catalog 모드 (손님 공개 — 모바일에서만 SPA 재사용) ──
-  const isCatalog = document.body.dataset.mode === 'catalog';
-  if (isCatalog) {
-    const params = new URLSearchParams(location.search);
-    store.catalogMode = true;
-    store.catalogParams = {
-      agentCode: params.get('a') || '',
-      provider: params.get('provider') || '',
-      car: params.get('car') || '',
-      pid: params.get('pid') || '',
-    };
-    document.body.classList.add('is-catalog-mode');
-    store.currentUser = { uid: 'guest', role: 'guest', name: '', company_name: '' };
-    store.authReady = true;
-
-    // 보낸사람 정보 로드 (실패해도 계속)
-    if (store.catalogParams.agentCode) {
-      try {
-        const { fetchCollection } = await import('./firebase/db.js');
-        const users = await fetchCollection('users').catch(() => null);
-        if (users) {
-          const list = Array.isArray(users) ? users : Object.values(users);
-          store.catalogAgent = list.find(u => u.user_code === store.catalogParams.agentCode) || null;
-        }
-      } catch {}
-    }
-
-    renderShell();
-    if (isMobile()) bindGlobalHaptic();
-    if (store.catalogParams.car) sessionStorage.setItem('fp.pendingCar', store.catalogParams.car);
-
-    // URL 은 /catalog.html 유지 (새로고침 시에도 카탈로그 복원)
-    const originalUrl = location.pathname + location.search;
-    navigate('/search', { transition: false });
-    history.replaceState(null, '', originalUrl);
-
-    // 공개 데이터 구독
-    import('./firebase/db.js').then(({ watchCollection }) => {
-      watchCollection('products', d => { store.products = d; });
-      watchCollection('partners', d => { store.partners = d; });
-    });
-    return;
-  }
-
-  // 엑셀 "문의" 링크 진입 — ?car=XXX 쿼리 캡처 후 URL 정리
-  const incomingCar = new URLSearchParams(location.search).get('car');
-  if (incomingCar) {
-    sessionStorage.setItem('fp.pendingCar', incomingCar);
-    history.replaceState({}, '', location.pathname);
-  }
-
-  // Wait for auth
-  const user = await initAuth();
-
-  if (user) {
-    renderShell();
-    // 모바일에서 전역 버튼 햅틱 활성화
-    if (isMobile()) bindGlobalHaptic();
-    const pendingCar = sessionStorage.getItem('fp.pendingCar');
-    if (pendingCar) {
-      sessionStorage.removeItem('fp.pendingCar');
-      handlePendingCar(pendingCar);
-    } else {
-      // 현재 URL이 유효한 라우트면 복원, 아니면 랜딩 페이지로
-      const restorePath = savedPath !== '/' && savedPath !== '/index.html' ? savedPath : landingPage;
-      // renderShell 직후는 transition 스킵 (DOM 교체 직후 View Transition abort 방지)
-      navigate(restorePath, { transition: false });
-    }
-    // 전역 데이터 감시 — 사이드바 뱃지 등 앱 전체에서 필요
-    import('./firebase/db.js').then(({ watchCollection }) => {
-      watchCollection('rooms', d => { store.rooms = d; });
-      watchCollection('contracts', d => { store.contracts = d; });
-      watchCollection('settlements', d => { store.settlements = d; });
-      watchCollection('products', d => { store.products = d; });
-      watchCollection('users', d => { store.users = d; });
-      watchCollection('partners', d => { store.partners = d; });
-    });
-    // Init background services
-    import('./core/auto-status.js').then(m => m.initAutoStatus());
-    import('./core/alerts.js').then(m => m.initAlerts());
-    import('./core/chat-notif.js').then(m => m.initChatNotif());
-    import('./core/command-palette.js').then(m => m.initCommandPalette());
-    import('./core/menu-badges.js').then(m => m.initMenuBadges());
-    import('./core/car-models.js').then(m => m.subscribeCarModels());
-    import('./firebase/messaging.js').then(m => m.onForegroundMessage(() => {}));
-    // PWA 설치 + 알림 권한 유도 (모바일, 설명 포함 시트) — 기존의 묵시적 Notification.requestPermission() 대체
-    import('./core/onboard-prompt.js').then(m => m.checkOnboard());
-  } else {
-    renderLogin();
-  }
-
-  // Watch auth changes — DOM 상태(.shell 유무) + UID 비교로 상황 판정.
-  //   user O · shell X  → 최초 로그인: shell + 랜딩 페이지 mount
-  //   user O · shell O · uid 다름 → 재로그인(계정 변경): shell 재생성 + 랜딩
-  //   user O · shell O · uid 동일 → profile 업데이트: 상단바/사이드바만 갱신
-  //   user X · shell O  → 로그아웃: 로그인 폼
-  //   user X · shell X  → 로그인 대기: 아무것도 안 함
-  let prevUid = store.currentUser?.uid || null;
-  subscribe('currentUser', (user) => {
-    if (!store.authReady) return;
-    const shell = document.querySelector('.shell');
-    const nextUid = user?.uid || null;
-
-    if (user && (!shell || nextUid !== prevUid)) {
-      resetRoute();  // shell 새로 만드니 router 가드 초기화
-      renderShell();
-      const pendingCar = sessionStorage.getItem('fp.pendingCar');
-      if (pendingCar) {
-        sessionStorage.removeItem('fp.pendingCar');
-        handlePendingCar(pendingCar);
-      } else {
-        navigate(localStorage.getItem('fp.landing') || '/search', { transition: false });
-      }
-    } else if (user && shell && nextUid === prevUid) {
-      // 프로필 업데이트 — 상단바·사이드바만 새로고침
-      renderTopbarUser();
-      const sb = document.querySelector('.sb-brand');
-      if (sb) sb.textContent = user.company_name || '';
-    } else if (!user && shell) {
-      resetRoute();
-      renderLogin();
-    }
-    prevUid = nextUid;
   });
 }
 
-/* ── 엑셀 "문의" 링크 진입 처리 — 차량번호로 상품 찾아 대화방 열기 ── */
-async function handlePendingCar(carNumber) {
-  try {
-    const { get, ref } = await import('firebase/database');
-    const { db } = await import('./firebase/config.js');
-    const { ensureRoom } = await import('./firebase/collections.js');
-    const { showToast } = await import('./core/toast.js');
-
-    const snap = await get(ref(db, 'products'));
-    if (!snap.exists()) {
-      navigate('/search');
-      showToast('상품 데이터가 없습니다.');
-      return;
-    }
-    const products = snap.val();
-    const entry = Object.entries(products).find(([, p]) => p.car_number === carNumber);
-    if (!entry) {
-      navigate('/search');
-      showToast(`차량번호 ${carNumber} 상품을 찾지 못했습니다.`);
-      return;
-    }
-    const [productUid, product] = entry;
-    const me = store.currentUser || {};
-    const roomId = await ensureRoom({
-      productUid,
-      productCode: product.product_code || productUid,
-      agentUid: me.uid,
-      agentCode: me.company_code || me.user_code || '',
-      agentName: me.company_name || me.name || '',
-      agentChannelCode: me.channel_code || '',
-      providerUid: product.provider_uid || '',
-      providerName: product.provider_name || product.provider_company_code || '',
-      providerCompanyCode: product.provider_company_code || '',
-      vehicleNumber: product.car_number,
-      modelName: product.model || '',
-      subModel: product.sub_model || '',
-      providerCode: product.provider_company_code || '',
-    });
-    store.pendingOpenRoom = roomId;
-    navigate('/', { transition: false });
-    showToast(`${product.model || carNumber} 문의방을 열었습니다.`);
-  } catch (e) {
-    console.error('[handlePendingCar]', e);
-    navigate('/search');
-  }
+/* ── 로그아웃 (사이드바 또는 어디든 #btnLogout 있으면) ── */
+function bindLogout() {
+  document.getElementById('btnLogout')?.addEventListener('click', async () => {
+    await fbLogout();
+    location.reload();
+  });
 }
 
-init();
+boot();
