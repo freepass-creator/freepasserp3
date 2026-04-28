@@ -25,7 +25,7 @@
   /* ── Layering (3단계) ── */
   --bg-page: #f3f4f6;
   --bg-card: #ffffff;
-  --bg-header: #fafafa;
+  --bg-header: #eef1f5;       /* 헤더 — 본문 zebra (#fafafa) 와 구분되게 한 톤 darker */
   --bg-stripe: #fafafa;
   --bg-hover: #eff6ff;
   --bg-selected: #dbeafe;
@@ -78,7 +78,7 @@
   --radius: 4px;
   --radius-sm: 2px;
   --radius-pill: 999px;
-  --row-height: 30px;
+  --row-height: 36px;
   --input-height: 26px;
   --button-height: 26px;
   --cell-padding: 6px 8px;
@@ -429,6 +429,78 @@ input[type="radio"] {
 .status-dot.사고 { background: var(--state-사고); }
 .status-dot.예약 { background: var(--state-예약); }
 
+/* 차량상태 색칩 — 영업자 세로 스캔용. 4상태 (즉시/가능/협의/불가) */
+/* 상태칩 — color-badge 와 동일 톤 (솔리드 fill, 굴림 12px 2자 fit) */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 18px;
+  padding: 0;
+  border-radius: 2px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+}
+.status-chip.즉시 { background: var(--alert-green-bg);  color: var(--alert-green-text); }
+.status-chip.가능 { background: var(--alert-blue-bg);   color: var(--alert-blue-text); }
+.status-chip.협의 { background: var(--alert-orange-bg); color: var(--alert-orange-text); }
+.status-chip.불가 { background: var(--bg-stripe);       color: var(--text-weak); }
+
+/* 외부/내부 색상 뱃지 — fuel-badge 동일 규격 (18x18 라운드 사각, 안에 한글 약어 1자)
+   box 크기 절대 불변. mono 폰트로 글리프 폭 통일 (Latin/Korean 모두) */
+/* 2글자 라벨 색칩 — 굴림 12px 2자에 딱 fit (mono 24px + 미세 여백) */
+.color-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 18px;
+  padding: 0;
+  border-radius: 3px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  box-sizing: border-box;
+  vertical-align: middle;
+  flex-shrink: 0;
+  border: 0;
+  white-space: nowrap;
+  letter-spacing: -0.05em;
+}
+
+/* 연료 — 박스 없는 영문 1자 (G/D/L/H/E/O). 본문과 동일 톤 */
+.fuel-letter {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-main);
+  text-align: center;
+  vertical-align: middle;
+}
+/* 옅은 색만 식별용 옅은 보더 */
+.color-badge.is-light {
+  border: 1px solid rgba(0, 0, 0, 0.18);
+}
+/* 빈 뱃지 — dashed 가 시각적으로 작아 보이지 않게 미세한 fill 추가 */
+.color-badge-empty {
+  background: rgba(0, 0, 0, 0.02);   /* 빈 뱃지도 채워진 뱃지와 동일한 시각 weight */
+  border-style: dashed;
+  border-color: var(--text-muted);
+}
+.color-badge-text {
+  background: var(--bg-stripe);
+  color: var(--text-sub);
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
 
 /* ═══════════════════════════════════════════════════════════════
  * 9. TABLES (ERP 핵심)
@@ -518,7 +590,7 @@ input[type="radio"] {
 .table thead th.sticky-col-2 {
   z-index: var(--z-table-corner);
 }
-/* tbody의 sticky-col 배경은 흰색/줄무늬 따름 */
+/* tbody의 sticky-col 배경 — 본문 zebra 와 동일 톤 유지 (홀: bg-card, 짝: bg-stripe) */
 .table tbody td.sticky-col,
 .table tbody td.sticky-col-2 { background: var(--bg-card); }
 .table tbody tr:nth-child(even) td.sticky-col,

@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>freepass — 상품 안내</title>
-<meta property="og:title" content="freepass — 상품 안내">
-<meta property="og:description" content="다양한 장기렌트 차량을 만나보세요">
+<title>상품 안내</title>
+<meta property="og:title" content="상품 안내">
+<meta property="og:description" content="장기렌트 상품 안내">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="/phosphor/style.css">
 <style>
@@ -33,31 +33,75 @@
   }
   *, *::before, *::after { box-sizing: border-box; font-family: var(--font); letter-spacing: 0; }
   .ph, .ph::before { font-family: 'Phosphor' !important; }
-  body {
+  html, body {
     margin: 0; padding: 0;
+    height: 100%;   /* 부모 채우기 — viewport 변화에 안전 */
+  }
+  body {
     font-size: 13px; color: var(--text-main);
     background: var(--bg-page);
+    /* grid shell — 상단(auto) / 중간(1fr) / 하단(auto). cat-grid 와 cat-detail-page 는 row 2 에 stack */
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 1fr;
+    overflow: hidden;
   }
-  /* 헤더 */
+  .cat-grid, .cat-detail-page { grid-row: 2; grid-column: 1; }
+  .cat-bottom-bar { grid-row: 3; grid-column: 1; }
+  .cat-top-fixed { grid-row: 1; grid-column: 1; }
+  /* 헤더 — 리스트/상세 모드 전환 (body.is-detail). 패널헤드 규격 36px (ERP 통일) */
   .cat-head {
-    position: sticky; top: 0; z-index: 100;
     background: var(--bg-card);
     border-bottom: 1px solid var(--border);
-    padding: 12px 16px;
-    display: flex; align-items: center; gap: 12px;
-    flex-wrap: wrap;
+    padding: 4px 12px;
+    display: flex; align-items: center; gap: 8px;
+    min-height: 44px;
   }
+  .cat-top-fixed {
+    background: var(--bg-card);
+    z-index: 100;
+  }
+  .cat-head-list { display: contents; }
+  .cat-head-detail { display: none; align-items: center; gap: 12px; flex: 1; }
+  body.is-detail .cat-head-list { display: none; }
+  body.is-detail .cat-head-detail { display: flex; }
+  body.is-detail .cat-filters,
+  body.is-detail .cat-grid { display: none; }
+  body:not(.is-detail) .cat-detail-page { display: none; }
+  /* 뒤로가기 버튼 */
+  .cat-back-btn {
+    width: 36px; height: 36px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: transparent; border: 0; cursor: pointer;
+    color: var(--text-main);
+    border-radius: 4px;
+    font-size: 18px;
+  }
+  .cat-back-btn:hover { background: var(--bg-stripe); }
+  /* 단일 상품 모드 — 뒤로가기 숨김 (돌아갈 리스트 없음, 그 상품만 봄) */
+  body.is-single .cat-back-btn { display: none; }
+  .cat-detail-title { flex: 1; min-width: 0; }
+  .cat-detail-car { font-size: 16px; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cat-detail-sub { font-size: 12px; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* 상세 페이지 본문 — body grid middle row. 자체 스크롤 */
+  .cat-detail-page {
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .cat-detail-page > * { max-width: 760px; margin: 0 auto; }
   .cat-brand {
     font-size: 16px; font-weight: 600;
     display: flex; align-items: center; gap: 6px;
   }
   .cat-brand i { color: var(--accent-blue); font-size: 20px; }
   .cat-search {
-    flex: 1; max-width: 480px;
+    flex: 1;
     position: relative;
   }
   .cat-search input {
-    width: 100%; padding: 8px 12px 8px 32px;
+    width: 100%; padding: 6px 32px 6px 30px;
+    height: 30px;
     border: 1px solid var(--border); border-radius: 4px;
     font-size: 13px; background: var(--bg-page);
   }
@@ -73,61 +117,271 @@
   }
   .cat-cta:hover { background: #1d4ed8; }
 
-  /* 필터 chips */
+  /* 필터 — segmented control. 외곽 한 틀 + 세로 라인 구분 (컴팩트) */
   .cat-filters {
-    padding: 10px 16px;
-    background: var(--bg-card); border-bottom: 1px solid var(--border-soft);
-    display: flex; gap: 6px; overflow-x: auto;
+    margin: 6px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; gap: 0;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
   }
+  .cat-filters .cat-chip {
+    flex: 1;
+    border: 0;
+    border-radius: 0;
+    border-right: 1px solid var(--border);
+    margin: 0;
+    text-align: center;
+    padding: 7px 6px;
+    background: transparent;
+    color: var(--text-sub);
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 4px;
+  }
+  .cat-filters .cat-chip:last-child { border-right: 0; }
+  .cat-filters .cat-chip:hover { background: var(--bg-stripe); color: var(--text-main); }
+  /* 카테고리에 선택된 preset 있음 — 파란 점 indicator 만, 글씨/배경은 기본 */
+  .cat-filters .cat-chip.is-active { /* 점 indicator 는 ::after 로만 표시 */ }
+  /* 펼쳐진 버튼 — 진한 파란 배경 + 흰 글씨로 명확하게 */
+  .cat-filters .cat-chip.is-open,
+  .cat-filters .cat-chip.is-open.is-active {
+    background: var(--accent-blue) !important;
+    color: #fff !important;
+    font-weight: 600;
+  }
+  /* 점 indicator — 필터 적용된 카테고리 버튼에 작은 점 (트렌드) */
+  .cat-filters .cat-chip.is-active::after {
+    content: '';
+    position: absolute; top: 6px; right: 8px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-blue);
+  }
+  .cat-filters .cat-chip.is-open.is-active::after { background: #fff; }
   .cat-chip {
-    padding: 6px 12px; border: 1px solid var(--border); border-radius: 999px;
+    padding: 6px 12px; border: 1px solid var(--border); border-radius: 4px;
     font-size: 12px; cursor: pointer; white-space: nowrap;
     background: var(--bg-card); color: var(--text-sub);
   }
   .cat-chip:hover { background: var(--bg-stripe); }
   .cat-chip.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
-
-  /* 그리드 */
-  .cat-grid {
-    padding: 16px;
-    display: grid; gap: 12px;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  .cat-range-btn { font-family: inherit; }
+  /* (이전 .cat-range-btn.is-active / is-open 룰은 .cat-filters .cat-chip 레벨에서 통합 관리) */
+  /* 빠른필터 popover */
+  .cat-range-pop {
+    position: fixed;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    min-width: 220px;
+    z-index: 300;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
   }
+  .cat-range-title { font-size: 12px; color: var(--text-sub); margin-bottom: 6px; }
+  .cat-range-row { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+  .cat-range-row input { width: 90px; padding: 6px 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; }
+  .cat-range-actions { display: flex; gap: 4px; justify-content: flex-end; }
+  .cat-range-actions button {
+    padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;
+    border: 1px solid var(--border); background: var(--bg-card); color: var(--text-main);
+  }
+  .cat-range-actions button.primary {
+    background: var(--accent-blue); color: #fff; border-color: var(--accent-blue);
+  }
+  .cat-fuel-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+  .cat-fuel-list label {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 12px;
+  }
+  .cat-fuel-list label:hover { background: var(--bg-stripe); }
+  /* preset 행 — 같은 segmented 스타일. 부드러운 슬라이드 전환 */
+  .cat-presets {
+    margin: 0 12px 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; gap: 0;
+    overflow: hidden;
+    animation: catPresetsSlide 0.18s ease-out;
+  }
+  @keyframes catPresetsSlide {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .cat-presets[hidden] { display: none; }
+  .cat-preset-chip {
+    flex: 1;
+    padding: 9px 6px;
+    border: 0;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-sub);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    text-align: center;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+  .cat-preset-chip:last-child { border-right: 0; }
+  .cat-preset-chip:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .cat-preset-chip.is-active {
+    background: var(--accent-blue);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* 그리드 — body grid 의 middle row (1fr). 자체 overflow-y: auto */
+  .cat-grid {
+    min-height: 0;
+    overflow-y: auto;
+    padding: 14px;
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-auto-rows: max-content;
+    align-content: start;
+  }
+  .cat-grid > .cat-card { align-self: start; }   /* 카드가 grid row 에서 stretch 되지 않게 */
+  /* 매우 좁은 모바일: 2단 보장 (1단으로 떨어지지 않게 — 큰 사진보다 빨리 훑어보기) */
+  @media (max-width: 480px) {
+    .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 10px; }
+  }
+
+  /* 검색창 안 세부필터 버튼 */
+  .cat-search { position: relative; }
+  .cat-search-detail-btn {
+    position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    width: 28px; height: 28px;
+    background: transparent; border: 0; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-sub); border-radius: 4px;
+  }
+  .cat-search-detail-btn:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .cat-search input { padding-right: 36px; }
+
+  /* 하단 탭바 — flex shell 의 bottom. 화면 하단 고정 (flex-shrink: 0) */
+  .cat-bottom-bar {
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 12px;
+    z-index: 200;
+  }
+  .cat-bb-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--accent-blue-bg);
+    color: var(--accent-blue);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 22px;
+  }
+  .cat-bb-info { flex: 1; min-width: 0; }
+  .cat-bb-name {
+    font-size: 14px; font-weight: 600; color: var(--text-main);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cat-bb-sub {
+    font-size: 12px; color: var(--text-sub);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cat-bb-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px;
+    background: var(--accent-blue); color: #fff;
+    border: 0; border-radius: 6px;
+    font-size: 14px; font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .cat-bb-cta:hover { background: #1d4ed8; }
+  .cat-bb-cta i { font-size: 16px; }
+  /* 단일 상품 모드에서도 탭바는 보임 */
+  /* 상품 카드 — 소비자 친화 비주얼 (큰 사진 + 명확한 가격 + 상태 뱃지) */
   .cat-card {
     background: var(--bg-card);
-    border: 1px solid var(--border-soft); border-radius: 6px;
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
     overflow: hidden; cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     display: flex; flex-direction: column;
   }
   .cat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    border-color: var(--border);
   }
   .cat-card-img {
-    width: 100%; aspect-ratio: 4/3; object-fit: cover;
-    background: var(--bg-stripe);
+    width: 100%;
+    height: 110px;        /* 컴팩트 — 위아래 약간 잘려도 차종 식별 가능 */
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #eef2f6 0%, #d8dee5 100%);
     display: flex; align-items: center; justify-content: center;
-    color: var(--text-muted); font-size: 36px;
+    color: #94a3b8; font-size: 36px;
+    position: relative;
+    overflow: hidden;
   }
-  .cat-card-img img { width: 100%; height: 100%; object-fit: cover; }
-  .cat-card-body { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
-  .cat-card-title { font-size: 13px; font-weight: 600; color: var(--text-main); }
-  .cat-card-sub { font-size: 12px; color: var(--text-sub); }
-  .cat-card-status {
-    align-self: flex-start;
-    font-size: 11px; padding: 2px 6px; border-radius: 3px;
-    margin-bottom: 2px;
+  .cat-card-img > img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    opacity: 0;
   }
-  .cat-card-status.즉시 { background: var(--accent-green-bg); color: var(--accent-green); }
-  .cat-card-status.가능 { background: var(--accent-blue-bg); color: var(--accent-blue); }
-  .cat-card-status.협의 { background: var(--accent-orange-bg); color: var(--accent-orange); }
-  .cat-card-status.상품 { background: var(--bg-stripe); color: var(--text-weak); }
+  .cat-card-img > img.is-loaded { opacity: 1; }
+  .cat-card:hover .cat-card-img img { transform: scale(1.04); }
+  .cat-card-body {
+    padding: 8px 10px 10px;
+    flex: 1; display: flex; flex-direction: column;
+    gap: 3px;
+  }
+  .cat-card-title {
+    font-size: 13px; font-weight: 700; color: var(--text-main);
+    line-height: 1.25;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+  .cat-card-sub {
+    font-size: 11px; color: var(--text-sub);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  /* 사진 위 좌상단 뱃지 — 가로 흐름, 자동 줄바꿈 (2줄까지 자연스럽게) */
+  .cat-card-badges {
+    position: absolute; top: 6px; left: 6px; right: 6px;
+    display: flex; flex-direction: row; gap: 3px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    pointer-events: none;
+  }
+  .cat-card-badge {
+    font-size: 10px; font-weight: 700; line-height: 1;
+    padding: 3px 6px; border-radius: 4px;
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    white-space: nowrap;
+  }
+  .cat-badge-now      { background: #059669; }   /* 즉시 — 초록 */
+  .cat-badge-ev       { background: #0891b2; }   /* 전기 — 청록 */
+  .cat-badge-eco      { background: #0e7490; }   /* 하이브리드 — 진청록 */
+  .cat-badge-new      { background: #2563eb; }   /* 신차 — 파랑 */
+  .cat-badge-lowkm    { background: #d97706; }   /* 짧은Km — 주황 */
+  .cat-badge-private  { background: #7c3aed; }   /* 일반번호 — 보라 */
+  /* 가격 — 시각적으로 가장 강조 (컴팩트) */
   .cat-card-price {
-    margin-top: 4px;
-    font-size: 14px; font-weight: 600; color: var(--accent-blue);
+    margin-top: 2px;
+    font-size: 14px; font-weight: 700; color: var(--text-main);
+    line-height: 1.2;
   }
-  .cat-card-price small { color: var(--text-weak); font-weight: 400; font-size: 11px; }
+  .cat-card-price small {
+    color: var(--text-sub); font-weight: 500; font-size: 10px;
+    margin-left: 2px;
+  }
 
   /* 영업자 카드 */
   .cat-agent {
@@ -204,6 +458,19 @@
     display: flex; flex-direction: column;
     box-shadow: 0 12px 40px rgba(0,0,0,0.2);
   }
+  /* 단일 상품 모드 — 오버레이 X, 페이지 자체로 표시 */
+  body.is-single .cat-modal {
+    position: static; inset: auto;
+    background: transparent;
+    z-index: auto;
+    padding: 0;
+    display: block;
+  }
+  body.is-single .cat-modal-card {
+    max-width: 760px; max-height: none; margin: 0 auto;
+    box-shadow: none; border-radius: 0;
+  }
+  body.is-single .cat-modal-close { display: none; }
   .cat-modal-head {
     padding: 14px 18px; border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
@@ -237,11 +504,59 @@
   .cat-info-grid .full { grid-column: 1 / -1; }
 
   /* 사진 갤러리 */
-  .cat-gallery-main { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 6px; background: var(--bg-stripe); }
-  .cat-gallery-thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 6px; }
-  .cat-gallery-thumb { aspect-ratio: 1; cursor: pointer; border-radius: 4px; overflow: hidden; border: 2px solid transparent; }
-  .cat-gallery-thumb.active { border-color: var(--accent-blue); }
-  .cat-gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  /* 메인 사진 stage — 사진 없는 / 로딩 중 케이스별 시각 분리 */
+  .cat-gallery-stage {
+    position: relative;
+    width: 100%; aspect-ratio: 16/10;
+    background: var(--bg-stripe);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-size: 48px;
+  }
+  /* "등록된 사진 없음" — 명확한 안내 (실패와 구별) */
+  .cat-gallery-empty {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: #94a3b8;
+  }
+  .cat-gallery-empty i { font-size: 48px; }
+  .cat-gallery-empty span { font-size: 13px; font-weight: 500; }
+  .cat-empty-none i { color: #cbd5e1; }
+  .cat-empty-loading i {
+    color: var(--accent-blue);
+    animation: catSpin 1s linear infinite;
+  }
+  @keyframes catSpin { to { transform: rotate(360deg); } }
+  .cat-gallery-main {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transition: opacity 0.2s ease;
+  }
+  .cat-gallery-main.is-loaded { opacity: 1; }
+  /* 썸네일 strip — IMG 직접 노출 (v2 패턴), 가로 스크롤, 고정 픽셀 */
+  .cat-gallery-thumbs {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .cat-gallery-thumb {
+    width: 64px; height: 48px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    background: var(--bg-stripe);
+    opacity: 0.7;
+    transition: opacity 0.15s ease, border-color 0.15s ease;
+  }
+  .cat-gallery-thumb:hover { opacity: 1; }
+  .cat-gallery-thumb.is-active {
+    opacity: 1;
+    border-color: var(--accent-blue);
+  }
 
   /* 가격/보험 표 */
   .cat-table {
@@ -274,27 +589,53 @@
 </style>
 </head>
 <body>
+  <!-- 상단 고정 영역 (sticky) — 헤더 + 빠른필터 한 덩어리. 그 아래만 스크롤됨 -->
+  <div class="cat-top-fixed">
+  <!-- 상단바 — 리스트 모드: 검색+필터 / 상세 모드: 뒤로가기+차량명 -->
   <header class="cat-head">
-    <div class="cat-brand" id="catBrand"><i class="ph ph-car-profile"></i> <span id="catBrandText">freepass 카탈로그</span></div>
-    <div class="cat-search">
-      <i class="ph ph-magnifying-glass"></i>
-      <input type="search" id="catSearch" placeholder="차량번호·제조사·모델 검색...">
+    <!-- 리스트 모드 콘텐츠 — 검색창 + 필터 버튼만 -->
+    <div class="cat-head-list">
+      <div class="cat-search">
+        <i class="ph ph-magnifying-glass"></i>
+        <input type="search" id="catSearch" placeholder="차량번호·제조사·모델 검색...">
+        <button class="cat-search-detail-btn" id="catDetailFilterBtn" title="세부 필터" aria-label="세부 필터"><i class="ph ph-sliders-horizontal"></i></button>
+      </div>
     </div>
-    <a class="cat-cta" id="catContact" href="tel:1588-0000"><i class="ph ph-phone"></i> 문의</a>
+    <!-- 상세 모드 콘텐츠 -->
+    <div class="cat-head-detail">
+      <button class="cat-back-btn" id="catBackBtn" aria-label="뒤로"><i class="ph ph-caret-left"></i></button>
+      <div class="cat-detail-title">
+        <div class="cat-detail-car" id="catDetailCar">-</div>
+        <div class="cat-detail-sub" id="catDetailSub"></div>
+      </div>
+    </div>
   </header>
-  <div id="catAgent"></div>
+  <!-- 빠른 필터 — 전체 + 5개 카테고리. 클릭 시 그 아래 preset chip 펼쳐짐 -->
   <div class="cat-filters" id="catFilters">
-    <span class="cat-chip active" data-f="all">전체</span>
-    <span class="cat-chip" data-f="즉시">즉시 출고</span>
-    <span class="cat-chip" data-f="협의">출고 협의</span>
-    <span class="cat-chip" data-f="가솔린">가솔린</span>
-    <span class="cat-chip" data-f="디젤">디젤</span>
-    <span class="cat-chip" data-f="하이브리드">하이브리드</span>
-    <span class="cat-chip" data-f="전기">전기</span>
+    <button class="cat-chip cat-clear-btn" data-act="clear">전체</button>
+    <button class="cat-chip cat-range-btn" data-range="rent">대여</button>
+    <button class="cat-chip cat-range-btn" data-range="deposit">보증</button>
+    <button class="cat-chip cat-range-btn" data-range="year">연식</button>
+    <button class="cat-chip cat-range-btn" data-range="mileage">주행</button>
+    <button class="cat-chip cat-range-btn" data-range="fuel">연료</button>
+  </div>
+  <!-- 선택된 카테고리의 preset chip 들이 펼쳐지는 행 (sticky 고정 영역 안쪽) -->
+  <div class="cat-presets" id="catPresets" hidden></div>
   </div>
   <main class="cat-grid" id="catGrid">
     <div class="cat-empty"><i class="ph ph-car-simple"></i>상품을 불러오는 중...</div>
   </main>
+  <!-- 상세 페이지 컨테이너 — 상세 모드에서만 보임 -->
+  <main class="cat-detail-page" id="catDetailPage" hidden></main>
+  <!-- 하단 sticky 탭바 — 담당자 정보 + 전화 CTA. 모든 모드에서 보임 -->
+  <footer class="cat-bottom-bar" id="catBottomBar">
+    <div class="cat-bb-avatar"><i class="ph ph-user"></i></div>
+    <div class="cat-bb-info">
+      <div class="cat-bb-name" id="catBbName">담당자</div>
+      <div class="cat-bb-sub" id="catBbSub">전화 문의</div>
+    </div>
+    <a class="cat-bb-cta" id="catBbCta" href="tel:1588-0000"><i class="ph ph-phone"></i> 전화</a>
+  </footer>
   <script type="module" src="/src/catalog-app.js"></script>
 </body>
 </html>

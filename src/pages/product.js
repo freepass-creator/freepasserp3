@@ -24,9 +24,10 @@ import { inferCarModel } from '../core/car-model-infer.js';
 import { getMakers, getModelsByMaker, getSubModels, findCarModel } from '../core/car-models.js';
 import { pickPartner } from '../core/dialogs.js';
 import {
-  esc, shortStatus, fmtTime,
+  esc, shortStatus, fmtTime, fmtDate, fmtMileage,
   listBody, emptyState, renderRoomItem,
   ffi, ffs, setHeadSave, flashSaved, bindFormSave,
+  providerNameByCode, formatMainLine,
 } from '../core/ui-helpers.js';
 
 /* v2 product-manage 옵션 — 차량 스펙 드롭다운 */
@@ -139,23 +140,47 @@ function autoFillFromCarModel(card, maker, model, sub_model) {
 export function renderProductList(products) {
   const body = listBody('product');
   if (!body) return;
-  if (!products.length) { body.innerHTML = emptyState('상품이 없습니다'); renderProductDetail(null); return; }
-  const sorted = [...products].sort((a, b) => (b.updated_at || 0) - (a.updated_at || 0));
+  if (!Array.isArray(products)) return;
+  // 역할별 가시성 — provider 는 자기 회사 차량만, agent/agent_admin/admin 은 전체
+  const me = store.currentUser;
+  let visible = products;
+  if (me?.role === 'provider') {
+    visible = products.filter(p =>
+      p.provider_company_code === me.company_code ||
+      p.partner_code === me.company_code ||
+      p.provider_uid === me.uid
+    );
+  }
+  if (!visible.length) { body.innerHTML = emptyState('상품이 없습니다'); renderProductDetail(null); return; }
+  const sorted = [...visible].sort((a, b) => (b.updated_at || 0) - (a.updated_at || 0));
   body.innerHTML = sorted.map((p, i) => {
-    const photos = ((Array.isArray(p.photos) ? p.photos : []).length) ||
-                   ((Array.isArray(p.image_urls) ? p.image_urls : []).length) ||
-                   ((Array.isArray(p.images) ? p.images : []).length) || 0;
     const priceCount = Object.entries(p.price || {}).filter(([, v]) => Number(v?.rent) > 0).length;
     const vs = p.vehicle_status || '';
     const PROD_TONE = /즉시/.test(vs) ? 'green' : /가능/.test(vs) ? 'blue' : /협의/.test(vs) ? 'orange' : /불가/.test(vs) ? 'red' : 'gray';
+    const PROD_ICON = /즉시/.test(vs) ? 'lightning' : /가능/.test(vs) ? 'circle' : /협의/.test(vs) ? 'chat-circle' : /불가/.test(vs) ? 'prohibit' : 'car-simple';
+    // 메인: 차량번호 · 세부모델 · 공급사명(한글) / 우측: 수정일
+    const mainLine = formatMainLine(
+      p.car_number,
+      p.sub_model,                                 // 모델 X 세부모델만
+      providerNameByCode(p.provider_company_code || p.partner_code, store),
+    );
+    // 보조: 제조사 · 연식 · 주행거리 · 연료 · 색상(외부/내부)
+    const colorPair = [p.ext_color, p.int_color].filter(Boolean).join('/');
+    const subParts = [
+      p.maker,
+      p.year ? `${p.year}년` : '',
+      p.mileage ? fmtMileage(p.mileage) + 'km' : '',
+      p.fuel_type,
+      colorPair,
+    ].filter(Boolean);
     return renderRoomItem({
       id: p._key,
-      icon: 'car-simple',
+      icon: PROD_ICON,
       badge: shortStatus(vs),
       tone: PROD_TONE,
-      name: `${p.car_number || '-'} ${[p.maker, p.sub_model || p.model].filter(Boolean).join(' ')}`,
-      time: fmtTime(p.updated_at || p.created_at),
-      msg: [p.trim_name || p.trim, p.year ? p.year + '년' : '', p.fuel_type, photos ? `사진 ${photos}` : ''].filter(Boolean).join(' · ') || '-',
+      name: mainLine,
+      time: fmtDate(p.updated_at || p.created_at),
+      msg: subParts.join(' · ') || '-',
       meta: priceCount ? `${priceCount}종` : '',
       active: i === 0,
     });
@@ -220,7 +245,7 @@ export function renderProductDetail(p) {
         ${ffi('변속기',    'transmission',  p.transmission, dis)}
         ${ffi('차령만료일', 'vehicle_age_expiry_date', p.vehicle_age_expiry_date, dis)}
         ${ffi('위치',      'location',      p.location, dis)}
-        <div class="ff"><label>메모</label><textarea class="input" data-f="partner_memo" style="height: 50px;"${dis}>${esc(p.partner_memo || p.note || '')}</textarea></div>
+        <div class="ff"><label>메모</label><textarea class="input" data-f="partner_memo" style="height: 50px;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(p.partner_memo || p.note || '')}</textarea></div>
       `)}
     `;
     if (canEdit) {
@@ -234,6 +259,8 @@ export function renderProductDetail(p) {
     const disabled = canEdit ? '' : ' disabled';
     const O = PRODUCT_OPTS;
     const fmt = v => (v != null && v !== '') ? Number(v).toLocaleString('ko-KR') : '';
+    const lockAttr = canEdit ? ' readonly data-edit-lock="1"' : '';
+    const lockSelAttr = canEdit ? ' data-edit-lock="1"' : '';
     const me = store.currentUser || {};
     const productProvider = p.provider_company_code || me.company_code || '';
     const policyOpts = (store.policies || []).filter(t => !t._deleted)
@@ -241,7 +268,7 @@ export function renderProductDetail(p) {
       .map(t => ({ code: t.policy_code || t._key, name: t.policy_name || t.term_name || '' }));
     const curPol = p.policy_code || '';
     const policySelectHtml = `
-      <div class="ff"><label>정책코드</label><select class="input" data-f="policy_code"${disabled}>
+      <div class="ff"><label>정책코드</label><select class="input" data-f="policy_code"${disabled}${lockSelAttr}>
         <option value="">선택</option>
         ${policyOpts.map(o => `<option value="${esc(o.code)}" ${o.code === curPol ? 'selected' : ''}>${esc(o.name ? `${o.name} (${o.code})` : o.code)}</option>`).join('')}
         ${curPol && !policyOpts.find(o => o.code === curPol) ? `<option value="${esc(curPol)}" selected>${esc(curPol)}</option>` : ''}
@@ -250,8 +277,8 @@ export function renderProductDetail(p) {
       const v = p.price?.[m] || {};
       return `<tr data-term="${m}">
         <td>${m}개월</td>
-        <td><input class="input pd-price-input" data-period="${m}" data-type="rent" value="${esc(fmt(v.rent))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}></td>
-        <td><input class="input pd-price-input" data-period="${m}" data-type="deposit" value="${esc(fmt(v.deposit))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}></td>
+        <td><input class="input pd-price-input" data-period="${m}" data-type="rent" value="${esc(fmt(v.rent))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
+        <td><input class="input pd-price-input" data-period="${m}" data-type="deposit" value="${esc(fmt(v.deposit))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
       </tr>`;
     };
     const feeRow = m => {
@@ -259,8 +286,8 @@ export function renderProductDetail(p) {
       const feeRaw = v.fee != null && v.fee !== '' ? v.fee : (v.commission || '');
       return `<tr data-term="${m}">
         <td>${m}개월</td>
-        <td><input class="input pd-price-input" data-period="${m}" data-type="fee" value="${esc(fmt(feeRaw))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}></td>
-        <td><input class="input pd-price-memo" data-period="${m}" data-type="fee_memo" value="${esc(v.fee_memo || '')}" placeholder="-" style="width:100%;"${disabled}></td>
+        <td><input class="input pd-price-input" data-period="${m}" data-type="fee" value="${esc(fmt(feeRaw))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
+        <td><input class="input pd-price-memo" data-period="${m}" data-type="fee_memo" value="${esc(v.fee_memo || '')}" placeholder="-" style="width:100%;"${disabled}${lockAttr}></td>
       </tr>`;
     };
     priceCard.querySelector('.ws4-body').innerHTML = `
@@ -278,7 +305,7 @@ export function renderProductDetail(p) {
         <tbody>${PRODUCT_TERMS.map(rentRow).join('')}</tbody>
       </table>
       ${(role === 'admin' || role === 'agent' || role === 'agent_admin') ? `
-        <div class="form-section-title"><i class="ph ph-percent"></i>수수료 · 비고 <span style="color:var(--text-weak); font-weight:400; font-size:11px;">(내부용)</span></div>
+        <div class="form-section-title"><i class="ph ph-percent"></i>수수료 · 비고 <span style="color:var(--text-weak); font-weight:400; font-size:12px;">(내부용)</span></div>
         <table class="table pd-price-table" id="prodFeeTable">
           <colgroup><col style="width:60px;"><col style="width:50%;"><col style="width:50%;"></colgroup>
           <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
@@ -341,14 +368,14 @@ function renderProductPhotoPanel(photoCard, p, canEdit) {
               <div class="pd-dropzone-text">차량등록증을 끌어놓거나 클릭해서 업로드</div>
               <div class="pd-dropzone-hint">이미지(JPG/PNG) 또는 PDF · 차명·등록일로 자동 매칭</div>
               <input type="file" id="pdRegFile" hidden accept="image/*,application/pdf">
-            </label>` : '<div style="font-size:11px; color:var(--text-weak);">미등록</div>')}
+            </label>` : '<div style="font-size:12px; color:var(--text-weak);">미등록</div>')}
     `)}
     ${sect('차량 사진', 'image-square', `
       ${allImgs.length ? `
         <div style="position:relative; margin-bottom:8px;">
           <img id="pdMainImg" src="${esc(allImgs[0])}" loading="lazy"
                style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; cursor: zoom-in; background: var(--bg-stripe);">
-          <div style="position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,0.65); color:#fff; padding:2px 8px; border-radius:10px; font-size:11px;">
+          <div style="position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,0.65); color:#fff; padding:2px 8px; border-radius:10px; font-size:12px;">
             <i class="ph ph-image"></i> ${allImgs.length}장
           </div>
           ${canEdit && uploadedImgs.length ? `<button class="pd-reg-del" id="pdMainDel" data-idx="0" title="대표 사진 삭제"><i class="ph ph-x"></i></button>` : ''}
@@ -362,7 +389,7 @@ function renderProductPhotoPanel(photoCard, p, canEdit) {
         </label>` : ''}
     `)}
     ${sect('사진 링크', 'link', `
-      <textarea class="input" data-f="photo_link" rows="2" placeholder="https://... (콤마/줄바꿈 구분)" style="width:100%; resize:vertical;"${dis}>${esc(photoLink)}</textarea>
+      <textarea class="input" data-f="photo_link" rows="2" placeholder="https://... (콤마/줄바꿈 구분)" style="width:100%; resize:vertical;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(photoLink)}</textarea>
     `)}
   `;
 

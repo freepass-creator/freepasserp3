@@ -24,19 +24,23 @@ const ROLE_LABEL = { admin: '관리자', provider: '공급', agent: '영업', ag
 export function renderUserList(users) {
   const body = listBody('users');
   if (!body) return;
+  if (!Array.isArray(users)) return;   // 미로드 — prototype 보존
   if (!users.length) { body.innerHTML = emptyState('사용자가 없습니다'); renderUserDetail(null); return; }
   const sorted = [...users].sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ko'));
   body.innerHTML = sorted.map((u, i) => {
     const rb = ROLE_BADGE[u.role] || { txt: '-', tone: 'gray' };
+    // 통일 spec: name=이름 직급 / msg=회사·연락처 / meta=상태(활성·대기·비활)
+    const namePos = [u.name || u.email?.split('@')[0] || u._key.slice(0, 8), u.position].filter(Boolean).join(' ');
+    const status = u.status === 'pending' ? '대기' : (u.is_active === false ? '비활' : '활성');
     return renderRoomItem({
       id: u._key,
       icon: 'user',
       badge: rb.txt,
       tone: rb.tone,
-      name: u.name || u.email?.split('@')[0] || u._key.slice(0, 8),
+      name: namePos,
       time: fmtTime(u.last_login_at),
-      msg: [u.company_name || u.company_code, u.email].filter(Boolean).join(' · ') || '-',
-      meta: u.is_active === false ? '비활' : '활성',
+      msg: [u.company_name || u.company_code, u.phone].filter(Boolean).join(' · ') || u.email || '-',
+      meta: status,
       active: i === 0,
     });
   }).join('');
@@ -69,24 +73,26 @@ export function renderUserDetail(u) {
   // 1. 편집
   if (editCard) {
     setHeadSave(editCard, '사용자 정보', canEdit, 'user');
+    const lock = canEdit ? ' readonly data-edit-lock="1"' : dis;
+    const lockSel = canEdit ? ' data-edit-lock="1"' : dis;
     editCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-grid">
-        <div class="ff"><label>이름</label><input type="text" class="input" data-f="name" value="${esc(u.name || '')}"${dis}></div>
-        <div class="ff"><label>직책</label><input type="text" class="input" data-f="title" value="${esc(u.title || '')}"${dis}></div>
-        <div class="ff"><label>이메일</label><input type="text" class="input" data-f="email" value="${esc(u.email || '')}"${dis}></div>
-        <div class="ff"><label>역할</label><select class="input" data-f="role"${dis}>${ROLES.map(([k, v]) => `<option value="${k}" ${k === u.role ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
-        <div class="ff"><label>소속코드</label><select class="input" data-f="company_code"${dis}>
+        <div class="ff"><label>이름</label><input type="text" class="input" data-f="name" value="${esc(u.name || '')}"${lock}></div>
+        <div class="ff"><label>직책</label><input type="text" class="input" data-f="title" value="${esc(u.title || '')}"${lock}></div>
+        <div class="ff"><label>이메일</label><input type="text" class="input" data-f="email" value="${esc(u.email || '')}"${lock}></div>
+        <div class="ff"><label>역할</label><select class="input" data-f="role"${lockSel}>${ROLES.map(([k, v]) => `<option value="${k}" ${k === u.role ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+        <div class="ff"><label>소속코드</label><select class="input" data-f="company_code"${lockSel}>
           <option value="">-</option>
           ${companies.map(c => `<option value="${esc(c.code)}" ${c.code === u.company_code ? 'selected' : ''}>${esc(c.name)} (${esc(c.code)})</option>`).join('')}
           ${u.company_code && !companies.find(c => c.code === u.company_code) ? `<option value="${esc(u.company_code)}" selected>${esc(u.company_code)}</option>` : ''}
         </select></div>
-        <div class="ff"><label>연락처</label><input type="text" class="input" data-f="phone" value="${esc(u.phone || '')}"${dis}></div>
+        <div class="ff"><label>연락처</label><input type="text" class="input" data-f="phone" value="${esc(u.phone || '')}"${lock}></div>
         <div class="ff"><label>상태</label>
           <div data-f="status" style="display:flex; gap:3px; flex-wrap:wrap;">
             ${STATUSES.map(s => `<span class="chip${s === currentStatus ? ' active' : ''}" data-v="${esc(s)}">${esc(s)}</span>`).join('')}
           </div>
         </div>
-        <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${dis}>${esc(u.memo || '')}</textarea></div>
+        <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${lock}>${esc(u.memo || '')}</textarea></div>
       </div>
     `;
   }

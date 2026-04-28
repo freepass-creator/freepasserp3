@@ -9,7 +9,7 @@
  */
 
 // 서버 스크래핑이 필요한 URL (img src에 직접 박으면 안 되는 HTML 페이지)
-const NEEDS_SERVER_RE = /drive\.google\.com\/(drive\/folders\/|drive\/u\/\d+\/folders\/)|moderentcar\.co\.kr/;
+const NEEDS_SERVER_RE = /drive\.google\.com\/(drive\/folders\/|drive\/u\/\d+\/folders\/)|moderentcar\.co\.kr|autoplus\.co\.kr/;
 
 // 모바일 브라우저의 cross-origin 이미지 차단 이슈 우회용 프록시 대상 호스트
 const PROXY_HOSTS_RE = /(^|\.)(googleusercontent\.com|drive\.google\.com)$/;

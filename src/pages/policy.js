@@ -54,19 +54,33 @@ export const POLICY_OPTS = {
 export function renderPolicyList(policies) {
   const body = listBody('policy');
   if (!body) return;
-  if (!policies.length) { body.innerHTML = emptyState('정책이 없습니다'); renderPolicyDetail(null); return; }
-  const sorted = [...policies].sort((a, b) => String(a.policy_name || '').localeCompare(String(b.policy_name || ''), 'ko'));
-  body.innerHTML = sorted.map((pol, i) => renderRoomItem({
-    id: pol._key,
-    icon: 'scroll',
-    badge: pol.is_active === false ? '비활' : (pol.status === '중단' ? '중단' : '활성'),
-    tone: pol.is_active === false ? 'gray' : (pol.status === '중단' ? 'red' : 'green'),
-    name: pol.policy_name || pol.policy_code || pol._key.slice(0, 8),
-    time: pol.policy_code || '',
-    msg: [pol.provider_company_code || pol.provider_name, pol.credit_grade].filter(Boolean).join(' · ') || '-',
-    meta: pol.is_active === false ? '비활성' : '활성',
-    active: i === 0,
-  })).join('');
+  if (!Array.isArray(policies)) return;   // 미로드 — prototype 보존
+  // 역할별 가시성 — provider 는 자기 회사 정책만
+  const me = store.currentUser;
+  let visible = policies;
+  if (me?.role === 'provider') {
+    visible = policies.filter(p =>
+      p.provider_company_code === me.company_code ||
+      p.partner_code === me.company_code
+    );
+  }
+  if (!visible.length) { body.innerHTML = emptyState('정책이 없습니다'); renderPolicyDetail(null); return; }
+  const sorted = [...visible].sort((a, b) => String(a.policy_name || '').localeCompare(String(b.policy_name || ''), 'ko'));
+  body.innerHTML = sorted.map((pol, i) => {
+    // 통일 spec: name=정책명 / msg=공급사·심사기준·적용차량 / meta=정책코드
+    const carCount = (store.products || []).filter(p => p.policy_code === pol.policy_code && !p._deleted).length;
+    return renderRoomItem({
+      id: pol._key,
+      icon: 'scroll',
+      badge: pol.is_active === false ? '비활' : (pol.status === '중단' ? '중단' : '활성'),
+      tone: pol.is_active === false ? 'gray' : (pol.status === '중단' ? 'red' : 'green'),
+      name: pol.policy_name || pol.policy_code || pol._key.slice(0, 8),
+      time: '',
+      msg: [pol.provider_company_code || pol.provider_name, pol.credit_grade, carCount ? `차량 ${carCount}` : ''].filter(Boolean).join(' · ') || '-',
+      meta: pol.policy_code || '',
+      active: i === 0,
+    });
+  }).join('');
 
   const head = document.querySelector('[data-page="policy"] .ws4-head span');
   if (head) head.textContent = `정책 목록 · ${policies.length}건`;
@@ -110,8 +124,8 @@ export function renderPolicyDetail(pol) {
     basicCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-grid">
         ${ffi('정책명',     'policy_name',                    pol.policy_name || pol.term_name,   dis)}
-        <div class="ff"><label>정책코드</label><input type="text" class="input" value="${esc(pol.policy_code || pol.term_code || '')}" readonly></div>
-        <div class="ff"><label>공급코드</label><select class="input" data-f="provider_company_code"${dis}>
+        <div class="ff"><label>정책코드</label><input type="text" class="input" value="${esc(pol.policy_code || pol.term_code || '')}" readonly data-permanent-lock="1"></div>
+        <div class="ff"><label>공급코드</label><select class="input" data-f="provider_company_code"${dis}${canEdit ? ' data-edit-lock="1"' : ''}>
           <option value="">선택</option>
           ${providers.map(p => `<option value="${esc(p.code)}" ${p.code === pol.provider_company_code ? 'selected' : ''}>${esc(p.name)} (${esc(p.code)})</option>`).join('')}
           ${pol.provider_company_code && !providers.find(p => p.code === pol.provider_company_code) ? `<option value="${esc(pol.provider_company_code)}" selected>${esc(pol.provider_company_code)}</option>` : ''}

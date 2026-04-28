@@ -267,13 +267,33 @@
     box-sizing: border-box;
     width: 100%;
   }
-  /* readonly — 입력칸 형태 유지, 수정 불가 */
+  /* readonly — 입력칸 형태 유지, 수정 불가
+     단, data-edit-lock 가 있으면 클릭 통과시켜 2-click 핸들러로 위임 */
   .contract-field-input[readonly] {
-    cursor: default;
-    pointer-events: none;
+    cursor: pointer;
     color: var(--c-text-sub);
     background: var(--c-bg-sub);
     border-color: transparent;
+  }
+  /* 영구 잠금 — 클릭/포커스 모두 차단 */
+  .contract-field-input[data-permanent-lock="1"] {
+    pointer-events: none;
+    cursor: default;
+  }
+  /* 1번째 클릭 — 선택 표시 (아직 수정 불가) */
+  .contract-field-input.is-selected,
+  .input.is-selected {
+    background: var(--c-accent-soft);
+    border-color: var(--c-accent);
+    color: var(--c-text);
+  }
+  /* 2번째 클릭 — 수정 모드 진입 (실제 readonly 해제 후 포커스) */
+  .contract-field-input.is-editing,
+  .input.is-editing {
+    background: var(--c-surface);
+    border-color: var(--c-accent);
+    color: var(--c-text);
+    cursor: text;
   }
   /* textarea는 높이 자동 */
   textarea.contract-field-input {
@@ -448,7 +468,7 @@
   *::-webkit-scrollbar-thumb {
     background: transparent;
     border-radius: 3px;
-    transition: background 0.2s;
+    transition: background var(--dur);
   }
   /* 컨테이너에 마우스 올리면 thumb 연하게 노출 */
   *:hover::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }

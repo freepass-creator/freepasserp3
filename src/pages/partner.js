@@ -16,6 +16,7 @@ import {
 export function renderPartnerList(partners) {
   const body = listBody('partners');
   if (!body) return;
+  if (!Array.isArray(partners)) return;   // 미로드 — prototype 보존
   if (!partners.length) { body.innerHTML = emptyState('파트너가 없습니다'); renderPartnerDetail(null); return; }
   // v2 partners: partner_code (HCAP), partner_name (현대캐피탈)
   const pCode = (pa) => pa.partner_code || pa.company_code || pa._key;
@@ -43,15 +44,16 @@ export function renderPartnerList(partners) {
       const ctCount = (store.contracts || []).filter(c => c.provider_company_code === code).length;
       stats = `차량${carCount}·계약${ctCount}`;
     }
+    // 통일 spec: name=회사명 / msg=담당자·연락처·통계 / meta=코드 / 시간 X
     return renderRoomItem({
       id: pa._key,
       icon: typeBadge.icon,
       badge: typeBadge.txt,
       tone: typeBadge.tone,
       name: pName(pa),
-      time: code,
+      time: '',
       msg: [pa.contact_name, pa.phone, stats].filter(Boolean).join(' · ') || '-',
-      meta: pa.is_active === false ? '비활' : '활성',
+      meta: code,
       active: i === 0,
     });
   }).join('');
@@ -81,19 +83,22 @@ export function renderPartnerDetail(pa) {
       ['운영사', /(운영|operator)/i],
     ];
     setHeadSave(editCard, '파트너 정보', canEdit, 'partner');
+    // 2-click 수정 모드 — 편집 가능(canEdit)일 때 readonly + data-edit-lock 부여
+    const lock = canEdit ? ' readonly data-edit-lock="1"' : dis;
+    const lockSel = canEdit ? ' data-edit-lock="1"' : dis;   // select 는 readonly 불가
     editCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-grid">
-        <div class="ff"><label>파트너코드</label><input type="text" class="input" data-f="partner_code" value="${esc(pa.partner_code || pa.company_code || '')}"${dis}></div>
-        <div class="ff"><label>파트너명</label><input type="text" class="input" data-f="partner_name" value="${esc(pa.partner_name || pa.company_name || '')}"${dis}></div>
-        <div class="ff"><label>유형</label><select class="input" data-f="partner_type"${dis}>${partnerTypeOpts.map(([label, re]) => `<option value="${esc(label)}" ${re.test(pa.partner_type || '공급사') ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>
-        <div class="ff"><label>대표자</label><input type="text" class="input" data-f="ceo_name" value="${esc(pa.ceo_name || '')}"${dis}></div>
-        <div class="ff"><label>사업자번호</label><input type="text" class="input" data-f="business_number" value="${esc(pa.business_number || '')}"${dis}></div>
-        <div class="ff"><label>담당자</label><input type="text" class="input" data-f="contact_name" value="${esc(pa.contact_name || '')}"${dis}></div>
-        <div class="ff"><label>직급</label><input type="text" class="input" data-f="contact_title" value="${esc(pa.contact_title || '')}"${dis}></div>
-        <div class="ff"><label>연락처</label><input type="text" class="input" data-f="phone" value="${esc(pa.phone || '')}"${dis}></div>
-        <div class="ff"><label>이메일</label><input type="text" class="input" data-f="email" value="${esc(pa.email || '')}"${dis}></div>
-        <div class="ff"><label>주소</label><input type="text" class="input" data-f="address" value="${esc(pa.address || '')}"${dis}></div>
-        <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${dis}>${esc(pa.memo || '')}</textarea></div>
+        <div class="ff"><label>파트너코드</label><input type="text" class="input" data-f="partner_code" value="${esc(pa.partner_code || pa.company_code || '')}"${lock}></div>
+        <div class="ff"><label>파트너명</label><input type="text" class="input" data-f="partner_name" value="${esc(pa.partner_name || pa.company_name || '')}"${lock}></div>
+        <div class="ff"><label>유형</label><select class="input" data-f="partner_type"${lockSel}>${partnerTypeOpts.map(([label, re]) => `<option value="${esc(label)}" ${re.test(pa.partner_type || '공급사') ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>
+        <div class="ff"><label>대표자</label><input type="text" class="input" data-f="ceo_name" value="${esc(pa.ceo_name || '')}"${lock}></div>
+        <div class="ff"><label>사업자번호</label><input type="text" class="input" data-f="business_number" value="${esc(pa.business_number || '')}"${lock}></div>
+        <div class="ff"><label>담당자</label><input type="text" class="input" data-f="contact_name" value="${esc(pa.contact_name || '')}"${lock}></div>
+        <div class="ff"><label>직급</label><input type="text" class="input" data-f="contact_title" value="${esc(pa.contact_title || '')}"${lock}></div>
+        <div class="ff"><label>연락처</label><input type="text" class="input" data-f="phone" value="${esc(pa.phone || '')}"${lock}></div>
+        <div class="ff"><label>이메일</label><input type="text" class="input" data-f="email" value="${esc(pa.email || '')}"${lock}></div>
+        <div class="ff"><label>주소</label><input type="text" class="input" data-f="address" value="${esc(pa.address || '')}"${lock}></div>
+        <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${lock}>${esc(pa.memo || '')}</textarea></div>
       </div>
     `;
   }

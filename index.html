@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>freepass ERP v3</title>
 <meta name="viewport" content="width=1280">
+<!-- Pretendard — jpkerp v4 와 동일한 ERP 톤 (한글 CJK 사실상 fullwidth + 숫자는 tabular-nums) -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="/src/styles/base.css">
 <link rel="stylesheet" href="/phosphor/style.css">
 <style>
@@ -18,39 +21,68 @@
 </style>
 <script type="module" src="/src/app.js"></script>
 <style>
-  /* ── 내부 ERP 톤 — 모던 ERP (라운드 4 / gap 6 / 카드 호흡) ── */
+  /* ── 클래식 ERP 톤 — 굴림체 / 12px / 단일 weight / 솔리드 chip / 2px 라운드 ── */
   :root {
-    --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+    /* ERP 혼합 폰트 — 영문/숫자: Consolas(Win) / SF Mono(Mac), 한글: Pretendard
+       브라우저가 글리프별로 자동 선택 (mono 폰트는 한글 없음 → Pretendard fallback) */
+    --font: Consolas, 'SF Mono', ui-monospace, 'Pretendard', sans-serif;
     --font-mono: var(--font);
-    --font-size: 11px;
-    --row-height: 24px;
-    --input-height: 22px;
-    --button-height: 22px;
-    --cell-padding: 3px 8px;
-    /* 라운드 — 카드 4px / 컨트롤 2px (각진 ERP 패널 + 모서리만 부드럽게) */
-    --radius: 4px;
-    --radius-sm: 2px;
+
+    /* 사이즈 — 12px 단일 (보조 사이즈 없음, 위계는 색만) */
+    --font-size:    12px;
+    --font-size-xs: 12px;   /* alias — 호환용 */
+    --font-size-lg: 12px;   /* alias — 호환용 */
+
+    /* 굵기 — 단일 (위계는 색으로) */
+    --fw:        400;
+    --fw-medium: 500;       /* 거의 안 씀 */
+    --fw-bold:   700;       /* 차량번호·금액만 */
+
+    /* 높이 — 컴팩트하지만 호흡 있게 (2줄 wrap 컨텐츠도 안 잘림) */
+    --row-height:    30px;  /* 표 본문 행 — 2줄 wrap 시 자동 확장 (min-height) */
+    --head-height:   30px;  /* 표 헤더 — 본문과 동일 높이 */
+    --input-height:  26px;
+    --button-height: 26px;
+    --chip-height:   20px;  /* 모든 칩/뱃지 */
+    --panel-head-h:  34px;  /* 패널 헤더 */
+    --sb-item-h:     30px;  /* 사이드바 메뉴 */
+    --cell-padding:  4px 8px;
+
+    /* 라운드 — 2px 통일 (각진 ERP) */
+    --radius:      2px;
+    --radius-sm:   2px;
     --radius-pill: 2px;
+    --ctrl-r:      2px;
+
+    /* 간격 토큰 */
+    --sp-1:  4px;
+    --sp-2:  6px;
+    --sp-3:  8px;
+    --sp-4: 12px;
+    --sp-5: 16px;
+    --sp-6: 24px;
   }
   *, *::before, *::after { font-family: var(--font); letter-spacing: 0; }
   /* ↑ universal 셀렉터가 phosphor 의 .ph::before 까지 시스템폰트로 덮어버림 — 명시 복원 */
   .ph, .ph::before { font-family: "Phosphor" !important; }
-  body { font-size: 11px; }
+  body { font-size: 12px; }
   kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
 
-  /* 버튼·뱃지·칩 규격 통일 */
+  /* 버튼·뱃지·칩 규격 통일 — 12px / 24px / 2px radius (단일 톤) */
   .btn, .btn-primary, .btn-danger, .btn-ghost, .btn-sm, .btn-lg {
-    height: 22px; padding: 0 8px; border-radius: 2px;
-    font-size: 11px; line-height: 1;
+    height: var(--button-height); padding: 0 var(--sp-3); border-radius: var(--radius);
+    font-size: var(--font-size); line-height: 1;
   }
-  .btn-icon { width: 22px; padding: 0; }
+  .btn-icon { width: var(--button-height); padding: 0; }
   .badge, .badge-red, .badge-orange, .badge-green, .badge-blue {
     display: inline-flex; align-items: center; justify-content: center;
-    height: 18px; padding: 0 6px; line-height: 1; border-radius: 2px;
+    height: var(--chip-height); padding: 0 var(--sp-2); line-height: 1; border-radius: var(--radius);
+    font-size: var(--font-size);
   }
   .chip {
-    height: 18px; padding: 0 8px; line-height: 1; border-radius: 2px;
-    display: inline-flex; align-items: center; gap: 4px;
+    height: var(--chip-height); padding: 0 var(--sp-3); line-height: 1; border-radius: var(--radius);
+    display: inline-flex; align-items: center; gap: var(--sp-1);
+    font-size: var(--font-size);
   }
   /* chip 내 카운트 — statbar 통합 (라벨 main / 카운트 weak) */
   .chip em.cnt { font-style: normal; color: var(--text-weak); }
@@ -62,31 +94,9 @@
     cursor: pointer; user-select: none;
   }
   .table thead th:hover { background: var(--bg-hover); }
-  .table thead th .ft {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 14px; height: 14px;
-    margin-left: 3px;
-    color: var(--text-muted); cursor: pointer;
-    border-radius: 2px;
-    opacity: 0;
-    transition: opacity 0.12s, background 0.12s;
-  }
-  .table thead th .ft i { font-size: 10px; line-height: 1; }
-  .table thead th:hover .ft { opacity: 1; }
-  .table thead th .ft:hover { background: var(--bg-hover); color: var(--text-sub); }
-  /* 필터 적용된 컬럼 — opacity 1 + accent 색 (작은 dot indicator) */
-  .table thead th .ft.is-on,
-  .table thead th.has-filter .ft {
-    opacity: 1;
-    color: var(--text-link);
-  }
-  .table thead th .ft.is-on::after,
-  .table thead th.has-filter .ft::after {
-    content: ''; position: absolute;
-    top: 4px; right: 4px;
-    width: 4px; height: 4px;
-    background: var(--text-link); border-radius: 50%;
-  }
+  /* funnel/필터 아이콘 숨김 — 헤더 클릭만으로 popover 열림 (.ft 마커 불필요)
+     필터 적용 표시는 헤더 자체 색/언더라인으로 차후 처리 */
+  .table thead th .ft { display: none; }
 
   /* ── 차량 상세 패널 — 사진 슬롯 + 섹션 라벨 ── */
   .detail-section { margin-top: 12px; }
@@ -105,9 +115,73 @@
     font-size: 32px;
     margin-bottom: 4px;
   }
-  .detail-photo-thumbs {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
+  /* 메인 사진 wrapper — prev/next 버튼 + 카운터 오버레이 */
+  .detail-photo-stage {
+    position: relative;
+    margin-bottom: 4px;
   }
+  .detail-photo-stage img.detail-photo-main {
+    margin-bottom: 0;
+    cursor: pointer;
+  }
+  .detail-photo-nav {
+    position: absolute; top: 50%;
+    width: 28px; height: 36px;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    border: 0; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0; transition: opacity 0.15s ease;
+  }
+  .detail-photo-stage:hover .detail-photo-nav { opacity: 1; }
+  .detail-photo-nav:hover { background: rgba(0,0,0,0.7); }
+  .detail-photo-prev { left: 4px; }
+  .detail-photo-next { right: 4px; }
+  .detail-photo-counter {
+    position: absolute; right: 6px; top: 6px;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+  }
+  /* 썸네일 — 가로 한 줄. 좌우 prev/next 버튼으로 페이지 단위 스크롤 + 메인 네비 시 자동 스크롤 */
+  .detail-photo-thumbs-wrap {
+    position: relative;
+    padding: 0 22px;  /* 좌우 nav 버튼 자리 확보 */
+  }
+  .detail-photo-thumbs {
+    display: flex;
+    gap: 3px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    /* 스크롤바 숨김 — Webkit/Firefox */
+    scrollbar-width: none;
+  }
+  .detail-photo-thumbs::-webkit-scrollbar { display: none; }
+  .detail-photo-thumbs .detail-photo-thumb {
+    flex: 0 0 56px;
+    scroll-snap-align: start;
+  }
+  .detail-thumbs-nav {
+    position: absolute; top: 50%;
+    width: 18px; height: calc(100% - 4px);
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.85);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+  }
+  .detail-thumbs-nav:hover { background: var(--bg-stripe); }
+  .detail-thumbs-prev { left: 0; }
+  .detail-thumbs-next { right: 0; }
   .detail-photo-thumb {
     aspect-ratio: 4/3;
     background: var(--bg-stripe);
@@ -120,7 +194,7 @@
   .detail-photo-thumb.is-active { border-color: var(--text-main); }
   .detail-photo-thumb.more { color: var(--text-weak); }
   /* img 가 들어오면 컨테이너 가득 채우고, 비율 유지 cover */
-  img.detail-photo-main { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; padding: 0; background: var(--bg-stripe); border: 1px solid var(--border-soft); border-radius: 2px; margin-bottom: 4px; }
+  img.detail-photo-main { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; padding: 0; background: var(--bg-stripe); border: 1px solid var(--border-soft); border-radius: 2px; }
   .detail-photo-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; display: block; }
   .detail-photo-thumb { padding: 0; overflow: hidden; }
   .detail-actions {
@@ -136,6 +210,8 @@
   .chips-wrap { display: flex; flex-wrap: wrap; gap: 3px; }
 
   /* ── 컬럼 필터 Popover (헤더 클릭 시 — 디자인만 정적 표시) ── */
+  /* th 가 overflow:hidden 이라 popover 가 잘림 — popover 열린 th 만 overflow:visible */
+  .table-fixed thead th:has(.ft-pop) { overflow: visible !important; z-index: 20 !important; }
   .ft-pop {
     position: absolute; top: 100%; left: 0;
     margin-top: 2px;
@@ -178,13 +254,14 @@
   .ft-pop-list .ft-pop-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ft-pop-list .ft-pop-cnt { color: var(--text-weak); font-size: 10px; }
 
-  /* ── App Shell — 사이드바 | (topbar 30 / main) ── */
+  /* ── App Shell — 사이드바 | (topbar 32 / main). topbar 와 panel-head 동일 높이
+     사이드바 토글: grid-template-columns 는 transition 없이 즉시 스냅(레이아웃 재계산이 느림).
+     라벨/카운트만 opacity 로 짧게 페이드 (체감 속도 우선) */
   body {
     display: grid;
     grid-template-columns: 180px 1fr;
-    grid-template-rows: 30px 1fr;
+    grid-template-rows: var(--panel-head-h) 1fr;
     height: 100vh; overflow: hidden;
-    transition: grid-template-columns 0.22s cubic-bezier(.4,.0,.2,1);
   }
   body.is-sb-collapsed { grid-template-columns: 48px 1fr; }
   .pt-sb {
@@ -193,27 +270,74 @@
     overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column;
     min-width: 0;
   }
-  /* 펼친 상태 — 아이콘 + 라벨 */
+  /* 사이드바 메뉴 — 28px 표준 높이 */
   .pt-sb a {
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: var(--sp-3);
+    height: var(--sb-item-h); box-sizing: border-box;
+    font-size: var(--font-size);
   }
   .pt-sb a > i:first-child {
-    font-size: 14px; line-height: 1; color: var(--text-sub);
+    font-size: 16px; line-height: 1; color: var(--text-sub);
     width: 16px; flex-shrink: 0; text-align: center;
   }
-  .pt-sb a .sb-label { flex: 1; }
-  /* 접힌 상태 — 아이콘만 보이고 라벨/카운트/섹션/하단/브랜드텍스트 모두 숨김, 토글만 가운데 */
-  body.is-sb-collapsed .pt-sb a > .sb-label,
-  body.is-sb-collapsed .pt-sb a > .cnt,
-  body.is-sb-collapsed .pt-sb-section,
-  body.is-sb-collapsed .pt-sb-bottom,
-  body.is-sb-collapsed .pt-sb-brand .sb-brand-text { display: none; }
-  body.is-sb-collapsed .pt-sb-brand { justify-content: center; padding: 0 !important; }
-  body.is-sb-collapsed .pt-sb-brand .pt-sb-toggle { margin-left: 0; }
-  body.is-sb-collapsed .pt-sb a {
-    justify-content: center; padding: 6px 0;
+  .pt-sb a .sb-label {
+    flex: 1; min-width: 0;
+    line-height: 1;
+    transition: opacity 0.12s ease;
   }
-  body.is-sb-collapsed .pt-sb a > i:first-child { font-size: 16px; }
+  /* 사이드바 카운트 뱃지 — 빨간 라운드, 처리 필요한 항목 수.
+     단일 숫자도 또렷하게: 11px 700, 흰 텍스트, 라이트/다크 모두 동일 빨강. */
+  .pt-sb a > .cnt {
+    flex-shrink: 0;
+    min-width: 18px;
+    height: 16px;
+    padding: 0 5px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #dc2626;
+    color: #fff !important;
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: opacity 0.12s ease;
+  }
+  .pt-sb-bottom {
+    transition: opacity 0.12s ease;
+  }
+  /* brand bar — 회사명 좌측, 토글 우측. 접힘 시 회사명 폭이 0 으로 줄면서
+     토글이 자연스럽게 메뉴 아이콘 X 위치(12px) 로 이동 */
+  .pt-sb-brand .sb-brand-text {
+    flex: 1; min-width: 0; overflow: hidden; white-space: nowrap;
+    margin-right: 8px;
+    transition: opacity 0.12s ease;
+  }
+  /* 접힌 상태 — 라벨/카운트/하단을 fade out + 폭 0 으로 줄여 아이콘이 가운데로 이동 */
+  body.is-sb-collapsed .pt-sb a > .sb-label,
+  body.is-sb-collapsed .pt-sb a > .cnt {
+    opacity: 0;
+    max-width: 0;
+    pointer-events: none;
+  }
+  body.is-sb-collapsed .pt-sb-bottom {
+    opacity: 0;
+    pointer-events: none;
+  }
+  body.is-sb-collapsed .pt-sb a {
+    justify-content: center;
+    gap: 0;
+  }
+  body.is-sb-collapsed .pt-sb-brand {
+    justify-content: center;
+  }
+  body.is-sb-collapsed .pt-sb-brand .sb-brand-text {
+    opacity: 0; max-width: 0; margin-right: 0;
+    pointer-events: none;
+  }
+  /* 접힘 상태에서 메뉴 link · brand 의 padding / justify-content / 아이콘 크기는
+     변경하지 않음 — 아이콘이 같은 X 위치에 그대로 머물러야 자연스러움 */
   /* 빈 cnt span 자동 숨김 — JS 가 :empty 트리거 안 해도 텍스트 비면 안 보임 */
   .pt-sb a .cnt:empty { display: none; }
 
@@ -227,8 +351,11 @@
   input[type="password"], input[type="search"], input[type="tel"],
   input[type="url"], input[type="date"], input[type="time"],
   select, textarea {
+    height: var(--input-height);
+    padding: 0 var(--sp-3);
+    font-size: var(--font-size);
     border: 1px solid var(--border) !important;
-    border-radius: 2px;
+    border-radius: var(--radius);
     background: var(--bg-card);
     transition: box-shadow 0.15s, border-color 0.15s;
   }
@@ -245,6 +372,30 @@
     outline: none;
     border-color: rgba(37, 99, 235, 0.3) !important;
     background: rgba(37, 99, 235, 0.025) !important;
+  }
+  /* 2) 선택됨 (1번째 클릭) — 시각 강조, 아직 수정 불가 */
+  .contract-field-input.is-selected,
+  .input.is-selected,
+  input.is-selected {
+    border-color: rgba(37, 99, 235, 0.6) !important;
+    background: rgba(37, 99, 235, 0.08) !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+    cursor: pointer;
+  }
+  /* readonly + 수정 가능 (data-edit-lock) — 보기 모드 시각 (회색 배경) */
+  input[data-edit-lock="1"][readonly],
+  .input[data-edit-lock="1"][readonly] {
+    background: var(--bg-stripe) !important;
+    color: var(--text-sub);
+    cursor: pointer;
+    border-color: var(--border-soft) !important;
+  }
+  /* 2번째 클릭 후 수정 가능 상태 — readonly 풀림, 흰 배경 */
+  input.is-editing,
+  .input.is-editing {
+    background: var(--bg-card) !important;
+    color: var(--text-main);
+    cursor: text;
   }
   /* 4) 저장 직후 — 옅은 초록 배경 틴트 (1.5초 fade) */
   .input.is-saved, input.is-saved, select.is-saved, textarea.is-saved {
@@ -276,6 +427,405 @@
   .btn-primary { border: 1px solid var(--text-main); }
   .chip { border: 1px solid var(--border); }
 
+  /* 패널 하단바 — 패널 헤더와 동일 높이 (--panel-head-h 토큰) */
+  .ws4-foot {
+    height: var(--panel-head-h);
+    flex-shrink: 0;
+    display: flex; align-items: center;
+    padding: 0 var(--sp-3);
+    border-top: 1px solid var(--border);
+    background: var(--bg-header);
+    color: var(--text-weak);
+    font-size: var(--font-size);
+    gap: var(--sp-1);
+    box-sizing: border-box;
+  }
+  /* 비어 있으면 숨김 — 내용(버튼/chip) 들어가야만 노출 */
+  .ws4-foot:empty { display: none; }
+  .ws4-foot .period-chip,
+  .ws4-foot .foot-filter-chip {
+    height: var(--chip-height); padding: 0 var(--sp-3);
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  /* 퀵필터 chip 은 popover 의 anchor 가 되어야 함 */
+  .ws4-foot .foot-filter-chip { position: relative; }
+  /* 활성 chip — 프리패스 메인 네이비 (CI #1B2A4A) */
+  .ws4-foot .period-chip.is-active,
+  .ws4-foot .foot-filter-chip.is-active {
+    background: #1B2A4A;
+    color: #fff;
+    border-color: #1B2A4A;
+  }
+  /* 대여료/보증금 구간 popover — position 은 JS 가 fixed 로 설정 (overflow:hidden 회피) */
+  .range-pop {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+    min-width: 200px;
+    color: var(--text-main);
+    font-weight: 400;
+    cursor: default;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  .range-pop-title { font-size: 11px; color: var(--text-sub); margin-bottom: 6px; }
+  .range-pop-row { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; }
+  .range-pop-row .input { width: 80px; height: 24px; }
+  .range-pop-actions { display: flex; gap: 4px; justify-content: flex-end; }
+  .range-pop-actions .btn,
+  .range-pop-actions .btn-primary { height: 24px; padding: 0 8px; font-size: 11px; }
+  .ws4-foot .period-chip.is-active:hover,
+  .ws4-foot .foot-filter-chip.is-active:hover { background: #0F1B35; }
+
+  /* 필터 적용 표시 — 컬럼 헤더 / 하단 chip 우측 상단에 빨간 점 */
+  .table thead th.has-filter,
+  .ws4-foot .foot-filter-chip.is-active {
+    position: relative;
+  }
+  .table thead th.has-filter::after,
+  .ws4-foot .foot-filter-chip.is-active::after {
+    content: '';
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 6px; height: 6px;
+    background: #dc2626;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* ── 사진 ZIP 다운로드 다이얼로그 (v2 이식) ── */
+  .pd-zip-dialog {
+    width: min(480px, 95vw);
+    max-height: 85vh;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    display: flex; flex-direction: column;
+  }
+  .pd-zip-dialog::backdrop { background: rgba(0,0,0,0.35); }
+  .pd-zip-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--sp-3); border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  .pd-zip-head .ph { margin-right: var(--sp-1); }
+  .pd-zip-close {
+    background: none; border: 0; padding: 4px; cursor: pointer;
+    color: var(--text-muted); font-size: 14px;
+  }
+  .pd-zip-close:hover { color: var(--text-main); }
+  .pd-zip-tabs {
+    display: flex; border-bottom: 1px solid var(--border);
+    background: var(--bg-stripe);
+  }
+  .pd-zip-tab {
+    flex: 1; padding: var(--sp-2) var(--sp-3);
+    background: transparent; border: 0;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted); font-size: var(--font-size); font-weight: 400;
+    cursor: pointer;
+  }
+  .pd-zip-tab:hover { color: var(--text-main); }
+  .pd-zip-tab.is-active {
+    color: var(--text-main);
+    border-bottom-color: #1B2A4A;
+    background: var(--bg-card);
+  }
+  .pd-zip-toolbar {
+    display: flex; gap: var(--sp-2); align-items: center;
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--border);
+  }
+  .pd-zip-toolbar .input { flex: 1; }
+  .pd-zip-allcb {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--text-sub);
+    cursor: pointer; user-select: none; white-space: nowrap;
+  }
+  .pd-zip-empty {
+    padding: var(--sp-5) var(--sp-3); text-align: center;
+    font-size: var(--font-size); color: var(--text-muted);
+  }
+  .pd-zip-sub-progress {
+    padding: 4px var(--sp-3); font-size: 11px;
+    color: var(--text-muted); background: var(--bg-stripe);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pd-zip-sub-progress[hidden] { display: none; }
+  .pd-zip-sub-progress .ph-spinner { animation: pd-zip-spin 1s linear infinite; }
+  @keyframes pd-zip-spin { to { transform: rotate(360deg); } }
+  .pd-zip-tree { flex: 1; overflow-y: auto; padding: var(--sp-2) 0; }
+  .pd-zip-provider { border-bottom: 1px solid var(--border); }
+  .pd-zip-provider:last-child { border-bottom: 0; }
+  .pd-zip-provider > summary {
+    display: flex; align-items: center; gap: 6px;
+    padding: var(--sp-2) var(--sp-3);
+    cursor: pointer; list-style: none; font-weight: 500;
+    background: var(--bg-card);
+  }
+  .pd-zip-provider > summary::-webkit-details-marker { display: none; }
+  .pd-zip-provider > summary::before {
+    content: '\25B6'; font-size: 9px; color: var(--text-muted);
+    transition: transform 0.1s;
+  }
+  .pd-zip-provider[open] > summary::before { transform: rotate(90deg); }
+  .pd-zip-provider > summary:hover { background: var(--bg-stripe); }
+  .pd-zip-prov-name { flex: 1; font-size: var(--font-size); }
+  .pd-zip-prov-meta { font-size: 11px; color: var(--text-muted); }
+  .pd-zip-cars { padding: 0 var(--sp-3) var(--sp-2); }
+  .pd-zip-car {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 0 4px 22px;
+    font-size: var(--font-size); cursor: pointer;
+  }
+  .pd-zip-car:hover { background: var(--bg-stripe); }
+  .pd-zip-car-no { flex: 1; font-variant-numeric: tabular-nums; }
+  .pd-zip-car-meta { font-size: 11px; color: var(--text-muted); }
+  .pd-zip-foot {
+    display: flex; align-items: center; gap: var(--sp-2);
+    padding: var(--sp-3);
+    border-top: 1px solid var(--border);
+    background: var(--bg-stripe);
+  }
+  .pd-zip-selinfo { font-size: 11px; color: var(--text-muted); }
+  .pd-zip-foot .btn { height: 26px; padding: 0 10px; }
+  .ws4-foot .period-chip:not(.is-active) {
+    color: var(--text-muted);
+  }
+  /* ── 하단바 액션 버튼 통일 규격 ──
+     소통/계약/공유 (search-detail), 엑셀/사진 (search-list) 모두 동일.
+     상단 툴바와 같이 패널 위아래 꽉차게, 좌측 보더만, radius 0. */
+  [data-page="search"] .ws4-foot button.btn,
+  [data-page="search"] .ws4-foot button.btn-primary {
+    height: var(--panel-head-h) !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    border-left: 1px solid var(--border) !important;
+    padding: 0 12px !important;
+    margin: 0 !important;
+    background: transparent !important;
+    color: var(--text-sub) !important;
+    font-size: var(--font-size) !important;
+    font-weight: 400 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer;
+  }
+  [data-page="search"] .ws4-foot button.btn:hover,
+  [data-page="search"] .ws4-foot button.btn-primary:hover {
+    background: var(--bg-stripe) !important;
+    color: var(--text-main) !important;
+  }
+  [data-page="search"] .ws4-foot button.btn .ph,
+  [data-page="search"] .ws4-foot button.btn-primary .ph {
+    font-size: 14px;
+  }
+  /* 액션 버튼이 우측 끝까지 꽉 차도록 ws4-foot 우측 padding 제거 — 좌측 padding 만 유지 */
+  [data-page="search"] .ws4-foot:has(.btn) { padding-right: 0; }
+  [data-page="search"] .ws4-foot button.btn-primary {
+    background: #1B2A4A !important;
+    color: #fff !important;
+  }
+  [data-page="search"] .ws4-foot button.btn-primary:hover { background: #0F1B35 !important; color: #fff !important; }
+
+  /* 컬럼 표시/숨김 — chip 끄면 hide-period-XX 클래스 추가 → 그 컬럼만 숨김 (다중 토글) */
+  [data-page="search"] table.table-fixed.hide-period-1m [data-period="1m"],
+  [data-page="search"] table.table-fixed.hide-period-12m [data-period="12m"],
+  [data-page="search"] table.table-fixed.hide-period-24m [data-period="24m"],
+  [data-page="search"] table.table-fixed.hide-period-36m [data-period="36m"],
+  [data-page="search"] table.table-fixed.hide-period-48m [data-period="48m"],
+  [data-page="search"] table.table-fixed.hide-period-60m [data-period="60m"] {
+    display: none !important;
+  }
+
+  /* 기간 컬럼 우측 틀고정 — right 값은 CSS 변수로 (JS 가 표시된 기간 수에 따라 설정) */
+  [data-page="search"] table.table-fixed thead th[data-period="1m"],
+  [data-page="search"] table.table-fixed tbody td[data-period="1m"]   { right: var(--right-1m,  300px); }
+  [data-page="search"] table.table-fixed thead th[data-period="12m"],
+  [data-page="search"] table.table-fixed tbody td[data-period="12m"]  { right: var(--right-12m, 240px); }
+  [data-page="search"] table.table-fixed thead th[data-period="24m"],
+  [data-page="search"] table.table-fixed tbody td[data-period="24m"]  { right: var(--right-24m, 180px); }
+  [data-page="search"] table.table-fixed thead th[data-period="36m"],
+  [data-page="search"] table.table-fixed tbody td[data-period="36m"]  { right: var(--right-36m, 120px); }
+  [data-page="search"] table.table-fixed thead th[data-period="48m"],
+  [data-page="search"] table.table-fixed tbody td[data-period="48m"]  { right: var(--right-48m,  60px); }
+  [data-page="search"] table.table-fixed thead th[data-period="60m"],
+  [data-page="search"] table.table-fixed tbody td[data-period="60m"]  { right: var(--right-60m,   0px); }
+  [data-page="search"] table.table-fixed thead th[data-period],
+  [data-page="search"] table.table-fixed tbody td[data-period] {
+    position: sticky;
+    z-index: 4;
+    background: var(--bg-card);
+  }
+  /* 기간 헤더는 다른 헤더와 동일 톤 (bg-header) — bg-card 면 흰색이라 갈라짐 */
+  [data-page="search"] table.table-fixed thead th[data-period] {
+    z-index: 11;  /* tbody sticky 보다 위 */
+    background: var(--bg-header);
+  }
+  /* 짝수행 zebra — 본문과 동일 톤 유지 (sticky 셀이 자체 bg 가지므로 명시 필요) */
+  [data-page="search"] table.table-fixed tbody tr:nth-child(even) td[data-period] {
+    background: var(--bg-stripe);
+  }
+  /* hover / selected 배경 sync */
+  [data-page="search"] table.table-fixed tbody tr:hover td[data-period] {
+    background: var(--bg-hover);
+  }
+  [data-page="search"] table.table-fixed tbody tr.selected td[data-period],
+  [data-page="search"] table.table-fixed tbody tr.selected td.sticky-col {
+    background: var(--bg-selected) !important;
+  }
+  /* selected row 자체도 even/odd 무관하게 항상 우선 — zebra 가 덮지 못하게 */
+  [data-page="search"] table.table-fixed tbody tr.selected {
+    background: var(--bg-selected) !important;
+  }
+
+  /* 기간 컬럼 셀 — 좌우 패딩 축소 (대여료/보증금 999만 ~ 4자리만 들어가면 됨) */
+  [data-page="search"] table.table-fixed tbody td[data-period],
+  [data-page="search"] table.table-fixed thead th[data-period] {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+  /* 연료/외부/내부 컬럼 — 명시 클래스 .col-tight 으로 통일 (nth-child 의존 제거) */
+  [data-page="search"] table.table-fixed thead th.col-tight,
+  [data-page="search"] table.table-fixed tbody td.col-tight {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+  }
+  /* 본문 셀 안 badge — block-level flex + margin auto 로 픽셀 정확 가운데 정렬.
+     fuel-letter 는 inline text 라 flex 적용 X (cell text-align: center 가 자체 가운데 정렬) */
+  [data-page="search"] table.table-fixed tbody td.col-tight > .fuel-badge,
+  [data-page="search"] table.table-fixed tbody td.col-tight > .color-badge {
+    display: flex;
+    margin: 0 auto;
+  }
+  /* 대여료 / 보증금 — 12px 통일, 대여료는 살짝 두껍게(500) */
+  .price-pair {
+    display: flex; flex-direction: column; align-items: flex-end; line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .price-pair .sep { display: none; }
+  .price-pair .rent {
+    color: var(--text-main);    /* 가장 진함 — 강조 */
+    font-weight: 700;           /* 차량번호와 동일 — 두껍게 */
+  }
+  .price-pair .rent .unit {
+    color: var(--text-sub);     /* 한 톤 흐림 */
+    margin-left: 1px;
+  }
+  .price-pair .dep {
+    font-size: 10px;            /* 보증금만 작게 — 참고 정보 위계 */
+    color: var(--text-sub);
+  }
+  .price-pair .dep .unit {
+    font-size: 10px;
+    margin-left: 1px;
+    color: var(--text-weak);
+  }
+  /* 상품목록 차량번호 — 두껍게 (강조) */
+  [data-page="search"] table.table-fixed tbody td.sticky-col {
+    font-weight: 700;
+  }
+  /* 유종 알파벳 뱃지 — color-badge 와 box-model 완전 동일 (18x18 border-box) */
+  .fuel-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; min-width: 18px; max-width: 18px;
+    height: 18px; min-height: 18px; max-height: 18px;
+    border-radius: 3px;
+    font-family: var(--font);   /* 본문과 동일 (굴림체) */
+    font-size: 10px; font-weight: 400;
+    line-height: 1;
+    box-sizing: border-box;
+    vertical-align: middle;
+    flex-shrink: 0;
+    flex-grow: 0;
+    background: var(--bg-stripe);
+    color: var(--text-sub);
+    border: 1px solid rgba(0, 0, 0, 0.22);
+  }
+  .fuel-badge.fuel-G,
+  .fuel-badge.fuel-D,
+  .fuel-badge.fuel-L,
+  .fuel-badge.fuel-H,
+  .fuel-badge.fuel-E { background: var(--bg-stripe); color: var(--text-sub); }
+  /* 연료 빈 칸 — color-badge-empty 와 시각 동일 (dashed + 미세 fill) */
+  .fuel-badge.fuel-empty {
+    background: rgba(0, 0, 0, 0.02);   /* color-badge-empty 와 동일한 시각 weight */
+    border-style: dashed;
+    border-color: var(--text-muted);
+  }
+  /* 제조사 — 글자 색만 브랜드 색 (배경 X). 12px 단일 */
+  .maker-badge {
+    display: inline-block;
+    padding: 0 2px;
+    font-size: 12px; font-weight: 400;
+    color: var(--mc, var(--text-main));
+    background: transparent;
+  }
+  /* 표 헤더 텍스트 — 본문과 동일하게 (text-main). 기교 없이 통일된 느낌 */
+  [data-page="search"] table.table-fixed thead th {
+    color: var(--text-main);
+  }
+  /* 토스트 — fixed 우측 하단 (document flow 영향 X). controls.css 미로드 보정 */
+  .toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    top: auto;
+    left: auto;
+    z-index: 9500;
+    display: flex; flex-direction: column; gap: 8px;
+    pointer-events: none;
+  }
+  .toast {
+    pointer-events: auto;
+    background: #1f2937;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    font-size: var(--font-size);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-width: 360px;
+    font-family: var(--font);
+  }
+  .toast.toast-success { background: var(--alert-green-text); }
+  .toast.toast-error   { background: var(--alert-red-text); }
+  .toast.toast-warn    { background: var(--alert-orange-text); }
+  /* 정렬 적용된 헤더 — 화살표 표시 (오름 ↑ / 내림 ↓) */
+  [data-page="search"] table.table-fixed thead th.is-sort-asc::after { content: ' ↑'; color: var(--text-sub); }
+  [data-page="search"] table.table-fixed thead th.is-sort-desc::after { content: ' ↓'; color: var(--text-sub); }
+  /* 필터 popover 안 정렬 버튼 활성 표시 */
+  .ft-pop-sort .sort-half.is-active {
+    background: var(--bg-selected);
+    color: var(--text-main);
+  }
+  /* selected row 의 sticky-col 배경 — 다른 td 와 동일하게 (sticky 자체 bg 가 가려서 강제 override 필요) */
+  [data-page="search"] table.table-fixed tbody tr.selected td.sticky-col {
+    background: var(--bg-selected) !important;
+  }
+
+  /* 상단 툴바 버튼 — 패널 위아래 꽉차게 사각형 (실속형). topbar 높이 그대로 채움 */
+  .pt-tb .btn,
+  .pt-tb .btn-primary {
+    height: var(--panel-head-h);
+    border-radius: 0;
+    border: 0;
+    border-left: 1px solid var(--border);
+    padding: 0 var(--sp-4);
+    margin: 0;
+  }
+  .pt-tb .btn-primary {
+    background: var(--c-primary, var(--text-main));
+    color: var(--text-inv, #fff);
+  }
+
   /* 사진 lightbox (풀스크린 갤러리) */
   .lightbox-overlay {
     position: fixed; inset: 0;
@@ -299,46 +849,63 @@
   body.role-agent .pt-sb a[data-page="product"],
   body.role-agent .pt-sb a[data-page="policy"],
   body.role-agent .pt-sb a[data-page="partners"],
-  body.role-agent .pt-sb a[data-page="users"],
-  body.role-agent .pt-sb-section[data-section="공급사"],
-  body.role-agent .pt-sb-section[data-section="관리자"] { display: none; }
+  body.role-agent .pt-sb a[data-page="users"] { display: none; }
+  /* 개발도구는 admin 만 */
+  body:not(.role-admin) .pt-sb-bottom-dev { display: none; }
   body.role-provider .pt-sb a[data-page="partners"],
-  body.role-provider .pt-sb a[data-page="users"],
-  body.role-provider .pt-sb-section[data-section="관리자"] { display: none; }
+  body.role-provider .pt-sb a[data-page="users"] { display: none; }
   body.role-agent_admin .pt-sb a[data-page="product"],
-  body.role-agent_admin .pt-sb a[data-page="policy"],
-  body.role-agent_admin .pt-sb-section[data-section="공급사"] { display: none; }
+  body.role-agent_admin .pt-sb a[data-page="policy"] { display: none; }
 
-  /* 사이드바 토글 버튼 (사이드바 brand 우측 — v2 스타일) */
+  /* 사이드바 토글 버튼 — 메뉴 아이콘과 같은 16px 컨테이너로 X 위치 통일 */
+  /* 아이콘은 항상 ph-caret-left (<). 접힘 시 180° 회전하여 > 로 보임 */
   .pt-sb-toggle {
-    width: 22px; height: 22px;
+    width: 16px; height: 22px;
     display: inline-flex; align-items: center; justify-content: center;
     border-radius: 2px; cursor: pointer; color: var(--text-sub);
     flex-shrink: 0; background: transparent; border: 0; padding: 0;
-    margin-left: auto;
+  }
+  .pt-sb-toggle > i {
+    font-size: 14px; line-height: 1;
+    transition: transform 0.15s ease;
+  }
+  body.is-sb-collapsed .pt-sb-toggle > i {
+    transform: rotate(180deg);
   }
   .pt-sb-toggle:hover { background: var(--bg-stripe); color: var(--text-main); }
-  .pt-sb-brand { justify-content: space-between; }
+  /* brand bar 는 flex-start. brand-text 의 flex:1 이 토글을 우측으로 밀어내고,
+     접힘 시 brand-text 폭 0 → 토글이 자연스럽게 X=12(메뉴 아이콘 위치)로 슬라이드 */
 
-  /* ══ 모든 "헤드" 띠 — 동일 30px 규격 (타이틀 헤더 / 패널 헤더 / 표 헤더) ══ */
+  /* ══ 모든 "헤드" 띠 — 동일 32px 높이 ══
+     쉘(브랜드/토픽바)은 bg-card (사이드바와 통일)
+     패널/표 헤더는 bg-header (본문과 구분) */
   .pt-sb-brand,
   .pt-tb,
   .ws4-head,
   .table thead th {
-    height: 30px !important;
-    padding: 0 8px !important;
-    background: var(--bg-header) !important;
-    border-bottom: 1px solid var(--border) !important;
+    height: var(--panel-head-h);
+    padding: 0 var(--sp-3);
+    border-bottom: 1px solid var(--border);
     color: var(--text-weak);
     box-sizing: border-box;
   }
-  /* 표 헤더 sticky 강제 (스크롤 시 thead 가 위에 고정) */
+  .pt-sb-brand,
+  .pt-tb {
+    background: var(--bg-card);   /* 사이드바와 동일 흰색 */
+  }
+  .ws4-head,
   .table thead th {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 10 !important;
+    background: var(--bg-header); /* 본문과 구분 */
+  }
+  /* 표 헤더 sticky (스크롤 시 thead 가 위에 고정) */
+  .table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
   .pt-sb-brand { color: var(--text-main); }   /* brand 만 메인 */
+  /* brand bar — padding 12px 로 override (메뉴 link 와 좌우 정렬 통일) */
+  .pt-sb-brand { padding: 0 12px !important; gap: 0; }
   .pt-sb-brand,
   .pt-tb,
   .ws4-head {
@@ -346,45 +913,83 @@
     flex-shrink: 0;
   }
   .pt-sb-brand { grid-column: 1; }
-  .pt-tb { grid-column: 2; grid-row: 1; gap: 8px; }
+  /* 토픽바 — 좌(검색) / 가운데(페이지 제목 absolute) / 우(사용자 메뉴)
+     좌우 padding 6px 으로 pt-main 과 동일 (목록 카드 edge 와 visual alignment) */
+  .pt-tb {
+    grid-column: 2; grid-row: 1;
+    gap: 0; position: relative;
+    padding: 0 6px;
+    box-sizing: border-box;
+  }
   .ws4-head { gap: 6px; }
   .table thead th { font-weight: 400; vertical-align: middle; }
-  .pt-tb-search { flex: 1; max-width: 480px; position: relative; }
-  .pt-tb-search input { width: 100%; padding-right: 28px; background: var(--bg-page); }
-  .pt-tb-search input:focus { background: var(--bg-card); }
-  .pt-tb-search kbd {
-    position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
+  /* 토픽바 검색 input — 좌측 고정 280px (제목 absolute 중앙, 사용자 우측 고정) */
+  .pt-tb-search {
+    flex: 0 0 280px;
+    margin: 0;
+    background: var(--bg-page);
   }
+  .pt-tb-search:focus { background: var(--bg-card); }
+  /* 현재 페이지 제목 — 토픽바 전체 absolute 가운데 (검색/사용자 폭에 영향 없음) */
+  .pt-tb-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: var(--font-size);
+    color: var(--text-main);
+    font-weight: 400;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .pt-tb-title i { font-size: 14px; color: var(--text-sub); }
   .pt-tb-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; color: var(--text-sub); }
+  /* 토픽바 우측 글로벌 영역 — 알림 + 사용자 메뉴 (이름 · 직급). margin-left:auto 로 우측 끝 */
+  .pt-tb-global {
+    margin-left: auto;
+    flex: 0 0 auto;
+    display: flex; align-items: center; gap: var(--sp-1);
+    height: 100%;
+  }
   .pt-tb-icon {
-    width: 22px; height: 22px;
+    height: 100%;
+    padding: 0 var(--sp-3);
     display: inline-flex; align-items: center; justify-content: center;
-    border-radius: 2px; cursor: pointer; color: var(--text-sub);
+    background: transparent; border: 0; cursor: pointer; color: var(--text-sub);
+    font-family: inherit;
   }
   .pt-tb-icon:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .pt-tb-icon i { font-size: 16px; }
+  /* 사용자 메뉴 버튼 — 이름 · 직급 + caret. 계정 메뉴 진입점 */
+  .pt-tb-user {
+    height: 100%;
+    padding: 0 var(--sp-3);
+    display: inline-flex; align-items: center; gap: var(--sp-2);
+    background: transparent; border: 0; cursor: pointer; color: var(--text-sub);
+    font-family: inherit; font-size: var(--font-size);
+  }
+  .pt-tb-user:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .pt-tb-user-name { color: var(--text-main); }
+  .pt-tb-user-role { color: var(--text-weak); }
   /* 페이지별 동적 topbar 영역 — display:contents 로 inner 자식이 그대로 flex 자식으로 동작 */
   .pt-tb-inner { display: contents; }
   .pt-tb-inner[hidden] { display: none; }
-  .pt-sb-section {
-    padding: 10px 12px 3px;
-    color: var(--text-muted);
-    border-top: 1px solid var(--border-soft);
-  }
-  .pt-sb-section:first-of-type { border-top: 0; }
   .pt-sb a {
     display: flex; align-items: center; justify-content: space-between;
     padding: 4px 12px; color: var(--text-sub); text-decoration: none;
-    border-left: 2px solid transparent;
   }
   .pt-sb a:hover { background: var(--bg-stripe); color: var(--text-main); text-decoration: none; }
   .pt-sb a.active {
     background: var(--bg-selected); color: var(--text-main);
-    border-left-color: var(--text-main);
   }
   .pt-sb a .cnt { color: var(--alert-red-text); }
-  .pt-sb-bottom {
-    margin-top: auto; padding: 8px 12px;
-    border-top: 1px solid var(--border); color: var(--text-weak);
+  /* 사이드바 하단 그룹 — 묶음 단위로 맨 아래에 붙임 (구분선 없음).
+     하단 링크 자체는 .pt-sb a 규격을 그대로 상속 (메뉴 아이템과 동일 호버/active) */
+  .pt-sb-bottom-group {
+    margin-top: auto;
   }
   .pt-main {
     grid-column: 2; grid-row: 2;
@@ -428,23 +1033,46 @@
   }
   .timeline-row:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
 
-  /* 표 셀 라인 — 가로·세로 미세 라인 (border-soft) + zebra row (bg-stripe, 더 연함) */
+  /* 표 셀 라인 — 가로·세로 동일 색. border (#e5e7eb) 로 한 단계 진하게 */
   .table tbody td {
-    border-bottom: 1px solid var(--border-soft) !important;
-    border-right: 1px solid var(--border-soft) !important;
+    border-bottom: 1px solid var(--border) !important;
+    border-right: 1px solid var(--border) !important;
   }
-  .table tbody tr:nth-child(even) { background: var(--bg-stripe); }
   .table tbody tr:hover { background: var(--bg-hover); }
   /* 다중 선택된 row (Ctrl+click) — 강조 배경 */
   .table tbody tr.is-checked { background: var(--alert-blue-bg, #e6f0ff) !important; }
   .table tbody tr.is-checked td.sticky-col { background: var(--alert-blue-bg, #e6f0ff) !important; }
 
-  /* 고정 컬럼폭 + 단일줄 말줄임 (colgroup 으로 폭 지정) */
-  .table-fixed { table-layout: fixed; }
-  .table-fixed td, .table-fixed th {
+  /* 고정 컬럼폭 — 12px 통일, 굴림체 + tabular-nums (숫자 자릿수 정렬) */
+  .table-fixed {
+    table-layout: fixed;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-fixed thead th {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 12px;
+  }
+  .table-fixed tbody td {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+    overflow: hidden;
+    vertical-align: middle;
+    font-size: 12px;
+  }
+  /* 3줄 이상 → 본문 축소 (영업자 의견: 정보 다 보이는게 우선) */
+  .table-fixed tbody td.is-cramped {
+    font-size: var(--fs-2xs);
+    line-height: 1.2;
+  }
+  /* 차량번호 / 대여기간 헤더 — weight 동일, 색 그대로 (다른 헤더와 구분 없음) */
+  [data-page="search"] table.table-fixed thead th.sticky-col,
+  [data-page="search"] table.table-fixed thead th[data-period] {
+    font-weight: 400;
   }
   /* 좌우 스크롤 시 sticky-col 은 좌측 고정 (z-index 우선순위 정리) */
   .table-fixed thead th.sticky-col,
@@ -458,44 +1086,56 @@
     z-index: 12 !important;
     top: 0 !important;
   }
-  /* 패널 헤드 = 타이틀 헤더(topbar / 사이드바 brand) 동일 30px 규격
-     padding 0 8 / 배경 bg-header / 색 text-weak (라벨 톤) */
+  /* 패널 헤드 — 32px 표준 (--panel-head-h 토큰) */
   .ws4-head {
-    height: 30px;
-    padding: 0 8px;
+    height: var(--panel-head-h);
+    padding: 0 var(--sp-3);
     background: var(--bg-header);
     color: var(--text-weak);
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center;
-    gap: 6px;
+    gap: var(--sp-2);
     flex-shrink: 0;
+    font-size: var(--font-size-lg);   /* 13px - 패널 헤더만 */
   }
-  /* 표 헤더 — 패널 헤드와 동일 30px (타이틀 헤더 / 패널 헤드 / 표 헤더 모두 통일) */
+  /* 표 헤더 — 패널 헤더와 동일 높이 (시각 통일).
+     본문 zebra 와 색 구분 + box-shadow 로 위/아래 라인 (sticky 스크롤 시에도 표시) */
   .table thead th {
-    height: 30px;
-    padding: 0 8px;
+    height: var(--panel-head-h);
+    padding: 0 var(--sp-3);
     background: var(--bg-header);
-    color: var(--text-weak);
-    border-bottom: 1px solid var(--border);
+    color: var(--text-sub);            /* text-weak 너무 흐려서 sub 로 진하게 */
     font-weight: 400;
+    font-size: var(--font-size);
+    box-shadow:
+      inset 0 1px 0 var(--border),
+      inset 0 -1px 0 var(--border);
   }
 
-  /* ── 상세 패널 슬라이드 (상품 찾기 split) ──
-     gap 을 패널의 left margin 으로 옮겨, 패널과 여백이 한 덩어리로 우측으로 밀려나감 */
+  /* ── 상세 패널 오버레이 (상품 찾기) ──
+     리스트는 항상 풀폭, 상세는 우측 absolute 로 빵 뜸 (no animation) */
   [data-page="search"] .ws4 {
-    transition: grid-template-columns 0.24s cubic-bezier(.4,.0,.2,1);
+    position: relative;
+    display: block;            /* flex/grid 해제 — 리스트만 전체 차지 */
+  }
+  [data-page="search"] .ws4 > .ws4-card:first-child {
+    height: 100%;
+    width: 100%;
   }
   [data-page="search"] .ws4 > .ws4-card:last-child {
-    overflow: hidden;
-    min-width: 0;
-    margin-left: 6px;
-    transition: margin-left 0.24s cubic-bezier(.4,.0,.2,1);
-  }
-  [data-page="search"] .ws4.is-collapsed {
-    grid-template-columns: 1fr 0fr !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 25%;       /* 업무소통 ws4 1패널 규격(1/4)과 동일 */
+    z-index: 50;
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+    box-shadow: -4px 0 16px rgba(17, 24, 39, 0.08);
+    margin: 0;
   }
   [data-page="search"] .ws4.is-collapsed > .ws4-card:last-child {
-    margin-left: 0 !important;
+    display: none;
   }
   /* row 클릭으로 자동 펼침 — JS 처리 (별도 reopen 버튼 불필요) */
   .ws4-head > span:first-child,
@@ -644,8 +1284,10 @@
     box-shadow: 0 12px 40px rgba(0,0,0,0.2);
   }
   .pick-head {
-    padding: 12px 14px; border-bottom: 1px solid var(--border-soft);
-    font-size: 12px; font-weight: 600; color: var(--text-main);
+    padding: var(--sp-4); border-bottom: 1px solid var(--border-soft);
+    font-size: var(--font-size-lg); color: var(--text-main);
+    height: var(--panel-head-h); display: flex; align-items: center;
+    box-sizing: border-box;
   }
   .pick-body { flex: 1; overflow-y: auto; padding: 6px; }
   .pick-item {
@@ -657,8 +1299,8 @@
   }
   .pick-item:hover { background: var(--bg-stripe); }
   .pick-item > i { font-size: 18px; color: var(--text-weak); flex: 0 0 auto; }
-  .pick-item-name { font-weight: 500; }
-  .pick-item-sub { font-size: 11px; color: var(--text-weak); margin-top: 1px; }
+  .pick-item-name { color: var(--text-main); }
+  .pick-item-sub { font-size: var(--font-size-xs); color: var(--text-weak); margin-top: 1px; }
   .pick-foot {
     padding: 8px 10px; border-top: 1px solid var(--border-soft);
     display: flex; justify-content: flex-end; gap: 6px;
@@ -707,10 +1349,10 @@
   /* 섹션 타이틀 — 같은 패널 안에 여러 form-grid 를 묶을 때 사용
      경계는 다음 섹션 위 border-top 으로 표시 → 마지막 섹션은 자연스럽게 끝남 */
   .form-section-title {
-    font-size: 11px; font-weight: 600;
-    color: var(--text-sub);
-    margin-bottom: 8px;
-    display: flex; align-items: center; gap: 5px;
+    font-size: var(--font-size-lg);
+    color: var(--text-main);
+    margin-bottom: var(--sp-3);
+    display: flex; align-items: center; gap: var(--sp-2);
   }
   .form-section-title > i { color: var(--accent-blue); font-size: 12px; flex: 0 0 auto; }
   .form-section-title + .form-grid { margin-bottom: 4px; }
@@ -733,7 +1375,7 @@
   .form-grid .ff:has(textarea) > label { padding-top: 4px; }
   .form-grid .ff > label {
     color: var(--text-weak); margin: 0;
-    font-size: 11px; line-height: 1.2;
+    font-size: var(--font-size-xs); line-height: 1.2;
     word-break: keep-all;       /* 한글 단어 단위 줄바꿈 */
     overflow-wrap: break-word;  /* 단어 못 끊으면 강제 wrap */
     /* 길면 자동 줄바꿈 → 행 높이 자연스럽게 늘어남 */
@@ -880,27 +1522,24 @@
   }
   .chat-row.is-mine .chat-bubble-wrap { align-items: flex-end; }
   .chat-bubble {
-    padding: 6px 8px; font-size: 11px; line-height: 1.45;
-    border-radius: 12px; word-break: break-word; max-width: 100%;
+    padding: var(--sp-2) var(--sp-3); font-size: var(--font-size); line-height: 1.45;
+    border-radius: var(--radius); word-break: break-word; max-width: 100%;
   }
+  /* 채팅 말풍선 — 배경색만으로 구분 (보더 X, 깔끔하게) */
   .chat-row.is-mine .chat-bubble {
     background: var(--alert-blue-bg); color: var(--alert-blue-text);
-    border: 1px solid var(--alert-blue-border);
     border-top-right-radius: 4px;
   }
   .chat-row.is-other .chat-bubble-agent {
     background: var(--alert-blue-bg); color: var(--text-main);
-    border: 1px solid var(--alert-blue-border);
     border-top-left-radius: 4px;
   }
   .chat-row.is-other .chat-bubble-provider {
     background: var(--alert-green-bg); color: var(--text-main);
-    border: 1px solid var(--alert-green-border);
     border-top-left-radius: 4px;
   }
   .chat-row.is-other .chat-bubble-admin {
-    background: #fdf2f8; color: var(--text-main);
-    border: 1px solid #fbcfe8;
+    background: var(--alert-red-bg); color: var(--text-main);
     border-top-left-radius: 4px;
   }
   .chat-meta {
@@ -917,27 +1556,36 @@
   .ws-input input { flex: 1; }
 
   /* v2 계약 진행 7단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
-  .ct-steps-v3 { display: flex; flex-direction: column; gap: 4px; }
+  .ct-steps-v3 { display: flex; flex-direction: column; gap: var(--sp-1); }
   .ct-step-row {
-    display: grid; grid-template-columns: 1fr 16px 1fr;
-    align-items: center; gap: 4px; font-size: 11px;
+    display: grid; grid-template-columns: 1fr 20px 1fr;
+    align-items: center; gap: var(--sp-1); font-size: var(--font-size);
   }
+  /* 영업/공급·관리 헤더 — 12px 통일, border-bottom 강조 */
   .ct-step-row.ct-step-head {
-    color: var(--text-weak); font-size: 10px; padding-bottom: 2px;
-    border-bottom: 1px solid var(--border-soft); margin-bottom: 2px;
+    color: var(--text-sub); font-size: var(--font-size);
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--sp-2);
   }
   .ct-step-row.ct-step-head > div { text-align: center; }
+  /* 가운데 화살표 컬럼 (영업 ↔ 공급) — 시각 분리 */
+  .ct-step-row.ct-step-head > div:nth-child(2)::before {
+    content: '↔';
+    color: var(--text-muted);
+  }
   .ct-step-cell {
-    display: flex; align-items: center; gap: 4px;
-    padding: 3px 6px; border-radius: 2px;
+    display: flex; align-items: center; gap: var(--sp-1);
+    padding: var(--sp-1) var(--sp-2); border-radius: var(--radius);
     color: var(--text-sub); white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis;
+    font-size: var(--font-size);
   }
   .ct-step-cell.done    { color: var(--alert-green-text); background: var(--alert-green-bg); }
   .ct-step-cell.pending { color: var(--text-muted); }
   .ct-step-cell.locked  { color: var(--text-muted); opacity: 0.5; }
   .ct-step-cell.rejected { color: var(--alert-red-text); background: var(--alert-red-bg); }
-  .ct-step-arrow { color: var(--text-muted); text-align: center; font-size: 10px; }
+  .ct-step-arrow { color: var(--text-muted); text-align: center; font-size: var(--font-size); }
 
   .step-list { display: flex; flex-direction: column; }
   .step {
@@ -955,168 +1603,646 @@
   .step.done .num { background: var(--text-main); border-color: var(--text-main); color: var(--text-inverse); }
   .step.cur .num  { background: var(--alert-blue-text); border-color: var(--alert-blue-text); color: var(--text-inverse); }
 
-  /* 가격 셀 — 월렌트/보증금 한줄 페어 (대여료 진하게, 보증금은 약하게) */
-  .price-pair { display: inline-flex; gap: 4px; align-items: baseline; }
-  .price-pair .rent { color: var(--text-main); }
-  .price-pair .sep { color: var(--text-muted); }
-  .price-pair .dep { color: var(--text-weak); }
-
   strong { font-weight: 400; color: var(--text-main); }
 
-  /* ── 로그인 overlay (auth 안 됨 → 사이드바·topbar·main 가리고 폼 표시) ── */
+  /* ── 설정/개발도구 페이지 공통 (탭 + 섹션) ── */
+  .settings-tab {
+    display: flex; align-items: flex-start; gap: var(--sp-2);
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    margin-bottom: 2px;
+    border-radius: var(--radius);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-sub);
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--font-size);
+  }
+  .settings-tab:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .settings-tab.is-active {
+    background: var(--bg-selected);
+    color: var(--text-main);
+  }
+  .settings-tab > i {
+    font-size: 16px; line-height: 1.4; flex-shrink: 0;
+    color: var(--text-weak);
+  }
+  .settings-tab.is-active > i { color: var(--text-main); }
+  .settings-tab-text {
+    display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0;
+  }
+  .settings-tab-label { color: inherit; }
+  .settings-tab-sub {
+    color: var(--text-weak); font-size: var(--font-size);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .settings-section {
+    margin-bottom: var(--sp-6);
+  }
+  .settings-section-title {
+    font-size: var(--font-size);
+    color: var(--text-sub);
+    margin-bottom: var(--sp-2);
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-rows {
+    display: flex; flex-direction: column; gap: var(--sp-2);
+  }
+  .settings-row {
+    display: flex; align-items: center; gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+  }
+  .settings-row-toggle {
+    cursor: pointer;
+    border-radius: var(--radius);
+    padding: var(--sp-2) var(--sp-3);
+    margin: 0 calc(-1 * var(--sp-3));
+  }
+  .settings-row-toggle:hover { background: var(--bg-stripe); }
+  .settings-row-label {
+    flex: 0 0 120px; color: var(--text-sub);
+  }
+  .settings-row-control {
+    flex: 1; display: flex; align-items: center; gap: var(--sp-2);
+  }
+  .settings-row-value {
+    margin-left: auto; color: var(--text-sub);
+  }
+  .ac-input { flex: 1; max-width: 320px; }
+  .ac-state {
+    font-size: var(--font-size); color: var(--text-weak);
+    display: inline-flex; align-items: center; gap: 2px;
+  }
+  .ac-state.is-saved { color: var(--alert-green-text); }
+  .ac-state.is-error { color: var(--alert-red-text); }
+
+  /* 프로필 헤더 */
+  .settings-profile {
+    display: flex; align-items: center; gap: var(--sp-4);
+    padding-bottom: var(--sp-4);
+    margin-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--bg-stripe);
+    color: var(--text-sub);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .settings-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .settings-avatar-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.4); color: #fff;
+    display: none;
+    align-items: center; justify-content: center;
+  }
+  .settings-avatar:hover .settings-avatar-overlay { display: flex; }
+  .settings-profile-name { font-size: var(--font-size); color: var(--text-main); margin-bottom: 2px; }
+  .settings-profile-sub { font-size: var(--font-size); color: var(--text-weak); }
+
+  /* 변경 불가 정보 — 입력칸 X, 텍스트 표시 */
+  .settings-row-static {
+    color: var(--text-main);
+    padding: 0 var(--sp-2);
+    font-family: var(--font);
+  }
+
+  /* 사용설명 가이드 — 페이지별 행 레이아웃 */
+  .settings-guide-rows {
+    display: flex; flex-direction: column; gap: var(--sp-3);
+  }
+  .settings-guide-row {
+    display: grid; grid-template-columns: 140px 1fr; gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-guide-row:last-child { border-bottom: 0; }
+  .settings-guide-label {
+    color: var(--text-main);
+    font-size: var(--font-size);
+    display: flex; align-items: center; gap: var(--sp-2);
+  }
+  .settings-guide-label > i { font-size: 16px; color: var(--text-sub); flex-shrink: 0; }
+  .settings-guide-body {
+    color: var(--text-sub);
+    line-height: 1.6;
+    font-size: var(--font-size);
+  }
+  .settings-guide-body b { color: var(--text-main); }
+  .settings-guide-body ul, .settings-guide-body ol {
+    margin: var(--sp-2) 0 0;
+    padding-left: var(--sp-4);
+  }
+  .settings-guide-body li {
+    margin-bottom: var(--sp-1);
+  }
+
+  /* 도움말 패널 (우측 1/4) */
+  .settings-help {
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+  .settings-help-title {
+    margin: 0 0 var(--sp-3);
+    color: var(--text-main);
+    font-weight: 400;
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-help p {
+    margin: 0 0 var(--sp-3);
+  }
+  .settings-help ul {
+    margin: 0 0 var(--sp-3);
+    padding-left: var(--sp-4);
+    list-style: disc;
+  }
+  .settings-help li {
+    margin-bottom: var(--sp-2);
+  }
+  .settings-help b { color: var(--text-main); }
+  .settings-help-tip {
+    background: var(--bg-stripe);
+    padding: var(--sp-3);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent-blue, var(--text-main));
+    color: var(--text-sub);
+  }
+
+  /* 액션 버튼 (비밀번호 변경 / 로그아웃) */
+  .settings-action {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: var(--sp-3);
+    background: transparent; border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-main); cursor: pointer;
+    font-family: inherit; font-size: var(--font-size);
+  }
+  .settings-action:hover { background: var(--bg-stripe); }
+  .settings-action.is-danger { color: var(--alert-red-text); }
+  .settings-action.is-danger:hover { background: var(--alert-red-bg); }
+  .settings-action-body { display: inline-flex; align-items: center; gap: var(--sp-2); }
+  .settings-action-hint { color: var(--text-weak); font-size: var(--font-size); }
+
+  /* ── 다크 모드 — :root[data-theme="dark"] 적용 시 토큰 일괄 override ── */
+  :root[data-theme="dark"] {
+    /* 배경 — 깊은 회색 계열, 카드는 한 톤 밝게 */
+    --bg-page:    #0f1115;
+    --bg-card:    #1a1d23;
+    --bg-header:  #14171d;
+    --bg-stripe:  #181b21;
+    --bg-hover:   #232830;
+    --bg-active:  #2c323b;
+    --bg-selected:#1f3a5f;
+
+    /* 텍스트 — 다크 배경에서 쨍하지 않게. 흰색을 한 톤 더 죽임 */
+    --text-main:  #b0b6c0;   /* 기존 검정 대응 — 부드러운 회백 (이전 c5cad3 보다 살짝 더 죽임) */
+    --text-sub:   #888f9a;
+    --text-weak:  #5e6470;
+    --text-muted: #404550;
+    --text-inv:   #0f1115;
+    --text-inverse: #0f1115;
+
+    /* 보더 */
+    --border:       #2a2f38;
+    --border-soft:  #1f242d;
+    --border-strong:#3a414c;
+    --border-focus: #4f8edc;
+
+    /* 액션 색 — 다크 배경에서도 가독 OK 톤 */
+    --accent-blue:  #6ea0e0;
+    --accent-green: #5fb37a;
+    --accent-orange:#e89f5b;
+    --accent-red:   #e07b7b;
+
+    /* 알림 색 — 옅은 톤 어둡게 */
+    --alert-blue-bg:    #1a2940;
+    --alert-blue-text:  #93b8e8;
+    --alert-blue-border:#2c4670;
+    --alert-green-bg:   #1c3026;
+    --alert-green-text: #6fce91;
+    --alert-green-border:#2e5240;
+    --alert-orange-bg:  #3a2a18;
+    --alert-orange-text:#e9b481;
+    --alert-orange-border:#5a4220;
+    --alert-red-bg:     #3a1f1f;
+    --alert-red-text:   #e89b9b;
+    --alert-red-border: #5a3535;
+  }
+  /* 라이트 모드 기본 — body 도 명시적 색 (브라우저 기본 black 의존 X) */
+  body { background: var(--bg-page); color: var(--text-main); }
+
+  /* 다크 모드 시 추가 보정 — 컨테이너/카드/입력칸/표 본문 색 직접 강제 */
+  :root[data-theme="dark"] body { background: var(--bg-page); color: var(--text-main); }
+  :root[data-theme="dark"] .pt-sb,
+  :root[data-theme="dark"] .pt-tb { background: var(--bg-card); color: var(--text-main); }
+  :root[data-theme="dark"] .login-overlay { background: var(--bg-page); }
+  :root[data-theme="dark"] .ws4-card { background: var(--bg-card); border-color: var(--border); color: var(--text-main); }
+  :root[data-theme="dark"] .ws4-head { background: var(--bg-header); color: var(--text-sub); }
+  :root[data-theme="dark"] .ws4-body { color: var(--text-main); }
+  :root[data-theme="dark"] .ws4-foot { background: var(--bg-header); color: var(--text-sub); border-top-color: var(--border); }
+  :root[data-theme="dark"] .table thead th { background: var(--bg-header); color: var(--text-sub); }
+  :root[data-theme="dark"] .table tbody td { color: var(--text-main); }
+  :root[data-theme="dark"] .table tbody tr:nth-child(even) { background: var(--bg-stripe); }
+  :root[data-theme="dark"] .table tbody tr:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .input,
+  :root[data-theme="dark"] input,
+  :root[data-theme="dark"] select,
+  :root[data-theme="dark"] textarea { background: var(--bg-stripe) !important; color: var(--text-main) !important; border-color: var(--border-soft) !important; }
+  :root[data-theme="dark"] .pt-sb a,
+  :root[data-theme="dark"] .pt-sb-bottom-link { color: var(--text-sub); }
+  :root[data-theme="dark"] .pt-sb a:hover,
+  :root[data-theme="dark"] .pt-sb-bottom-link:hover { background: var(--bg-hover); color: var(--text-main); }
+  :root[data-theme="dark"] .pt-sb a.active,
+  :root[data-theme="dark"] .pt-sb-bottom-link.active { background: var(--bg-selected); color: var(--text-main); }
+  :root[data-theme="dark"] .pt-tb-title { color: var(--text-main); }
+  :root[data-theme="dark"] .pt-tb-user-name { color: var(--text-main); }
+  :root[data-theme="dark"] .pt-tb-user-role { color: var(--text-weak); }
+  :root[data-theme="dark"] .chip { background: var(--bg-stripe); color: var(--text-sub); border-color: var(--border-soft); }
+  :root[data-theme="dark"] .chip.active { background: var(--bg-selected); color: var(--text-main); }
+  :root[data-theme="dark"] .btn { background: var(--bg-stripe); color: var(--text-main); border-color: var(--border); }
+  :root[data-theme="dark"] .btn:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .btn-primary { background: var(--text-main); color: var(--bg-card); border-color: var(--text-main); }
+  :root[data-theme="dark"] .room-item { color: var(--text-main); }
+  :root[data-theme="dark"] .room-item-name { color: var(--text-main); }
+  :root[data-theme="dark"] .room-item-msg { color: var(--text-sub); }
+  :root[data-theme="dark"] .room-item:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .room-item.active { background: var(--bg-selected); }
+  :root[data-theme="dark"] .ctx-menu { background: var(--bg-card); border-color: var(--border); }
+  :root[data-theme="dark"] .ctx-item { color: var(--text-main); }
+  :root[data-theme="dark"] .ctx-item:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .settings-tab { color: var(--text-sub); }
+  :root[data-theme="dark"] .settings-tab.is-active { background: var(--bg-selected); color: var(--text-main); }
+  :root[data-theme="dark"] .settings-tab:hover { background: var(--bg-hover); color: var(--text-main); }
+  :root[data-theme="dark"] .settings-section-title { color: var(--text-sub); border-bottom-color: var(--border-soft); }
+  :root[data-theme="dark"] .settings-row-static { color: var(--text-main); }
+  :root[data-theme="dark"] .settings-help-tip { background: var(--bg-stripe); }
+  /* 제조사 뱃지 — 다크 모드에서 어두운 브랜드색(제네시스/벤츠/렉서스 등) 가독 보정.
+     인라인 --mc 가 #1c1c1c 등 어두우면 다크 배경에서 안 보임 → 다크모드에선 text-main 으로 통일 */
+  :root[data-theme="dark"] .maker-badge { color: var(--text-main) !important; }
+
+  /* ── 자동저장 상태 인디케이터 — 우측 하단 floating, 저장 중에만 보임 ── */
+  .save-status {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: var(--font-size);
+    color: var(--text-sub);
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.10);
+    z-index: 9000;
+    transition: opacity 0.1s, transform 0.1s;
+  }
+  .save-status i { font-size: 14px; }
+  .save-status.is-idle,
+  .save-status.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+  }
+  .save-status.is-saving { color: var(--text-sub); }
+  .save-status.is-saving i { color: var(--accent-blue, var(--text-main)); }
+  .save-status.is-saved i { color: var(--alert-green-text); }
+  .save-status.is-error { color: var(--alert-red-text); border-color: var(--alert-red-text); }
+  .save-status.is-error i { color: var(--alert-red-text); }
+
+  /* ── 컨텍스트 메뉴 (우클릭) — 대화 숨김/삭제 등. 굴림체 톤 통일 ── */
+  .ctx-menu {
+    position: fixed;
+    z-index: 10000;
+    min-width: 160px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.12);
+    padding: var(--sp-1) 0;
+    font-size: var(--font-size);
+    font-family: var(--font);
+  }
+  .ctx-item {
+    display: flex; align-items: center; gap: var(--sp-2);
+    width: 100%;
+    padding: 0 var(--sp-3);
+    height: var(--sb-item-h);
+    border: 0; background: transparent;
+    color: var(--text-main);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 400;
+  }
+  .ctx-item:hover { background: var(--bg-hover); }
+  .ctx-item:focus,
+  .ctx-item:focus-visible { outline: none; background: var(--bg-hover); }
+  .ctx-item i { font-size: 14px; color: var(--text-weak); width: 14px; text-align: center; flex-shrink: 0; }
+  .ctx-item.is-danger { color: var(--alert-red-text); }
+  .ctx-item.is-danger i { color: var(--alert-red-text); }
+  .ctx-item.is-active { color: var(--accent-blue, var(--text-main)); }
+  .ctx-item.is-active i { color: var(--accent-blue, var(--text-main)); }
+  .ctx-item.is-disabled,
+  .ctx-item:disabled { color: var(--text-muted); cursor: default; }
+  .ctx-item.is-disabled:hover,
+  .ctx-item:disabled:hover { background: transparent; }
+  .ctx-item .ctx-check { margin-left: auto; font-size: 12px; }
+  .ctx-item.has-submenu .ctx-caret { margin-left: auto; font-size: 12px; color: var(--text-weak); }
+  .ctx-item.has-submenu:hover .ctx-caret { color: var(--text-main); }
+  .ctx-divider {
+    height: 1px;
+    background: var(--border-soft);
+    margin: var(--sp-1) 0;
+  }
+
+  /* ── 로그인 페이지 — v2 규격 (값 하드코딩 — v3 디자인 시스템과 분리) ── */
   .login-overlay {
     position: fixed; inset: 0;
     display: none;
-    align-items: center; justify-content: center;
-    background: var(--bg-page);
+    background: #ffffff;
     z-index: 9999;
+    overflow: auto;
   }
-  body.is-login .login-overlay { display: flex; }
+  body.is-login .login-overlay { display: block; }
   body.is-login .pt-sb,
   body.is-login .pt-tb,
   body.is-login .pt-main { display: none; }
-  body.is-loading > * { visibility: hidden; }
-  .login-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 24px; width: 320px;
-    display: flex; flex-direction: column; gap: 8px;
-  }
-  .login-card h2 {
-    text-align: center; color: var(--text-main);
-    margin-bottom: 8px; font-weight: 400;
-  }
-  .login-card .login-msg {
-    color: var(--alert-red-text); font-size: 11px; min-height: 14px;
-  }
-  .login-card button[type="submit"] {
-    margin-top: 8px;
-  }
-  .login-card .login-sub {
-    text-align: center; font-size: 11px; color: var(--text-weak);
-    margin: -4px 0 8px;
-  }
-  .login-card .login-links {
+  body.is-loading > *:not(.auth-loading) { visibility: hidden; }
+  /* 인증중 오버레이 — 새로고침 시 확실히 차단 */
+  .auth-loading {
+    position: fixed; inset: 0; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
-    gap: 6px; margin-top: 8px; font-size: 11px;
+    flex-direction: column; gap: 16px;
+    background: #ffffff;
+    color: #495057;
+    font-size: 14px;
   }
-  .login-card .login-links a {
-    color: var(--text-sub); text-decoration: none;
+  .auth-loading i {
+    font-size: 32px; color: #868e96;
+    animation: authSpin 1s linear infinite;
   }
-  .login-card .login-links a:hover { color: var(--accent-blue); text-decoration: underline; }
-  .login-card .login-links-sep { color: var(--text-muted); }
+  @keyframes authSpin { to { transform: rotate(360deg); } }
+  body:not(.is-loading) .auth-loading { display: none; }
+
+  .login-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 40px 16px;
+    padding-top: max(40px, env(safe-area-inset-top));
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+    background: #ffffff;
+    user-select: none;
+  }
+  /* v3 universal 셀렉터(`*` font-family/letter-spacing) override — Pretendard 강제 */
+  .login-page,
+  .login-page *,
+  .login-page *::before,
+  .login-page *::after {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .login-page {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .login-page input,
+  .login-page select { user-select: text; }
+
+  .login-brand {
+    font-size: 22px;
+    letter-spacing: -0.035em;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px;
+    text-transform: lowercase;
+  }
+  .login-brand-main { font-weight: 700; color: #1B2A4A; }
+  .login-brand-base { font-weight: 400; color: #7F93B3; }
+
+  .login-card {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 32px;
+    box-shadow: 0 4px 12px rgba(17, 17, 17, 0.10), 0 2px 4px rgba(17, 17, 17, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow: hidden;
+    margin: 0;  /* form 이라 기본 margin 0 강제 */
+  }
+  /* Loading 스피너 (제출 중) */
+  .login-card.is-loading::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,.85);
+    z-index: 10;
+  }
+  .login-card.is-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 32px; height: 32px;
+    margin: -16px 0 0 -16px;
+    border: 3px solid #d5d8dc;
+    border-top-color: #1B2A4A;
+    border-radius: 50%;
+    animation: login-spin .6s linear infinite;
+    z-index: 11;
+  }
+  @keyframes login-spin { to { transform: rotate(360deg); } }
+
+  .login-head { display: flex; flex-direction: column; gap: 6px; }
+  .login-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111111;
+  }
+  .login-sub {
+    margin: 0;
+    font-size: 13px;
+    color: #495057;
+  }
+
+  .login-form { display: flex; flex-direction: column; gap: 14px; }
+  .login-field { display: flex; flex-direction: column; gap: 4px; }
+  .login-field label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #495057;
+  }
+  .login-field input,
+  .login-field select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    background: #ffffff;
+    font-size: 14px;
+    font-family: inherit;
+    color: #111111;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 150ms cubic-bezier(.4,0,.2,1), box-shadow 150ms cubic-bezier(.4,0,.2,1);
+  }
+  .login-field input::placeholder { color: #868e96; }
+  .login-field input:hover,
+  .login-field select:hover { border-color: #c4c7cc; }
+  .login-field input:focus,
+  .login-field select:focus { border-color: #1B2A4A; box-shadow: 0 0 0 3px rgba(27,42,74,.08); }
+
+  .login-submit {
+    width: 100%;
+    height: 42px;
+    border: 0;
+    border-radius: 4px;
+    background: #1B2A4A;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 150ms cubic-bezier(.4,0,.2,1);
+  }
+  .login-submit:hover { background: #0F1B35; }
+  .login-submit:active { background: #0F1B35; }
+  .login-submit:disabled { background: #c4c7cc; cursor: default; }
+
+  .login-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #868e96;
+  }
+  .login-links a {
+    color: #1B2A4A;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .login-links a:hover { color: #0F1B35; }
+  .login-links-sep { color: #adb5bd; }
+
+  .login-msg {
+    margin: 0;
+    min-height: 16px;
+    font-size: 11px;
+    color: #868e96;
+    text-align: center;
+  }
+  .login-msg:empty { display: none; }
+
+  .login-copy {
+    font-size: 10px;
+    color: #868e96;
+    letter-spacing: 0.01em;
+  }
+
   /* 가입/재설정 카드는 로그인 카드와 동시에 안 뜨게 — 모드 토글 */
   body.is-login .login-card[hidden] { display: none !important; }
+
+  /* 모바일 */
+  @media (max-width: 768px) {
+    .login-page {
+      align-items: stretch;
+      padding: max(24px, env(safe-area-inset-top)) 0 max(24px, env(safe-area-inset-bottom));
+      background: #ffffff;
+      gap: 20px;
+    }
+    .login-brand {
+      font-size: 22px;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .login-card {
+      box-shadow: none;
+      border: 0;
+      border-radius: 0;
+      padding: 0 24px;
+      gap: 20px;
+      max-width: none;
+    }
+    .login-title { font-size: 20px; }
+    .login-sub { font-size: 14px; }
+  }
 </style>
 </head>
-<body class="is-loading">
+<body class="is-loading is-login">
+
+<!-- 인증중 — body.is-loading 동안 다른 모든 UI 차단 -->
+<div class="auth-loading"><i class="ph ph-spinner-gap"></i><span>인증 중...</span></div>
 
 <aside class="pt-sb">
   <div class="pt-sb-brand">
     <span class="sb-brand-text">freepass ERP</span>
-    <button class="pt-sb-toggle" id="sbToggle" title="사이드바 접기/펼치기"><i class="ph ph-sidebar-simple"></i></button>
+    <button class="pt-sb-toggle" id="sbToggle" title="사이드바 접기/펼치기"><i class="ph ph-caret-left"></i></button>
   </div>
-  <div class="pt-sb-section" data-section="공통">공통</div>
   <a href="#search" data-page="search" title="상품 찾기"><i class="ph ph-magnifying-glass"></i><span class="sb-label">상품 찾기</span><span class="cnt"></span></a>
-  <a href="#workspace" data-page="workspace" title="업무 소통"><i class="ph ph-chat-circle"></i><span class="sb-label">업무 소통</span><span class="cnt"></span></a>
+  <a href="#workspace" data-page="workspace" title="업무 소통"><i class="ph ph-chat-circle-dots"></i><span class="sb-label">업무 소통</span><span class="cnt"></span></a>
   <a href="#contract" data-page="contract" title="계약 관리"><i class="ph ph-file-text"></i><span class="sb-label">계약 관리</span><span class="cnt"></span></a>
   <a href="#settle" data-page="settle" title="정산 관리"><i class="ph ph-coins"></i><span class="sb-label">정산 관리</span><span class="cnt"></span></a>
-  <div class="pt-sb-section" data-section="공급사">공급사·관리자</div>
   <a href="#product" data-page="product" title="재고 관리"><i class="ph ph-package"></i><span class="sb-label">재고 관리</span><span class="cnt"></span></a>
   <a href="#policy" data-page="policy" title="정책 관리"><i class="ph ph-shield-check"></i><span class="sb-label">정책 관리</span><span class="cnt"></span></a>
-  <div class="pt-sb-section" data-section="관리자">관리자</div>
   <a href="#partners" data-page="partners" title="파트너 관리"><i class="ph ph-handshake"></i><span class="sb-label">파트너 관리</span><span class="cnt"></span></a>
   <a href="#users" data-page="users" title="사용자 관리"><i class="ph ph-users-three"></i><span class="sb-label">사용자 관리</span><span class="cnt"></span></a>
-  <div class="pt-sb-bottom">홍길동 · 영업자</div>
+  <!-- 사이드바 하단 그룹 — 개발도구 (admin) + 설정. 사이 구분선 없이 같이 묶음 -->
+  <div class="pt-sb-bottom-group">
+    <a href="#dev" class="pt-sb-bottom-link pt-sb-bottom-dev" data-page="dev" title="개발도구"><i class="ph ph-code"></i><span class="sb-label">개발도구</span></a>
+    <a href="#settings" class="pt-sb-bottom-link" data-page="settings" title="설정"><i class="ph ph-gear"></i><span class="sb-label">설정</span></a>
+  </div>
 </aside>
 
 <header class="pt-tb">
-  <!-- 페이지 컨텍스트 검색 — 위치 글로벌, placeholder 는 현재 페이지에 맞춰 JS 가 변경 -->
-  <input type="search" class="input" id="ptTbSearch" placeholder="차량번호·차종·옵션·금액·무심사..." style="width:280px;">
+  <!-- ① 좌측: 검색창 (페이지 컨텍스트, placeholder 는 JS 가 페이지별 변경) -->
+  <input type="search" class="input pt-tb-search" id="ptTbSearch" placeholder="차량번호·차종·옵션·금액·무심사...">
 
-  <!-- 페이지별 동적 영역 — chip + 액션 (검색은 글로벌) -->
-  <!-- ① 상품 찾기 -->
-  <div class="pt-tb-inner" data-tb="search" hidden>
-    <span class="chip active">전체 <em class="cnt">606</em></span>
-    <span class="chip">즉시 <em class="cnt">87</em></span>
-    <span class="chip">출고가능 <em class="cnt">266</em></span>
-    <span class="chip">출고협의 <em class="cnt">324</em></span>
-    <div class="spacer"></div>
-    <button class="btn">엑셀</button>
-    <button class="btn">사진 ZIP</button>
-    <button class="btn-primary">신규 <kbd>N</kbd></button>
-  </div>
-  <!-- ② 업무 소통 -->
-  <div class="pt-tb-inner" data-tb="workspace" hidden>
-    <span class="chip active">전체 <em class="cnt">12</em></span>
-    <span class="chip">미읽음 <em class="cnt">4</em></span>
-    <span class="chip">진행중</span>
-    <div class="spacer"></div>
-    <button class="btn-primary">새 대화</button>
-  </div>
-  <!-- ③ 계약 관리 -->
-  <div class="pt-tb-inner" data-tb="contract" hidden>
-    <span class="chip active">전체 <em class="cnt">108</em></span>
-    <span class="chip">진행중 <em class="cnt">47</em></span>
-    <span class="chip">출고대기 <em class="cnt">4</em></span>
-    <span class="chip">만기임박 <em class="cnt">8</em></span>
-    <div class="spacer"></div>
-    <button class="btn">엑셀</button>
-    <button class="btn-primary">신규 계약</button>
-  </div>
-  <!-- ④ 정산 관리 -->
-  <div class="pt-tb-inner" data-tb="settle" hidden>
-    <span class="chip">전체 <em class="cnt">101</em></span>
-    <span class="chip active">미정산 <em class="cnt">14</em></span>
-    <span class="chip">정산완료 <em class="cnt">87</em></span>
-    <span class="chip">환수 <em class="cnt">3</em></span>
-    <div class="spacer"></div>
-    <button class="btn">엑셀</button>
-    <button class="btn-primary">일괄 정산</button>
-  </div>
-  <!-- ⑤ 재고 관리 -->
-  <div class="pt-tb-inner" data-tb="product" hidden>
-    <span class="chip active">전체 <em class="cnt">606</em></span>
-    <span class="chip">사진 미등록 <em class="cnt">14</em></span>
-    <span class="chip">가격 미설정 <em class="cnt">8</em></span>
-    <div class="spacer"></div>
-    <button class="btn">대량 업로드</button>
-    <button class="btn-primary">신규 차량</button>
-  </div>
-  <!-- ⑥ 정책 관리 -->
-  <div class="pt-tb-inner" data-tb="policy" hidden>
-    <span class="chip active">전체 <em class="cnt">24</em></span>
-    <span class="chip">활성 <em class="cnt">22</em></span>
-    <span class="chip">비활성 <em class="cnt">2</em></span>
-    <div class="spacer"></div>
-    <button class="btn-primary">새 정책</button>
-  </div>
-  <!-- ⑦ 파트너 관리 -->
-  <div class="pt-tb-inner" data-tb="partners" hidden>
-    <span class="chip active">전체 <em class="cnt">87</em></span>
-    <span class="chip">공급사 <em class="cnt">12</em></span>
-    <span class="chip">영업채널 <em class="cnt">47</em></span>
-    <span class="chip">대기 <em class="cnt">2</em></span>
-    <div class="spacer"></div>
-    <button class="btn">엑셀</button>
-    <button class="btn-primary">새 파트너</button>
-  </div>
-  <!-- ⑧ 사용자 관리 -->
-  <div class="pt-tb-inner" data-tb="users" hidden>
-    <span class="chip active">전체 <em class="cnt">218</em></span>
-    <span class="chip">관리자 <em class="cnt">4</em></span>
-    <span class="chip">공급사 <em class="cnt">167</em></span>
-    <span class="chip">영업자 <em class="cnt">47</em></span>
-    <span class="chip">대기 <em class="cnt">2</em></span>
-    <div class="spacer"></div>
-    <button class="btn">권한 일괄</button>
-    <button class="btn-primary">새 사용자</button>
-  </div>
-  <!-- 글로벌 (페이지 무관) — 알림 + 사용자 -->
-  <span style="border-left: 1px solid var(--border); padding-left: 8px; margin-left: 4px; display: flex; align-items: center; gap: 6px;">
-    <span class="pt-tb-icon"><i class="ph ph-bell"></i></span>
-    <span style="color: var(--text-sub);">홍길동 ▾</span>
+  <!-- ② 가운데: 현재 페이지 제목 (작업상태) -->
+  <span class="pt-tb-title" id="ptTbTitle">상품 찾기</span>
+
+  <!-- 페이지별 동적 영역 (예약, 현재는 비어있음) -->
+  <div class="pt-tb-inner" data-tb="search" hidden></div>
+  <div class="pt-tb-inner" data-tb="workspace" hidden></div>
+  <div class="pt-tb-inner" data-tb="contract" hidden></div>
+  <div class="pt-tb-inner" data-tb="settle" hidden></div>
+  <div class="pt-tb-inner" data-tb="product" hidden></div>
+  <div class="pt-tb-inner" data-tb="policy" hidden></div>
+  <div class="pt-tb-inner" data-tb="partners" hidden></div>
+  <div class="pt-tb-inner" data-tb="users" hidden></div>
+
+  <!-- ③ 우측: 알림 + 이름·직급 (사용자 메뉴 진입점) -->
+  <span class="pt-tb-global">
+    <button class="pt-tb-icon" id="ptTbAlert" title="알림"><i class="ph ph-bell"></i></button>
+    <button class="pt-tb-user" id="ptTbUserMenu" title="계정 메뉴">
+      <span class="pt-tb-user-name">홍길동</span>
+      <span class="pt-tb-user-role">영업자</span>
+      <i class="ph ph-caret-down" style="font-size:10px;"></i>
+    </button>
   </span>
 </header>
 
@@ -1124,7 +2250,7 @@
 
 <!-- ① 상품 찾기 — 좌 표 / 우 차량 상세 (split 2패널, A안) -->
 <div class="pt-page" data-page="search">
-  <div class="ws4" style="display: grid; grid-template-columns: 3fr 1fr; gap: 0;">
+  <div class="ws4 is-collapsed">
     <!-- 좌: 차량 표 (3) -->
     <div class="ws4-card">
       <div class="ws4-body no-pad" style="overflow: auto;">
@@ -1140,14 +2266,16 @@
           <col style="width: 130px"><!-- 선택옵션 (긴 건 trunc) -->
           <col style="width: 50px"><!-- 연식 -->
           <col style="width: 70px"><!-- 주행 -->
-          <col style="width: 60px"><!-- 연료 -->
-          <col style="width: 50px"><!-- 색상 -->
+          <col style="width: 33px"><!-- 연료 (33-1=32 content, subpixel 0) -->
+          <col style="width: 33px"><!-- 외부색 (33-1-26=6, 3px 각각 정수) -->
+          <col style="width: 33px"><!-- 내부색 (subpixel 0, 12/13컬럼 동일) -->
           <col style="width: 60px"><!-- 심사 -->
-          <col style="width: 50px"><!-- 연령 -->
-          <col style="width: 88px"><!-- 24개월 -->
-          <col style="width: 88px"><!-- 36개월 -->
-          <col style="width: 88px"><!-- 48개월 -->
-          <col style="width: 88px"><!-- 60개월 -->
+          <col style="width: 52px" data-period="1m"><!-- 대여료 999만 max + 좌우 패딩 축소 -->
+          <col style="width: 52px" data-period="12m">
+          <col style="width: 52px" data-period="24m">
+          <col style="width: 52px" data-period="36m">
+          <col style="width: 52px" data-period="48m">
+          <col style="width: 52px" data-period="60m">
         </colgroup>
         <thead><tr>
           <th class="sticky-col">차량번호</th>
@@ -1160,14 +2288,16 @@
           <th>선택옵션 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
           <th class="center">연식 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
           <th class="num">주행 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
-          <th class="center">연료 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
-          <th class="center">색상 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
+          <th class="center col-tight">연료<span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
+          <th class="center col-tight">외부<span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
+          <th class="center col-tight">내부<span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
           <th class="center">심사 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
-          <th class="center">연령 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
-          <th class="num">24개월 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
-          <th class="num">36개월 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
-          <th class="num">48개월 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
-          <th class="num">60개월 <span class="ft"><i class="ph ph-funnel-simple"></i></span></th>
+          <th class="num" data-period="1m">1개월</th>
+          <th class="num" data-period="12m">12개월</th>
+          <th class="num" data-period="24m">24개월</th>
+          <th class="num" data-period="36m">36개월</th>
+          <th class="num" data-period="48m">48개월</th>
+          <th class="num" data-period="60m">60개월</th>
         </tr></thead>
         <tbody>
           <tr><td class="sticky-col">12가 3456</td><td class="center"><span class="status-dot 운행"></span>즉시</td><td class="center">장기</td><td>현대</td><td>그랜저</td><td>IG 2.5</td><td>프리미엄</td><td class="dim">선루프·통풍</td><td class="center">2022</td><td class="num">35,420</td><td class="center">가솔린</td><td class="center">검정</td><td class="center">무심사</td><td class="center">21+</td><td class="num"><span class="price-pair"><span class="rent">76만</span><span class="sep">/</span><span class="dep">100만</span></span></td><td class="num"><span class="price-pair"><span class="rent">72만</span><span class="sep">/</span><span class="dep">300만</span></span></td><td class="num"><span class="price-pair"><span class="rent">68만</span><span class="sep">/</span><span class="dep">400만</span></span></td><td class="num"><span class="price-pair"><span class="rent">64만</span><span class="sep">/</span><span class="dep">500만</span></span></td></tr>
@@ -1182,15 +2312,28 @@
         </tbody>
       </table>
     </div>
-      <div class="app-footer" style="flex-shrink:0;">
-        <span class="stat">선택<strong>1</strong></span>
-        <span class="stat">출고가능<strong>266</strong></span>
-        <div class="spacer"></div>
-        <span><kbd>↑↓</kbd> 이동</span>
-        <span><kbd>Enter</kbd> 상세</span>
-        <span><kbd>Q</kbd> 견적</span>
-        <span><kbd>C</kbd> 계약</span>
-      </div>
+    <!-- 목록 하단바 — 컬럼 표시/숨김 토글 (사용자별 localStorage 저장) -->
+    <div class="ws4-foot" data-foot="search-list">
+      <span class="foot-toggle-group">
+        <button class="chip foot-filter-chip" data-foot-filter="new">신차</button>
+        <button class="chip foot-filter-chip" data-foot-filter="used">중고</button>
+        <button class="chip foot-filter-chip" data-foot-filter="age26">만26세 이하</button>
+        <button class="chip foot-filter-chip" data-foot-filter="rent">대여료 구간</button>
+        <button class="chip foot-filter-chip" data-foot-filter="deposit">보증금 구간</button>
+      </span>
+      <span class="foot-status" id="srchListCount"></span>
+      <div class="spacer" style="flex:1;"></div>
+      <button class="btn" id="srchExcel" title="현재 필터된 차량 엑셀 다운로드"><i class="ph ph-file-xls"></i> 엑셀</button>
+      <button class="btn" id="srchPhotoZip" title="현재 필터된 차량 사진 ZIP 다운로드"><i class="ph ph-file-zip"></i> 사진</button>
+      <span class="foot-toggle-group" style="margin-left: var(--sp-2);">
+        <button class="chip period-chip" data-col-period="1m">1M</button>
+        <button class="chip period-chip" data-col-period="12m">12M</button>
+        <button class="chip period-chip" data-col-period="24m">24M</button>
+        <button class="chip period-chip" data-col-period="36m">36M</button>
+        <button class="chip period-chip" data-col-period="48m">48M</button>
+        <button class="chip period-chip" data-col-period="60m">60M</button>
+      </span>
+    </div>
     </div>
 
     <!-- 우: 선택된 차량 상세 (디자인 슬롯) -->
@@ -1286,11 +2429,8 @@
         </div>
 
       </div>
-      <!-- 액션 — ws4-card 하단 고정 -->
-      <div class="detail-actions">
-        <button class="btn"><i class="ph ph-share-network"></i> 공유</button>
-        <button class="btn-primary"><i class="ph ph-paper-plane-tilt"></i> 견적 보내기</button>
-      </div>
+      <!-- 하단바 — 헤더는 정보만, 액션은 모두 여기에 (역할별 렌더는 JS) -->
+      <div class="ws4-foot" data-foot="search-detail"></div>
     </div>
   </div>
 </div>
@@ -1302,7 +2442,6 @@
       <div class="ws4-head">
         <span>업무 목록</span>
         <div class="spacer"></div>
-        <button class="btn btn-sm"><i class="ph ph-plus"></i></button>
       </div>
       <div class="ws4-body no-pad">
         <div class="room-item active">
@@ -2118,54 +3257,107 @@
   </div>
 </div>
 
+<!-- 설정 (계정 + 시스템 + 카탈로그 통합) -->
+<div class="pt-page" data-page="settings"></div>
+
+<!-- 개발도구 (admin 전용) -->
+<div class="pt-page" data-page="dev"></div>
+
 </main>
 
-<!-- 로그인 overlay (auth 안 됨일 때만 보임 — body.is-login) -->
+<!-- 로그인 overlay (auth 안 됨일 때만 보임 — body.is-login) — v2 규격 -->
 <div class="login-overlay">
-  <form class="login-card" id="loginForm">
-    <h2>freepass ERP</h2>
-    <input type="email" class="input" id="loginEmail" placeholder="이메일" required autocomplete="username">
-    <input type="password" class="input" id="loginPw" placeholder="비밀번호" required autocomplete="current-password">
-    <button type="submit" class="btn-primary">로그인</button>
-    <div class="login-links">
-      <a href="#" id="signupLink">계정 만들기</a>
-      <span class="login-links-sep">·</span>
-      <a href="#" id="resetLink">비밀번호 재설정</a>
-    </div>
-    <div class="login-msg" id="loginMsg"></div>
-  </form>
+  <div class="login-page">
+    <div class="login-brand"><span class="login-brand-main">freepass</span> <span class="login-brand-base">erp</span></div>
 
-  <!-- 회원가입 카드 (signup-mode 일 때만 보임) -->
-  <form class="login-card login-card-signup" id="signupForm" hidden>
-    <h2>계정 만들기</h2>
-    <p class="login-sub">가입 후 관리자 승인이 필요합니다.</p>
-    <input type="email" class="input" id="suEmail" placeholder="이메일" required autocomplete="username">
-    <input type="password" class="input" id="suPw" placeholder="비밀번호 (6자 이상)" required autocomplete="new-password">
-    <input type="text" class="input" id="suName" placeholder="이름" required>
-    <input type="tel" class="input" id="suPhone" placeholder="연락처 010-0000-0000">
-    <input type="text" class="input" id="suCompany" placeholder="소속 회사명">
-    <select class="input" id="suRole">
-      <option value="agent">영업자</option>
-      <option value="provider">공급사</option>
-    </select>
-    <button type="submit" class="btn-primary">가입하기</button>
-    <div class="login-links">
-      <a href="#" id="suBackLink">로그인으로 돌아가기</a>
-    </div>
-    <div class="login-msg" id="signupMsg"></div>
-  </form>
+    <!-- 로그인 카드 -->
+    <form class="login-card" id="loginForm" novalidate>
+      <header class="login-head">
+        <h2 class="login-title">로그인</h2>
+        <p class="login-sub">이메일과 비밀번호를 입력해주세요.</p>
+      </header>
+      <div class="login-form">
+        <div class="login-field">
+          <label for="loginEmail">이메일</label>
+          <input id="loginEmail" type="email" placeholder="name@company.com" autocomplete="username" required>
+        </div>
+        <div class="login-field">
+          <label for="loginPw">비밀번호</label>
+          <input id="loginPw" type="password" placeholder="비밀번호 입력" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="login-submit">로그인</button>
+      </div>
+      <div class="login-links">
+        <a href="#" id="signupLink">계정 만들기</a>
+        <span class="login-links-sep">·</span>
+        <a href="#" id="resetLink">비밀번호 재설정</a>
+      </div>
+      <p class="login-msg" id="loginMsg" aria-live="polite"></p>
+    </form>
 
-  <!-- 비밀번호 재설정 카드 -->
-  <form class="login-card login-card-reset" id="resetForm" hidden>
-    <h2>비밀번호 재설정</h2>
-    <p class="login-sub">가입한 이메일로 재설정 링크를 보내드립니다.</p>
-    <input type="email" class="input" id="rpEmail" placeholder="이메일" required autocomplete="username">
-    <button type="submit" class="btn-primary">재설정 메일 전송</button>
-    <div class="login-links">
-      <a href="#" id="rpBackLink">로그인으로 돌아가기</a>
-    </div>
-    <div class="login-msg" id="resetMsg"></div>
-  </form>
+    <!-- 회원가입 카드 -->
+    <form class="login-card" id="signupForm" novalidate hidden>
+      <header class="login-head">
+        <h2 class="login-title">계정 만들기</h2>
+        <p class="login-sub">가입 후 관리자 승인이 필요합니다.</p>
+      </header>
+      <div class="login-form">
+        <div class="login-field">
+          <label for="suEmail">이메일</label>
+          <input id="suEmail" type="email" placeholder="name@company.com" autocomplete="username" required>
+        </div>
+        <div class="login-field">
+          <label for="suPw">비밀번호</label>
+          <input id="suPw" type="password" placeholder="6자 이상" autocomplete="new-password" required>
+        </div>
+        <div class="login-field">
+          <label for="suName">이름</label>
+          <input id="suName" placeholder="홍길동" required>
+        </div>
+        <div class="login-field">
+          <label for="suPhone">연락처</label>
+          <input id="suPhone" type="tel" placeholder="010-0000-0000">
+        </div>
+        <div class="login-field">
+          <label for="suCompany">소속 회사명</label>
+          <input id="suCompany" placeholder="회사명">
+        </div>
+        <div class="login-field">
+          <label for="suRole">역할</label>
+          <select id="suRole">
+            <option value="agent">영업자</option>
+            <option value="provider">공급사</option>
+          </select>
+        </div>
+        <button type="submit" class="login-submit">가입하기</button>
+      </div>
+      <div class="login-links">
+        <a href="#" id="suBackLink">로그인으로 돌아가기</a>
+      </div>
+      <p class="login-msg" id="signupMsg" aria-live="polite"></p>
+    </form>
+
+    <!-- 비밀번호 재설정 카드 -->
+    <form class="login-card" id="resetForm" novalidate hidden>
+      <header class="login-head">
+        <h2 class="login-title">비밀번호 재설정</h2>
+        <p class="login-sub">가입한 이메일로 재설정 링크를 보내드립니다.</p>
+      </header>
+      <div class="login-form">
+        <div class="login-field">
+          <label for="rpEmail">이메일</label>
+          <input id="rpEmail" type="email" placeholder="name@company.com" autocomplete="username" required>
+        </div>
+        <button type="submit" class="login-submit">재설정 메일 전송</button>
+      </div>
+      <div class="login-links">
+        <a href="#" id="rpBackLink">로그인으로 돌아가기</a>
+      </div>
+      <p class="login-msg" id="resetMsg" aria-live="polite"></p>
+    </form>
+
+    <div class="login-copy">&copy; 2026 freepassmobility. All Rights Reserved.</div>
+  </div>
 </div>
 
 <script>
@@ -2180,15 +3372,41 @@
     partners:  '파트너명·코드·담당자...',
     users:     '이름·이메일·회사·연락처...',
   };
-  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users'];
+  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users','settings','dev'];
+  // 페이지 표시명 + 아이콘 — 토픽바 가운데 작업상태 표시
+  const PAGE_TITLES = {
+    search:    { icon: 'magnifying-glass', label: '상품 찾기' },
+    workspace: { icon: 'chat-circle-dots', label: '업무 소통' },
+    contract:  { icon: 'file-text',        label: '계약 관리' },
+    settle:    { icon: 'calculator',       label: '정산 관리' },
+    product:   { icon: 'package',          label: '재고 관리' },
+    policy:    { icon: 'shield-check',     label: '정책 관리' },
+    partners:  { icon: 'handshake',        label: '파트너 관리' },
+    users:     { icon: 'users-three',      label: '사용자 관리' },
+    settings:  { icon: 'gear',             label: '설정' },
+    dev:       { icon: 'code',             label: '개발도구' },
+  };
   function showPage(name) {
     if (!VALID_PAGES.includes(name)) name = 'search';
     document.querySelectorAll('.pt-page').forEach(p => p.classList.toggle('active', p.dataset.page === name));
     document.querySelectorAll('.pt-sb a').forEach(a => a.classList.toggle('active', a.dataset.page === name));
+    document.querySelectorAll('.pt-sb-bottom-link').forEach(a => a.classList.toggle('active', a.dataset.page === name));
     document.querySelectorAll('.pt-tb-inner').forEach(t => t.hidden = t.dataset.tb !== name);
     const ph = SEARCH_PH[name];
     const sb = document.getElementById('ptTbSearch');
     if (sb && ph) sb.placeholder = ph;
+    // 토픽바 제목 갱신 (현재 페이지 표시 — 작업상태 + 아이콘)
+    const titleEl = document.getElementById('ptTbTitle');
+    if (titleEl) {
+      const t = PAGE_TITLES[name];
+      titleEl.innerHTML = t ? `<i class="ph ph-${t.icon}"></i> ${t.label}` : name;
+    }
+    // settings / dev 페이지는 클릭 시 동적 렌더
+    if (name === 'settings') {
+      import('/src/pages/settings.js').then(m => m.renderSettings());
+    } else if (name === 'dev') {
+      import('/src/pages/dev.js').then(m => m.renderDev());
+    }
   }
   // 사이드바 클릭 — hash 업데이트만 (hashchange 가 showPage 호출)
   document.querySelectorAll('.pt-sb a[data-page]').forEach(a => {
@@ -2208,7 +3426,7 @@
   // 초기 페이지 — hash 우선, 없으면 search
   showPage(location.hash.replace('#', '') || 'search');
 
-  // 사이드바 토글 (localStorage 영속)
+  // 사이드바 토글 (localStorage 영속) — 아이콘은 항상 ph-caret-left, CSS 로 180° 회전
   const SB_KEY = 'sb-collapsed';
   if (localStorage.getItem(SB_KEY) === '1') document.body.classList.add('is-sb-collapsed');
   document.getElementById('sbToggle')?.addEventListener('click', () => {

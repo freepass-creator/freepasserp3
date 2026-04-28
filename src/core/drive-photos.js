@@ -45,7 +45,7 @@ export function isDriveFolderLink(value) {
   return !!extractDriveFolderId(value);
 }
 
-const SCRAPABLE_HOSTS = ['moderentcar.co.kr'];
+const SCRAPABLE_HOSTS = ['moderentcar.co.kr', 'autoplus.co.kr'];
 export function isSupportedPhotoSource(value) {
   if (!value) return false;
   if (extractDriveFolderId(value)) return true;

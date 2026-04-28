@@ -142,9 +142,11 @@
     --z-modal:        2000;
     --z-toast:        3000;
 
-    /* ── Transitions ── */
-    --ease:           cubic-bezier(.4, 0, .2, 1);
-    --dur:            150ms;
-    --dur-slow:       250ms;
+    /* ── Transitions ── 전역 토큰. 멋보다 기능 — 짧고 딱딱하게.
+       hover/feedback 은 ~80ms, 패널/슬라이드는 ~120ms. */
+    --ease:           ease-out;
+    --dur:            80ms;
+    --dur-fast:       60ms;
+    --dur-slow:       120ms;
   }
 }

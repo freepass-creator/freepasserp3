@@ -19,15 +19,18 @@ export function fieldInput(label, field, data, opts = {}) {
   const isNum = opts.num === true;
   const v = isNum && raw !== '' && raw !== null ? Number(raw).toLocaleString('ko-KR') : raw;
   const numAttr = isNum ? ' data-num="1" inputmode="numeric"' : '';
-  const roAttr = opts.readonly ? ' readonly' : '';
+  // 기본 readonly — 2-click 수정 모드 진입 (영구 readonly 는 opts.readonly)
+  const lockedAttr = opts.readonly ? ' readonly data-permanent-lock="1"' : ' readonly data-edit-lock="1"';
   const listId = opts.autocomplete ? `dl_${field}` : '';
   const listAttr = listId ? ` list="${listId}"` : '';
   const dlEl = listId && opts.datalist ? `<datalist id="${listId}">${opts.datalist.map(x => `<option value="${x}">`).join('')}</datalist>` : '';
   const fullClass = opts.full ? ' form-row-full' : '';
+  // placeholder = "라벨 : 예시" (예시 있을 때) — 입력칸이 라벨+예시 모두 표현
+  const ph = opts.example ? `${label} : ${opts.example}` : (opts.placeholder || label);
   return `<div class="form-row${fullClass}">
     <span class="form-row-label">${label}</span>
     <div class="form-row-control">
-      <input class="contract-field-input" data-field="${field}" value="${v}" placeholder="${opts.placeholder || '-'}"${numAttr}${roAttr}${listAttr}>${dlEl}
+      <input class="contract-field-input" data-field="${field}" value="${v}" placeholder="${ph}"${numAttr}${lockedAttr}${listAttr}>${dlEl}
       <span class="form-state" data-state="${field}"></span>
     </div>
   </div>`;
@@ -38,10 +41,11 @@ export function fieldInput(label, field, data, opts = {}) {
  */
 export function fieldSelect(label, field, data, options) {
   const cur = String(data[field] ?? '');
+  // select 도 2-click 수정모드 — 처음엔 disabled-look (data-edit-lock), 2번째 클릭 시 활성화
   return `<div class="form-row">
     <span class="form-row-label">${label}</span>
     <div class="form-row-control">
-      <select class="contract-field-input contract-field-select" data-field="${field}">
+      <select class="contract-field-input contract-field-select" data-field="${field}" data-edit-lock="1">
         <option value="">-</option>
         ${options.map(o => {
           const val = typeof o === 'object' ? o.value : o;
@@ -283,3 +287,69 @@ function setFieldState(el, state, undoFn) {
     el.textContent = '';
   }
 }
+
+/* ──────── 2-click 수정 모드 ────────
+   data-edit-lock 가 있는 input/select 는 처음엔 잠긴 상태.
+   1) 클릭 → is-selected (시각 강조, 아직 수정 불가)
+   2) 같은 칸 다시 클릭 → 잠금 해제 + 포커스 + 수정 가능
+   다른 곳 클릭 / blur → 다시 잠김 (저장은 기존 bindAutoSave 가 처리) */
+let _editSelected = null;
+function lockField(el) {
+  if (!el) return;
+  el.classList.remove('is-selected');
+  if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+    el.setAttribute('readonly', '');
+  } else if (el.tagName === 'SELECT') {
+    // select 는 readonly 가 없어 pointer-events 차단으로 잠금
+    el.style.pointerEvents = 'none';
+    el.setAttribute('tabindex', '-1');
+  }
+  el.dataset.editLock = '1';
+}
+function unlockField(el) {
+  if (!el) return;
+  if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+    el.removeAttribute('readonly');
+  } else if (el.tagName === 'SELECT') {
+    el.style.pointerEvents = '';
+    el.removeAttribute('tabindex');
+  }
+  delete el.dataset.editLock;
+  el.classList.remove('is-selected');
+  el.classList.add('is-editing');
+  setTimeout(() => el.focus(), 0);
+}
+// select 가 잠긴 상태에서 1번째 클릭에 드롭다운이 열리지 않도록 mousedown 차단
+document.addEventListener('mousedown', (e) => {
+  const sel = e.target.closest('select[data-edit-lock="1"]:not([data-permanent-lock])');
+  if (sel) e.preventDefault();
+});
+document.addEventListener('click', (e) => {
+  // permanent-lock 은 항상 잠김 (편집 불가)
+  const target = e.target.closest('[data-edit-lock="1"]:not([data-permanent-lock])');
+  // 외부 클릭 — 선택 해제
+  if (!target) {
+    if (_editSelected) {
+      _editSelected.classList.remove('is-selected');
+      _editSelected = null;
+    }
+    return;
+  }
+  if (target === _editSelected) {
+    // 2번째 클릭 — 수정 모드로
+    unlockField(target);
+    _editSelected = null;
+  } else {
+    // 1번째 클릭 — 선택 표시
+    if (_editSelected) _editSelected.classList.remove('is-selected');
+    target.classList.add('is-selected');
+    _editSelected = target;
+  }
+});
+// blur — 수정 모드 종료, 다시 잠금
+document.addEventListener('blur', (e) => {
+  const el = e.target;
+  if (!el?.classList?.contains('is-editing')) return;
+  el.classList.remove('is-editing');
+  lockField(el);
+}, true);

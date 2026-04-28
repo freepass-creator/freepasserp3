@@ -111,24 +111,55 @@ export function pickPartner(type = '공급사') {
 }
 
 /* 계약자(고객) 결정 — phone 매칭 시 기존 customer 재사용, 없으면 신규 push.
- *  resolve: { _key, name, phone, ... } 또는 null (취소) */
-export function pickOrCreateCustomer() {
+ *  product 전달 시 기간별 대여료/보증금 선택 영역 노출
+ *  resolve: { _key, name, phone, period?, rent?, deposit?, ... } 또는 null (취소) */
+export function pickOrCreateCustomer(product = null) {
   const customers = store.customers || [];
+  // 상품의 기간별 가격 — 가격이 등록된 기간만 노출
+  const priceMap = product?.price || {};
+  const PERIODS = ['1', '12', '24', '36', '48', '60'];
+  const availablePeriods = PERIODS.filter(p => Number(priceMap[p]?.rent) > 0);
+  const defaultPeriod = availablePeriods.includes('36') ? '36' : (availablePeriods[0] || '');
+
   return new Promise(resolve => {
     const overlay = document.createElement('div');
     overlay.className = 'pick-overlay';
     overlay.innerHTML = `
-      <div class="pick-card" style="max-width: 420px;">
-        <div class="pick-head">계약자 정보</div>
-        <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
-          <input class="input" id="cuName" placeholder="이름 *" autocomplete="off">
-          <input class="input" id="cuPhone" placeholder="연락처 010-0000-0000 *" autocomplete="off" inputmode="tel">
-          <label style="font-size:11px; color:var(--text-sub); display:flex; align-items:center; gap:6px;">
-            <input type="checkbox" id="cuBiz"> 사업자 계약
-          </label>
-          <input class="input" id="cuBizNo" placeholder="사업자등록번호" style="display:none;">
-          <input class="input" id="cuBizName" placeholder="법인/상호명" style="display:none;">
-          <div id="cuMatch" style="font-size:11px; color:var(--accent-blue); min-height:14px;"></div>
+      <div class="pick-card" style="max-width: 460px;">
+        <div class="pick-head">${product ? `${product.car_number || ''} ${product.maker || ''} ${product.sub_model || product.model || ''} — 계약 생성` : '계약자 정보'}</div>
+        <div style="padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;">
+          ${availablePeriods.length ? `
+          <div>
+            <div style="font-size:12px; color:var(--text-sub); margin-bottom:4px;">대여 기간</div>
+            <div id="cuPeriods" style="display:flex; gap:4px; flex-wrap:wrap;">
+              ${availablePeriods.map(m => `<button type="button" class="chip cu-period-chip${m === defaultPeriod ? ' is-active' : ''}" data-m="${m}">${m}개월</button>`).join('')}
+            </div>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+            <div>
+              <div style="font-size:12px; color:var(--text-sub); margin-bottom:4px;">월 대여료</div>
+              <input class="input" id="cuRent" readonly>
+            </div>
+            <div>
+              <div style="font-size:12px; color:var(--text-sub); margin-bottom:4px;">보증금</div>
+              <input class="input" id="cuDeposit" readonly>
+            </div>
+          </div>
+          ` : (product ? '<div style="font-size:12px; color:var(--accent-orange);">⚠ 등록된 가격 정보가 없습니다</div>' : '')}
+          <div style="border-top: 1px solid var(--border-soft); padding-top:10px;">
+            <div style="font-size:12px; color:var(--text-sub); margin-bottom:4px;">계약자 정보</div>
+            <div style="display:flex; flex-direction: column; gap:8px;">
+              <input class="input" id="cuName" placeholder="이름 : 홍길동" autocomplete="off">
+              <input class="input" id="cuBirth" placeholder="생년월일 : 900101 (또는 19900101)" autocomplete="off" inputmode="numeric" maxlength="10">
+              <input class="input" id="cuPhone" placeholder="연락처 : 010-0000-0000" autocomplete="off" inputmode="tel">
+              <label style="font-size:12px; color:var(--text-sub); display:flex; align-items:center; gap:6px;">
+                <input type="checkbox" id="cuBiz"> 사업자 계약
+              </label>
+              <input class="input" id="cuBizNo" placeholder="사업자등록번호 : 123-45-67890" style="display:none;">
+              <input class="input" id="cuBizName" placeholder="법인/상호명 : (주)예시" style="display:none;">
+              <div id="cuMatch" style="font-size:12px; color:var(--accent-blue); min-height:14px;"></div>
+            </div>
+          </div>
         </div>
         <div class="pick-foot">
           <button class="btn btn-sm" id="cuCancel">취소</button>
@@ -138,8 +169,29 @@ export function pickOrCreateCustomer() {
     `;
     document.body.appendChild(overlay);
 
+    // 기간 선택 → 대여료/보증금 자동 채움
+    let selectedPeriod = defaultPeriod;
+    const rentEl = overlay.querySelector('#cuRent');
+    const depEl = overlay.querySelector('#cuDeposit');
+    const fillPrice = (m) => {
+      if (!m || !rentEl || !depEl) return;
+      const p = priceMap[m] || {};
+      rentEl.value = p.rent ? Math.round(Number(p.rent) / 10000) + '만원' : '-';
+      depEl.value = p.deposit ? Math.round(Number(p.deposit) / 10000) + '만원' : '-';
+    };
+    fillPrice(selectedPeriod);
+    overlay.querySelectorAll('.cu-period-chip').forEach(b => {
+      b.addEventListener('click', () => {
+        overlay.querySelectorAll('.cu-period-chip').forEach(x => x.classList.remove('is-active'));
+        b.classList.add('is-active');
+        selectedPeriod = b.dataset.m;
+        fillPrice(selectedPeriod);
+      });
+    });
+
     const nameEl = overlay.querySelector('#cuName');
     const phoneEl = overlay.querySelector('#cuPhone');
+    const birthEl = overlay.querySelector('#cuBirth');
     const bizEl = overlay.querySelector('#cuBiz');
     const bizNoEl = overlay.querySelector('#cuBizNo');
     const bizNameEl = overlay.querySelector('#cuBizName');
@@ -157,6 +209,7 @@ export function pickOrCreateCustomer() {
       if (existing) {
         matchEl.textContent = `기존 고객 매칭: ${existing.name || ''} (계약 ${(store.contracts || []).filter(x => x.customer_uid === existing._key).length}건)`;
         if (!nameEl.value) nameEl.value = existing.name || '';
+        if (birthEl && !birthEl.value && existing.birth) birthEl.value = existing.birth;
       } else {
         matchEl.textContent = '신규 고객으로 등록됩니다';
       }
@@ -167,35 +220,40 @@ export function pickOrCreateCustomer() {
     const close = (val) => { overlay.remove(); resolve(val); };
     overlay.querySelector('#cuCancel').addEventListener('click', () => close(null));
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(null); });
-    overlay.querySelector('#cuOk').addEventListener('click', async () => {
+    overlay.querySelector('#cuOk').addEventListener('click', () => {
       const name = nameEl.value.trim();
       const phone = normalizePhone(phoneEl.value);
+      const birth = (birthEl?.value || '').replace(/[^0-9]/g, '');
       if (!name || phone.length < 10) {
         matchEl.style.color = 'var(--accent-red)';
         matchEl.textContent = '이름과 연락처(10자리 이상) 필수';
         return;
       }
-      const existing = customers.find(c => normalizePhone(c.phone) === phone);
-      if (existing) {
-        close({ ...existing, _existing: true });
+      if (!birth || (birth.length !== 6 && birth.length !== 8)) {
+        matchEl.style.color = 'var(--accent-red)';
+        matchEl.textContent = '생년월일 6자리(YYMMDD) 또는 8자리(YYYYMMDD) 입력';
         return;
       }
-      try {
-        const ref = await pushRecord('customers', {
-          name, phone,
-          is_business: bizEl.checked,
-          business_number: bizEl.checked ? bizNoEl.value.trim() : '',
-          company_name: bizEl.checked ? bizNameEl.value.trim() : '',
-          created_at: Date.now(),
-          created_by: store.currentUser?.uid || '',
-        });
-        const newKey = ref?.key || ref;
-        close({ _key: newKey, name, phone, is_business: bizEl.checked });
-      } catch (e) {
-        console.error('[customer create]', e);
-        matchEl.style.color = 'var(--accent-red)';
-        matchEl.textContent = '저장 실패: ' + (e.message || e);
-      }
+      const existing = customers.find(c => normalizePhone(c.phone) === phone);
+      // 모달은 데이터 수집만 — 실제 저장은 caller (search.js / contract.js) 에서 가계약 생성과 함께
+      const customerData = existing
+        ? { ...existing, _existing: true, birth: existing.birth || birth }
+        : {
+            _existing: false,
+            name, phone, birth,
+            is_business: bizEl.checked,
+            business_number: bizEl.checked ? bizNoEl.value.trim() : '',
+            company_name: bizEl.checked ? bizNameEl.value.trim() : '',
+          };
+      // product 가 있었으면 기간/대여료/보증금도 같이 반환
+      const period = selectedPeriod || '';
+      const priceItem = period ? (priceMap[period] || {}) : {};
+      close({
+        ...customerData,
+        contract_period: period,
+        contract_rent: Number(priceItem.rent) || 0,
+        contract_deposit: Number(priceItem.deposit) || 0,
+      });
     });
   });
 }

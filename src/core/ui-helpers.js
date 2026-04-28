@@ -15,26 +15,29 @@ export function esc(s) {
   return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+/* 차량 상태 — 4개로 정규화: 즉시 / 가능 / 협의 / 불가
+   - "즉시출고" → 즉시
+   - "출고가능" → 가능
+   - "출고완료", "출고불가" → 불가
+   - 그 외 모든 값 → 협의 */
 export function shortStatus(s) {
-  return ({
-    '즉시': '즉시', '즉시 가능': '즉시',
-    '출고가능': '가능', '출고 가능': '가능', '가능': '가능',
-    '출고협의': '협의', '출고 협의': '협의', '협의': '협의',
-    '상품화': '상품',
-    '불가': '불가',
-    '대기': '대기',
-  })[s] || (s ? s.slice(0, 2) : '-');
+  if (!s) return '-';
+  const t = String(s);
+  if (/즉시/.test(t)) return '즉시';
+  if (/완료|불가/.test(t)) return '불가';
+  if (/가능/.test(t)) return '가능';
+  return '협의';
 }
 
 /* 차량 status → CSS dot class 매핑 — .status-dot.{운행/대기/정비/예약/사고} 와 매칭 */
 export function mapStatusDot(status) {
+  const norm = shortStatus(status);
   return {
-    '즉시': '운행', '즉시 가능': '운행',
-    '가능': '대기', '출고가능': '대기', '출고 가능': '대기',
-    '협의': '정비', '출고협의': '정비', '출고 협의': '정비',
-    '상품화': '예약',
+    '즉시': '운행',
+    '가능': '대기',
+    '협의': '정비',
     '불가': '사고',
-  }[status] || '대기';
+  }[norm] || '대기';
 }
 
 export function fmtMileage(m) { return m ? Number(m).toLocaleString() : '-'; }
@@ -60,6 +63,21 @@ export function fmtTime(ts) {
   const now = new Date();
   if (d.toDateString() === now.toDateString()) return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
   return `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/* 통합 포맷 — 문자열(YYYYMMDD)이든 타임스탬프든 자동 처리. 목록의 우측 날짜용 */
+export function fmtListDate(v) {
+  if (!v && v !== 0) return '';
+  // 숫자 또는 ISO/Date.parse 가능 → fmtTime (오늘이면 HH:MM, 이전이면 MM-DD)
+  const t = typeof v === 'number' ? v : (v.toMillis?.() || (Number.isFinite(Date.parse(v)) ? Date.parse(v) : 0));
+  if (t) {
+    const d = new Date(t);
+    const now = new Date();
+    if (d.toDateString() === now.toDateString()) return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    return `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  }
+  // 문자열 형식 (YYYYMMDD / YYMMDD)
+  return fmtDate(v);
 }
 
 /* 빈값은 '-' 로 (활동 이력 표 등에서 일관성) */
@@ -109,16 +127,34 @@ export function renderRoomItem({ id, icon, badge, tone, accent, name, time, msg,
   </div>`;
 }
 
+/* 공급사 코드 → 한글 회사명 변환 (store.partners 에서 lookup) */
+export function providerNameByCode(code, store) {
+  if (!code) return '';
+  const p = (store?.partners || []).find(x =>
+    (x.partner_code === code || x.company_code === code) && !x._deleted
+  );
+  return p?.partner_name || p?.company_name || code;
+}
+
+/* 메인줄 통일 포맷 — 차량번호 · 세부모델 · 공급사명(한글) */
+export function formatMainLine(carNumber, subModel, providerName) {
+  return [carNumber, subModel, providerName].filter(Boolean).join(' · ') || '-';
+}
+
 /* ──────── 폼 필드 ──────── */
+/* 2-click 수정 모드 적용 — dis 가 없으면(편집 가능) data-edit-lock + readonly 부여.
+   첫 클릭 = 선택, 두 번째 클릭 = 수정 모드 (form-fields.js 의 전역 핸들러가 처리) */
 export function ffi(label, field, val, dis = '') {
-  return `<div class="ff"><label>${esc(label)}</label><input type="text" class="input" data-f="${esc(field)}" value="${esc(val || '')}"${dis}></div>`;
+  const lockAttr = dis ? '' : ' readonly data-edit-lock="1"';
+  return `<div class="ff"><label>${esc(label)}</label><input type="text" class="input" data-f="${esc(field)}" value="${esc(val || '')}"${dis}${lockAttr}></div>`;
 }
 
 export function ffs(label, field, val, opts, dis = '') {
   const cur = val || '';
   const inOpts = opts.includes(cur);
+  const lockAttr = dis ? '' : ' data-edit-lock="1"';
   return `<div class="ff"><label>${esc(label)}</label>
-    <select class="input" data-f="${esc(field)}"${dis}>
+    <select class="input" data-f="${esc(field)}"${dis}${lockAttr}>
       <option value="">선택</option>
       ${opts.map(o => `<option ${o === cur ? 'selected' : ''}>${esc(o)}</option>`).join('')}
       ${cur && !inOpts ? `<option selected>${esc(cur)}</option>` : ''}

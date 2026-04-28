@@ -3,11 +3,20 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence,
 } from 'firebase/auth';
 import { ref, get } from 'firebase/database';
 import { auth, db } from './config.js';
 import { store } from '../core/store.js';
+
+// 명시적 LOCAL persistence — 브라우저 새로고침 / 재시작 후에도 로그인 유지
+// 1s timeout 으로 race — Firebase 가 어떤 이유로든 settle 안 시켜도 로그인 진행
+const _persistenceReady = Promise.race([
+  setPersistence(auth, browserLocalPersistence).catch(e => console.warn('[auth] setPersistence 실패:', e?.message || e)),
+  new Promise(resolve => setTimeout(resolve, 1000)),
+]);
 
 /** Watch auth state and load user profile
  *  - Firebase는 토큰 갱신 시에도 onAuthStateChanged emit → UID 변경 시에만 profile 재로드
@@ -26,8 +35,13 @@ export function initAuth() {
       }
       lastUid = uid;
       if (user) {
-        const snap = await get(ref(db, `users/${user.uid}`));
-        const profile = snap.val() || {};
+        // 첫 로그인 직후 reload 케이스: auth 토큰이 db SDK 에 완전히 attach 되기 전 get() 이 fire 되어
+        // 빈 객체를 받아 role 누락으로 판정되는 race 방어 — null/role 없으면 한 번 재시도
+        let profile = (await get(ref(db, `users/${user.uid}`))).val() || {};
+        if (!profile.role) {
+          await new Promise(r => setTimeout(r, 300));
+          profile = (await get(ref(db, `users/${user.uid}`))).val() || profile;
+        }
         store.currentUser = { uid: user.uid, email: user.email, ...profile };
       } else {
         store.currentUser = null;
@@ -39,11 +53,13 @@ export function initAuth() {
 }
 
 export async function login(email, password) {
+  await _persistenceReady;
   const cred = await signInWithEmailAndPassword(auth, email, password);
   return cred.user;
 }
 
 export async function signup(email, password) {
+  await _persistenceReady;
   const cred = await createUserWithEmailAndPassword(auth, email, password);
   return cred.user;
 }

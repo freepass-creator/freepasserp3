@@ -11,6 +11,7 @@ import { filterByRole } from '../core/roles.js';
 import {
   esc, fmtDate, fmtTime, fmtFullTime,
   listBody, emptyState, renderRoomItem, flashSaved,
+  providerNameByCode, formatMainLine,
 } from '../core/ui-helpers.js';
 
 const SETTLE_STATUSES = ['미정산', '정산완료', '환수'];
@@ -31,22 +32,37 @@ function toDateInput(ts) {
 export function renderSettlementList(settlements) {
   const body = listBody('settle');
   if (!body) return;
-  const visible = filterByRole(settlements || [], store.currentUser);
+  if (!Array.isArray(settlements)) return;   // 미로드 — prototype 보존
+  const visible = filterByRole(settlements, store.currentUser);
   if (!visible.length) { body.innerHTML = emptyState('정산 항목이 없습니다'); renderSettlementDetail(null); return; }
   const sorted = [...visible].sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
   body.innerHTML = sorted.map((s, i) => {
     const status = s.settlement_status || s.status || '미정산';
     const sb = SETTLE_BADGE[status] || { txt: status.slice(0, 2), tone: 'gray' };
     const fee = s.fee_amount || s.commission || 0;
+    const feeText = fee ? `수수료 ${Math.round(Number(fee)/10000)}만` : '';
+    // 메인: 차량번호 · 세부모델 · 공급사명(한글) / 우측: 정산일
+    const mainLine = formatMainLine(
+      s.car_number_snapshot || s.car_number,
+      s.sub_model_snapshot,
+      providerNameByCode(s.provider_company_code || s.partner_code, store),
+    );
+    // 보조: 영업채널 · 영업자코드 · 계약자명 · 수수료금액
+    const subParts = [
+      s.agent_channel_code,
+      s.agent_code,
+      s.customer_name,
+      feeText,
+    ].filter(Boolean);
     return renderRoomItem({
       id: s._key,
-      icon: 'coins',
+      icon: status === '정산완료' ? 'check-circle' : status === '환수' ? 'arrow-counter-clockwise' : 'hourglass',
       badge: sb.txt,
       tone: sb.tone,
-      name: `${s.contract_code || s.contract_id || s._key.slice(0,8)} ${s.customer_name || ''}`.trim(),
-      time: fmtTime((s.settled_date || s.settled_at) || s.created_at),
-      msg: [s.car_number_snapshot || s.car_number, s.sub_model_snapshot || s.model].filter(Boolean).join(' · ') || '-',
-      meta: fee ? Math.round(Number(fee)/10000) + '만' : '',
+      name: mainLine,
+      time: fmtDate((s.settled_date || s.settled_at) || s.created_at),
+      msg: subParts.join(' · ') || '-',
+      meta: s.contract_code || '',
       active: i === 0,
     });
   }).join('');
@@ -79,6 +95,7 @@ export function renderSettlementDetail(s) {
   // 1. 정산 작업 (편집 폼) — 헤더에 [저장] 버튼 (id="setlSave")
   if (workCard) {
     const disabled = canEdit ? '' : ' disabled';
+    const lock = canEdit ? ' readonly data-edit-lock="1"' : '';
     const head = workCard.querySelector('.ws4-head');
     if (head) head.innerHTML = `
       <span>정산 작업</span>
@@ -87,14 +104,14 @@ export function renderSettlementDetail(s) {
     `;
     workCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-grid">
-        <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${disabled}></div>
+        <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${disabled}${lock}></div>
         <div class="ff"><label>정산상태</label>
           <div id="setlStatus" style="display:flex; gap:3px; flex-wrap:wrap;">
             ${SETTLE_STATUSES.map(st => `<span class="chip${st === status ? ' active' : ''}" data-status="${esc(st)}">${esc(st)}</span>`).join('')}
           </div>
         </div>
-        <div class="ff"><label>정산일</label><input type="date" class="input" id="setlDate" value="${esc(toDateInput((s.settled_date || s.settled_at)))}"${disabled}></div>
-        <div class="ff"><label>메모</label><textarea class="input" id="setlMemo" placeholder="정산 메모..." style="height: 80px;"${disabled}>${esc(s.memo || '')}</textarea></div>
+        <div class="ff"><label>정산일</label><input type="date" class="input" id="setlDate" value="${esc(toDateInput((s.settled_date || s.settled_at)))}"${disabled}${lock}></div>
+        <div class="ff"><label>메모</label><textarea class="input" id="setlMemo" placeholder="정산 메모..." style="height: 80px;"${disabled}${lock}>${esc(s.memo || '')}</textarea></div>
         ${baseFee ? `<div class="ff"><label>기본수수료</label><div>${Math.round(baseFee/10000)}만${s.term ? ' · ' + s.term + '개월' : ''}</div></div>` : ''}
       </div>
     `;

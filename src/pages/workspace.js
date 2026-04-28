@@ -22,9 +22,10 @@ import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from '../co
 import { showToast } from '../core/toast.js';
 import { notifyProviderAndAdmin } from '../core/notify.js';
 import {
-  esc, fmtTime,
+  esc, fmtTime, fmtDate,
   listBody, emptyState, renderRoomItem,
   isMobileViewport,
+  providerNameByCode, formatMainLine,
 } from '../core/ui-helpers.js';
 import {
   renderContractWorkV2, bindContractWorkV2,
@@ -46,6 +47,7 @@ export function setPrevPeerReadAt(v) { _prevPeerReadAt = v; }
 export function renderRoomList(rooms) {
   const body = listBody('workspace');
   if (!body) return;
+  if (!Array.isArray(rooms)) return;   // 미로드 — prototype 보존
   const role = store.currentUser?.role;
   const uid = store.currentUser?.uid;
   const myCompany = store.currentUser?.company_code;
@@ -72,14 +74,27 @@ export function renderRoomList(rooms) {
 
   body.innerHTML = sorted.map((r, i) => {
     const unread = unreadOf(r);
+    // 메인: 차량번호 · 세부모델 · 공급사명 / 우측: 날짜
+    const mainLine = formatMainLine(
+      r.vehicle_number || r.car_number,
+      r.sub_model,
+      providerNameByCode(r.provider_company_code || r.provider_code, store),
+    );
+    // 보조: 영업채널 · 영업자코드 · 마지막시간 · 마지막메시지
+    const subParts = [
+      r.agent_channel_code || r.agent_channel,
+      r.agent_code,
+      fmtTime(r.last_message_at),
+      r.last_message,
+    ].filter(Boolean);
     return renderRoomItem({
       id: r._key,
       icon: unread > 0 ? 'chat-circle-dots' : 'chat-circle',
       badge: unread > 0 ? '안읽' : '읽음',
       tone: unread > 0 ? 'blue' : 'gray',
-      name: [r.vehicle_number || r.car_number, r.sub_model || r.model].filter(Boolean).join(' '),
-      time: fmtTime(r.last_message_at),
-      msg: r.last_message || [r.provider_company_code || r.provider_code, r.agent_code].filter(Boolean).join(' · ') || '-',
+      name: mainLine,
+      time: fmtTime(r.last_message_at || r.created_at),   // timestamp → 오늘이면 HH:MM, 이전이면 MM-DD
+      msg: subParts.join(' · ') || '-',
       meta: unread > 0 ? String(unread) : '',
       metaClass: unread > 0 ? 'cnt' : '',
       active: r._key === _activeRoomId || (i === 0 && !_activeRoomId),
@@ -99,11 +114,33 @@ export function selectRoom(roomId) {
     return;
   }
   const room = (store.rooms || []).find(r => r._key === roomId);
-  // 채팅 헤더 갱신 (대화코드)
-  const chatHead = document.querySelector('[data-page="workspace"] .ws4-card:nth-child(2) .ws4-head span');
-  if (chatHead && room) {
+  // 채팅 헤더 갱신 (대화코드 + 역할별 액션 버튼)
+  const chatHeadEl = document.querySelector('[data-page="workspace"] .ws4-card:nth-child(2) .ws4-head');
+  if (chatHeadEl && room) {
     const code = room.chat_code || room.room_code || room.room_id || room._key.slice(0, 8);
-    chatHead.textContent = `채팅 · ${code}`;
+    const role = store.currentUser?.role;
+    const showHide = role === 'agent' || role === 'agent_admin' || role === 'provider' || role === 'admin';
+    const showDelete = role === 'admin' || role === 'provider';
+    chatHeadEl.innerHTML = `
+      <span>채팅 · ${esc(code)}</span>
+      <div class="spacer" style="flex:1;"></div>
+      ${showHide ? `<button class="btn btn-sm" id="chatHide" title="대화 숨김"><i class="ph ph-eye-slash"></i> 숨김</button>` : ''}
+      ${showDelete ? `<button class="btn btn-sm" id="chatDelete" title="대화 삭제" style="color:var(--alert-red-text);"><i class="ph ph-trash"></i> 삭제</button>` : ''}
+    `;
+    // 숨김 버튼
+    chatHeadEl.querySelector('#chatHide')?.addEventListener('click', async () => {
+      const hideField = role === 'agent' ? 'hidden_for_agent'
+        : role === 'provider' ? 'hidden_for_provider'
+        : 'hidden_for_admin';
+      await updateRecord(`rooms/${roomId}`, { [hideField]: true, updated_at: Date.now() });
+      showToast('대화 숨김 처리됨');
+    });
+    // 삭제 버튼 (admin/provider 만)
+    chatHeadEl.querySelector('#chatDelete')?.addEventListener('click', async () => {
+      if (!confirm('이 대화방을 삭제하시겠습니까?')) return;
+      await updateRecord(`rooms/${roomId}`, { _deleted: true, updated_at: Date.now() });
+      showToast('대화 삭제됨');
+    });
   }
   renderRoomDetail(room);
 
@@ -142,7 +179,7 @@ export function selectRoom(roomId) {
       console.warn(`[chat] no callback within 1.5s for messages/${roomId}`);
       const w = document.querySelector('[data-page="workspace"] .ws-chat-msgs');
       if (w && w.textContent.includes('대화 불러오는 중')) {
-        w.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);">메시지가 없거나 Firebase 권한 거부<br><span style="font-size:10px;">(브라우저 콘솔 확인)</span></div>';
+        w.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);">메시지가 없거나 Firebase 권한 거부<br><span style="font-size:12px;">(브라우저 콘솔 확인)</span></div>';
       }
     }
   }, 1500);

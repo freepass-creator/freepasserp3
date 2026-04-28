@@ -45,7 +45,6 @@ export function watchCollection(path, callback, options = {}) {
     entry.lastData = data;
     callbacks.forEach(cb => cb(data));
   }, (error) => {
-    // permission denied 등 — 콜백 못 받으면 사용자 영원히 로딩 상태. 빈 배열로 fallback + 콘솔 경고
     console.warn(`[watchCollection] ${path} 실패:`, error?.code || error?.message || error);
     entry.lastData = [];
     callbacks.forEach(cb => cb([]));

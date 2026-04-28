@@ -177,7 +177,7 @@ export function renderExcelTable(container, opts) {
         });
         const sorted = Object.entries(vals).sort((a, b) => b[1] - a[1]);
         popup.innerHTML = `
-          <div style="flex:1;overflow:auto;padding:4px 0;">${sorted.map(([v, cnt]) => `<label style="display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;"><input type="checkbox" value="${v}" style="accent-color:var(--c-accent);"> ${v} <span style="color:var(--c-text-muted);font-size:10px;margin-left:auto;">${cnt}</span></label>`).join('')}</div>
+          <div style="flex:1;overflow:auto;padding:4px 0;">${sorted.map(([v, cnt]) => `<label style="display:flex;align-items:center;gap:6px;padding:3px 10px;cursor:pointer;white-space:nowrap;"><input type="checkbox" value="${v}" style="accent-color:var(--c-accent);"> ${v} <span style="color:var(--c-text-muted);font-size:12px;margin-left:auto;">${cnt}</span></label>`).join('')}</div>
           <div style="display:flex;gap:4px;padding:6px 8px;border-top:1px solid var(--c-border-soft);">
             <button class="btn btn-xs btn-outline" data-a="reset" style="flex:1;">초기화</button>
             <button class="btn btn-xs btn-primary" data-a="apply" style="flex:1;">적용</button>

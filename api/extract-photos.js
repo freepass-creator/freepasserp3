@@ -15,7 +15,7 @@ import { extractDriveFolderId } from '../src/core/drive-photos.js';
 const _inflight = new Map();
 
 // 스크래핑 허용 호스트 — drive-photos.js 의 SCRAPABLE_HOSTS 와 맞출 것 (SSRF 방지)
-const SCRAPABLE_HOSTS = ['moderentcar.co.kr'];
+const SCRAPABLE_HOSTS = ['moderentcar.co.kr', 'autoplus.co.kr'];
 
 async function fetchDriveImages(folderId, size, apiKey) {
   const query = `'${folderId}' in parents and mimeType contains 'image/' and trashed = false`;

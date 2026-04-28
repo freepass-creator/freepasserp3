@@ -15,6 +15,7 @@ import { openFullscreen } from './core/product-detail-render.js';
 import { extractProductDetailRows } from './core/product-detail-rows.js';
 import { uploadImage } from './firebase/storage-helper.js';
 import { showToast } from './core/toast.js';
+import './core/form-fields.js';   // 전역 2-click 수정 모드 핸들러 등록
 import { ocrFile } from './core/ocr.js';
 import { parseVehicleRegistration } from './core/ocr-parsers/vehicle-registration.js';
 import { sendAlimtalk } from './core/alimtalk.js';
@@ -59,6 +60,13 @@ import { inferCarModel } from './core/car-model-infer.js';
 
 /* ── Boot ── */
 async function boot() {
+  // 저장된 폰트/다크모드 즉시 적용 (FOUC 방지)
+  try {
+    const { applyStoredFont, applyStoredTheme } = await import('./pages/settings.js');
+    applyStoredFont();
+    applyStoredTheme();
+  } catch (_) {}
+
   // v2 잔존 Service Worker 강제 정리 — stale 캐시(폰트/CSS) 가로채기 방지
   cleanupStaleServiceWorkers();
   // 샘플 데이터 즉시 정리 — auth/hydration 동안에도 샘플이 보이지 않게
@@ -71,24 +79,29 @@ async function boot() {
     console.error('[auth] init failed', e);
   }
 
-  if (user) {
-    // 승인 대기 / 거부 / 비활성 사용자 진입 차단
-    const status = user.status || 'active';
-    if (user.is_active === false || status === 'pending' || status === 'rejected') {
-      const reason = status === 'rejected' ? '가입이 거부되었습니다' : (user.is_active === false ? '비활성 계정입니다' : '관리자 승인 대기 중입니다');
+  // 유효한 역할을 가진 사용자만 진입 — 그 외(미가입/role 없음/비활성/대기/거부) 모두 로그인 화면
+  const VALID_ROLES = ['admin', 'agent', 'agent_admin', 'provider'];
+  const status = user?.status || 'active';
+  const hasValidRole = user && VALID_ROLES.includes(user.role);
+  const isBlocked = user && (user.is_active === false || status === 'pending' || status === 'rejected');
+
+  if (user && hasValidRole && !isBlocked) {
+    document.body.classList.remove('is-login');
+    hydrateUser(user);
+    startHydration();
+  } else {
+    // 인증은 됐지만 진입 자격 없음 → 강제 로그아웃 + 로그인 폼
+    if (user) {
+      const reason = !hasValidRole ? '권한이 부여되지 않은 계정입니다' :
+        (status === 'rejected' ? '가입이 거부되었습니다' :
+         user.is_active === false ? '비활성 계정입니다' :
+         '관리자 승인 대기 중입니다');
       await fbLogout();
-      document.body.classList.add('is-login');
-      // 로그인 폼 메시지에 안내 표시
       setTimeout(() => {
         const msg = document.getElementById('loginMsg');
         if (msg) msg.textContent = reason;
       }, 50);
-    } else {
-      document.body.classList.remove('is-login');
-      hydrateUser(user);
-      startHydration();
     }
-  } else {
     document.body.classList.add('is-login');
   }
 
@@ -124,10 +137,27 @@ function cleanupStaleServiceWorkers() {
   }).catch(() => {});
 }
 
-/* prototype 샘플 비움 — head/입력바 외 자식의 INNER 만 비움 */
+/* 목록 패널(.ws4-list) 에만 빈 ws4-foot 자동 주입 — 다른 패널(상세/조건 등)은 제외 */
+function ensureWs4Foot() {
+  document.querySelectorAll('.ws4-card.ws4-list').forEach(card => {
+    if (!card.querySelector(':scope > .ws4-foot')) {
+      const foot = document.createElement('div');
+      foot.className = 'ws4-foot';
+      card.appendChild(foot);
+    }
+  });
+}
+
+/* prototype 샘플 비움 — 모든 페이지의 가짜 샘플을 먼저 정리. 실제 데이터(또는 emptyState)가 자리 차지 */
 function clearSampleData() {
   document.querySelectorAll('[data-page="search"] .table tbody').forEach(tb => tb.innerHTML = '');
-  // 보존해야 할 자식 (입력창·헤더는 비우면 안 됨)
+  // 검색 페이지 우측 상세 패널 — JS 가 선택 시 채우므로 초기엔 완전히 비움
+  const searchDetail = document.querySelectorAll('.pt-page[data-page="search"] .ws4-card')[1];
+  if (searchDetail) {
+    searchDetail.querySelector('.ws4-head')?.replaceChildren();
+    searchDetail.querySelector('.ws4-body')?.replaceChildren();
+  }
+  // 다른 페이지 — head/입력바 외 ws4-card 자식 비움 (실제 데이터 도착하면 render 가 덮어씀)
   const KEEP = new Set(['ws4-head', 'ws-input']);
   ['workspace','contract','settle','product','policy','partners','users'].forEach(page => {
     document.querySelectorAll(`[data-page="${page}"] .ws4-card`).forEach(card => {
@@ -325,49 +355,14 @@ async function deleteRecord(collection, key) {
 
 
 
-/* ──────── D. 사진 풀스크린 갤러리 (lightbox) ──────── */
-function openLightbox(imgs, startIdx = 0) {
-  if (!imgs?.length) return;
-  document.querySelector('.lightbox-overlay')?.remove();
-  let idx = startIdx;
-  const wrap = document.createElement('div');
-  wrap.className = 'lightbox-overlay';
-  wrap.innerHTML = `
-    <div class="lightbox-stage"><img src="${esc(imgs[idx])}" alt=""></div>
-    <button class="lightbox-close" title="닫기"><i class="ph ph-x"></i></button>
-    ${imgs.length > 1 ? `
-      <button class="lightbox-prev" title="이전"><i class="ph ph-caret-left"></i></button>
-      <button class="lightbox-next" title="다음"><i class="ph ph-caret-right"></i></button>
-      <div class="lightbox-count">${idx + 1} / ${imgs.length}</div>
-    ` : ''}
-  `;
-  document.body.appendChild(wrap);
-
-  const update = () => {
-    wrap.querySelector('img').src = imgs[idx];
-    const cnt = wrap.querySelector('.lightbox-count');
-    if (cnt) cnt.textContent = `${idx + 1} / ${imgs.length}`;
-  };
-  const close = () => { wrap.remove(); document.removeEventListener('keydown', onKey); };
-  const onKey = (e) => {
-    if (e.key === 'Escape') close();
-    else if (e.key === 'ArrowLeft' && imgs.length > 1) { idx = (idx - 1 + imgs.length) % imgs.length; update(); }
-    else if (e.key === 'ArrowRight' && imgs.length > 1) { idx = (idx + 1) % imgs.length; update(); }
-  };
-  document.addEventListener('keydown', onKey);
-  wrap.querySelector('.lightbox-close').addEventListener('click', close);
-  wrap.addEventListener('click', (e) => { if (e.target === wrap) close(); });
-  wrap.querySelector('.lightbox-prev')?.addEventListener('click', () => { idx = (idx - 1 + imgs.length) % imgs.length; update(); });
-  wrap.querySelector('.lightbox-next')?.addEventListener('click', () => { idx = (idx + 1) % imgs.length; update(); });
-}
-
-/* 사진 클릭 → 풀스크린 (search detail / product detail 양쪽) — body 위임 */
+/* 사진 클릭 → 풀스크린 (search detail / product detail 양쪽) — body 위임
+   v2 와 동일한 상하 스크롤 방식 (openFullscreen) 사용 — 좌우 prev/next 안 씀 */
 function bindPhotoClicks() {
   document.body.addEventListener('click', (e) => {
     // 메인 사진 또는 썸네일 클릭
     const img = e.target.closest('img.detail-photo-main, .detail-photo-thumb img');
     if (!img) return;
-    if (img.closest('.lightbox-overlay')) return;   // lightbox 안의 이미지 무시
+    if (img.closest('.srch-fullscreen, .lightbox-overlay')) return;   // 풀스크린 안의 이미지 무시
     // 현재 열린 detail 의 모든 사진 수집
     const card = img.closest('.ws4-card, .ws4-body');
     if (!card) return;
@@ -375,7 +370,7 @@ function bindPhotoClicks() {
       .map(i => i.src).filter(Boolean);
     const unique = [...new Set(all)];
     const startIdx = unique.indexOf(img.src);
-    openLightbox(unique, Math.max(0, startIdx));
+    openFullscreen(unique, Math.max(0, startIdx));
   });
 }
 
@@ -539,25 +534,32 @@ function applyGlobalSearch() {
     return;
   }
 
-  // 다른 페이지 — store 데이터 필터 후 재렌더
+  // 다른 페이지 — store 데이터 필터 후 재렌더.
+  // store.X 가 undefined (= watchCollection 콜백 미실행 = 미로드/권한 부족) 면 UI 손대지 않음 (prototype 보존)
   const matches = (haystack) => !q || haystack.toLowerCase().includes(q);
   if (page === 'workspace') {
-    const filtered = (store.rooms || []).filter(r => matches([r.car_number, r.maker, r.model, r.last_message_text, r.partner_name].filter(Boolean).join(' ')));
+    if (!store.rooms) return;
+    const filtered = store.rooms.filter(r => matches([r.car_number, r.maker, r.model, r.last_message_text, r.partner_name].filter(Boolean).join(' ')));
     renderRoomList(filtered);
   } else if (page === 'contract') {
-    const filtered = (store.contracts || []).filter(c => matches([c.contract_id, c.customer_name, c.car_number, c.maker, c.model, c.agent_name].filter(Boolean).join(' ')));
+    if (!store.contracts) return;
+    const filtered = store.contracts.filter(c => matches([c.contract_id, c.customer_name, c.car_number, c.maker, c.model, c.agent_name].filter(Boolean).join(' ')));
     renderContractList(filtered);
   } else if (page === 'settle') {
-    const filtered = (store.settlements || []).filter(s => matches([s.contract_id, s.customer_name, s.car_number, s.maker, s.model, s.agent_name].filter(Boolean).join(' ')));
+    if (!store.settlements) return;
+    const filtered = store.settlements.filter(s => matches([s.contract_id, s.customer_name, s.car_number, s.maker, s.model, s.agent_name].filter(Boolean).join(' ')));
     renderSettlementList(filtered);
   } else if (page === 'product') {
-    const filtered = (store.products || []).filter(p => matches([p.car_number, p.maker, p.model, p.sub_model, p.trim_name, Array.isArray(p.options) ? p.options.join(' ') : p.options].filter(Boolean).join(' ')));
+    if (!store.products) return;
+    const filtered = store.products.filter(p => matches([p.car_number, p.maker, p.model, p.sub_model, p.trim_name, Array.isArray(p.options) ? p.options.join(' ') : p.options].filter(Boolean).join(' ')));
     renderProductList(filtered);
   } else if (page === 'policy') {
-    const filtered = (store.policies || []).filter(p => matches([p.policy_name, p.policy_code, p.provider_company_code, p.provider_name, p.credit_grade].filter(Boolean).join(' ')));
+    if (!store.policies) return;
+    const filtered = store.policies.filter(p => matches([p.policy_name, p.policy_code, p.provider_company_code, p.provider_name, p.credit_grade].filter(Boolean).join(' ')));
     renderPolicyList(filtered);
   } else if (page === 'partners') {
-    const filtered = (store.partners || []).filter(p => matches([p.partner_name, p.partner_code, p.company_name, p.company_code, p.contact_name, p.phone, p.email, p.partner_type].filter(Boolean).join(' ')));
+    if (!store.partners) return;
+    const filtered = store.partners.filter(p => matches([p.partner_name, p.partner_code, p.company_name, p.company_code, p.contact_name, p.phone, p.email, p.partner_type].filter(Boolean).join(' ')));
     renderPartnerList(filtered);
   } else if (page === 'users') {
     const filtered = (store.users || []).filter(u => matches([u.name, u.email, u.company_name, u.role, u.phone].filter(Boolean).join(' ')));
@@ -568,12 +570,16 @@ function applyGlobalSearch() {
 function bindGlobalSearch() {
   const sb = document.getElementById('ptTbSearch');
   if (!sb) return;
+  // 디바운스 — 키 입력 후 120ms 멈췄을 때만 필터 실행 (타이핑 중 매 키 재렌더 차단)
+  let _searchTimer = null;
   sb.addEventListener('input', (e) => {
     _globalSearch = e.target.value || '';
-    applyGlobalSearch();
+    if (_searchTimer) clearTimeout(_searchTimer);
+    _searchTimer = setTimeout(applyGlobalSearch, 120);
   });
   // 페이지 전환 시 검색어 초기화 — 이전 페이지 필터가 새 페이지에 잘못 적용되지 않게
   window.addEventListener('hashchange', () => {
+    if (_searchTimer) clearTimeout(_searchTimer);
     _globalSearch = '';
     sb.value = '';
     _searchFilter.search = '';
@@ -615,6 +621,212 @@ function bindGenericListInteractions() {
       if (u) renderUserDetail(u);
     }
   });
+
+  // ── 우클릭 컨텍스트 메뉴 (페이지별 항목 액션) ──
+  document.body.addEventListener('contextmenu', async (e) => {
+    // 1) 사이드바 .ws4-list 의 room-item 우클릭
+    let item = e.target.closest('.ws4-list .room-item');
+    let id = item?.dataset.id;
+    let page = item?.closest('.pt-page')?.dataset.page;
+
+    // 2) 검색 페이지 표 행 우클릭 (tr[data-id])
+    if (!item) {
+      const tr = e.target.closest('[data-page="search"] table.table-fixed tbody tr[data-id]');
+      if (tr) {
+        item = tr;
+        id = tr.dataset.id;
+        page = 'search';
+      }
+    }
+    if (!item || !id || !page) return;
+    e.preventDefault();
+
+    const { openContextMenu } = await import('./core/context-menu.js');
+    const items = buildContextMenuItems(page, id, item);
+    if (items.length) openContextMenu(e, items);
+  });
+}
+
+/* 상품 내용 → 영업자가 고객에게 보낼 텍스트 (카톡/문자용 깔끔 포맷) */
+function formatProductForCopy(p) {
+  const lines = [];
+  // 헤더 — 차량번호 + 모델
+  const carNo = p.car_number || '';
+  const maker = p.maker || '';
+  const model = [p.maker, p.sub_model || p.model].filter(Boolean).join(' ');
+  const trim = p.trim_name || p.trim || '';
+  lines.push(`[${carNo}] ${model}${trim ? ' ' + trim : ''}`);
+
+  // 기본 스펙 — 한 줄
+  const specs = [];
+  if (p.year) specs.push(`${p.year}년`);
+  if (p.mileage) specs.push(`${Number(p.mileage).toLocaleString()}km`);
+  if (p.fuel_type) specs.push(p.fuel_type);
+  if (p.ext_color) specs.push(`외부 ${p.ext_color}`);
+  if (p.int_color) specs.push(`내부 ${p.int_color}`);
+  if (specs.length) lines.push(specs.join(' · '));
+
+  // 옵션 — 있으면 별도 줄
+  const opts = Array.isArray(p.options) ? p.options.join(', ') : (p.options || '');
+  if (opts) lines.push(`옵션: ${opts}`);
+
+  // 대여료 / 보증금 — 가격 등록된 기간만
+  const PERIODS = ['1', '12', '24', '36', '48', '60'];
+  const priceRows = PERIODS
+    .filter(m => Number(p.price?.[m]?.rent) > 0)
+    .map(m => {
+      const r = Math.round(Number(p.price[m].rent) / 10000);
+      const d = Math.round(Number(p.price[m].deposit || 0) / 10000);
+      return `· ${m}개월: ${r}만 / ${d}만`;
+    });
+  if (priceRows.length) {
+    lines.push('');
+    lines.push('대여료 (월 / 보증금)');
+    lines.push(...priceRows);
+  }
+
+  // 심사
+  const credit = (p._policy?.credit_grade || p._policy?.screening_criteria || p.credit_grade || '').trim();
+  if (credit) {
+    lines.push('');
+    lines.push(`심사: ${credit}`);
+  }
+
+  // 담당자 — 소속 · 이름 직급 · 역할 · 연락처 (현재 로그인 사용자)
+  const me = store.currentUser || {};
+  const agentParts = [];
+  if (me.company_name) agentParts.push(me.company_name);
+  // 이름 + 직급 합쳐서 (e.g., "홍길동 팀장")
+  const namePos = [me.name, me.position].filter(Boolean).join(' ');
+  if (namePos) agentParts.push(namePos);
+  // 역할 (영업/공급/관리)
+  const roleLabel = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업 관리자' }[me.role];
+  if (roleLabel) agentParts.push(roleLabel);
+  if (agentParts.length) {
+    lines.push('');
+    lines.push(`담당: ${agentParts.join(' · ')}`);
+    if (me.phone) lines.push(`연락처: ${me.phone}`);
+  }
+
+  return lines.join('\n');
+}
+
+/* 페이지별 우클릭 메뉴 빌더 — workspace / contract / settle / product / policy / partners / users / search */
+function buildContextMenuItems(page, id, item) {
+  if (page === 'search') {
+    const p = (store.products || []).find(x => x._key === id);
+    if (!p) return [];
+    const car = p.car_number || '';
+    return [
+      { icon: 'ph ph-link', label: '상품 링크 복사', action: () => {
+        const url = `${location.origin}/catalog.html?car=${encodeURIComponent(car)}`;
+        navigator.clipboard?.writeText(url).then(() => {
+          import('./core/toast.js').then(m => m.showToast(`상품 링크 복사됨 — ${car}`));
+        });
+      }},
+      { icon: 'ph ph-copy', label: '상품 내용 복사', action: () => {
+        const text = formatProductForCopy(p);
+        navigator.clipboard?.writeText(text).then(() => {
+          import('./core/toast.js').then(m => m.showToast(`상품 내용 복사됨 — ${car}`));
+        });
+      }},
+      { divider: true },
+      { icon: 'ph ph-chat-circle-dots', label: '문의 하기', action: () => {
+        const btn = document.querySelector('[data-page="search"] .ws4-card:nth-child(2) #srchChat');
+        btn?.click();
+      }},
+      { icon: 'ph ph-file-text', label: '계약 생성', action: () => {
+        const btn = document.querySelector('[data-page="search"] .ws4-card:nth-child(2) #srchContract');
+        btn?.click();
+      }},
+    ];
+  }
+  if (page === 'workspace') {
+    const room = (store.rooms || []).find(r => r._key === id);
+    if (!room) return [];
+    const role = store.currentUser?.role;
+    const hideField = role === 'agent' ? 'hidden_for_agent'
+      : role === 'provider' ? 'hidden_for_provider'
+      : 'hidden_for_admin';
+    return [
+      { icon: 'ph ph-eye', label: '읽음 처리', action: async () => {
+        const { markRoomRead } = await import('./firebase/collections.js');
+        await markRoomRead(id, store.currentUser?.uid);
+      }},
+      { icon: 'ph ph-star', label: '즐겨찾기', action: () => alert('즐겨찾기 — 준비 중') },
+      { divider: true },
+      { icon: 'ph ph-eye-slash', label: '대화 숨김', action: async () => {
+        await updateRecord(`rooms/${id}`, { [hideField]: true, updated_at: Date.now() });
+      }},
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 대화방을 삭제하시겠습니까?')) return;
+        await updateRecord(`rooms/${id}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  if (page === 'contract') {
+    const c = (store.contracts || []).find(x => x.contract_code === id || x._key === id);
+    if (!c) return [];
+    return [
+      { icon: 'ph ph-copy', label: '계약코드 복사', action: () => navigator.clipboard?.writeText(c.contract_code || '').then(() => {
+        import('./core/toast.js').then(m => m.showToast('계약코드 복사됨'));
+      })},
+      { divider: true },
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 계약을 삭제하시겠습니까?')) return;
+        await updateRecord(`contracts/${c._key}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  if (page === 'settle') {
+    const s = (store.settlements || []).find(x => x._key === id);
+    if (!s) return [];
+    return [
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 정산을 삭제하시겠습니까?')) return;
+        await updateRecord(`settlements/${s._key}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  if (page === 'product') {
+    const p = (store.products || []).find(x => x._key === id);
+    if (!p) return [];
+    return [
+      { icon: 'ph ph-share-network', label: '카탈로그 링크 복사', action: () => {
+        const car = p.car_number || '';
+        const url = `${location.origin}/catalog.html?car=${encodeURIComponent(car)}`;
+        navigator.clipboard?.writeText(url).then(() => {
+          import('./core/toast.js').then(m => m.showToast(`상품 카탈로그 링크 복사됨 — ${car}`));
+        });
+      }},
+      { divider: true },
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 차량을 삭제하시겠습니까?')) return;
+        await updateRecord(`products/${p._key}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  if (page === 'policy') {
+    const pol = (store.policies || []).find(x => x._key === id);
+    if (!pol) return [];
+    return [
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 정책을 삭제하시겠습니까?')) return;
+        await updateRecord(`policies/${pol._key}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  if (page === 'partners') {
+    const pa = (store.partners || []).find(x => x._key === id);
+    if (!pa) return [];
+    return [
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 파트너를 삭제하시겠습니까?')) return;
+        await updateRecord(`partners/${pa._key}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  return [];
 }
 
 
@@ -622,37 +834,68 @@ function bindGenericListInteractions() {
 function hydrateUser(user) {
   const brandText = document.querySelector('.pt-sb-brand .sb-brand-text');
   if (brandText) brandText.textContent = user.company_name || 'freepass ERP';
-  const bottom = document.querySelector('.pt-sb-bottom');
-  if (bottom) {
-    const roleBase = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업' }[user.role] || user.role || '';
-    // 영업관리자는 "영업 · 관리자" 처럼 두 가지 다 표시
-    const role = user.role === 'agent_admin' ? `${roleBase} · 관리자` : roleBase;
-    bottom.textContent = `${user.name || user.email || ''}${role ? ' · ' + role : ''}`;
+  // user 정보 텍스트만 갱신 (로그아웃 버튼 등 다른 자식은 보존)
+  const roleBase = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업' }[user.role] || user.role || '';
+  const role = user.role === 'agent_admin' ? `${roleBase} · 관리자` : roleBase;
+  const userInfo = document.querySelector('.pt-sb-user-info');
+  if (userInfo) {
+    userInfo.textContent = `${user.name || user.email || ''}${role ? ' · ' + role : ''}`;
   }
+  // 토픽바 우측 사용자 메뉴 — 이름 · 직급 (역할 X)
+  const tbUserName = document.querySelector('.pt-tb-user-name');
+  if (tbUserName) tbUserName.textContent = user.name || user.email || '사용자';
+  const tbUserRole = document.querySelector('.pt-tb-user-role');
+  if (tbUserRole) tbUserRole.textContent = user.position || '';
   // body 에 role 클래스 — CSS 가 권한별 메뉴 가시성 처리
   document.body.classList.remove('role-admin', 'role-provider', 'role-agent', 'role-agent_admin');
   if (user.role) document.body.classList.add(`role-${user.role}`);
 }
 
-/* ── 사이드바 카운트 자동 갱신 — 모든 watchCollection 후 호출 ── */
+/* ── 사이드바 카운트 자동 갱신 — "처리 필요"만 카운트. watchCollection 후 호출 ── */
 function updateSidebarCounts() {
   const setCnt = (page, n) => {
     const el = document.querySelector(`.pt-sb a[data-page="${page}"] .cnt`);
-    if (el) el.textContent = n > 0 ? String(n) : '';
+    if (!el) return;
+    el.textContent = n > 0 ? String(n) : '';
   };
-  // 상품 찾기 — 즉시 출고 가능
-  setCnt('search', (store.products || []).filter(p => /즉시/.test(p.vehicle_status || '')).length);
-  // 업무 소통 — 안읽음 룸
-  setCnt('workspace', (store.rooms || []).filter(r => r.unread > 0).length);
-  // 계약 관리 — 진행중 (만기 제외)
-  setCnt('contract', (store.contracts || []).filter(c => (c.stage || c.status || '접수') !== '만기').length);
-  // 정산 관리 — 미정산
-  setCnt('settle', (store.settlements || []).filter(s => (s.settlement_status || s.status || '미정산') === '미정산').length);
-  // 재고/정책/파트너/사용자 — 전체 수
-  setCnt('product', (store.products || []).length);
-  setCnt('policy', (store.policies || []).length);
-  setCnt('partners', (store.partners || []).length);
-  setCnt('users', (store.users || []).length);
+  const role = store.currentUser?.role;
+
+  // 업무 소통 — 내 역할 기준 안읽음 룸 수 (workspace.js unreadOf 와 동일)
+  const unreadCount = (store.rooms || []).filter(r => {
+    if (r._deleted) return false;
+    const u = role === 'agent' || role === 'agent_admin'
+      ? r.unread_for_agent
+      : role === 'provider' ? r.unread_for_provider
+      : (r.unread_for_admin || r.unread);
+    return Number(u) > 0;
+  }).length;
+  setCnt('workspace', unreadCount);
+
+  // 계약 관리 — 진행중 (요청/대기/발송). 완료·취소 제외
+  const pendingContracts = (store.contracts || []).filter(c => {
+    if (c._deleted) return false;
+    const s = c.contract_status || '계약요청';
+    return s === '계약요청' || s === '계약대기' || s === '계약발송';
+  }).length;
+  setCnt('contract', pendingContracts);
+
+  // 정산 관리 — 미정산 (정산완료 제외)
+  const pendingSettlements = (store.settlements || []).filter(s => {
+    if (s._deleted) return false;
+    const st = s.settlement_status || s.status || '미정산';
+    return st !== '정산완료' && st !== '완료';
+  }).length;
+  setCnt('settle', pendingSettlements);
+
+  // 사용자 관리 — 가입 대기 (admin 만 의미. role 별 가시성은 CSS 가 처리)
+  const pendingUsers = (store.users || []).filter(u => u.status === 'pending').length;
+  setCnt('users', pendingUsers);
+
+  // 카운트 개념 없는 페이지 — 명시적으로 비움
+  setCnt('search', 0);
+  setCnt('product', 0);
+  setCnt('policy', 0);
+  setCnt('partners', 0);
 }
 
 /* ── 로그인 / 가입 / 재설정 폼 — v2 패턴 그대로 ── */
@@ -671,15 +914,19 @@ function bindLoginForm() {
   // 로그인
   loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitBtn = loginForm.querySelector('button[type="submit"]');
+    if (submitBtn?.disabled) return;          // 중복 submit 방어
     const email = document.getElementById('loginEmail').value.trim();
     const pw = document.getElementById('loginPw').value;
     const msg = document.getElementById('loginMsg');
     if (msg) msg.textContent = '';
+    if (submitBtn) submitBtn.disabled = true;
     try {
       await fbLogin(email, pw);
       location.reload();
     } catch (err) {
       if (msg) msg.textContent = '로그인 실패 — ' + (err.code || err.message || err);
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 
@@ -735,11 +982,40 @@ function bindLoginForm() {
   });
 }
 
-/* ── 로그아웃 (사이드바 또는 어디든 #btnLogout 있으면) ── */
+/* ── 로그아웃 / 사용자 메뉴 / 설정 / 알림 바인딩 ── */
 function bindLogout() {
+  // 사이드바 하단 로그아웃 (구버전 호환 — id 가 있으면 동작)
   document.getElementById('btnLogout')?.addEventListener('click', async () => {
     await fbLogout();
     location.reload();
+  });
+
+  // 사이드바 하단 설정 버튼 — 설정 페이지 / 다이얼로그 진입
+  document.getElementById('btnSettings')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('설정 — 준비 중');
+  });
+
+  // 토픽바 우측 사용자 메뉴 — 설정 / 계정정보 / 로그아웃 진입점
+  document.getElementById('ptTbUserMenu')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const { openContextMenu } = await import('./core/context-menu.js');
+    openContextMenu(e, [
+      { icon: 'ph ph-user-circle', label: '내 정보', action: () => alert('준비 중') },
+      { icon: 'ph ph-gear', label: '설정', action: () => alert('준비 중') },
+      { icon: 'ph ph-key', label: '비밀번호 변경', action: () => alert('준비 중') },
+      { divider: true },
+      { icon: 'ph ph-sign-out', label: '로그아웃', danger: true, action: async () => {
+        await fbLogout();
+        location.reload();
+      }},
+    ]);
+  });
+
+  // 알림 버튼 — 향후 알림 패널 연결 (현재는 placeholder)
+  document.getElementById('ptTbAlert')?.addEventListener('click', () => {
+    alert('알림 — 준비 중');
   });
 }
 

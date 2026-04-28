@@ -21,6 +21,7 @@ import { pickAgent, pickOrCreateCustomer } from '../core/dialogs.js';
 import {
   esc, fmtDate, fmtTime,
   listBody, emptyState, renderRoomItem, flashSaved,
+  providerNameByCode, formatMainLine,
 } from '../core/ui-helpers.js';
 
 export const CONTRACT_STATUSES = ['계약요청', '계약대기', '계약발송', '계약완료', '계약취소'];
@@ -48,26 +49,51 @@ export async function allocateRealContractCode() {
 export function renderContractList(contracts) {
   const body = listBody('contract');
   if (!body) return;
-  let list = (contracts || []).filter(c => !c._deleted);
+  // 데이터 미로드 (undefined/null) — prototype HTML 보존 (UI 손대지 않음)
+  if (!Array.isArray(contracts)) return;
+  let list = contracts.filter(c => !c._deleted);
   list = filterByRole(list, store.currentUser);
   if (!list.length) { body.innerHTML = emptyState('계약이 없습니다'); renderContractDetail(null); return; }
   const sorted = [...list].sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
   body.innerHTML = sorted.map((c, i) => {
     const status = c.contract_status || '-';
     const sb = STATUS_BADGE[status] || { txt: status.slice(0, 2), tone: 'gray' };
-    const carName = `${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}`.trim();
+    // 진행 단계 — 7/7 형식
+    let progress = '';
+    try {
+      const prog = getProgress(c);
+      progress = `${prog.done}/${prog.total}`;
+    } catch (_) { progress = ''; }
     const rent = c.rent_amount_snapshot || c.monthly_rent;
+    const dep = c.deposit_amount_snapshot || c.deposit;
     const term = c.rent_month_snapshot || c.contract_term;
-    const price = rent ? `${term ? term + '개월 ' : ''}${Math.round(Number(rent)/10000)}만` : (term ? term + '개월' : '');
+    const rentStr = rent ? `${Math.round(Number(rent)/10000)}만` : '';
+    const depStr  = dep  ? `${Math.round(Number(dep)/10000)}만`  : '';
+    // 메인: 차량번호 · 세부모델 · 공급사명(한글) / 우측: 계약일
+    const mainLine = formatMainLine(
+      c.car_number_snapshot,
+      c.sub_model_snapshot,
+      providerNameByCode(c.provider_company_code || c.partner_code, store),
+    );
+    // 보조: 단계(7/7) · 영업채널 · 영업자코드 · 계약자명 · 대여료 · 보증금 · 기간
+    const subParts = [
+      progress ? `단계 ${progress}` : '',
+      c.agent_channel_code,
+      c.agent_code,
+      c.customer_name,
+      rentStr,
+      depStr,
+      term ? `${term}개월` : '',
+    ].filter(Boolean);
     return renderRoomItem({
       id: c.contract_code || c._key,
-      icon: 'file-text',
+      icon: status === '계약완료' ? 'check-circle' : status === '계약취소' ? 'x-circle' : 'file-text',
       badge: sb.txt,
       tone: sb.tone,
-      name: `${c.contract_code || ''} ${c.customer_name || ''}`.trim() || (c._key.slice(0, 8)),
-      time: fmtTime(c.created_at),
-      msg: carName || '-',
-      meta: price,
+      name: mainLine,
+      time: fmtDate(c.contract_date || c.created_at),
+      msg: subParts.join(' · ') || '-',
+      meta: c.contract_code || '',
       active: i === 0,
     });
   }).join('');
@@ -229,39 +255,39 @@ export function renderContractWorkV2(c) {
 
   return `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <div style="font-size:11px;">
+      <div style="font-size:12px;">
         <b style="color:var(--text-main);">${esc(c.contract_code || '-')}</b>
         ${c.customer_name ? ' · ' + esc(c.customer_name) : ''}
         <span style="margin-left:6px;color:var(--text-sub);">${esc(status)}</span>
       </div>
-      <span style="font-size:10px;color:${prog.done === prog.total ? 'var(--alert-green-text)' : 'var(--alert-blue-text)'};">${prog.done}/${prog.total}</span>
+      <span style="font-size:12px;color:${prog.done === prog.total ? 'var(--alert-green-text)' : 'var(--alert-blue-text)'};">${prog.done}/${prog.total}</span>
     </div>
     <div class="ct-steps-v3">
       <div class="ct-step-row ct-step-head"><div>영업</div><div></div><div>공급·관리</div></div>
       ${CONTRACT_STEPS_V2.map(stepRow).join('')}
     </div>
 
-    <!-- 취소/완료 버튼 -->
+    <!-- 취소/완료 상태 — 모두 동일 정렬 (display:flex + justify-content:center). 디스플레이/버튼 모두 통일 -->
     <div style="margin-top:10px;">
       ${isCancelled
-        ? `<div style="text-align:center;color:var(--alert-red-text);font-size:11px;padding:6px;">계약취소됨</div>`
+        ? `<div style="color:var(--alert-red-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-prohibit"></i>계약취소됨</div>`
         : isCompleted
-          ? `<div style="text-align:center;color:var(--alert-green-text);font-size:11px;padding:6px;"><i class="ph ph-check-circle"></i> 계약완료</div>`
-          : `<button class="btn btn-sm" id="ctCancelBtn" style="width:100%;color:var(--alert-red-text);"><i class="ph ph-prohibit"></i> 계약 취소</button>
-             ${prog.done === prog.total ? `<button class="btn btn-sm btn-primary" id="ctCompleteBtn" style="width:100%;margin-top:4px;"><i class="ph ph-check-circle"></i> 계약 완료</button>` : ''}`
+          ? `<div style="color:var(--alert-green-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-check-circle"></i>계약완료</div>`
+          : `<button class="btn btn-sm" id="ctCancelBtn" style="width:100%;color:var(--alert-red-text);justify-content:center;"><i class="ph ph-prohibit"></i>계약 취소</button>
+             ${prog.done === prog.total ? `<button class="btn btn-sm btn-primary" id="ctCompleteBtn" style="width:100%;margin-top:4px;justify-content:center;"><i class="ph ph-check-circle"></i>계약 완료</button>` : ''}`
       }
     </div>
 
     <!-- 진행 메모 (영업/공급/관리) -->
     ${!isCancelled ? `
-      <div style="margin-top:12px;color:var(--text-weak);margin-bottom:4px;font-size:10px;">진행 메모</div>
+      <div style="margin-top:12px;color:var(--text-weak);margin-bottom:4px;font-size:12px;">진행 메모</div>
       <div class="info-grid" style="grid-template-columns: 60px 1fr;">
         <div class="lab">영업</div>
-        <textarea class="input" data-memo="agent_memo" rows="2" style="width:100%;resize:vertical;font-size:11px;">${esc(c.agent_memo || '')}</textarea>
+        <textarea class="input" data-memo="agent_memo" rows="2" style="width:100%;resize:vertical;font-size:12px;" readonly data-edit-lock="1">${esc(c.agent_memo || '')}</textarea>
         <div class="lab">공급</div>
-        <textarea class="input" data-memo="provider_memo" rows="2" style="width:100%;resize:vertical;font-size:11px;">${esc(c.provider_memo || '')}</textarea>
+        <textarea class="input" data-memo="provider_memo" rows="2" style="width:100%;resize:vertical;font-size:12px;" readonly data-edit-lock="1">${esc(c.provider_memo || '')}</textarea>
         <div class="lab">관리</div>
-        <textarea class="input" data-memo="admin_memo" rows="2" style="width:100%;resize:vertical;font-size:11px;">${esc(c.admin_memo || '')}</textarea>
+        <textarea class="input" data-memo="admin_memo" rows="2" style="width:100%;resize:vertical;font-size:12px;" readonly data-edit-lock="1">${esc(c.admin_memo || '')}</textarea>
       </div>
     ` : ''}
   `;
