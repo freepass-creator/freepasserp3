@@ -57,6 +57,11 @@ import { markRoomRead } from './firebase/collections.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
 import { getMakers, getModelsByMaker, getSubModels, findCarModel } from './core/car-models.js';
 import { inferCarModel } from './core/car-model-infer.js';
+import { renderSettings } from './pages/settings.js';
+import { renderDev } from './pages/dev.js';
+// index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
+window.renderSettings = renderSettings;
+window.renderDev = renderDev;
 
 /* ── Boot ── */
 async function boot() {

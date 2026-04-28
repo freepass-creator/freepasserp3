@@ -3401,11 +3401,11 @@
       const t = PAGE_TITLES[name];
       titleEl.innerHTML = t ? `<i class="ph ph-${t.icon}"></i> ${t.label}` : name;
     }
-    // settings / dev 페이지는 클릭 시 동적 렌더
+    // settings / dev 페이지 — app.js 가 window 에 노출
     if (name === 'settings') {
-      import('/src/pages/settings.js').then(m => m.renderSettings());
+      window.renderSettings?.();
     } else if (name === 'dev') {
-      import('/src/pages/dev.js').then(m => m.renderDev());
+      window.renderDev?.();
     }
   }
   // 사이드바 클릭 — hash 업데이트만 (hashchange 가 showPage 호출)
