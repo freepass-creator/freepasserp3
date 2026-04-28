@@ -447,7 +447,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   body.innerHTML = `
     <div class="detail-section">${photoHtml}</div>
 
-    <!-- 1. 기본정보 -->
+    <!-- 1. 기본정보 (스크롤 맨 위 — 새 차량 선택 시 사진부터 보이게) -->
     <div class="detail-section">
       <div class="detail-section-label">1. 기본정보</div>
       <div class="info-grid">${renderGrid(basicRows)}</div>
@@ -501,6 +501,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       <div class="info-grid">${renderGrid(adminRows)}</div>
     </div>` : ''}
   `;
+  // 새 차량 선택 시 항상 사진부터 보이게 — 스크롤 맨 위로
+  body.scrollTop = 0;
 
   const thumbsEl = body.querySelector('.detail-photo-thumbs');
 
