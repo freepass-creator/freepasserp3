@@ -517,6 +517,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       <div class="detail-section-label">1. 차량정보</div>
       <div class="info-grid">
         <div class="lab">차량번호</div><div class="full">${esc(p.car_number || '-')}</div>
+        ${pair('차량상태', basicByLabel['차량상태'] || p.vehicle_status, '상품구분', specByLabel['상품구분'] || p.product_type)}
         ${pair('제조사', basicByLabel['제조사'], '모델명', basicByLabel['모델'])}
         <div class="lab">세부모델</div><div class="full">${esc(basicByLabel['세부모델'] || '-')}</div>
         <div class="lab">세부트림</div><div class="full">${esc(specByLabel['트림'] || '-')}</div>
