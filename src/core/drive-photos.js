@@ -78,7 +78,8 @@ export function fetchDriveFolderImages(sourceUrl, size = SIZE_FULL) {
         if (!wrap) return u;
         try {
           const host = new URL(u, location.origin).hostname;
-          if (/(^|\.)(googleusercontent\.com|drive\.google\.com)$/.test(host)) {
+          // Drive·lh3 + 스크래퍼 대상 호스트 (autoplus·moderentcar·s3) 도 프록시 경유
+          if (/(^|\.)(googleusercontent\.com|drive\.google\.com|autoplus\.co\.kr|moderentcar\.co\.kr|moren-images\.s3[^.]*\.amazonaws\.com)$/.test(host)) {
             return `/api/img?url=${encodeURIComponent(u)}`;
           }
         } catch {}

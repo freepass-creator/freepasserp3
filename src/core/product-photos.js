@@ -12,7 +12,8 @@
 const NEEDS_SERVER_RE = /drive\.google\.com\/(drive\/folders\/|drive\/u\/\d+\/folders\/)|moderentcar\.co\.kr|autoplus\.co\.kr/;
 
 // 모바일 브라우저의 cross-origin 이미지 차단 이슈 우회용 프록시 대상 호스트
-const PROXY_HOSTS_RE = /(^|\.)(googleusercontent\.com|drive\.google\.com)$/;
+//  + 외부 사이트(autoplus, moderentcar) 핫링크 차단 우회
+const PROXY_HOSTS_RE = /(^|\.)(googleusercontent\.com|drive\.google\.com|autoplus\.co\.kr|moderentcar\.co\.kr|moren-images\.s3[^.]*\.amazonaws\.com)$/;
 
 /** 로컬 dev 판별 — Vite 에서는 /api/img 서버리스가 없으니 직접 URL 을 쓴다. */
 export function isLocalDev() {

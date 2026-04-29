@@ -18,6 +18,12 @@ const ALLOWED_HOSTS = [
   'lh6.googleusercontent.com',
   'firebasestorage.googleapis.com',
   'firebasestorage.app',
+  // 외부 사이트 스크래핑 — 핫링크 차단 우회
+  'autoplus.co.kr',
+  'img.autoplus.co.kr',
+  'moderentcar.co.kr',
+  'moren-images.s3.amazonaws.com',
+  'moren-images.s3.ap-northeast-2.amazonaws.com',
 ];
 
 export default async function handler(req, res) {
