@@ -44,16 +44,29 @@ const STATUS_BADGE = {
   '계약취소': { txt: '취소', tone: 'red' },
 };
 
-/* ── 임시/정식 계약 코드 발급 ── */
-export function makeTempContractCode() {
-  return 'TMP-' + new Date().getFullYear() + '-' + Date.now().toString(36).toUpperCase().slice(-6);
+/* ── 계약 코드 포맷 통일 ──
+ *  임시(가계약): TMP-YYMMDD-NN  (예: TMP-260429-01)
+ *  정식(체결):   CT-YYMMDD-NN   (예: CT-260429-01)
+ *  같은 포맷이라 진행취소·완료 시 prefix 만 바꿔 변환 가능 */
+function todayYYMMDD() {
+  const d = new Date();
+  return String(d.getFullYear()).slice(-2)
+       + String(d.getMonth() + 1).padStart(2, '0')
+       + String(d.getDate()).padStart(2, '0');
+}
+
+export async function makeTempContractCode() {
+  const dateStr = todayYYMMDD();
+  const { nextSequence } = await import('../firebase/collections.js');
+  const seq = await nextSequence(`contract_temp_${dateStr}`);
+  return `TMP-${dateStr}-${String(seq).padStart(2, '0')}`;
 }
 
 export async function allocateRealContractCode() {
-  const dateStr = new Date().toISOString().slice(2,10).replace(/-/g,'').slice(0,4);
+  const dateStr = todayYYMMDD();
   const { nextSequence } = await import('../firebase/collections.js');
   const seq = await nextSequence(`contract_${dateStr}`);
-  return `CT${dateStr}${String(seq).padStart(2,'0')}`;
+  return `CT-${dateStr}-${String(seq).padStart(2, '0')}`;
 }
 
 export function renderContractList(contracts) {
@@ -635,7 +648,7 @@ export async function createContractFromRoomLocal(room) {
   if (!customer) return;
 
   const product = (store.products || []).find(p => p._key === room.product_uid || p.car_number === (room.vehicle_number || room.car_number));
-  const code = makeTempContractCode();
+  const code = await makeTempContractCode();
   try {
     await pushRecord('contracts', {
       contract_code: code,

@@ -19,6 +19,7 @@ import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichPro
 import { showToast } from '../core/toast.js';
 import {
   esc, shortStatus, mapStatusDot, fmtMileage,
+  providerNameByCode,
 } from '../core/ui-helpers.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
@@ -72,6 +73,7 @@ export function calibrateSearchCols(products) {
   const STATUS_DOT = 10;
   // 차량번호(idx 0): max 포맷 "000가0000" (7 ASCII + 1 한글) bold = ~64px + padding 16 → 80px 면 충분
   const MIN_WIDTHS = [80, 48, 44, 44, 56, 60, 56, 80, 40, 48, 48, 40, 44];
+  // 공급사 컬럼은 마지막에 100px 고정 (한글 회사명 4-7자 fit)
 
   const widths = getters.map((get, idx) => {
     let sum = 0, n = 0;
@@ -100,7 +102,7 @@ export function renderSearchTable(products) {
   const tbody = document.querySelector('[data-page="search"] .table tbody');
   if (!tbody) return;
   if (!products || !products.length) {
-    tbody.innerHTML = '<tr><td colspan="19" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="21" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
     return;
   }
   tbody.innerHTML = products.map(renderSearchRow).join('');
@@ -138,6 +140,7 @@ function renderSearchRow(p) {
   const subModel = p.sub_model || '-';
   const trim = p.trim_name || p.trim || '-';
   const fuelB = fuelBadge(p.fuel_type);
+  const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '-';
   return `
     <tr data-id="${p._key}">
       <td class="sticky-col" title="${esc(p.car_number || '')}">${p.car_number || '-'}</td>
@@ -160,6 +163,7 @@ function renderSearchRow(p) {
       <td class="num" data-period="36m">${fmtPricePair(p.price?.['36'])}</td>
       <td class="num" data-period="48m">${fmtPricePair(p.price?.['48'])}</td>
       <td class="num" data-period="60m">${fmtPricePair(p.price?.['60'])}</td>
+      <td title="${esc(p.provider_company_code || '')}">${esc(providerName)}</td>
     </tr>`;
 }
 
@@ -360,7 +364,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
             // 2) 가계약 생성 — 임시 코드, 완료 시 실코드 부여
             step = 'contract';
-            const tempCode = makeTempContractCode();
+            const tempCode = await makeTempContractCode();
             await pushRecord('contracts', {
               contract_code: tempCode,
               is_draft: true,
@@ -615,6 +619,7 @@ const SEARCH_COL_FIELD = [
   'int_color',                // 내부색
   '_policy.credit_grade',
   null, null, null, null, null, null,  // 가격 6컬럼 (1M/12M/24M/36M/48M/60M, range 미구현)
+  '_provider_name',           // 20 공급사 (한글 회사명 — getColumnVal 에서 lookup)
 ];
 
 /* 컬럼별 정렬 상태 — 한 번에 한 컬럼만 정렬 (asc | desc | null) */
@@ -624,6 +629,10 @@ function getColumnVal(p, field) {
   if (!field) return null;
   if (field.startsWith('_policy.')) return p._policy?.[field.slice(8)];
   if (field === 'options' && Array.isArray(p.options)) return p.options.join('·');
+  // 공급사 — 코드를 한글 회사명으로 변환해서 필터/정렬
+  if (field === '_provider_name') {
+    return providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
+  }
   return p[field];
 }
 
