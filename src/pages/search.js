@@ -312,28 +312,43 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         `;
         foot.querySelector('#srchChat')?.addEventListener('click', () => _onCreateRoom?.(p));
         foot.querySelector('#srchContract')?.addEventListener('click', async () => {
+          const me = store.currentUser || {};
+          // 사전 점검 — Firebase rule 통과 조건 미리 검증
+          if (!me.uid) {
+            showToast('계약 생성 실패: 로그인 정보 없음 — 새로고침 후 재시도', 'error');
+            return;
+          }
+          if (!(me.role === 'admin' || me.role === 'agent' || me.role === 'agent_admin')) {
+            showToast(`계약 생성 권한 없음 (현재 역할: ${me.role || '미지정'})`, 'error');
+            return;
+          }
           const { pickOrCreateCustomer } = await import('../core/dialogs.js');
           const r = await pickOrCreateCustomer(p);
           if (!r) return;
+
+          let step = 'init';
           try {
             const { pushRecord } = await import('../firebase/db.js');
             const { makeTempContractCode } = await import('./contract.js');
             // 1) 신규 고객이면 customer 생성
             let customerKey = r._key;
             if (!r._existing) {
-              const cref = await pushRecord('customers', {
-                name: r.name, phone: r.phone, birth: r.birth,
+              step = 'customer';
+              customerKey = await pushRecord('customers', {
+                name: r.name,
+                phone: r.phone,
+                birth: r.birth,
                 is_business: !!r.is_business,
                 business_number: r.business_number || '',
                 company_name: r.company_name || '',
-                created_at: Date.now(),
-                created_by: store.currentUser?.uid || '',
+                created_by: me.uid,
               });
-              customerKey = cref?.key || cref;
             }
+            if (!customerKey) throw new Error('customerKey 발급 실패');
+
             // 2) 가계약 생성 — 임시 코드, 완료 시 실코드 부여
+            step = 'contract';
             const tempCode = makeTempContractCode();
-            const me = store.currentUser || {};
             await pushRecord('contracts', {
               contract_code: tempCode,
               is_draft: true,
@@ -361,20 +376,20 @@ export function renderSearchDetail(p, targetCard, options = {}) {
               policy_name_snapshot: p._policy?.policy_name || p.policy_name || '',
               provider_company_code: p.provider_company_code || '',
               partner_code: p.partner_code || p.provider_company_code || '',
-              // 영업자
-              agent_uid: me.uid || '',
+              // 영업자 — Firebase rule 이 newData.agent_uid === auth.uid 체크
+              agent_uid: me.uid,
               agent_name: me.name || '',
               agent_code: me.user_code || '',
-              agent_channel_code: me.agent_channel_code || me.channel_code || '',
-              created_at: Date.now(),
-              created_by: me.uid || '',
+              agent_channel_code: me.agent_channel_code || me.channel_code || me.company_code || '',
+              created_by: me.uid,
             });
-            const { showToast } = await import('../core/toast.js');
             showToast(`가계약 생성됨 — ${tempCode} (완료 시 실코드 부여)`, 'success');
           } catch (e) {
-            console.error('[contract create]', e);
-            const { showToast } = await import('../core/toast.js');
-            showToast('계약 생성 실패: ' + (e.code || e.message || e), 'error');
+            console.error(`[contract create:${step}]`, e);
+            const errMsg = e.code === 'PERMISSION_DENIED'
+              ? `권한 거부 (${step} 단계) — Firebase rule 확인 필요`
+              : `${step} 실패: ${e.code || e.message || e}`;
+            showToast('계약 생성 실패 — ' + errMsg, 'error');
           }
         });
         foot.querySelector('#srchShare')?.addEventListener('click', async () => {

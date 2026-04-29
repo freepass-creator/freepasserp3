@@ -13,6 +13,41 @@ export function normalizePhone(s) {
   return String(s || '').replace(/[^\d]/g, '');
 }
 
+/* 전화번호 표시 포맷 — 011/010-XXXX-XXXX 또는 02-XXX-XXXX (서울)
+ *  자동 하이픈 입력 보조용. digit-only 문자열을 받아 010-1234-5678 형태로 반환. */
+export function formatPhone(s) {
+  const d = normalizePhone(s);
+  if (!d) return '';
+  // 서울 02 (2자리 지역번호)
+  if (d.startsWith('02')) {
+    if (d.length <= 2) return d;
+    if (d.length <= 5) return `${d.slice(0, 2)}-${d.slice(2)}`;
+    if (d.length <= 9) return `${d.slice(0, 2)}-${d.slice(2, 5)}-${d.slice(5)}`;
+    return `${d.slice(0, 2)}-${d.slice(2, 6)}-${d.slice(6, 10)}`;
+  }
+  // 휴대폰 010/011/016/017/018/019 등 (3자리 시작)
+  if (d.length <= 3) return d;
+  if (d.length <= 7) return `${d.slice(0, 3)}-${d.slice(3)}`;
+  if (d.length <= 10) return `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}`;
+  return `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7, 11)}`;
+}
+
+/* 생년월일 — YYMMDD 6자리 강제. YYYYMMDD 입력하면 YY 만 남김. */
+export function normalizeBirth6(s) {
+  const d = String(s || '').replace(/[^\d]/g, '');
+  if (d.length === 8) return d.slice(2);    // YYYYMMDD → YYMMDD
+  return d.slice(0, 6);
+}
+
+/* YYMMDD 표시 포맷 — YY.MM.DD */
+export function formatBirth6(s) {
+  const d = normalizeBirth6(s);
+  if (!d) return '';
+  if (d.length <= 2) return d;
+  if (d.length <= 4) return `${d.slice(0, 2)}.${d.slice(2)}`;
+  return `${d.slice(0, 2)}.${d.slice(2, 4)}.${d.slice(4, 6)}`;
+}
+
 /* 영업자 선택 — admin 이 계약 생성할 때 호출
  *  agent / agent_admin 활성 사용자 목록. 클릭하면 해당 user 객체, 취소면 null */
 export function pickAgent() {
@@ -150,8 +185,8 @@ export function pickOrCreateCustomer(product = null) {
             <div style="font-size:12px; color:var(--text-sub); margin-bottom:4px;">계약자 정보</div>
             <div style="display:flex; flex-direction: column; gap:8px;">
               <input class="input" id="cuName" placeholder="이름 : 홍길동" autocomplete="off">
-              <input class="input" id="cuBirth" placeholder="생년월일 : 900101 (또는 19900101)" autocomplete="off" inputmode="numeric" maxlength="10">
-              <input class="input" id="cuPhone" placeholder="연락처 : 010-0000-0000" autocomplete="off" inputmode="tel">
+              <input class="input" id="cuBirth" placeholder="생년월일 : 90.01.01 (YYMMDD 6자리)" autocomplete="off" inputmode="numeric" maxlength="8">
+              <input class="input" id="cuPhone" placeholder="연락처 : 010-0000-0000" autocomplete="off" inputmode="tel" maxlength="13">
               <label style="font-size:12px; color:var(--text-sub); display:flex; align-items:center; gap:6px;">
                 <input type="checkbox" id="cuBiz"> 사업자 계약
               </label>
@@ -202,17 +237,26 @@ export function pickOrCreateCustomer(product = null) {
       bizNoEl.style.display = bizNameEl.style.display = on ? '' : 'none';
     });
 
+    // 전화번호 자동 하이픈
     phoneEl.addEventListener('input', () => {
+      const formatted = formatPhone(phoneEl.value);
+      if (formatted !== phoneEl.value) phoneEl.value = formatted;
       const phone = normalizePhone(phoneEl.value);
       if (phone.length < 10) { matchEl.textContent = ''; return; }
       const existing = customers.find(c => normalizePhone(c.phone) === phone);
       if (existing) {
         matchEl.textContent = `기존 고객 매칭: ${existing.name || ''} (계약 ${(store.contracts || []).filter(x => x.customer_uid === existing._key).length}건)`;
         if (!nameEl.value) nameEl.value = existing.name || '';
-        if (birthEl && !birthEl.value && existing.birth) birthEl.value = existing.birth;
+        if (birthEl && !birthEl.value && existing.birth) birthEl.value = formatBirth6(existing.birth);
       } else {
         matchEl.textContent = '신규 고객으로 등록됩니다';
       }
+    });
+
+    // 생년월일 — YYMMDD 6자리만, 자동 점 포맷
+    birthEl?.addEventListener('input', () => {
+      const formatted = formatBirth6(birthEl.value);
+      if (formatted !== birthEl.value) birthEl.value = formatted;
     });
 
     setTimeout(() => nameEl.focus(), 50);
@@ -223,15 +267,15 @@ export function pickOrCreateCustomer(product = null) {
     overlay.querySelector('#cuOk').addEventListener('click', () => {
       const name = nameEl.value.trim();
       const phone = normalizePhone(phoneEl.value);
-      const birth = (birthEl?.value || '').replace(/[^0-9]/g, '');
+      const birth = normalizeBirth6(birthEl?.value);
       if (!name || phone.length < 10) {
-        matchEl.style.color = 'var(--accent-red)';
+        matchEl.style.color = 'var(--alert-red-text, #dc2626)';
         matchEl.textContent = '이름과 연락처(10자리 이상) 필수';
         return;
       }
-      if (!birth || (birth.length !== 6 && birth.length !== 8)) {
-        matchEl.style.color = 'var(--accent-red)';
-        matchEl.textContent = '생년월일 6자리(YYMMDD) 또는 8자리(YYYYMMDD) 입력';
+      if (birth.length !== 6) {
+        matchEl.style.color = 'var(--alert-red-text, #dc2626)';
+        matchEl.textContent = '생년월일 6자리(YYMMDD) 입력';
         return;
       }
       const existing = customers.find(c => normalizePhone(c.phone) === phone);
