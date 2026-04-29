@@ -388,6 +388,9 @@ export async function createRoomFromProduct(product) {
     return;
   }
   try {
+    const me = store.currentUser || {};
+    const isAgent = me.role === 'agent' || me.role === 'agent_admin';
+    const isProvider = me.role === 'provider';
     const ref = await pushRecord('rooms', {
       car_number: product.car_number,
       maker: product.maker,
@@ -397,9 +400,13 @@ export async function createRoomFromProduct(product) {
       product_uid: product._key,
       provider_company_code: product.provider_company_code,
       partner_code: product.partner_code,
+      // Firebase rule 통과용 — agent 가 만든 룸이면 agent_uid 필수
+      agent_uid: isAgent ? (me.uid || '') : '',
+      provider_uid: isProvider ? (me.uid || '') : '',
+      agent_channel_code: isAgent ? (me.agent_channel_code || me.channel_code || me.company_code || '') : '',
       unread: 0,
       created_at: Date.now(),
-      created_by: store.currentUser?.uid || '',
+      created_by: me.uid || '',
     });
     const newKey = ref?.key || ref;
     location.hash = 'workspace';
