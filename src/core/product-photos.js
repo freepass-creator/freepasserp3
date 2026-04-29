@@ -39,16 +39,24 @@ export function toProxiedImage(url) {
   } catch { return url; }
 }
 
-/** URL의 "동일성 키" — Firebase Storage URL은 경로(o/...)만, 나머지는 쿼리스트링 제외한 origin+path
- *  같은 이미지인데 토큰만 다른 경우를 같은 것으로 인식하기 위함 */
+/** URL의 "동일성 키" — Firebase Storage URL은 경로(o/...)만, 나머지는 쿼리스트링 제외한 origin+path.
+ *  ⚠ /api/img?url=... 프록시 URL 은 path 가 모두 동일해 dedup 되면 1개만 남음.
+ *     이 경우 url 쿼리 파라미터로 진짜 식별자 추출. */
 function dedupKey(url) {
   try {
-    const u = new URL(url);
+    const s = String(url || '');
+    // 프록시 URL — ?url= 안에 진짜 source URL 이 들어있음. 그걸로 dedup.
+    if (s.startsWith('/api/img?')) {
+      const m = s.match(/[?&]url=([^&]+)/);
+      if (m) return 'proxy:' + decodeURIComponent(m[1]);
+      return s;   // 쿼리 못 찾으면 raw 사용 (절대 dedup 되지 않게)
+    }
+    const u = new URL(s, typeof location !== 'undefined' ? location.origin : 'https://x/');
     if (u.hostname.endsWith('firebasestorage.googleapis.com') || u.hostname.endsWith('firebasestorage.app')) {
       const m = u.pathname.match(/\/o\/([^?]+)/);
       if (m) return 'fs:' + decodeURIComponent(m[1]);
     }
-    return u.origin + u.pathname;  // 쿼리스트링 무시
+    return u.origin + u.pathname;
   } catch { return url; }
 }
 
