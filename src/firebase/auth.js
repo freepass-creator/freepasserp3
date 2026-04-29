@@ -42,7 +42,9 @@ export function initAuth() {
           await new Promise(r => setTimeout(r, 300));
           profile = (await get(ref(db, `users/${user.uid}`))).val() || profile;
         }
-        store.currentUser = { uid: user.uid, email: user.email, ...profile };
+        // ⚠ Firebase rule 의 auth.uid 매칭용 — profile 에 uid 필드가 다른 값으로 들어있으면
+        //   여기서 덮어쓰여 PERMISSION_DENIED 발생. spread 뒤에 uid/email 명시.
+        store.currentUser = { ...profile, uid: user.uid, email: user.email };
       } else {
         store.currentUser = null;
       }
