@@ -322,6 +322,18 @@ export function renderSearchDetail(p, targetCard, options = {}) {
             showToast(`계약 생성 권한 없음 (현재 역할: ${me.role || '미지정'})`, 'error');
             return;
           }
+
+          // 디버그 — store.currentUser.uid 와 Firebase Auth 의 실제 auth.uid 가 일치하는지
+          //  Firebase rule 의 auth.uid 는 토큰에서 오므로, 둘이 다르면 PERMISSION_DENIED 의 진짜 원인
+          try {
+            const { auth } = await import('../firebase/config.js');
+            const realAuthUid = auth.currentUser?.uid;
+            console.log('[contract-debug] store.uid=', me.uid, ' auth.uid=', realAuthUid, ' role=', me.role);
+            if (realAuthUid && realAuthUid !== me.uid) {
+              showToast(`UID 불일치 — store=${me.uid?.slice(0, 8)} / auth=${realAuthUid.slice(0, 8)} (재로그인 필요)`, 'error');
+              return;
+            }
+          } catch (_) {}
           const { pickOrCreateCustomer } = await import('../core/dialogs.js');
           const r = await pickOrCreateCustomer(p);
           if (!r) return;
