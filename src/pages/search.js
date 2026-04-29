@@ -488,13 +488,18 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   };
   const specByLabel = Object.fromEntries(specRows.map(r => [r[0], r[1]]));
   const basicByLabel = Object.fromEntries(basicRows.map(r => [r[0], r[1]]));
-  // 제조사 스펙 — 제조사/모델·세부모델/세부트림·선택옵션·연식/주행·색상·연료/구동
+  // 제조사 스펙 — 사용자 지정 순서:
+  //  차량번호 / 제조사/모델 / 세부모델 / 세부트림 / 선택옵션 / 연식/주행 / 연료/구동 / 색상(외/내)
+  //  ※ 선택옵션은 chips 라 row 가 아니라 별도 마크업으로 처리 (옵션 자리 위치 보존)
   const compactSpecRows = [
+    ['차량번호', basicByLabel['차량번호'] || p.car_number],
     merged('제조사', basicByLabel['제조사'], '모델', basicByLabel['모델']),
-    merged('세부모델', basicByLabel['세부모델'], '세부트림', specByLabel['트림']),
-    merged('연식', specByLabel['연식'], '주행', specByLabel['주행']),
-    ['색상(외/내)', [specByLabel['외장색'], specByLabel['내장색']].filter(Boolean).join(' / ')],
+    ['세부모델', basicByLabel['세부모델']],
+    ['세부트림', specByLabel['트림']],
+    // 선택옵션은 아래 HTML 에서 chips 로 별도 삽입
+    merged('연식', specByLabel['연식'], '주행거리', specByLabel['주행']),
     merged('연료', specByLabel['연료'], '구동방식', specByLabel['구동']),
+    ['색상(외/내)', [specByLabel['외장색'], specByLabel['내장색']].filter(Boolean).join(' / ')],
   ].filter(Boolean);
 
   // condRows → 묶음 row
@@ -549,12 +554,18 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   body.innerHTML = `
     <div class="detail-section">${photoHtml}</div>
 
-    <!-- 1. 제조사 스펙 — 제조사/모델·세부모델/트림·옵션·연식/주행·색상·연료/구동 -->
+    <!-- 1. 차량정보 — 차량번호·제조사/모델·세부모델·세부트림·선택옵션·연식/주행·연료/구동·색상 -->
     <div class="detail-section">
-      <div class="detail-section-label">1. 제조사 스펙 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">${esc(p.car_number || '')}</span></div>
+      <div class="detail-section-label">1. 차량정보</div>
       <div class="info-grid">
-        ${renderGrid(compactSpecRows)}
-        ${opts.length ? `<div class="lab">선택옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : ''}
+        ${(() => {
+          // 세부트림 행 뒤에 선택옵션 chips 삽입 — 사용자 지정 순서 유지
+          const before = compactSpecRows.slice(0, 4);   // 차량번호·제조사/모델·세부모델·세부트림
+          const after = compactSpecRows.slice(4);        // 연식/주행 ~ 색상
+          return renderGrid(before)
+            + (opts.length ? `<div class="lab">선택옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : '')
+            + renderGrid(after);
+        })()}
       </div>
     </div>
 
