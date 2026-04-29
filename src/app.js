@@ -217,16 +217,20 @@ function startHydration() {
   });
   watchCollection('contracts',   (list) => { store.contracts   = list || []; renderContractList(store.contracts);     updateSidebarCounts(); });
   watchCollection('settlements', (list) => { store.settlements = list || []; renderSettlementList(store.settlements); updateSidebarCounts(); });
-  watchCollection('partners',    (list) => {
+  // partners 갱신 시 dependent list 재렌더는 디바운스 (연속 변경 시 1번만)
+  let _partnersRefreshT;
+  const refreshPartnersDependents = () => {
+    if (Array.isArray(store.products))    renderSearchTable(store.products);
+    if (Array.isArray(store.products))    renderProductList(store.products);
+    if (Array.isArray(store.contracts))   renderContractList(store.contracts);
+    if (Array.isArray(store.settlements)) renderSettlementList(store.settlements);
+  };
+  watchCollection('partners', (list) => {
     store.partners = list || [];
     renderPartnerList(store.partners);
     updateSidebarCounts();
-    // partners 가 늦게 도착했을 때 — providerNameByCode 를 쓰는 다른 리스트들 재렌더
-    //  (search/contract/product/settle 메인줄·상세에 한글 회사명 즉시 반영)
-    if (Array.isArray(store.products)) renderSearchTable(store.products);
-    if (Array.isArray(store.products)) renderProductList(store.products);
-    if (Array.isArray(store.contracts)) renderContractList(store.contracts);
-    if (Array.isArray(store.settlements)) renderSettlementList(store.settlements);
+    clearTimeout(_partnersRefreshT);
+    _partnersRefreshT = setTimeout(refreshPartnersDependents, 80);
   });
   watchCollection('users',       (list) => { store.users       = list || []; renderUserList(store.users);             updateSidebarCounts(); });
   watchCollection('customers',   (list) => { store.customers   = list || []; });
@@ -768,7 +772,7 @@ function buildContextMenuItems(page, id, item) {
         const { markRoomRead } = await import('./firebase/collections.js');
         await markRoomRead(id, store.currentUser?.uid);
       }},
-      { icon: 'ph ph-star', label: '즐겨찾기', action: () => alert('즐겨찾기 — 준비 중') },
+      { icon: 'ph ph-star', label: '즐겨찾기', action: () => showToast('즐겨찾기 — 추후 지원 예정', 'info') },
       { divider: true },
       { icon: 'ph ph-eye-slash', label: '대화 숨김', action: async () => {
         await updateRecord(`rooms/${id}`, { [hideField]: true, updated_at: Date.now() });
@@ -1007,10 +1011,10 @@ function bindLogout() {
     location.reload();
   });
 
-  // 사이드바 하단 설정 버튼 — 설정 페이지 / 다이얼로그 진입
+  // 사이드바 하단 설정 버튼 — 설정 페이지로 이동
   document.getElementById('btnSettings')?.addEventListener('click', (e) => {
     e.preventDefault();
-    alert('설정 — 준비 중');
+    location.hash = 'settings';
   });
 
   // 토픽바 우측 사용자 메뉴 — 설정 / 계정정보 / 로그아웃 진입점
@@ -1019,9 +1023,9 @@ function bindLogout() {
     e.stopPropagation();
     const { openContextMenu } = await import('./core/context-menu.js');
     openContextMenu(e, [
-      { icon: 'ph ph-user-circle', label: '내 정보', action: () => alert('준비 중') },
-      { icon: 'ph ph-gear', label: '설정', action: () => alert('준비 중') },
-      { icon: 'ph ph-key', label: '비밀번호 변경', action: () => alert('준비 중') },
+      { icon: 'ph ph-user-circle', label: '내 정보',     action: () => { location.hash = 'settings'; } },
+      { icon: 'ph ph-gear',        label: '설정',        action: () => { location.hash = 'settings'; } },
+      { icon: 'ph ph-key',         label: '비밀번호 변경', action: () => showToast('비밀번호 변경은 설정 페이지에서', 'info') },
       { divider: true },
       { icon: 'ph ph-sign-out', label: '로그아웃', danger: true, action: async () => {
         await fbLogout();
@@ -1032,7 +1036,7 @@ function bindLogout() {
 
   // 알림 버튼 — 향후 알림 패널 연결 (현재는 placeholder)
   document.getElementById('ptTbAlert')?.addEventListener('click', () => {
-    alert('알림 — 준비 중');
+    showToast('알림 — 추후 지원 예정', 'info');
   });
 }
 
