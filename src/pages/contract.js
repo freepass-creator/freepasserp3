@@ -110,10 +110,15 @@ export function renderContractDetail(c) {
     return;
   }
 
-  // 1. 진행상황
+  // 1. 진행상황 — 입력 중(메모 포커스)에는 재렌더 스킵해서 튕김 방지
   if (stepCard) {
-    stepCard.querySelector('.ws4-body').innerHTML = renderContractWorkV2(c);
-    bindContractWorkV2(stepCard, c, { reRender: () => renderContractDetail(c) });
+    const stepBody = stepCard.querySelector('.ws4-body');
+    const focused = document.activeElement;
+    const isTypingInStep = focused && stepBody.contains(focused) && (focused.tagName === 'TEXTAREA' || focused.tagName === 'INPUT');
+    if (!isTypingInStep) {
+      stepBody.innerHTML = renderContractWorkV2(c);
+      bindContractWorkV2(stepCard, c, { reRender: () => renderContractDetail(c) });
+    }
   }
 
   // 2. 계약 상세 — 4개 섹션 (계약자 / 차량 / 대여조건 / 관계자)
@@ -470,18 +475,16 @@ export function renderContractWorkV2(c) {
       }
     </div>
 
-    <!-- 진행 메모 (영업/공급/관리) -->
-    ${!isCancelled ? `
-      <div style="margin-top:12px;color:var(--text-weak);margin-bottom:4px;font-size:12px;">진행 메모</div>
-      <div class="info-grid" style="grid-template-columns: 60px 1fr;">
-        <div class="lab">영업</div>
-        <textarea class="input" data-memo="agent_memo" rows="2" style="width:100%;resize:vertical;font-size:12px;" readonly data-edit-lock="1">${esc(c.agent_memo || '')}</textarea>
-        <div class="lab">공급</div>
-        <textarea class="input" data-memo="provider_memo" rows="2" style="width:100%;resize:vertical;font-size:12px;" readonly data-edit-lock="1">${esc(c.provider_memo || '')}</textarea>
-        <div class="lab">관리</div>
-        <textarea class="input" data-memo="admin_memo" rows="2" style="width:100%;resize:vertical;font-size:12px;" readonly data-edit-lock="1">${esc(c.admin_memo || '')}</textarea>
-      </div>
-    ` : ''}
+    <!-- 진행 메모 (영업/공급/관리) — 진행취소 후에도 메모 가능 (사후 정리용) -->
+    <div style="margin-top:12px;color:var(--text-sub);margin-bottom:6px;font-size:12px;font-weight:500;"><i class="ph ph-note"></i> 진행 메모</div>
+    <div class="info-grid" style="grid-template-columns: 60px 1fr; gap: 6px;">
+      <div class="lab">영업</div>
+      <textarea class="input" data-memo="agent_memo" rows="2" placeholder="-" readonly data-edit-lock="1">${esc(c.agent_memo || '')}</textarea>
+      <div class="lab">공급</div>
+      <textarea class="input" data-memo="provider_memo" rows="2" placeholder="-" readonly data-edit-lock="1">${esc(c.provider_memo || '')}</textarea>
+      <div class="lab">관리</div>
+      <textarea class="input" data-memo="admin_memo" rows="2" placeholder="-" readonly data-edit-lock="1">${esc(c.admin_memo || '')}</textarea>
+    </div>
   `;
 }
 
