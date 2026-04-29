@@ -23,6 +23,7 @@ export const POLICY_OPTS = {
   screening_criteria: ['신용무관','신용필요'],
   credit_grade: ['7등급 이상','7등급 미만'],
   basic_driver_age: ['만 21세 이상','만 22세 이상','만 23세 이상','만 24세 이상','만 25세 이상','만 26세 이상','만 27세 이상','만 28세 이상','만 29세 이상','만 30세 이상'],
+  license_period: ['제한없음','3개월 이상','6개월 이상','1년 이상','2년 이상','3년 이상'],
   driver_age_upper_limit: ['제한없음','만 60세 이하','만 65세 이하','만 70세 이하','만 75세 이하','만 80세 이하','협의'],
   driver_age_lowering: ['불가','협의','만25세','만24세','만23세','만22세','만21세'],
   personal_driver_scope: ['계약자 본인+직계가족','계약자 본인만','계약자 본인+추가운전자','협의'],
@@ -168,6 +169,7 @@ export function renderPolicyDetail(pol) {
         ${ffs('정비서비스', 'maintenance_service',                pol.maintenance_service,                                               O.maintenance_service, dis)}
         ${ffs('긴급출동',   'annual_roadside_assistance',         pol.annual_roadside_assistance || pol.roadside_assistance,             O.annual_roadside_assistance, dis)}
         ${ffs('기본연령',   'basic_driver_age',                   pol.basic_driver_age,                                                  O.basic_driver_age, dis)}
+        ${ffs('면허취득',   'license_period',                     pol.license_period,                                                    O.license_period, dis)}
         ${ffs('연령상한',   'driver_age_upper_limit',             pol.driver_age_upper_limit,                                            O.driver_age_upper_limit, dis)}
         ${ffs('연령하향',   'driver_age_lowering',                pol.driver_age_lowering,                                               O.driver_age_lowering, dis)}
         ${ffs('연령하향비', 'age_lowering_cost',                  pol.age_lowering_cost,                                                 O.age_lowering_cost, dis)}

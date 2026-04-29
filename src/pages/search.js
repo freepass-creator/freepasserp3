@@ -457,7 +457,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const feeRows   = rows.fee;
   const opts      = rows.options;
 
-  const filterRows = (r) => r.filter(([, v]) => v != null && v !== '' && v !== '-');
   // 값에서 라벨과 중복되는 단어 제거 — "연간 주행" 라벨에 "연간 5만Km 주행" 값 → "5만Km"
   //  라벨의 단어들(공백/슬래시 분리)을 값 앞뒤에서 제거
   const cleanVal = (label, value) => {
@@ -472,8 +471,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     }
     return v.trim() || value;
   };
-  // 단일 행 — 라벨 1칸 + 값 3칸 spanning (4컬럼 grid 에서)
-  const renderGrid = (r) => filterRows(r).map(([l, v]) => `<div class="lab">${esc(l)}</div><div class="full">${esc(cleanVal(l, v))}</div>`).join('');
+  // 단일 행 — 라벨 1칸 + 값 3칸 spanning. 빈 값은 '-' (필터 안 함, 그냥 보여주는 표)
+  const renderGrid = (r) => r.map(([l, v]) => `<div class="lab">${esc(l)}</div><div class="full">${esc(cleanVal(l, v) || '-')}</div>`).join('');
   // 좌우 쌍 — [라벨1][값1][라벨2][값2]. 값이 라벨과 겹치는 부분 자동 제거.
   const pair = (l1, v1, l2, v2) => `
     <div class="lab">${esc(l1)}</div><div>${esc(cleanVal(l1, v1) || '-')}</div>
