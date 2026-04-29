@@ -512,6 +512,18 @@ export function renderContractWorkV2(c) {
   `;
 }
 
+/* 단계별 알림 매핑 — agent 가 어떤 단계 누르면 공급사에 알림톡.
+ *  관리자에게 가야 하는 단계는 who: 'admin' 으로 (notifyProviderAndAdmin 가 admin 까지 같이 보냄) */
+const STEP_NOTIFY = {
+  agent_delivery_inquiry:    { subject: '출고 문의',   tmpl: 'new_inquiry',   text: '출고 문의가 도착했습니다.' },
+  agent_deposit_paid:        { subject: '계약금 입금', tmpl: 'new_inquiry',   text: '계약금이 입금됐습니다. 확인 부탁드립니다.' },
+  agent_docs_submitted:      { subject: '서류 제출',   tmpl: 'new_inquiry',   text: '계약 서류가 제출됐습니다. 심사 부탁드립니다.' },
+  agent_contract_requested:  { subject: '계약서 요청', tmpl: 'new_inquiry',   text: '계약서 요청이 도착했습니다. 발송 부탁드립니다.' },
+  agent_balance_paid:        { subject: '잔금 입금',   tmpl: 'new_inquiry',   text: '잔금이 입금됐습니다. 확인 부탁드립니다.' },
+  agent_release_requested:   { subject: '출고 요청',   tmpl: 'new_inquiry',   text: '출고 요청이 도착했습니다.' },
+  agent_handover_confirmed:  { subject: '인도 확인',   tmpl: 'new_inquiry',   text: '차량 인도가 확인됐습니다.' },
+};
+
 /* renderContractWorkV2 의 클릭/드롭다운/메모/취소·완료 이벤트 바인딩
  *  options.reRender — 호출자가 자기 페이지 재렌더 함수 주입 (workspace / contract 양쪽 호환) */
 export function bindContractWorkV2(stepCard, c, options = {}) {
@@ -520,7 +532,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
   const isAdmin = role === 'admin';
   const reRender = options.reRender || (() => renderContractDetail(c));
 
-  // 단계 셀 클릭 (단순 체크 토글)
+  // 단계 셀 클릭 (단순 체크 토글) — 영업측 단계 ON 시 공급사·관리자에 알림톡
   stepCard.querySelectorAll('.ct-step-cell.clickable').forEach(cell => {
     cell.addEventListener('click', async () => {
       const key = cell.dataset.key;
@@ -533,6 +545,18 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
         await updateRecord(`contracts/${c.contract_code}`, update);
         c[key] = next;
         reRender();
+        // 영업 측 단계 활성화(true) 시 공급사·관리자에 알림톡
+        if (next && STEP_NOTIFY[key]) {
+          const n = STEP_NOTIFY[key];
+          const car = c.car_number_snapshot || '';
+          const customer = c.customer_name || '';
+          notifyProviderAndAdmin({
+            template: n.tmpl,
+            providerCode: c.provider_company_code,
+            subject: n.subject,
+            message: `[Freepass]\n${car} ${customer ? customer + ' ' : ''}${n.text}\n계약: ${c.contract_code || ''}`,
+          }).catch(() => null);
+        }
       } catch (e) { alert('저장 실패: ' + (e.message || e)); }
     });
   });
