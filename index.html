@@ -1151,8 +1151,11 @@
   }
 
   /* info-grid — 한 줄에 한 항목: [라벨 80px][값 1fr] (form-grid 와 통일된 규격) */
+  /* 4컬럼 grid — [라벨 100][값 1fr][라벨 100][값 1fr]
+     쌍으로 묶을 수 있는 항목(연식/주행거리, 연료/구동방식 등)을 좌우로 배치.
+     단일 항목은 .full 값셀이 cols 2-4 로 spanning. */
   .info-grid {
-    display: grid; grid-template-columns: 120px 1fr;
+    display: grid; grid-template-columns: 100px 1fr 100px 1fr;
     border-top: 1px solid var(--border-soft);
     min-width: 0;
   }
@@ -1163,14 +1166,14 @@
   }
   .info-grid > .lab {
     background: var(--bg-stripe); color: var(--text-weak);
-    white-space: nowrap;        /* 라벨은 한 줄 강제 */
+    white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis;
   }
   .info-grid > div:not(.lab) {
-    word-break: break-word;     /* 값은 강제 끊기 (긴 URL/숫자 대응) */
+    word-break: break-word;
   }
-  /* .full 클래스는 더 이상 의미 없지만 호환 위해 유지 (값 셀이 가로로 못 늘어나는 케이스 방지) */
-  .info-grid .full { grid-column: 2 / -1; }
+  /* 단일 행 — 라벨 1칸 + 값 3칸 spanning (cols 2-4) */
+  .info-grid > .full { grid-column: 2 / -1; }
 
   /* form-grid — 모든 항목 한 줄에 한 개: [라벨 80px][입력칸 1fr]
      항목명 5자 규격으로 통일. textarea 만 라벨 윗정렬. 표는 .table 별도 */

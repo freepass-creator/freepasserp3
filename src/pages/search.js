@@ -458,7 +458,13 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const opts      = rows.options;
 
   const filterRows = (r) => r.filter(([, v]) => v != null && v !== '' && v !== '-');
-  const renderGrid = (r) => filterRows(r).map(([l, v]) => `<div class="lab">${esc(l)}</div><div>${esc(v)}</div>`).join('');
+  // 단일 행 — 라벨 1칸 + 값 3칸 spanning (4컬럼 grid 에서)
+  const renderGrid = (r) => filterRows(r).map(([l, v]) => `<div class="lab">${esc(l)}</div><div class="full">${esc(v)}</div>`).join('');
+  // 좌우 쌍 — [라벨1][값1][라벨2][값2]. 값이 없는 라벨은 '-'
+  const pair = (l1, v1, l2, v2) => `
+    <div class="lab">${esc(l1)}</div><div>${esc(v1 || '-')}</div>
+    <div class="lab">${esc(l2)}</div><div>${esc(v2 || '-')}</div>
+  `;
 
   const photoHtml = imgs.length ? `
     <div class="detail-photo-stage">
@@ -483,96 +489,26 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     ${driveSrc ? `<div style="padding:8px; text-align:center; color:var(--text-muted); font-size:12px;">사진 불러오는 중...</div>` : ''}
   `;
 
-  // 관련 필드끼리 묶어서 한 줄로 — "라벨1 / 라벨2" : "값1 / 값2"
-  // 둘 중 하나만 있으면 단독 라벨/값으로, 둘 다 없으면 row 생략
-  const merged = (lbl1, val1, lbl2, val2) => {
-    const v1 = val1 != null && val1 !== '' && val1 !== '-' ? val1 : '';
-    const v2 = val2 != null && val2 !== '' && val2 !== '-' ? val2 : '';
-    if (v1 && v2) return [`${lbl1} / ${lbl2}`, `${v1} / ${v2}`];
-    if (v1) return [lbl1, v1];
-    if (v2) return [lbl2, v2];
-    return null;
-  };
   const specByLabel = Object.fromEntries(specRows.map(r => [r[0], r[1]]));
   const basicByLabel = Object.fromEntries(basicRows.map(r => [r[0], r[1]]));
-  // 제조사 스펙 — 사용자 지정 순서:
-  //  차량번호 / 제조사/모델 / 세부모델 / 세부트림 / 선택옵션 / 연식/주행 / 연료/구동 / 색상(외/내)
-  //  ※ 선택옵션은 chips 라 row 가 아니라 별도 마크업으로 처리 (옵션 자리 위치 보존)
-  const compactSpecRows = [
-    ['차량번호', basicByLabel['차량번호'] || p.car_number],
-    merged('제조사', basicByLabel['제조사'], '모델', basicByLabel['모델']),
-    ['세부모델', basicByLabel['세부모델']],
-    ['세부트림', specByLabel['트림']],
-    // 선택옵션은 아래 HTML 에서 chips 로 별도 삽입
-    merged('연식', specByLabel['연식'], '주행거리', specByLabel['주행']),
-    merged('연료', specByLabel['연료'], '구동방식', specByLabel['구동']),
-    ['색상(외/내)', [specByLabel['외장색'], specByLabel['내장색']].filter(Boolean).join(' / ')],
-  ].filter(Boolean);
-
-  // condRows → 묶음 row
   const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
-  const driverCond = [
-    merged('기본 연령', condByLabel['기본연령'], '연령 상한', condByLabel['연령상한']),
-    merged('연령 하향', condByLabel['연령하향'], '연령 하향비', condByLabel['연령하향비']),
-    merged('개인 범위', condByLabel['개인범위'], '사업자 범위', condByLabel['사업자범위']),
-    merged('추가 인원', condByLabel['추가인원'], '추가 운전비', condByLabel['추가운전비']),
-  ].filter(Boolean);
-  const screenCond = [
-    merged('심사 여부', condByLabel['심사여부'], '심사 기준', condByLabel['심사기준']),
-    ['결제 방식', condByLabel['결제방식']],
-    merged('보증금 분납', condByLabel['보증금분납'], '보증 카드', condByLabel['보증카드']),
-    ['위약금', condByLabel['위약금']],
-  ].filter(Boolean);
-  const drivingCond = [
-    merged('연간 주행', condByLabel['연간약정주행'], '1만km추가', condByLabel['1만km추가']),
-    merged('대여 지역', condByLabel['대여지역'], '탁송비', condByLabel['탁송비']),
-  ].filter(Boolean);
-  const serviceCond = [
-    merged('정비 서비스', condByLabel['정비서비스'], '보험 포함', condByLabel['보험 포함']),
-  ].filter(Boolean);
-
-  // 5. 기타 정보 — 공급사명(한글, 법인 접두/접미어 제거) + 정책명 + 등록증·차량 부가
   const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
-  const etcRows = [
-    ['공급사', providerName, true],
-    ['정책명', policyName, true],
-    merged('차종', specByLabel['차종'], '인승', specByLabel['인승']),
-    merged('배기량', specByLabel['배기량'], '용도', specByLabel['용도']),
-    merged('등록일', specByLabel['최초등록일'], '차령만료', specByLabel['차령만료일']),
-    ['상품구분', specByLabel['상품구분']],
-    ['차량가격', specByLabel['차량가격']],
-    ['위치', specByLabel['위치']],
-    ['차대번호', specByLabel['차대번호'], true],
-    ...(isAdmin ? [
-      ['공급코드',   p.provider_company_code],
-      ['영업코드',   p.partner_code],
-      ['상품코드',   p.product_code],
-      ['상품UID',    p._key, true],
-      ['정책코드',   p._policy?.policy_code || p.policy_code],
-      ['정책유형',   p._policy?.policy_type],
-      ['수수료환수', p._policy?.commission_clawback_condition, true],
-      ['특이사항',   p.partner_memo || p.note, true],
-    ] : []),
-  ].filter(Boolean);
-
-  const renderGridFull = (r) => r.filter(([, v]) => v != null && v !== '' && v !== '-').map(([l, v, full]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${esc(v)}</div>`).join('');
 
   const body = card.querySelector('.ws4-body');
   body.innerHTML = `
     <div class="detail-section">${photoHtml}</div>
 
-    <!-- 1. 차량정보 — 차량번호·제조사/모델·세부모델·세부트림·선택옵션·연식/주행·연료/구동·색상 -->
+    <!-- 1. 차량정보 — 4컬럼 표 형식 (라벨/값/라벨/값) -->
     <div class="detail-section">
       <div class="detail-section-label">1. 차량정보</div>
       <div class="info-grid">
-        ${(() => {
-          // 세부트림 행 뒤에 선택옵션 chips 삽입 — 사용자 지정 순서 유지
-          const before = compactSpecRows.slice(0, 4);   // 차량번호·제조사/모델·세부모델·세부트림
-          const after = compactSpecRows.slice(4);        // 연식/주행 ~ 색상
-          return renderGrid(before)
-            + (opts.length ? `<div class="lab">선택옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : '')
-            + renderGrid(after);
-        })()}
+        <div class="lab">차량번호</div><div class="full">${esc(p.car_number || '-')}</div>
+        ${pair('제조사', basicByLabel['제조사'], '모델', basicByLabel['모델'])}
+        ${pair('세부모델', basicByLabel['세부모델'], '세부트림', specByLabel['트림'])}
+        ${opts.length ? `<div class="lab">선택옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : ''}
+        ${pair('연식', specByLabel['연식'], '주행거리', specByLabel['주행'])}
+        ${pair('연료', specByLabel['연료'], '구동방식', specByLabel['구동'])}
+        ${pair('외장색', specByLabel['외장색'], '내장색', specByLabel['내장색'])}
       </div>
     </div>
 
@@ -586,9 +522,14 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     </div>` : ''}
 
     <!-- 3. 운전 가능 범위·연령·보험료 -->
-    ${(filterRows(driverCond).length || insRows.length) ? `<div class="detail-section">
+    ${(condByLabel['기본연령'] || condByLabel['개인범위'] || insRows.length) ? `<div class="detail-section">
       <div class="detail-section-label">3. 운전 가능 범위 / 연령 / 보험</div>
-      ${filterRows(driverCond).length ? `<div class="info-grid">${renderGrid(driverCond)}</div>` : ''}
+      <div class="info-grid">
+        ${pair('기본 연령', condByLabel['기본연령'], '연령 상한', condByLabel['연령상한'])}
+        ${pair('연령 하향', condByLabel['연령하향'], '연령 하향비', condByLabel['연령하향비'])}
+        ${pair('개인 범위', condByLabel['개인범위'], '사업자 범위', condByLabel['사업자범위'])}
+        ${pair('추가 인원', condByLabel['추가인원'], '추가 운전비', condByLabel['추가운전비'])}
+      </div>
       ${insRows.length ? `
         <div style="color:var(--text-sub); margin: 8px 0 4px; font-size: 11px;">보험 한도</div>
         <table class="table">
@@ -598,27 +539,39 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       ` : ''}
     </div>` : ''}
 
-    <!-- 4. 대여 조건 (심사·결제 / 주행·지역 / 정비) -->
-    ${(filterRows(screenCond).length || filterRows(drivingCond).length || filterRows(serviceCond).length) ? `<div class="detail-section">
+    <!-- 4. 대여 조건 -->
+    ${(condByLabel['심사여부'] || condByLabel['연간약정주행'] || condByLabel['정비서비스']) ? `<div class="detail-section">
       <div class="detail-section-label">4. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
-      ${filterRows(screenCond).length ? `
-        <div style="color:var(--text-sub); margin: 4px 0; font-size: 11px;">심사·결제·보증금</div>
-        <div class="info-grid">${renderGrid(screenCond)}</div>
-      ` : ''}
-      ${filterRows(drivingCond).length ? `
-        <div style="color:var(--text-sub); margin: 8px 0 4px; font-size: 11px;">주행·지역</div>
-        <div class="info-grid">${renderGrid(drivingCond)}</div>
-      ` : ''}
-      ${filterRows(serviceCond).length ? `
-        <div style="color:var(--text-sub); margin: 8px 0 4px; font-size: 11px;">정비·서비스</div>
-        <div class="info-grid">${renderGrid(serviceCond)}</div>
-      ` : ''}
+      <div class="info-grid">
+        ${pair('심사 여부', condByLabel['심사여부'], '심사 기준', condByLabel['심사기준'])}
+        ${pair('결제 방식', condByLabel['결제방식'], '위약금', condByLabel['위약금'])}
+        ${pair('보증금 분납', condByLabel['보증금분납'], '보증 카드', condByLabel['보증카드'])}
+        ${pair('연간 주행', condByLabel['연간약정주행'], '1만km 추가', condByLabel['1만km추가'])}
+        ${pair('대여 지역', condByLabel['대여지역'], '탁송비', condByLabel['탁송비'])}
+        ${pair('정비 서비스', condByLabel['정비서비스'], '보험 포함', condByLabel['보험 포함'])}
+      </div>
     </div>` : ''}
 
-    <!-- 5. 기타 정보 (공급사명 등) -->
-    ${etcRows.filter(([, v]) => v != null && v !== '' && v !== '-').length ? `<div class="detail-section">
+    <!-- 5. 기타 정보 -->
+    ${(providerName || policyName || specByLabel['최초등록일']) ? `<div class="detail-section">
       <div class="detail-section-label">5. 기타 정보</div>
-      <div class="info-grid">${renderGridFull(etcRows)}</div>
+      <div class="info-grid">
+        ${providerName ? `<div class="lab">공급사</div><div class="full">${esc(providerName)}</div>` : ''}
+        ${policyName ? `<div class="lab">정책명</div><div class="full">${esc(policyName)}</div>` : ''}
+        ${pair('차종', specByLabel['차종'], '인승', specByLabel['인승'])}
+        ${pair('배기량', specByLabel['배기량'], '용도', specByLabel['용도'])}
+        ${pair('등록일', specByLabel['최초등록일'], '차령만료', specByLabel['차령만료일'])}
+        ${pair('상품구분', specByLabel['상품구분'], '위치', specByLabel['위치'])}
+        ${pair('차량가격', specByLabel['차량가격'], '차대번호', specByLabel['차대번호'])}
+        ${isAdmin ? `
+          ${pair('공급코드', p.provider_company_code, '영업코드', p.partner_code)}
+          ${pair('상품코드', p.product_code, '정책코드', p._policy?.policy_code || p.policy_code)}
+          ${p._key ? `<div class="lab">상품UID</div><div class="full">${esc(p._key)}</div>` : ''}
+          ${p._policy?.policy_type ? `<div class="lab">정책유형</div><div class="full">${esc(p._policy.policy_type)}</div>` : ''}
+          ${p._policy?.commission_clawback_condition ? `<div class="lab">수수료환수</div><div class="full">${esc(p._policy.commission_clawback_condition)}</div>` : ''}
+          ${(p.partner_memo || p.note) ? `<div class="lab">특이사항</div><div class="full">${esc(p.partner_memo || p.note)}</div>` : ''}
+        ` : ''}
+      </div>
     </div>` : ''}
 
     <!-- 6. 영업 수수료 (영업자/관리자만 — 기간별 수수료 + 비고) -->
