@@ -116,11 +116,32 @@ export function renderContractDetail(c) {
     bindContractWorkV2(stepCard, c, { reRender: () => renderContractDetail(c) });
   }
 
-  // 2. 계약 상세
+  // 2. 계약 상세 — 4개 섹션 (계약자 / 차량 / 대여조건 / 관계자)
   if (detailCard) {
     const termN = c.rent_month_snapshot || c.contract_term;
     const rentN = c.rent_amount_snapshot || c.monthly_rent;
     const depN = c.deposit_amount_snapshot || c.deposit;
+
+    // 같은 customer_uid 의 다른 계약 카운트 (재계약 표시용)
+    const sameCustomerCount = c.customer_uid
+      ? (store.contracts || []).filter(x => x.customer_uid === c.customer_uid && x._key !== c._key && !x._deleted).length
+      : 0;
+    const customerLabel = sameCustomerCount > 0
+      ? `${c.customer_name || ''} · 다른계약 ${sameCustomerCount}건`
+      : (c.customer_name || '');
+
+    // 1) 계약자 정보
+    const customerRows = [
+      ['계약자', customerLabel, true],
+      ['생년월일', c.customer_birth],
+      ['연락처', c.customer_phone, true],
+      ['사업자', c.customer_is_business ? '예' : ''],
+      ['사업자번호', c.customer_business_number, true],
+      ['법인/상호명', c.customer_company_name, true],
+      ['배송지', c.delivery_region, true],
+    ].filter(([, v]) => v);
+
+    // 2) 차량 정보
     const carRows = [
       ['차량번호', c.car_number_snapshot],
       ['제조사', c.maker_snapshot],
@@ -131,38 +152,35 @@ export function renderContractDetail(c) {
       ['연료', c.fuel_type_snapshot],
       ['색상', c.ext_color_snapshot],
     ].filter(([, v]) => v);
+
+    // 3) 대여 조건 정보
     const rentRows = [
       ['대여기간', termN ? termN + '개월' : ''],
       ['월대여료', rentN ? Math.round(Number(rentN)/10000) + '만' : ''],
       ['보증금', depN ? Math.round(Number(depN)/10000) + '만' : ''],
       ['계약일', fmtDate(c.contract_date), true],
       ['심사기준', c.credit_grade_snapshot, true],
-      ['정책명', c.policy_name_snapshot || c.policy_code, true],
+      ['정책명', c.policy_name_snapshot, true],
     ].filter(([, v]) => v);
-    // 같은 customer_uid 의 다른 계약 카운트
-    const sameCustomerCount = c.customer_uid
-      ? (store.contracts || []).filter(x => x.customer_uid === c.customer_uid && x._key !== c._key && !x._deleted).length
-      : 0;
-    const customerLabel = sameCustomerCount > 0
-      ? `${c.customer_name || ''} · 다른계약 ${sameCustomerCount}건`
-      : (c.customer_name || '');
+
+    // 4) 관계자 정보 — 공급사는 회사명(한글), 나머지는 코드
+    const providerName = providerNameByCode(c.provider_company_code || c.partner_code, store);
     const partyRows = [
-      ['계약자', customerLabel],
-      ['생년월일', c.customer_birth],
-      ['연락처', c.customer_phone, true],
-      ['사업자', c.customer_is_business ? '예' : ''],
-      ['배송지', c.delivery_region, true],
-      ['영업자', c.agent_name ? `${c.agent_name} (${c.agent_code || ''})` : c.agent_code],
-      ['영업코드', c.agent_channel_code],
-      ['공급코드', c.provider_company_code, true],
+      ['공급사', providerName, true],
+      ['영업채널', c.agent_channel_code],
+      ['영업자', c.agent_code],
       ['정책코드', c.policy_code],
-      ['계약코드', c.contract_code + (c.is_draft ? ' · 임시' : '')],
+      ['계약코드', c.contract_code + (c.is_draft ? ' · 임시' : ''), true],
     ].filter(([, v]) => v);
+
     const renderRows = (rows) => `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;
+    const sectionTitle = (icon, label) => `<div style="color:var(--text-sub);margin:12px 0 4px;font-size:12px;font-weight:500;"><i class="ph ph-${icon}"></i> ${label}</div>`;
+
     detailCard.querySelector('.ws4-body').innerHTML = `
-      ${carRows.length ? `<div style="color:var(--text-weak); margin-bottom: 4px;"><i class="ph ph-car-simple"></i> 차량정보</div>${renderRows(carRows)}` : ''}
-      ${rentRows.length ? `<div style="color:var(--text-weak); margin: 12px 0 4px;"><i class="ph ph-currency-krw"></i> 대여정보</div>${renderRows(rentRows)}` : ''}
-      ${partyRows.length ? `<div style="color:var(--text-weak); margin: 12px 0 4px;"><i class="ph ph-users"></i> 관계자</div>${renderRows(partyRows)}` : ''}
+      ${customerRows.length ? `<div style="color:var(--text-sub);margin-bottom:4px;font-size:12px;font-weight:500;"><i class="ph ph-user"></i> 계약자 정보</div>${renderRows(customerRows)}` : ''}
+      ${carRows.length ? sectionTitle('car-simple', '차량 정보') + renderRows(carRows) : ''}
+      ${rentRows.length ? sectionTitle('currency-krw', '대여조건 정보') + renderRows(rentRows) : ''}
+      ${partyRows.length ? sectionTitle('users', '관계자 정보') + renderRows(partyRows) : ''}
     `;
   }
 
