@@ -391,7 +391,7 @@ input[type="radio"] {
   background: var(--bg-card);
   color: var(--text-sub);
   border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -887,6 +887,73 @@ kbd, .kbd {
   .filterbar { padding: 8px; }
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+ * ERP 톤 토큰 override — 위 default 값을 덮어쓰는 ERP 스타일.
+ *  inline <style> 보다 늦게 로드되도록 base.css 맨 끝에 둠 (Vercel 빌드에서
+ *  bundle CSS 가 inline <style> 보다 뒤에 주입되어 inline override 가 무력화되는
+ *  문제 해결).
+ * ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ERP 혼합 폰트 — 영문/숫자: Consolas(Win)/SF Mono(Mac), 한글: Pretendard */
+  --font: Consolas, 'SF Mono', ui-monospace, 'Pretendard', sans-serif;
+  --font-mono: var(--font);
+
+  /* 사이즈 — 12px 단일 (위계는 색만) */
+  --font-size:    12px;
+  --font-size-xs: 12px;
+  --font-size-lg: 12px;
+
+  /* 굵기 단일 */
+  --fw:        400;
+  --fw-medium: 500;
+  --fw-bold:   700;
+
+  /* 컴팩트 높이 */
+  --row-height:    30px;
+  --head-height:   30px;
+  --input-height:  26px;
+  --button-height: 26px;
+  --chip-height:   20px;
+  --panel-head-h:  34px;
+  --sb-item-h:     30px;
+  --cell-padding:  4px 8px;
+
+  /* 라운드 — 2px 통일 (각진 ERP) */
+  --radius:      2px;
+  --radius-sm:   2px;
+  --radius-pill: 2px;
+  --ctrl-r:      2px;
+
+  /* 간격 토큰 */
+  --sp-1:  4px;
+  --sp-2:  6px;
+  --sp-3:  8px;
+  --sp-4: 12px;
+  --sp-5: 16px;
+  --sp-6: 24px;
+}
+*, *::before, *::after { font-family: var(--font); letter-spacing: 0; }
+.ph, .ph::before { font-family: "Phosphor" !important; }
+body { font-size: 12px; }
+kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
+
+/* 버튼·뱃지·칩 — ERP 톤 강제 */
+.btn, .btn-primary, .btn-outline, .btn-danger, .btn-ghost {
+  height: var(--button-height); border-radius: var(--radius); font-size: var(--font-size);
+}
+.btn-icon { width: var(--button-height); padding: 0; }
+.badge, .badge-red, .badge-orange, .badge-green, .badge-blue, .badge-gray {
+  height: var(--chip-height); padding: 0 var(--sp-2); border-radius: var(--radius);
+  font-size: var(--font-size);
+  display: inline-flex; align-items: center; justify-content: center; line-height: 1;
+}
+.chip {
+  height: var(--chip-height); padding: 0 var(--sp-3); border-radius: var(--radius);
+  font-size: var(--font-size);
+  display: inline-flex; align-items: center; gap: var(--sp-1); line-height: 1;
+}
 
 /* ═══════════════════════════════════════════════════════════════
  * END OF base.css
