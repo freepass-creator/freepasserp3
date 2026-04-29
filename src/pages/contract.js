@@ -183,54 +183,72 @@ function renderContractDocs(card, c) {
 
   body.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:12px;padding:8px;">
-      <!-- 1. 운전면허증 (단일, OCR 대상) -->
+      <!-- 1. 운전면허증 — 한 장 큰 미리보기 + OCR -->
       <div style="border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-card);">
         <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${license ? 'var(--alert-green-bg)' : 'var(--bg-stripe)'};border-bottom:1px solid var(--border);">
           <i class="ph ph-identification-card" style="font-size:14px;color:${license ? 'var(--alert-green-text)' : 'var(--text-sub)'};"></i>
           <span style="flex:1;font-size:12px;font-weight:500;">운전면허증 <span style="color:var(--alert-red-text);">*</span></span>
           ${license ? '<span style="font-size:10px;color:var(--alert-green-text);">제출됨</span>' : '<span style="font-size:10px;color:var(--text-muted);">미제출</span>'}
-          ${license && canEdit ? `<button class="btn" style="height:22px;padding:0 8px;font-size:11px;" id="ctLicenseOcr" title="OCR 분석"><i class="ph ph-scan"></i> OCR</button>` : ''}
+          ${license && canEdit ? `
+            <button class="btn" style="height:22px;padding:0 8px;font-size:11px;" id="ctLicenseOcr" title="OCR 분석"><i class="ph ph-scan"></i> OCR</button>
+            <button class="btn" style="height:22px;padding:0 8px;font-size:11px;color:var(--alert-red-text);" id="ctLicenseDel"><i class="ph ph-x"></i></button>
+          ` : ''}
         </div>
         ${license ? `
-          <div style="padding:8px;">
+          <div style="padding:8px;display:flex;justify-content:center;background:var(--bg-stripe);">
             ${isPdf(license)
-              ? `<a href="${esc(license)}" target="_blank" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-link);text-decoration:none;"><i class="ph ph-file-pdf" style="font-size:24px;"></i><span>PDF 보기</span></a>`
-              : `<img src="${esc(license)}" style="max-width:100%;max-height:160px;border-radius:4px;cursor:zoom-in;" data-doc-img="${esc(license)}">`}
-            ${canEdit ? `<button class="btn" style="margin-top:6px;height:22px;padding:0 8px;font-size:11px;color:var(--alert-red-text);" id="ctLicenseDel"><i class="ph ph-x"></i> 제거</button>` : ''}
+              ? `<a href="${esc(license)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--text-link);text-decoration:none;padding:32px;"><i class="ph ph-file-pdf" style="font-size:48px;"></i><span>PDF 보기</span></a>`
+              : `<img src="${esc(license)}" style="max-width:100%;max-height:280px;border-radius:4px;cursor:zoom-in;display:block;" data-doc-img="${esc(license)}">`}
           </div>
         ` : (canEdit ? `
-          <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);margin:8px;border-radius:4px;">
-            <i class="ph ph-upload-simple" style="font-size:20px;margin-bottom:4px;"></i>
+          <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);margin:8px;border-radius:4px;">
+            <i class="ph ph-upload-simple" style="font-size:24px;margin-bottom:6px;"></i>
             <span>면허증 업로드 (OCR 대상)</span>
             <input type="file" hidden accept="image/*,application/pdf" id="ctLicenseUpload">
           </label>
-        ` : '<div style="padding:8px;font-size:11px;color:var(--text-muted);text-align:center;">미제출</div>')}
+        ` : '<div style="padding:16px;font-size:11px;color:var(--text-muted);text-align:center;">미제출</div>')}
       </div>
 
-      <!-- 2. 첨부 서류 (다중 — 신분증·통장사본·재직증명·사업자등록증 등) -->
+      <!-- 2. 첨부 서류 — 썸네일 그리드 -->
       <div style="border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-card);">
         <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-stripe);border-bottom:1px solid var(--border);">
           <i class="ph ph-paperclip" style="font-size:14px;color:var(--text-sub);"></i>
           <span style="flex:1;font-size:12px;font-weight:500;">첨부 서류</span>
           <span style="font-size:10px;color:var(--text-muted);">${attachments.length}개</span>
-        </div>
-        <div style="padding:8px;display:flex;flex-direction:column;gap:6px;">
-          ${attachments.length ? attachments.map((url, i) => `
-            <div style="display:flex;align-items:center;gap:8px;padding:6px;border:1px solid var(--border-soft, var(--border));border-radius:4px;">
-              ${isPdf(url)
-                ? `<i class="ph ph-file-pdf" style="font-size:20px;color:var(--alert-red-text);"></i>`
-                : `<img src="${esc(url)}" style="width:36px;height:36px;object-fit:cover;border-radius:3px;cursor:zoom-in;" data-doc-img="${esc(url)}">`}
-              <a href="${esc(url)}" target="_blank" style="flex:1;font-size:11px;color:var(--text-link);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">파일 ${i + 1}</a>
-              ${canEdit ? `<button class="btn" style="height:22px;padding:0 8px;font-size:11px;color:var(--alert-red-text);" data-att-del="${i}"><i class="ph ph-x"></i></button>` : ''}
-            </div>
-          `).join('') : '<div style="padding:8px;font-size:11px;color:var(--text-muted);text-align:center;">첨부된 서류 없음</div>'}
-          ${canEdit ? `
-            <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);border-radius:4px;">
-              <i class="ph ph-plus" style="font-size:18px;margin-bottom:4px;"></i>
-              <span>서류 추가 (여러 개 가능)</span>
-              <input type="file" hidden accept="image/*,application/pdf" multiple id="ctAttUpload">
+          ${canEdit && attachments.length ? `
+            <label style="height:22px;padding:0 8px;font-size:11px;border:1px solid var(--border);border-radius:2px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;background:var(--bg-card);">
+              <i class="ph ph-plus"></i> 추가
+              <input type="file" hidden accept="image/*,application/pdf" multiple class="ctAttUploadAdd">
             </label>
           ` : ''}
+        </div>
+        <div style="padding:8px;">
+          ${attachments.length ? `
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));gap:6px;">
+              ${attachments.map((url, i) => `
+                <div style="position:relative;aspect-ratio:1/1;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-stripe);">
+                  ${isPdf(url)
+                    ? `<a href="${esc(url)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--alert-red-text);text-decoration:none;font-size:9px;gap:2px;"><i class="ph ph-file-pdf" style="font-size:24px;"></i><span>PDF</span></a>`
+                    : `<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block;" data-doc-img="${esc(url)}">`}
+                  ${canEdit ? `<button data-att-del="${i}" style="position:absolute;top:2px;right:2px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="ph ph-x"></i></button>` : ''}
+                  <span style="position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;">${i + 1}</span>
+                </div>
+              `).join('')}
+              ${canEdit ? `
+                <label style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:10px;border:1px dashed var(--border);border-radius:4px;gap:2px;">
+                  <i class="ph ph-plus" style="font-size:18px;"></i>
+                  <span>추가</span>
+                  <input type="file" hidden accept="image/*,application/pdf" multiple class="ctAttUploadAdd">
+                </label>
+              ` : ''}
+            </div>
+          ` : (canEdit ? `
+            <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);border-radius:4px;gap:4px;">
+              <i class="ph ph-plus" style="font-size:20px;"></i>
+              <span>첨부 서류 추가 (여러 개 가능)</span>
+              <input type="file" hidden accept="image/*,application/pdf" multiple class="ctAttUploadAdd">
+            </label>
+          ` : '<div style="padding:16px;font-size:11px;color:var(--text-muted);text-align:center;">첨부된 서류 없음</div>')}
         </div>
       </div>
     </div>
@@ -238,15 +256,16 @@ function renderContractDocs(card, c) {
 
   if (!canEdit) return;
 
-  // 면허증 업로드
+  // 면허증 업로드 — 이미지/PDF 분기 (v2 패턴)
   body.querySelector('#ctLicenseUpload')?.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     try {
       showToast('면허증 업로드 중...', 'info');
-      const { uploadImage } = await import('../firebase/storage-helper.js');
+      const { uploadImage, uploadFile } = await import('../firebase/storage-helper.js');
+      const isImage = file.type?.startsWith('image/');
       const path = `contract-docs/${c._key}/license_${Date.now()}_${file.name}`;
-      const { url } = await uploadImage(path, file);
+      const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
       await updateRecord(`contracts/${c._key}`, { doc_license: url, updated_at: Date.now() });
       c.doc_license = url;
       showToast('면허증 업로드 완료', 'success');
@@ -272,28 +291,31 @@ function renderContractDocs(card, c) {
     // TODO: ocr-parsers/license.js 같은 파서 만들고 image URL 다운로드 후 OCR
   });
 
-  // 첨부서류 다중 업로드
-  body.querySelector('#ctAttUpload')?.addEventListener('change', async (e) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) return;
-    try {
-      showToast(`${files.length}개 파일 업로드 중...`, 'info');
-      const { uploadImage } = await import('../firebase/storage-helper.js');
-      const newUrls = [];
-      for (const file of files) {
-        const path = `contract-docs/${c._key}/att_${Date.now()}_${file.name}`;
-        const { url } = await uploadImage(path, file);
-        newUrls.push(url);
+  // 첨부서류 다중 업로드 — 이미지/PDF 분기 (v2 패턴). 빈 상태/추가 입력 모두 동일 핸들러
+  body.querySelectorAll('input.ctAttUploadAdd').forEach(input => {
+    input.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+      try {
+        showToast(`${files.length}개 파일 업로드 중...`, 'info');
+        const { uploadImage, uploadFile } = await import('../firebase/storage-helper.js');
+        const newUrls = [];
+        for (const file of files) {
+          const isImage = file.type?.startsWith('image/');
+          const path = `contract-docs/${c._key}/att_${Date.now()}_${file.name}`;
+          const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+          newUrls.push(url);
+        }
+        const next = [...attachments, ...newUrls];
+        await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
+        c.doc_attachments = next;
+        showToast(`${newUrls.length}개 업로드 완료`, 'success');
+        renderContractDocs(card, c);
+      } catch (err) {
+        console.error('[att upload]', err);
+        showToast('업로드 실패: ' + (err.message || err), 'error');
       }
-      const next = [...attachments, ...newUrls];
-      await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
-      c.doc_attachments = next;
-      showToast(`${newUrls.length}개 업로드 완료`, 'success');
-      renderContractDocs(card, c);
-    } catch (err) {
-      console.error('[att upload]', err);
-      showToast('업로드 실패: ' + (err.message || err), 'error');
-    }
+    });
   });
 
   // 첨부서류 개별 삭제
