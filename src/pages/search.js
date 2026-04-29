@@ -607,7 +607,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     ${(condByLabel['약정 주행거리'] || condByLabel['심사여부'] || condByLabel['정비서비스']) ? `<div class="detail-section">
       <div class="detail-section-label">5. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
       <div class="info-grid">
-        ${pair('약정 주행거리', condByLabel['약정 주행거리'], '1만Km 추가비', condByLabel['1만km추가'])}
+        ${pair('약정 주행거리', String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, ''), '1만Km 추가비', condByLabel['1만km추가'])}
         ${pair('심사 여부', condByLabel['심사여부'], '심사 기준', condByLabel['심사기준'])}
         ${pair('보증금 분납', condByLabel['보증금분납'], '보증 카드', condByLabel['보증카드'])}
         ${pair('결제 방식', condByLabel['결제방식'], '위약금', condByLabel['위약금'])}
