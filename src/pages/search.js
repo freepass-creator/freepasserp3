@@ -476,36 +476,51 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     ${driveSrc ? `<div style="padding:8px; text-align:center; color:var(--text-muted); font-size:12px;">사진 불러오는 중...</div>` : ''}
   `;
 
-  // condRows 를 운전·결제·주행·정비 4개 그룹으로 분리
+  // 관련 필드끼리 묶어서 한 줄로 — "라벨1 / 라벨2" : "값1 / 값2"
+  // 둘 중 하나만 있으면 단독 라벨/값으로, 둘 다 없으면 row 생략
+  const merged = (lbl1, val1, lbl2, val2) => {
+    const v1 = val1 != null && val1 !== '' && val1 !== '-' ? val1 : '';
+    const v2 = val2 != null && val2 !== '' && val2 !== '-' ? val2 : '';
+    if (v1 && v2) return [`${lbl1} / ${lbl2}`, `${v1} / ${v2}`];
+    if (v1) return [lbl1, v1];
+    if (v2) return [lbl2, v2];
+    return null;
+  };
+  const specByLabel = Object.fromEntries(specRows.map(r => [r[0], r[1]]));
+  const compactSpecRows = [
+    ['트림', specByLabel['트림']],
+    merged('연식', specByLabel['연식'], '주행', specByLabel['주행']),
+    merged('색상(외/내)', [specByLabel['외장색'], specByLabel['내장색']].filter(Boolean).join(' / ') || null, null, null),
+    merged('연료', specByLabel['연료'], '배기량', specByLabel['배기량']),
+    merged('차종', specByLabel['차종'], '구동', specByLabel['구동']),
+    merged('인승', specByLabel['인승'], '용도', specByLabel['용도']),
+    merged('상품구분', specByLabel['상품구분'], '위치', specByLabel['위치']),
+    merged('등록일', specByLabel['최초등록일'], '차령만료', specByLabel['차령만료일']),
+    ['차량가격', specByLabel['차량가격']],
+    ['차대번호', specByLabel['차대번호']],
+  ].filter(Boolean);
+
+  // condRows → 묶음 row
   const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
   const driverCond = [
-    ['기본연령',     condByLabel['기본연령']],
-    ['연령상한',     condByLabel['연령상한']],
-    ['연령하향',     condByLabel['연령하향']],
-    ['연령하향비',   condByLabel['연령하향비']],
-    ['개인범위',     condByLabel['개인범위']],
-    ['사업자범위',   condByLabel['사업자범위']],
-    ['추가인원',     condByLabel['추가인원']],
-    ['추가운전비',   condByLabel['추가운전비']],
-  ];
+    merged('기본 연령', condByLabel['기본연령'], '연령 상한', condByLabel['연령상한']),
+    merged('연령 하향', condByLabel['연령하향'], '연령 하향비', condByLabel['연령하향비']),
+    merged('개인 범위', condByLabel['개인범위'], '사업자 범위', condByLabel['사업자범위']),
+    merged('추가 인원', condByLabel['추가인원'], '추가 운전비', condByLabel['추가운전비']),
+  ].filter(Boolean);
   const screenCond = [
-    ['심사여부',     condByLabel['심사여부']],
-    ['심사기준',     condByLabel['심사기준']],
-    ['결제방식',     condByLabel['결제방식']],
-    ['보증금분납',   condByLabel['보증금분납']],
-    ['보증카드',     condByLabel['보증카드']],
-    ['위약금',       condByLabel['위약금']],
-  ];
+    merged('심사 여부', condByLabel['심사여부'], '심사 기준', condByLabel['심사기준']),
+    ['결제 방식', condByLabel['결제방식']],
+    merged('보증금 분납', condByLabel['보증금분납'], '보증 카드', condByLabel['보증카드']),
+    ['위약금', condByLabel['위약금']],
+  ].filter(Boolean);
   const drivingCond = [
-    ['연간약정주행', condByLabel['연간약정주행']],
-    ['1만km추가',    condByLabel['1만km추가']],
-    ['대여지역',     condByLabel['대여지역']],
-    ['탁송비',       condByLabel['탁송비']],
-  ];
+    merged('연간 주행', condByLabel['연간약정주행'], '1만km추가', condByLabel['1만km추가']),
+    merged('대여 지역', condByLabel['대여지역'], '탁송비', condByLabel['탁송비']),
+  ].filter(Boolean);
   const serviceCond = [
-    ['정비서비스',   condByLabel['정비서비스']],
-    ['보험 포함',    condByLabel['보험 포함']],
-  ];
+    merged('정비 서비스', condByLabel['정비서비스'], '보험 포함', condByLabel['보험 포함']),
+  ].filter(Boolean);
 
   // 5. 기타 정보 — 공급사명(한글, 법인 접두/접미어 제거) + 정책명
   const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
