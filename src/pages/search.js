@@ -476,62 +476,122 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     ${driveSrc ? `<div style="padding:8px; text-align:center; color:var(--text-muted); font-size:12px;">사진 불러오는 중...</div>` : ''}
   `;
 
+  // condRows 를 운전·결제·주행·정비 4개 그룹으로 분리
+  const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
+  const driverCond = [
+    ['기본연령',     condByLabel['기본연령']],
+    ['연령상한',     condByLabel['연령상한']],
+    ['연령하향',     condByLabel['연령하향']],
+    ['연령하향비',   condByLabel['연령하향비']],
+    ['개인범위',     condByLabel['개인범위']],
+    ['사업자범위',   condByLabel['사업자범위']],
+    ['추가인원',     condByLabel['추가인원']],
+    ['추가운전비',   condByLabel['추가운전비']],
+  ];
+  const screenCond = [
+    ['심사여부',     condByLabel['심사여부']],
+    ['심사기준',     condByLabel['심사기준']],
+    ['결제방식',     condByLabel['결제방식']],
+    ['보증금분납',   condByLabel['보증금분납']],
+    ['보증카드',     condByLabel['보증카드']],
+    ['위약금',       condByLabel['위약금']],
+  ];
+  const drivingCond = [
+    ['연간약정주행', condByLabel['연간약정주행']],
+    ['1만km추가',    condByLabel['1만km추가']],
+    ['대여지역',     condByLabel['대여지역']],
+    ['탁송비',       condByLabel['탁송비']],
+  ];
+  const serviceCond = [
+    ['정비서비스',   condByLabel['정비서비스']],
+    ['보험 포함',    condByLabel['보험 포함']],
+  ];
+
+  // 5. 기타 정보 — 공급사명(한글, 법인 접두/접미어 제거) + 정책명
+  const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
+  const etcRows = [
+    ['공급사', providerName, true],
+    ['정책명', policyName, true],
+    ...(isAdmin ? [
+      ['공급코드',   p.provider_company_code],
+      ['영업코드',   p.partner_code],
+      ['상품코드',   p.product_code],
+      ['상품UID',    p._key, true],
+      ['정책코드',   p._policy?.policy_code || p.policy_code],
+      ['정책유형',   p._policy?.policy_type],
+      ['수수료환수', p._policy?.commission_clawback_condition, true],
+      ['특이사항',   p.partner_memo || p.note, true],
+    ] : []),
+  ];
+
+  const renderGridFull = (r) => r.filter(([, v]) => v != null && v !== '' && v !== '-').map(([l, v, full]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${esc(v)}</div>`).join('');
+
   const body = card.querySelector('.ws4-body');
   body.innerHTML = `
     <div class="detail-section">${photoHtml}</div>
 
-    <!-- 1. 기본정보 (스크롤 맨 위 — 새 차량 선택 시 사진부터 보이게) -->
+    <!-- 1. 차량 정보 + 제조사 스펙 -->
     <div class="detail-section">
-      <div class="detail-section-label">1. 기본정보</div>
-      <div class="info-grid">${renderGrid(basicRows)}</div>
-    </div>
-
-    <!-- 2. 제조사 스펙 -->
-    ${filterRows(specRows).length || opts.length ? `<div class="detail-section">
-      <div class="detail-section-label">2. 제조사 스펙</div>
+      <div class="detail-section-label">1. 차량 정보 / 제조사 스펙</div>
       <div class="info-grid">
+        ${renderGrid(basicRows)}
         ${renderGrid(specRows)}
         ${opts.length ? `<div class="lab">옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : ''}
       </div>
-    </div>` : ''}
+    </div>
 
-    <!-- 3. 기간별 대여료 -->
+    <!-- 2. 기간별 대여료 구성표 -->
     ${priceRows.length ? `<div class="detail-section">
-      <div class="detail-section-label">3. 기간별 대여료 / 보증금</div>
+      <div class="detail-section-label">2. 기간별 대여료</div>
       <table class="table">
         <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
         <tbody>${priceRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${r.rent ? Math.round(r.rent/10000) + '만' : '-'}</td><td class="num">${r.dep ? Math.round(r.dep/10000) + '만' : '-'}</td></tr>`).join('')}</tbody>
       </table>
     </div>` : ''}
 
-    <!-- 4. 보험 정보 -->
-    ${insRows.length ? `<div class="detail-section">
-      <div class="detail-section-label">4. 보험 정보</div>
-      <table class="table">
-        <thead><tr><th>구분</th><th>보장한도</th><th>자기부담금</th></tr></thead>
-        <tbody>${insRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${esc(r[2] || '-')}</td></tr>`).join('')}</tbody>
-      </table>
+    <!-- 3. 운전 가능 범위·연령·보험료 -->
+    ${(filterRows(driverCond).length || insRows.length) ? `<div class="detail-section">
+      <div class="detail-section-label">3. 운전 가능 범위 / 연령 / 보험</div>
+      ${filterRows(driverCond).length ? `<div class="info-grid">${renderGrid(driverCond)}</div>` : ''}
+      ${insRows.length ? `
+        <div style="color:var(--text-sub); margin: 8px 0 4px; font-size: 11px;">보험 한도</div>
+        <table class="table">
+          <thead><tr><th>구분</th><th>보장한도</th><th>자기부담금</th></tr></thead>
+          <tbody>${insRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${esc(r[2] || '-')}</td></tr>`).join('')}</tbody>
+        </table>
+      ` : ''}
     </div>` : ''}
 
-    <!-- 5. 기타 계약 조건 -->
-    ${filterRows(condRows).length ? `<div class="detail-section">
-      <div class="detail-section-label">5. 기타 계약 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
-      <div class="info-grid">${renderGrid(condRows)}</div>
+    <!-- 4. 대여 조건 (심사·결제 / 주행·지역 / 정비) -->
+    ${(filterRows(screenCond).length || filterRows(drivingCond).length || filterRows(serviceCond).length) ? `<div class="detail-section">
+      <div class="detail-section-label">4. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
+      ${filterRows(screenCond).length ? `
+        <div style="color:var(--text-sub); margin: 4px 0; font-size: 11px;">심사·결제·보증금</div>
+        <div class="info-grid">${renderGrid(screenCond)}</div>
+      ` : ''}
+      ${filterRows(drivingCond).length ? `
+        <div style="color:var(--text-sub); margin: 8px 0 4px; font-size: 11px;">주행·지역</div>
+        <div class="info-grid">${renderGrid(drivingCond)}</div>
+      ` : ''}
+      ${filterRows(serviceCond).length ? `
+        <div style="color:var(--text-sub); margin: 8px 0 4px; font-size: 11px;">정비·서비스</div>
+        <div class="info-grid">${renderGrid(serviceCond)}</div>
+      ` : ''}
     </div>` : ''}
 
-    <!-- 6. 영업 수수료 (agent / admin / agent_admin 만) -->
+    <!-- 5. 기타 정보 (공급사명 등) -->
+    ${etcRows.filter(([, v]) => v != null && v !== '' && v !== '-').length ? `<div class="detail-section">
+      <div class="detail-section-label">5. 기타 정보</div>
+      <div class="info-grid">${renderGridFull(etcRows)}</div>
+    </div>` : ''}
+
+    <!-- 6. 영업 수수료 (영업자/관리자만 — 기간별 수수료 + 비고) -->
     ${(canSeeFee && feeRows.length) ? `<div class="detail-section">
-      <div class="detail-section-label">6. 영업 수수료</div>
+      <div class="detail-section-label">6. 영업 수수료 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">(내부용)</span></div>
       <table class="table">
-        <thead><tr><th>기간</th><th class="num">수수료</th></tr></thead>
-        <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${Math.round(r.fee/10000)}만</td></tr>`).join('')}</tbody>
+        <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
+        <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${Math.round(r.fee/10000)}만</td><td style="color:var(--text-sub);">${esc(r.fee_memo || '')}</td></tr>`).join('')}</tbody>
       </table>
-    </div>` : ''}
-
-    <!-- 관리자 정보 (admin only) -->
-    ${adminRows.length && filterRows(adminRows).length ? `<div class="detail-section">
-      <div class="detail-section-label">관리자 정보</div>
-      <div class="info-grid">${renderGrid(adminRows)}</div>
     </div>` : ''}
   `;
   // 새 차량 선택 시 항상 사진부터 보이게 — 스크롤 맨 위로

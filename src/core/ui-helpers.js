@@ -155,13 +155,29 @@ export function renderRoomItem({ id, icon, badge, tone, accent, name, time, msg,
   </div>`;
 }
 
-/* 공급사 코드 → 한글 회사명 변환 (store.partners 에서 lookup) */
+/* 회사명에서 법인 접두/접미어 제거 — "주식회사 현대캐피탈" → "현대캐피탈" 등.
+ *  (주)·㈜·주식회사·유한회사·합자회사·합명회사·재단법인·사단법인 모두 처리. */
+export function stripLegalEntity(name) {
+  if (!name) return '';
+  let s = String(name).trim();
+  // 접두형: "(주) 현대캐피탈", "주식회사 현대캐피탈", "㈜현대캐피탈"
+  s = s.replace(/^[\(（]\s*주\s*[\)）]\s*/, '');
+  s = s.replace(/^㈜\s*/, '');
+  s = s.replace(/^(주식회사|유한회사|합자회사|합명회사|재단법인|사단법인|학교법인|의료법인)\s+/, '');
+  // 접미형: "현대캐피탈 (주)", "현대캐피탈㈜", "현대캐피탈 주식회사"
+  s = s.replace(/\s*[\(（]\s*주\s*[\)）]\s*$/, '');
+  s = s.replace(/\s*㈜\s*$/, '');
+  s = s.replace(/\s+(주식회사|유한회사|합자회사|합명회사|재단법인|사단법인|학교법인|의료법인)$/, '');
+  return s.trim();
+}
+
+/* 공급사 코드 → 한글 회사명 변환 (store.partners 에서 lookup, 법인 접두/접미어 제거) */
 export function providerNameByCode(code, store) {
   if (!code) return '';
   const p = (store?.partners || []).find(x =>
     (x.partner_code === code || x.company_code === code) && !x._deleted
   );
-  return p?.partner_name || p?.company_name || code;
+  return stripLegalEntity(p?.partner_name || p?.company_name || code);
 }
 
 /* 메인줄 통일 포맷 — 차량번호 · 세부모델 · 공급사명(한글) */
