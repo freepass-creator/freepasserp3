@@ -471,6 +471,16 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
   const imgs = [...new Set([...productImages(p), ...productExternalImages(p)])].map(toProxiedImage);
   const driveSrc = supportedDriveSource(p);
+  // 디버그 — 어디서 사진 수가 줄어드는지 확인
+  if (typeof window !== 'undefined' && imgs.length === 1 && p._drive_folder_virtual) {
+    console.warn('[search-detail] imgs.length=1 but _drive_folder_virtual set!', {
+      car: p.car_number,
+      image_urls_len: (p.image_urls || []).length,
+      productImages_len: productImages(p).length,
+      productExternalImages_len: productExternalImages(p).length,
+      sample_url: (p.image_urls || [])[0],
+    });
+  }
 
   // 6섹션 row 데이터 — 공통 헬퍼
   const rows = extractProductDetailRows(p, { canSeeFee, isAdmin, policies: store.policies });
