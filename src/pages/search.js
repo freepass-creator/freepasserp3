@@ -550,21 +550,41 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     <!-- 4. 보험 내용 — 6 항목 (대인·대물·자손·무보험차·자차·긴급출동) -->
     ${(() => {
       const pol = p._policy || (store.policies || []).find(po => po.policy_code === p.policy_code) || {};
+      // 자차 면책금 — 수리비율·최소·최대 조합. 정액이면 1줄, 비율형이면 2줄.
+      //  2줄: "수리비의 20%" / "최소 30만 ~ 최대 100만"
+      //  1줄: 단일 값 (pol.own_damage_min_deductible 만 있는 경우 = 정액 면책)
+      const ratio = pol.own_damage_repair_ratio || pol.own_damage_compensation_rate;
+      const minD = pol.own_damage_min_deductible;
+      const maxD = pol.own_damage_max_deductible;
+      let ownDamageDeductibleHtml;
+      if (ratio) {
+        // 비율형 — 2줄 (HTML, esc 없음)
+        const line1 = `수리비의 ${esc(ratio)}`;
+        const rangeParts = [];
+        if (minD) rangeParts.push(`최소 ${esc(minD)}`);
+        if (maxD) rangeParts.push(`최대 ${esc(maxD)}`);
+        ownDamageDeductibleHtml = `<div>${line1}</div>${rangeParts.length ? `<div style="color:var(--text-sub);font-size:11px;">${rangeParts.join(' ~ ')}</div>` : ''}`;
+      } else if (minD) {
+        // 정액 — 1줄
+        ownDamageDeductibleHtml = esc(minD);
+      } else {
+        ownDamageDeductibleHtml = '-';
+      }
       const insTableRows = [
-        ['대인',       pol.injury_compensation_limit,          pol.injury_deductible],
-        ['대물',       pol.property_compensation_limit,        pol.property_deductible],
-        ['자손',       pol.self_body_accident || pol.personal_injury_compensation_limit, pol.self_body_deductible || pol.personal_injury_deductible],
-        ['무보험차',   pol.uninsured_damage || pol.uninsured_compensation_limit, pol.uninsured_deductible],
-        ['자차',       pol.own_damage_compensation,            pol.own_damage_min_deductible],
+        ['대인',       pol.injury_compensation_limit,          esc(pol.injury_deductible || '-')],
+        ['대물',       pol.property_compensation_limit,        esc(pol.property_deductible || '-')],
+        ['자손',       pol.self_body_accident || pol.personal_injury_compensation_limit, esc(pol.self_body_deductible || pol.personal_injury_deductible || '-')],
+        ['무보험차',   pol.uninsured_damage || pol.uninsured_compensation_limit, esc(pol.uninsured_deductible || '-')],
+        ['자차',       pol.own_damage_compensation,            ownDamageDeductibleHtml],
         ['긴급출동',   pol.annual_roadside_assistance || pol.roadside_assistance, '-'],
       ];
-      const hasAny = insTableRows.some(r => r[1] || r[2]);
+      const hasAny = insTableRows.some(r => r[1] || (r[2] && r[2] !== '-'));
       if (!hasAny) return '';
       return `<div class="detail-section">
         <div class="detail-section-label">4. 보험 내용</div>
         <table class="table">
           <thead><tr><th>구분</th><th>한도</th><th>면책금</th></tr></thead>
-          <tbody>${insTableRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${esc(r[2] || '-')}</td></tr>`).join('')}</tbody>
+          <tbody>${insTableRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${r[2] || '-'}</td></tr>`).join('')}</tbody>
         </table>
       </div>`;
     })()}
