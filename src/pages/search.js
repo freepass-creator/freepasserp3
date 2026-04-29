@@ -647,6 +647,9 @@ export function renderSearchDetail(p, targetCard, options = {}) {
           <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${Math.round(r.fee/10000)}만</td><td style="color:var(--text-sub);">${esc(r.fee_memo || '')}</td></tr>`).join('')}</tbody>
         </table>
       ` : `<div style="padding:16px; text-align:center; color:var(--text-muted); font-size:11px; background:var(--bg-stripe); border-radius:4px;">등록된 수수료 정보 없음</div>`}
+      <div style="margin-top:6px; font-size:11px; color:var(--text-muted); text-align:right;">
+        * 수수료 정보는 영업자에게만 노출됩니다.
+      </div>
     </div>` : ''}
   `;
   // 새 차량 선택 시 항상 사진부터 보이게 — 스크롤 맨 위로
