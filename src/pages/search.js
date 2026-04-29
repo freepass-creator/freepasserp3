@@ -1062,23 +1062,31 @@ function openRangePopover(chip, key) {
     <div class="range-pop-actions">
       <button class="btn" data-act="reset">초기화</button>
       <button class="btn-primary" data-act="apply">적용</button>
+      <button class="btn" data-act="close">닫기</button>
     </div>
   `;
-  // body 에 append + position: fixed — 하단바 바로 위에 띄움 (4px 갭)
+  // 위치 잡기 전에 미리 fixed 로 — append 시 document flow 차지하지 않게
+  pop.style.position = 'fixed';
+  pop.style.zIndex = '200';
+  pop.style.visibility = 'hidden';   // 측정 끝나기 전엔 숨김 (깜빡임 방지)
   document.body.appendChild(pop);
+
   const foot = chip.closest('.ws4-foot');
   const fr = foot.getBoundingClientRect();
   const cr = chip.getBoundingClientRect();
-  pop.style.position = 'fixed';
-  pop.style.zIndex = '200';
-  pop.style.top = 'auto';
-  pop.style.right = 'auto';
-  pop.style.bottom = (window.innerHeight - fr.top + 4) + 'px';
-  // 가로는 chip 의 좌측에 맞춤. 화면 우측 넘으면 chip 우측에 맞춤
+  const popH = pop.offsetHeight;
   const popW = pop.offsetWidth;
+
+  // 세로 — 하단바 top 에서 4px 위쪽으로 popover bottom 정렬 (top 으로 직접 계산)
+  pop.style.top = (fr.top - popH - 4) + 'px';
+  pop.style.bottom = 'auto';
+  pop.style.right = 'auto';
+
+  // 가로 — chip 좌측 정렬, 화면 우측 넘으면 chip 우측 정렬
   let left = cr.left;
   if (left + popW > window.innerWidth - 8) left = Math.max(8, cr.right - popW);
   pop.style.left = left + 'px';
+  pop.style.visibility = 'visible';
 
   pop.querySelector('[data-act="apply"]').addEventListener('click', (e) => {
     e.stopPropagation();
@@ -1096,6 +1104,10 @@ function openRangePopover(chip, key) {
     chip.classList.remove('is-active');
     pop.remove();
     applySearchFilter();
+  });
+  pop.querySelector('[data-act="close"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    pop.remove();   // 현재 필터 상태 유지하고 popover 만 닫기
   });
   // 외부 클릭 시 닫기
   setTimeout(() => {
