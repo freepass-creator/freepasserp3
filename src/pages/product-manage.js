@@ -20,9 +20,8 @@ let unsubProducts = null;
 let allProducts = [];
 let activeKey = null;
 let viewMode = 'card';
-// 신규 상품 draft — 저장 버튼 눌러야 Firebase 커밋, 그 전까진 메모리만
-let draftProduct = null;
-const DRAFT_KEY = '__draft__';
+// 상품 복사 클립보드 — 복사 버튼으로 메모리에 담고, 붙여넣기 버튼으로 다른 상품에 적용
+let _productClipboard = null;
 
 const WS_KEY = 'fp.prod.widths';
 
@@ -43,7 +42,7 @@ export function mount() {
             <input type="file" id="pdRegQuickFile" accept="image/*,application/pdf" hidden>
             <button class="btn btn-sm btn-outline" id="pdRegUpload" title="차량등록증으로 자동 등록"><i class="ph ph-identification-card"></i> 등록증</button>
             <button class="btn btn-sm btn-outline" id="pdImport" title="Google Sheets 일괄 임포트"><i class="ph ph-google-logo"></i> 시트</button>
-            <button class="btn btn-sm btn-primary" id="pdNew"><i class="ph ph-plus"></i> 새 상품</button>
+            <button class="btn btn-sm btn-primary" id="pdNew"><i class="ph ph-plus"></i> 신규등록</button>
           </span>
         </div>
         <div class="ws4-search">
@@ -217,10 +216,11 @@ export function mount() {
   });
 }
 
-/** 신규 상품 draft 생성 — Firebase 저장은 "저장" 버튼 클릭 시 */
-function createProduct(source = {}) {
+/** 신규 상품 — Firebase 즉시 커밋 (draft 모드 없음, 입력칸은 자동저장) */
+async function createProduct(source = {}) {
   const me = store.currentUser || {};
   const thisYear = String(new Date().getFullYear());
+  const uid = `P_${Date.now()}`;
 
   const EXCLUDE = new Set([
     '_key', '_deleted', 'product_uid', 'product_code', 'car_number',
@@ -234,10 +234,9 @@ function createProduct(source = {}) {
     copied[k] = v;
   }
 
-  draftProduct = {
-    _key: DRAFT_KEY,
-    product_uid: '',
-    product_code: '',
+  const payload = {
+    product_uid: uid,
+    product_code: uid,                           // 차량번호 입력 후 재계산 (bindHeroCarNo)
     car_number: '',
     vehicle_status: '출고가능',
     product_type: '중고렌트',
@@ -247,55 +246,20 @@ function createProduct(source = {}) {
     partner_code: me.partner_code || source.partner_code || '',
     image_urls: [],
     doc_images: [],
-  };
-
-  activeKey = DRAFT_KEY;
-  renderList();
-  loadAll(DRAFT_KEY);
-  showToast(Object.keys(source).length ? '복제됨 — 저장 버튼을 눌러야 등록됩니다' : '신규 — 저장 버튼을 눌러야 등록됩니다');
-}
-
-/** draft를 Firebase에 커밋 */
-async function saveDraft() {
-  if (!draftProduct) return;
-  const d = draftProduct;
-  if (!d.car_number || !d.car_number.trim()) {
-    showToast('차량번호를 입력하세요');
-    return;
-  }
-  const uid = `P_${Date.now()}`;
-  const me = store.currentUser || {};
-  const payload = {
-    ...d,
-    product_uid: uid,
-    product_code: d.product_code || (d.car_number && d.partner_code ? `${d.car_number}_${d.partner_code}` : uid),
     created_at: Date.now(),
     created_by: me.uid || me.user_code || '',
   };
-  delete payload._key;
+
   try {
     await setRecord(`products/${uid}`, payload);
-    draftProduct = null;
     activeKey = uid;
     renderList();
     setTimeout(() => loadAll(uid), 300);
-    showToast('저장 완료');
+    showToast(Object.keys(source).length ? '복제됨 — 차량번호를 입력하세요' : '신규 등록됨 — 차량번호를 입력하세요');
   } catch (e) {
-    console.error('[saveDraft]', e);
-    showToast('저장 실패');
+    console.error('[createProduct]', e);
+    showToast('등록 실패');
   }
-}
-
-/** draft 취소 (저장 안 하고 버림) */
-function cancelDraft() {
-  draftProduct = null;
-  activeKey = null;
-  renderList();
-  document.getElementById('pdAsset').innerHTML  = '<div class="srch-empty"><i class="ph ph-car-simple"></i><p>차량을 선택하세요</p></div>';
-  document.getElementById('pdTerms').innerHTML  = '<div class="srch-empty"><i class="ph ph-list-checks"></i><p>대여조건 · 가격</p></div>';
-  document.getElementById('pdPhotos').innerHTML = '<div class="srch-empty"><i class="ph ph-image"></i><p>사진</p></div>';
-  const headActions = document.getElementById('pdAssetActions');
-  if (headActions) headActions.innerHTML = '';
 }
 
 function updateBrief() {
@@ -495,7 +459,7 @@ function bindListEvents(el) {
 }
 
 function loadAll(key) {
-  const p = key === DRAFT_KEY ? draftProduct : allProducts.find(x => x._key === key);
+  const p = allProducts.find(x => x._key === key);
   if (!p) return;
   renderAsset(p, key);
   renderTerms(p, key);
@@ -643,10 +607,15 @@ function renderAsset(p, key) {
   const productCode  = p.product_code || (carNo && partnerCode ? `${carNo}_${partnerCode}` : '');
 
   el.innerHTML = `
-    <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}" style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+    <div class="pd-form" style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
 
       <div class="form-section">
-        <div class="form-section-title"><i class="ph ph-identification-card"></i> 기본정보</div>
+        <div class="form-section-title">
+          <span><i class="ph ph-identification-card"></i> 기본정보</span>
+          <span style="display:flex;gap:var(--sp-1);margin-left:auto;">
+            ${_productClipboard ? `<button class="btn btn-xs btn-outline" id="pdPaste" title="복사된 차량 정보 붙여넣기 (차량번호 제외)"><i class="ph ph-clipboard-text"></i> 붙여넣기</button>` : ''}
+          </span>
+        </div>
         <div class="form-section-body">
           ${fi('차량번호','car_number',p)}
           ${fi('차대번호','vin',p)}
@@ -701,46 +670,71 @@ function renderAsset(p, key) {
     </div>
   `;
 
-  // 패널 헤드에 액션 버튼 주입 (draft: 저장/취소, 기존: 삭제)
+  // 패널 헤드 — 항상 복사/신규/삭제 (저장은 자동, 별도 버튼 없음)
   const headActions = document.getElementById('pdAssetActions');
   if (headActions) {
-    headActions.innerHTML = key === DRAFT_KEY
-      ? `<button class="btn btn-xs btn-outline" id="pdCancel"><i class="ph ph-x"></i> 취소</button>
-         <button class="btn btn-xs btn-primary" id="pdSave"><i class="ph ph-check"></i> 저장</button>`
-      : `<button class="btn btn-xs btn-outline" id="pdClone"><i class="ph ph-copy"></i> 복제</button>
-         <button class="btn btn-xs btn-outline pd-delete" id="pdDelete" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>`;
+    headActions.innerHTML = `
+      <button class="btn btn-xs btn-outline" id="pdCopy" title="현재 차량 정보 복사 (붙여넣기로 다른 차량에 적용)"><i class="ph ph-copy"></i> 복사</button>
+      <button class="btn btn-xs btn-outline" id="pdNewFromHead" title="신규 등록"><i class="ph ph-plus"></i> 신규</button>
+      <button class="btn btn-xs btn-outline pd-delete" id="pdDelete" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>
+    `;
   }
 
   bindPicker(el, p, key);
   bindFormAutoSave(el, (field, value) => saveField(key, field, value));
 
-  // 차량번호·파트너 바뀌면 상품코드 자동 재조합 (기존 상품만)
-  if (key !== DRAFT_KEY) {
-    el.querySelector('[data-field="car_number"]')?.addEventListener('blur', () => {
-      const newCarNo = el.querySelector('[data-field="car_number"]').value.trim();
-      const newCode = newCarNo && partnerCode ? `${newCarNo}_${partnerCode}` : '';
-      if (newCode && newCode !== p.product_code) {
-        p.product_code = newCode;
-        updateRecord(`products/${key}`, { product_code: newCode });
-        // 화면 상품코드 갱신
-        const codeInput = el.querySelector('input[readonly][value]');
-        const inputs = el.querySelectorAll('input[readonly]');
-        inputs.forEach(inp => { if (inp.value.includes('_')) inp.value = newCode; });
-      }
-    });
-  }
+  // 차량번호·파트너 바뀌면 상품코드 자동 재조합
+  el.querySelector('[data-field="car_number"]')?.addEventListener('blur', () => {
+    const newCarNo = el.querySelector('[data-field="car_number"]').value.trim();
+    const newCode = newCarNo && partnerCode ? `${newCarNo}_${partnerCode}` : '';
+    if (newCode && newCode !== p.product_code) {
+      p.product_code = newCode;
+      updateRecord(`products/${key}`, { product_code: newCode });
+      const inputs = el.querySelectorAll('input[readonly]');
+      inputs.forEach(inp => { if (inp.value.includes('_')) inp.value = newCode; });
+    }
+  });
 
-  // 저장·취소 (draft) vs 삭제 (기존) — 버튼이 헤드(body 밖)에 있으므로 headActions 기준
-  headActions?.querySelector('#pdSave')?.addEventListener('click', () => saveDraft());
-  headActions?.querySelector('#pdCancel')?.addEventListener('click', () => {
-    if (confirm('저장하지 않은 내용이 사라집니다. 계속할까요?')) cancelDraft();
+  // 복사: 현재 차량 정보를 메모리 클립보드에 저장 (식별자 제외)
+  headActions?.querySelector('#pdCopy')?.addEventListener('click', () => {
+    const EXCLUDE = new Set([
+      '_key', '_deleted', 'product_uid', 'product_code', 'car_number', 'vin',
+      'image_urls', 'images', 'photos', 'image_url', 'photo_link',
+      'doc_images', 'created_at', 'created_by', 'updated_at',
+    ]);
+    const snap = {};
+    for (const [k, v] of Object.entries(p)) {
+      if (EXCLUDE.has(k)) continue;
+      if (v == null || v === '') continue;
+      snap[k] = v;
+    }
+    _productClipboard = snap;
+    showToast(`${p.car_number || '차량'} 정보 복사됨 — 다른 차량에서 붙여넣기 가능`);
+    renderAsset(p, key);   // 붙여넣기 버튼 노출 갱신
   });
-  headActions?.querySelector('#pdClone')?.addEventListener('click', async () => {
-    const src = allProducts.find(x => x._key === key);
-    if (!src) return;
-    await createProduct(src);
-    showToast(`${src.model || '상품'} 복제됨 — 차량번호만 입력하세요`);
+
+  // 붙여넣기: 클립보드 정보를 현재 차량에 적용 (차량번호 등 식별자는 유지)
+  el.querySelector('#pdPaste')?.addEventListener('click', async () => {
+    if (!_productClipboard) return;
+    if (!confirm('복사된 차량 정보를 현재 차량에 적용합니다. 차량번호/차대번호는 유지됩니다. 계속할까요?')) return;
+    const patch = { ..._productClipboard };
+    Object.assign(p, patch);
+    try {
+      await updateRecord(`products/${key}`, patch);
+      renderAsset(p, key);
+      renderTerms(p, key);
+      showToast('붙여넣기 완료');
+    } catch (e) {
+      console.error('[paste]', e);
+      showToast('붙여넣기 실패');
+    }
   });
+
+  // 신규: 빈 차량 등록 (즉시 Firebase 커밋)
+  headActions?.querySelector('#pdNewFromHead')?.addEventListener('click', async () => {
+    await createProduct({});
+  });
+
   headActions?.querySelector('#pdDelete')?.addEventListener('click', async () => {
     if (!confirm('이 상품을 삭제하시겠습니까?')) return;
     await softDelete(`products/${key}`);
@@ -749,13 +743,9 @@ function renderAsset(p, key) {
   });
 }
 
-/* ── 공용 필드 저장 헬퍼 — draft면 메모리만, 기존 상품이면 Firebase ── */
+/* ── 공용 필드 저장 헬퍼 — Firebase 즉시 반영 (자동저장) ── */
 async function saveField(key, field, value) {
-  if (key === DRAFT_KEY) {
-    if (draftProduct) draftProduct[field] = value;
-  } else {
-    await updateRecord(`products/${key}`, { [field]: value });
-  }
+  await updateRecord(`products/${key}`, { [field]: value });
 }
 
 /* ── 공용: focus/blur 자동저장 바인딩 ── */
@@ -791,7 +781,7 @@ function renderTerms(p, key) {
   ];
 
   el.innerHTML = `
-    <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}" style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
+    <div class="pd-form" style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">
       <div class="form-section">
         <div class="form-section-title"><i class="ph ph-scroll"></i> 상태 · 정책</div>
         <div class="form-section-body">
@@ -887,15 +877,7 @@ function renderTerms(p, key) {
       }
       const saved = isMemo ? (val || null) : (val ? Number(val) : null);
       const m = inp.dataset.period, t = inp.dataset.type;
-      if (key === DRAFT_KEY) {
-        if (draftProduct) {
-          draftProduct.price = draftProduct.price || {};
-          draftProduct.price[m] = draftProduct.price[m] || {};
-          draftProduct.price[m][t] = saved;
-        }
-      } else {
-        await updateRecord(`products/${key}`, { [`price/${m}/${t}`]: saved });
-      }
+      await updateRecord(`products/${key}`, { [`price/${m}/${t}`]: saved });
       originalPrice = val;
       // 저장 후 콤마 포맷 복구
       if (!isMemo && val !== '') inp.value = Number(val).toLocaleString('ko-KR');
@@ -938,12 +920,6 @@ async function uploadParallel(files, pathFn, concurrency = UPLOAD_CONCURRENCY) {
 function renderPhotos(p, key) {
   const el = document.getElementById('pdPhotos');
 
-  // draft는 Storage 경로 없음 → 저장 후 업로드 유도
-  if (key === DRAFT_KEY) {
-    el.innerHTML = `<div class="srch-empty"><i class="ph ph-image"></i><p>먼저 저장한 후 사진을 업로드하세요</p></div>`;
-    return;
-  }
-
   const imgs = productImages(p);                          // 업로드된 사진 (image_urls 등)
   const extImgs = productExternalImages(p);               // 외부 직접 URL 링크 (바로 img 가능)
   const driveSource = supportedDriveSource(p);            // Drive 폴더·moderentcar (서버 해석 필요)
@@ -952,7 +928,7 @@ function renderPhotos(p, key) {
   const regImg = p.registration_image || '';
 
   el.innerHTML = `
-    <div class="pd-form ${key === DRAFT_KEY ? 'is-draft' : ''}">
+    <div class="pd-form">
       <!-- 차량 사진 -->
       <div class="form-section">
         <div class="form-section-title">
@@ -1244,17 +1220,13 @@ function bindPicker(el, p, key) {
       }
 
       Object.assign(p, patch);
-      if (key === DRAFT_KEY) {
-        Object.assign(draftProduct, patch);
-      } else {
-        await updateRecord(`products/${key}`, patch);
-      }
+      await updateRecord(`products/${key}`, patch);
       renderAsset(p, key);
     });
   });
 }
 
-/** hero 차량번호 큰 입력 — 블러/엔터 저장 (draft면 메모리만) */
+/** hero 차량번호 큰 입력 — 블러/엔터 자동저장 */
 function bindHeroCarNo(el, p, key) {
   const inp = el.querySelector('.pd-hero-carno');
   if (!inp) return;
@@ -1264,14 +1236,10 @@ function bindHeroCarNo(el, p, key) {
     const v = inp.value.trim();
     if (v === original) return;
     p.car_number = v;
-    if (key === DRAFT_KEY) {
-      if (draftProduct) draftProduct.car_number = v;
-    } else {
-      try {
-        await updateRecord(`products/${key}`, { car_number: v });
-        showToast('차량번호 저장됨');
-      } catch (err) { showToast('저장 실패'); }
-    }
+    try {
+      await updateRecord(`products/${key}`, { car_number: v });
+      showToast('차량번호 저장됨');
+    } catch (err) { showToast('저장 실패'); }
   });
   inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') inp.blur(); });
 }
