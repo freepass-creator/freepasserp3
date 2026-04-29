@@ -541,7 +541,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         const insurance = condByLabel['보험 포함'];
         const parts = [age, mileage, insurance].filter(Boolean);
         return parts.length
-          ? `<div style="margin-top:8px; padding:8px 10px; background:var(--bg-stripe); border-radius:4px; font-size:11px; color:var(--text-sub);">
+          ? `<div style="margin-top:6px; font-size:11px; color:var(--text-muted); text-align:right;">
                * ${esc(parts.join(' · '))} 기준 금액입니다.
              </div>`
           : '';
