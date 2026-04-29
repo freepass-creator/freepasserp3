@@ -396,6 +396,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
               created_by: me.uid,
             });
             showToast(`가계약 생성됨 — ${tempCode} (완료 시 실코드 부여)`, 'success');
+            // 계약 페이지로 이동 — 방금 만든 계약 자동 선택되도록 hash 변경
+            location.hash = 'contract';
           } catch (e) {
             console.error(`[contract create:${step}]`, e);
             const errMsg = e.code === 'PERMISSION_DENIED'
