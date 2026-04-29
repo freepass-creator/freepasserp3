@@ -367,30 +367,48 @@ const FIELD_F_SELECTOR = [
   '[data-f] input', '[data-f] select', '[data-f] textarea',
 ].join(', ');
 
+// 각 input 별 현재 표시중인 태그 추적 (DOM 외부 — body 에 fixed 로 띄움)
+const _fieldTags = new WeakMap();
+
+function positionTag(tag, el) {
+  const rect = el.getBoundingClientRect();
+  tag.style.top = (rect.top - 12) + 'px';
+  tag.style.left = (rect.right - tag.offsetWidth - 6) + 'px';
+}
+
 function showFieldStateTag(el, kind, text) {
   if (!el) return;
-  // 부모(.ff)를 컨테이너로 사용 (있을 때만), 없으면 input 자체 wrapper 처리
-  const host = el.closest('.ff') || el.parentElement;
-  if (!host) return;
-  // 기존 태그 제거
-  host.querySelector(':scope > .field-state-tag')?.remove();
-  if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+  // 같은 input 의 다른 종류 태그가 떠있으면 제거
+  const existing = _fieldTags.get(el);
+  if (existing) existing.remove();
   const tag = document.createElement('span');
   tag.className = `field-state-tag is-${kind}`;
+  tag.style.position = 'fixed';
   tag.textContent = text;
-  host.appendChild(tag);
-  // 다음 프레임에 보이게 (transition 트리거)
-  requestAnimationFrame(() => tag.classList.add('is-show'));
+  document.body.appendChild(tag);
+  positionTag(tag, el);
+  _fieldTags.set(el, tag);
+  requestAnimationFrame(() => {
+    tag.classList.add('is-show');
+    positionTag(tag, el);   // offsetWidth 측정 후 재정렬
+  });
+  // 스크롤/리사이즈 시 재정렬 (display 짧으니 간단히 처리)
+  const onMove = () => positionTag(tag, el);
+  window.addEventListener('scroll', onMove, true);
+  window.addEventListener('resize', onMove);
+  tag._cleanup = () => {
+    window.removeEventListener('scroll', onMove, true);
+    window.removeEventListener('resize', onMove);
+  };
   return tag;
 }
 function hideFieldStateTag(el, kind) {
   if (!el) return;
-  const host = el.closest('.ff') || el.parentElement;
-  if (!host) return;
-  const tag = host.querySelector(`:scope > .field-state-tag.is-${kind}`);
-  if (!tag) return;
+  const tag = _fieldTags.get(el);
+  if (!tag || !tag.classList.contains(`is-${kind}`)) return;
   tag.classList.remove('is-show');
-  setTimeout(() => tag.remove(), 200);
+  tag._cleanup?.();
+  setTimeout(() => { tag.remove(); _fieldTags.delete(el); }, 200);
 }
 
 document.addEventListener('focusin', (e) => {

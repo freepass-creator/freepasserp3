@@ -488,15 +488,26 @@ export function renderContractWorkV2(c) {
       }
     </div>
 
-    <!-- 진행 메모 (영업/공급/관리) — 진행취소 후에도 메모 가능 (사후 정리용) -->
+    <!-- 진행 메모 (영업/공급/관리) — 역할별 권한:
+         agent / agent_admin → agent_memo 만 편집
+         provider → provider_memo 만 편집
+         admin → 전부 편집 가능
+         그 외 readonly (permanent-lock) -->
     <div style="margin-top:12px;color:var(--text-sub);margin-bottom:6px;font-size:12px;font-weight:500;"><i class="ph ph-note"></i> 진행 메모</div>
     <div class="info-grid" style="grid-template-columns: 60px 1fr; gap: 6px;">
-      <div class="lab">영업</div>
-      <textarea class="input" data-memo="agent_memo" rows="2" placeholder="-" readonly data-edit-lock="1">${esc(c.agent_memo || '')}</textarea>
-      <div class="lab">공급</div>
-      <textarea class="input" data-memo="provider_memo" rows="2" placeholder="-" readonly data-edit-lock="1">${esc(c.provider_memo || '')}</textarea>
-      <div class="lab">관리</div>
-      <textarea class="input" data-memo="admin_memo" rows="2" placeholder="-" readonly data-edit-lock="1">${esc(c.admin_memo || '')}</textarea>
+      ${(() => {
+        const memoRow = (label, field, ownerRoles) => {
+          const canEditMemo = isAdmin || ownerRoles.includes(role);
+          const lockAttr = canEditMemo
+            ? ' readonly data-edit-lock="1"'              // 본인 역할 → 2-click 후 편집
+            : ' readonly data-permanent-lock="1"';        // 다른 역할 → 영구 잠금 (보기만)
+          return `<div class="lab">${label}</div>
+            <textarea class="input" data-memo="${field}" rows="2" placeholder="-"${lockAttr}>${esc(c[field] || '')}</textarea>`;
+        };
+        return memoRow('영업', 'agent_memo', ['agent', 'agent_admin'])
+             + memoRow('공급', 'provider_memo', ['provider'])
+             + memoRow('관리', 'admin_memo', []);    // admin 만 (위 isAdmin 체크에서 통과)
+      })()}
     </div>
   `;
 }
@@ -541,8 +552,9 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
     });
   });
 
-  // 메모 자동 저장 (blur)
+  // 메모 자동 저장 (blur) — 역할 권한 없는 textarea(permanent-lock)는 스킵
   stepCard.querySelectorAll('textarea[data-memo]').forEach(ta => {
+    if (ta.dataset.permanentLock === '1') return;   // 다른 역할 메모 — 저장 시도조차 X
     ta.addEventListener('blur', async () => {
       const field = ta.dataset.memo;
       try {
