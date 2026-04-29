@@ -947,6 +947,23 @@
     white-space: nowrap;
   }
   .pt-tb-title i { font-size: 14px; color: var(--text-sub); }
+  /* 상품 찾기 페이지 — 제목 옆 상태별 카운트 (총/즉시/가능/협의/불가) */
+  .pt-tb-search-stats {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-sub);
+  }
+  .pt-tb-search-stats:empty { display: none; }
+  .pt-tb-search-stats .stat-total { color: var(--text-main); font-weight: 500; }
+  .pt-tb-search-stats .stat-즉시 { color: var(--alert-green-text); }
+  .pt-tb-search-stats .stat-가능 { color: var(--alert-blue-text); }
+  .pt-tb-search-stats .stat-협의 { color: var(--alert-orange-text); }
+  .pt-tb-search-stats .stat-불가 { color: var(--alert-red-text); }
   .pt-tb-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; color: var(--text-sub); }
   /* 토픽바 우측 글로벌 영역 — 알림 + 사용자 메뉴 (이름 · 직급). margin-left:auto 로 우측 끝 */
   .pt-tb-global {
@@ -2382,7 +2399,10 @@
   <input type="search" class="input pt-tb-search" id="ptTbSearch" placeholder="차량번호·차종·옵션·금액·무심사...">
 
   <!-- ② 가운데: 현재 페이지 제목 (작업상태) -->
-  <span class="pt-tb-title" id="ptTbTitle">상품 찾기</span>
+  <span class="pt-tb-title" id="ptTbTitle">
+    <span id="ptTbTitleText">상품 찾기</span>
+    <span class="pt-tb-search-stats" id="ptTbSearchStats"></span>
+  </span>
 
   <!-- 페이지별 동적 영역 (예약, 현재는 비어있음) -->
   <div class="pt-tb-inner" data-tb="search" hidden></div>
@@ -3547,11 +3567,17 @@
     const ph = SEARCH_PH[name];
     const sb = document.getElementById('ptTbSearch');
     if (sb && ph) sb.placeholder = ph;
-    // 토픽바 제목 갱신 (현재 페이지 표시 — 작업상태 + 아이콘)
-    const titleEl = document.getElementById('ptTbTitle');
-    if (titleEl) {
+    // 토픽바 제목 갱신 — #ptTbTitleText 만 (옆의 #ptTbSearchStats 보존)
+    const titleTextEl = document.getElementById('ptTbTitleText');
+    if (titleTextEl) {
       const t = PAGE_TITLES[name];
-      titleEl.innerHTML = t ? `<i class="ph ph-${t.icon}"></i> ${t.label}` : name;
+      titleTextEl.innerHTML = t ? `<i class="ph ph-${t.icon}"></i> ${t.label}` : name;
+    }
+    // 상품찾기일 때만 상태 카운트 표시 (다른 페이지에선 비움)
+    const statsEl = document.getElementById('ptTbSearchStats');
+    if (statsEl) {
+      if (name === 'search') window.updateSearchStats?.();
+      else statsEl.innerHTML = '';
     }
     // settings / dev 페이지 — app.js 가 window 에 노출
     if (name === 'settings') {

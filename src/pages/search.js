@@ -28,6 +28,29 @@ export function setSearchCallbacks({ onCreateRoom }) {
   _onCreateRoom = onCreateRoom;
 }
 
+/* 토픽바 — 상품찾기 페이지 제목 옆 상태별 카운트 (총/즉시/가능/협의/불가).
+ *  app.js 의 products watcher 에서 호출. showPage('search') 진입 시도 호출. */
+export function updateSearchStats() {
+  const el = document.getElementById('ptTbSearchStats');
+  if (!el) return;
+  const products = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted');
+  const total = products.length;
+  const counts = { '즉시': 0, '가능': 0, '협의': 0, '불가': 0 };
+  for (const p of products) {
+    const s = shortStatus(p.vehicle_status || '');
+    if (counts[s] !== undefined) counts[s]++;
+  }
+  el.innerHTML = `
+    <span class="stat-total">총 ${total}대</span>
+    <span class="stat-즉시">즉시 ${counts['즉시']}</span>
+    <span class="stat-가능">가능 ${counts['가능']}</span>
+    <span class="stat-협의">협의 ${counts['협의']}</span>
+    <span class="stat-불가">불가 ${counts['불가']}</span>
+  `;
+}
+// 다른 모듈에서 호출하기 쉽게 window 에도 노출 (showPage non-module 스크립트용)
+if (typeof window !== 'undefined') window.updateSearchStats = updateSearchStats;
+
 /* search 페이지 필터 상태 — bindGlobalSearch 등 외부 모듈에서 search 만 갱신 */
 export const _searchFilter = {
   chip: 'all',

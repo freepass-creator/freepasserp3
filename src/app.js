@@ -194,6 +194,7 @@ function startHydration() {
     renderSearchTable(store.products);
     renderProductList(store.products);
     updateSidebarCounts();
+    window.updateSearchStats?.();   // 토픽바 상품찾기 카운트 갱신
   });
   // 대화방 (업무소통) + 계약 + 정산 + 파트너 + 사용자
   watchCollection('rooms',       (list) => {
