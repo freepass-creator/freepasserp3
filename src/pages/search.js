@@ -513,36 +513,64 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       </div>
     </div>
 
-    <!-- 2. 기간별 대여료 구성표 -->
+    <!-- 2. 기간별 대여료 및 보증금 -->
     ${priceRows.length ? `<div class="detail-section">
-      <div class="detail-section-label">2. 기간별 대여료</div>
+      <div class="detail-section-label">2. 기간별 대여료 및 보증금</div>
       <table class="table">
         <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
         <tbody>${priceRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${r.rent ? Math.round(r.rent/10000) + '만' : '-'}</td><td class="num">${r.dep ? Math.round(r.dep/10000) + '만' : '-'}</td></tr>`).join('')}</tbody>
       </table>
+      ${(() => {
+        const parts = [
+          condByLabel['기본연령'],
+          condByLabel['연간약정주행'],
+          condByLabel['보험 포함'],
+        ].filter(Boolean);
+        return parts.length
+          ? `<div style="margin-top:8px; padding:8px 10px; background:var(--bg-stripe); border-radius:4px; font-size:11px; color:var(--text-sub);">
+               * ${parts.join(', ')} 기준 금액입니다.
+             </div>`
+          : '';
+      })()}
     </div>` : ''}
 
-    <!-- 3. 운전 가능 범위·연령·보험료 -->
-    ${(condByLabel['기본연령'] || condByLabel['개인범위'] || insRows.length) ? `<div class="detail-section">
-      <div class="detail-section-label">3. 운전 가능 범위 / 연령 / 보험</div>
+    <!-- 3. 운전자 연령 및 범위 -->
+    ${(condByLabel['기본연령'] || condByLabel['개인범위']) ? `<div class="detail-section">
+      <div class="detail-section-label">3. 운전자 연령 및 범위</div>
       <div class="info-grid">
         ${pair('기본 연령', condByLabel['기본연령'], '연령 상한', condByLabel['연령상한'])}
-        ${pair('연령 하향', condByLabel['연령하향'], '연령 하향비', condByLabel['연령하향비'])}
-        ${pair('개인 범위', condByLabel['개인범위'], '사업자 범위', condByLabel['사업자범위'])}
-        ${pair('추가 인원', condByLabel['추가인원'], '추가 운전비', condByLabel['추가운전비'])}
+        ${pair('연령 하한', condByLabel['연령하향'], '연령 하향 비용', condByLabel['연령하향비'])}
+        ${pair('개인 운전 범위', condByLabel['개인범위'], '사업자 운전 범위', condByLabel['사업자범위'])}
+        ${pair('추가 인원', condByLabel['추가인원'], '추가 운전 비용', condByLabel['추가운전비'])}
+        <div class="lab">면허 취득 기간</div><div class="full">${esc(p._policy?.license_period || p.license_period || '제한없음')}</div>
       </div>
-      ${insRows.length ? `
-        <div style="color:var(--text-sub); margin: 8px 0 4px; font-size: 11px;">보험 한도</div>
-        <table class="table">
-          <thead><tr><th>구분</th><th>보장한도</th><th>자기부담금</th></tr></thead>
-          <tbody>${insRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${esc(r[2] || '-')}</td></tr>`).join('')}</tbody>
-        </table>
-      ` : ''}
     </div>` : ''}
 
-    <!-- 4. 대여 조건 -->
+    <!-- 4. 보험 내용 — 6 항목 (대인·대물·자손·무보험차·자차·긴급출동) -->
+    ${(() => {
+      const pol = p._policy || (store.policies || []).find(po => po.policy_code === p.policy_code) || {};
+      const insTableRows = [
+        ['대인',       pol.injury_compensation_limit,          pol.injury_deductible],
+        ['대물',       pol.property_compensation_limit,        pol.property_deductible],
+        ['자손',       pol.self_body_accident || pol.personal_injury_compensation_limit, pol.self_body_deductible || pol.personal_injury_deductible],
+        ['무보험차',   pol.uninsured_damage || pol.uninsured_compensation_limit, pol.uninsured_deductible],
+        ['자차',       pol.own_damage_compensation,            pol.own_damage_min_deductible],
+        ['긴급출동',   pol.annual_roadside_assistance || pol.roadside_assistance, '-'],
+      ];
+      const hasAny = insTableRows.some(r => r[1] || r[2]);
+      if (!hasAny) return '';
+      return `<div class="detail-section">
+        <div class="detail-section-label">4. 보험 내용</div>
+        <table class="table">
+          <thead><tr><th>구분</th><th>한도</th><th>면책금</th></tr></thead>
+          <tbody>${insTableRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${esc(r[2] || '-')}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+    })()}
+
+    <!-- 5. 대여 조건 -->
     ${(condByLabel['심사여부'] || condByLabel['연간약정주행'] || condByLabel['정비서비스']) ? `<div class="detail-section">
-      <div class="detail-section-label">4. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
+      <div class="detail-section-label">5. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
       <div class="info-grid">
         ${pair('심사 여부', condByLabel['심사여부'], '심사 기준', condByLabel['심사기준'])}
         ${pair('결제 방식', condByLabel['결제방식'], '위약금', condByLabel['위약금'])}
@@ -553,9 +581,9 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       </div>
     </div>` : ''}
 
-    <!-- 5. 기타 정보 -->
+    <!-- 6. 기타 정보 -->
     ${(providerName || policyName || specByLabel['최초등록일']) ? `<div class="detail-section">
-      <div class="detail-section-label">5. 기타 정보</div>
+      <div class="detail-section-label">6. 기타 정보</div>
       <div class="info-grid">
         ${providerName ? `<div class="lab">공급사</div><div class="full">${esc(providerName)}</div>` : ''}
         ${policyName ? `<div class="lab">정책명</div><div class="full">${esc(policyName)}</div>` : ''}
@@ -575,9 +603,9 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       </div>
     </div>` : ''}
 
-    <!-- 6. 영업 수수료 (영업자/관리자만 — 기간별 수수료 + 비고) -->
+    <!-- 7. 영업 수수료 (영업자/관리자만 — 기간별 수수료 + 비고) -->
     ${(canSeeFee && feeRows.length) ? `<div class="detail-section">
-      <div class="detail-section-label">6. 영업 수수료 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">(내부용)</span></div>
+      <div class="detail-section-label">7. 영업 수수료 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">(내부용)</span></div>
       <table class="table">
         <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
         <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${Math.round(r.fee/10000)}만</td><td style="color:var(--text-sub);">${esc(r.fee_memo || '')}</td></tr>`).join('')}</tbody>
