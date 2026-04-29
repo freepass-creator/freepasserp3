@@ -413,7 +413,6 @@ export async function createRoomFromProduct(product) {
     if (typeof newKey === 'string') selectRoom(newKey);
 
     // 알림 — 공급사 + 관리자에게 신규 대화 알림
-    const me = store.currentUser;
     notifyProviderAndAdmin({
       template: 'new_inquiry',
       providerCode: product.provider_company_code,
