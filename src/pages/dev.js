@@ -49,6 +49,8 @@ export function renderDev() {
     return;
   }
   const active = DEV_TABS.find(t => t.id === _activeDev);
+  // 차종 마스터 / RTDB 현황 / 데이터 삭제 — 본문이 list+detail 형태라 우측을 detail 로 사용 (로그 패널 숨김)
+  const isWideTab = _activeDev === 'vehicle';
   page.innerHTML = `
     <div class="ws4">
       <!-- 좌 (1): 도구 목록 -->
@@ -67,21 +69,28 @@ export function renderDev() {
         </div>
       </div>
 
-      <!-- 가운데 (2): 본문 -->
-      <div class="ws4-card" style="flex: 2 1 0;">
+      <!-- 가운데 (본문) -->
+      <div class="ws4-card" style="flex: ${isWideTab ? '2' : '2'} 1 0;">
         <div class="ws4-head">
           <i class="ph ph-${active?.icon}"></i>
           <span>${esc(active?.label || '')}</span>
           <span style="margin-left: 8px; color: var(--text-muted); font-size: 11px;">${esc(active?.sub || '')}</span>
         </div>
-        <div class="ws4-body" id="devContent" style="padding: var(--sp-3); overflow-y: auto;"></div>
+        <div class="ws4-body" id="devContent" style="padding: var(--sp-3); overflow: hidden; display: flex; flex-direction: column;"></div>
       </div>
 
-      <!-- 우 (1): 로그 -->
-      <div class="ws4-card" style="flex: 1 1 0;">
-        <div class="ws4-head"><i class="ph ph-terminal"></i> <span>로그</span></div>
-        <div class="ws4-body" id="devLog" style="padding: var(--sp-3); font-family: var(--font-mono, monospace); font-size: 11px; color: var(--text-sub); white-space: pre-wrap; overflow-y: auto;"></div>
-      </div>
+      <!-- 우 (1): 차종 마스터일 때는 detail, 그 외는 로그 -->
+      ${isWideTab ? `
+        <div class="ws4-card" style="flex: 1 1 0;">
+          <div class="ws4-head"><i class="ph ph-info"></i> <span>차종 상세</span></div>
+          <div class="ws4-body" id="devDetail" style="padding: var(--sp-3); overflow-y: auto;"></div>
+        </div>
+      ` : `
+        <div class="ws4-card" style="flex: 1 1 0;">
+          <div class="ws4-head"><i class="ph ph-terminal"></i> <span>로그</span></div>
+          <div class="ws4-body" id="devLog" style="padding: var(--sp-3); font-family: var(--font-mono, monospace); font-size: 11px; color: var(--text-sub); white-space: pre-wrap; overflow-y: auto;"></div>
+        </div>
+      `}
     </div>
   `;
 
@@ -654,9 +663,33 @@ function renderVehicleTab(el) {
   devUnsubs.push(unsub);
 }
 
+/* 정렬 우선순위 — 국산 메이저 → 국산 기타 → 수입.
+   같은 그룹 내에서는 제조사명 → 모델명 → 세부모델 모두 한국어 로케일 asc */
+const KOR_MAKER_ORDER = ['현대', '기아', '제네시스', '쌍용', 'KGM', '르노', '르노삼성', '쉐보레', '한국GM', 'GM대우', '대우'];
+
+function vehicleSortKey(m) {
+  const isKor = m.origin === '국산' || KOR_MAKER_ORDER.includes(m.maker);
+  const korIdx = KOR_MAKER_ORDER.indexOf(m.maker);
+  // 1) 국산 먼저(0) / 수입 나중(1)
+  // 2) 국산 메이저 우선순위 인덱스 (없으면 999)
+  // 3) 제조사명 asc
+  return [isKor ? 0 : 1, korIdx >= 0 ? korIdx : 999, m.maker || ''];
+}
+
 function drawVehicleTab(el) {
   const { selectedKey, mode, filterMaker, filterQ, showArchived, models, productCounts } = _vmState;
-  const makers = [...new Set(models.map(m => m.maker).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'));
+  const detailEl = document.getElementById('devDetail');
+
+  // 제조사 select 옵션 — 정렬 순서대로
+  const makerSet = new Set(models.map(m => m.maker).filter(Boolean));
+  const makers = [...makerSet].sort((a, b) => {
+    const ai = KOR_MAKER_ORDER.indexOf(a), bi = KOR_MAKER_ORDER.indexOf(b);
+    const aIsKor = ai >= 0, bIsKor = bi >= 0;
+    if (aIsKor !== bIsKor) return aIsKor ? -1 : 1;
+    if (aIsKor) return ai - bi;
+    return a.localeCompare(b, 'ko');
+  });
+
   const filtered = models
     .filter(m => showArchived || !m.archived)
     .filter(m => !filterMaker || m.maker === filterMaker)
@@ -665,17 +698,52 @@ function drawVehicleTab(el) {
       const q = filterQ.toLowerCase();
       return [m.maker, m.model, m.sub, m.car_name, m.category].some(v => v && String(v).toLowerCase().includes(q));
     })
-    .map(m => ({ ...m, _count: productCounts.get([m.maker, m.model, m.sub].filter(Boolean).join('|')) || 0 }))
-    .sort((a, b) => b._count - a._count || String(a.maker).localeCompare(String(b.maker), 'ko'));
+    .map(m => ({ ...m, _count: productCounts.get([m.maker, m.model, m.sub].filter(Boolean).join('|')) || 0 }));
+
+  // 정렬 — 국산우선 → 제조사우선순위 → 제조사명 → 모델명 → 세부모델
+  filtered.sort((a, b) => {
+    const ka = vehicleSortKey(a), kb = vehicleSortKey(b);
+    if (ka[0] !== kb[0]) return ka[0] - kb[0];
+    if (ka[1] !== kb[1]) return ka[1] - kb[1];
+    const m1 = String(a.maker || '').localeCompare(String(b.maker || ''), 'ko');
+    if (m1) return m1;
+    const m2 = String(a.model || '').localeCompare(String(b.model || ''), 'ko');
+    if (m2) return m2;
+    return String(a.sub || '').localeCompare(String(b.sub || ''), 'ko');
+  });
+
+  // 제조사별 그룹 행 삽입 — 같은 제조사 처음 등장 시 헤더 row
   const archivedCount = models.filter(m => m.archived).length;
   const sel = selectedKey ? models.find(m => m._key === selectedKey) : null;
+
+  let lastMaker = null;
+  const rowsHtml = filtered.length ? filtered.slice(0, 800).map(m => {
+    let groupHeader = '';
+    if (m.maker !== lastMaker) {
+      lastMaker = m.maker;
+      const groupCount = filtered.filter(x => x.maker === m.maker).length;
+      const isKor = KOR_MAKER_ORDER.includes(m.maker);
+      groupHeader = `<tr class="vm-group" style="background:var(--bg-stripe);">
+        <td colspan="4" style="padding:6px 8px;font-weight:600;color:${isKor ? 'var(--text-main)' : 'var(--text-sub)'};font-size:11px;">
+          ${isKor ? '🇰🇷' : '🌐'} ${esc(m.maker)} <span style="color:var(--text-muted);font-weight:400;">${groupCount}종</span>
+        </td>
+      </tr>`;
+    }
+    const rowSel = m._key === selectedKey;
+    return groupHeader + `<tr data-key="${esc(m._key)}" style="cursor:pointer;${rowSel ? 'background:var(--bg-selected);' : ''}">
+      <td>${esc(m.model || '-')}</td>
+      <td>${esc(m.sub || m.car_name || '-')}${m.archived ? ' <span style="color:var(--text-muted);font-size:9px;">[단종]</span>' : ''}</td>
+      <td style="color:var(--text-sub);">${esc(m.category || '')}</td>
+      <td style="text-align:right;">${m._count || ''}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text-muted);">데이터 없음</td></tr>`;
 
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:8px;height:100%;">
       <!-- 필터바 -->
       <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
         <input class="input" id="vmQ" placeholder="검색 (제조사·모델·세부)" value="${esc(filterQ)}" style="flex:1;min-width:140px;">
-        <select class="input" id="vmMaker" style="width:120px;">
+        <select class="input" id="vmMaker" style="width:140px;">
           <option value="">전체 제조사 (${models.length})</option>
           ${makers.map(m => `<option value="${esc(m)}" ${m === filterMaker ? 'selected' : ''}>${esc(m)} (${models.filter(x => x.maker === m).length})</option>`).join('')}
         </select>
@@ -685,41 +753,26 @@ function drawVehicleTab(el) {
         <button class="btn btn-primary" id="vmNew"><i class="ph ph-plus"></i> 새 차종</button>
       </div>
 
-      <!-- 메인 split: 좌(목록) / 우(상세/편집) -->
-      <div style="display:flex;gap:8px;flex:1;min-height:0;">
-        <!-- 목록 -->
-        <div style="flex:1;border:1px solid var(--border);border-radius:4px;overflow:auto;min-width:0;">
-          <table class="table" style="width:100%;font-size:11px;">
-            <thead>
-              <tr>
-                <th style="text-align:left;">제조사</th>
-                <th style="text-align:left;">모델</th>
-                <th style="text-align:left;">세부모델</th>
-                <th style="text-align:left;">분류</th>
-                <th style="text-align:right;">상품</th>
-              </tr>
-            </thead>
-            <tbody id="vmRows">
-              ${filtered.length ? filtered.slice(0, 500).map(m => `
-                <tr data-key="${esc(m._key)}" style="cursor:pointer;${m._key === selectedKey ? 'background:var(--bg-selected);' : ''}">
-                  <td>${esc(m.maker || '-')}</td>
-                  <td>${esc(m.model || '-')}</td>
-                  <td>${esc(m.sub || m.car_name || '-')}${m.archived ? ' <span style="color:var(--text-muted);font-size:9px;">[단종]</span>' : ''}</td>
-                  <td style="color:var(--text-sub);">${esc(m.category || '')}</td>
-                  <td style="text-align:right;">${m._count || ''}</td>
-                </tr>`).join('') : `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text-muted);">데이터 없음</td></tr>`}
-            </tbody>
-          </table>
-          ${filtered.length > 500 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 500건 · ${filtered.length}건 중</div>` : ''}
-        </div>
-
-        <!-- 상세/편집 -->
-        <div style="flex:1;border:1px solid var(--border);border-radius:4px;padding:12px;overflow:auto;min-width:0;">
-          ${renderVehicleDetail(sel, mode)}
-        </div>
+      <!-- 목록만 (상세는 우측 패널) -->
+      <div style="flex:1;border:1px solid var(--border);border-radius:4px;overflow:auto;min-width:0;">
+        <table class="table" style="width:100%;font-size:11px;">
+          <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
+            <tr>
+              <th style="text-align:left;">모델</th>
+              <th style="text-align:left;">세부모델</th>
+              <th style="text-align:left;">분류</th>
+              <th style="text-align:right;">상품</th>
+            </tr>
+          </thead>
+          <tbody id="vmRows">${rowsHtml}</tbody>
+        </table>
+        ${filtered.length > 800 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 800건 · 총 ${filtered.length}건 (필터로 좁히세요)</div>` : ''}
       </div>
     </div>
   `;
+
+  // 우측 detail 패널 채우기
+  if (detailEl) detailEl.innerHTML = renderVehicleDetail(sel, mode);
 
   // 필터 이벤트
   el.querySelector('#vmQ').addEventListener('input', (e) => { _vmState.filterQ = e.target.value; drawVehicleTab(el); });
@@ -736,7 +789,7 @@ function drawVehicleTab(el) {
     });
   });
 
-  // 상세 패널 액션
+  // 상세 패널 액션 (우측 detail 영역에서)
   bindVehicleDetailActions(el, sel);
 }
 
