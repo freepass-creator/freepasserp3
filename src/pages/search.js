@@ -768,7 +768,9 @@ export function bindSearchInteractions() {
       ws4.classList.add('is-collapsed');
       return;
     }
-    const th = e.target.closest('.table thead th');
+    // 메인 목록 표 (.table-fixed) 헤더만 필터 popover 대상.
+    //  상세 패널 안의 표(보험·가격·수수료)는 그냥 보여주는 표라 필터 X
+    const th = e.target.closest('.table.table-fixed thead th');
     if (th && !e.target.closest('.ft-pop')) {
       e.stopPropagation();
       if (th.classList.contains('sticky-col')) return;

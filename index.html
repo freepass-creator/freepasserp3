@@ -102,8 +102,11 @@
   .detail-section { margin-top: 12px; }
   .detail-section:first-child { margin-top: 0; }
   .detail-section-label {
-    color: var(--text-weak);
-    margin-bottom: 4px;
+    color: var(--text-main);
+    font-weight: 600;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
   }
   .detail-photo-main {
     aspect-ratio: 16/10;
@@ -1165,11 +1168,14 @@
     line-height: 1.5;
   }
   .info-grid > .lab {
-    background: var(--bg-stripe); color: var(--text-weak);
+    background: var(--bg-stripe);
+    color: var(--text-sub);     /* 더 진하게 — #6b7280 */
+    font-weight: 500;
     white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis;
   }
   .info-grid > div:not(.lab) {
+    color: var(--text-main);    /* 값은 main 색 명확히 */
     word-break: break-word;
   }
   /* 단일 행 — 라벨 1칸 + 값 3칸 spanning (cols 2-4) */

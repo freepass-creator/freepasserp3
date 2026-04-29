@@ -32,10 +32,10 @@
   --bg-disabled: #f9fafb;
 
   /* ── Text Hierarchy (4단계) ── */
-  --text-main: #111827;       /* 핵심 데이터 */
-  --text-sub: #6b7280;        /* 보조 정보 */
-  --text-weak: #9ca3af;       /* 라벨/메타 */
-  --text-muted: #d1d5db;      /* 비활성 */
+  --text-main: #0f172a;       /* 핵심 데이터 — 거의 검정 (가독성↑) */
+  --text-sub: #475569;        /* 보조 정보 — 진한 슬레이트 */
+  --text-weak: #64748b;       /* 라벨/메타 — 중간 슬레이트 */
+  --text-muted: #94a3b8;      /* 비활성 — 옅은 슬레이트 */
   --text-inverse: #ffffff;
   --text-link: #1d4ed8;
 
