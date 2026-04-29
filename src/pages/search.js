@@ -542,9 +542,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const basicByLabel = Object.fromEntries(basicRows.map(r => [r[0], r[1]]));
   const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
   const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
-  // 정책 미할당 차량은 정책 의존 섹션(3·4·5) 숨김 — 자동 임포트(autoplus 등) 차량 노이즈 제거.
-  //  policy_code 가 비어있으면 정책 미설정으로 간주.
-  const hasPolicy = !!(p.policy_code || p._policy?.policy_code);
 
   const body = card.querySelector('.ws4-body');
   body.innerHTML = `
@@ -587,8 +584,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       })()}
     </div>` : ''}
 
-    <!-- 3. 운전자 연령 및 범위 — 정책 있을 때만 -->
-    ${hasPolicy ? `<div class="detail-section">
+    <!-- 3. 운전자 연령 및 범위 — 정책 없으면 모든 값 '-' (섹션은 유지) -->
+    <div class="detail-section">
       <div class="detail-section-label">3. 운전자 연령 및 범위</div>
       <div class="info-grid">
         <div class="lab">기본 연령</div><div class="full">${esc(condByLabel['기본연령'] || '-')}</div>
@@ -598,10 +595,10 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <div class="lab">개인 운전 범위</div><div class="full">${esc(condByLabel['개인범위'] || '-')}</div>
         <div class="lab">사업자 운전 범위</div><div class="full">${esc(condByLabel['사업자범위'] || '-')}</div>
       </div>
-    </div>` : ''}
+    </div>
 
-    <!-- 4. 보험 내용 — 정책 있을 때만 -->
-    ${hasPolicy ? (() => {
+    <!-- 4. 보험 내용 — 섹션 유지, 정책 없으면 빈 표 -->
+    ${(() => {
       const pol = p._policy || (store.policies || []).find(po => po.policy_code === p.policy_code) || {};
       // 자차 면책금 — 수리비율·최소·최대 조합. 정액이면 1줄, 비율형이면 2줄.
       //  2줄: "수리비의 20%" / "최소 30만 ~ 최대 100만"
@@ -631,8 +628,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         ['자차',       pol.own_damage_compensation,            ownDamageDeductibleHtml],
         ['긴급출동',   pol.annual_roadside_assistance || pol.roadside_assistance, '-'],
       ];
-      const hasAny = insTableRows.some(r => r[1] || (r[2] && r[2] !== '-'));
-      if (!hasAny) return '';
+      // 빈 값이어도 섹션은 유지 — 정책 없으면 모두 '-'
       return `<div class="detail-section">
         <div class="detail-section-label">4. 보험 내용</div>
         <table class="table">
@@ -640,10 +636,10 @@ export function renderSearchDetail(p, targetCard, options = {}) {
           <tbody>${insTableRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${r[2] || '-'}</td></tr>`).join('')}</tbody>
         </table>
       </div>`;
-    })() : ''}
+    })()}
 
-    <!-- 5. 대여 조건 — 정책 있을 때만 -->
-    ${hasPolicy ? `<div class="detail-section">
+    <!-- 5. 대여 조건 — 섹션 유지, 정책 없으면 빈칸 -->
+    <div class="detail-section">
       <div class="detail-section-label">5. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
       <div class="info-grid">
         ${pair('약정 주행거리', String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, ''), '1만Km 추가비', condByLabel['1만km추가'])}
@@ -655,7 +651,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <div class="lab">탁송비</div><div class="full">${esc(condByLabel['탁송비'] || '-')}</div>
         ${pair('정비 서비스', condByLabel['정비서비스'], '보험 포함', condByLabel['보험 포함'])}
       </div>
-    </div>` : ''}
+    </div>
 
     <!-- 6. 기타 정보 -->
     ${(providerName || policyName || specByLabel['최초등록일']) ? `<div class="detail-section">
