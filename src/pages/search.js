@@ -639,13 +639,15 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       </div>
     </div>` : ''}
 
-    <!-- 7. 영업 수수료 (영업자/관리자만 — 기간별 수수료 + 비고) -->
-    ${(canSeeFee && feeRows.length) ? `<div class="detail-section">
-      <div class="detail-section-label">7. 영업 수수료 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">(내부용)</span></div>
-      <table class="table">
-        <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
-        <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${Math.round(r.fee/10000)}만</td><td style="color:var(--text-sub);">${esc(r.fee_memo || '')}</td></tr>`).join('')}</tbody>
-      </table>
+    <!-- 7. 수수료 정보 (영업자/관리자만 — 데이터 없어도 섹션 표시) -->
+    ${canSeeFee ? `<div class="detail-section">
+      <div class="detail-section-label">7. 수수료 정보 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">(내부용 · 영업자만)</span></div>
+      ${feeRows.length ? `
+        <table class="table">
+          <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
+          <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${Math.round(r.fee/10000)}만</td><td style="color:var(--text-sub);">${esc(r.fee_memo || '')}</td></tr>`).join('')}</tbody>
+        </table>
+      ` : `<div style="padding:16px; text-align:center; color:var(--text-muted); font-size:11px; background:var(--bg-stripe); border-radius:4px;">등록된 수수료 정보 없음</div>`}
     </div>` : ''}
   `;
   // 새 차량 선택 시 항상 사진부터 보이게 — 스크롤 맨 위로
