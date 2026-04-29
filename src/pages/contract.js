@@ -405,7 +405,7 @@ export function renderContractWorkV2(c) {
       <div style="font-size:12px;">
         <b style="color:var(--text-main);">${esc(c.contract_code || '-')}</b>
         ${c.customer_name ? ' · ' + esc(c.customer_name) : ''}
-        <span style="margin-left:6px;color:var(--text-sub);">${esc(status)}</span>
+        <span style="margin-left:6px;color:var(--text-sub);">${esc(STATUS_LABEL[status] || status)}</span>
       </div>
       <span style="font-size:12px;color:${prog.done === prog.total ? 'var(--alert-green-text)' : 'var(--alert-blue-text)'};">${prog.done}/${prog.total}</span>
     </div>
