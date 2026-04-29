@@ -355,9 +355,17 @@ document.addEventListener('blur', (e) => {
 }, true);
 
 /* ──────── 3. 입력 상태 라벨 (수정중 / 저장됨) ────────
-   data-f 속성을 가진 input/select/textarea 가 focus 되면 위에 '수정중' 라벨,
-   blur + 저장 성공 시 '저장됨' 라벨 1.5초 표시. 부드럽게 fade. */
-const FIELD_F_SELECTOR = 'input[data-f], select[data-f], textarea[data-f], [data-f] input, [data-f] select, [data-f] textarea';
+   다음 중 하나라도 해당하면 라벨 대상 (전역 적용 — 재고/계약/파트너/사용자/
+   정책/정산/설정 모든 폼):
+   - .ff 폼 래퍼 안의 input/select/textarea
+   - data-f / data-memo / data-field 속성 사용 (직접 또는 부모) */
+const FIELD_F_SELECTOR = [
+  '.ff input', '.ff select', '.ff textarea',
+  'input[data-f]', 'select[data-f]', 'textarea[data-f]',
+  'input[data-memo]', 'select[data-memo]', 'textarea[data-memo]',
+  'input[data-field]', 'select[data-field]', 'textarea[data-field]',
+  '[data-f] input', '[data-f] select', '[data-f] textarea',
+].join(', ');
 
 function showFieldStateTag(el, kind, text) {
   if (!el) return;
