@@ -108,9 +108,10 @@ async function scrapePageImages(pageUrl) {
       add(u);
     }
   } else {
-    // 범용 휴리스틱 — 큰 이미지만 (data-src 우선, 로고/아이콘 제외)
-    const attrs = ['data-src', 'data-original', 'data-lazy', 'src'];
-    const bad = ['logo', 'icon', 'favicon', 'sprite', 'banner', 'btn_', '/adm/', '/assets/ico'];
+    // 범용 휴리스틱 — img attr (data-* / src) + style 의 background-image
+    const attrs = ['data-src', 'data-original', 'data-lazy', 'data-bg', 'data-image', 'src'];
+    // 명백한 로고/아이콘만 제외 (banner 는 제외 — 차량 사진이 banner 로 표기되는 경우 있음)
+    const bad = ['logo', 'favicon', 'sprite', 'btn_', '/adm/', '/assets/ico', '/icon/'];
     for (const attr of attrs) {
       const re = new RegExp(`${attr}=["'](https?:\\/\\/[^"'\\s]+?\\.(?:jpg|jpeg|png|webp))["']`, 'gi');
       let m;
@@ -120,6 +121,24 @@ async function scrapePageImages(pageUrl) {
         if (bad.some(b => low.includes(b))) continue;
         add(u);
       }
+    }
+    // background-image: url(...) 추출
+    const bgRe = /background(?:-image)?\s*:\s*url\(["']?(https?:\/\/[^"'\)]+?\.(?:jpg|jpeg|png|webp))["']?\)/gi;
+    let bm;
+    while ((bm = bgRe.exec(html)) !== null) {
+      const u = bm[1];
+      const low = u.toLowerCase();
+      if (bad.some(b => low.includes(b))) continue;
+      add(u);
+    }
+    // <a href="...jpg/png"> 도 (autoplus 갤러리가 이런 패턴 자주 사용)
+    const aRe = /href=["'](https?:\/\/[^"'\s]+?\.(?:jpg|jpeg|png|webp))["']/gi;
+    let am;
+    while ((am = aRe.exec(html)) !== null) {
+      const u = am[1];
+      const low = u.toLowerCase();
+      if (bad.some(b => low.includes(b))) continue;
+      add(u);
     }
   }
 
