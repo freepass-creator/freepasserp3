@@ -716,27 +716,18 @@ function drawVehicleTab(el) {
   const archivedCount = models.filter(m => m.archived).length;
   const sel = selectedKey ? models.find(m => m._key === selectedKey) : null;
 
-  let lastMaker = null;
   const rowsHtml = filtered.length ? filtered.slice(0, 800).map(m => {
-    let groupHeader = '';
-    if (m.maker !== lastMaker) {
-      lastMaker = m.maker;
-      const groupCount = filtered.filter(x => x.maker === m.maker).length;
-      const isKor = KOR_MAKER_ORDER.includes(m.maker);
-      groupHeader = `<tr class="vm-group" style="background:var(--bg-stripe);">
-        <td colspan="4" style="padding:6px 8px;font-weight:600;color:${isKor ? 'var(--text-main)' : 'var(--text-sub)'};font-size:11px;">
-          ${isKor ? '🇰🇷' : '🌐'} ${esc(m.maker)} <span style="color:var(--text-muted);font-weight:400;">${groupCount}종</span>
-        </td>
-      </tr>`;
-    }
     const rowSel = m._key === selectedKey;
-    return groupHeader + `<tr data-key="${esc(m._key)}" style="cursor:pointer;${rowSel ? 'background:var(--bg-selected);' : ''}">
+    return `<tr data-key="${esc(m._key)}" style="cursor:pointer;${rowSel ? 'background:var(--bg-selected);' : ''}">
+      <td>${esc(m.maker || '-')}</td>
       <td>${esc(m.model || '-')}</td>
       <td>${esc(m.sub || m.car_name || '-')}${m.archived ? ' <span style="color:var(--text-muted);font-size:9px;">[단종]</span>' : ''}</td>
       <td style="color:var(--text-sub);">${esc(m.category || '')}</td>
+      <td style="color:var(--text-sub);">${esc(m.year_start || '')}</td>
+      <td style="color:var(--text-sub);">${esc(m.year_end || '')}</td>
       <td style="text-align:right;">${m._count || ''}</td>
     </tr>`;
-  }).join('') : `<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text-muted);">데이터 없음</td></tr>`;
+  }).join('') : `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">데이터 없음</td></tr>`;
 
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:8px;height:100%;">
@@ -758,10 +749,13 @@ function drawVehicleTab(el) {
         <table class="table" style="width:100%;font-size:11px;">
           <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
             <tr>
+              <th style="text-align:left;">제조사</th>
               <th style="text-align:left;">모델</th>
               <th style="text-align:left;">세부모델</th>
-              <th style="text-align:left;">분류</th>
-              <th style="text-align:right;">상품</th>
+              <th style="text-align:left;">차종구분</th>
+              <th style="text-align:left;">생산시작</th>
+              <th style="text-align:left;">생산종료</th>
+              <th style="text-align:right;">상품수</th>
             </tr>
           </thead>
           <tbody id="vmRows">${rowsHtml}</tbody>
