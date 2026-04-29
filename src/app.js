@@ -928,7 +928,8 @@ function bindLoginForm() {
     if (submitBtn) submitBtn.disabled = true;
     try {
       await fbLogin(email, pw);
-      location.reload();
+      // 로그인 후 항상 상품찾기로 진입 (이전 hash 가 settings/contract 였더라도)
+      location.replace(location.pathname + '#search');
     } catch (err) {
       if (msg) msg.textContent = '로그인 실패 — ' + (err.code || err.message || err);
       if (submitBtn) submitBtn.disabled = false;
