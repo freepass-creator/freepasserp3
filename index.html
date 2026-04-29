@@ -1305,6 +1305,33 @@
     padding: 8px 10px; border-top: 1px solid var(--border-soft);
     display: flex; justify-content: flex-end; gap: 6px;
   }
+  /* 계약생성 다이얼로그 — 대여기간 chip 규격 통일 (검색 하단 period-chip 과 동일).
+     base.css 의 .chip 룰이 prod 에서 cascade 후순위로 덮어쓰는 문제 — 셀렉터
+     specificity 올려 강제. JS 가 .is-active 클래스 쓰므로 그쪽도 매칭. */
+  .pick-overlay .cu-period-chip {
+    height: 26px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg-card);
+    color: var(--text-sub);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: background 80ms ease-out;
+  }
+  .pick-overlay .cu-period-chip:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .pick-overlay .cu-period-chip.is-active,
+  .pick-overlay .cu-period-chip.active {
+    background: #1B2A4A;
+    color: #fff;
+    border-color: #1B2A4A;
+  }
+  .pick-overlay .cu-period-chip.is-active:hover,
+  .pick-overlay .cu-period-chip.active:hover { background: #0F1B35; color: #fff; }
 
   /* 사진 풀스크린 갤러리 — v2 product-detail-render openFullscreen 호환 */
   dialog.srch-fullscreen {
