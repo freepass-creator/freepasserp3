@@ -796,11 +796,13 @@ export function bindSearchInteractions() {
       if (wasSelected && wasOpen) {
         ws4.classList.add('is-collapsed');
       } else {
+        // 즉시: 선택 표시 + 패널 열기 (시각 피드백 즉시)
         ws4.querySelectorAll('.table tbody tr').forEach(r => r.classList.remove('selected'));
         tr.classList.add('selected');
         ws4.classList.remove('is-collapsed');
+        // 다음 프레임에 detail 렌더 (paint 먼저 → 사용자 체감 빠름)
         const p = (store.products || []).find(x => x._key === tr.dataset.id);
-        if (p) renderSearchDetail(p);
+        if (p) requestAnimationFrame(() => renderSearchDetail(p));
       }
     }
   });
@@ -1489,7 +1491,14 @@ function filterProductsExcept(exceptField) {
   });
 }
 
+// 빠른 클릭 연타 시 테이블 재구성을 1번으로 묶어 체감 속도 향상 (rAF coalesce)
+let _applyFilterRaf = null;
 export function applySearchFilter() {
+  if (_applyFilterRaf) cancelAnimationFrame(_applyFilterRaf);
+  _applyFilterRaf = requestAnimationFrame(_doApplySearchFilter);
+}
+function _doApplySearchFilter() {
+  _applyFilterRaf = null;
   let list = filterProductsExcept(null);
   if (_sortState.field) {
     const f = _sortState.field;
@@ -1500,14 +1509,12 @@ export function applySearchFilter() {
       if (va == null && vb == null) return 0;
       if (va == null) return 1;
       if (vb == null) return -1;
-      // 숫자면 숫자 비교, 아니면 문자열 비교 (한글 로케일)
       const na = Number(va), nb = Number(vb);
       if (!Number.isNaN(na) && !Number.isNaN(nb)) return (na - nb) * dir;
       return String(va).localeCompare(String(vb), 'ko') * dir;
     });
   }
   renderSearchTable(list);
-  // 헤더 정렬 표시 동기화
   document.querySelectorAll('[data-page="search"] table.table-fixed thead th').forEach((th, idx) => {
     th.classList.remove('is-sort-asc', 'is-sort-desc');
     if (SEARCH_COL_FIELD[idx] === _sortState.field && _sortState.dir) {
