@@ -105,12 +105,19 @@ export function renderSearchTable(products) {
     tbody.innerHTML = '<tr><td colspan="21" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
     return;
   }
+  // 재렌더 전 현재 선택 row 의 product key 보존 — partners 갱신 등으로 재렌더 시 선택 유지
+  const prevSelectedId = tbody.querySelector('tr.selected')?.dataset.id;
   tbody.innerHTML = products.map(renderSearchRow).join('');
-  const first = tbody.querySelector('tr');
-  if (first) {
-    first.classList.add('selected');
-    const p = products.find(x => x._key === first.dataset.id);
-    if (p) renderSearchDetail(p);
+  // 이전 선택 복원, 없으면 첫 row
+  const restored = prevSelectedId ? tbody.querySelector(`tr[data-id="${prevSelectedId}"]`) : null;
+  const target = restored || tbody.querySelector('tr');
+  if (target) {
+    target.classList.add('selected');
+    const p = products.find(x => x._key === target.dataset.id);
+    // detail 패널이 열려있을 때만 재렌더 (closed 상태에서 reset 방지)
+    const ws4 = document.querySelector('[data-page="search"] .ws4');
+    const isOpen = ws4 && !ws4.classList.contains('is-collapsed');
+    if (p && (isOpen || !restored)) renderSearchDetail(p);
   }
   // 2줄 초과 셀 → 글씨 축소 (.is-cramped). 가독성 보조용이라 idle 에 늦게 적용해도 무방.
   // 직전 호출 취소 (검색 디바운스 중 빠른 재실행 시 누적 방지)
@@ -674,18 +681,26 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     updateMain();
   });
 
-  // Drive 폴더면 백그라운드 fetch 후 재렌더
+  // Drive 폴더면 백그라운드 fetch 후 재렌더 — 외부사진 다수 + 썸네일 strip
   if (driveSrc && !p._drive_folder_virtual) {
     import('../core/drive-photos.js').then(m => {
       m.fetchDriveFolderImages(driveSrc).then(urls => {
-        if (!urls?.length) return;
-        const stillCurrent = card.querySelector('.ws4-head span')?.textContent === (p.car_number || '-');
+        if (!urls?.length) {
+          console.warn('[drive-photos] empty result for', driveSrc, '— DRIVE_API_KEY 미설정 또는 폴더 비공개');
+          return;
+        }
+        // stillCurrent 체크 — 좌측 표에서 현재 선택된 row 의 _key 가 이 product 인지
+        const selectedRow = document.querySelector('[data-page="search"] tr.selected');
+        const stillCurrent = selectedRow?.dataset.id === p._key;
         if (stillCurrent) {
-          p.image_urls = urls;
+          // photo_link 의 direct URL 도 같이 합쳐 중복 제거 (Set)
+          const externalDirect = productExternalImages(p);
+          p.image_urls = [...new Set([...urls, ...externalDirect])];
           p._drive_folder_virtual = true;
+          console.log('[drive-photos] loaded', p.image_urls.length, 'photos for', p.car_number);
           renderSearchDetail(p);
         }
-      }).catch(() => {});
+      }).catch((e) => { console.error('[drive-photos] failed', e); });
     });
   }
 }
