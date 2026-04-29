@@ -1582,37 +1582,112 @@
   }
   .ws-input input { flex: 1; }
 
-  /* v2 계약 진행 7단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
-  .ct-steps-v3 { display: flex; flex-direction: column; gap: var(--sp-1); }
+  /* 계약 진행 7단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
+  .ct-steps-v3 { display: flex; flex-direction: column; gap: 4px; }
+  /* 단계번호 24px | 영업셀 1fr | 화살표 24px | 공급셀 1fr */
   .ct-step-row {
-    display: grid; grid-template-columns: 1fr 20px 1fr;
-    align-items: center; gap: var(--sp-1); font-size: var(--font-size);
+    display: grid; grid-template-columns: 24px 1fr 24px 1fr;
+    align-items: center; gap: 6px; font-size: var(--font-size);
   }
-  /* 영업/공급·관리 헤더 — 12px 통일, border-bottom 강조 */
+  /* 헤더 행 */
   .ct-step-row.ct-step-head {
-    color: var(--text-sub); font-size: var(--font-size);
-    padding-bottom: var(--sp-2);
+    color: var(--text-sub);
+    padding-bottom: 6px;
     border-bottom: 1px solid var(--border);
-    margin-bottom: var(--sp-2);
+    margin-bottom: 4px;
+    font-weight: 500;
   }
-  .ct-step-row.ct-step-head > div { text-align: center; }
-  /* 가운데 화살표 컬럼 (영업 ↔ 공급) — 시각 분리 */
-  .ct-step-row.ct-step-head > div:nth-child(2)::before {
-    content: '↔';
+  .ct-step-row.ct-step-head > div { text-align: center; font-size: 11px; }
+  .ct-step-num {
+    text-align: center;
     color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
+  .ct-step-num.is-parallel {
+    color: var(--alert-blue-text);
+    font-weight: 600;
+  }
+  /* phase 그룹 사이에 살짝 간격 */
+  .ct-step-row[data-phase-break="1"] { margin-top: 6px; }
+
+  /* 영업/공급 셀 — 박스형 */
   .ct-step-cell {
-    display: flex; align-items: center; gap: var(--sp-1);
-    padding: var(--sp-1) var(--sp-2); border-radius: var(--radius);
-    color: var(--text-sub); white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis;
-    font-size: var(--font-size);
+    transition: background 80ms ease-out, border-color 80ms ease-out;
+    min-height: 28px;
+    box-sizing: border-box;
   }
-  .ct-step-cell.done    { color: var(--alert-green-text); background: var(--alert-green-bg); }
-  .ct-step-cell.pending { color: var(--text-muted); }
-  .ct-step-cell.locked  { color: var(--text-muted); opacity: 0.5; }
-  .ct-step-cell.rejected { color: var(--alert-red-text); background: var(--alert-red-bg); }
-  .ct-step-arrow { color: var(--text-muted); text-align: center; font-size: var(--font-size); }
+  .ct-step-cell > i { font-size: 14px; flex-shrink: 0; }
+  .ct-step-cell > span { overflow: hidden; text-overflow: ellipsis; }
+  .ct-step-cell.clickable { cursor: pointer; }
+  .ct-step-cell.clickable:hover { background: var(--bg-hover); border-color: var(--border-strong, #adb5bd); }
+  .ct-step-cell.done {
+    color: var(--alert-green-text);
+    background: var(--alert-green-bg);
+    border-color: var(--alert-green-border);
+    font-weight: 500;
+  }
+  .ct-step-cell.pending {
+    color: var(--text-sub);
+    background: var(--bg-card);
+  }
+  .ct-step-cell.locked {
+    color: var(--text-muted);
+    background: var(--bg-stripe);
+    border-color: var(--border-soft, var(--border));
+    opacity: 0.7;
+  }
+  .ct-step-cell.rejected {
+    color: var(--alert-red-text);
+    background: var(--alert-red-bg);
+    border-color: var(--alert-red-border);
+    font-weight: 500;
+  }
+  /* 활성 단계 — 클릭 가능하고 done 아닌 경우 강조 (현재 액션 필요) */
+  .ct-step-cell.clickable.pending {
+    border-color: var(--alert-blue-text, #1e40af);
+    background: var(--alert-blue-bg);
+    color: var(--alert-blue-text);
+    font-weight: 500;
+  }
+  .ct-step-arrow {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 12px;
+  }
+  .ct-step-arrow.is-done { color: var(--alert-green-text); }
+  .ct-step-arrow.is-rejected { color: var(--alert-red-text); }
+  /* select (대여료 가능/불가/협의 등) — cell 안에 끼워 넣음 */
+  .ct-step-select {
+    flex: 1;
+    height: 22px;
+    padding: 0 6px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    outline: none;
+  }
+  /* 관리자 대신 처리 표시 */
+  .ct-step-admin {
+    font-size: 9px;
+    color: var(--text-link, #1d4ed8);
+    margin-left: auto;
+    padding: 1px 4px;
+    background: var(--alert-blue-bg);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
 
   .step-list { display: flex; flex-direction: column; }
   .step {

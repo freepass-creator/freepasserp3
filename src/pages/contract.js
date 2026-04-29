@@ -216,7 +216,22 @@ export function renderContractWorkV2(c) {
   const prog = getProgress(c);
   const isDoneVal = v => v === true || v === 'yes' || v === '출고 가능' || v === '출고 협의' || v === '서류 승인';
 
-  const stepRow = (step) => {
+  // 단계 번호 — phase 1,2(2a/2b 병렬),3,4,5,6
+  let lastPhase = 0;
+  let parallelIdx = 0;
+  const stepNumOf = (step, idx) => {
+    if (step.parallel) {
+      // 같은 phase 내 첫번째는 'a', 두번째는 'b'
+      if (step.phase !== lastPhase) parallelIdx = 0;
+      const letter = parallelIdx === 0 ? 'a' : 'b';
+      parallelIdx++;
+      return `${step.phase}${letter}`;
+    }
+    parallelIdx = 0;
+    return String(step.phase);
+  };
+
+  const stepRow = (step, idx) => {
     const st = states[step.id] || {};
     const locked = !!st.locked;
     const agentKey = step.agent?.key;
@@ -233,22 +248,36 @@ export function renderContractWorkV2(c) {
     const canClickResp = isAdmin || (agentDone && !locked && role === respRole && !respDone && !isRejected);
 
     const agentCls = agentDone ? 'done' : (locked ? 'locked' : 'pending');
-    const respCls = isRejected ? 'rejected' : (respDone ? 'done' : (locked ? 'locked' : 'pending'));
+    const respCls = isRejected ? 'rejected' : (respDone ? 'done' : ((!agentDone && !isAdmin) || locked ? 'locked' : 'pending'));
     const agentLabel = step.agent?.label || '-';
     const respLabel = step.provider?.label || step.admin?.label || '-';
     const respDisplay = (typeof respVal === 'string' && respVal && respVal !== 'yes') ? respVal : respLabel;
 
-    return `<div class="ct-step-row">
+    // 관리자가 대신 처리한 경우
+    const agentBy = c[agentKey + '_by'];
+    const respBy = c[(respKey || '') + '_by'];
+    const agentAdminBadge = agentBy === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
+    const respAdminBadge = respBy === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
+
+    // phase 바뀌면 위에 갭 (parallel 두 번째 행은 갭 없음)
+    const phaseBreak = (step.phase !== lastPhase && !(step.parallel && parallelIdx === 1)) ? 1 : 0;
+    const num = stepNumOf(step, idx);
+    lastPhase = step.phase;
+
+    const arrowCls = isRejected ? 'is-rejected' : (agentDone && respDone ? 'is-done' : '');
+
+    return `<div class="ct-step-row" data-phase-break="${phaseBreak}">
+      <div class="ct-step-num${step.parallel ? ' is-parallel' : ''}">${num}</div>
       <div class="ct-step-cell ${agentCls}${canClickAgent && agentKey ? ' clickable' : ''}" data-key="${esc(agentKey || '')}">
-        <i class="ph ${agentDone ? 'ph-check-circle' : 'ph-circle'}"></i><span>${esc(agentLabel)}</span>
+        <i class="ph ${agentDone ? 'ph-check-circle-fill' : 'ph-circle'}"></i><span>${esc(agentLabel)}</span>${agentAdminBadge}
       </div>
-      <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
+      <div class="ct-step-arrow ${arrowCls}"><i class="ph ph-caret-right"></i></div>
       <div class="ct-step-cell ${respCls}${!choices && canClickResp && respKey ? ' clickable' : ''}" data-key="${esc(respKey || '')}">
-        <i class="ph ${isRejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : 'ph-circle'}"></i>
+        <i class="ph ${isRejected ? 'ph-x-circle-fill' : respDone ? 'ph-check-circle-fill' : 'ph-circle'}"></i>
         ${choices && canClickResp ? `<select class="ct-step-select" data-key="${esc(respKey)}">
           <option value="">${esc(respLabel)}</option>
           ${choices.map(ch => `<option value="${esc(ch)}" ${respVal === ch ? 'selected' : ''}>${esc(ch)}</option>`).join('')}
-        </select>` : `<span>${esc(respDisplay)}</span>`}
+        </select>` : `<span>${esc(respDisplay)}</span>`}${respAdminBadge}
       </div>
     </div>`;
   };
@@ -263,7 +292,12 @@ export function renderContractWorkV2(c) {
       <span style="font-size:12px;color:${prog.done === prog.total ? 'var(--alert-green-text)' : 'var(--alert-blue-text)'};">${prog.done}/${prog.total}</span>
     </div>
     <div class="ct-steps-v3">
-      <div class="ct-step-row ct-step-head"><div>영업</div><div></div><div>공급·관리</div></div>
+      <div class="ct-step-row ct-step-head">
+        <div></div>
+        <div>영업</div>
+        <div></div>
+        <div>공급·관리</div>
+      </div>
       ${CONTRACT_STEPS_V2.map(stepRow).join('')}
     </div>
 
