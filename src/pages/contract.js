@@ -19,12 +19,22 @@ import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from '../core/
 import { notifyProviderAndAdmin } from '../core/notify.js';
 import { pickAgent, pickOrCreateCustomer } from '../core/dialogs.js';
 import {
-  esc, fmtDate, fmtTime,
+  esc, fmtDate, fmtTime, fmtListDate,
   listBody, emptyState, renderRoomItem, flashSaved,
   providerNameByCode, formatMainLine,
 } from '../core/ui-helpers.js';
 
 export const CONTRACT_STATUSES = ['계약요청', '계약대기', '계약발송', '계약완료', '계약취소'];
+
+/* 화면 표시용 라벨 매핑 — DB 값(계약취소)는 그대로 두고 라벨만 진행취소로
+ *  (가계약 단계 취소는 정식 계약 취소가 아니므로) */
+export const STATUS_LABEL = {
+  '계약요청': '계약요청',
+  '계약대기': '계약대기',
+  '계약발송': '계약발송',
+  '계약완료': '계약완료',
+  '계약취소': '진행취소',
+};
 
 const STATUS_BADGE = {
   '계약요청': { txt: '요청', tone: 'blue' },
@@ -58,40 +68,26 @@ export function renderContractList(contracts) {
   body.innerHTML = sorted.map((c, i) => {
     const status = c.contract_status || '-';
     const sb = STATUS_BADGE[status] || { txt: status.slice(0, 2), tone: 'gray' };
-    // 진행 단계 — 7/7 형식
-    let progress = '';
-    try {
-      const prog = getProgress(c);
-      progress = `${prog.done}/${prog.total}`;
-    } catch (_) { progress = ''; }
     const rent = c.rent_amount_snapshot || c.monthly_rent;
     const dep = c.deposit_amount_snapshot || c.deposit;
     const term = c.rent_month_snapshot || c.contract_term;
     const rentStr = rent ? `${Math.round(Number(rent)/10000)}만` : '';
     const depStr  = dep  ? `${Math.round(Number(dep)/10000)}만`  : '';
-    // 메인: 차량번호 · 세부모델 · 공급사명(한글) / 우측: 계약일
-    const mainLine = formatMainLine(
-      c.car_number_snapshot,
-      c.sub_model_snapshot,
-      providerNameByCode(c.provider_company_code || c.partner_code, store),
-    );
-    // 보조: 단계(7/7) · 영업채널 · 영업자코드 · 계약자명 · 대여료 · 보증금 · 기간
-    const subParts = [
-      progress ? `단계 ${progress}` : '',
-      c.agent_channel_code,
-      c.agent_code,
-      c.customer_name,
-      rentStr,
-      depStr,
-      term ? `${term}개월` : '',
-    ].filter(Boolean);
+    const termStr = term ? `${term}개월` : '';
+    // 메인 — 계약자명(굵게) · 차량번호 · 세부모델
+    const customerName = c.customer_name || '계약자 미정';
+    const mainLine = [customerName, c.car_number_snapshot, c.sub_model_snapshot].filter(Boolean).join(' · ');
+    // 보조 — 대여료/보증금/기간 · 공급사명(한글)
+    const providerName = providerNameByCode(c.provider_company_code || c.partner_code, store);
+    const priceLine = [rentStr, depStr, termStr].filter(Boolean).join(' / ');
+    const subParts = [priceLine, providerName].filter(Boolean);
     return renderRoomItem({
       id: c.contract_code || c._key,
       icon: status === '계약완료' ? 'check-circle' : status === '계약취소' ? 'x-circle' : 'file-text',
       badge: sb.txt,
       tone: sb.tone,
       name: mainLine,
-      time: fmtDate(c.contract_date || c.created_at),
+      time: fmtListDate(c.contract_date || c.created_at),
       msg: subParts.join(' · ') || '-',
       meta: c.contract_code || '',
       active: i === 0,
@@ -170,38 +166,160 @@ export function renderContractDetail(c) {
     `;
   }
 
-  // 3. 계약 조건
+  // 3. 첨부 서류 (면허증·신분증·통장사본·재직·사업자등록증 등)
   if (condCard) {
-    const pol = c._policy || (store.policies || []).find(p => p.policy_code === c.policy_code) || {};
-    const cond = c.condition || {};
-    const reviewed = c.is_screened || pol.credit_grade ? '심사' : '무심사';
-    const insLine = [
-      pol.injury_compensation_limit && `대인 ${pol.injury_compensation_limit}`,
-      pol.property_compensation_limit && `대물 ${pol.property_compensation_limit}`,
-      pol.own_damage_min_deductible && `자차 ${pol.own_damage_min_deductible} 자기부담`,
-    ].filter(Boolean).join(' / ');
-    const condRows = [
-      ['심사', reviewed],
-      ['연 주행', pol.annual_mileage ? `${pol.annual_mileage}` : (c.annual_mileage || '')],
-      ['운전 연령', pol.basic_driver_age ? `${pol.basic_driver_age}` : ''],
-      ['운전 범위', pol.personal_driver_scope || pol.business_driver_scope || ''],
-      ['보험', insLine, true],
-      ['중도해지', cond.early_termination || pol.penalty_condition || '', true],
-    ].filter(([, v]) => v);
-
-    const settlement = (store.settlements || []).find(s => s.contract_code === c.contract_code);
-    const settleRows = settlement ? [
-      ['정산상태', settlement.settlement_status || settlement.status || '미정산'],
-      ['수수료', settlement.fee_amount ? Math.round(Number(settlement.fee_amount)/10000) + '만' : '-'],
-      ['정산일', fmtDate(settlement.settled_date || settlement.settled_at) || '-'],
-    ] : [];
-
-    const renderRows = (rows) => `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;
-    condCard.querySelector('.ws4-body').innerHTML = (condRows.length || settleRows.length)
-      ? `${condRows.length ? renderRows(condRows) : ''}
-         ${settleRows.length ? `<div style="color:var(--text-weak); margin: 12px 0 4px;"><i class="ph ph-coins"></i> 정산</div>${renderRows(settleRows)}` : ''}`
-      : emptyState('조건 정보 없음');
+    renderContractDocs(condCard, c);
   }
+}
+
+function renderContractDocs(card, c) {
+  const role = store.currentUser?.role;
+  const canEdit = role === 'admin' || role === 'agent' || role === 'agent_admin' || role === 'provider';
+  const body = card.querySelector('.ws4-body');
+
+  const license = c.doc_license || '';
+  const attachments = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
+  const isPdf = (u) => u && /\.pdf(\?|$)/i.test(u);
+
+  body.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:12px;padding:8px;">
+      <!-- 1. 운전면허증 (단일, OCR 대상) -->
+      <div style="border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-card);">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${license ? 'var(--alert-green-bg)' : 'var(--bg-stripe)'};border-bottom:1px solid var(--border);">
+          <i class="ph ph-identification-card" style="font-size:14px;color:${license ? 'var(--alert-green-text)' : 'var(--text-sub)'};"></i>
+          <span style="flex:1;font-size:12px;font-weight:500;">운전면허증 <span style="color:var(--alert-red-text);">*</span></span>
+          ${license ? '<span style="font-size:10px;color:var(--alert-green-text);">제출됨</span>' : '<span style="font-size:10px;color:var(--text-muted);">미제출</span>'}
+          ${license && canEdit ? `<button class="btn" style="height:22px;padding:0 8px;font-size:11px;" id="ctLicenseOcr" title="OCR 분석"><i class="ph ph-scan"></i> OCR</button>` : ''}
+        </div>
+        ${license ? `
+          <div style="padding:8px;">
+            ${isPdf(license)
+              ? `<a href="${esc(license)}" target="_blank" style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-link);text-decoration:none;"><i class="ph ph-file-pdf" style="font-size:24px;"></i><span>PDF 보기</span></a>`
+              : `<img src="${esc(license)}" style="max-width:100%;max-height:160px;border-radius:4px;cursor:zoom-in;" data-doc-img="${esc(license)}">`}
+            ${canEdit ? `<button class="btn" style="margin-top:6px;height:22px;padding:0 8px;font-size:11px;color:var(--alert-red-text);" id="ctLicenseDel"><i class="ph ph-x"></i> 제거</button>` : ''}
+          </div>
+        ` : (canEdit ? `
+          <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);margin:8px;border-radius:4px;">
+            <i class="ph ph-upload-simple" style="font-size:20px;margin-bottom:4px;"></i>
+            <span>면허증 업로드 (OCR 대상)</span>
+            <input type="file" hidden accept="image/*,application/pdf" id="ctLicenseUpload">
+          </label>
+        ` : '<div style="padding:8px;font-size:11px;color:var(--text-muted);text-align:center;">미제출</div>')}
+      </div>
+
+      <!-- 2. 첨부 서류 (다중 — 신분증·통장사본·재직증명·사업자등록증 등) -->
+      <div style="border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-card);">
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-stripe);border-bottom:1px solid var(--border);">
+          <i class="ph ph-paperclip" style="font-size:14px;color:var(--text-sub);"></i>
+          <span style="flex:1;font-size:12px;font-weight:500;">첨부 서류</span>
+          <span style="font-size:10px;color:var(--text-muted);">${attachments.length}개</span>
+        </div>
+        <div style="padding:8px;display:flex;flex-direction:column;gap:6px;">
+          ${attachments.length ? attachments.map((url, i) => `
+            <div style="display:flex;align-items:center;gap:8px;padding:6px;border:1px solid var(--border-soft, var(--border));border-radius:4px;">
+              ${isPdf(url)
+                ? `<i class="ph ph-file-pdf" style="font-size:20px;color:var(--alert-red-text);"></i>`
+                : `<img src="${esc(url)}" style="width:36px;height:36px;object-fit:cover;border-radius:3px;cursor:zoom-in;" data-doc-img="${esc(url)}">`}
+              <a href="${esc(url)}" target="_blank" style="flex:1;font-size:11px;color:var(--text-link);text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">파일 ${i + 1}</a>
+              ${canEdit ? `<button class="btn" style="height:22px;padding:0 8px;font-size:11px;color:var(--alert-red-text);" data-att-del="${i}"><i class="ph ph-x"></i></button>` : ''}
+            </div>
+          `).join('') : '<div style="padding:8px;font-size:11px;color:var(--text-muted);text-align:center;">첨부된 서류 없음</div>'}
+          ${canEdit ? `
+            <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);border-radius:4px;">
+              <i class="ph ph-plus" style="font-size:18px;margin-bottom:4px;"></i>
+              <span>서류 추가 (여러 개 가능)</span>
+              <input type="file" hidden accept="image/*,application/pdf" multiple id="ctAttUpload">
+            </label>
+          ` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+
+  if (!canEdit) return;
+
+  // 면허증 업로드
+  body.querySelector('#ctLicenseUpload')?.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      showToast('면허증 업로드 중...', 'info');
+      const { uploadImage } = await import('../firebase/storage-helper.js');
+      const path = `contract-docs/${c._key}/license_${Date.now()}_${file.name}`;
+      const { url } = await uploadImage(path, file);
+      await updateRecord(`contracts/${c._key}`, { doc_license: url, updated_at: Date.now() });
+      c.doc_license = url;
+      showToast('면허증 업로드 완료', 'success');
+      renderContractDocs(card, c);
+    } catch (err) {
+      console.error('[license upload]', err);
+      showToast('업로드 실패: ' + (err.message || err), 'error');
+    }
+  });
+
+  // 면허증 삭제
+  body.querySelector('#ctLicenseDel')?.addEventListener('click', async () => {
+    if (!confirm('면허증을 제거할까요?')) return;
+    await updateRecord(`contracts/${c._key}`, { doc_license: null, updated_at: Date.now() });
+    c.doc_license = null;
+    showToast('면허증 제거됨');
+    renderContractDocs(card, c);
+  });
+
+  // 면허증 OCR
+  body.querySelector('#ctLicenseOcr')?.addEventListener('click', async () => {
+    showToast('OCR 기능은 추후 활성화 예정', 'info');
+    // TODO: ocr-parsers/license.js 같은 파서 만들고 image URL 다운로드 후 OCR
+  });
+
+  // 첨부서류 다중 업로드
+  body.querySelector('#ctAttUpload')?.addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    try {
+      showToast(`${files.length}개 파일 업로드 중...`, 'info');
+      const { uploadImage } = await import('../firebase/storage-helper.js');
+      const newUrls = [];
+      for (const file of files) {
+        const path = `contract-docs/${c._key}/att_${Date.now()}_${file.name}`;
+        const { url } = await uploadImage(path, file);
+        newUrls.push(url);
+      }
+      const next = [...attachments, ...newUrls];
+      await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
+      c.doc_attachments = next;
+      showToast(`${newUrls.length}개 업로드 완료`, 'success');
+      renderContractDocs(card, c);
+    } catch (err) {
+      console.error('[att upload]', err);
+      showToast('업로드 실패: ' + (err.message || err), 'error');
+    }
+  });
+
+  // 첨부서류 개별 삭제
+  body.querySelectorAll('[data-att-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const idx = Number(btn.dataset.attDel);
+      if (!confirm(`첨부 ${idx + 1}을 제거할까요?`)) return;
+      const next = attachments.filter((_, i) => i !== idx);
+      await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
+      c.doc_attachments = next;
+      showToast('제거됨');
+      renderContractDocs(card, c);
+    });
+  });
+
+  // 이미지 클릭 → 풀스크린
+  body.querySelectorAll('[data-doc-img]').forEach(img => {
+    img.addEventListener('click', () => {
+      const url = img.dataset.docImg;
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
+      overlay.innerHTML = `<img src="${esc(url)}" style="max-width:95vw;max-height:95vh;">`;
+      overlay.addEventListener('click', () => overlay.remove());
+      document.body.appendChild(overlay);
+    });
+  });
 }
 
 /* v2 contract.js renderWork 동등 — 진행 단계 + 클릭 + 드롭다운 + 취소/완료 + 메모 */
@@ -304,10 +422,10 @@ export function renderContractWorkV2(c) {
     <!-- 취소/완료 상태 — 모두 동일 정렬 (display:flex + justify-content:center). 디스플레이/버튼 모두 통일 -->
     <div style="margin-top:10px;">
       ${isCancelled
-        ? `<div style="color:var(--alert-red-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-prohibit"></i>계약취소됨</div>`
+        ? `<div style="color:var(--alert-red-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-prohibit"></i>진행 취소됨</div>`
         : isCompleted
-          ? `<div style="color:var(--alert-green-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-check-circle"></i>계약완료</div>`
-          : `<button class="btn btn-sm" id="ctCancelBtn" style="width:100%;color:var(--alert-red-text);justify-content:center;"><i class="ph ph-prohibit"></i>계약 취소</button>
+          ? `<div style="color:var(--alert-green-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-check-circle"></i>계약 완료</div>`
+          : `<button class="btn btn-sm" id="ctCancelBtn" style="width:100%;color:var(--alert-red-text);justify-content:center;"><i class="ph ph-prohibit"></i>진행 취소</button>
              ${prog.done === prog.total ? `<button class="btn btn-sm btn-primary" id="ctCompleteBtn" style="width:100%;margin-top:4px;justify-content:center;"><i class="ph ph-check-circle"></i>계약 완료</button>` : ''}`
       }
     </div>
@@ -379,9 +497,9 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
     });
   });
 
-  // 계약 취소
+  // 진행 취소 (가계약 단계 — 정식 계약 전)
   stepCard.querySelector('#ctCancelBtn')?.addEventListener('click', async () => {
-    if (!confirm('정말 계약을 취소하시겠습니까?')) return;
+    if (!confirm('진행 중인 계약을 취소하시겠습니까?\n차량 상태도 함께 복구됩니다.')) return;
     try {
       await updateRecord(`contracts/${c._key}`, {
         contract_status: '계약취소',
@@ -398,7 +516,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
           await updateRecord(`products/${c.product_uid}`, { vehicle_status: '출고가능', updated_at: Date.now() });
         }
       }
-      showToast('계약 취소됨', 'info');
+      showToast('진행 취소됨', 'info');
     } catch (e) { showToast('취소 실패: ' + (e.message || e), 'error'); }
   });
 

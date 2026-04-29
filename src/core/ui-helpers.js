@@ -42,11 +42,39 @@ export function mapStatusDot(status) {
 
 export function fmtMileage(m) { return m ? Number(m).toLocaleString() : '-'; }
 
+/* 전역 날짜 포맷 — YY.MM.DD 통일.
+ *  - 숫자(타임스탬프 ms) 또는 Date.parse 가능 문자열 → YY.MM.DD
+ *  - YYYYMMDD/YYMMDD 문자열 → YY.MM.DD
+ *  - 그 외 → 빈 문자열
+ */
 export function fmtDate(v) {
+  if (v == null || v === '') return '';
+  // 숫자 (타임스탬프) 또는 ISO/Date.parse 가능
+  if (typeof v === 'number' || /^\d{10,}$/.test(String(v).trim())) {
+    const t = Number(v);
+    const d = new Date(t);
+    if (!isNaN(d.getTime())) {
+      const yy = String(d.getFullYear()).slice(-2);
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yy}.${mm}.${dd}`;
+    }
+  }
+  // ISO 형식 (2026-04-29 등) 또는 Date.parse 가능 문자열
+  if (typeof v === 'string') {
+    const parsed = Date.parse(v);
+    if (Number.isFinite(parsed)) {
+      const d = new Date(parsed);
+      const yy = String(d.getFullYear()).slice(-2);
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      return `${yy}.${mm}.${dd}`;
+    }
+  }
+  // 숫자 문자열 (YYYYMMDD / YYMMDD)
   const d = String(v ?? '').replace(/[^\d]/g, '');
-  if (!d) return '';
-  if (d.length === 8) return `${d.slice(0, 4)}.${d.slice(4, 6)}.${d.slice(6, 8)}`;
-  if (d.length === 6) return `20${d.slice(0, 2)}.${d.slice(2, 4)}.${d.slice(4, 6)}`;
+  if (d.length === 8) return `${d.slice(2, 4)}.${d.slice(4, 6)}.${d.slice(6, 8)}`;
+  if (d.length === 6) return `${d.slice(0, 2)}.${d.slice(2, 4)}.${d.slice(4, 6)}`;
   return String(v ?? '').trim() || '';
 }
 
@@ -55,6 +83,7 @@ export function fmtMoney(v) {
   return n >= 10000 ? Math.round(n / 10000) + '만' : n.toLocaleString();
 }
 
+/* 채팅 등 시간 표시 — 오늘이면 HH:MM, 이전이면 YY.MM.DD */
 export function fmtTime(ts) {
   if (!ts) return '';
   const t = typeof ts === 'number' ? ts : (ts.toMillis?.() || Date.parse(ts) || 0);
@@ -62,31 +91,30 @@ export function fmtTime(ts) {
   const d = new Date(t);
   const now = new Date();
   if (d.toDateString() === now.toDateString()) return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-  return `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  return fmtDate(t);
 }
 
-/* 통합 포맷 — 문자열(YYYYMMDD)이든 타임스탬프든 자동 처리. 목록의 우측 날짜용 */
+/* 목록 우측 날짜 — 오늘이면 HH:MM, 그 외 YY.MM.DD (전역 통일) */
 export function fmtListDate(v) {
   if (!v && v !== 0) return '';
-  // 숫자 또는 ISO/Date.parse 가능 → fmtTime (오늘이면 HH:MM, 이전이면 MM-DD)
   const t = typeof v === 'number' ? v : (v.toMillis?.() || (Number.isFinite(Date.parse(v)) ? Date.parse(v) : 0));
   if (t) {
     const d = new Date(t);
     const now = new Date();
     if (d.toDateString() === now.toDateString()) return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-    return `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    return fmtDate(t);
   }
-  // 문자열 형식 (YYYYMMDD / YYMMDD)
   return fmtDate(v);
 }
 
-/* 빈값은 '-' 로 (활동 이력 표 등에서 일관성) */
+/* 활동 이력 / 상세 — YY.MM.DD HH:MM (전역 통일) */
 export function fmtFullTime(ts) {
   if (!ts) return '-';
   const t = typeof ts === 'number' ? ts : (ts.toMillis?.() || Date.parse(ts) || 0);
   if (!t) return '-';
   const d = new Date(t);
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const yy = String(d.getFullYear()).slice(-2);
+  return `${yy}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
 /* 모바일 환경 감지 — viewport 너비 + UA 보강 (PWA 도 모바일로 인식) */
