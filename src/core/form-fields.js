@@ -353,3 +353,69 @@ document.addEventListener('blur', (e) => {
   el.classList.remove('is-editing');
   lockField(el);
 }, true);
+
+/* ──────── 3. 입력 상태 라벨 (수정중 / 저장됨) ────────
+   data-f 속성을 가진 input/select/textarea 가 focus 되면 위에 '수정중' 라벨,
+   blur + 저장 성공 시 '저장됨' 라벨 1.5초 표시. 부드럽게 fade. */
+const FIELD_F_SELECTOR = 'input[data-f], select[data-f], textarea[data-f], [data-f] input, [data-f] select, [data-f] textarea';
+
+function showFieldStateTag(el, kind, text) {
+  if (!el) return;
+  // 부모(.ff)를 컨테이너로 사용 (있을 때만), 없으면 input 자체 wrapper 처리
+  const host = el.closest('.ff') || el.parentElement;
+  if (!host) return;
+  // 기존 태그 제거
+  host.querySelector(':scope > .field-state-tag')?.remove();
+  if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+  const tag = document.createElement('span');
+  tag.className = `field-state-tag is-${kind}`;
+  tag.textContent = text;
+  host.appendChild(tag);
+  // 다음 프레임에 보이게 (transition 트리거)
+  requestAnimationFrame(() => tag.classList.add('is-show'));
+  return tag;
+}
+function hideFieldStateTag(el, kind) {
+  if (!el) return;
+  const host = el.closest('.ff') || el.parentElement;
+  if (!host) return;
+  const tag = host.querySelector(`:scope > .field-state-tag.is-${kind}`);
+  if (!tag) return;
+  tag.classList.remove('is-show');
+  setTimeout(() => tag.remove(), 200);
+}
+
+document.addEventListener('focusin', (e) => {
+  const el = e.target;
+  if (!el.matches?.(FIELD_F_SELECTOR)) return;
+  // readonly (2-click 잠금) 상태에서는 표시 X
+  if (el.hasAttribute('readonly')) return;
+  showFieldStateTag(el, 'editing', '수정중');
+});
+document.addEventListener('focusout', (e) => {
+  const el = e.target;
+  if (!el.matches?.(FIELD_F_SELECTOR)) return;
+  hideFieldStateTag(el, 'editing');
+});
+
+// flashSaved 가 .is-saved 클래스를 추가하는 시점에 '저장됨' 태그도 같이 표시.
+//  MutationObserver 로 클래스 추가 감지 → 라벨 띄움
+const _savedObserver = new MutationObserver(muts => {
+  for (const m of muts) {
+    if (m.type !== 'attributes' || m.attributeName !== 'class') continue;
+    const el = m.target;
+    if (el.classList.contains('is-saved') && el.matches?.(FIELD_F_SELECTOR)) {
+      showFieldStateTag(el, 'saved', '저장됨');
+      setTimeout(() => hideFieldStateTag(el, 'saved'), 1300);
+    }
+  }
+});
+// 페이지 전체에 attr 변경 감지 (data-f 가진 input/select/textarea 만 응답)
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => {
+    _savedObserver.observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
+  }, { once: true });
+  if (document.readyState !== 'loading') {
+    _savedObserver.observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
+  }
+}

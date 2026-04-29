@@ -1179,6 +1179,38 @@
   /* 단일 행 — 라벨 1칸 + 값 3칸 spanning (cols 2-4) */
   .info-grid > .full { grid-column: 2 / -1; }
 
+  /* 입력 상태 라벨 — 수정중 / 저장됨 (input 위에 잠깐 떴다가 사라짐) */
+  .field-state-tag {
+    position: absolute;
+    top: -8px;
+    right: 6px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1.4;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity 0.12s ease-out, transform 0.12s ease-out;
+    z-index: 5;
+    white-space: nowrap;
+  }
+  .field-state-tag.is-show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .field-state-tag.is-editing {
+    background: var(--alert-blue-bg, #eff6ff);
+    color: var(--alert-blue-text, #1e40af);
+    border: 1px solid var(--alert-blue-border, #bfdbfe);
+  }
+  .field-state-tag.is-saved {
+    background: var(--alert-green-bg, #f0fdf4);
+    color: var(--alert-green-text, #15803d);
+    border: 1px solid var(--alert-green-border, #bbf7d0);
+  }
+
   /* form-grid — 모든 항목 한 줄에 한 개: [라벨 80px][입력칸 1fr]
      항목명 5자 규격으로 통일. textarea 만 라벨 윗정렬. 표는 .table 별도 */
   .form-grid {
