@@ -231,7 +231,7 @@ function _renderProductDetail(container, product, options = {}) {
   const isAdmin = role === 'admin';
   const canSeeCommission = isAdmin || role === 'agent' || role === 'agent_admin';
 
-  // 가격표 하단 요약 — "만 26세 이상 · 연 20,000km · 보험 포함" 같은 한 줄
+  // 가격표 하단 요약 — "만 26세 이상 | 연 20,000km | 보험 포함" 같은 한 줄
   const summaryAge = first(policy.basic_driver_age, p.base_age, p.min_age);
   const summaryMileage = first(policy.annual_mileage, p.annual_mileage);
   const summaryInsurance = first(policy.insurance_included, p.insurance_included);
@@ -253,7 +253,7 @@ function _renderProductDetail(container, product, options = {}) {
     else summaryParts.push(`보험 <b>${s}</b>`);
   }
   const priceSummaryHtml = summaryParts.length
-    ? `<div class="cat-price-summary">${summaryParts.join(' · ')} 조건입니다</div>`
+    ? `<div class="cat-price-summary">${summaryParts.join(' | ')} 조건입니다</div>`
     : '';
 
   // ── 키 포인트 칩 ── 이 차의 셀링포인트 3~5개 (가격표 위에 직관적으로 표시)

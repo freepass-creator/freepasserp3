@@ -274,7 +274,17 @@ td.num, td.date, th.num, th.date {
 }
 .btn-ghost:hover { background: var(--bg-stripe); }
 
+/* outline — 일반 액션 (대부분의 액션바 버튼). 기본 .btn 과 시각적으로 동일하지만 의미적 분류 위해 별도 클래스 */
+.btn-outline {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+.btn-outline:hover { background: var(--bg-stripe); }
+
+/* 사이즈 — sm 22px / xs 20px / lg 32px */
 .btn-sm { height: 22px; padding: 0 8px; font-size: 11px; }
+.btn-xs { height: 20px; padding: 0 6px; font-size: 11px; }
 .btn-lg { height: 32px; padding: 0 16px; }
 
 /* 아이콘만 있는 버튼 */
@@ -407,6 +417,7 @@ input[type="radio"] {
 }
 .badge-red { background: var(--alert-red-bg); color: var(--alert-red-text); border-color: var(--alert-red-border); }
 .badge-orange { background: var(--alert-orange-bg); color: var(--alert-orange-text); border-color: var(--alert-orange-border); }
+.badge-gray { background: var(--bg-stripe); color: var(--text-weak); border-color: var(--border); }
 .badge-green { background: var(--alert-green-bg); color: var(--alert-green-text); border-color: var(--alert-green-border); }
 .badge-blue { background: var(--alert-blue-bg); color: var(--alert-blue-text); border-color: var(--alert-blue-border); }
 

@@ -12,6 +12,7 @@ import { STEPS as CONTRACT_STEPS, getProgress } from '../core/contract-steps.js'
 import { pushMobileView, openBottomSheet } from '../core/mobile-shell.js';
 import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { mEmpty, mLoading } from '../core/format.js';
+import { fmtDate, chatCodeOf, providerNameByCode } from '../core/ui-helpers.js';
 
 let unsubRooms = null;
 let unsubMessages = null;
@@ -134,14 +135,14 @@ function renderRooms() {
 
   el.innerHTML = rooms.map(r => {
     const unread = (role === 'agent' || role === 'agent_admin') ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : 0;
-    const fmtDate = r.last_message_at ? new Date(r.last_message_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '';
+    const dateStr = fmtDate(r.last_message_at);
     const fmtHM   = r.last_message_at ? new Date(r.last_message_at).toLocaleTimeString('ko', { hour: '2-digit', minute: '2-digit' }) : '';
-    const title = [r.vehicle_number, r.sub_model || r.model].filter(Boolean).join(' ') || '-';
-    // 2줄: 공급사코드 · 영업채널 · 영업자 · 대화코드
-    const chatCode = r.chat_code || r.room_id || r._key || '';
-    const chatCodeShort = chatCode.length > 18 ? chatCode.slice(-12) : chatCode;
-    const meta = [r.provider_company_code || r.provider_code, r.agent_channel_code, r.agent_code, chatCodeShort].filter(Boolean).join(' · ');
-    // 3줄: 마지막 발신자 코드 + 시간 · 마지막메세지
+    // 메인: 차량번호 세부모델 공급사명 (공백 구분, 데스크톱과 통일)
+    const providerName = providerNameByCode(r.provider_company_code || r.provider_code, store);
+    const title = [r.vehicle_number, r.sub_model || r.model, providerName].filter(Boolean).join(' ') || '-';
+    // 보조: 영업채널 | 영업자 | 대화코드
+    const meta = [r.agent_channel_code, r.agent_code, chatCodeOf(r)].filter(Boolean).join(' | ');
+    // 3줄: 마지막 발신자 코드 + 시간 | 마지막메세지
     const senderTone = r.last_sender_role === 'agent' || r.last_sender_role === 'agent_admin' ? 'agent'
                      : r.last_sender_role === 'provider' ? 'provider'
                      : r.last_sender_role === 'admin' ? 'admin' : '';
@@ -158,14 +159,14 @@ function renderRooms() {
         <div class="m-room-item-body">
           <div class="m-room-item-top">
             <span class="m-room-item-name">${title}</span>
-            <span class="m-room-item-time">${fmtDate}</span>
+            <span class="m-room-item-time">${dateStr}</span>
           </div>
           <div class="m-room-item-msg">
             <span>${meta}</span>
           </div>
           <div class="m-room-item-sub">
             ${senderBadge}
-            <span>${[fmtHM, r.last_message, hasUnread ? `(안읽음 ${unread > 99 ? '99+' : unread})` : ''].filter(Boolean).join(' · ') || '-'}</span>
+            <span>${[fmtHM, r.last_message, hasUnread ? `(안읽음 ${unread > 99 ? '99+' : unread})` : ''].filter(Boolean).join(' | ') || '-'}</span>
           </div>
         </div>
       </div>

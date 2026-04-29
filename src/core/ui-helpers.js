@@ -185,9 +185,33 @@ export function providerNameByCode(code, store) {
   return stripLegalEntity(p?.partner_name || p?.company_name || code);
 }
 
-/* 메인줄 통일 포맷 — 차량번호 · 세부모델 · 공급사명(한글) */
+/* 공급사 코드 → "회사명 (코드)" 라벨. 폼 드롭다운/리스트 등 사용자가 보는 곳에서 사용.
+ *  코드만 있고 회사명 없으면 코드만 반환. */
+export function providerLabelByCode(code, store) {
+  if (!code) return '';
+  const name = providerNameByCode(code, store);
+  return (name && name !== code) ? `${name} (${code})` : code;
+}
+
+/* 메인줄 통일 포맷 — 구분자 없이 공백으로만, 보조줄에서만 | 사용 */
 export function formatMainLine(carNumber, subModel, providerName) {
-  return [carNumber, subModel, providerName].filter(Boolean).join(' · ') || '-';
+  return [carNumber, subModel, providerName].filter(Boolean).join(' ') || '-';
+}
+
+/* 채팅 코드 통일 포맷 — `CH-{차량번호}-{영업자코드}` (둘 다 있을 때).
+ *  ensureRoom 으로 생성된 신규 룸은 chat_code 가 동일 형식 (CH_..._...).
+ *  과거 pushRecord 자동 ID 룸은 _key 가 ugly 하므로, 룸 데이터로부터 derive. */
+export function chatCodeOf(room) {
+  if (!room) return '';
+  const car = room.vehicle_number || room.car_number || '';
+  const agent = room.agent_code || '';
+  if (car && agent) return `CH-${car}-${agent}`;
+  // 명시 코드 (ensureRoom 생성) 가 CH_ 형식이면 보기 좋게 dash 로 변환
+  const explicit = room.chat_code || room.room_code || room.room_id || '';
+  if (explicit && /^CH_/.test(explicit)) return explicit.replace(/_/g, '-');
+  if (explicit) return explicit;
+  // 최후 fallback — Firebase 자동 ID 인 경우 (구버전 데이터)
+  return room._key ? `CH-${room._key.slice(0, 8)}` : '';
 }
 
 /* ──────── 폼 필드 ──────── */
@@ -212,15 +236,12 @@ export function ffs(label, field, val, opts, dis = '') {
 }
 
 /* ──────── 저장 패턴 ──────── */
-/* 패널 헤더에 [저장] 버튼 주입 — bindFormSave 가 클릭 처리 */
-export function setHeadSave(card, title, canEdit, formId) {
+/* 패널 헤더 — 제목만. 저장은 자동 (input blur). canEdit/formId 인자는
+ *  하위 호환 위해 받지만 더 이상 버튼 안 그림. */
+export function setHeadSave(card, title, _canEdit, _formId) {
   const head = card?.querySelector('.ws4-head');
   if (!head) return;
-  head.innerHTML = `
-    <span>${esc(title)}</span>
-    <div class="spacer" style="flex:1;"></div>
-    ${canEdit ? `<button class="btn btn-sm btn-primary" data-save-form="${esc(formId)}">저장</button>` : ''}
-  `;
+  head.innerHTML = `<span>${esc(title)}</span>`;
 }
 
 /* 저장 성공 시 input/select/textarea 에 .is-saved 클래스 1.5초 부착 → 초록 라인 flash */
@@ -233,60 +254,71 @@ export function flashSaved(elements) {
   });
 }
 
-/* 페이지 단위 폼 저장 핸들러 (panel-scoped) — bindDirtyTracking 의 dirty 해제도 함께 처리
- *  data-save-form 속성을 가진 버튼 클릭 시: 같은 .ws4-card 내 [data-f] 모두 수집 → updateRecord */
+/* 페이지 단위 폼 자동저장 — 각 [data-f] 입력의 blur 시 해당 필드만 즉시 Firebase 업데이트.
+ *  과거 [저장] 버튼 클릭 일괄저장 → 입력칸별 자동저장으로 전환 (하단바에서 버튼 통합 후) */
 export function bindFormSave(page, collection, key, _current, options = {}) {
   const { onSaved } = options;
+  if (!page || !key) return;
 
-  // chip 토글 — 단일/멀티
-  page.querySelectorAll('[data-f][data-multi]').forEach(group => {
-    group.querySelectorAll('.chip[data-v]').forEach(chip => {
-      chip.addEventListener('click', () => chip.classList.toggle('active'));
+  const saveField = async (f, val, flashEl) => {
+    if (!f) return;
+    const patch = { [f]: val, updated_at: Date.now() };
+    if (f === 'status') {
+      if (val === '비활성') patch.is_active = false;
+      else if (val === '활성') patch.is_active = true;
+    }
+    try {
+      await updateRecord(`${collection}/${key}`, patch);
+      if (flashEl) flashSaved(flashEl);
+      onSaved?.(patch);
+    } catch (e) {
+      console.error(`[${collection}] auto save fail`, e);
+    }
+  };
+
+  // input/select/textarea — focus 시 original 캡처, blur 시 변경 감지 → 저장
+  page.querySelectorAll('input[data-f], select[data-f], textarea[data-f], [data-f] input, [data-f] select, [data-f] textarea').forEach(el => {
+    const f = el.dataset.f || el.closest('[data-f]')?.dataset.f;
+    if (!f) return;
+    let original = el.value;
+    el.addEventListener('focus', () => { original = el.value; });
+    el.addEventListener('blur', () => {
+      if (el.value === original) return;
+      saveField(f, el.value, el);
+      original = el.value;
     });
-  });
-  page.querySelectorAll('[data-f]:not([data-multi])').forEach(el => {
-    if (el.tagName === 'DIV') {
-      el.querySelectorAll('.chip[data-v]').forEach(chip => {
-        chip.addEventListener('click', () => {
-          el.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-          chip.classList.add('active');
-        });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && el.tagName !== 'TEXTAREA') el.blur();
+      else if (e.key === 'Escape') { el.value = original; el.blur(); }
+    });
+    // select 는 change 시 즉시 저장 (blur 이벤트 안 정확함)
+    if (el.tagName === 'SELECT') {
+      el.addEventListener('change', () => {
+        if (el.value === original) return;
+        saveField(f, el.value, el);
+        original = el.value;
       });
     }
   });
 
-  page.querySelectorAll('[data-save-form]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const card = btn.closest('.ws4-card') || page;
-      const data = {};
-      card.querySelectorAll('[data-f]').forEach(el => {
-        const f = el.dataset.f;
-        if (el.tagName === 'INPUT' || el.tagName === 'SELECT' || el.tagName === 'TEXTAREA') {
-          data[f] = el.value;
-        } else if (el.tagName === 'DIV') {
-          if (el.dataset.multi) {
-            data[f] = [...el.querySelectorAll('.chip.active')].map(c => c.dataset.v);
-          } else {
-            data[f] = el.querySelector('.chip.active')?.dataset.v || '';
-          }
+  // chip — 클릭 즉시 저장 (단일 = 토글, 멀티 = 다중 선택)
+  page.querySelectorAll('[data-f]').forEach(wrapper => {
+    if (wrapper.tagName !== 'DIV') return;
+    const f = wrapper.dataset.f;
+    if (!f) return;
+    const isMulti = !!wrapper.dataset.multi;
+    wrapper.querySelectorAll('.chip[data-v]').forEach(chip => {
+      chip.addEventListener('click', () => {
+        if (isMulti) {
+          chip.classList.toggle('active');
+          const vals = [...wrapper.querySelectorAll('.chip.active')].map(c => c.dataset.v);
+          saveField(f, vals, [...wrapper.querySelectorAll('input, select, textarea')]);
+        } else {
+          wrapper.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          saveField(f, chip.dataset.v, [...wrapper.querySelectorAll('input, select, textarea')]);
         }
       });
-      if (data.status === '비활성') data.is_active = false;
-      else if (data.status === '활성') data.is_active = true;
-      data.updated_at = Date.now();
-
-      try {
-        await updateRecord(`${collection}/${key}`, data);
-        // dirty 해제 (전역 헬퍼와 호환 — 클래스 직접 제거)
-        card.classList.remove('is-dirty');
-        card.querySelectorAll('[data-save-form]').forEach(b => b.classList.remove('is-pulse'));
-        // 저장 성공 → 해당 패널의 모든 input/select/textarea 초록 flash
-        flashSaved([...card.querySelectorAll('[data-f] input, [data-f] select, [data-f] textarea, input[data-f], select[data-f], textarea[data-f]')]);
-        onSaved?.(data);
-      } catch (e) {
-        console.error(`[${collection}] save fail`, e);
-        alert('저장 실패 — ' + (e.message || e));
-      }
     });
   });
 }

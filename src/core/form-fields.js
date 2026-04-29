@@ -294,154 +294,47 @@ function setFieldState(el, state, undoFn) {
    2) 같은 칸 다시 클릭 → 잠금 해제 + 포커스 + 수정 가능
    다른 곳 클릭 / blur → 다시 잠김 (저장은 기존 bindAutoSave 가 처리) */
 let _editSelected = null;
-function lockField(el) {
-  if (!el) return;
-  el.classList.remove('is-selected');
-  if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-    el.setAttribute('readonly', '');
-  } else if (el.tagName === 'SELECT') {
-    // select 는 readonly 가 없어 pointer-events 차단으로 잠금
-    el.style.pointerEvents = 'none';
-    el.setAttribute('tabindex', '-1');
-  }
-  el.dataset.editLock = '1';
+/* 페이지별 수정 모드 토글 — body.is-edit-mode 클래스로 관리.
+ *  보기모드(off): 입력칸 완전 비활성화 — 클릭해도 커서 안 꽂히고 드롭다운 안 열림 (CSS pointer-events:none)
+ *  편집모드(on):  입력칸 활성화 — 단일 클릭으로 바로 편집, 자동저장 동작 */
+function applyEditMode(on) {
+  const page = document.querySelector('.pt-page.active');
+  document.body.classList.toggle('is-edit-mode', !!on);
+  if (!page) return;
+  page.querySelectorAll('[data-edit-lock="1"]:not([data-permanent-lock])').forEach(el => {
+    if (on) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.removeAttribute('readonly');
+    } else {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.setAttribute('readonly', '');
+    }
+  });
 }
-function unlockField(el) {
-  if (!el) return;
-  if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-    el.removeAttribute('readonly');
-  } else if (el.tagName === 'SELECT') {
-    el.style.pointerEvents = '';
-    el.removeAttribute('tabindex');
+window.toggleEditMode = function(on) {
+  const cur = document.body.classList.contains('is-edit-mode');
+  const next = (typeof on === 'boolean') ? on : !cur;
+  // 편집 → 보기 전환 시 현재 포커스된 입력칸 강제 blur (자동저장 트리거)
+  if (cur && !next) {
+    const ae = document.activeElement;
+    if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT')) {
+      ae.blur();
+    }
   }
-  delete el.dataset.editLock;
-  el.classList.remove('is-selected');
-  el.classList.add('is-editing');
-  setTimeout(() => el.focus(), 0);
-}
-// select 가 잠긴 상태에서 1번째 클릭에 드롭다운이 열리지 않도록 mousedown 차단
+  applyEditMode(next);
+  window.refreshPageActions?.();
+};
+window.isEditMode = () => document.body.classList.contains('is-edit-mode');
+
+// select 가 잠긴 상태에서 드롭다운이 열리지 않도록 mousedown 차단 (수정모드 OFF 일 때만)
 document.addEventListener('mousedown', (e) => {
+  if (document.body.classList.contains('is-edit-mode')) return;
   const sel = e.target.closest('select[data-edit-lock="1"]:not([data-permanent-lock])');
   if (sel) e.preventDefault();
 });
-document.addEventListener('click', (e) => {
-  // permanent-lock 은 항상 잠김 (편집 불가)
-  const target = e.target.closest('[data-edit-lock="1"]:not([data-permanent-lock])');
-  // 외부 클릭 — 선택 해제
-  if (!target) {
-    if (_editSelected) {
-      _editSelected.classList.remove('is-selected');
-      _editSelected = null;
-    }
-    return;
-  }
-  if (target === _editSelected) {
-    // 2번째 클릭 — 수정 모드로
-    unlockField(target);
-    _editSelected = null;
-  } else {
-    // 1번째 클릭 — 선택 표시
-    if (_editSelected) _editSelected.classList.remove('is-selected');
-    target.classList.add('is-selected');
-    _editSelected = target;
-  }
-});
-// blur — 수정 모드 종료, 다시 잠금
-document.addEventListener('blur', (e) => {
-  const el = e.target;
-  if (!el?.classList?.contains('is-editing')) return;
-  el.classList.remove('is-editing');
-  lockField(el);
-}, true);
 
-/* ──────── 3. 입력 상태 라벨 (수정중 / 저장됨) ────────
-   다음 중 하나라도 해당하면 라벨 대상 (전역 적용 — 재고/계약/파트너/사용자/
-   정책/정산/설정 모든 폼):
-   - .ff 폼 래퍼 안의 input/select/textarea
-   - data-f / data-memo / data-field 속성 사용 (직접 또는 부모) */
-const FIELD_F_SELECTOR = [
-  '.ff input', '.ff select', '.ff textarea',
-  'input[data-f]', 'select[data-f]', 'textarea[data-f]',
-  'input[data-memo]', 'select[data-memo]', 'textarea[data-memo]',
-  'input[data-field]', 'select[data-field]', 'textarea[data-field]',
-  '[data-f] input', '[data-f] select', '[data-f] textarea',
-].join(', ');
-
-// 각 input 별 현재 표시중인 태그 추적 (DOM 외부 — body 에 fixed 로 띄움)
-const _fieldTags = new WeakMap();
-
-function positionTag(tag, el) {
-  const rect = el.getBoundingClientRect();
-  tag.style.top = (rect.top - 12) + 'px';
-  tag.style.left = (rect.right - tag.offsetWidth - 6) + 'px';
-}
-
-function showFieldStateTag(el, kind, text) {
-  if (!el) return;
-  // 같은 input 의 다른 종류 태그가 떠있으면 제거
-  const existing = _fieldTags.get(el);
-  if (existing) existing.remove();
-  const tag = document.createElement('span');
-  tag.className = `field-state-tag is-${kind}`;
-  tag.style.position = 'fixed';
-  tag.textContent = text;
-  document.body.appendChild(tag);
-  positionTag(tag, el);
-  _fieldTags.set(el, tag);
-  requestAnimationFrame(() => {
-    tag.classList.add('is-show');
-    positionTag(tag, el);   // offsetWidth 측정 후 재정렬
-  });
-  // 스크롤/리사이즈 시 재정렬 (display 짧으니 간단히 처리)
-  const onMove = () => positionTag(tag, el);
-  window.addEventListener('scroll', onMove, true);
-  window.addEventListener('resize', onMove);
-  tag._cleanup = () => {
-    window.removeEventListener('scroll', onMove, true);
-    window.removeEventListener('resize', onMove);
-  };
-  return tag;
-}
-function hideFieldStateTag(el, kind) {
-  if (!el) return;
-  const tag = _fieldTags.get(el);
-  if (!tag || !tag.classList.contains(`is-${kind}`)) return;
-  tag.classList.remove('is-show');
-  tag._cleanup?.();
-  setTimeout(() => { tag.remove(); _fieldTags.delete(el); }, 200);
-}
-
-document.addEventListener('focusin', (e) => {
-  const el = e.target;
-  if (!el.matches?.(FIELD_F_SELECTOR)) return;
-  // readonly (2-click 잠금) 상태에서는 표시 X
-  if (el.hasAttribute('readonly')) return;
-  showFieldStateTag(el, 'editing', '수정중');
-});
-document.addEventListener('focusout', (e) => {
-  const el = e.target;
-  if (!el.matches?.(FIELD_F_SELECTOR)) return;
-  hideFieldStateTag(el, 'editing');
+// 페이지 이동 시 수정모드 자동 종료 (다른 페이지로 가면서 편집 상태 가져가지 않음)
+window.addEventListener('hashchange', () => {
+  if (document.body.classList.contains('is-edit-mode')) applyEditMode(false);
 });
 
-// flashSaved 가 .is-saved 클래스를 추가하는 시점에 '저장됨' 태그도 같이 표시.
-//  MutationObserver 로 클래스 추가 감지 → 라벨 띄움
-const _savedObserver = new MutationObserver(muts => {
-  for (const m of muts) {
-    if (m.type !== 'attributes' || m.attributeName !== 'class') continue;
-    const el = m.target;
-    if (el.classList.contains('is-saved') && el.matches?.(FIELD_F_SELECTOR)) {
-      showFieldStateTag(el, 'saved', '저장됨');
-      setTimeout(() => hideFieldStateTag(el, 'saved'), 1300);
-    }
-  }
-});
-// 페이지 전체에 attr 변경 감지 (data-f 가진 input/select/textarea 만 응답)
-if (typeof document !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', () => {
-    _savedObserver.observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
-  }, { once: true });
-  if (document.readyState !== 'loading') {
-    _savedObserver.observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
-  }
-}
+/* 플로팅 "수정중/저장됨" 태그는 제거 — bindAutoSave 가 input 옆 .form-state 에 인라인 표시.
+   (이전: position:fixed 로 body 에 띄우다가 input 위치 계산 오류 시 엉뚱한 좌표에 튀어나오는 버그) */

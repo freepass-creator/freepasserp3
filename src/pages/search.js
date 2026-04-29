@@ -312,9 +312,203 @@ function makerBadge(maker) {
 /* ──────── B. 상세 패널 (다른 페이지에서도 호출됨) ──────── */
 
 /* options.skipHead — 헤드 건드리지 않음 (워크스페이스 차량정보 카드 등) */
+/* 현재 search 페이지에서 선택된 상품 — 하단 액션바가 참조 */
+let _activeSearchProduct = null;
+export function getActiveSearchProduct() { return _activeSearchProduct; }
+
+/* 소통(채팅방 생성) — 하단 액션바에서 호출 */
+export function searchActionChat(p) {
+  if (!p) return;
+  _onCreateRoom?.(p);
+}
+
+/* 계약 생성 — 하단 액션바에서 호출 (가계약 + 계약 페이지로 이동) */
+export async function searchActionContract(p) {
+  if (!p) return;
+  const me = store.currentUser || {};
+  if (!me.uid) { showToast('계약 생성 실패: 로그인 정보 없음 — 새로고침 후 재시도', 'error'); return; }
+  if (!(me.role === 'admin' || me.role === 'agent' || me.role === 'agent_admin')) {
+    showToast(`계약 생성 권한 없음 (현재 역할: ${me.role || '미지정'})`, 'error'); return;
+  }
+  // store/auth uid 일치 검증 — Firebase rule PERMISSION_DENIED 사전 차단
+  try {
+    const { auth } = await import('../firebase/config.js');
+    const realAuthUid = auth.currentUser?.uid;
+    if (realAuthUid && realAuthUid !== me.uid) {
+      showToast(`UID 불일치 — 재로그인 필요`, 'error'); return;
+    }
+  } catch (_) {}
+  const { pickOrCreateCustomer } = await import('../core/dialogs.js');
+  const r = await pickOrCreateCustomer(p);
+  if (!r) return;
+
+  let step = 'init';
+  try {
+    const { pushRecord } = await import('../firebase/db.js');
+    const { makeTempContractCode } = await import('./contract.js');
+    let customerKey = r._key;
+    if (!r._existing) {
+      step = 'customer';
+      customerKey = await pushRecord('customers', {
+        name: r.name, phone: r.phone, birth: r.birth,
+        is_business: !!r.is_business,
+        business_number: r.business_number || '',
+        company_name: r.company_name || '',
+        created_by: me.uid,
+      });
+    }
+    if (!customerKey) throw new Error('customerKey 발급 실패');
+
+    step = 'contract';
+    const tempCode = await makeTempContractCode();
+    await pushRecord('contracts', {
+      contract_code: tempCode,
+      is_draft: true,
+      contract_status: '계약요청',
+      customer_uid: customerKey,
+      customer_name: r.name,
+      customer_phone: r.phone,
+      customer_birth: r.birth,
+      customer_is_business: !!r.is_business,
+      product_uid: p._key,
+      product_code: p.product_code || '',
+      car_number_snapshot: p.car_number || '',
+      maker_snapshot: p.maker || '',
+      model_snapshot: p.model || '',
+      sub_model_snapshot: p.sub_model || '',
+      fuel_type_snapshot: p.fuel_type || '',
+      year_snapshot: p.year || '',
+      ext_color_snapshot: p.ext_color || '',
+      rent_month_snapshot: Number(r.contract_period) || 0,
+      rent_amount_snapshot: r.contract_rent || 0,
+      deposit_amount_snapshot: r.contract_deposit || 0,
+      policy_code: p.policy_code || (p._policy?.policy_code) || '',
+      policy_name_snapshot: p._policy?.policy_name || p.policy_name || '',
+      provider_company_code: p.provider_company_code || '',
+      partner_code: p.partner_code || p.provider_company_code || '',
+      agent_uid: me.uid,
+      agent_name: me.name || '',
+      agent_code: me.user_code || '',
+      agent_channel_code: me.agent_channel_code || me.channel_code || me.company_code || '',
+      created_by: me.uid,
+    });
+    showToast(`가계약 생성됨 — ${tempCode} (완료 시 실코드 부여)`, 'success');
+    location.hash = 'contract';
+  } catch (e) {
+    console.error(`[contract create:${step}]`, e);
+    const errMsg = e.code === 'PERMISSION_DENIED'
+      ? `권한 거부 (${step} 단계) — Firebase rule 확인 필요`
+      : `${step} 실패: ${e.code || e.message || e}`;
+    showToast('계약 생성 실패 — ' + errMsg, 'error');
+  }
+}
+
+/* 공유(카탈로그 링크 클립보드 복사) — 하단 액션바에서 호출 */
+export async function searchActionShare(p) {
+  if (!p) return;
+  const me = store.currentUser || {};
+  const agentQS = me.user_code ? `&a=${encodeURIComponent(me.user_code)}` : '';
+  const car = p.car_number || '';
+  const url = car
+    ? `${location.origin}/catalog.html?car=${encodeURIComponent(car)}${agentQS}`
+    : `${location.origin}/catalog.html?pid=${encodeURIComponent(p._key)}${agentQS.replace(/^&/, '?')}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast(`상품 카탈로그 링크 복사됨 — ${car || p._key}`, 'success');
+  } catch {
+    prompt('아래 링크를 복사하세요 (Ctrl+C):', url);
+  }
+}
+
+/* 퀵 필터 토글 (신차/중고/만26세/대여료/보증금) — 하단 액션바에서 호출.
+ *  rent/deposit 은 popover 가 필요한데 anchor element 가 없으므로 prompt 로 단순화.
+ *  popup anchor 가 필요하면 별도 컴포넌트로 분리 필요. */
+export function searchToggleQuickFilter(key, anchorEl) {
+  const set = _searchFilter.quick;
+  if (key === 'rent' || key === 'deposit') {
+    if (anchorEl) { openRangePopover(anchorEl, key); return; }
+    // 폴백 — anchor 없으면 prompt
+    const range = key === 'rent' ? _searchFilter.rentRange : _searchFilter.depositRange;
+    const cur = `${range.min ? range.min/10000 : ''}~${range.max ? range.max/10000 : ''}`;
+    const input = prompt(`${key === 'rent' ? '대여료' : '보증금'} 구간 (만원, 예: 50~100):`, cur === '~' ? '' : cur);
+    if (input == null) return;
+    if (!input.trim()) { range.min = null; range.max = null; }
+    else {
+      const [minS, maxS] = input.split('~').map(s => s.trim());
+      range.min = minS ? Number(minS) * 10000 : null;
+      range.max = maxS ? Number(maxS) * 10000 : null;
+    }
+    applySearchFilter();
+    return;
+  }
+  if (set.has(key)) set.delete(key); else set.add(key);
+  if (key === 'new' && set.has('new')) set.delete('used');
+  if (key === 'used' && set.has('used')) set.delete('new');
+  applySearchFilter();
+}
+
+/** 퀵 필터 활성 상태 — 액션바에서 chip 의 active 표시용 */
+export function isQuickFilterActive(key) {
+  if (key === 'rent') return _searchFilter.rentRange.min != null || _searchFilter.rentRange.max != null;
+  if (key === 'deposit') return _searchFilter.depositRange.min != null || _searchFilter.depositRange.max != null;
+  return _searchFilter.quick.has(key);
+}
+
+/** 기간 컬럼 표시/숨김 토글 — 하단 액션바에서 호출 */
+const PERIOD_KEY_GLOBAL = 'srch.period.hidden';
+export function searchTogglePeriod(period) {
+  const hidden = new Set(JSON.parse(localStorage.getItem(PERIOD_KEY_GLOBAL) || '[]'));
+  if (hidden.has(period)) hidden.delete(period); else hidden.add(period);
+  localStorage.setItem(PERIOD_KEY_GLOBAL, JSON.stringify([...hidden]));
+  // 컬럼 표시/숨김 적용 (bindPeriodToggles 의 applyAll 과 동일)
+  const table = document.querySelector('[data-page="search"] table.table-fixed');
+  if (table) {
+    const idxOf = (p) => ['1m','12m','24m','36m','48m','60m'].indexOf(p);
+    const colIdx = idxOf(period);
+    if (colIdx >= 0) {
+      const PERIOD_OFFSET = 14;   // 기간 컬럼 시작 위치 (콘텐츠 컬럼 다음)
+      const realIdx = PERIOD_OFFSET + colIdx;
+      const cols = table.querySelectorAll('colgroup col');
+      const ths = table.querySelectorAll('thead th');
+      const trs = table.querySelectorAll('tbody tr');
+      const visible = !hidden.has(period);
+      if (cols[realIdx]) cols[realIdx].style.width = visible ? '52px' : '0';
+      if (ths[realIdx]) ths[realIdx].style.display = visible ? '' : 'none';
+      trs.forEach(tr => { const td = tr.children[realIdx]; if (td) td.style.display = visible ? '' : 'none'; });
+    }
+  }
+  window.refreshPageActions?.('search');
+}
+export function isPeriodVisible(period) {
+  const hidden = new Set(JSON.parse(localStorage.getItem(PERIOD_KEY_GLOBAL) || '[]'));
+  return !hidden.has(period);
+}
+
+/** 엑셀 다운로드 — 현재 필터된 결과 */
+export async function searchExportExcel() {
+  const list = filterProductsExcept(null);
+  if (!list.length) { showToast('다운로드할 차량이 없습니다', 'error'); return; }
+  try {
+    const enriched = enrichProductsWithPolicy(list, store.policies || []);
+    await downloadExcelWithFilter('차량목록', PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
+      baseUrl: location.origin,
+    });
+  } catch (e) {
+    console.error('[srchExcel]', e);
+    showToast('엑셀 다운로드 실패 — ' + (e.message || e), 'error');
+  }
+}
+
+/** 사진 ZIP 다운로드 — 현재 필터된 결과 */
+export function searchDownloadPhotoZip() {
+  openPhotoZipDialog(filterProductsExcept(null));
+}
+
 export function renderSearchDetail(p, targetCard, options = {}) {
   const card = targetCard || document.querySelectorAll('.pt-page[data-page="search"] .ws4-card')[1];
   if (!card) return;
+  _activeSearchProduct = p;                                    // 하단 액션바 참조
+  window.refreshPageActions?.('search');                       // 액션바 갱신 (활성화 토글)
   const role = store.currentUser?.role;
   const isAdmin = role === 'admin';
   const canSeeFee = isAdmin || role === 'agent' || role === 'agent_admin';
@@ -325,8 +519,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   if (!options.skipHead) {
     const head = card.querySelector('.ws4-head');
     if (head) {
-      const canCreateRoom = role === 'agent' || role === 'agent_admin' || isAdmin;
-      // 헤더 — 정보만 (토글 + 차량번호 + 모델 라벨)
       head.innerHTML = `
         <button class="pt-sb-toggle" id="detailClose" title="상세 패널 접기"><i class="ph ph-caret-right"></i></button>
         <span style="color: var(--text-main);">${esc(p.car_number || '-')}</span>
@@ -335,137 +527,9 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       head.querySelector('#detailClose')?.addEventListener('click', () => {
         document.querySelector('[data-page="search"] .ws4')?.classList.toggle('is-collapsed');
       });
-
-      // 하단바 — 역할별 액션 버튼 (agent/agent_admin/admin: 소통·계약·공유 / provider: 공유만)
+      // 하단바 액션 — 더 이상 패널 footer 에 박지 않음. 전역 하단 액션바(setPageActions) 사용.
       const foot = card.querySelector('.ws4-foot[data-foot="search-detail"]');
-      if (foot) {
-        const canChat = role === 'agent' || role === 'agent_admin' || isAdmin;
-        const canContract = canChat;
-        foot.innerHTML = `
-          <div class="spacer" style="flex:1;"></div>
-          ${canChat ? `<button class="btn" id="srchChat"><i class="ph ph-chat-circle"></i> 소통</button>` : ''}
-          ${canContract ? `<button class="btn" id="srchContract"><i class="ph ph-file-text"></i> 계약</button>` : ''}
-          <button class="btn" id="srchShare"><i class="ph ph-share-network"></i> 공유</button>
-        `;
-        foot.querySelector('#srchChat')?.addEventListener('click', () => _onCreateRoom?.(p));
-        foot.querySelector('#srchContract')?.addEventListener('click', async () => {
-          const me = store.currentUser || {};
-          // 사전 점검 — Firebase rule 통과 조건 미리 검증
-          if (!me.uid) {
-            showToast('계약 생성 실패: 로그인 정보 없음 — 새로고침 후 재시도', 'error');
-            return;
-          }
-          if (!(me.role === 'admin' || me.role === 'agent' || me.role === 'agent_admin')) {
-            showToast(`계약 생성 권한 없음 (현재 역할: ${me.role || '미지정'})`, 'error');
-            return;
-          }
-
-          // 디버그 — store.currentUser.uid 와 Firebase Auth 의 실제 auth.uid 가 일치하는지
-          //  Firebase rule 의 auth.uid 는 토큰에서 오므로, 둘이 다르면 PERMISSION_DENIED 의 진짜 원인
-          try {
-            const { auth } = await import('../firebase/config.js');
-            const realAuthUid = auth.currentUser?.uid;
-            console.log('[contract-debug] store.uid=', me.uid, ' auth.uid=', realAuthUid, ' role=', me.role);
-            if (realAuthUid && realAuthUid !== me.uid) {
-              showToast(`UID 불일치 — store=${me.uid?.slice(0, 8)} / auth=${realAuthUid.slice(0, 8)} (재로그인 필요)`, 'error');
-              return;
-            }
-          } catch (_) {}
-          const { pickOrCreateCustomer } = await import('../core/dialogs.js');
-          const r = await pickOrCreateCustomer(p);
-          if (!r) return;
-
-          let step = 'init';
-          try {
-            const { pushRecord } = await import('../firebase/db.js');
-            const { makeTempContractCode } = await import('./contract.js');
-            // 1) 신규 고객이면 customer 생성
-            let customerKey = r._key;
-            if (!r._existing) {
-              step = 'customer';
-              customerKey = await pushRecord('customers', {
-                name: r.name,
-                phone: r.phone,
-                birth: r.birth,
-                is_business: !!r.is_business,
-                business_number: r.business_number || '',
-                company_name: r.company_name || '',
-                created_by: me.uid,
-              });
-            }
-            if (!customerKey) throw new Error('customerKey 발급 실패');
-
-            // 2) 가계약 생성 — 임시 코드, 완료 시 실코드 부여
-            step = 'contract';
-            const tempCode = await makeTempContractCode();
-            await pushRecord('contracts', {
-              contract_code: tempCode,
-              is_draft: true,
-              contract_status: '계약요청',
-              customer_uid: customerKey,
-              customer_name: r.name,
-              customer_phone: r.phone,
-              customer_birth: r.birth,
-              customer_is_business: !!r.is_business,
-              // 차량 스냅샷
-              product_uid: p._key,
-              product_code: p.product_code || '',
-              car_number_snapshot: p.car_number || '',
-              maker_snapshot: p.maker || '',
-              model_snapshot: p.model || '',
-              sub_model_snapshot: p.sub_model || '',
-              fuel_type_snapshot: p.fuel_type || '',
-              year_snapshot: p.year || '',
-              ext_color_snapshot: p.ext_color || '',
-              // 대여 조건
-              rent_month_snapshot: Number(r.contract_period) || 0,
-              rent_amount_snapshot: r.contract_rent || 0,
-              deposit_amount_snapshot: r.contract_deposit || 0,
-              policy_code: p.policy_code || (p._policy?.policy_code) || '',
-              policy_name_snapshot: p._policy?.policy_name || p.policy_name || '',
-              provider_company_code: p.provider_company_code || '',
-              partner_code: p.partner_code || p.provider_company_code || '',
-              // 영업자 — Firebase rule 이 newData.agent_uid === auth.uid 체크
-              agent_uid: me.uid,
-              agent_name: me.name || '',
-              agent_code: me.user_code || '',
-              agent_channel_code: me.agent_channel_code || me.channel_code || me.company_code || '',
-              created_by: me.uid,
-            });
-            showToast(`가계약 생성됨 — ${tempCode} (완료 시 실코드 부여)`, 'success');
-            // 계약 페이지로 이동 — 방금 만든 계약 자동 선택되도록 hash 변경
-            location.hash = 'contract';
-          } catch (e) {
-            console.error(`[contract create:${step}]`, e);
-            const errMsg = e.code === 'PERMISSION_DENIED'
-              ? `권한 거부 (${step} 단계) — Firebase rule 확인 필요`
-              : `${step} 실패: ${e.code || e.message || e}`;
-            showToast('계약 생성 실패 — ' + errMsg, 'error');
-          }
-        });
-        foot.querySelector('#srchShare')?.addEventListener('click', async () => {
-          // 카탈로그 단일 상품 링크 — 영업자 추적 코드 포함
-          const me = store.currentUser || {};
-          const agentQS = me.user_code ? `&a=${encodeURIComponent(me.user_code)}` : '';
-          const car = p.car_number || '';
-          const url = car
-            ? `${location.origin}/catalog.html?car=${encodeURIComponent(car)}${agentQS}`
-            : `${location.origin}/catalog.html?pid=${encodeURIComponent(p._key)}${agentQS.replace(/^&/, '?')}`;
-          try {
-            const { showToast } = await import('../core/toast.js');
-            try {
-              await navigator.clipboard.writeText(url);
-              showToast(`상품 카탈로그 링크 복사됨 — ${car || p._key}`, 'success');
-            } catch {
-              // 클립보드 차단 환경 — prompt 로 fallback
-              prompt('아래 링크를 복사하세요 (Ctrl+C):', url);
-            }
-          } catch {
-            // toast 모듈 fail — 그냥 alert
-            alert('카탈로그 링크: ' + url);
-          }
-        });
-      }
+      if (foot) foot.innerHTML = '';
     }
   }
 
@@ -578,7 +642,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         const parts = [age, mileage, insurance].filter(Boolean);
         return parts.length
           ? `<div style="margin-top:6px; font-size:11px; color:var(--text-muted); text-align:right;">
-               * ${esc(parts.join(' · '))} 기준 금액입니다.
+               * ${esc(parts.join(' | '))} 기준 금액입니다.
              </div>`
           : '';
       })()}
@@ -860,30 +924,9 @@ export function bindSearchInteractions() {
     applySearchFilter();
   });
 
-  // 엑셀 다운로드 — 현재 필터된 결과 + 정책 병합
-  document.getElementById('srchExcel')?.addEventListener('click', async () => {
-    const list = filterProductsExcept(null);
-    if (!list.length) { alert('다운로드할 차량이 없습니다'); return; }
-    try {
-      const enriched = enrichProductsWithPolicy(list, store.policies || []);
-      await downloadExcelWithFilter('차량목록', PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
-        baseUrl: location.origin,
-      });
-    } catch (e) {
-      console.error('[srchExcel]', e);
-      alert('엑셀 다운로드 실패 — ' + (e.message || e));
-    }
-  });
-
-  // 사진 ZIP 다운로드 — 현재 필터된 차량 사진을 공급사·차량별로 그룹핑하여 ZIP
-  document.getElementById('srchPhotoZip')?.addEventListener('click', () => {
-    openPhotoZipDialog(filterProductsExcept(null));
-  });
-
-  // 하단바 — 기간 컬럼 표시/숨김 (localStorage 영속)
+  // 엑셀/사진/필터/기간 토글은 모두 하단 액션바(setPageActions)가 처리.
+  // 기간 컬럼 표시/숨김 초기 상태만 적용 (localStorage 복원).
   bindPeriodToggles();
-  // 하단바 — 퀵 필터 (신차/중고/26세이하/대여료/보증금)
-  bindQuickFilters();
 }
 
 /* ──────── E. 사진 ZIP 다운로드 다이얼로그 (v2 이식) ──────── */
@@ -930,8 +973,8 @@ function openPhotoZipDialog(list) {
       <button class="pd-zip-close" aria-label="닫기"><i class="ph ph-x"></i></button>
     </div>
     <div class="pd-zip-tabs" role="tablist">
-      <button class="pd-zip-tab is-active" data-tab="own" role="tab"><span data-tablabel="own">자체사진 (${datasets.own.totalCars}대 · ${datasets.own.totalPhotos}장)</span></button>
-      <button class="pd-zip-tab" data-tab="ext" role="tab"><span data-tablabel="ext">외부사진 (${datasets.ext.totalCars}대 · ${datasets.ext.totalPhotos}장)</span></button>
+      <button class="pd-zip-tab is-active" data-tab="own" role="tab"><span data-tablabel="own">자체사진 (${datasets.own.totalCars}대 | ${datasets.own.totalPhotos}장)</span></button>
+      <button class="pd-zip-tab" data-tab="ext" role="tab"><span data-tablabel="ext">외부사진 (${datasets.ext.totalCars}대 | ${datasets.ext.totalPhotos}장)</span></button>
     </div>
     <div class="pd-zip-toolbar">
       <input type="search" class="input" id="zipSearch" placeholder="차량번호·공급사코드 검색" autocomplete="off">
@@ -971,7 +1014,7 @@ function openPhotoZipDialog(list) {
           <summary>
             <input type="checkbox" class="zip-prov-cb" data-prov="${prov.replace(/"/g,'&quot;')}">
             <span class="pd-zip-prov-name">${prov}</span>
-            <span class="pd-zip-prov-meta">${cars.length}대 · ${provPhotos}장</span>
+            <span class="pd-zip-prov-meta">${cars.length}대 | ${provPhotos}장</span>
           </summary>
           <div class="pd-zip-cars">
             ${cars.map(({ p, imgs }) => {
@@ -1042,7 +1085,7 @@ function openPhotoZipDialog(list) {
     const map = byKey();
     let cars = selected.length, photos = 0;
     for (const cb of selected) photos += (map.get(cb.dataset.key)?.imgs.length || 0);
-    dlg.querySelector('#zipSelInfo').textContent = `선택: ${cars}대 · ${photos}장`;
+    dlg.querySelector('#zipSelInfo').textContent = `선택: ${cars}대 | ${photos}장`;
     dlg.querySelector('#zipDownload').disabled = cars === 0;
   };
 
@@ -1094,7 +1137,7 @@ function openPhotoZipDialog(list) {
       const refreshRow = (entry) => {
         datasets.ext.totalPhotos = datasets.ext.withPhotos.reduce((s, e) => s + e.imgs.length, 0);
         const tabLabel = dlg.querySelector('[data-tablabel="ext"]');
-        if (tabLabel) tabLabel.textContent = `외부사진 (${datasets.ext.totalCars}대 · ${datasets.ext.totalPhotos}장)`;
+        if (tabLabel) tabLabel.textContent = `외부사진 (${datasets.ext.totalCars}대 | ${datasets.ext.totalPhotos}장)`;
         if (activeTab !== 'ext') return;
         const carCb = dlg.querySelector(`.zip-car-cb[data-key="${CSS.escape(entry.p._key)}"]`);
         if (carCb) {
@@ -1105,7 +1148,7 @@ function openPhotoZipDialog(list) {
         const provEntries = datasets.ext.groups[prov] || [];
         const provPhotos = provEntries.reduce((s, c) => s + c.imgs.length, 0);
         const provMeta = dlg.querySelector(`.zip-prov-cb[data-prov="${CSS.escape(prov)}"]`)?.closest('summary')?.querySelector('.pd-zip-prov-meta');
-        if (provMeta) provMeta.textContent = `${provEntries.length}대 · ${provPhotos}장`;
+        if (provMeta) provMeta.textContent = `${provEntries.length}대 | ${provPhotos}장`;
         updateSelInfo();
       };
 
@@ -1208,8 +1251,8 @@ function openPhotoZipDialog(list) {
       a.click();
       URL.revokeObjectURL(url);
       const msg = fail
-        ? `${carSucceeded.size}대 · ${ok}장 다운로드 (${fail}장 실패)`
-        : `${carSucceeded.size}대 · ${ok}장 다운로드 완료`;
+        ? `${carSucceeded.size}대 | ${ok}장 다운로드 (${fail}장 실패)`
+        : `${carSucceeded.size}대 | ${ok}장 다운로드 완료`;
       showToast(msg, fail ? 'info' : 'success');
       close();
     } catch (e) {
@@ -1219,31 +1262,6 @@ function openPhotoZipDialog(list) {
       resetBtn();
     }
   }, { signal: ac.signal });
-}
-
-function bindQuickFilters() {
-  const foot = document.querySelector('.ws4-foot[data-foot="search-list"]');
-  if (!foot) return;
-  foot.addEventListener('click', (e) => {
-    const chip = e.target.closest('.foot-filter-chip');
-    if (!chip) return;
-    const key = chip.dataset.footFilter;
-    if (key === 'rent' || key === 'deposit') {
-      // 구간 필터 — popover 열기 (간단한 min/max 입력)
-      openRangePopover(chip, key);
-      return;
-    }
-    // 토글 (신차/중고/26세이하)
-    const set = _searchFilter.quick;
-    if (set.has(key)) set.delete(key); else set.add(key);
-    // 신차 vs 중고 — 상호 배타 (한쪽 켜면 반대쪽 꺼짐)
-    if (key === 'new' && set.has('new')) set.delete('used');
-    if (key === 'used' && set.has('used')) set.delete('new');
-    foot.querySelectorAll('.foot-filter-chip').forEach(c => {
-      c.classList.toggle('is-active', set.has(c.dataset.footFilter));
-    });
-    applySearchFilter();
-  });
 }
 
 function openRangePopover(chip, key) {
@@ -1329,37 +1347,18 @@ function openRangePopover(chip, key) {
 const PERIOD_KEY = 'srch.period.hidden';
 const ALL_PERIODS = ['1m', '12m', '24m', '36m', '48m', '60m'];
 const PERIOD_COL_W = 52;  // colgroup 의 기간 컬럼 폭과 동일하게
+/* 기간 컬럼 표시/숨김 — 초기 렌더 시 저장된 hidden 상태 적용. 토글 핸들러는 하단 액션바가 처리.
+ *  searchTogglePeriod() 가 클릭마다 컬럼 가시성 다시 적용. */
 function bindPeriodToggles() {
-  const foot = document.querySelector('.ws4-foot[data-foot="search-list"]');
   const table = document.querySelector('[data-page="search"] table.table-fixed');
-  if (!foot || !table) return;
-
-  // 저장된 hidden 상태 복원 (기본: 모두 활성)
+  if (!table) return;
   const hidden = new Set(JSON.parse(localStorage.getItem(PERIOD_KEY) || '[]'));
-  const applyAll = () => {
-    foot.querySelectorAll('.period-chip').forEach(chip => {
-      const period = chip.dataset.colPeriod;
-      chip.classList.toggle('is-active', !hidden.has(period));
-      table.classList.toggle(`hide-period-${period}`, hidden.has(period));
-    });
-    // 표시된 기간 수에 따라 우측 sticky right 값을 CSS 변수로 (table 에 한 번만 set → 모든 row 자동 적용)
-    const visible = ALL_PERIODS.filter(p => !hidden.has(p));
-    ALL_PERIODS.forEach(p => {
-      const i = visible.indexOf(p);
-      const right = i === -1 ? 0 : (visible.length - 1 - i) * PERIOD_COL_W;
-      table.style.setProperty(`--right-${p}`, right + 'px');
-    });
-  };
-  applyAll();
-
-  // 토글 — 클릭하면 해당 컬럼 on/off (다중 선택 가능)
-  foot.addEventListener('click', (e) => {
-    const chip = e.target.closest('.period-chip');
-    if (!chip) return;
-    const period = chip.dataset.colPeriod;
-    if (hidden.has(period)) hidden.delete(period); else hidden.add(period);
-    applyAll();
-    localStorage.setItem(PERIOD_KEY, JSON.stringify([...hidden]));
+  ALL_PERIODS.forEach(p => table.classList.toggle(`hide-period-${p}`, hidden.has(p)));
+  const visible = ALL_PERIODS.filter(p => !hidden.has(p));
+  ALL_PERIODS.forEach(p => {
+    const i = visible.indexOf(p);
+    const right = i === -1 ? 0 : (visible.length - 1 - i) * PERIOD_COL_W;
+    table.style.setProperty(`--right-${p}`, right + 'px');
   });
 }
 

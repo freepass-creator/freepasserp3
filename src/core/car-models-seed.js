@@ -32,7 +32,7 @@ export function inferPowertrain(category) {
   if (/하이브리드/.test(category)) return '하이브리드';
   return '내연';
 }
-/** "2022" → "22-" · "1999" → "99-" */
+/** "2022" → "22-" | "1999" → "99-" */
 export function toYearSuffix(year_start) {
   const s = String(year_start);
   const yy = s.length === 4 ? s.slice(2) : s;

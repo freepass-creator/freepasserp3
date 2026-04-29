@@ -412,7 +412,7 @@ function renderCard(p) {
   const trimClean = trimMinusSub(subModel, p.trim_name || p.trim);
   const modelLine = [subModel || p.model || '차량', trimClean].filter(Boolean).join(' ');
 
-  // 메인 (강조) — 월대여료 · 보증금 · 대여기간 + [차량상태][상품구분] 뱃지 2개
+  // 메인 (강조) — 월대여료 | 보증금 | 대여기간 + [차량상태][상품구분] 뱃지 2개
   const priceHtml = bestRent
     ? `<span class="m-card-price-rent">${fmtMoney(bestRent)}</span>${bestDep ? `<span class="m-card-price-dep">보증 ${fmtMoney(bestDep)}</span>` : ''}<span class="m-card-price-period">${bestMonth}개월</span>`
     : `<span class="m-card-price-ask">가격 문의</span>`;
@@ -430,7 +430,7 @@ function renderCard(p) {
   ].filter(Boolean).join('');
   const mainLine = `<div class="m-card-main-line">${priceHtml}${badgesHtml}</div>`;
 
-  // 사양 — 차량번호 · 연식 · 주행거리 · 연료 · 색상
+  // 사양 — 차량번호 | 연식 | 주행거리 | 연료 | 색상
   const color = [p.ext_color, p.int_color].filter(Boolean).join('/');
   const specLine = [
     p.car_number,
@@ -438,7 +438,7 @@ function renderCard(p) {
     p.mileage ? `${Number(p.mileage).toLocaleString()}km` : '',
     p.fuel_type,
     color,
-  ].filter(Boolean).join(' · ');
+  ].filter(Boolean).join(' | ');
 
   // 썸네일 심사기준 오버레이
   const creditGrade = p._policy?.credit_grade || p._policy?.screening_criteria || p.credit_grade || '';

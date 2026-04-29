@@ -70,7 +70,7 @@ export function pickAgent() {
               <i class="ph ph-user-circle"></i>
               <div>
                 <div class="pick-item-name">${esc(a.name || a.email || '-')}</div>
-                <div class="pick-item-sub">${esc([a.user_code, a.company_name, a.role === 'agent_admin' ? '영업관리' : '영업'].filter(Boolean).join(' · '))}</div>
+                <div class="pick-item-sub">${esc([a.user_code, a.company_name, a.role === 'agent_admin' ? '영업관리' : '영업'].filter(Boolean).join(' | '))}</div>
               </div>
             </button>
           `).join('')}
@@ -121,7 +121,7 @@ export function pickPartner(type = '공급사') {
                 <i class="ph ph-buildings"></i>
                 <div>
                   <div class="pick-item-name">${esc(name)}</div>
-                  <div class="pick-item-sub">${esc(code)}${p.contact_name ? ' · ' + esc(p.contact_name) : ''}</div>
+                  <div class="pick-item-sub">${esc(code)}${p.contact_name ? ' | ' + esc(p.contact_name) : ''}</div>
                 </div>
               </button>`;
           }).join('')}

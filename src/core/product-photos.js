@@ -1,7 +1,7 @@
 /**
  * product-photos.js — 상품 이미지 수집 공용 헬퍼
  *
- * search.js · excel-export.js · mobile 등에서 각각 중복 구현하던
+ * search.js | excel-export.js | mobile 등에서 각각 중복 구현하던
  * 이미지 URL 정규화 로직을 통합. Firebase Storage/외부URL 재귀 파싱.
  *
  * Drive "폴더" / moderentcar 같은 HTML 페이지는 서버 스크래핑 필요 —

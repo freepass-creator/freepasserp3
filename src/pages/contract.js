@@ -87,21 +87,26 @@ export function renderContractList(contracts) {
     const rentStr = rent ? `${Math.round(Number(rent)/10000)}만` : '';
     const depStr  = dep  ? `${Math.round(Number(dep)/10000)}만`  : '';
     const termStr = term ? `${term}개월` : '';
-    // 메인 — 계약자명(굵게) · 차량번호 · 세부모델
-    const customerName = c.customer_name || '계약자 미정';
-    const mainLine = [customerName, c.car_number_snapshot, c.sub_model_snapshot].filter(Boolean).join(' · ');
-    // 보조 — 대여료/보증금/기간 · 공급사명(한글)
+    // 메인 — 계약자명 차량번호 세부모델 공급사명 (구분자 없이 문단처럼)
+    const customerName = c.customer_name || '계약자미정';
     const providerName = providerNameByCode(c.provider_company_code || c.partner_code, store);
-    const priceLine = [rentStr, depStr, termStr].filter(Boolean).join(' / ');
-    const subParts = [priceLine, providerName].filter(Boolean);
+    const mainLine = [customerName, c.car_number_snapshot, c.sub_model_snapshot, providerName].filter(Boolean).join(' ');
+    // 보조 — 영업채널 | 영업자 | 대여료/보증금/기간 | 진행단계
+    const priceLine = [rentStr, depStr, termStr].filter(Boolean).join('/');
+    const subParts = [
+      c.agent_channel_code || c.agent_channel,
+      c.agent_code,
+      priceLine,
+      status,
+    ].filter(Boolean);
     return renderRoomItem({
       id: c.contract_code || c._key,
       icon: status === '계약완료' ? 'check-circle' : status === '계약취소' ? 'x-circle' : 'file-text',
       badge: sb.txt,
       tone: sb.tone,
       name: mainLine,
-      time: fmtListDate(c.contract_date || c.created_at),
-      msg: subParts.join(' · ') || '-',
+      time: fmtDate(c.contract_date || c.created_at),
+      msg: subParts.join(' | ') || '-',
       meta: c.contract_code || '',
       active: i === 0,
     });
@@ -145,7 +150,7 @@ export function renderContractDetail(c) {
       ? (store.contracts || []).filter(x => x.customer_uid === c.customer_uid && x._key !== c._key && !x._deleted).length
       : 0;
     const customerLabel = sameCustomerCount > 0
-      ? `${c.customer_name || ''} · 다른계약 ${sameCustomerCount}건`
+      ? `${c.customer_name || ''} | 다른계약 ${sameCustomerCount}건`
       : (c.customer_name || '');
 
     // 1) 계약자 정보
@@ -188,7 +193,7 @@ export function renderContractDetail(c) {
       ['영업채널', c.agent_channel_code],
       ['영업자', c.agent_code],
       ['정책코드', c.policy_code],
-      ['계약코드', c.contract_code + (c.is_draft ? ' · 임시' : ''), true],
+      ['계약코드', c.contract_code + (c.is_draft ? ' | 임시' : ''), true],
     ].filter(([, v]) => v);
 
     const renderRows = (rows) => `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;
@@ -462,7 +467,7 @@ export function renderContractWorkV2(c) {
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
       <div style="font-size:12px;">
         <b style="color:var(--text-main);">${esc(c.contract_code || '-')}</b>
-        ${c.customer_name ? ' · ' + esc(c.customer_name) : ''}
+        ${c.customer_name ? ' | ' + esc(c.customer_name) : ''}
         <span style="margin-left:6px;color:var(--text-sub);">${esc(STATUS_LABEL[status] || status)}</span>
       </div>
       <span style="font-size:12px;color:${prog.done === prog.total ? 'var(--alert-green-text)' : 'var(--alert-blue-text)'};">${prog.done}/${prog.total}</span>
@@ -613,7 +618,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
         x.contract_status === '계약완료' && !x._deleted
       );
       if (alreadyDone) {
-        return showToast(`이미 완료된 계약이 있습니다 · ${alreadyDone.contract_code}`, 'error');
+        return showToast(`이미 완료된 계약이 있습니다 | ${alreadyDone.contract_code}`, 'error');
       }
     }
     if (!confirm('계약을 완료 처리하시겠습니까?')) return;
@@ -643,7 +648,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
         subject: '계약 체결',
         message: `[Freepass]\n${product?.car_number || c.car_number_snapshot || ''} ${c.customer_name || ''} 계약이 체결됐습니다 (${newCode}).`,
       }).catch(() => null);
-      showToast(`계약 완료 · ${newCode}`, 'success');
+      showToast(`계약 완료 | ${newCode}`, 'success');
     } catch (e) {
       console.error('[contract complete]', e);
       showToast('완료 실패: ' + (e.message || e), 'error');
@@ -736,7 +741,7 @@ export async function createContractFromRoomLocal(room) {
       message: `[Freepass]\n${agent.name || '영업자'}님이 ${product?.car_number || ''} ${product?.maker || ''} ${product?.sub_model || product?.model || ''} 계약(${code})을 생성했습니다.`,
     }).catch(() => null);
 
-    showToast(`계약 생성됨 · ${agent.name || agent.user_code} 배정 · ${code}`, 'success');
+    showToast(`계약 생성됨 | ${agent.name || agent.user_code} 배정 | ${code}`, 'success');
   } catch (e) {
     console.error('[contract create]', e);
     showToast('계약 생성 실패 — ' + (e.message || e), 'error');

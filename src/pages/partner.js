@@ -30,30 +30,34 @@ export function renderPartnerList(partners) {
                      : isOperator ? { txt: '운영', tone: 'red', icon: 'gear' }
                      : { txt: '공급', tone: 'blue', icon: 'buildings' };
     const code = pCode(pa);
-    // 유형별 카운트 — 공급사: 차량+계약 / 영업채널: 영업자+계약 / 운영사: 사용자
+    const typeLabel = isAgent ? '영업채널' : (isOperator ? '운영사' : '공급사');
+    // 유형별 카운트
     let stats = '';
     if (isAgent) {
       const agentCount = (store.users || []).filter(u => u.agent_channel_code === code).length;
       const ctCount = (store.contracts || []).filter(c => c.agent_channel_code === code).length;
-      stats = `영업${agentCount}·계약${ctCount}`;
+      stats = `영업${agentCount} 계약${ctCount}`;
     } else if (isOperator) {
       const userCount = (store.users || []).filter(u => u.company_code === code).length;
       stats = `사용자${userCount}`;
     } else {
       const carCount = (store.products || []).filter(p => p.provider_company_code === code || p.partner_code === code).length;
       const ctCount = (store.contracts || []).filter(c => c.provider_company_code === code).length;
-      stats = `차량${carCount}·계약${ctCount}`;
+      stats = `차량${carCount} 계약${ctCount}`;
     }
-    // 통일 spec: name=회사명 / msg=담당자·연락처·통계 / meta=코드 / 시간 X
+    // 메인: 파트너명 코드  /  우측: 등록일
+    const mainLine = [pName(pa), code].filter(Boolean).join(' ');
+    // 보조: 유형 | 담당자 | 연락처 | 통계
+    const subParts = [typeLabel, pa.contact_name, pa.phone, stats].filter(Boolean);
     return renderRoomItem({
       id: pa._key,
       icon: typeBadge.icon,
       badge: typeBadge.txt,
       tone: typeBadge.tone,
-      name: pName(pa),
-      time: '',
-      msg: [pa.contact_name, pa.phone, stats].filter(Boolean).join(' · ') || '-',
-      meta: code,
+      name: mainLine,
+      time: fmtDate(pa.created_at),
+      msg: subParts.join(' | ') || '-',
+      meta: '',
       active: i === 0,
     });
   }).join('');
@@ -139,7 +143,7 @@ export function renderPartnerDetail(pa) {
     } else {
       historyCard.querySelector('.ws4-body').innerHTML = events.map(ev => `
         <div class="timeline-row">
-          <span class="text-weak">${esc(fmtFullTime(ev.at))}</span> · ${esc(ev.status || '-')} · ${esc(ev.actor || '시스템')}
+          <span class="text-weak">${esc(fmtFullTime(ev.at))}</span> | ${esc(ev.status || '-')} | ${esc(ev.actor || '시스템')}
           <div class="text-sub">${esc(ev.note || '')}</div>
         </div>
       `).join('');
@@ -149,36 +153,4 @@ export function renderPartnerDetail(pa) {
   if (canEdit) bindFormSave(page, 'partners', pa._key, pa);
 }
 
-/* 새 파트너 — partners 페이지 헤드 "새 파트너" 버튼
- *  partner_code 를 key 로 사용 (v2 동일). 코드만 받고 row 생성, 우측 편집 폼에서 나머지 입력. */
-export function bindPartnerCreate() {
-  const btn = document.querySelector('[data-page="partners"] .ws4-list .ws4-head .btn-primary');
-  if (!btn) return;
-  btn.addEventListener('click', async () => {
-    const role = store.currentUser?.role;
-    if (role !== 'admin') return showToast('파트너 등록은 관리자 전용', 'error');
-    const code = prompt('파트너코드 (예: HCAP, KCAP):');
-    if (!code?.trim()) return;
-    const partnerCode = code.trim().toUpperCase();
-    if ((store.partners || []).find(p => (p.partner_code || p._key) === partnerCode)) {
-      return showToast('이미 등록된 파트너코드', 'error');
-    }
-    const name = prompt('파트너명:') || partnerCode;
-    const typeIdx = prompt('유형: 1=공급사 / 2=영업채널 / 3=운영사', '1');
-    const partner_type = typeIdx === '2' ? '영업채널' : (typeIdx === '3' ? '운영사' : '공급사');
-    try {
-      await setRecord(`partners/${partnerCode}`, {
-        partner_code: partnerCode,
-        partner_name: name.trim(),
-        partner_type,
-        is_active: true,
-        created_at: Date.now(),
-        created_by: store.currentUser?.uid || '',
-      });
-      showToast('파트너 등록 완료', 'success');
-    } catch (e) {
-      console.error('[partner create]', e);
-      showToast('등록 실패 — ' + (e.message || e), 'error');
-    }
-  });
-}
+/* 신규등록은 하단 액션바(setPageActions) 의 createNewPartner 가 처리 — app.js 정의 */

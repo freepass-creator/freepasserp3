@@ -68,21 +68,22 @@
   body { font-size: 12px; }
   kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
 
-  /* 버튼·뱃지·칩 규격 통일 — 12px / 24px / 2px radius (단일 톤) */
-  .btn, .btn-primary, .btn-danger, .btn-ghost, .btn-sm, .btn-lg {
-    height: var(--button-height); padding: 0 var(--sp-3); border-radius: var(--radius);
-    font-size: var(--font-size); line-height: 1;
+  /* 버튼·뱃지·칩 — base.css 가 표준 정의 보유 (.btn / .btn-primary / .btn-outline / .btn-danger /
+     .btn-ghost / .btn-sm / .btn-xs / .btn-lg / .btn-icon / .badge / .chip).
+     여기서는 ERP 톤(높이·라운드·폰트) 만 토큰으로 강제. */
+  .btn, .btn-primary, .btn-outline, .btn-danger, .btn-ghost {
+    height: var(--button-height); border-radius: var(--radius); font-size: var(--font-size);
   }
   .btn-icon { width: var(--button-height); padding: 0; }
-  .badge, .badge-red, .badge-orange, .badge-green, .badge-blue {
-    display: inline-flex; align-items: center; justify-content: center;
-    height: var(--chip-height); padding: 0 var(--sp-2); line-height: 1; border-radius: var(--radius);
+  .badge, .badge-red, .badge-orange, .badge-green, .badge-blue, .badge-gray {
+    height: var(--chip-height); padding: 0 var(--sp-2); border-radius: var(--radius);
     font-size: var(--font-size);
+    display: inline-flex; align-items: center; justify-content: center; line-height: 1;
   }
   .chip {
-    height: var(--chip-height); padding: 0 var(--sp-3); line-height: 1; border-radius: var(--radius);
-    display: inline-flex; align-items: center; gap: var(--sp-1);
+    height: var(--chip-height); padding: 0 var(--sp-3); border-radius: var(--radius);
     font-size: var(--font-size);
+    display: inline-flex; align-items: center; gap: var(--sp-1); line-height: 1;
   }
   /* chip 내 카운트 — statbar 통합 (라벨 main / 카운트 weak) */
   .chip em.cnt { font-style: normal; color: var(--text-weak); }
@@ -261,10 +262,11 @@
   body {
     display: grid;
     grid-template-columns: 180px 1fr;
-    grid-template-rows: var(--panel-head-h) 1fr;
+    grid-template-rows: var(--panel-head-h) 1fr auto;  /* 3행: topbar / main / 액션바 */
     height: 100vh; overflow: hidden;
   }
   body.is-sb-collapsed { grid-template-columns: 48px 1fr; }
+  body.is-login .pt-actions { display: none; }       /* 로그인 화면에서는 숨김 */
   .pt-sb {
     grid-column: 1; grid-row: 1 / -1;
     background: var(--bg-card); border-right: 1px solid var(--border);
@@ -337,7 +339,7 @@
     opacity: 0; max-width: 0; margin-right: 0;
     pointer-events: none;
   }
-  /* 접힘 상태에서 메뉴 link · brand 의 padding / justify-content / 아이콘 크기는
+  /* 접힘 상태에서 메뉴 link | brand 의 padding / justify-content / 아이콘 크기는
      변경하지 않음 — 아이콘이 같은 X 위치에 그대로 머물러야 자연스러움 */
   /* 빈 cnt span 자동 숨김 — JS 가 :empty 트리거 안 해도 텍스트 비면 안 보임 */
   .pt-sb a .cnt:empty { display: none; }
@@ -965,7 +967,7 @@
   .pt-tb-search-stats .stat-협의 { color: var(--alert-orange-text); }
   .pt-tb-search-stats .stat-불가 { color: var(--alert-red-text); }
   .pt-tb-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; color: var(--text-sub); }
-  /* 토픽바 우측 글로벌 영역 — 알림 + 사용자 메뉴 (이름 · 직급). margin-left:auto 로 우측 끝 */
+  /* 토픽바 우측 글로벌 영역 — 알림 + 사용자 메뉴 (이름 | 직급). margin-left:auto 로 우측 끝 */
   .pt-tb-global {
     margin-left: auto;
     flex: 0 0 auto;
@@ -981,7 +983,7 @@
   }
   .pt-tb-icon:hover { background: var(--bg-stripe); color: var(--text-main); }
   .pt-tb-icon i { font-size: 16px; }
-  /* 사용자 메뉴 버튼 — 이름 · 직급 + caret. 계정 메뉴 진입점 */
+  /* 사용자 메뉴 버튼 — 이름 | 직급 + caret. 계정 메뉴 진입점 */
   .pt-tb-user {
     height: 100%;
     padding: 0 var(--sp-3);
@@ -1015,6 +1017,56 @@
     padding: 6px;          /* 외곽 6px = 패널 gap 6px = 한 기준 */
     background: var(--bg-page);
   }
+
+  /* ── 페이지 액션바 (전역 하단) — 3-zone: [좌] [중] [우] */
+  .pt-actions {
+    grid-column: 2; grid-row: 3;
+    display: flex; align-items: center;
+    height: 36px; padding: 0 var(--sp-3);
+    background: var(--bg-card); border-top: 1px solid var(--border);
+    font-size: var(--font-size);
+  }
+  .pt-actions-zone { display: flex; align-items: center; gap: var(--sp-1); }
+  .pt-actions-left   { justify-content: flex-start; flex: 1; min-width: 0; }
+  .pt-actions-center { justify-content: center; gap: var(--sp-1); }
+  .pt-actions-right  { justify-content: flex-end; flex: 1; min-width: 0; }
+  .pt-actions-zone:empty { display: none; }
+  .pt-actions-divider { width: 1px; height: 16px; background: var(--border); margin: 0 var(--sp-1); }
+
+  /* 액션바 내부 .btn-xs / .chip — 통일 규격 강제 (전역 base.css 토큰 위에) */
+  .pt-actions .btn-xs { height: 20px; padding: 0 6px; font-size: 11px; gap: 4px; }
+  .pt-actions .chip   { height: 20px; padding: 0 6px; font-size: 11px; gap: 4px; }
+  .pt-actions .chip.is-active {
+    background: var(--text-main); color: var(--text-inverse); border-color: var(--text-main);
+  }
+  .pt-actions .chip.is-active:hover { background: #000; border-color: #000; }
+
+  /* .btn 의 is-danger 변형 — outline + 빨강 텍스트 (삭제 버튼 등) */
+  .btn.is-danger { color: var(--alert-red-text); }
+  .btn.is-danger:hover { background: var(--alert-red-bg); border-color: var(--alert-red-border); }
+
+  /* chip 안의 X 버튼 — 색상/태그 제거용 */
+  .chip-x {
+    background: none; border: 0; padding: 0; margin-left: 4px;
+    color: var(--alert-red-text); cursor: pointer; font-size: 12px; line-height: 1;
+  }
+  .chip-x:hover { color: #b91c1c; }
+
+  /* 보기 모드 (기본) — data-edit-lock 가진 입력칸은 클릭/포커스 모두 차단.
+     커서 안 꽂히고, select 드롭다운도 안 열림. 폼 자체가 "정보 표시"처럼 동작. */
+  body:not(.is-edit-mode) .pt-page.active [data-edit-lock="1"]:not([data-permanent-lock]) {
+    pointer-events: none;
+    user-select: text;            /* 텍스트 선택은 허용 (복사 등) — drag-select 만 가능 */
+    cursor: default;
+  }
+  /* 편집 모드 — 활성 페이지의 입력칸 활성화 + 시각 강조 (옅은 노랑) */
+  body.is-edit-mode .pt-page.active [data-edit-lock="1"]:not([data-permanent-lock]) {
+    pointer-events: auto;
+    background: #fffceb;
+    border-color: var(--text-main);
+  }
+  /* 편집 모드 진입 시 액션바 상단 강조 (저장 버튼 색상은 .is-primary 가 처리) */
+  body.is-edit-mode .pt-actions { box-shadow: inset 0 2px 0 var(--text-main); }
 
   /* 페이지 — main padding 안에서 100% 채움, 작업 패널은 카드(border + 4px) */
   .pt-page { display: none; height: 100%; }
@@ -1153,6 +1205,10 @@
     margin: 0;
   }
   [data-page="search"] .ws4.is-collapsed > .ws4-card:last-child {
+    display: none;
+  }
+  /* 업무소통 — 채팅 패널 (2번째 ws4-card) 숨김 토글 */
+  [data-page="workspace"] .ws4.is-chat-hidden > .ws4-card:nth-child(2) {
     display: none;
   }
   /* row 클릭으로 자동 펼침 — JS 처리 (별도 reopen 버튼 불필요) */
@@ -1302,6 +1358,19 @@
     align-items: center; justify-content: center; cursor: pointer;
   }
   .pd-photo-item:hover .pd-photo-del { display: flex; }
+  /* 대표 사진 설정 — 별 버튼 (호버시만, 좌상단) */
+  .pd-photo-set-primary {
+    position: absolute; top: 2px; left: 2px;
+    width: 18px; height: 18px; padding: 0; border: 0;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.6); color: #fff;
+    font-size: 10px; display: none;
+    align-items: center; justify-content: center; cursor: pointer;
+  }
+  .pd-photo-item:hover .pd-photo-set-primary { display: flex; }
+  .pd-photo-set-primary:hover { background: var(--accent-orange); }
+  /* 대표 사진 — 별표 채움 + 보더 강조 */
+  .pd-photo-item.is-primary { outline: 2px solid var(--accent-blue); outline-offset: -2px; }
   .pd-photo-badge {
     position: absolute; bottom: 2px; left: 2px;
     padding: 1px 5px; font-size: 10px;
@@ -2493,28 +2562,7 @@
         </tbody>
       </table>
     </div>
-    <!-- 목록 하단바 — 컬럼 표시/숨김 토글 (사용자별 localStorage 저장) -->
-    <div class="ws4-foot" data-foot="search-list">
-      <span class="foot-toggle-group">
-        <button class="chip foot-filter-chip" data-foot-filter="new">신차</button>
-        <button class="chip foot-filter-chip" data-foot-filter="used">중고</button>
-        <button class="chip foot-filter-chip" data-foot-filter="age26">만26세 이하</button>
-        <button class="chip foot-filter-chip" data-foot-filter="rent">대여료 구간</button>
-        <button class="chip foot-filter-chip" data-foot-filter="deposit">보증금 구간</button>
-      </span>
-      <span class="foot-status" id="srchListCount"></span>
-      <div class="spacer" style="flex:1;"></div>
-      <button class="btn" id="srchExcel" title="현재 필터된 차량 엑셀 다운로드"><i class="ph ph-file-xls"></i> 엑셀</button>
-      <button class="btn" id="srchPhotoZip" title="현재 필터된 차량 사진 ZIP 다운로드"><i class="ph ph-file-zip"></i> 사진</button>
-      <span class="foot-toggle-group" style="margin-left: var(--sp-2);">
-        <button class="chip period-chip" data-col-period="1m">1M</button>
-        <button class="chip period-chip" data-col-period="12m">12M</button>
-        <button class="chip period-chip" data-col-period="24m">24M</button>
-        <button class="chip period-chip" data-col-period="36m">36M</button>
-        <button class="chip period-chip" data-col-period="48m">48M</button>
-        <button class="chip period-chip" data-col-period="60m">60M</button>
-      </span>
-    </div>
+    <!-- 목록 하단바 제거됨 — 모든 필터/엑셀/사진/기간 토글은 전역 하단 액션바(setPageActions)로 이동 -->
     </div>
 
     <!-- 우: 선택된 차량 상세 (디자인 슬롯) -->
@@ -2611,14 +2659,13 @@
 
       </div>
       <!-- 하단바 — 헤더는 정보만, 액션은 모두 여기에 (역할별 렌더는 JS) -->
-      <div class="ws4-foot" data-foot="search-detail"></div>
     </div>
   </div>
 </div>
 
 <!-- ② 업무 소통 -->
 <div class="pt-page" data-page="workspace">
-  <div class="ws4">
+  <div class="ws4" id="workspaceWs4">
     <div class="ws4-card ws4-list">
       <div class="ws4-head">
         <span>업무 목록</span>
@@ -2758,7 +2805,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-file-text"></i>접수</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2026-0042 이준호</span><span class="room-item-time">04-25</span></div>
-            <div class="room-item-msg">56다 1234 · 쏘렌토 MQ4</div>
+            <div class="room-item-msg">56다 1234 | 쏘렌토 MQ4</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>82만/300만</span></div>
           </div>
         </div>
@@ -2766,7 +2813,7 @@
           <div class="room-item-avatar"><i class="ph ph-file-text"></i>심사</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2026-0041 최서연</span><span class="room-item-time">04-22</span></div>
-            <div class="room-item-msg">90마 9012 · 벤츠 C200</div>
+            <div class="room-item-msg">90마 9012 | 벤츠 C200</div>
             <div class="room-item-bot"><span class="text-weak">48개월</span><span>112만/500만</span></div>
           </div>
         </div>
@@ -2774,7 +2821,7 @@
           <div class="room-item-avatar"><i class="ph ph-file-text"></i>출고대기</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2026-0040 한지원</span><span class="room-item-time">04-20</span></div>
-            <div class="room-item-msg">22사 5566 · 팰리세이드 LX2</div>
+            <div class="room-item-msg">22사 5566 | 팰리세이드 LX2</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>108만/300만</span></div>
           </div>
         </div>
@@ -2782,7 +2829,7 @@
           <div class="room-item-avatar"><i class="ph ph-file-text"></i>운행중</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2025-0398 김영수</span><span class="room-item-time">08-12</span></div>
-            <div class="room-item-msg">12가 3456 · 그랜저 IG</div>
+            <div class="room-item-msg">12가 3456 | 그랜저 IG</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>72만/300만</span></div>
           </div>
         </div>
@@ -2790,7 +2837,7 @@
           <div class="room-item-avatar"><i class="ph ph-file-text"></i>운행중</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2024-0287 박민지</span><span class="room-item-time">11-03</span></div>
-            <div class="room-item-msg">34나 7890 · K5 3세대</div>
+            <div class="room-item-msg">34나 7890 | K5 3세대</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>58만/300만</span></div>
           </div>
         </div>
@@ -2798,7 +2845,7 @@
           <div class="room-item-avatar"><i class="ph ph-file-text"></i>운행중</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2024-0089 정태호</span><span class="room-item-time">06-18</span></div>
-            <div class="room-item-msg">11바 3344 · BMW 5시리즈</div>
+            <div class="room-item-msg">11바 3344 | BMW 5시리즈</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>106만/300만</span></div>
           </div>
         </div>
@@ -2828,7 +2875,7 @@
           <div class="lab">계약번호</div><div class="full">FP-2026-0042</div>
           <div class="lab">계약자</div><div>이준호</div>
           <div class="lab">연락처</div><div>010-1234-5678</div>
-          <div class="lab">차량</div><div class="full">56다 1234 · 쏘렌토 MQ4 시그니처</div>
+          <div class="lab">차량</div><div class="full">56다 1234 | 쏘렌토 MQ4 시그니처</div>
           <div class="lab">기간</div><div>36개월</div>
           <div class="lab">월렌트</div><div>82만</div>
           <div class="lab">보증금</div><div>300만</div>
@@ -2857,7 +2904,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-coins"></i>미정산</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2026-0040 한지원</span><span class="room-item-time">04-25</span></div>
-            <div class="room-item-msg">22사 5566 · 팰리세이드 LX2</div>
+            <div class="room-item-msg">22사 5566 | 팰리세이드 LX2</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>30만</span></div>
           </div>
         </div>
@@ -2865,7 +2912,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-coins"></i>미정산</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2026-0042 이준호</span><span class="room-item-time">04-25</span></div>
-            <div class="room-item-msg">56다 1234 · 쏘렌토 MQ4</div>
+            <div class="room-item-msg">56다 1234 | 쏘렌토 MQ4</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>22만</span></div>
           </div>
         </div>
@@ -2873,7 +2920,7 @@
           <div class="room-item-avatar"><i class="ph ph-check-circle"></i>완료</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2025-0398 김영수</span><span class="room-item-time">04-20</span></div>
-            <div class="room-item-msg">12가 3456 · 그랜저 IG</div>
+            <div class="room-item-msg">12가 3456 | 그랜저 IG</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>20만</span></div>
           </div>
         </div>
@@ -2881,7 +2928,7 @@
           <div class="room-item-avatar"><i class="ph ph-arrow-u-up-left"></i>환수</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2024-0287 박민지</span><span class="room-item-time">04-15</span></div>
-            <div class="room-item-msg">34나 7890 · K5 3세대 (중도해지)</div>
+            <div class="room-item-msg">34나 7890 | K5 3세대 (중도해지)</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span class="text-red">-12만</span></div>
           </div>
         </div>
@@ -2889,7 +2936,7 @@
           <div class="room-item-avatar"><i class="ph ph-check-circle"></i>완료</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">FP-2024-0156 이상민</span><span class="room-item-time">04-10</span></div>
-            <div class="room-item-msg">44카 9911 · 스타리아 9인승</div>
+            <div class="room-item-msg">44카 9911 | 스타리아 9인승</div>
             <div class="room-item-bot"><span class="text-weak">36개월</span><span>26만</span></div>
           </div>
         </div>
@@ -2928,11 +2975,11 @@
           <div class="lab">계약번호</div><div class="full">FP-2026-0040</div>
           <div class="lab">계약자</div><div>한지원</div>
           <div class="lab">기간</div><div>36개월</div>
-          <div class="lab">차량</div><div class="full">22사 5566 · 팰리세이드 LX2 캘리그래피</div>
+          <div class="lab">차량</div><div class="full">22사 5566 | 팰리세이드 LX2 캘리그래피</div>
           <div class="lab">대여료</div><div>108만/월</div>
           <div class="lab">보증금</div><div>300만</div>
           <div class="lab">공급사</div><div class="full">현대캐피탈</div>
-          <div class="lab">영업자</div><div class="full">강남오토렌탈 · 최영업</div>
+          <div class="lab">영업자</div><div class="full">강남오토렌탈 | 최영업</div>
           <div class="lab">원수수료</div><div>30만</div>
           <div class="lab">정산금</div><div>30만</div>
           <div class="lab">정산상태</div><div class="full"><span class="badge badge-orange">미정산</span></div>
@@ -2945,11 +2992,11 @@
       <div class="ws4-head"><span>정산 이력</span></div>
       <div class="ws4-body">
         <div class="timeline-row">
-          <span class="text-weak">2026-04-25 11:00</span> · <span class="badge badge-orange">미정산</span> · 자동
+          <span class="text-weak">2026-04-25 11:00</span> | <span class="badge badge-orange">미정산</span> | 자동
           <div class="text-sub">계약 등록 → 정산 항목 자동 생성 (30만)</div>
         </div>
         <div class="timeline-row">
-          <span class="text-weak">2026-04-24 09:30</span> · <span class="badge badge-blue">견적 발송</span> · 김영업
+          <span class="text-weak">2026-04-24 09:30</span> | <span class="badge badge-blue">견적 발송</span> | 김영업
           <div class="text-sub">36개월 108만/300만 견적</div>
         </div>
       </div>
@@ -2968,7 +3015,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-car-simple"></i>즉시</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">56다 1234 쏘렌토 MQ4</span><span class="room-item-time">12-08</span></div>
-            <div class="room-item-msg">기아 · MQ4 2.2D · 시그니처</div>
+            <div class="room-item-msg">기아 | MQ4 2.2D | 시그니처</div>
             <div class="room-item-bot"><span class="text-weak">사진 12장</span><span>5종 가격</span></div>
           </div>
         </div>
@@ -2976,7 +3023,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-car-simple"></i>즉시</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">12가 3456 그랜저 IG</span><span class="room-item-time">11-20</span></div>
-            <div class="room-item-msg">현대 · IG 2.5 · 프리미엄</div>
+            <div class="room-item-msg">현대 | IG 2.5 | 프리미엄</div>
             <div class="room-item-bot"><span class="text-weak">사진 9장</span><span>5종 가격</span></div>
           </div>
         </div>
@@ -2984,7 +3031,7 @@
           <div class="room-item-avatar"><i class="ph ph-car-simple"></i>협의</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">34나 7890 K5</span><span class="room-item-time">11-02</span></div>
-            <div class="room-item-msg">기아 · 3세대 1.6T · 시그니처</div>
+            <div class="room-item-msg">기아 | 3세대 1.6T | 시그니처</div>
             <div class="room-item-bot"><span class="text-weak">사진 7장</span><span>5종 가격</span></div>
           </div>
         </div>
@@ -2992,7 +3039,7 @@
           <div class="room-item-avatar"><i class="ph ph-car-simple"></i>가능</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">78라 5678 아반떼</span><span class="room-item-time">10-15</span></div>
-            <div class="room-item-msg">현대 · CN7 1.6 · 모던</div>
+            <div class="room-item-msg">현대 | CN7 1.6 | 모던</div>
             <div class="room-item-bot"><span class="text-orange">사진 미등록</span><span>5종 가격</span></div>
           </div>
         </div>
@@ -3000,7 +3047,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-car-simple"></i>즉시</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">22사 5566 팰리세이드</span><span class="room-item-time">09-30</span></div>
-            <div class="room-item-msg">현대 · LX2 3.8 · 캘리그래피</div>
+            <div class="room-item-msg">현대 | LX2 3.8 | 캘리그래피</div>
             <div class="room-item-bot"><span class="text-weak">사진 11장</span><span>5종 가격</span></div>
           </div>
         </div>
@@ -3008,7 +3055,7 @@
           <div class="room-item-avatar"><i class="ph ph-car-simple"></i>가능</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">33아 7788 레이</span><span class="room-item-time">09-15</span></div>
-            <div class="room-item-msg">기아 · SA 1.0 · 그래비티</div>
+            <div class="room-item-msg">기아 | SA 1.0 | 그래비티</div>
             <div class="room-item-bot"><span class="text-orange">사진 미등록</span><span class="text-orange">가격 미설정</span></div>
           </div>
         </div>
@@ -3038,11 +3085,11 @@
       </div>
     </div>
 
-    <!-- 우상: 대여조건 · 가격 -->
+    <!-- 우상: 대여조건 | 가격 -->
     <div class="ws4-card ws4-detail">
       <div class="ws4-head"><span>대여조건 · 가격</span></div>
       <div class="ws4-body">
-        <div style="color: var(--text-weak); margin-bottom: 4px;">대여료 · 보증금</div>
+        <div style="color: var(--text-weak); margin-bottom: 4px;">대여료 | 보증금</div>
         <table class="table" style="margin-bottom: 12px;">
           <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
           <tbody>
@@ -3089,42 +3136,41 @@
     <div class="ws4-card ws4-list">
       <div class="ws4-head">
         <span>정책 목록 · 24건</span>
-        <button class="btn btn-sm btn-primary">새 정책</button>
       </div>
       <div class="ws4-body no-pad">
         <div class="room-item active">
           <div class="room-item-avatar is-accent"><i class="ph ph-scroll"></i>활성</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">현대 SUV 무심사 36/48</span><span class="room-item-time text-weak">HD-001</span></div>
-            <div class="room-item-msg">현대캐피탈 · 7등급 이상</div>
+            <div class="room-item-msg">현대캐피탈 | 7등급 이상</div>
           </div>
         </div>
         <div class="room-item">
           <div class="room-item-avatar"><i class="ph ph-scroll"></i>활성</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">현대 세단 무심사 36/48/60</span><span class="room-item-time text-weak">HD-002</span></div>
-            <div class="room-item-msg">현대캐피탈 · 7등급 이상</div>
+            <div class="room-item-msg">현대캐피탈 | 7등급 이상</div>
           </div>
         </div>
         <div class="room-item">
           <div class="room-item-avatar"><i class="ph ph-scroll"></i>활성</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">기아 전체 심사필요</span><span class="room-item-time text-weak">KO-005</span></div>
-            <div class="room-item-msg">기아오토Q · 7등급 미만</div>
+            <div class="room-item-msg">기아오토Q | 7등급 미만</div>
           </div>
         </div>
         <div class="room-item">
           <div class="room-item-avatar"><i class="ph ph-scroll"></i>활성</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">수입차 24/36 보증금↑</span><span class="room-item-time text-weak">SK-012</span></div>
-            <div class="room-item-msg">SK렌터카 · 7등급 이상</div>
+            <div class="room-item-msg">SK렌터카 | 7등급 이상</div>
           </div>
         </div>
         <div class="room-item">
           <div class="room-item-avatar"><i class="ph ph-scroll"></i>활성</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">상용차 9인승 36/48</span><span class="room-item-time text-weak">RT-008</span></div>
-            <div class="room-item-msg">롯데렌탈 · 7등급 이상</div>
+            <div class="room-item-msg">롯데렌탈 | 7등급 이상</div>
           </div>
         </div>
       </div>
@@ -3203,31 +3249,31 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-buildings"></i>공급사</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">현대캐피탈</span><span class="room-item-time">HCAP</span></div>
-            <div class="room-item-msg">박이사 · 02-1234-5678</div>
-            <div class="room-item-bot"><span class="text-weak">차량 186 · 계약 142</span><span class="text-green">활성</span></div>
+            <div class="room-item-msg">박이사 | 02-1234-5678</div>
+            <div class="room-item-bot"><span class="text-weak">차량 186 | 계약 142</span><span class="text-green">활성</span></div>
           </div>
         </div>
         <div class="room-item">
           <div class="room-item-avatar is-accent"><i class="ph ph-buildings"></i>공급사</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">기아오토Q</span><span class="room-item-time">KOQ</span></div>
-            <div class="room-item-msg">이대표 · 02-2345-6789</div>
-            <div class="room-item-bot"><span class="text-weak">차량 120 · 계약 98</span><span class="text-green">활성</span></div>
+            <div class="room-item-msg">이대표 | 02-2345-6789</div>
+            <div class="room-item-bot"><span class="text-weak">차량 120 | 계약 98</span><span class="text-green">활성</span></div>
           </div>
         </div>
         <div class="room-item">
           <div class="room-item-avatar is-accent"><i class="ph ph-buildings"></i>공급사</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">SK렌터카</span><span class="room-item-time">SKR</span></div>
-            <div class="room-item-msg">한지원 · 02-3456-7890</div>
-            <div class="room-item-bot"><span class="text-weak">차량 98 · 계약 76</span><span class="text-green">활성</span></div>
+            <div class="room-item-msg">한지원 | 02-3456-7890</div>
+            <div class="room-item-bot"><span class="text-weak">차량 98 | 계약 76</span><span class="text-green">활성</span></div>
           </div>
         </div>
         <div class="room-item">
           <div class="room-item-avatar"><i class="ph ph-storefront"></i>영업채널</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">강남오토렌탈</span><span class="room-item-time">GNAR</span></div>
-            <div class="room-item-msg">최영업 · 02-4567-8901</div>
+            <div class="room-item-msg">최영업 | 02-4567-8901</div>
             <div class="room-item-bot"><span class="text-weak">계약 52건</span><span class="text-green">활성</span></div>
           </div>
         </div>
@@ -3235,7 +3281,7 @@
           <div class="room-item-avatar"><i class="ph ph-storefront"></i>영업채널</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">홍길동 영업</span><span class="room-item-time">HGD</span></div>
-            <div class="room-item-msg">홍길동 · 010-1111-2222</div>
+            <div class="room-item-msg">홍길동 | 010-1111-2222</div>
             <div class="room-item-bot"><span class="text-weak">계약 12건</span><span class="text-green">활성</span></div>
           </div>
         </div>
@@ -3243,7 +3289,7 @@
           <div class="room-item-avatar"><i class="ph ph-storefront"></i>영업채널</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">서울오토</span><span class="room-item-time">SAR</span></div>
-            <div class="room-item-msg">이서울 · 02-7890-1234</div>
+            <div class="room-item-msg">이서울 | 02-7890-1234</div>
             <div class="room-item-bot"><span class="text-weak">신규 등록</span><span class="text-orange">대기</span></div>
           </div>
         </div>
@@ -3294,15 +3340,15 @@
       <div class="ws4-head"><span>활동 이력</span></div>
       <div class="ws4-body">
         <div class="timeline-row">
-          <span class="text-weak">2026-04-25 10:42</span> · <span class="badge badge-blue">계약</span> · 박이사
+          <span class="text-weak">2026-04-25 10:42</span> | <span class="badge badge-blue">계약</span> | 박이사
           <div class="text-sub">FP-2026-0042 신규 계약 (쏘렌토 MQ4)</div>
         </div>
         <div class="timeline-row">
-          <span class="text-weak">2026-04-22 14:15</span> · <span class="badge">담당자 변경</span> · 시스템
+          <span class="text-weak">2026-04-22 14:15</span> | <span class="badge">담당자 변경</span> | 시스템
           <div class="text-sub">담당자: 김현대 → 박이사</div>
         </div>
         <div>
-          <span class="text-weak">2026-04-15 09:00</span> · <span class="badge badge-green">활성</span> · 김영수
+          <span class="text-weak">2026-04-15 09:00</span> | <span class="badge badge-green">활성</span> | 김영수
           <div class="text-sub">파트너 활성 승인</div>
         </div>
       </div>
@@ -3321,7 +3367,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-user"></i>공급사</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">박이사</span><span class="room-item-time">10:42</span></div>
-            <div class="room-item-msg">현대캐피탈 · park@hcap.kr</div>
+            <div class="room-item-msg">현대캐피탈 | park@hcap.kr</div>
             <div class="room-item-bot"><span class="text-weak">계약 142건</span><span class="text-green">활성</span></div>
           </div>
         </div>
@@ -3329,7 +3375,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-user"></i>관리자</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">김영수</span><span class="room-item-time">09:30</span></div>
-            <div class="room-item-msg">freepass mobility · admin@freepass.kr</div>
+            <div class="room-item-msg">freepass mobility | admin@freepass.kr</div>
             <div class="room-item-bot"><span class="text-weak">관리자</span><span class="text-green">활성</span></div>
           </div>
         </div>
@@ -3337,7 +3383,7 @@
           <div class="room-item-avatar is-accent"><i class="ph ph-user"></i>공급사</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">이대표</span><span class="room-item-time">08:15</span></div>
-            <div class="room-item-msg">기아오토Q · lee@kiaoq.kr</div>
+            <div class="room-item-msg">기아오토Q | lee@kiaoq.kr</div>
             <div class="room-item-bot"><span class="text-weak">계약 98건</span><span class="text-green">활성</span></div>
           </div>
         </div>
@@ -3345,7 +3391,7 @@
           <div class="room-item-avatar"><i class="ph ph-user"></i>영업자</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">홍길동</span><span class="room-item-time">어제</span></div>
-            <div class="room-item-msg">홍길동 영업 · hong@gildong.kr</div>
+            <div class="room-item-msg">홍길동 영업 | hong@gildong.kr</div>
             <div class="room-item-bot"><span class="text-weak">계약 12건</span><span class="text-green">활성</span></div>
           </div>
         </div>
@@ -3353,7 +3399,7 @@
           <div class="room-item-avatar"><i class="ph ph-user"></i>영업자</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">최영업</span><span class="room-item-time">어제</span></div>
-            <div class="room-item-msg">강남오토렌탈 · choi@gangnam.kr</div>
+            <div class="room-item-msg">강남오토렌탈 | choi@gangnam.kr</div>
             <div class="room-item-bot"><span class="text-weak">계약 52건</span><span class="text-green">활성</span></div>
           </div>
         </div>
@@ -3361,7 +3407,7 @@
           <div class="room-item-avatar"><i class="ph ph-user"></i>공급사</div>
           <div>
             <div class="room-item-top"><span class="room-item-name">신입사원</span><span class="room-item-time">04-23</span></div>
-            <div class="room-item-msg">SK렌터카 · new@skrent.kr</div>
+            <div class="room-item-msg">SK렌터카 | new@skrent.kr</div>
             <div class="room-item-bot"><span class="text-weak">신규 등록</span><span class="text-orange">대기</span></div>
           </div>
         </div>
@@ -3413,16 +3459,16 @@
       <div class="ws4-head"><span>활동 이력</span></div>
       <div class="ws4-body">
         <div class="timeline-row">
-          <span class="text-weak">2026-04-25 10:42</span> · <span class="badge badge-blue">로그인</span>
-          <div class="text-sub">웹 (Windows · Chrome)</div>
+          <span class="text-weak">2026-04-25 10:42</span> | <span class="badge badge-blue">로그인</span>
+          <div class="text-sub">웹 (Windows | Chrome)</div>
         </div>
         <div class="timeline-row">
-          <span class="text-weak">2026-04-24 14:08</span> · <span class="badge">계약 등록</span>
+          <span class="text-weak">2026-04-24 14:08</span> | <span class="badge">계약 등록</span>
           <div class="text-sub">FP-2026-0042 (쏘렌토 MQ4)</div>
         </div>
         <div>
-          <span class="text-weak">2026-04-22 09:00</span> · <span class="badge badge-blue">로그인</span>
-          <div class="text-sub">웹 (Windows · Chrome)</div>
+          <span class="text-weak">2026-04-22 09:00</span> | <span class="badge badge-blue">로그인</span>
+          <div class="text-sub">웹 (Windows | Chrome)</div>
         </div>
       </div>
     </div>
@@ -3436,6 +3482,9 @@
 <div class="pt-page" data-page="dev"></div>
 
 </main>
+
+<!-- 페이지별 액션바 — 각 페이지가 mount 시 src/core/page-actions.js의 setPageActions() 로 채움 -->
+<footer class="pt-actions" id="pageActions"></footer>
 
 <!-- 로그인 overlay (auth 안 됨일 때만 보임 — body.is-login) — v2 규격 -->
 <div class="login-overlay">
@@ -3573,11 +3622,13 @@
       const t = PAGE_TITLES[name];
       titleTextEl.innerHTML = t ? `<i class="ph ph-${t.icon}"></i> ${t.label}` : name;
     }
-    // 상품찾기일 때만 상태 카운트 표시 (다른 페이지에선 비움)
-    const statsEl = document.getElementById('ptTbSearchStats');
-    if (statsEl) {
-      if (name === 'search') window.updateSearchStats?.();
-      else statsEl.innerHTML = '';
+    // 토픽바 페이지 상태 카운트 (총건수 / 활성·대기·안읽음 등 페이지별).
+    // 모든 페이지에 적용 — 통합 헬퍼 window.updatePageStats(name) 가 페이지별 카운트 계산.
+    if (window.updatePageStats) window.updatePageStats(name);
+    else if (name === 'search') window.updateSearchStats?.();
+    else {
+      const statsEl = document.getElementById('ptTbSearchStats');
+      if (statsEl) statsEl.innerHTML = '';
     }
     // settings / dev 페이지 — app.js 가 window 에 노출
     if (name === 'settings') {
@@ -3585,6 +3636,8 @@
     } else if (name === 'dev') {
       window.renderDev?.();
     }
+    // 하단 액션바 — 페이지별 액션은 app.js 가 window.refreshPageActions 로 노출
+    window.refreshPageActions?.(name);
   }
   // 사이드바 클릭 — hash 업데이트만 (hashchange 가 showPage 호출)
   document.querySelectorAll('.pt-sb a[data-page]').forEach(a => {

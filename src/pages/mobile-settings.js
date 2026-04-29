@@ -1,7 +1,7 @@
 /**
  * 모바일 설정 — 히어로 프로필 + 스크롤 시 상단바 응축(collapsing header)
  * - 초기: 큰 프로필 카드 (아바타 + 이름 + 역할)
- * - 스크롤 내리면: 상단 고정바가 compact 프로필(작은 아바타 · 이름 · 메타)로 변형
+ * - 스크롤 내리면: 상단 고정바가 compact 프로필(작은 아바타 | 이름 | 메타)로 변형
  */
 import { store } from '../core/store.js';
 import { showToast } from '../core/toast.js';
@@ -13,6 +13,7 @@ import { uploadImage, uploadFile } from '../firebase/storage-helper.js';
 import { logout, resetPassword } from '../firebase/auth.js';
 import { auth } from '../firebase/config.js';
 import { canInstall, isIOS, isStandalone, promptInstall, onInstallStateChange } from '../core/pwa-install.js';
+import { fmtFullTime } from '../core/ui-helpers.js';
 
 // 2개 섹션으로 분리 — 소속감 강조를 위해 회사 정보 먼저, 개인 정보 뒤
 const COMPANY_FIELDS = [
@@ -55,7 +56,6 @@ const APP_VERSION = 'v2.0.0';
 const NOTIF_TYPES = [
   { key: 'inquiry',    label: '신규 문의',   icon: 'ph ph-chat-circle-dots' },
   { key: 'contract',   label: '계약 진행',   icon: 'ph ph-file-text' },
-  { key: 'settlement', label: '정산',       icon: 'ph ph-coins' },
   { key: 'notice',     label: '공지사항',   icon: 'ph ph-megaphone' },
 ];
 const AUTO_LOGOUT_OPTIONS = [
@@ -93,8 +93,8 @@ function _render() {
   const avatarHtml = ciUrl
     ? `<img class="is-ci" src="${ciUrl}" alt="회사 CI">`
     : (u.avatar_url ? `<img src="${u.avatar_url}" alt="">` : initial);
-  const affiliation = [u.company_name, u.position].filter(Boolean).join(' · ');
-  const metaLine = [roleLabel(role), u.user_code].filter(Boolean).join(' · ') || '-';
+  const affiliation = [u.company_name, u.position].filter(Boolean).join(' | ');
+  const metaLine = [roleLabel(role), u.user_code].filter(Boolean).join(' | ') || '-';
 
   main.innerHTML = `
     <div class="m-shell-page m-settings">
@@ -232,7 +232,7 @@ function _render() {
           </button>
           <div class="m-info-row">
             <span class="m-info-label">마지막 동기화</span>
-            <span class="m-info-value" style="color:var(--c-text-muted);font-weight:var(--fw-normal);">${new Date(lastSync).toLocaleString('ko', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' })}</span>
+            <span class="m-info-value" style="color:var(--c-text-muted);font-weight:var(--fw-normal);">${fmtFullTime(lastSync)}</span>
           </div>
         </section>
 
@@ -590,7 +590,7 @@ function bindAll(main, u) {
             <span class="m-doc-thumb"><i class="ph ph-megaphone"></i></span>
             <span class="m-doc-info">
               <span class="m-doc-link" style="color:var(--c-text);">${(n.title || '').replace(/</g,'&lt;')}</span>
-              <span class="m-doc-meta">${n.created_at ? new Date(n.created_at).toLocaleDateString('ko', { year:'2-digit', month:'2-digit', day:'2-digit' }) : ''}${n.body ? ` · ${String(n.body).slice(0, 80).replace(/</g,'&lt;')}` : ''}</span>
+              <span class="m-doc-meta">${n.created_at ? new Date(n.created_at).toLocaleDateString('ko', { year:'2-digit', month:'2-digit', day:'2-digit' }) : ''}${n.body ? ` | ${String(n.body).slice(0, 80).replace(/</g,'&lt;')}` : ''}</span>
             </span>
           </div>`).join('')}</div>`
       : `<div style="padding:var(--sp-4);text-align:center;color:var(--c-text-muted);font-size:var(--fs-sm);">공지사항이 없습니다</div>`;
@@ -603,10 +603,10 @@ function bindAll(main, u) {
       <div class="m-info-page" style="padding:var(--sp-3) 0;">
         <section class="m-info-section">
           <div class="m-info-section-head"><span class="m-info-section-title">주요 기능</span></div>
-          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-magnifying-glass"></i> 찾기</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">차량 검색 · 필터 · 문의</span></div>
+          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-magnifying-glass"></i> 찾기</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">차량 검색 | 필터 | 문의</span></div>
           <div class="m-info-row"><span class="m-info-label"><i class="ph ph-chat-circle"></i> 소통</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">공급사 ↔ 영업자 채팅</span></div>
-          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-file-text"></i> 계약</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">계약 진행 · 고객 · 상세</span></div>
-          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-gear"></i> 설정</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">프로필 · 알림 · 자료</span></div>
+          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-file-text"></i> 계약</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">계약 진행 | 고객 | 상세</span></div>
+          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-gear"></i> 설정</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">프로필 | 알림 | 자료</span></div>
         </section>
         <section class="m-info-section">
           <div class="m-info-section-head"><span class="m-info-section-title">계약 진행 단계</span></div>

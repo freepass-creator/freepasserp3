@@ -33,7 +33,7 @@ export function unsubscribeCarModels() {
 
 /* ── 공용 조회 헬퍼 ── */
 
-/** products 기준 보유 카운트 계산 — 제조사별 · 제조사+모델별 */
+/** products 기준 보유 카운트 계산 — 제조사별 | 제조사+모델별 */
 function productCounts() {
   const byMaker = new Map();
   const byMakerModel = new Map();

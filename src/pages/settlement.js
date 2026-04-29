@@ -40,19 +40,21 @@ export function renderSettlementList(settlements) {
     const status = s.settlement_status || s.status || '미정산';
     const sb = SETTLE_BADGE[status] || { txt: status.slice(0, 2), tone: 'gray' };
     const fee = s.fee_amount || s.commission || 0;
-    const feeText = fee ? `수수료 ${Math.round(Number(fee)/10000)}만` : '';
-    // 메인: 차량번호 · 세부모델 · 공급사명(한글) / 우측: 정산일
+    const feeText = fee ? `${Math.round(Number(fee)/10000)}만원` : '';
+    const settledDate = fmtDate(s.settled_date || s.settled_at || s.created_at);
+    // 메인: 차량번호 세부모델 공급사명(한글)  /  우측: 금액 (정산은 금액이 가장 중요한 스캔 정보)
     const mainLine = formatMainLine(
       s.car_number_snapshot || s.car_number,
       s.sub_model_snapshot,
       providerNameByCode(s.provider_company_code || s.partner_code, store),
     );
-    // 보조: 영업채널 · 영업자코드 · 계약자명 · 수수료금액
+    // 보조: 영업채널 | 영업자 | 계약자명 | 정산상태 (정산일)
+    const statusWithDate = settledDate ? `${status} (${settledDate})` : status;
     const subParts = [
       s.agent_channel_code,
       s.agent_code,
       s.customer_name,
-      feeText,
+      statusWithDate,
     ].filter(Boolean);
     return renderRoomItem({
       id: s._key,
@@ -60,8 +62,8 @@ export function renderSettlementList(settlements) {
       badge: sb.txt,
       tone: sb.tone,
       name: mainLine,
-      time: fmtDate((s.settled_date || s.settled_at) || s.created_at),
-      msg: subParts.join(' · ') || '-',
+      time: feeText || '-',
+      msg: subParts.join(' | ') || '-',
       meta: s.contract_code || '',
       active: i === 0,
     });
@@ -112,7 +114,7 @@ export function renderSettlementDetail(s) {
         </div>
         <div class="ff"><label>정산일</label><input type="date" class="input" id="setlDate" value="${esc(toDateInput((s.settled_date || s.settled_at)))}"${disabled}${lock}></div>
         <div class="ff"><label>메모</label><textarea class="input" id="setlMemo" placeholder="정산 메모..." style="height: 80px;"${disabled}${lock}>${esc(s.memo || '')}</textarea></div>
-        ${baseFee ? `<div class="ff"><label>기본수수료</label><div>${Math.round(baseFee/10000)}만${s.term ? ' · ' + s.term + '개월' : ''}</div></div>` : ''}
+        ${baseFee ? `<div class="ff"><label>기본수수료</label><div>${Math.round(baseFee/10000)}만${s.term ? ' | ' + s.term + '개월' : ''}</div></div>` : ''}
       </div>
     `;
     if (canEdit) bindSettleEdit(s);
@@ -122,8 +124,8 @@ export function renderSettlementDetail(s) {
   if (detailCard) {
     const monthlyRent = s.monthly_rent ? `${Math.round(Number(s.monthly_rent)/10000)}만/월` : '';
     const dep = s.deposit ? `${Math.round(Number(s.deposit)/10000)}만` : '';
-    const carLine = [s.car_number, s.maker, s.sub_model || s.model, s.trim_name].filter(Boolean).join(' · ');
-    const agentLine = [s.agent_company || s.agent_partner_name, s.agent_name].filter(Boolean).join(' · ');
+    const carLine = [s.car_number, s.maker, s.sub_model || s.model, s.trim_name].filter(Boolean).join(' | ');
+    const agentLine = [s.agent_company || s.agent_partner_name, s.agent_name].filter(Boolean).join(' | ');
     const rows = [
       ['계약번호', s.contract_id || s._key, true],
       ['계약자', s.customer_name],
@@ -147,14 +149,14 @@ export function renderSettlementDetail(s) {
     if (!events.length) {
       historyCard.querySelector('.ws4-body').innerHTML = `
         <div class="timeline-row">
-          <span class="text-weak">${esc(fmtFullTime(s.created_at))}</span> · ${esc(status)} · 자동
+          <span class="text-weak">${esc(fmtFullTime(s.created_at))}</span> | ${esc(status)} | 자동
           <div class="text-sub">정산 항목 생성${baseFee ? ' (' + Math.round(baseFee/10000) + '만)' : ''}</div>
         </div>
       `;
     } else {
       historyCard.querySelector('.ws4-body').innerHTML = events.map(ev => `
         <div class="timeline-row">
-          <span class="text-weak">${esc(fmtFullTime(ev.at))}</span> · ${esc(ev.status || '-')} · ${esc(ev.actor || '-')}
+          <span class="text-weak">${esc(fmtFullTime(ev.at))}</span> | ${esc(ev.status || '-')} | ${esc(ev.actor || '-')}
           <div class="text-sub">${esc(ev.note || '')}</div>
         </div>
       `).join('');
@@ -193,7 +195,7 @@ function bindSettleEdit(s) {
       at: Date.now(),
       status,
       actor: store.currentUser?.name || store.currentUser?.email || '-',
-      note: `${status}${update.fee_amount ? ' · ' + Math.round(update.fee_amount/10000) + '만' : ''}`,
+      note: `${status}${update.fee_amount ? ' | ' + Math.round(update.fee_amount/10000) + '만' : ''}`,
     });
     update.events = events;
 
@@ -207,31 +209,27 @@ function bindSettleEdit(s) {
   });
 }
 
-/* 일괄 정산 — 정산관리 페이지 헤드 "일괄 정산" 버튼
- *  계약완료 + settlement 미존재 인 모든 contract 에 대해 createSettlement 호출 */
-export function bindSettlementCreate() {
-  const btn = document.querySelector('[data-page="settle"] .ws4-list .ws4-head .btn-primary');
-  if (!btn) return;
-  btn.addEventListener('click', async () => {
-    const role = store.currentUser?.role;
-    if (!(role === 'admin' || role === 'agent_admin')) {
-      return showToast('일괄 정산은 관리자 전용', 'error');
+/* 일괄 정산 — 향후 하단 액션바 액션으로 옮길 예정. 현재는 호출 지점 없음. */
+export async function bulkCreateSettlements() {
+  const role = store.currentUser?.role;
+  if (!(role === 'admin' || role === 'agent_admin')) {
+    showToast('일괄 정산은 관리자 전용', 'error');
+    return;
+  }
+  const completed = (store.contracts || []).filter(c => !c._deleted && c.contract_status === '계약완료');
+  const existingCodes = new Set((store.settlements || []).map(s => s.contract_code).filter(Boolean));
+  const targets = completed.filter(c => !existingCodes.has(c.contract_code));
+  if (!targets.length) { showToast('정산 대상 없음 — 모든 계약완료 건이 이미 정산됨', 'info'); return; }
+  if (!confirm(`${targets.length}건의 정산을 일괄 생성할까요?`)) return;
+  try {
+    const { createSettlement } = await import('../firebase/collections.js');
+    let ok = 0, fail = 0;
+    for (const c of targets) {
+      try { await createSettlement(c); ok++; } catch (e) { console.error('[settle]', c.contract_code, e); fail++; }
     }
-    const completed = (store.contracts || []).filter(c => !c._deleted && c.contract_status === '계약완료');
-    const existingCodes = new Set((store.settlements || []).map(s => s.contract_code).filter(Boolean));
-    const targets = completed.filter(c => !existingCodes.has(c.contract_code));
-    if (!targets.length) return showToast('정산 대상 없음 — 모든 계약완료 건이 이미 정산됨', 'info');
-    if (!confirm(`${targets.length}건의 정산을 일괄 생성할까요?`)) return;
-    try {
-      const { createSettlement } = await import('../firebase/collections.js');
-      let ok = 0, fail = 0;
-      for (const c of targets) {
-        try { await createSettlement(c); ok++; } catch (e) { console.error('[settle]', c.contract_code, e); fail++; }
-      }
-      showToast(`정산 생성 ${ok}건${fail ? ` · 실패 ${fail}건` : ''}`, fail ? 'error' : 'success');
-    } catch (e) {
-      console.error('[settle batch]', e);
-      showToast('일괄 정산 실패 — ' + (e.message || e), 'error');
-    }
-  });
+    showToast(`정산 생성 ${ok}건${fail ? ` | 실패 ${fail}건` : ''}`, fail ? 'error' : 'success');
+  } catch (e) {
+    console.error('[settle batch]', e);
+    showToast('일괄 정산 실패 — ' + (e.message || e), 'error');
+  }
 }

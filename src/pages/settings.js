@@ -13,9 +13,9 @@ import { showToast } from '../core/toast.js';
 import { esc } from '../core/ui-helpers.js';
 
 const TABS = [
-  { id: 'guide',    icon: 'book-open',     label: '사용설명',      sub: '단축키 · 우클릭 · 페이지 가이드' },
-  { id: 'account',  icon: 'user-circle',   label: '계정 정보',     sub: '프로필 · 서류 · 계정 관리' },
-  { id: 'system',   icon: 'gear',          label: '시스템 설정',   sub: '다크모드 · 폰트 · 알림' },
+  { id: 'guide',    icon: 'book-open',     label: '사용설명',      sub: '단축키 | 우클릭 | 페이지 가이드' },
+  { id: 'account',  icon: 'user-circle',   label: '계정 정보',     sub: '프로필 | 서류 | 계정 관리' },
+  { id: 'system',   icon: 'gear',          label: '시스템 설정',   sub: '다크모드 | 폰트 | 알림' },
   { id: 'catalog',  icon: 'share-network', label: '카탈로그 공유', sub: '내 카탈로그 링크' },
 ];
 
@@ -262,7 +262,7 @@ function renderAccountSection(user) {
       </div>
       <div class="settings-profile-meta">
         <div class="settings-profile-name">${esc(user.name || '이름 없음')}</div>
-        <div class="settings-profile-sub">${esc([user.company_name, user.position].filter(Boolean).join(' · ') || '-')}</div>
+        <div class="settings-profile-sub">${esc([user.company_name, user.position].filter(Boolean).join(' | ') || '-')}</div>
       </div>
     </header>
 

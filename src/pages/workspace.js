@@ -25,7 +25,7 @@ import {
   esc, fmtTime, fmtDate,
   listBody, emptyState, renderRoomItem,
   isMobileViewport,
-  providerNameByCode, formatMainLine,
+  providerNameByCode, formatMainLine, chatCodeOf,
 } from '../core/ui-helpers.js';
 import {
   renderContractWorkV2, bindContractWorkV2,
@@ -72,19 +72,28 @@ export function renderRoomList(rooms) {
 
   if (_activeRoomId && !sorted.find(r => r._key === _activeRoomId)) _activeRoomId = null;
 
+  // HH:MM 시간 — 보조줄 안 마지막메세지시간 표기
+  const fmtHHMM = (ts) => {
+    if (!ts) return '';
+    const t = typeof ts === 'number' ? ts : Date.parse(ts) || 0;
+    if (!t) return '';
+    const d = new Date(t);
+    return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  };
+
   body.innerHTML = sorted.map((r, i) => {
     const unread = unreadOf(r);
-    // 메인: 차량번호 · 세부모델 · 공급사명 / 우측: 날짜
+    // 메인: 차량번호 세부모델 공급사명(한글)  /  우측: 날짜
     const mainLine = formatMainLine(
       r.vehicle_number || r.car_number,
       r.sub_model,
       providerNameByCode(r.provider_company_code || r.provider_code, store),
     );
-    // 보조: 영업채널 · 영업자코드 · 마지막시간 · 마지막메시지
+    // 보조: 영업채널코드 | 영업자계정코드 | 마지막메세지시간 | 마지막메시지
     const subParts = [
       r.agent_channel_code || r.agent_channel,
       r.agent_code,
-      fmtTime(r.last_message_at),
+      fmtHHMM(r.last_message_at),
       r.last_message,
     ].filter(Boolean);
     return renderRoomItem({
@@ -93,8 +102,8 @@ export function renderRoomList(rooms) {
       badge: unread > 0 ? '안읽' : '읽음',
       tone: unread > 0 ? 'blue' : 'gray',
       name: mainLine,
-      time: fmtTime(r.last_message_at || r.created_at),   // timestamp → 오늘이면 HH:MM, 이전이면 MM-DD
-      msg: subParts.join(' · ') || '-',
+      time: fmtDate(r.last_message_at || r.created_at),    // 메인줄 우측 = 날짜 (YY.MM.DD)
+      msg: subParts.join(' | ') || '-',
       meta: unread > 0 ? String(unread) : '',
       metaClass: unread > 0 ? 'cnt' : '',
       active: r._key === _activeRoomId || (i === 0 && !_activeRoomId),
@@ -114,33 +123,11 @@ export function selectRoom(roomId) {
     return;
   }
   const room = (store.rooms || []).find(r => r._key === roomId);
-  // 채팅 헤더 갱신 (대화코드 + 역할별 액션 버튼)
+  // 채팅 헤더 — 대화코드만 표시 (숨김/삭제는 하단 액션바로 이전됨)
   const chatHeadEl = document.querySelector('[data-page="workspace"] .ws4-card:nth-child(2) .ws4-head');
   if (chatHeadEl && room) {
-    const code = room.chat_code || room.room_code || room.room_id || room._key.slice(0, 8);
-    const role = store.currentUser?.role;
-    const showHide = role === 'agent' || role === 'agent_admin' || role === 'provider' || role === 'admin';
-    const showDelete = role === 'admin' || role === 'provider';
-    chatHeadEl.innerHTML = `
-      <span>채팅 · ${esc(code)}</span>
-      <div class="spacer" style="flex:1;"></div>
-      ${showHide ? `<button class="btn btn-sm" id="chatHide" title="대화 숨김"><i class="ph ph-eye-slash"></i> 숨김</button>` : ''}
-      ${showDelete ? `<button class="btn btn-sm" id="chatDelete" title="대화 삭제" style="color:var(--alert-red-text);"><i class="ph ph-trash"></i> 삭제</button>` : ''}
-    `;
-    // 숨김 버튼
-    chatHeadEl.querySelector('#chatHide')?.addEventListener('click', async () => {
-      const hideField = role === 'agent' ? 'hidden_for_agent'
-        : role === 'provider' ? 'hidden_for_provider'
-        : 'hidden_for_admin';
-      await updateRecord(`rooms/${roomId}`, { [hideField]: true, updated_at: Date.now() });
-      showToast('대화 숨김 처리됨');
-    });
-    // 삭제 버튼 (admin/provider 만)
-    chatHeadEl.querySelector('#chatDelete')?.addEventListener('click', async () => {
-      if (!confirm('이 대화방을 삭제하시겠습니까?')) return;
-      await updateRecord(`rooms/${roomId}`, { _deleted: true, updated_at: Date.now() });
-      showToast('대화 삭제됨');
-    });
+    const code = chatCodeOf(room);
+    chatHeadEl.innerHTML = `<span>채팅 ${esc(code)}</span>`;
   }
   renderRoomDetail(room);
 

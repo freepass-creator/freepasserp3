@@ -9,9 +9,9 @@
 export const MOBILE_BREAKPOINT = 768;
 
 // 실제 폰 UA만 매칭 — iPad/Android 태블릿/데스크톱 좁은 창 제외
-// · iPhone: "iPhone"
-// · Android 폰: "Android" + "Mobile" (태블릿은 "Mobile" 없음)
-// · iPadOS 13+: 데스크톱 Safari UA 사용 → 매칭 안 됨 (의도)
+// | iPhone: "iPhone"
+// | Android 폰: "Android" + "Mobile" (태블릿은 "Mobile" 없음)
+// | iPadOS 13+: 데스크톱 Safari UA 사용 → 매칭 안 됨 (의도)
 const UA_PHONE = /iPhone|iPod|Android.*Mobile|webOS|BlackBerry|IEMobile|Opera Mini|Windows Phone/i;
 
 /** 모바일(폰) 여부 — UA 기반. ?mobile=1/0 URL 파라미터로 강제 가능 (개발용) */

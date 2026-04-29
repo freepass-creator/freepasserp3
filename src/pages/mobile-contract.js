@@ -7,6 +7,7 @@ import { store } from '../core/store.js';
 import { watchCollection, updateRecord } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtWon, mEmpty } from '../core/format.js';
+import { fmtDate, providerNameByCode } from '../core/ui-helpers.js';
 import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { pushMobileView } from '../core/mobile-shell.js';
 import { filterByRole } from '../core/roles.js';
@@ -18,7 +19,7 @@ function formatDriverAge(pol) {
   const low = pol.driver_age_lowering;
   const lowNum = Number(low) || 0;
   if (base && lowNum && lowNum < base) return `만 ${base}세 이상 (만 ${lowNum}세 하향 가능)`;
-  if (base) return `만 ${base}세 이상${low && typeof low === 'string' && low !== '없음' ? ` · 하향 ${low}` : ''}`;
+  if (base) return `만 ${base}세 이상${low && typeof low === 'string' && low !== '없음' ? ` | 하향 ${low}` : ''}`;
   return typeof low === 'string' ? low : '';
 }
 
@@ -196,17 +197,19 @@ function renderList() {
     const tone = done ? 'ok' : cancelled ? 'err' : 'info';
     const icon = done ? 'ph-check-circle' : cancelled ? 'ph-x-circle' : 'ph-file-text';
     const avatarLabel = done ? '완료' : cancelled ? '취소' : '진행중';
-    const fmtDate = c.contract_date || (c.created_at ? new Date(c.created_at).toLocaleDateString('ko', { year: '2-digit', month: '2-digit', day: '2-digit' }) : '');
-    const titleLine = `${c.car_number_snapshot || ''} ${c.sub_model_snapshot || c.model_snapshot || ''}`.trim() || c.contract_code;
-    // 2줄: 공급사 · 영업채널 · 영업자 · 계약코드
-    const meta = [c.provider_company_code, c.agent_channel_code, c.agent_code, c.contract_code].filter(Boolean).join(' · ');
-    // 3줄: [진행률 뱃지] 계약자명 · 생년월일 · 연락처
+    const dateStr = fmtDate(c.contract_date || c.created_at);
+    // 메인: 계약자명 차량번호 세부모델 공급사 (공백 구분, 데스크톱과 통일)
+    const providerName = providerNameByCode(c.provider_company_code, store);
+    const titleLine = [c.customer_name, c.car_number_snapshot, c.sub_model_snapshot || c.model_snapshot, providerName].filter(Boolean).join(' ') || c.contract_code;
+    // 보조: 영업채널 | 영업자 | 계약코드
+    const meta = [c.agent_channel_code, c.agent_code, c.contract_code].filter(Boolean).join(' | ');
+    // 3줄: [진행률 뱃지] 계약자명 | 생년월일 | 연락처
     const dob = formatDob(c);
     const customerLine = [
       c.customer_name ? `<b class="m-customer">${c.customer_name}</b>` : '',
       dob,
       c.customer_phone,
-    ].filter(Boolean).join(' · ');
+    ].filter(Boolean).join(' | ');
     const progressColor = prog.done === prog.total ? 'var(--c-ok)' : prog.done > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
     return `
       <article class="m-card-contract" data-code="${c.contract_code}">
@@ -217,7 +220,7 @@ function renderList() {
         <div class="m-card-contract-body">
           <div class="m-room-item-top">
             <span class="m-room-item-name">${titleLine}</span>
-            <span class="m-room-item-time">${fmtDate}</span>
+            <span class="m-room-item-time">${dateStr}</span>
           </div>
           <div class="m-room-item-msg">
             <span>${meta}</span>
@@ -322,7 +325,7 @@ function bindContractView(view, c) {
     try {
       await updateRecord(`contracts/${c.contract_code}`, updates);
       Object.assign(c, updates);
-      showToast(`${m}M${rent ? ` · ${rent.toLocaleString()}원` : ''}`);
+      showToast(`${m}M${rent ? ` | ${rent.toLocaleString()}원` : ''}`);
       const panel = view.querySelector('[data-panel="progress"]');
       panel.innerHTML = renderProgressPanel(c);
     } catch (err) {
@@ -655,7 +658,7 @@ function renderCustomerPanel(c) {
             <span class="m-doc-thumb">${isImg ? `<img src="${d.url}" alt="">` : `<i class="ph ph-file-text"></i>`}</span>
             <span class="m-doc-info">
               <a href="${d.url}" target="_blank" rel="noopener" class="m-doc-link">${(d.name || '파일').replace(/</g,'&lt;')}</a>
-              <span class="m-doc-meta">${d.size ? `${Math.round(d.size/1024)}KB` : ''}${d.uploaded_at ? ` · ${new Date(d.uploaded_at).toLocaleDateString('ko', { month:'2-digit', day:'2-digit' })}` : ''}</span>
+              <span class="m-doc-meta">${d.size ? `${Math.round(d.size/1024)}KB` : ''}${d.uploaded_at ? ` | ${new Date(d.uploaded_at).toLocaleDateString('ko', { month:'2-digit', day:'2-digit' })}` : ''}</span>
             </span>
             <button class="m-doc-del" data-doc-del="${key}" type="button" aria-label="삭제"><i class="ph ph-trash"></i></button>
           </div>`;
@@ -665,7 +668,7 @@ function renderCustomerPanel(c) {
     : `<button class="m-upload-dropzone" id="ctDocAddBtn" type="button">
         <i class="ph ph-paperclip"></i>
         <span class="m-upload-primary">첨부 서류 추가</span>
-        <span class="m-upload-hint">신분증 · 인감 · 기타 (10MB 이하)</span>
+        <span class="m-upload-hint">신분증 | 인감 | 기타 (10MB 이하)</span>
       </button>`;
 
   // 면허증 (단일, customer_license_url)
@@ -685,7 +688,7 @@ function renderCustomerPanel(c) {
     : `<button class="m-upload-dropzone" id="ctLicenseBtn" type="button">
         <i class="ph ph-identification-card"></i>
         <span class="m-upload-primary">운전면허증 등록</span>
-        <span class="m-upload-hint">앞면 사진 · JPG/PNG/PDF (10MB 이하)</span>
+        <span class="m-upload-hint">앞면 사진 | JPG/PNG/PDF (10MB 이하)</span>
       </button>`;
 
   return `

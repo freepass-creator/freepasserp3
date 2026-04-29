@@ -29,18 +29,26 @@ export function renderUserList(users) {
   const sorted = [...users].sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ko'));
   body.innerHTML = sorted.map((u, i) => {
     const rb = ROLE_BADGE[u.role] || { txt: '-', tone: 'gray' };
-    // 통일 spec: name=이름 직급 / msg=회사·연락처 / meta=상태(활성·대기·비활)
+    const roleLabel = ({ admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업관리자' }[u.role]) || u.role || '-';
+    const status = u.status === 'pending' ? '승인 대기' : (u.status === 'rejected' ? '반려' : (u.is_active === false ? '비활성' : '승인됨'));
+    // 메인: 이름 직급  /  우측: 마지막 로그인
     const namePos = [u.name || u.email?.split('@')[0] || u._key.slice(0, 8), u.position].filter(Boolean).join(' ');
-    const status = u.status === 'pending' ? '대기' : (u.is_active === false ? '비활' : '활성');
+    // 보조: 역할 | 소속 | 연락처 | 상태
+    const subParts = [
+      roleLabel,
+      u.company_name || u.company_code,
+      u.phone || u.email,
+      status,
+    ].filter(Boolean);
     return renderRoomItem({
       id: u._key,
       icon: 'user',
       badge: rb.txt,
       tone: rb.tone,
       name: namePos,
-      time: fmtTime(u.last_login_at),
-      msg: [u.company_name || u.company_code, u.phone].filter(Boolean).join(' · ') || u.email || '-',
-      meta: status,
+      time: fmtDate(u.last_login_at || u.created_at),
+      msg: subParts.join(' | ') || '-',
+      meta: '',
       active: i === 0,
     });
   }).join('');
@@ -110,7 +118,7 @@ export function renderUserDetail(u) {
       ['이메일', u.email, true],
       ['역할', ROLE_LABEL[u.role] || u.role || '-'],
       ['상태', currentStatus],
-      ['소속', [u.company_name, u.company_code].filter(Boolean).join(' · '), true],
+      ['소속', [u.company_name, u.company_code].filter(Boolean).join(' | '), true],
       ['연락처', u.phone, true],
       ['최근 로그인', fmtFullTime(u.last_login_at), true],
       ['담당 계약', myContracts.length + '건'],
@@ -125,12 +133,12 @@ export function renderUserDetail(u) {
     const events = Array.isArray(u.events) ? [...u.events].sort((a, b) => (b.at || 0) - (a.at || 0)) : [];
     if (!events.length) {
       historyCard.querySelector('.ws4-body').innerHTML = u.last_login_at
-        ? `<div class="timeline-row"><span class="text-weak">${esc(fmtFullTime(u.last_login_at))}</span> · 로그인</div>`
+        ? `<div class="timeline-row"><span class="text-weak">${esc(fmtFullTime(u.last_login_at))}</span> | 로그인</div>`
         : emptyState('이력 없음');
     } else {
       historyCard.querySelector('.ws4-body').innerHTML = events.map(ev => `
         <div class="timeline-row">
-          <span class="text-weak">${esc(fmtFullTime(ev.at))}</span> · ${esc(ev.type || '-')}
+          <span class="text-weak">${esc(fmtFullTime(ev.at))}</span> | ${esc(ev.type || '-')}
           <div class="text-sub">${esc(ev.note || '')}</div>
         </div>
       `).join('');

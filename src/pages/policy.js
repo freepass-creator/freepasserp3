@@ -13,9 +13,10 @@
 import { store } from '../core/store.js';
 import { pushRecord } from '../firebase/db.js';
 import {
-  esc, shortStatus, mapStatusDot,
+  esc, shortStatus, mapStatusDot, fmtDate,
   listBody, emptyState, renderRoomItem,
   ffi, ffs, setHeadSave, bindFormSave,
+  providerNameByCode,
 } from '../core/ui-helpers.js';
 
 /* v2 정책 OPTS — 드롭다운 옵션 */
@@ -68,23 +69,27 @@ export function renderPolicyList(policies) {
   if (!visible.length) { body.innerHTML = emptyState('정책이 없습니다'); renderPolicyDetail(null); return; }
   const sorted = [...visible].sort((a, b) => String(a.policy_name || '').localeCompare(String(b.policy_name || ''), 'ko'));
   body.innerHTML = sorted.map((pol, i) => {
-    // 통일 spec: name=정책명 / msg=공급사·심사기준·적용차량 / meta=정책코드
-    const carCount = (store.products || []).filter(p => p.policy_code === pol.policy_code && !p._deleted).length;
+    const providerLabel = providerNameByCode(pol.provider_company_code || pol.provider_name, store) || pol.provider_company_code || '';
+    const isActive = pol.is_active !== false && pol.status !== '중단';
+    // 메인: 정책명 회사명 (공백 구분, 문단처럼) / 우측: 수정일
+    const mainLine = [pol.policy_name || '정책명미정', providerLabel].filter(Boolean).join(' ');
+    // 보조: 정책설명
+    const sub = pol.term_description || pol.description || '-';
     return renderRoomItem({
       id: pol._key,
       icon: 'scroll',
-      badge: pol.is_active === false ? '비활' : (pol.status === '중단' ? '중단' : '활성'),
-      tone: pol.is_active === false ? 'gray' : (pol.status === '중단' ? 'red' : 'green'),
-      name: pol.policy_name || pol.policy_code || pol._key.slice(0, 8),
-      time: '',
-      msg: [pol.provider_company_code || pol.provider_name, pol.credit_grade, carCount ? `차량 ${carCount}` : ''].filter(Boolean).join(' · ') || '-',
-      meta: pol.policy_code || '',
+      badge: isActive ? '활성' : '비활',
+      tone: isActive ? 'green' : 'gray',
+      name: mainLine,
+      time: fmtDate(pol.updated_at || pol.created_at),
+      msg: sub,
+      meta: '',
       active: i === 0,
     });
   }).join('');
 
   const head = document.querySelector('[data-page="policy"] .ws4-head span');
-  if (head) head.textContent = `정책 목록 · ${policies.length}건`;
+  if (head) head.textContent = `정책 목록 | ${policies.length}건`;
   renderPolicyDetail(sorted[0]);
 }
 
@@ -206,27 +211,4 @@ export function renderPolicyDetail(pol) {
   if (canEdit) bindFormSave(page, 'policies', pol._key, pol);
 }
 
-/* 새 정책 — 페이지 헤드 "새 정책" 버튼 */
-export function bindPolicyCreate() {
-  const btn = document.querySelector('[data-page="policy"] .ws4-list .ws4-head .btn-primary');
-  if (!btn) return;
-  btn.addEventListener('click', async () => {
-    const role = store.currentUser?.role;
-    if (role !== 'admin' && role !== 'provider') return alert('권한이 없습니다');
-    const name = prompt('새 정책명:');
-    if (!name?.trim()) return;
-    try {
-      await pushRecord('policies', {
-        policy_name: name.trim(),
-        policy_code: 'POL-' + Date.now().toString(36).toUpperCase(),
-        is_active: true,
-        status: '활성',
-        provider_company_code: store.currentUser?.company_name || '',
-        created_at: Date.now(),
-        created_by: store.currentUser?.uid || '',
-      });
-    } catch (e) {
-      alert('생성 실패 — ' + (e.message || e));
-    }
-  });
-}
+/* 신규등록은 하단 액션바(setPageActions) 의 createNewPolicy 가 처리 — app.js 정의 */

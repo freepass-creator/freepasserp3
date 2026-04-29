@@ -10,7 +10,7 @@ import { store } from '../core/store.js';
 import { watchRecord, updateRecord, softDelete, setRecord, fetchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { saveNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
-import { esc, emptyState } from './../core/ui-helpers.js';
+import { esc, emptyState, renderRoomItem } from './../core/ui-helpers.js';
 
 let devUnsubs = [];
 let _activeDev = 'tools';
@@ -53,19 +53,21 @@ export function renderDev() {
   const isWideTab = _activeDev === 'vehicle';
   page.innerHTML = `
     <div class="ws4">
-      <!-- 좌 (1): 도구 목록 -->
+      <!-- 좌 (1): 도구 목록 — 다른 페이지 목록과 동일 .room-item 규격 (간격 없이 딱 붙음) -->
       <div class="ws4-card ws4-list" style="flex: 1 1 0;">
         <div class="ws4-head"><i class="ph ph-code"></i> <span>개발도구</span></div>
-        <div class="ws4-body" style="padding: var(--sp-2);">
-          ${DEV_TABS.map(t => `
-            <button class="settings-tab ${t.id === _activeDev ? 'is-active' : ''}" data-dev="${t.id}">
-              <i class="ph ph-${t.icon}"></i>
-              <span class="settings-tab-text">
-                <span class="settings-tab-label">${t.label}</span>
-                <span class="settings-tab-sub">${t.sub}</span>
-              </span>
-            </button>
-          `).join('')}
+        <div class="ws4-body no-pad">
+          ${DEV_TABS.map(t => renderRoomItem({
+            id: t.id,
+            icon: t.icon,
+            badge: '',
+            tone: 'gray',
+            name: t.label,
+            time: '',
+            msg: t.sub,
+            meta: '',
+            active: t.id === _activeDev,
+          })).join('')}
         </div>
       </div>
 
@@ -94,9 +96,10 @@ export function renderDev() {
     </div>
   `;
 
-  page.querySelectorAll('[data-dev]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      _activeDev = btn.dataset.dev;
+  // 좌측 목록 클릭 — room-item.data-id 가 탭 id
+  page.querySelectorAll('.ws4-list .room-item').forEach(item => {
+    item.addEventListener('click', () => {
+      _activeDev = item.dataset.id;
       // unsub 모든 구독 (탭 변경 시 누수 방지)
       devUnsubs.forEach(u => u?.());
       devUnsubs = [];
@@ -133,19 +136,19 @@ function renderToolsTab(el) {
       <div>
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">동작</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
-          <button class="btn" id="devCacheClear"><i class="ph ph-trash"></i> 캐시 초기화 (localStorage)</button>
-          <button class="btn" id="devStoreView"><i class="ph ph-database"></i> Store 상태 보기</button>
-          <button class="btn" id="devReload"><i class="ph ph-arrow-clockwise"></i> 강제 새로고침</button>
+          <button class="btn btn-sm" id="devCacheClear"><i class="ph ph-trash"></i> 캐시 초기화 (localStorage)</button>
+          <button class="btn btn-sm" id="devStoreView"><i class="ph ph-database"></i> Store 상태 보기</button>
+          <button class="btn btn-sm" id="devReload"><i class="ph ph-arrow-clockwise"></i> 강제 새로고침</button>
         </div>
       </div>
       <div>
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">일회성 마이그레이션</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
-          <button class="btn" id="devMigrateTermPolicy"><i class="ph ph-swap"></i> policies: term_* → policy_*</button>
-          <button class="btn" id="devMigrateModelName"><i class="ph ph-swap"></i> model_name → model</button>
-          <button class="btn" id="devMigratePartnerType"><i class="ph ph-swap"></i> partner_type 영어 → 한글</button>
-          <button class="btn" id="devMigrateUserCode"><i class="ph ph-identification-badge"></i> user_code 일괄부여</button>
-          <button class="btn" id="devMigrateCreditGrade"><i class="ph ph-swap"></i> credit_grade: 저신용 → 신용무관</button>
+          <button class="btn btn-sm" id="devMigrateTermPolicy"><i class="ph ph-swap"></i> policies: term_* → policy_*</button>
+          <button class="btn btn-sm" id="devMigrateModelName"><i class="ph ph-swap"></i> model_name → model</button>
+          <button class="btn btn-sm" id="devMigratePartnerType"><i class="ph ph-swap"></i> partner_type 영어 → 한글</button>
+          <button class="btn btn-sm" id="devMigrateUserCode"><i class="ph ph-identification-badge"></i> user_code 일괄부여</button>
+          <button class="btn btn-sm" id="devMigrateCreditGrade"><i class="ph ph-swap"></i> credit_grade: 저신용 → 신용무관</button>
         </div>
       </div>
     </div>
@@ -193,7 +196,7 @@ async function migrateTermPolicy() {
       if (v?.term_type != null) { if (v.policy_type == null) patch.policy_type = v.term_type; patch.term_type = null; }
       if (Object.keys(patch).length) { await update(ref(db, `policies/${k}`), patch); moved++; }
     }
-    devLog(`✓ policies 스캔 ${scanned}건 · rename ${moved}건`);
+    devLog(`✓ policies 스캔 ${scanned}건 | rename ${moved}건`);
     showToast(`마이그레이션 완료 (${moved}/${scanned})`);
   } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
 }
@@ -338,9 +341,9 @@ function renderStockTab(el) {
       </div>
       <div style="display:flex;gap:4px;align-items:center;">
         <span id="stkCount" style="font-size:11px;color:var(--text-muted);">0대</span>
-        <button class="btn" id="stkAll">전체 선택</button>
-        <button class="btn" id="stkNone">해제</button>
-        <button class="btn" style="background:#dc2626;color:#fff;margin-left:auto;" id="stkDel"><i class="ph ph-trash"></i> 선택 삭제</button>
+        <button class="btn btn-sm" id="stkAll">전체 선택</button>
+        <button class="btn btn-sm" id="stkNone">해제</button>
+        <button class="btn btn-sm is-danger" style="margin-left:auto;" id="stkDel"><i class="ph ph-trash"></i> 선택 삭제</button>
       </div>
       <div id="stkList" style="flex:1;overflow-y:auto;border:1px solid var(--border);border-radius:4px;"></div>
     </div>
@@ -362,7 +365,7 @@ function renderStockTab(el) {
 
   const render = () => {
     const list = filter();
-    el.querySelector('#stkCount').textContent = `${list.length}대 · 선택 ${checked.size}`;
+    el.querySelector('#stkCount').textContent = `${list.length}대 | 선택 ${checked.size}`;
     el.querySelector('#stkList').innerHTML = list.slice(0, 500).map(p => {
       const k = p._key || p.product_uid || p.product_code;
       return `<div style="display:flex;align-items:center;gap:8px;padding:4px 8px;border-bottom:1px solid var(--border);font-size:11px;">
@@ -373,11 +376,11 @@ function renderStockTab(el) {
         <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(p.model || '')} ${esc(p.sub_model || '')}</span>
         <span style="width:60px;color:var(--text-muted);">${esc(p.vehicle_status || '')}</span>
       </div>`;
-    }).join('') + (list.length > 500 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 500건 · 필터로 좁히세요</div>` : '');
+    }).join('') + (list.length > 500 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 500건 | 필터로 좁히세요</div>` : '');
     el.querySelectorAll('#stkList input[type=checkbox]').forEach(cb => {
       cb.addEventListener('change', () => {
         if (cb.checked) checked.add(cb.dataset.k); else checked.delete(cb.dataset.k);
-        el.querySelector('#stkCount').textContent = `${list.length}대 · 선택 ${checked.size}`;
+        el.querySelector('#stkCount').textContent = `${list.length}대 | 선택 ${checked.size}`;
       });
     });
   };
@@ -410,7 +413,7 @@ function renderNoticeTab(el) {
           <input class="input" id="ncTitle" placeholder="제목">
           <textarea class="input" id="ncContent" rows="3" placeholder="내용" style="height:auto;"></textarea>
           <input type="file" id="ncImg" accept="image/*" style="font-size:11px;">
-          <button class="btn btn-primary" id="ncSave"><i class="ph ph-megaphone"></i> 등록</button>
+          <button class="btn btn-sm btn-primary" id="ncSave"><i class="ph ph-megaphone"></i> 등록</button>
         </div>
       </div>
       <div>
@@ -430,7 +433,7 @@ function renderNoticeTab(el) {
             <div style="font-size:11px;color:var(--text-muted);white-space:pre-wrap;">${esc(n.content || '')}</div>
             <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${new Date(n.created_at || 0).toLocaleString('ko')}</div>
           </div>
-          <button class="btn" style="background:#dc2626;color:#fff;height:24px;padding:0 8px;" data-del="${esc(n._key)}"><i class="ph ph-x"></i></button>
+          <button class="btn btn-xs is-danger" data-del="${esc(n._key)}"><i class="ph ph-x"></i></button>
         </div>
       </div>
     `).join('') : emptyState('공지 없음');
@@ -465,7 +468,7 @@ function renderColorTab(el) {
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">외장색</div>
         <div style="display:flex;gap:4px;margin-bottom:6px;">
           <input class="input" id="extIn" placeholder="색상명" style="flex:1;">
-          <button class="btn btn-primary" id="extAdd"><i class="ph ph-plus"></i> 추가</button>
+          <button class="btn btn-sm btn-primary" id="extAdd"><i class="ph ph-plus"></i> 추가</button>
         </div>
         <div id="extList" style="display:flex;flex-wrap:wrap;gap:4px;"></div>
       </div>
@@ -473,7 +476,7 @@ function renderColorTab(el) {
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">내장색</div>
         <div style="display:flex;gap:4px;margin-bottom:6px;">
           <input class="input" id="intIn" placeholder="색상명" style="flex:1;">
-          <button class="btn btn-primary" id="intAdd"><i class="ph ph-plus"></i> 추가</button>
+          <button class="btn btn-sm btn-primary" id="intAdd"><i class="ph ph-plus"></i> 추가</button>
         </div>
         <div id="intList" style="display:flex;flex-wrap:wrap;gap:4px;"></div>
       </div>
@@ -484,10 +487,10 @@ function renderColorTab(el) {
     const ext = cm.ext_colors || [];
     const intC = cm.int_colors || [];
     el.querySelector('#extList').innerHTML = ext.length
-      ? ext.map(c => `<span class="chip" style="cursor:default;">${esc(c)}<button style="background:none;border:none;margin-left:4px;cursor:pointer;color:#dc2626;" data-exd="${esc(c)}">×</button></span>`).join('')
+      ? ext.map(c => `<span class="chip">${esc(c)}<button class="chip-x" data-exd="${esc(c)}" title="삭제">×</button></span>`).join('')
       : '<span style="color:var(--text-muted);font-size:11px;">없음</span>';
     el.querySelector('#intList').innerHTML = intC.length
-      ? intC.map(c => `<span class="chip" style="cursor:default;">${esc(c)}<button style="background:none;border:none;margin-left:4px;cursor:pointer;color:#dc2626;" data-ind="${esc(c)}">×</button></span>`).join('')
+      ? intC.map(c => `<span class="chip">${esc(c)}<button class="chip-x" data-ind="${esc(c)}" title="삭제">×</button></span>`).join('')
       : '<span style="color:var(--text-muted);font-size:11px;">없음</span>';
     el.querySelectorAll('[data-exd]').forEach(b => b.addEventListener('click', async () => {
       if (!confirm(`"${b.dataset.exd}" 삭제?`)) return;
@@ -529,9 +532,9 @@ function renderUploadTab(el) {
     <div style="display:flex;flex-direction:column;gap:16px;">
       <div>
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">상품 CSV 업로드</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">차량번호 컬럼 필수 · 헤더 첫 행</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">차량번호 컬럼 필수 | 헤더 첫 행</div>
         <input type="file" id="upFile" accept=".csv,.tsv" style="font-size:11px;margin-bottom:6px;">
-        <button class="btn btn-primary" id="upBtn"><i class="ph ph-upload-simple"></i> 업로드</button>
+        <button class="btn btn-sm btn-primary" id="upBtn"><i class="ph ph-upload-simple"></i> 업로드</button>
       </div>
     </div>
   `;
@@ -579,7 +582,7 @@ function renderSyncTab(el) {
       <div>
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">외부 시트 동기화</div>
         <input class="input" id="syncUrl" placeholder="구글시트 공유 URL" style="margin-bottom:6px;">
-        <button class="btn btn-primary" id="syncBtn"><i class="ph ph-google-drive-logo"></i> 가져오기</button>
+        <button class="btn btn-sm btn-primary" id="syncBtn"><i class="ph ph-google-drive-logo"></i> 가져오기</button>
       </div>
     </div>
   `;
@@ -741,7 +744,7 @@ function drawVehicleTab(el) {
         <label style="font-size:11px;color:var(--text-sub);display:flex;align-items:center;gap:4px;cursor:pointer;">
           <input type="checkbox" id="vmShowArchived" ${showArchived ? 'checked' : ''}> 단종 ${archivedCount}건
         </label>
-        <button class="btn btn-primary" id="vmNew"><i class="ph ph-plus"></i> 새 차종</button>
+        <button class="btn btn-sm btn-primary" id="vmNew"><i class="ph ph-plus"></i> 새 차종</button>
       </div>
 
       <!-- 목록만 (상세는 우측 패널) -->
@@ -760,7 +763,7 @@ function drawVehicleTab(el) {
           </thead>
           <tbody id="vmRows">${rowsHtml}</tbody>
         </table>
-        ${filtered.length > 800 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 800건 · 총 ${filtered.length}건 (필터로 좁히세요)</div>` : ''}
+        ${filtered.length > 800 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 800건 | 총 ${filtered.length}건 (필터로 좁히세요)</div>` : ''}
       </div>
     </div>
   `;
@@ -822,12 +825,12 @@ function renderVehicleDetail(sel, mode) {
       <span style="font-weight:600;font-size:13px;">${isEdit ? (mode === 'new' ? '새 차종 등록' : '편집') : `${esc(m.maker || '')} ${esc(m.sub || m.car_name || '')}`}</span>
       <div style="display:flex;gap:4px;">
         ${isEdit ? `
-          <button class="btn btn-primary" id="vmSave"><i class="ph ph-check"></i> 저장</button>
-          <button class="btn" id="vmCancel">취소</button>
+          <button class="btn btn-sm btn-primary" id="vmSave"><i class="ph ph-check"></i> 저장</button>
+          <button class="btn btn-sm" id="vmCancel">취소</button>
         ` : `
-          <button class="btn" id="vmEdit"><i class="ph ph-pencil"></i> 편집</button>
-          <button class="btn" id="vmArchive">${m.archived ? '복원' : '단종'}</button>
-          <button class="btn" style="color:#dc2626;" id="vmDelete"><i class="ph ph-trash"></i></button>
+          <button class="btn btn-sm" id="vmEdit"><i class="ph ph-pencil"></i> 편집</button>
+          <button class="btn btn-sm" id="vmArchive">${m.archived ? '복원' : '단종'}</button>
+          <button class="btn btn-sm is-danger" id="vmDelete"><i class="ph ph-trash"></i></button>
         `}
       </div>
     </div>

@@ -27,8 +27,8 @@ function vehicleStatusBadge(product) {
 }
 
 /* ── 상품구분 뱃지 — 계열 분리 + 중고는 soft 변형
- *    렌트  = 파랑(info)  · 구독  = 초록(ok)
- *    신차  = is-filled (진하게) · 중고 = is-soft (연하게) */
+ *    렌트  = 파랑(info)  | 구독  = 초록(ok)
+ *    신차  = is-filled (진하게) | 중고 = is-soft (연하게) */
 function productTypeBadge(product) {
   const pt = normalizeProductType(product?.product_type);
   if (!pt) return '';

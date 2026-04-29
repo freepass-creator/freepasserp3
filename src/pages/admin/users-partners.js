@@ -121,7 +121,7 @@ export function mount(main, subPath) {
     if (mode === 'users') {
       const pending = data.filter(u => u.status === 'pending').length;
       const active = data.filter(u => u.status === 'active').length;
-      setBreadcrumbBrief(`대기 ${pending} · 승인 ${active} / 전체 ${data.length}`);
+      setBreadcrumbBrief(`대기 ${pending} | 승인 ${active} / 전체 ${data.length}`);
     } else {
       const active = data.filter(p => p.status === 'active').length;
       setBreadcrumbBrief(`활성 ${active} / 전체 ${data.length}`);
@@ -196,8 +196,8 @@ function renderList() {
     const avatarIcon = mode === 'users' ? 'ph-user' : 'ph-buildings';
     const roleLabel = { admin: '관리자', provider: '공급사', agent: '영업자', agent_admin: '영업관리자' }[item.role] || item.role || '';
     const sub = mode === 'users'
-      ? [roleLabel, item.company_name, item.phone].filter(Boolean).join(' · ')
-      : [item.partner_type, item.business_number, item.manager_phone || item.company_phone].filter(Boolean).join(' · ');
+      ? [roleLabel, item.company_name, item.phone].filter(Boolean).join(' | ')
+      : [item.partner_type, item.business_number, item.manager_phone || item.company_phone].filter(Boolean).join(' | ');
 
     return `
       <div class="room-item ${activeKey === key ? 'is-active' : ''}" data-key="${key}">

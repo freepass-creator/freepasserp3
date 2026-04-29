@@ -76,7 +76,7 @@ function renderAgent() {
   const bbSub = document.getElementById('catBbSub');
   const bbCta = document.getElementById('catBbCta');
   if (bbName) bbName.textContent = _agent.name || _agent.email || '담당자';
-  if (bbSub) bbSub.textContent = [_agent.title || _agent.position, role, _agent.company_name].filter(Boolean).join(' · ') || '전화 문의';
+  if (bbSub) bbSub.textContent = [_agent.title || _agent.position, role, _agent.company_name].filter(Boolean).join(' | ') || '전화 문의';
   if (bbCta && _agent.phone) {
     bbCta.href = `tel:${_agent.phone.replace(/[^0-9]/g, '')}`;
   }
@@ -86,7 +86,7 @@ function renderAgent() {
       <div class="cat-agent-avatar"><i class="ph ph-user"></i></div>
       <div class="cat-agent-info">
         <div class="cat-agent-name">${esc(_agent.name || _agent.email || '-')}</div>
-        <div class="cat-agent-sub">${esc([_agent.company_name, role].filter(Boolean).join(' · '))}</div>
+        <div class="cat-agent-sub">${esc([_agent.company_name, role].filter(Boolean).join(' | '))}</div>
       </div>
       <div class="cat-agent-actions">
         ${_agent.phone ? `<a class="cat-agent-btn" href="tel:${esc(_agent.phone)}"><i class="ph ph-phone"></i> 전화</a>` : ''}
@@ -184,9 +184,9 @@ function renderGrid() {
     const imgs = [...productImages(p), ...productExternalImages(p)].map(toProxiedImage);
     const status = shortStatus(p.vehicle_status || '');
     const carName = `${p.car_number || '-'} ${p.maker || ''} ${p.sub_model || p.model || ''}`.trim();
-    const sub = [p.year ? p.year + '년' : '', p.fuel_type, p.mileage ? fmtMileage(p.mileage) + 'km' : ''].filter(Boolean).join(' · ');
+    const sub = [p.year ? p.year + '년' : '', p.fuel_type, p.mileage ? fmtMileage(p.mileage) + 'km' : ''].filter(Boolean).join(' | ');
     const p36 = p.price?.['36'];
-    const priceText = p36?.rent ? `${Math.round(p36.rent/10000)}만 <small>/${Math.round((p36.deposit||0)/10000)}만 · 36개월</small>` : '<small>가격 문의</small>';
+    const priceText = p36?.rent ? `${Math.round(p36.rent/10000)}만 <small>/${Math.round((p36.deposit||0)/10000)}만 | 36개월</small>` : '<small>가격 문의</small>';
     const badges = computeCardBadges(p);
     return `<div class="cat-card" data-key="${esc(p._key)}">
       <div class="cat-card-img">
@@ -728,9 +728,9 @@ watchCollection('products', (list) => {
       const senderLabel = _agent?.company_name || _agent?.name
         || (_partners.find(p => (p.partner_code || p.company_code || p._key) === target.provider_company_code)?.partner_name)
         || '';
-      document.title = senderLabel ? `${carName} · ${senderLabel}` : carName;
+      document.title = senderLabel ? `${carName} | ${senderLabel}` : carName;
       document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title);
-      const sub = [target.year ? target.year + '년' : '', target.fuel_type, target.mileage ? Number(target.mileage).toLocaleString() + 'km' : ''].filter(Boolean).join(' · ');
+      const sub = [target.year ? target.year + '년' : '', target.fuel_type, target.mileage ? Number(target.mileage).toLocaleString() + 'km' : ''].filter(Boolean).join(' | ');
       document.querySelector('meta[property="og:description"]')?.setAttribute('content', sub || '');
       openDetail(target._key);
     } else if (_products.length) {

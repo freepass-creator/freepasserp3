@@ -10,7 +10,7 @@
 import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';
 import { watchCollection, pushRecord, updateRecord, softDelete, fetchRecord, setRecord } from './firebase/db.js';
 import { store } from './core/store.js';
-import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from './core/product-photos.js';
+import { productImages, productExternalImages, supportedDriveSource } from './core/product-photos.js';
 import { openFullscreen } from './core/product-detail-render.js';
 import { extractProductDetailRows } from './core/product-detail-rows.js';
 import { uploadImage } from './firebase/storage-helper.js';
@@ -25,10 +25,10 @@ import {
   listBody, emptyState, renderRoomItem,
   ffi, ffs, setHeadSave, flashSaved, bindFormSave,
 } from './core/ui-helpers.js';
-import { POLICY_OPTS, renderPolicyList, renderPolicyDetail, bindPolicyCreate } from './pages/policy.js';
-import { renderPartnerList, renderPartnerDetail, bindPartnerCreate } from './pages/partner.js';
+import { POLICY_OPTS, renderPolicyList, renderPolicyDetail } from './pages/policy.js';
+import { renderPartnerList, renderPartnerDetail } from './pages/partner.js';
 import { renderUserList, renderUserDetail } from './pages/user.js';
-import { renderSettlementList, renderSettlementDetail, bindSettlementCreate } from './pages/settlement.js';
+import { renderSettlementList, renderSettlementDetail } from './pages/settlement.js';
 import {
   CONTRACT_STATUSES, renderContractList, renderContractDetail,
   renderContractWorkV2, bindContractWorkV2,
@@ -40,6 +40,10 @@ import {
   calibrateSearchCols, renderSearchTable, renderSearchDetail,
   bindSearchInteractions, bindSearchSelection, applySearchFilter,
   setSearchCallbacks, _searchFilter,
+  getActiveSearchProduct, searchActionChat, searchActionContract, searchActionShare,
+  searchToggleQuickFilter, isQuickFilterActive,
+  searchTogglePeriod, isPeriodVisible,
+  searchExportExcel, searchDownloadPhotoZip,
 } from './pages/search.js';
 import {
   renderRoomList, selectRoom, renderRoomDetail, renderChatMessages,
@@ -48,7 +52,7 @@ import {
 } from './pages/workspace.js';
 import {
   PRODUCT_OPTS, PRODUCT_TERMS,
-  renderProductList, renderProductDetail, bindProductCreate,
+  renderProductList, renderProductDetail,
 } from './pages/product.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
 import { filterByRole } from './core/roles.js';
@@ -59,9 +63,530 @@ import { getMakers, getModelsByMaker, getSubModels, findCarModel } from './core/
 import { inferCarModel } from './core/car-model-infer.js';
 import { renderSettings } from './pages/settings.js';
 import { renderDev } from './pages/dev.js';
+import { setPageActions } from './core/page-actions.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
 window.renderDev = renderDev;
+
+/* ── 페이지별 하단 액션바 — index.html showPage() 에서 호출 ── */
+let _productClipboard = null;
+
+/* 신규 생성된 빈 레코드 추적 — 페이지 이동 시 필수 정보 비어있으면 자동 삭제.
+ *  collection: { id: requiredField } 형식. requiredField 가 비어있으면 폐기. */
+const _pendingDrafts = {
+  products: new Map(),    // _key → 'car_number'
+  policies: new Map(),    // _key → 'policy_name'
+  partners: new Map(),    // _key → 'partner_name'
+};
+
+function trackDraft(collection, key, requiredField) {
+  _pendingDrafts[collection]?.set(key, requiredField);
+}
+
+function isDraftValid(collection, key) {
+  const field = _pendingDrafts[collection]?.get(key);
+  if (!field) return true;     // not tracked → valid
+  const list = store[collection === 'products' ? 'products'
+              : collection === 'policies' ? 'policies' : 'partners'] || [];
+  const rec = list.find(x => x._key === key);
+  if (!rec) return true;        // already gone
+  return !!String(rec[field] || '').trim();
+}
+
+/* 미완성 신규 레코드 일괄 정리 — hashchange 시 호출 */
+async function discardIncompleteDrafts() {
+  for (const [collection, map] of Object.entries(_pendingDrafts)) {
+    for (const [key, _] of [...map]) {
+      if (!isDraftValid(collection, key)) {
+        try { await updateRecord(`${collection}/${key}`, { _deleted: true, updated_at: Date.now() }); } catch (_) {}
+        showToast('미입력 신규 항목 자동 정리됨', 'info');
+      }
+      map.delete(key);
+    }
+  }
+}
+
+window.addEventListener('hashchange', () => { discardIncompleteDrafts(); });
+
+window.refreshPageActions = function(pageName) {
+  const p = pageName || document.querySelector('.pt-page.active')?.dataset.page;
+  if (!p) { setPageActions({}); return; }
+
+  const activeItem = document.querySelector(`.pt-page[data-page="${p}"] .ws4-list .room-item.active`);
+  const activeId = activeItem?.dataset.id;
+  const ctx = pageStatusText(p);
+
+  // 수정/저장 토글 — 폼 있는 페이지 공통. 편집모드 ON 일 때 readonly 해제 + primary 강조
+  const isEditing = document.body.classList.contains('is-edit-mode');
+  const editToggle = {
+    label: isEditing ? '저장' : '수정',
+    icon:  isEditing ? 'ph-check' : 'ph-pencil-simple',
+    primary: isEditing,
+    title: isEditing ? '편집 모드 끄기 (자동저장은 입력 직후 적용됨)' : '편집 모드 켜기',
+    onClick: () => window.toggleEditMode?.(),
+  };
+
+  if (p === 'product') {
+    const hasSelection = !!activeId;
+    const product = hasSelection ? (store.products || []).find(x => x._key === activeId) : null;
+    setPageActions({
+      right: [
+        { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewProduct() },
+        editToggle,
+        { divider: true },
+        { label: '복사', icon: 'ph-copy', disabled: !hasSelection,
+          title: '현재 차량 정보 복사', onClick: () => copyProduct(product) },
+        { label: '붙여넣기', icon: 'ph-clipboard-text', disabled: !hasSelection || !_productClipboard,
+          title: '복사된 정보를 현재 차량에 적용 (차량번호 제외)',
+          onClick: () => pasteToProduct(product) },
+        { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
+          onClick: () => deleteProduct(product) },
+      ],
+    });
+  } else if (p === 'policy') {
+    const hasSelection = !!activeId;
+    setPageActions({
+      right: [
+        { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPolicy() },
+        editToggle,
+        { divider: true },
+        { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
+          onClick: () => deletePolicy(activeId) },
+      ],
+    });
+  } else if (p === 'partners') {
+    const hasSelection = !!activeId;
+    setPageActions({
+      right: [
+        { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPartner() },
+        editToggle,
+        { divider: true },
+        { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
+          onClick: () => deletePartner(activeId) },
+      ],
+    });
+  } else if (p === 'workspace') {
+    const ws4 = document.getElementById('workspaceWs4');
+    const chatHidden = ws4?.classList.contains('is-chat-hidden');
+    const hasSelection = !!activeId;
+    setPageActions({
+      right: [
+        { label: chatHidden ? '채팅 보이기' : '채팅 숨기기',
+          icon:  chatHidden ? 'ph-eye' : 'ph-eye-slash',
+          onClick: () => { ws4?.classList.toggle('is-chat-hidden'); window.refreshPageActions?.('workspace'); } },
+        { divider: true },
+        { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
+          onClick: () => deleteRoom(activeId) },
+      ],
+    });
+  } else if (p === 'contract') {
+    const hasSelection = !!activeId;
+    setPageActions({
+      right: [
+        editToggle,
+        { divider: true },
+        { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
+          onClick: () => deleteContract(activeId) },
+      ],
+    });
+  } else if (p === 'settle') {
+    const hasSelection = !!activeId;
+    setPageActions({
+      right: [
+        editToggle,
+        { divider: true },
+        { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
+          onClick: () => deleteSettlement(activeId) },
+      ],
+    });
+  } else if (p === 'users') {
+    const hasSelection = !!activeId;
+    setPageActions({
+      right: [
+        editToggle,
+        { divider: true },
+        { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
+          onClick: () => deleteUser(activeId) },
+      ],
+    });
+  } else if (p === 'search') {
+    const role = store.currentUser?.role;
+    const isAgent = role === 'agent' || role === 'agent_admin' || role === 'admin';
+    const product = getActiveSearchProduct();
+    const hasSelection = !!product;
+
+    const requireSelect = (fn) => () => {
+      const cur = getActiveSearchProduct();
+      if (!cur) { showToast('차량을 먼저 선택해주세요', 'info'); return; }
+      fn(cur);
+    };
+
+    // 좌: 퀵 필터
+    const QUICK = [
+      { v: 'new', l: '신차' },
+      { v: 'used', l: '중고' },
+      { v: 'age26', l: '만26세 이하' },
+      { v: 'rent', l: '대여료 구간' },
+      { v: 'deposit', l: '보증금 구간' },
+    ];
+    const left = QUICK.map(q => ({
+      chip: true, label: q.l, active: isQuickFilterActive(q.v),
+      onClick: (e) => searchToggleQuickFilter(q.v, e.currentTarget),
+    }));
+
+    // 중: 선택 차량 액션 (소통/계약/공유) + 출력(엑셀/사진)
+    const center = [
+      ...(isAgent ? [
+        { label: '소통', icon: 'ph-chat-circle', primary: hasSelection,
+          title: '이 차량으로 채팅방 생성', onClick: requireSelect(searchActionChat) },
+        { label: '계약', icon: 'ph-file-text',
+          title: '이 차량으로 가계약 생성', onClick: requireSelect(searchActionContract) },
+      ] : []),
+      { label: '공유', icon: 'ph-share-network',
+        title: '카탈로그 링크 복사', onClick: requireSelect(searchActionShare) },
+      { divider: true },
+      { label: '엑셀', icon: 'ph-file-xls', title: '필터된 차량 엑셀 다운로드', onClick: () => searchExportExcel() },
+      { label: '사진', icon: 'ph-file-zip', title: '필터된 차량 사진 ZIP', onClick: () => searchDownloadPhotoZip() },
+    ];
+
+    // 우: 기간 컬럼 토글
+    const PERIODS = ['1m', '12m', '24m', '36m', '48m', '60m'];
+    const right = PERIODS.map(pd => ({
+      chip: true, label: pd.toUpperCase(), active: isPeriodVisible(pd),
+      title: `${pd.toUpperCase()} 컬럼 표시/숨김`,
+      onClick: () => searchTogglePeriod(pd),
+    }));
+
+    setPageActions({ left, center, right });
+  } else {
+    setPageActions({});
+  }
+};
+
+/* 토픽바 — 페이지 제목 옆 상태 카운트 (search 외 모든 페이지에도 적용).
+ *  search 페이지는 search.js 의 updateSearchStats() 가 별도 처리 (출고불가 제외 등 특수 로직). */
+window.updatePageStats = function(name) {
+  const el = document.getElementById('ptTbSearchStats');
+  if (!el) return;
+  if (name === 'search') { window.updateSearchStats?.(); return; }
+  const html = pageStatsHtml(name);
+  el.innerHTML = html || '';
+};
+
+function pageStatsHtml(p) {
+  if (p === 'product') {
+    const me = store.currentUser;
+    const ps = (store.products || []).filter(x => !x._deleted);
+    const visible = me?.role === 'provider'
+      ? ps.filter(x => x.provider_company_code === me.company_code || x.partner_code === me.company_code)
+      : ps;
+    const cnt = (s) => visible.filter(x => x.vehicle_status === s).length;
+    return `<span class="stat-total">총 ${visible.length}대</span>
+      <span class="stat-즉시">즉시 ${cnt('즉시출고')}</span>
+      <span class="stat-가능">가능 ${cnt('출고가능')}</span>
+      <span class="stat-협의">협의 ${cnt('출고협의')}</span>`;
+  }
+  if (p === 'workspace') {
+    const list = (store.rooms || []).filter(x => !x._deleted);
+    const role = store.currentUser?.role;
+    const unreadKey = role === 'agent' ? 'unread_for_agent' : role === 'provider' ? 'unread_for_provider' : 'unread_for_admin';
+    const unread = list.reduce((sum, r) => sum + Number(r[unreadKey] || 0), 0);
+    return `<span class="stat-total">총 ${list.length}개</span>
+      ${unread ? `<span class="stat-협의">안읽음 ${unread}</span>` : ''}`;
+  }
+  if (p === 'contract') {
+    const list = (store.contracts || []).filter(x => !x._deleted);
+    const wait = list.filter(x => x.contract_status === '계약요청' || x.contract_status === '진행중' || x.contract_status === '대기').length;
+    const done = list.filter(x => x.contract_status === '계약완료' || x.contract_status === '완료').length;
+    return `<span class="stat-total">총 ${list.length}건</span>
+      <span class="stat-가능">진행 ${list.length - done}</span>
+      <span class="stat-즉시">완료 ${done}</span>
+      ${wait ? `<span class="stat-협의">대기 ${wait}</span>` : ''}`;
+  }
+  if (p === 'settle') {
+    const list = (store.settlements || []).filter(x => !x._deleted);
+    const wait = list.filter(x => (x.settlement_status || x.status) === '미정산' || (x.settlement_status || x.status) === '정산대기').length;
+    const done = list.filter(x => (x.settlement_status || x.status) === '정산완료').length;
+    return `<span class="stat-total">총 ${list.length}건</span>
+      ${wait ? `<span class="stat-협의">미정산 ${wait}</span>` : ''}
+      <span class="stat-즉시">완료 ${done}</span>`;
+  }
+  if (p === 'policy') {
+    const list = (store.policies || []).filter(x => !x._deleted);
+    const active = list.filter(x => x.is_active !== false && x.status !== '중단').length;
+    return `<span class="stat-total">총 ${list.length}개</span>
+      <span class="stat-즉시">활성 ${active}</span>`;
+  }
+  if (p === 'partners') {
+    const list = (store.partners || []).filter(x => !x._deleted);
+    const active = list.filter(x => x.is_active !== false).length;
+    return `<span class="stat-total">총 ${list.length}개</span>
+      <span class="stat-즉시">활성 ${active}</span>`;
+  }
+  if (p === 'users') {
+    const list = (store.users || []).filter(x => !x._deleted);
+    const pending = list.filter(x => x.status === 'pending').length;
+    const active = list.filter(x => x.is_active !== false && x.status !== 'pending' && x.status !== 'rejected').length;
+    return `<span class="stat-total">총 ${list.length}명</span>
+      <span class="stat-즉시">활성 ${active}</span>
+      ${pending ? `<span class="stat-협의">승인 대기 ${pending}</span>` : ''}`;
+  }
+  return '';
+}
+
+/* 하단바 좌측 컨텍스트 — 비움 (페이지 상태는 토픽바로 이전됨). 향후 선택된 항목 표시용으로 활용 가능. */
+function pageStatusText(_p) { return ''; }
+
+/* 임시 차량번호 — `100신0001`, `100신0002` 형식. 출고예정/구매예정/번호등록예정 차량용.
+ *  store.products 에서 같은 prefix 의 최대값 +1 (deleted 포함하여 충돌 방지). */
+function nextTempCarNumber() {
+  const PREFIX = '100신';
+  const PAD = 4;
+  const max = (store.products || [])
+    .map(p => String(p.car_number || ''))
+    .filter(n => n.startsWith(PREFIX))
+    .map(n => parseInt(n.slice(PREFIX.length), 10))
+    .filter(n => Number.isFinite(n))
+    .reduce((m, n) => Math.max(m, n), 0);
+  return `${PREFIX}${String(max + 1).padStart(PAD, '0')}`;
+}
+
+/* 신규 상품 등록 — 빈 레코드 즉시 생성 + 우측 자산정보 폼이 빈 입력칸으로 전환.
+ *  - 차량번호: 자동 `100신XXXX` 임시번호 (실번호 받으면 사용자가 덮어씀)
+ *  - 공급/영업: 본인 회사로 자동 고정 (수정 불가)
+ *  - 관리자: 공급코드 빈 값 → 폼 드롭다운에서 직접 선택 */
+async function createNewProduct() {
+  const me = store.currentUser;
+  const role = me?.role;
+  if (!(role === 'admin' || role === 'provider')) {
+    showToast('차량 등록은 공급사·관리자 전용', 'error');
+    return;
+  }
+  let providerCode = '';
+  let partnerCode = '';
+  if (role === 'provider') {
+    providerCode = me.company_code || me.partner_code || '';
+    partnerCode = providerCode;
+    if (!providerCode) { showToast('소속 공급사 정보가 없습니다 — 관리자 문의', 'error'); return; }
+  }
+  const uid = `P_${Date.now()}`;
+  const newRec = {
+    _key: uid,
+    product_uid: uid,
+    product_code: uid,
+    car_number: '',
+    provider_company_code: providerCode,
+    partner_code: partnerCode,
+    vehicle_status: '상품화중',
+    product_type: '중고렌트',
+    is_active: true,
+    created_at: Date.now(),
+    created_by: me.uid,
+  };
+  // Optimistic — store 즉시 갱신 + 우측 자산 폼이 빈 입력칸으로 렌더
+  store.products = [newRec, ...(store.products || [])];
+  const m = await import('./pages/product.js');
+  m.renderProductList(store.products);
+  const item = document.querySelector(`.pt-page[data-page="product"] .ws4-list .room-item[data-id="${uid}"]`);
+  if (item) {
+    document.querySelectorAll('.pt-page[data-page="product"] .room-item').forEach(r => r.classList.remove('active'));
+    item.classList.add('active');
+  }
+  m.renderProductDetail(newRec);
+  window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
+  trackDraft('products', uid, 'car_number');
+  setRecord(`products/${uid}`, newRec).catch(e => {
+    console.error('[product create]', e);
+    showToast('등록 실패 — ' + (e.message || e), 'error');
+  });
+}
+
+function copyProduct(p) {
+  if (!p) return;
+  const EXCLUDE = new Set([
+    '_key', '_deleted', 'product_uid', 'product_code', 'car_number', 'vin',
+    'image_urls', 'images', 'photos', 'image_url', 'photo_link',
+    'doc_images', 'created_at', 'created_by', 'updated_at',
+  ]);
+  const snap = {};
+  for (const [k, v] of Object.entries(p)) {
+    if (EXCLUDE.has(k)) continue;
+    if (v == null || v === '') continue;
+    snap[k] = v;
+  }
+  _productClipboard = snap;
+  showToast(`${p.car_number || '차량'} 정보 복사됨 — 다른 차량 선택 후 붙여넣기`);
+  window.refreshPageActions?.('product');
+}
+
+async function pasteToProduct(p) {
+  if (!p || !_productClipboard) return;
+  if (!confirm('복사된 차량 정보를 현재 차량에 적용합니다. 차량번호/차대번호는 유지됩니다. 계속할까요?')) return;
+  try {
+    await updateRecord(`products/${p._key}`, { ..._productClipboard });
+    showToast('붙여넣기 완료');
+  } catch (e) {
+    console.error('[paste]', e);
+    showToast('붙여넣기 실패', 'error');
+  }
+}
+
+async function deleteProduct(p) {
+  if (!p) return;
+  if (!confirm(`${p.car_number || '이 차량'}을 삭제하시겠습니까?`)) return;
+  try {
+    await updateRecord(`products/${p._key}`, { _deleted: true, updated_at: Date.now() });
+    showToast('삭제됨');
+  } catch (e) {
+    showToast('삭제 실패', 'error');
+  }
+}
+
+async function createNewPolicy() {
+  const role = store.currentUser?.role;
+  if (role !== 'admin' && role !== 'provider') { alert('권한이 없습니다'); return; }
+  const policyCode = 'POL-' + Date.now().toString(36).toUpperCase();
+  const newRec = {
+    _key: policyCode,
+    policy_code: policyCode,
+    policy_name: '',
+    is_active: true,
+    status: '활성',
+    provider_company_code: store.currentUser?.company_code || '',
+    created_at: Date.now(),
+    created_by: store.currentUser?.uid || '',
+  };
+  store.policies = [newRec, ...(store.policies || [])];
+  const m = await import('./pages/policy.js');
+  m.renderPolicyList(store.policies);
+  const item = document.querySelector(`.pt-page[data-page="policy"] .ws4-list .room-item[data-id="${policyCode}"]`);
+  if (item) {
+    document.querySelectorAll('.pt-page[data-page="policy"] .room-item').forEach(r => r.classList.remove('active'));
+    item.classList.add('active');
+  }
+  m.renderPolicyDetail(newRec);
+  window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
+  trackDraft('policies', policyCode, 'policy_name');
+  setRecord(`policies/${policyCode}`, newRec).catch(e => {
+    console.error('[policy create]', e);
+    showToast('생성 실패 — ' + (e.message || e), 'error');
+  });
+}
+
+async function deletePolicy(id) {
+  if (!id) return;
+  const pol = (store.policies || []).find(x => x._key === id);
+  if (!pol) return;
+  if (!confirm(`${pol.policy_name || '정책'} 을 삭제하시겠습니까?`)) return;
+  try {
+    await updateRecord(`policies/${id}`, { _deleted: true, updated_at: Date.now() });
+    showToast('삭제됨');
+  } catch (e) {
+    showToast('삭제 실패', 'error');
+  }
+}
+
+async function createNewPartner() {
+  const role = store.currentUser?.role;
+  if (role !== 'admin') { alert('admin 만 가능합니다'); return; }
+  const partnerCode = 'PT-' + Date.now().toString(36).toUpperCase();
+  const newRec = {
+    _key: partnerCode,
+    partner_code: partnerCode,
+    partner_name: '',
+    partner_type: '공급사',
+    is_active: true,
+    created_at: Date.now(),
+    created_by: store.currentUser?.uid || '',
+  };
+  // Optimistic — store 에 즉시 추가 + 우측 폼을 빈 입력칸으로 렌더 (Firebase 응답 기다리지 않음)
+  store.partners = [newRec, ...(store.partners || [])];
+  const m = await import('./pages/partner.js');
+  m.renderPartnerList(store.partners);
+  // 새 항목 강제 활성화
+  const item = document.querySelector(`.pt-page[data-page="partners"] .ws4-list .room-item[data-id="${partnerCode}"]`);
+  if (item) {
+    document.querySelectorAll('.pt-page[data-page="partners"] .room-item').forEach(r => r.classList.remove('active'));
+    item.classList.add('active');
+  }
+  m.renderPartnerDetail(newRec);
+  window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
+  trackDraft('partners', partnerCode, 'partner_name');
+  // Firebase 저장은 백그라운드 (이후 사용자 입력은 자동저장)
+  setRecord(`partners/${partnerCode}`, newRec).catch(e => {
+    console.error('[partner create]', e);
+    showToast('생성 실패 — ' + (e.message || e), 'error');
+  });
+}
+
+async function deletePartner(id) {
+  if (!id) return;
+  const pt = (store.partners || []).find(x => x._key === id);
+  if (!pt) return;
+  if (!confirm(`${pt.partner_name || '파트너'} 를 삭제하시겠습니까?`)) return;
+  try {
+    await updateRecord(`partners/${id}`, { _deleted: true, updated_at: Date.now() });
+    showToast('삭제됨');
+  } catch (e) {
+    showToast('삭제 실패', 'error');
+  }
+}
+
+async function deleteRoom(id) {
+  if (!id) return;
+  const r = (store.rooms || []).find(x => x._key === id);
+  if (!r) return;
+  if (!confirm(`${r.car_number || '이 대화'} 를 삭제하시겠습니까?`)) return;
+  try {
+    await updateRecord(`rooms/${id}`, { _deleted: true, updated_at: Date.now() });
+    showToast('삭제됨');
+  } catch (e) { showToast('삭제 실패', 'error'); }
+}
+
+async function deleteContract(id) {
+  if (!id) return;
+  const c = (store.contracts || []).find(x => x._key === id || x.contract_code === id);
+  if (!c) return;
+  if (!confirm(`${c.contract_code || '이 계약'} 을 삭제하시겠습니까?`)) return;
+  try {
+    await updateRecord(`contracts/${c._key}`, { _deleted: true, updated_at: Date.now() });
+    showToast('삭제됨');
+  } catch (e) { showToast('삭제 실패', 'error'); }
+}
+
+async function deleteSettlement(id) {
+  if (!id) return;
+  const s = (store.settlements || []).find(x => x._key === id);
+  if (!s) return;
+  if (!confirm('이 정산을 삭제하시겠습니까?')) return;
+  try {
+    await updateRecord(`settlements/${id}`, { _deleted: true, updated_at: Date.now() });
+    showToast('삭제됨');
+  } catch (e) { showToast('삭제 실패', 'error'); }
+}
+
+async function deleteUser(id) {
+  if (!id) return;
+  const u = (store.users || []).find(x => x._key === id);
+  if (!u) return;
+  if (store.currentUser?.role !== 'admin') { showToast('admin 만 가능합니다', 'error'); return; }
+  if (!confirm(`${u.name || u.email || '이 사용자'} 를 삭제하시겠습니까?`)) return;
+  try {
+    await updateRecord(`users/${id}`, { _deleted: true, updated_at: Date.now() });
+    showToast('삭제됨');
+  } catch (e) { showToast('삭제 실패', 'error'); }
+}
+
+// 모듈 로드 직후 한 번 — 인라인 showPage(초기) 가 refreshPageActions 정의 전에 호출됐을 수 있으므로 재호출
+window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
 
 /* ── Boot ── */
 async function boot() {
@@ -186,6 +711,9 @@ function startHydration() {
     }
     renderPolicyList(store.policies);
     updateSidebarCounts();
+    window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
   });
   // 상품 — search + 재고관리 양쪽 갱신
   watchCollection('products', (list) => {
@@ -195,12 +723,18 @@ function startHydration() {
     renderProductList(store.products);
     updateSidebarCounts();
     window.updateSearchStats?.();   // 토픽바 상품찾기 카운트 갱신
+    window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
   });
   // 대화방 (업무소통) + 계약 + 정산 + 파트너 + 사용자
   watchCollection('rooms',       (list) => {
     store.rooms = list || [];
     renderRoomList(store.rooms);
     updateSidebarCounts();
+    window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
     // 활성 룸의 상대 read_at 변경 시 메시지 재렌더 → 읽음 표시 자동 갱신 (v2 패턴)
     const activeId = getActiveRoomId();
     if (activeId) {
@@ -216,8 +750,12 @@ function startHydration() {
       }
     }
   });
-  watchCollection('contracts',   (list) => { store.contracts   = list || []; renderContractList(store.contracts);     updateSidebarCounts(); });
-  watchCollection('settlements', (list) => { store.settlements = list || []; renderSettlementList(store.settlements); updateSidebarCounts(); });
+  watchCollection('contracts',   (list) => { store.contracts   = list || []; renderContractList(store.contracts);     updateSidebarCounts(); window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage); });
+  watchCollection('settlements', (list) => { store.settlements = list || []; renderSettlementList(store.settlements); updateSidebarCounts(); window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage); });
   // partners 갱신 시 dependent list 재렌더는 디바운스 (연속 변경 시 1번만)
   let _partnersRefreshT;
   const refreshPartnersDependents = () => {
@@ -232,8 +770,13 @@ function startHydration() {
     updateSidebarCounts();
     clearTimeout(_partnersRefreshT);
     _partnersRefreshT = setTimeout(refreshPartnersDependents, 80);
+    window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);
   });
-  watchCollection('users',       (list) => { store.users       = list || []; renderUserList(store.users);             updateSidebarCounts(); });
+  watchCollection('users',       (list) => { store.users       = list || []; renderUserList(store.users);             updateSidebarCounts(); window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage); });
   watchCollection('customers',   (list) => { store.customers   = list || []; });
   // 차종 마스터 (vehicle_master) — 제조사·모델·세부모델 cascade picker 데이터원
   watchCollection('vehicle_master', (data) => {
@@ -256,13 +799,8 @@ function startHydration() {
   bindGenericListInteractions();
   bindChatInput();
   bindGlobalSearch();
-  bindPolicyCreate();
   bindRoomCreate();
-  bindPartnerCreate();
-  bindProductCreate();
-  bindSettlementCreate();
   bindDirtyTracking();
-  bindDeleteButtons();
   bindPhotoClicks();
   bindSearchSelection();
   setupAutoFitObserver();
@@ -514,29 +1052,6 @@ function openCompareModal(products) {
 }
 
 
-/* 우측 detail 카드 헤드에 삭제 버튼 추가 — admin only, 페이지/key 는 위임 클릭 시 결정 */
-function bindDeleteButtons() {
-  // hover 시 .ws4-detail .ws4-head 우측에 X 버튼 표시 (admin)
-  if (store.currentUser?.role !== 'admin') return;
-  document.querySelectorAll('.ws4-detail .ws4-head').forEach(head => {
-    if (head.querySelector('.dtl-delete')) return;
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-sm dtl-delete';
-    btn.title = '삭제';
-    btn.style.cssText = 'margin-left:auto; color: var(--alert-red-text);';
-    btn.innerHTML = '<i class="ph ph-trash"></i>';
-    head.appendChild(btn);
-    btn.addEventListener('click', () => {
-      const page = head.closest('.pt-page')?.dataset.page;
-      const activeItem = head.closest('.pt-page')?.querySelector('.ws4-list .room-item.active');
-      const id = activeItem?.dataset.id;
-      if (!page || !id) return;
-      const collectionMap = { contract: 'contracts', settle: 'settlements', product: 'products', policy: 'policies', partners: 'partners', users: 'users', workspace: 'rooms' };
-      const collection = collectionMap[page];
-      if (collection) deleteRecord(collection, id);
-    });
-  });
-}
 
 /* bindFormSave → ui-helpers.js (import) */
 
@@ -598,6 +1113,7 @@ function bindGlobalSearch() {
     _searchTimer = setTimeout(applyGlobalSearch, 120);
   });
   // 페이지 전환 시 검색어 초기화 — 이전 페이지 필터가 새 페이지에 잘못 적용되지 않게
+  // (액션바는 showPage() 가 window.refreshPageActions 로 알아서 갱신 — 여기서 건드리면 중복 실행 후 빈 footer 가 됨)
   window.addEventListener('hashchange', () => {
     if (_searchTimer) clearTimeout(_searchTimer);
     _globalSearch = '';
@@ -614,6 +1130,9 @@ function bindGenericListInteractions() {
     const list = item.parentElement;
     list.querySelectorAll('.room-item').forEach(r => r.classList.remove('active'));
     item.classList.add('active');
+    window.refreshPageActions?.();
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage) window.updatePageStats?.(activePage);   // 선택 바뀌면 액션바 disabled 상태 갱신
 
     const id = item.dataset.id;
     const page = item.closest('.pt-page')?.dataset.page;
@@ -684,7 +1203,7 @@ function formatProductForCopy(p) {
   if (p.fuel_type) specs.push(p.fuel_type);
   if (p.ext_color) specs.push(`외부 ${p.ext_color}`);
   if (p.int_color) specs.push(`내부 ${p.int_color}`);
-  if (specs.length) lines.push(specs.join(' · '));
+  if (specs.length) lines.push(specs.join(' | '));
 
   // 옵션 — 있으면 별도 줄
   const opts = Array.isArray(p.options) ? p.options.join(', ') : (p.options || '');
@@ -712,7 +1231,7 @@ function formatProductForCopy(p) {
     lines.push(`심사: ${credit}`);
   }
 
-  // 담당자 — 소속 · 이름 직급 · 역할 · 연락처 (현재 로그인 사용자)
+  // 담당자 — 소속 | 이름 직급 | 역할 | 연락처 (현재 로그인 사용자)
   const me = store.currentUser || {};
   const agentParts = [];
   if (me.company_name) agentParts.push(me.company_name);
@@ -724,7 +1243,7 @@ function formatProductForCopy(p) {
   if (roleLabel) agentParts.push(roleLabel);
   if (agentParts.length) {
     lines.push('');
-    lines.push(`담당: ${agentParts.join(' · ')}`);
+    lines.push(`담당: ${agentParts.join(' | ')}`);
     if (me.phone) lines.push(`연락처: ${me.phone}`);
   }
 
@@ -811,7 +1330,18 @@ function buildContextMenuItems(page, id, item) {
   if (page === 'product') {
     const p = (store.products || []).find(x => x._key === id);
     if (!p) return [];
+    const STATUS_OPTS = ['즉시출고', '출고가능', '상품화중', '출고협의', '출고불가'];
     return [
+      { icon: 'ph ph-flag', label: `상태: ${p.vehicle_status || '-'}`,
+        submenu: STATUS_OPTS.map(s => ({
+          label: s, active: p.vehicle_status === s,
+          action: async () => {
+            await updateRecord(`products/${p._key}`, { vehicle_status: s, updated_at: Date.now() });
+            showToast(`상태 → ${s}`);
+          },
+        })),
+      },
+      { divider: true },
       { icon: 'ph ph-share-network', label: '카탈로그 링크 복사', action: () => {
         const car = p.car_number || '';
         const url = `${location.origin}/catalog.html?car=${encodeURIComponent(car)}`;
@@ -829,7 +1359,22 @@ function buildContextMenuItems(page, id, item) {
   if (page === 'policy') {
     const pol = (store.policies || []).find(x => x._key === id);
     if (!pol) return [];
+    const POLICY_STATUS = ['활성', '비활성', '준비중'];
     return [
+      { icon: 'ph ph-flag', label: `상태: ${pol.status || '-'}`,
+        submenu: POLICY_STATUS.map(s => ({
+          label: s, active: pol.status === s,
+          action: async () => {
+            await updateRecord(`policies/${pol._key}`, {
+              status: s,
+              is_active: s === '활성',
+              updated_at: Date.now(),
+            });
+            showToast(`상태 → ${s}`);
+          },
+        })),
+      },
+      { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
         if (!confirm('이 정책을 삭제하시겠습니까?')) return;
         await updateRecord(`policies/${pol._key}`, { _deleted: true, updated_at: Date.now() });
@@ -839,10 +1384,93 @@ function buildContextMenuItems(page, id, item) {
   if (page === 'partners') {
     const pa = (store.partners || []).find(x => x._key === id);
     if (!pa) return [];
+    const PARTNER_TYPES = ['공급사', '영업채널', '운영사'];
+    const isActive = pa.is_active !== false;
     return [
+      { icon: 'ph ph-tag', label: `유형: ${pa.partner_type || '-'}`,
+        submenu: PARTNER_TYPES.map(t => ({
+          label: t, active: pa.partner_type === t,
+          action: async () => {
+            await updateRecord(`partners/${pa._key}`, { partner_type: t, updated_at: Date.now() });
+            showToast(`유형 → ${t}`);
+          },
+        })),
+      },
+      { icon: isActive ? 'ph ph-pause' : 'ph ph-play', label: isActive ? '비활성화' : '활성화',
+        action: async () => {
+          await updateRecord(`partners/${pa._key}`, { is_active: !isActive, updated_at: Date.now() });
+          showToast(isActive ? '비활성화됨' : '활성화됨');
+        } },
+      { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
         if (!confirm('이 파트너를 삭제하시겠습니까?')) return;
         await updateRecord(`partners/${pa._key}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  if (page === 'users') {
+    const u = (store.users || []).find(x => x._key === id);
+    if (!u) return [];
+    const ROLES = [
+      { v: 'admin', l: '관리자' },
+      { v: 'provider', l: '공급' },
+      { v: 'agent', l: '영업' },
+      { v: 'agent_admin', l: '영업관리자' },
+    ];
+    const STATUS = [
+      { v: 'active', l: '승인됨' },
+      { v: 'pending', l: '승인 대기' },
+      { v: 'rejected', l: '반려' },
+    ];
+    const roleLabel = ROLES.find(r => r.v === u.role)?.l || u.role || '-';
+    const statusLabel = STATUS.find(s => s.v === u.status)?.l || u.status || '-';
+    return [
+      { icon: 'ph ph-user-circle', label: `역할: ${roleLabel}`,
+        submenu: ROLES.map(r => ({
+          label: r.l, active: u.role === r.v,
+          action: async () => {
+            await updateRecord(`users/${u._key}`, { role: r.v, updated_at: Date.now() });
+            showToast(`역할 → ${r.l}`);
+          },
+        })),
+      },
+      { icon: 'ph ph-flag', label: `상태: ${statusLabel}`,
+        submenu: STATUS.map(s => ({
+          label: s.l, active: u.status === s.v,
+          action: async () => {
+            await updateRecord(`users/${u._key}`, { status: s.v, updated_at: Date.now() });
+            showToast(`상태 → ${s.l}`);
+          },
+        })),
+      },
+      { divider: true },
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 사용자를 삭제하시겠습니까?')) return;
+        await updateRecord(`users/${u._key}`, { _deleted: true, updated_at: Date.now() });
+      }},
+    ];
+  }
+  if (page === 'contract') {
+    const c = (store.contracts || []).find(x => x.contract_code === id || x._key === id);
+    if (!c) return [];
+    const CONTRACT_STATUS = ['진행중', '대기', '계약체결', '심사중', '출고대기', '출고완료', '완료', '취소'];
+    return [
+      { icon: 'ph ph-flag', label: `상태: ${c.status || '-'}`,
+        submenu: CONTRACT_STATUS.map(s => ({
+          label: s, active: c.status === s,
+          action: async () => {
+            await updateRecord(`contracts/${c._key}`, { status: s, updated_at: Date.now() });
+            showToast(`상태 → ${s}`);
+          },
+        })),
+      },
+      { divider: true },
+      { icon: 'ph ph-copy', label: '계약코드 복사',
+        action: () => navigator.clipboard?.writeText(c.contract_code || '').then(() => showToast('계약코드 복사됨')) },
+      { divider: true },
+      { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
+        if (!confirm('이 계약을 삭제하시겠습니까?')) return;
+        await updateRecord(`contracts/${c._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
   }
@@ -850,18 +1478,18 @@ function buildContextMenuItems(page, id, item) {
 }
 
 
-/* ── 사용자 정보 → 사이드바 brand · bottom + 역할 클래스 ── */
+/* ── 사용자 정보 → 사이드바 brand | bottom + 역할 클래스 ── */
 function hydrateUser(user) {
   const brandText = document.querySelector('.pt-sb-brand .sb-brand-text');
   if (brandText) brandText.textContent = user.company_name || 'freepass ERP';
   // user 정보 텍스트만 갱신 (로그아웃 버튼 등 다른 자식은 보존)
   const roleBase = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업' }[user.role] || user.role || '';
-  const role = user.role === 'agent_admin' ? `${roleBase} · 관리자` : roleBase;
+  const role = user.role === 'agent_admin' ? `${roleBase} | 관리자` : roleBase;
   const userInfo = document.querySelector('.pt-sb-user-info');
   if (userInfo) {
-    userInfo.textContent = `${user.name || user.email || ''}${role ? ' · ' + role : ''}`;
+    userInfo.textContent = `${user.name || user.email || ''}${role ? ' | ' + role : ''}`;
   }
-  // 토픽바 우측 사용자 메뉴 — 이름 · 직급 (역할 X)
+  // 토픽바 우측 사용자 메뉴 — 이름 | 직급 (역할 X)
   const tbUserName = document.querySelector('.pt-tb-user-name');
   if (tbUserName) tbUserName.textContent = user.name || user.email || '사용자';
   const tbUserRole = document.querySelector('.pt-tb-user-role');

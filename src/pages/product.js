@@ -27,7 +27,7 @@ import {
   esc, shortStatus, fmtTime, fmtDate, fmtMileage,
   listBody, emptyState, renderRoomItem,
   ffi, ffs, setHeadSave, flashSaved, bindFormSave,
-  providerNameByCode, formatMainLine,
+  providerNameByCode, providerLabelByCode, formatMainLine,
 } from '../core/ui-helpers.js';
 
 /* v2 product-manage 옵션 — 차량 스펙 드롭다운 */
@@ -158,13 +158,13 @@ export function renderProductList(products) {
     const vs = p.vehicle_status || '';
     const PROD_TONE = /즉시/.test(vs) ? 'green' : /가능/.test(vs) ? 'blue' : /협의/.test(vs) ? 'orange' : /불가/.test(vs) ? 'red' : 'gray';
     const PROD_ICON = /즉시/.test(vs) ? 'lightning' : /가능/.test(vs) ? 'circle' : /협의/.test(vs) ? 'chat-circle' : /불가/.test(vs) ? 'prohibit' : 'car-simple';
-    // 메인: 차량번호 · 세부모델 · 공급사명(한글) / 우측: 수정일
+    // 메인: 차량번호 세부모델 공급사명(한글)  /  우측: 수정일
     const mainLine = formatMainLine(
       p.car_number,
       p.sub_model,                                 // 모델 X 세부모델만
       providerNameByCode(p.provider_company_code || p.partner_code, store),
     );
-    // 보조: 제조사 · 연식 · 주행거리 · 연료 · 색상(외부/내부)
+    // 보조: 제조사 | 연식 | 주행 | 연료 | 색상  (상태는 좌측 아바타 뱃지로 표시)
     const colorPair = [p.ext_color, p.int_color].filter(Boolean).join('/');
     const subParts = [
       p.maker,
@@ -180,7 +180,7 @@ export function renderProductList(products) {
       tone: PROD_TONE,
       name: mainLine,
       time: fmtDate(p.updated_at || p.created_at),
-      msg: subParts.join(' · ') || '-',
+      msg: subParts.join(' | ') || '-',
       meta: priceCount ? `${priceCount}종` : '',
       active: i === 0,
     });
@@ -216,14 +216,42 @@ export function renderProductDetail(p) {
     const optsValue = optsArr.join(', ');
     const ro = (label, value) => `<div class="ff"><label>${esc(label)}</label><input type="text" class="input" value="${esc(value || '')}" readonly></div>`;
     const sect = (title, icon, body) => `<div class="form-section-title"><i class="ph ph-${icon}"></i>${esc(title)}</div><div class="form-grid">${body}</div>`;
+    // 공급코드 — admin 은 드롭다운, 그 외는 readonly 코드.
+    // 운영사/영업채널 제외, 그 외 모든 파트너 노출. 현재값이 옵션에 없으면 fallback 추가.
+    const curProv = p.provider_company_code || '';
+    const providerOptions = (store.partners || [])
+      .filter(pa => !pa._deleted)
+      .filter(pa => {
+        const t = pa.partner_type || '';
+        return !(t === '운영사' || t === 'operator' || t === '영업채널' || t === 'sales_channel');
+      })
+      .map(pa => {
+        const code = pa.partner_code || pa.company_code || pa._key;
+        const name = pa.partner_name || pa.company_name || code;
+        // 코드 + 회사명 순 (코드로 먼저 인지, 회사명으로 확인)
+        return { value: code, label: `${code} ${name}` };
+      })
+      // 코드 가나다순 정렬 — 일관된 순서
+      .sort((a, b) => a.value.localeCompare(b.value, 'ko'));
+    // 현재 product 의 공급코드가 옵션에 없으면 fallback 옵션 추가
+    if (curProv && !providerOptions.some(o => o.value === curProv)) {
+      const name = providerNameByCode(curProv, store) || '';
+      providerOptions.unshift({ value: curProv, label: name ? `${curProv} ${name}` : curProv });
+    }
+    // 2-click 수정 패턴 — data-edit-lock 으로 첫 클릭은 선택, 두 번째 클릭에 드롭다운 열림
+    const lockSel = dis ? '' : ' data-edit-lock="1"';
+    const providerField = (role === 'admin')
+      ? `<div class="ff"><label>공급코드</label><select class="input" data-f="provider_company_code"${dis}${lockSel}>
+          <option value="">-</option>
+          ${providerOptions.map(o => `<option value="${esc(o.value)}" ${curProv === o.value ? 'selected' : ''}>${esc(o.label)}</option>`).join('')}
+        </select></div>`
+      : `<div class="ff"><label>공급코드</label><input type="text" class="input" value="${esc(curProv ? `${curProv} ${providerNameByCode(curProv, store) || ''}`.trim() : '-')}" readonly></div>`;
     assetCard.querySelector('.ws4-body').innerHTML = `
       ${sect('기본정보', 'identification-card', `
         ${ffi('차량번호',  'car_number', p.car_number, dis)}
         ${ffi('차대번호',  'vin',        p.vin, dis)}
-        ${ro('공급코드',   p.provider_company_code)}
-        ${ro('파트너코드', p.partner_code)}
+        ${providerField}
         ${ro('상품코드',   p.product_code)}
-        ${ro('상품UID',    p.product_uid || p._key)}
       `)}
       ${sect('제조사스펙', 'car-simple', `
         ${renderCarPicker(p, dis)}
@@ -291,21 +319,21 @@ export function renderProductDetail(p) {
       </tr>`;
     };
     priceCard.querySelector('.ws4-body').innerHTML = `
-      <div class="form-section-title"><i class="ph ph-scroll"></i>상태 · 정책</div>
+      <div class="form-section-title"><i class="ph ph-scroll"></i>상태 | 정책</div>
       <div class="form-grid" style="margin-bottom: 12px;">
         ${policySelectHtml}
         ${ffs('상품구분', 'product_type',    p.product_type,    O.product_type,    disabled)}
         ${ffs('차량상태', 'vehicle_status',  p.vehicle_status,  O.vehicle_status,  disabled)}
         ${ffi('주행거리', 'mileage',         p.mileage,                              disabled)}
       </div>
-      <div class="form-section-title"><i class="ph ph-currency-krw"></i>대여료 · 보증금</div>
+      <div class="form-section-title"><i class="ph ph-currency-krw"></i>대여료 | 보증금</div>
       <table class="table pd-price-table" style="margin-bottom: 12px;" id="prodPriceTable">
         <colgroup><col style="width:60px;"><col style="width:50%;"><col style="width:50%;"></colgroup>
         <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
         <tbody>${PRODUCT_TERMS.map(rentRow).join('')}</tbody>
       </table>
       ${(role === 'admin' || role === 'agent' || role === 'agent_admin') ? `
-        <div class="form-section-title"><i class="ph ph-percent"></i>수수료 · 비고 <span style="color:var(--text-weak); font-weight:400; font-size:12px;">(내부용)</span></div>
+        <div class="form-section-title"><i class="ph ph-percent"></i>수수료 | 비고 <span style="color:var(--text-weak); font-weight:400; font-size:12px;">(내부용)</span></div>
         <table class="table pd-price-table" id="prodFeeTable">
           <colgroup><col style="width:60px;"><col style="width:50%;"><col style="width:50%;"></colgroup>
           <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
@@ -366,25 +394,31 @@ function renderProductPhotoPanel(photoCard, p, canEdit) {
             <label class="pd-dropzone" id="pdRegDropzone" for="pdRegFile">
               <i class="ph ph-identification-card"></i>
               <div class="pd-dropzone-text">차량등록증을 끌어놓거나 클릭해서 업로드</div>
-              <div class="pd-dropzone-hint">이미지(JPG/PNG) 또는 PDF · 차명·등록일로 자동 매칭</div>
+              <div class="pd-dropzone-hint">이미지(JPG/PNG) 또는 PDF | 차명·등록일로 자동 매칭</div>
               <input type="file" id="pdRegFile" hidden accept="image/*,application/pdf">
             </label>` : '<div style="font-size:12px; color:var(--text-weak);">미등록</div>')}
     `)}
     ${sect('차량 사진', 'image-square', `
       ${allImgs.length ? `
-        <div style="position:relative; margin-bottom:8px;">
-          <img id="pdMainImg" src="${esc(allImgs[0])}" loading="lazy"
-               style="width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; cursor: zoom-in; background: var(--bg-stripe);">
-          <div style="position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,0.65); color:#fff; padding:2px 8px; border-radius:10px; font-size:12px;">
-            <i class="ph ph-image"></i> ${allImgs.length}장
-          </div>
-          ${canEdit && uploadedImgs.length ? `<button class="pd-reg-del" id="pdMainDel" data-idx="0" title="대표 사진 삭제"><i class="ph ph-x"></i></button>` : ''}
-        </div>` : ''}
+        <div class="pd-photo-grid">
+          ${allImgs.map((src, i) => `
+            <div class="pd-photo-item${i === 0 ? ' is-primary' : ''}" data-idx="${i}" data-src="${esc(src)}">
+              <img src="${esc(src)}" loading="lazy">
+              ${i === 0 ? '<span class="pd-photo-badge">대표</span>' : ''}
+              ${canEdit && i > 0 ? `<button class="pd-photo-set-primary" data-idx="${i}" title="대표 사진으로 설정"><i class="ph ph-crown"></i></button>` : ''}
+              ${canEdit ? `<button class="pd-photo-del" data-idx="${i}" title="삭제"><i class="ph ph-x"></i></button>` : ''}
+            </div>
+          `).join('')}
+        </div>
+        <div style="font-size:11px; color:var(--text-weak); margin: 4px 0 8px;">
+          <i class="ph ph-image"></i> ${allImgs.length}장 — 클릭: 크게보기 / <i class="ph ph-crown"></i> 대표 설정
+        </div>
+      ` : ''}
       ${canEdit ? `
         <label class="pd-dropzone" id="pdDropzone" for="pdPhotoFile">
           <i class="ph ph-upload-simple"></i>
           <div class="pd-dropzone-text">이미지를 끌어놓거나 클릭해서 업로드</div>
-          <div class="pd-dropzone-hint">최대 ${MAX_PHOTOS}장 · 첫 번째 = 대표 · 클릭하면 크게보기</div>
+          <div class="pd-dropzone-hint">최대 ${MAX_PHOTOS}장 | 클릭=크게보기 / 별표=대표 설정</div>
           <input type="file" id="pdPhotoFile" multiple hidden accept="image/*">
         </label>` : ''}
     `)}
@@ -393,7 +427,53 @@ function renderProductPhotoPanel(photoCard, p, canEdit) {
     `)}
   `;
 
-  photoCard.querySelector('#pdMainImg')?.addEventListener('click', () => openFullscreen(allImgs, 0));
+  // 썸네일 클릭 → 크게보기 (해당 idx 부터)
+  photoCard.querySelectorAll('.pd-photo-item').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;       // 버튼 클릭은 위임
+      const idx = Number(el.dataset.idx) || 0;
+      openFullscreen(allImgs, idx);
+    });
+  });
+  // 대표 사진 설정 — image_urls 배열에서 해당 idx 를 맨 앞으로 이동
+  photoCard.querySelectorAll('.pd-photo-set-primary').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const idx = Number(btn.dataset.idx) || 0;
+      const src = allImgs[idx];
+      if (!src) return;
+      // image_urls 만 재배치 (외부 photo_link 는 그대로)
+      const cur = Array.isArray(p.image_urls) ? [...p.image_urls] : [];
+      const pos = cur.indexOf(src);
+      if (pos > 0) {
+        cur.splice(pos, 1);
+        cur.unshift(src);
+      } else if (pos === -1) {
+        // 외부 링크가 대표로 지정된 경우 — image_urls 맨 앞에 추가 (photo_link 우선)
+        cur.unshift(src);
+      }
+      try {
+        await updateRecord(`products/${p._key}`, { image_urls: cur, updated_at: Date.now() });
+        p.image_urls = cur;
+        renderProductPhotoPanel(photoCard, p, canEdit);
+      } catch (err) { console.error('[set-primary]', err); }
+    });
+  });
+  // 삭제 버튼 (개별 사진)
+  photoCard.querySelectorAll('.pd-photo-del').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const idx = Number(btn.dataset.idx) || 0;
+      const src = allImgs[idx];
+      if (!src || !confirm('이 사진을 삭제할까요?')) return;
+      const cur = Array.isArray(p.image_urls) ? p.image_urls.filter(u => u !== src) : [];
+      try {
+        await updateRecord(`products/${p._key}`, { image_urls: cur, updated_at: Date.now() });
+        p.image_urls = cur;
+        renderProductPhotoPanel(photoCard, p, canEdit);
+      } catch (err) { console.error('[photo-del]', err); }
+    });
+  });
   photoCard.querySelector('#pdRegImg')?.addEventListener('click', () => openFullscreen([regImg], 0));
 
   photoCard.querySelector('textarea[data-f="photo_link"]')?.addEventListener('blur', async (e) => {
@@ -432,7 +512,7 @@ function bindPhotoUpload(photoCard, p, currentImgs) {
         dropzone.classList.add('is-uploading');
       } else {
         if (txt) txt.textContent = '이미지를 끌어놓거나 클릭해서 업로드';
-        if (hint) hint.textContent = `최대 ${MAX_PHOTOS}장 · 첫 번째 = 대표 · 클릭하면 크게보기`;
+        if (hint) hint.textContent = `최대 ${MAX_PHOTOS}장 | 첫 번째 = 대표 | 클릭하면 크게보기`;
         dropzone.classList.remove('is-uploading');
       }
     };
@@ -447,7 +527,7 @@ function bindPhotoUpload(photoCard, p, currentImgs) {
       await updateRecord(`products/${p._key}`, { image_urls: next, updated_at: Date.now() });
       const ok = urls.filter(Boolean).length;
       const fail = target.length - ok;
-      showToast(`사진 ${ok}장 업로드 완료${fail ? ` · 실패 ${fail}장` : ''}`, fail ? 'error' : 'success');
+      showToast(`사진 ${ok}장 업로드 완료${fail ? ` | 실패 ${fail}장` : ''}`, fail ? 'error' : 'success');
     } catch (e) {
       console.error('[photo upload]', e);
       showToast('업로드 실패 — ' + (e.message || e), 'error');
@@ -620,48 +700,4 @@ function bindProductPriceEdit(p) {
   });
 }
 
-/* ──────── E. 신규 차량 등록 ──────── */
-export function bindProductCreate() {
-  const btn = document.querySelector('[data-page="product"] .ws4-list .ws4-head .btn-primary');
-  if (!btn) return;
-  btn.addEventListener('click', async () => {
-    const me = store.currentUser;
-    const role = me?.role;
-    if (!(role === 'admin' || role === 'provider')) {
-      return showToast('차량 등록은 공급사·관리자 전용', 'error');
-    }
-    const carNumber = prompt('차량번호 (예: 56다 1234):');
-    if (!carNumber?.trim()) return;
-    const norm = s => String(s || '').replace(/\s/g, '');
-    const carNo = carNumber.trim();
-    const dupe = (store.products || []).find(p => norm(p.car_number) === norm(carNo));
-    if (dupe) return showToast('이미 등록된 차량번호', 'error');
-
-    let partner;
-    if (role === 'admin') {
-      partner = await pickPartner('공급사');
-      if (!partner) return;
-    } else {
-      partner = { partner_code: me.company_code || me.partner_code, partner_name: me.company_name || '' };
-      if (!partner.partner_code) return showToast('소속 공급사 정보가 없습니다 — 관리자 문의', 'error');
-    }
-    try {
-      await pushRecord('products', {
-        car_number: carNo,
-        provider_company_code: partner.partner_code,
-        partner_code: partner.partner_code,
-        product_code: `${carNo}_${partner.partner_code}`,
-        vehicle_status: '상품화중',
-        product_type: '중고렌트',
-        is_active: true,
-        created_at: Date.now(),
-        created_by: me.uid,
-      });
-      showToast('차량 등록됨 — 자산정보를 채워주세요', 'success');
-      location.hash = 'product';
-    } catch (e) {
-      console.error('[product create]', e);
-      showToast('등록 실패 — ' + (e.message || e), 'error');
-    }
-  });
-}
+/* 신규등록은 하단 액션바(setPageActions) 의 createNewProduct 가 처리 — app.js 정의 */

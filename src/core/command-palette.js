@@ -130,7 +130,7 @@ function getCommands(q) {
     ) {
       results.push({
         label: `${p.year||''} ${p.model||''} ${p.sub_model||''}`,
-        hint: `${p.car_number||''} · ${p.maker||''}`,
+        hint: `${p.car_number||''} | ${p.maker||''}`,
         kind: '차량',
         icon: 'ph ph-car-simple',
         href: '/search',
@@ -147,7 +147,7 @@ function getCommands(q) {
     ) {
       results.push({
         label: `${c.vehicle_name_snapshot || c.contract_code}`,
-        hint: `${c.customer_name || ''} · ${c.contract_status || ''}`,
+        hint: `${c.customer_name || ''} | ${c.contract_status || ''}`,
         kind: '계약',
         icon: 'ph ph-file-text',
         href: '/contract',
@@ -163,7 +163,7 @@ function getCommands(q) {
     ) {
       results.push({
         label: `${s.settlement_code || s._key}`,
-        hint: `${s.customer_name || ''} · ${s.settlement_status || s.status || ''}`.trim(),
+        hint: `${s.customer_name || ''} | ${s.settlement_status || s.status || ''}`.trim(),
         kind: '정산',
         icon: 'ph ph-coins',
         href: '/settle',
