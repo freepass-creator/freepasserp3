@@ -39,24 +39,37 @@ export function toProxiedImage(url) {
   } catch { return url; }
 }
 
-/** URL의 "동일성 키" — Firebase Storage URL은 경로(o/...)만, 나머지는 쿼리스트링 제외한 origin+path.
- *  ⚠ /api/img?url=... 프록시 URL 은 path 가 모두 동일해 dedup 되면 1개만 남음.
- *     이 경우 url 쿼리 파라미터로 진짜 식별자 추출. */
+/** URL의 "동일성 키" — 같은 이미지인데 토큰만 다른 케이스 (Firebase Storage)는 합치고,
+ *  쿼리로 이미지 ID 를 구분하는 케이스 (Drive thumbnail ?id=, lh3 ?w=) 는 유지.
+ *  ⚠ 기본 origin+pathname 으로 dedup 하면 Drive 같은 동일 path 다른 query 가 합쳐짐. */
 function dedupKey(url) {
   try {
     const s = String(url || '');
-    // 프록시 URL — ?url= 안에 진짜 source URL 이 들어있음. 그걸로 dedup.
+    // 1) 프록시 URL — ?url= 안에 진짜 source URL 추출 후 재귀로 키 생성
     if (s.startsWith('/api/img?')) {
       const m = s.match(/[?&]url=([^&]+)/);
-      if (m) return 'proxy:' + decodeURIComponent(m[1]);
-      return s;   // 쿼리 못 찾으면 raw 사용 (절대 dedup 되지 않게)
+      if (m) return 'proxy:' + dedupKey(decodeURIComponent(m[1]));
+      return s;
     }
     const u = new URL(s, typeof location !== 'undefined' ? location.origin : 'https://x/');
+    // 2) Firebase Storage — 토큰(쿼리)이 다르더라도 같은 객체. o/path 만 키로
     if (u.hostname.endsWith('firebasestorage.googleapis.com') || u.hostname.endsWith('firebasestorage.app')) {
       const m = u.pathname.match(/\/o\/([^?]+)/);
       if (m) return 'fs:' + decodeURIComponent(m[1]);
     }
-    return u.origin + u.pathname;
+    // 3) Drive thumbnail/uc — id 쿼리가 이미지 식별자
+    if (u.hostname === 'drive.google.com') {
+      const id = u.searchParams.get('id');
+      if (id) return 'drive:' + id;
+    }
+    // 4) lh3.googleusercontent — path 자체가 식별자 (size suffix 가 다르면 같은 이미지)
+    //    예: /XXXX=s2000 vs /XXXX=s1280 → 같은 path prefix
+    if (/(^|\.)googleusercontent\.com$/.test(u.hostname)) {
+      const base = u.pathname.replace(/=[swh]\d+(-[a-z]+)?$/, '');
+      return 'lh:' + base;
+    }
+    // 5) 그 외 — origin+pathname+search 전부 (path 같고 query 만 다른 이미지도 구분)
+    return u.origin + u.pathname + u.search;
   } catch { return url; }
 }
 
