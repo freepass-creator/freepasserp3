@@ -498,17 +498,18 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   body.innerHTML = `
     <div class="detail-section">${photoHtml}</div>
 
-    <!-- 1. 차량정보 — 4컬럼 표 형식 (라벨/값/라벨/값) -->
+    <!-- 1. 차량정보 — 4컬럼 표 형식. 단독행: 차량번호·세부모델·세부트림·선택옵션 -->
     <div class="detail-section">
       <div class="detail-section-label">1. 차량정보</div>
       <div class="info-grid">
         <div class="lab">차량번호</div><div class="full">${esc(p.car_number || '-')}</div>
-        ${pair('제조사', basicByLabel['제조사'], '모델', basicByLabel['모델'])}
-        ${pair('세부모델', basicByLabel['세부모델'], '세부트림', specByLabel['트림'])}
-        ${opts.length ? `<div class="lab">선택옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : ''}
+        ${pair('제조사', basicByLabel['제조사'], '모델명', basicByLabel['모델'])}
+        <div class="lab">세부모델</div><div class="full">${esc(basicByLabel['세부모델'] || '-')}</div>
+        <div class="lab">세부트림</div><div class="full">${esc(specByLabel['트림'] || '-')}</div>
+        <div class="lab">선택옵션</div><div class="full ${opts.length ? 'chips-wrap' : ''}">${opts.length ? opts.map(o => `<span class="chip">${esc(o)}</span>`).join('') : '-'}</div>
         ${pair('연식', specByLabel['연식'], '주행거리', specByLabel['주행'])}
         ${pair('연료', specByLabel['연료'], '구동방식', specByLabel['구동'])}
-        ${pair('외장색', specByLabel['외장색'], '내장색', specByLabel['내장색'])}
+        ${pair('외부색상', specByLabel['외장색'], '내부색상', specByLabel['내장색'])}
       </div>
     </div>
 
