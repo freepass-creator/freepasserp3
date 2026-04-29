@@ -217,7 +217,17 @@ function startHydration() {
   });
   watchCollection('contracts',   (list) => { store.contracts   = list || []; renderContractList(store.contracts);     updateSidebarCounts(); });
   watchCollection('settlements', (list) => { store.settlements = list || []; renderSettlementList(store.settlements); updateSidebarCounts(); });
-  watchCollection('partners',    (list) => { store.partners    = list || []; renderPartnerList(store.partners);       updateSidebarCounts(); });
+  watchCollection('partners',    (list) => {
+    store.partners = list || [];
+    renderPartnerList(store.partners);
+    updateSidebarCounts();
+    // partners 가 늦게 도착했을 때 — providerNameByCode 를 쓰는 다른 리스트들 재렌더
+    //  (search/contract/product/settle 메인줄·상세에 한글 회사명 즉시 반영)
+    if (Array.isArray(store.products)) renderSearchTable(store.products);
+    if (Array.isArray(store.products)) renderProductList(store.products);
+    if (Array.isArray(store.contracts)) renderContractList(store.contracts);
+    if (Array.isArray(store.settlements)) renderSettlementList(store.settlements);
+  });
   watchCollection('users',       (list) => { store.users       = list || []; renderUserList(store.users);             updateSidebarCounts(); });
   watchCollection('customers',   (list) => { store.customers   = list || []; });
   // 차종 마스터 (vehicle_master) — 제조사·모델·세부모델 cascade picker 데이터원

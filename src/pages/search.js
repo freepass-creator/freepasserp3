@@ -487,17 +487,14 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     return null;
   };
   const specByLabel = Object.fromEntries(specRows.map(r => [r[0], r[1]]));
+  const basicByLabel = Object.fromEntries(basicRows.map(r => [r[0], r[1]]));
+  // 제조사 스펙 — 제조사/모델·세부모델/세부트림·선택옵션·연식/주행·색상·연료/구동
   const compactSpecRows = [
-    ['트림', specByLabel['트림']],
+    merged('제조사', basicByLabel['제조사'], '모델', basicByLabel['모델']),
+    merged('세부모델', basicByLabel['세부모델'], '세부트림', specByLabel['트림']),
     merged('연식', specByLabel['연식'], '주행', specByLabel['주행']),
-    merged('색상(외/내)', [specByLabel['외장색'], specByLabel['내장색']].filter(Boolean).join(' / ') || null, null, null),
-    merged('연료', specByLabel['연료'], '배기량', specByLabel['배기량']),
-    merged('차종', specByLabel['차종'], '구동', specByLabel['구동']),
-    merged('인승', specByLabel['인승'], '용도', specByLabel['용도']),
-    merged('상품구분', specByLabel['상품구분'], '위치', specByLabel['위치']),
-    merged('등록일', specByLabel['최초등록일'], '차령만료', specByLabel['차령만료일']),
-    ['차량가격', specByLabel['차량가격']],
-    ['차대번호', specByLabel['차대번호']],
+    ['색상(외/내)', [specByLabel['외장색'], specByLabel['내장색']].filter(Boolean).join(' / ')],
+    merged('연료', specByLabel['연료'], '구동방식', specByLabel['구동']),
   ].filter(Boolean);
 
   // condRows → 묶음 row
@@ -522,11 +519,18 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     merged('정비 서비스', condByLabel['정비서비스'], '보험 포함', condByLabel['보험 포함']),
   ].filter(Boolean);
 
-  // 5. 기타 정보 — 공급사명(한글, 법인 접두/접미어 제거) + 정책명
+  // 5. 기타 정보 — 공급사명(한글, 법인 접두/접미어 제거) + 정책명 + 등록증·차량 부가
   const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
   const etcRows = [
     ['공급사', providerName, true],
     ['정책명', policyName, true],
+    merged('차종', specByLabel['차종'], '인승', specByLabel['인승']),
+    merged('배기량', specByLabel['배기량'], '용도', specByLabel['용도']),
+    merged('등록일', specByLabel['최초등록일'], '차령만료', specByLabel['차령만료일']),
+    ['상품구분', specByLabel['상품구분']],
+    ['차량가격', specByLabel['차량가격']],
+    ['위치', specByLabel['위치']],
+    ['차대번호', specByLabel['차대번호'], true],
     ...(isAdmin ? [
       ['공급코드',   p.provider_company_code],
       ['영업코드',   p.partner_code],
@@ -537,7 +541,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       ['수수료환수', p._policy?.commission_clawback_condition, true],
       ['특이사항',   p.partner_memo || p.note, true],
     ] : []),
-  ];
+  ].filter(Boolean);
 
   const renderGridFull = (r) => r.filter(([, v]) => v != null && v !== '' && v !== '-').map(([l, v, full]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${esc(v)}</div>`).join('');
 
@@ -545,13 +549,12 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   body.innerHTML = `
     <div class="detail-section">${photoHtml}</div>
 
-    <!-- 1. 차량 정보 + 제조사 스펙 -->
+    <!-- 1. 제조사 스펙 — 제조사/모델·세부모델/트림·옵션·연식/주행·색상·연료/구동 -->
     <div class="detail-section">
-      <div class="detail-section-label">1. 차량 정보 / 제조사 스펙</div>
+      <div class="detail-section-label">1. 제조사 스펙 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">${esc(p.car_number || '')}</span></div>
       <div class="info-grid">
-        ${renderGrid(basicRows)}
-        ${renderGrid(specRows)}
-        ${opts.length ? `<div class="lab">옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : ''}
+        ${renderGrid(compactSpecRows)}
+        ${opts.length ? `<div class="lab">선택옵션</div><div class="full chips-wrap">${opts.map(o => `<span class="chip">${esc(o)}</span>`).join('')}</div>` : ''}
       </div>
     </div>
 
