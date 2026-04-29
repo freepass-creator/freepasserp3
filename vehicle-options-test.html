@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>차량 옵션 매핑 테스트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<script src="./public/data/encar-master-seed.js"></script>
+<script src="./public/data/trim-options-seed.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:'Pretendard',sans-serif;max-width:920px;margin:0 auto;padding:24px;background:#f8fafc;color:#0f172a}
+  h1{font-size:22px;margin:0 0 20px}
+  h2{font-size:15px;margin:0 0 12px;color:#475569}
+  .panel{background:#fff;border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid #e2e8f0}
+  .selector-row{display:grid;grid-template-columns:1fr 1.2fr 1.6fr 1.4fr;gap:8px;margin-bottom:12px}
+  .seed-badge{display:inline-block;padding:2px 8px;background:#dbeafe;color:#1e40af;border-radius:4px;font-size:11px;font-weight:600;margin-left:6px}
+  select{padding:9px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;font-family:inherit;background:#fff}
+  select:disabled{background:#f1f5f9;color:#94a3b8}
+  .summary{font-size:13px;color:#64748b;margin-top:8px}
+  .summary.warn{color:#dc2626}
+  .summary.ok{color:#059669}
+  .total-summary{font-size:14px;color:#0f172a;font-weight:600;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e2e8f0}
+  .total-summary span{color:#3b82f6}
+  .mode-toggle{display:flex;gap:6px;margin-top:14px}
+  .mode-btn{padding:7px 14px;border:1px solid #cbd5e1;background:#fff;border-radius:6px;cursor:pointer;font-size:13px;font-family:inherit}
+  .mode-btn.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+  .category{margin-bottom:22px}
+  .category-header{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:#0f172a;margin-bottom:10px}
+  .count{color:#3b82f6;font-size:14px;font-weight:600}
+  .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
+  .option{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14px;color:#94a3b8}
+  .option.has{color:#0f172a;font-weight:500}
+  .option input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:#3b82f6}
+  .option label{cursor:pointer;flex:1;line-height:1.4}
+  body.view-mode .option input[type=checkbox]{display:none}
+  body.view-mode .option label{cursor:default}
+  body.view-mode .option:not(.has){opacity:.45}
+  body.view-mode .option.has::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#3b82f6}
+  .opt-badge{display:inline-block;padding:1px 5px;background:#fef3c7;color:#92400e;border-radius:3px;font-size:10px;font-weight:600;margin-left:4px;vertical-align:middle}
+  .opt-uncertain.has{background:#fffbeb;border-radius:4px;padding-left:6px}
+  .opt-uncertain.has label::after{content:" ⚠";color:#d97706;font-size:13px;font-weight:600}
+  body.view-mode .opt-uncertain.has{background:transparent;padding-left:0}
+  /* 인기옵션 카드 */
+  .popular-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:8px}
+  .pop-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px;border:1px solid #e2e8f0;border-radius:10px;cursor:pointer;background:#fff;transition:all .15s}
+  .pop-card:hover{border-color:#3b82f6}
+  .pop-card.has{border-color:#3b82f6;background:#eff6ff}
+  .pop-card .icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:22px}
+  .pop-card.has .icon{color:#3b82f6}
+  .pop-card .lbl{font-size:12px;color:#94a3b8;text-align:center;line-height:1.3}
+  .pop-card.has .lbl{color:#0f172a;font-weight:500}
+  body.view-mode .pop-card{cursor:default}
+  body.view-mode .pop-card:not(.has){opacity:.4}
+  /* 부가옵션 작은 카드 */
+  .pop-sub-section{margin-top:14px;padding-top:14px;border-top:1px dashed #e2e8f0}
+  .pop-sub-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px;color:#94a3b8;font-weight:500}
+  .popular-sub-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+  .pop-card-sm{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;border:1px solid #e2e8f0;border-radius:8px;cursor:pointer;background:#fff;transition:all .15s}
+  .pop-card-sm:hover{border-color:#3b82f6}
+  .pop-card-sm.has{border-color:#3b82f6;background:#eff6ff}
+  .pop-card-sm .icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:#cbd5e1}
+  .pop-card-sm.has .icon{color:#3b82f6}
+  .pop-card-sm .lbl{font-size:10px;color:#94a3b8;text-align:center;line-height:1.2;white-space:nowrap}
+  .pop-card-sm.has .lbl{color:#0f172a;font-weight:500}
+  body.view-mode .pop-card-sm{cursor:default}
+  body.view-mode .pop-card-sm:not(.has){opacity:.4}
+  @media (max-width:720px){
+    .popular-sub-grid{grid-template-columns:repeat(4,1fr)}
+  }
+  /* 제조사 선택옵션 */
+  .pkg-section{margin-top:20px;padding-top:18px;border-top:1px solid #e2e8f0}
+  .pkg-summary{font-size:13px;color:#64748b;margin-bottom:10px}
+  .pkg-summary b{color:#dc2626;font-size:14px}
+  .pkg-list{display:flex;flex-direction:column;gap:6px}
+  .pkg-item{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:6px;font-size:14px}
+  .pkg-item .pname{font-weight:500}
+  .pkg-item .pprice{color:#dc2626;font-weight:600;text-align:right;white-space:nowrap}
+  .pkg-item .pdel{background:transparent;border:none;cursor:pointer;color:#94a3b8;font-size:18px;padding:0 4px}
+  .pkg-item .pdel:hover{color:#dc2626}
+  .pkg-add{display:grid;grid-template-columns:1fr 140px auto;gap:8px;margin-top:8px}
+  .pkg-add input{padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-family:inherit}
+  .pkg-add button{padding:8px 16px;background:#3b82f6;color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}
+  /* 선택옵션 paste */
+  .pkg-paste{margin-bottom:14px;padding:14px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px}
+  .pkg-paste textarea{width:100%;min-height:60px;padding:10px;border:1px solid #cbd5e1;border-radius:6px;font-family:inherit;font-size:13px;resize:vertical}
+  .pkg-paste .row{display:flex;gap:8px;margin-top:8px}
+  .pkg-paste button{padding:8px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit;border:1px solid #cbd5e1;background:#fff}
+  .pkg-paste button.primary{background:#3b82f6;color:#fff;border-color:#3b82f6}
+  .pkg-preview{margin-top:10px;padding:10px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;font-size:13px}
+  .pkg-preview .ok{color:#059669}
+  .pkg-preview .fail{color:#dc2626}
+  .pkg-preview .neu{color:#64748b}
+  /* 전체 옵션 토글 */
+  .all-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:10px 0;margin-top:14px;border-top:1px solid #e2e8f0;color:#475569;font-size:13px;font-weight:500}
+  .all-toggle:hover{color:#3b82f6}
+  #allOptionsWrap{display:none;margin-top:8px}
+  #allOptionsWrap.open{display:block}
+  .actions{display:flex;gap:8px;margin-top:20px;flex-wrap:wrap}
+  .btn{padding:10px 20px;border:1px solid #cbd5e1;background:#fff;border-radius:8px;cursor:pointer;font-size:14px;font-family:inherit}
+  .btn-primary{background:#3b82f6;color:#fff;border-color:#3b82f6}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  pre{background:#f1f5f9;padding:14px;border-radius:8px;font-size:12px;overflow:auto;white-space:pre-wrap;max-height:320px;margin-top:12px}
+  .vehicle-meta{display:flex;gap:14px;font-size:12px;color:#64748b;margin-top:6px}
+  .vehicle-meta span b{color:#0f172a;font-weight:500}
+</style>
+</head>
+<body>
+
+<h1>차량 옵션 매핑 테스트</h1>
+
+<div class="panel">
+  <h2>차량 선택 (엔카마스터 기준)</h2>
+  <div class="selector-row">
+    <select id="maker" disabled><option value="">제조사 로딩중…</option></select>
+    <select id="model" disabled><option value="">모델</option></select>
+    <select id="sub" disabled><option value="">세부모델</option></select>
+    <select id="trim" disabled><option value="">트림</option></select>
+  </div>
+  <div class="summary" id="trimInfo">엔카마스터 데이터 로딩중…</div>
+  <div class="vehicle-meta" id="vehicleMeta" style="display:none"></div>
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="edit">직원 입력</button>
+    <button class="mode-btn" data-mode="view">고객 보기</button>
+  </div>
+</div>
+
+<div class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <h2 style="margin:0">제조사 선택옵션</h2>
+    <span id="pkgSummary" class="pkg-summary" style="margin:0">0개 적용</span>
+  </div>
+
+  <div class="pkg-paste">
+    <div style="font-size:12px;color:#0369a1;margin-bottom:6px;font-weight:600">📋 선택옵션 paste → 자동 분석</div>
+    <textarea id="pkgPaste" placeholder="구분자: / | , 또는 줄바꿈&#10;예: 17인치 알로이휠&타이어 2 / 선루프 | 컴포트 패키지, 시그니처1+렉시콘(베이지)"></textarea>
+    <div class="row">
+      <button class="primary" id="pkgAnalyze">분석하기</button>
+      <button id="pkgClear">지우기</button>
+    </div>
+    <div id="pkgPreview" class="pkg-preview" style="display:none"></div>
+  </div>
+
+  <div class="pkg-list" id="pkgList"></div>
+  <div class="pkg-add">
+    <input type="text" id="pkgName" placeholder="패키지명 직접 입력">
+    <input type="number" id="pkgPrice" placeholder="가격 (원)" min="0" step="10000">
+    <button id="pkgAdd">추가</button>
+  </div>
+</div>
+
+<div class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <h2 style="margin:0">주요옵션</h2>
+    <span id="popSummary" style="font-size:13px;color:#64748b">0 / 10</span>
+  </div>
+  <div class="popular-grid" id="popularGrid"></div>
+
+  <div class="pop-sub-section">
+    <div class="pop-sub-header">
+      <span>알면 좋을만한 옵션</span>
+      <span id="popSubSummary">0 / 7</span>
+    </div>
+    <div class="popular-sub-grid" id="popularSubGrid"></div>
+  </div>
+
+  <div class="all-toggle" id="allToggle">
+    <span><b id="totalSummary">0 / 93</b>개 옵션 모두보기</span>
+    <span id="chevron">▾</span>
+  </div>
+  <div id="allOptionsWrap">
+    <div id="categories"></div>
+  </div>
+</div>
+
+<div class="actions">
+  <button class="btn btn-primary" id="btnSave">옵션 저장</button>
+  <button class="btn" id="btnJson">JSON 출력</button>
+  <button class="btn" id="btnReset">초기화</button>
+  <button class="btn" id="btnExport">전체 매핑 내보내기</button>
+</div>
+
+<pre id="jsonOut" style="display:none"></pre>
+
+<script>
+// 옵션 마스터 — [id, name, kind]
+//   kind 'opt'  : 트림 무관 선택옵션 (시드 자동체크 ❌, [선택] 뱃지) — 11개
+//   kind 'unc'  : 트림 종속이지만 옵션 패키지로 빠지는 경우 多 (시드 자동체크 ⭕, ⚠️ 검토표시) — 약 20개
+//   kind 없음   : 확실한 트림 종속 (시드 자동체크 ⭕)
+const OPTIONS = {
+  exterior: { label:'외관', items: [
+    ['SUNROOF','썬루프(일반)','opt'],['SUNROOF_PANO','파노라마 썬루프','opt'],['SUNROOF_SAFETY','세이프티 썬루프','opt'],
+    ['HEAD_LED','LED 헤드램프'],['HEAD_HID','제논 헤드램프(HID)','unc'],['POSITION_LED','LED 포지션램프'],
+    ['DRL','주간 주행등'],['HEAD_ESCORT','에스코트 헤드램프','unc'],
+    ['MIRROR_FOLD','전동접이 사이드미러'],['MIRROR_ADJ','전동조절 사이드미러','unc'],
+    ['ROOF_RACK','루프랙','unc'],['ALUMINUM_WHEEL','알루미늄휠'],
+    ['FOG_LED','안개등 (LED)'],['REAR_LED_COMBI','LED 리어 콤비네이션 램프']
+  ]},
+  interior: { label:'내장', items: [
+    ['CRUISE','크루즈컨트롤'],['STR_REMOTE','스티어링 휠 리모컨'],
+    ['AUTO_LIGHT','오토 라이트 컨트롤'],['POWER_STR','파워 스티어링'],
+    ['HANDS_FREE','핸즈프리'],['HEAT_STR','열선 스티어링휠','unc'],
+    ['POWER_SEAT_DR','전동시트(운전석)'],['POWER_SEAT_PS','전동시트(동승석)','unc'],
+    ['MEMORY_SEAT_DR','메모리시트(운전석)','unc'],['MEMORY_SEAT_PS','메모리시트(동승석)','opt'],
+    ['HEAT_SEAT_FRONT','열선시트(앞좌석)'],['HEAT_SEAT_REAR','열선시트(뒷좌석)','unc'],
+    ['VENT_SEAT_DR','통풍시트(운전석)','unc'],['VENT_SEAT_PS','통풍시트(동승석)','unc'],
+    ['SEAT_LEATHER','가죽시트'],['SEAT_FABRIC','직물 시트'],['SEAT_MIX','직물+가죽 시트'],
+    ['ECM_MIRROR','ECM룸미러'],
+    ['ECM_HIPASS_RV','ECM룸미러(하이패스+리어뷰내장)','unc'],
+    ['ECM_HIPASS_MTS','ECM룸미러(하이패스+MTS내장)','unc'],
+    ['HIPASS_MIRROR','하이패스 룸미러'],['REAR_MIRROR','후방 룸미러'],
+    ['MTS_E_MIRROR','전자식 룸미러(MTS)','opt']
+  ]},
+  safety: { label:'안전', items: [
+    ['AIRBAG_DR','에어백(운전석)'],['AIRBAG_PS','에어백(동승석)'],
+    ['AIRBAG_SIDE','에어백(사이드)'],['AIRBAG_KNEE','에어백(무릎보호)','unc'],
+    ['CAM_REAR','후방 카메라'],['SENSOR_REAR','후방 감지센서'],
+    ['CAM_FRONT','전방 카메라','unc'],['SENSOR_FRONT','전방 감지센서','unc'],
+    ['AVMS','어라운드 뷰 (AVMS)','unc'],['SPAS','주차 조향 보조 시스템 (SPAS)','unc'],
+    ['FOOT_PARKING','풋파킹 브레이크'],['EPB','전자식 파킹 브레이크'],
+    ['ABS','ABS'],['BAS','제동 도움 장치(BAS)'],
+    ['AEB','자동 긴급 제동 시스템 (AEB)','unc'],['VDC','차체자세제어 (VDC/VSM/ESC/ESP)'],
+    ['TCS','미끄럼방지 (TCS)'],['ESS','급제동 경보 (ESS)'],
+    ['TPMS','타이어 공기압감지 (TPMS)'],['HDA','고속도로 주행 지원시스템 (HDA)','unc'],
+    ['LDWS','차선이탈 경보 (LDWS)','unc'],['LKAS','차선 유지 보조 (LKAS)','unc'],
+    ['DAW','운전자 주의 경고 (DAW)','unc'],['FCWS','전방 추돌 경보 (FCWS)','unc'],
+    ['DBC','경사로 저속주행 (DBC)','unc'],['ECS','전자제어 서스펜션 (ECS/ALS)','opt'],
+    ['HUD','헤드업 디스플레이 (HUD)','opt'],['RCTA','후측방 경보시스템 (RCTA)','unc'],
+    ['HAC','경사로 밀림방지 (HAC)']
+  ]},
+  convenience: { label:'편의', items: [
+    ['NAVIGATION','내비게이션'],['HIPASS','하이패스','unc'],
+    ['BLACKBOX','블랙박스 (사후장착)','opt'],['BUILTIN_CAM','빌트인캠 (정품)','unc'],
+    ['BUTTON_START','버튼 시동'],['SMART_KEY','스마트키'],
+    ['REMOTE_LOCK','무선 도어 잠금장치'],['REMOTE_START','원격시동','unc'],
+    ['AUTO_AC','자동 에어컨'],['AUTO_AC_REAR','자동 에어컨 (뒷좌석)','unc'],['MANUAL_AC','매뉴얼 에어컨'],
+    ['SLIDING_DOOR','파워 슬라이딩 도어','unc'],['SMART_TRUNK','스마트 트렁크/테일게이트','unc'],
+    ['POWER_TRUNK','파워트렁크','unc'],['POWER_WINDOW','파워윈도우'],
+    ['CURTAIN_M','커튼(수동식)','unc'],['CURTAIN_E','커튼(전동식)','opt'],
+    ['ECO_GUIDE','경제운전 안내(액티브)','unc'],['WPC','무선충전 시스템(WPC)','unc']
+  ]},
+  media: { label:'미디어', items: [
+    ['CD_PLAYER','CD플레이어','opt'],['MP3','MP3'],['REAR_TV','뒷자석 TV','opt'],
+    ['BLUETOOTH','블루투스'],['AUX','AUX 단자','opt'],['USB','USB 단자'],
+    ['MIRRORING','유선 미러링 (카플레이/안드로이드오토)','unc'],
+    ['MIRRORING_WIRELESS','무선 카플레이/안드로이드오토','unc'],
+    ['WELCOME','웰컴 시스템','opt'],['VOICE_RECOG','음성인식 시스템','unc']
+  ]}
+};
+
+const TOTAL = Object.values(OPTIONS).reduce((s,c)=>s+c.items.length, 0);
+const STORAGE_KEY = 'vehicle_options_mapping_v1';
+const PKG_KEY = 'vehicle_packages_v1';
+
+// 패키지명 → 옵션ID[] 매핑 사전 (전역 baseline, 차종 무관)
+//   매칭은 substring (대소문자/공백 무시), 가장 긴 매칭 우선
+const PACKAGE_DICT = {
+  // 썬루프
+  '파노라마 썬루프': ['SUNROOF_PANO'], '파노라마 선루프': ['SUNROOF_PANO'],
+  '와이드 썬루프': ['SUNROOF_PANO'], '와이드 선루프': ['SUNROOF_PANO'],
+  '세이프티 썬루프': ['SUNROOF_SAFETY'], '세이프티 선루프': ['SUNROOF_SAFETY'],
+  '썬루프': ['SUNROOF'], '선루프': ['SUNROOF'],
+  // 헤드램프
+  '에스코트 헤드램프': ['HEAD_ESCORT'],
+  'LED 헤드램프': ['HEAD_LED'], 'LED헤드램프': ['HEAD_LED'],
+  'HID 헤드램프': ['HEAD_HID'], '제논 헤드램프': ['HEAD_HID'], '제논': ['HEAD_HID'],
+  // 시트 패키지 (현대/기아)
+  '컴포트 II': ['VENT_SEAT_DR','VENT_SEAT_PS','HEAT_SEAT_REAR','MEMORY_SEAT_DR'],
+  '컴포트2': ['VENT_SEAT_DR','VENT_SEAT_PS','HEAT_SEAT_REAR','MEMORY_SEAT_DR'],
+  '컴포트': ['VENT_SEAT_DR','HEAT_SEAT_REAR'],
+  '컨비니언스': ['POWER_SEAT_PS','MEMORY_SEAT_DR','WPC'],
+  // 시트 단품
+  '천연가죽': ['SEAT_LEATHER'], '나파가죽': ['SEAT_LEATHER'], '가죽시트': ['SEAT_LEATHER'],
+  '직물+가죽': ['SEAT_MIX'], '직물 가죽': ['SEAT_MIX'],
+  '통풍시트(앞좌석)': ['VENT_SEAT_DR','VENT_SEAT_PS'],
+  '통풍시트': ['VENT_SEAT_DR'],
+  '뒷좌석 열선': ['HEAT_SEAT_REAR'],
+  '열선시트': ['HEAT_SEAT_FRONT'],
+  '열선 스티어링': ['HEAT_STR'],
+  // ADAS 패키지
+  '드라이브 와이즈': ['HDA','RCTA','LKAS','AEB','FCWS','DAW','BAS'],
+  '스마트센스 II': ['AEB','LKAS','FCWS','DAW','RCTA'],
+  '스마트센스': ['AEB','LKAS','FCWS','DAW'],
+  '스마트크루즈': ['HDA'], 'HDA': ['HDA'], '고속도로 주행': ['HDA'],
+  '어라운드뷰': ['AVMS'], 'AVMS': ['AVMS'], '서라운드 뷰': ['AVMS'],
+  '후측방경보': ['RCTA'], '후측방 경보': ['RCTA'], 'RCTA': ['RCTA'],
+  '주차 보조': ['SPAS'], 'SPAS': ['SPAS'],
+  // 시그니처/디스플레이
+  '시그니처 디자인': [], '시그니처디자인': [],
+  '시그니처 1': ['HUD','AVMS'], '시그니처1': ['HUD','AVMS'],
+  '시그니처 2': ['HUD','AVMS','HEAT_SEAT_REAR','WPC'], '시그니처2': ['HUD','AVMS','HEAT_SEAT_REAR','WPC'],
+  '헤드업 디스플레이': ['HUD'], 'HUD': ['HUD'], '헤드업': ['HUD'],
+  // 편의
+  '빌트인캠': ['BUILTIN_CAM'], '빌트인 캠': ['BUILTIN_CAM'],
+  '무선충전': ['WPC'], '무선 충전': ['WPC'], 'WPC': ['WPC'],
+  '원격시동': ['REMOTE_START'], '원격 시동': ['REMOTE_START'],
+  '하이패스 룸미러': ['ECM_HIPASS_RV'],
+  '하이패스+리어뷰': ['ECM_HIPASS_RV'],
+  '하이패스+MTS': ['ECM_HIPASS_MTS'],
+  'ECM 룸미러': ['ECM_MIRROR'], 'ECM룸미러': ['ECM_MIRROR'],
+  '음성인식': ['VOICE_RECOG'],
+  '미러링': ['MIRRORING'],
+  '무선 카플레이': ['MIRRORING_WIRELESS'], '무선카플레이': ['MIRRORING_WIRELESS'],
+  '무선 안드로이드': ['MIRRORING_WIRELESS'],
+  '카플레이': ['MIRRORING_WIRELESS'],
+  // 외관
+  '루프랙': ['ROOF_RACK'],
+  // 트렁크/도어
+  '파워트렁크': ['POWER_TRUNK'], '전동트렁크': ['POWER_TRUNK'],
+  '스마트 트렁크': ['SMART_TRUNK'], '스마트 테일게이트': ['SMART_TRUNK'],
+  '핸즈프리 테일게이트': ['SMART_TRUNK'],
+  '전동 슬라이딩': ['SLIDING_DOOR'], '파워 슬라이딩': ['SLIDING_DOOR'],
+  // 휠 (사이즈는 메타데이터로만)
+  '알로이휠': ['ALUMINUM_WHEEL'], '알루미늄휠': ['ALUMINUM_WHEEL'], '알루미늄 휠': ['ALUMINUM_WHEEL']
+};
+
+// 휠 사이즈 패턴 (메타데이터)
+const WHEEL_SIZE_RE = /(\d{2})\s*인치/;
+
+// 주요옵션 — 차종 선택 시 위에 카드로 강조 (2026년 렌터카 트렌드 기준)
+//   [optionId, 라벨, lucide 아이콘명]
+const POPULAR_OPTIONS = [
+  ['SUNROOF_PANO',       '파노라마 선루프',     'sun'],
+  ['NAVIGATION',         '내비게이션',          'map-pin'],
+  ['AVMS',               '어라운드뷰',          'scan'],
+  ['VENT_SEAT_DR',       '통풍시트',            'wind'],
+  ['HEAT_SEAT_FRONT',    '열선시트',            'flame'],
+  ['HDA',                '스마트크루즈',        'gauge'],
+  ['HUD',                '헤드업디스플레이',    'monitor-up'],
+  ['POWER_TRUNK',        '전동트렁크',          'package-open'],
+  ['MIRRORING_WIRELESS', '무선 카플레이/안드로이드오토', 'smartphone'],
+  ['BUILTIN_CAM',        '빌트인캠',            'cctv']
+];
+
+// 부가옵션 — 주요옵션 아래에 작은 카드로 표시 (신경쓰일 만한 옵션)
+const SUB_POPULAR_OPTIONS = [
+  ['SMART_KEY',       '스마트키',         'key-round'],
+  ['RCTA',            '후측방경보',       'shield-alert'],
+  ['WPC',             '무선충전',         'battery-charging'],
+  ['SEAT_LEATHER',    '가죽시트',         'armchair'],
+  ['MEMORY_SEAT_DR',  '메모리시트',       'user-cog'],
+  ['REMOTE_START',    '원격시동',         'power'],
+  ['VOICE_RECOG',     '음성인식',         'mic']
+];
+
+// 제조사 인기 순위 (낮을수록 위)
+const MAKER_RANK = {
+  // 국산
+  '현대':1,'기아':2,'제네시스':3,'쉐보레':4,'KGM':5,'르노':6,'기타 제조사':99,
+  // 수입 (인기순)
+  'BMW':10,'벤츠':11,'아우디':12,'렉서스':13,'미니':14,'볼보':15,
+  '포르쉐':16,'폭스바겐':17,'랜드로버':18,'포드':19,'혼다':20,
+  '도요타':21,'닛산':22,'테슬라':23,'마세라티':24,'재규어':25,
+  '지프':26,'캐딜락':27,'링컨':28,'페라리':29,'람보르기니':30
+};
+function makerRank(m) { return MAKER_RANK[m] !== undefined ? MAKER_RANK[m] : 50; }
+function isDomestic(row) { return row && row.origin === '국산'; }
+
+// 15년 필터 — production_end가 15년 전 이전이면 제외
+function within15Years(row) {
+  const cutoff = '2011-01'; // 2026년 기준 15년 전
+  if (!row.production_end) return true;        // 단종 안된 차
+  return row.production_end >= cutoff;
+}
+
+const state = {
+  master: [],          // encar-master-seed 전체
+  selected: null,      // 선택된 마스터 row
+  maker:'', model:'', sub:'', trim:'',
+  has: new Set(),
+  packages: [],        // [{name, price}]
+  source: '',          // 'saved' | 'seed' | 'empty'
+  mode: 'edit'
+};
+
+const $ = id => document.getElementById(id);
+
+async function loadMaster() {
+  // 1) script 태그로 로드된 window.ENCAR_MASTER (file:// 더블클릭 OK)
+  if (Array.isArray(window.ENCAR_MASTER) && window.ENCAR_MASTER.length) {
+    const filtered = window.ENCAR_MASTER
+      .filter(r => r && !r.archived && r.status !== 'deleted')
+      .filter(within15Years);
+    console.log(`[loaded] window.ENCAR_MASTER — ${window.ENCAR_MASTER.length} → ${filtered.length} (15년 필터 적용)`);
+    return filtered;
+  }
+  // 2) fetch fallback (Vite dev 서버 환경)
+  const candidates = [
+    '/data/encar-master-seed.json',
+    './public/data/encar-master-seed.json',
+    'public/data/encar-master-seed.json'
+  ];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (Array.isArray(data) && data.length) {
+        const filtered = data
+          .filter(r => r && !r.archived && r.status !== 'deleted')
+          .filter(within15Years);
+        console.log(`[loaded] ${url} — ${data.length} → ${filtered.length} rows (15년 필터)`);
+        return filtered;
+      }
+    } catch (e) {
+      console.warn(`[fetch fail] ${url}`, e.message);
+    }
+  }
+  return null;
+}
+
+function loadSavedMapping() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+function saveMapping(key, options) {
+  const all = loadSavedMapping();
+  all[key] = { options: [...options].sort(), updated_at: Date.now() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+}
+
+function getSavedOptions(key) {
+  const all = loadSavedMapping();
+  return all[key]?.options || null;
+}
+
+async function init() {
+  // 마스터 로드
+  const data = await loadMaster();
+  if (!data) {
+    $('trimInfo').textContent = '⚠️  엔카마스터 로드 실패 — Vite dev 서버에서 열어주세요 (npm run dev → http://localhost:5173/vehicle-options-test.html)';
+    $('trimInfo').classList.add('warn');
+    return;
+  }
+  state.master = data;
+  $('trimInfo').textContent = `엔카마스터 ${data.length}건 로드 완료. 차량을 선택하세요.`;
+
+  // 제조사 채우기
+  fillMakers();
+  $('maker').disabled = false;
+
+  $('maker').addEventListener('change', onMakerChange);
+  $('model').addEventListener('change', onModelChange);
+  $('sub').addEventListener('change', onSubChange);
+  $('trim').addEventListener('change', onTrimChange);
+  document.querySelectorAll('.mode-btn').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  $('btnSave').addEventListener('click', onSave);
+  $('btnJson').addEventListener('click', showJSON);
+  $('btnReset').addEventListener('click', resetAll);
+  $('btnExport').addEventListener('click', exportAll);
+  $('allToggle').addEventListener('click', () => {
+    const wrap = $('allOptionsWrap');
+    wrap.classList.toggle('open');
+    $('chevron').textContent = wrap.classList.contains('open') ? '▴' : '▾';
+  });
+  $('pkgAdd').addEventListener('click', onPkgAdd);
+  $('pkgAnalyze').addEventListener('click', onPkgAnalyze);
+  $('pkgClear').addEventListener('click', () => {
+    $('pkgPaste').value = '';
+    $('pkgPreview').style.display = 'none';
+    _pendingAnalysis = null;
+  });
+
+  renderOptions();
+  renderPopular();
+  renderPackages();
+}
+
+function uniqueSorted(arr) {
+  return [...new Set(arr.filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ko'));
+}
+
+/** 시드 보유 여부 (제조사/모델/서브) — 인기 정렬 보조 */
+function makerHasSeed(maker) {
+  if (!window.TRIM_OPTIONS_SEED) return false;
+  return state.master.some(r => r.maker === maker && window.TRIM_OPTIONS_SEED[r._key]);
+}
+function modelHasSeed(maker, model) {
+  if (!window.TRIM_OPTIONS_SEED) return false;
+  return state.master.some(r => r.maker === maker && r.model === model && window.TRIM_OPTIONS_SEED[r._key]);
+}
+function subHasSeed(row) {
+  return !!(window.TRIM_OPTIONS_SEED && window.TRIM_OPTIONS_SEED[row._key]);
+}
+
+function fillMakers() {
+  const sel = $('maker');
+  sel.innerHTML = '<option value="">제조사 선택</option>';
+
+  // 국산/수입 분리, 각 그룹 안에서 (시드 보유 → 인기순 → 가나다)
+  const domestic = [], imported = [];
+  const seenD = new Set(), seenI = new Set();
+  for (const r of state.master) {
+    if (!r.maker) continue;
+    if (isDomestic(r)) {
+      if (!seenD.has(r.maker)) { seenD.add(r.maker); domestic.push(r.maker); }
+    } else {
+      if (!seenI.has(r.maker)) { seenI.add(r.maker); imported.push(r.maker); }
+    }
+  }
+  const cmp = (a, b) => {
+    const sa = makerHasSeed(a), sb = makerHasSeed(b);
+    if (sa !== sb) return sa ? -1 : 1;
+    const ra = makerRank(a), rb = makerRank(b);
+    if (ra !== rb) return ra - rb;
+    return a.localeCompare(b, 'ko');
+  };
+  domestic.sort(cmp);
+  imported.sort(cmp);
+
+  if (domestic.length) {
+    const og = document.createElement('optgroup');
+    og.label = '국산';
+    domestic.forEach(m => {
+      const o = document.createElement('option');
+      o.value = m; o.textContent = makerHasSeed(m) ? '✓ ' + m : m;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  }
+  if (imported.length) {
+    const og = document.createElement('optgroup');
+    og.label = '수입';
+    imported.forEach(m => {
+      const o = document.createElement('option');
+      o.value = m; o.textContent = makerHasSeed(m) ? '✓ ' + m : m;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  }
+}
+
+function fillModels(maker) {
+  const seen = new Map(); // model → 최신 production_start
+  for (const r of state.master) {
+    if (r.maker !== maker || !r.model) continue;
+    const ps = r.production_start || (r.year_start ? `${r.year_start}-01` : '');
+    const cur = seen.get(r.model);
+    if (!cur || ps > cur) seen.set(r.model, ps);
+  }
+  const models = [...seen.keys()];
+  models.sort((a, b) => {
+    // 1) 시드 보유 우선
+    const sa = modelHasSeed(maker, a), sb = modelHasSeed(maker, b);
+    if (sa !== sb) return sa ? -1 : 1;
+    // 2) 최신 연식 우선
+    const pa = seen.get(a) || '', pb = seen.get(b) || '';
+    if (pa !== pb) return pb.localeCompare(pa);
+    // 3) 가나다
+    return a.localeCompare(b, 'ko');
+  });
+  const sel = $('model');
+  sel.innerHTML = '<option value="">모델 선택</option>';
+  models.forEach(m => {
+    const o = document.createElement('option');
+    o.value = m;
+    o.textContent = modelHasSeed(maker, m) ? '✓ ' + m : m;
+    sel.appendChild(o);
+  });
+}
+
+function fillSubs(maker, model) {
+  const rows = state.master.filter(r => r.maker === maker && r.model === model);
+  rows.sort((a, b) => {
+    // 1) 시드 보유 우선
+    const sa = subHasSeed(a), sb = subHasSeed(b);
+    if (sa !== sb) return sa ? -1 : 1;
+    // 2) 최신 연식 우선
+    const pa = a.production_start || (a.year_start ? `${a.year_start}-01` : '');
+    const pb = b.production_start || (b.year_start ? `${b.year_start}-01` : '');
+    if (pa && pb && pa !== pb) return pb.localeCompare(pa);
+    if (pa && !pb) return -1;
+    if (!pa && pb) return 1;
+    return (a.sub || '').localeCompare(b.sub || '', 'ko');
+  });
+  const seen = new Set();
+  const out = [];
+  for (const r of rows) {
+    if (!r.sub || seen.has(r.sub)) continue;
+    seen.add(r.sub);
+    out.push(r);
+  }
+  const sel = $('sub');
+  sel.innerHTML = '<option value="">세부모델 선택</option>';
+  out.forEach(r => {
+    const o = document.createElement('option');
+    o.value = r.sub;
+    o.textContent = subHasSeed(r) ? '✓ ' + r.sub : r.sub;
+    sel.appendChild(o);
+  });
+}
+
+function fillSelect(sel, items, ph) {
+  sel.innerHTML = `<option value="">${ph}</option>`;
+  items.forEach(v => {
+    const o = document.createElement('option');
+    o.value = v; o.textContent = v;
+    sel.appendChild(o);
+  });
+}
+
+function onMakerChange(e) {
+  state.maker = e.target.value;
+  state.model = ''; state.sub = ''; state.trim = ''; state.selected = null;
+  state.has = new Set(); state.source = ''; state.packages = [];
+  if (state.maker) {
+    fillModels(state.maker);
+    $('model').disabled = false;
+  } else {
+    $('model').innerHTML = '<option value="">모델</option>';
+    $('model').disabled = true;
+  }
+  $('sub').innerHTML = '<option value="">세부모델</option>'; $('sub').disabled = true;
+  $('trim').innerHTML = '<option value="">트림</option>'; $('trim').disabled = true;
+  updateInfo();
+  renderOptions();
+  renderPackages();
+}
+
+function onModelChange(e) {
+  state.model = e.target.value;
+  state.sub = ''; state.trim = ''; state.selected = null;
+  state.has = new Set(); state.source = ''; state.packages = [];
+  if (state.maker && state.model) {
+    fillSubs(state.maker, state.model);
+    $('sub').disabled = false;
+  } else {
+    $('sub').innerHTML = '<option value="">세부모델</option>';
+    $('sub').disabled = true;
+  }
+  $('trim').innerHTML = '<option value="">트림</option>'; $('trim').disabled = true;
+  updateInfo();
+  renderOptions();
+  renderPackages();
+}
+
+function onSubChange(e) {
+  state.sub = e.target.value;
+  state.trim = '';
+  state.has = new Set(); state.source = '';
+  state.packages = [];
+  state.selected = null;
+  if (state.maker && state.model && state.sub) {
+    state.selected = state.master.find(r =>
+      r.maker === state.maker && r.model === state.model && r.sub === state.sub
+    );
+  }
+  // 시드에 트림 정의 있으면 트림 dropdown 채움
+  const seed = state.selected && window.TRIM_OPTIONS_SEED && window.TRIM_OPTIONS_SEED[state.selected._key];
+  if (seed && seed.trims) {
+    fillSelect($('trim'), Object.keys(seed.trims), '트림 선택');
+    $('trim').disabled = false;
+    // 첫 트림 자동 선택
+    const firstTrim = Object.keys(seed.trims)[0];
+    $('trim').value = firstTrim;
+    state.trim = firstTrim;
+    applySourceForCurrent();
+  } else {
+    $('trim').innerHTML = '<option value="">트림 데이터 없음</option>';
+    $('trim').disabled = true;
+    // 시드 없으면 sub 단위 저장된 옵션이라도 로드 시도
+    if (state.selected) applySourceForCurrent();
+  }
+  loadPackagesForCurrent();
+  updateInfo();
+  renderOptions();
+  renderPackages();
+}
+
+function onTrimChange(e) {
+  state.trim = e.target.value;
+  state.has = new Set();
+  state.source = '';
+  applySourceForCurrent();
+  loadPackagesForCurrent();
+  updateInfo();
+  renderOptions();
+  renderPackages();
+}
+
+/** 우선순위: 저장된 데이터 > 시드 > 빈값 */
+function applySourceForCurrent() {
+  if (!state.selected) return;
+  const storageKey = state.selected._key + (state.trim ? ':' + state.trim : '');
+  const saved = getSavedOptions(storageKey);
+  if (saved) {
+    state.has = new Set(saved);
+    state.source = 'saved';
+    return;
+  }
+  // 시드에서 트림 매칭
+  const seed = window.TRIM_OPTIONS_SEED && window.TRIM_OPTIONS_SEED[state.selected._key];
+  if (seed && seed.trims && state.trim && seed.trims[state.trim]) {
+    state.has = new Set(seed.trims[state.trim]);
+    state.source = 'seed';
+    return;
+  }
+  state.has = new Set();
+  state.source = 'empty';
+}
+
+function updateInfo() {
+  const info = $('trimInfo');
+  const meta = $('vehicleMeta');
+  info.classList.remove('warn','ok');
+  if (state.selected) {
+    const r = state.selected;
+    const trimLabel = state.trim ? ` · ${state.trim}` : '';
+    let badge = '';
+    if (state.source === 'saved') {
+      badge = '<span class="seed-badge" style="background:#dcfce7;color:#166534">저장됨</span>';
+      info.classList.add('ok');
+    } else if (state.source === 'seed') {
+      badge = '<span class="seed-badge">AI 시드 (검토필요)</span>';
+    } else if (state.source === 'empty') {
+      badge = '<span class="seed-badge" style="background:#fef3c7;color:#92400e">데이터 없음</span>';
+    }
+    info.innerHTML = `${r.maker} ${r.model} ${r.sub}${trimLabel} ${badge}`;
+    meta.style.display = 'flex';
+    meta.innerHTML = `
+      <span>키: <b>${r._key}${state.trim ? ':' + state.trim : ''}</b></span>
+      ${r.category ? `<span>분류: <b>${r.category}</b></span>` : ''}
+      ${r.production_start ? `<span>생산: <b>${r.production_start}${r.production_end ? ' ~ '+r.production_end : ''}</b></span>` : ''}
+      ${r.origin ? `<span>구분: <b>${r.origin}</b></span>` : ''}
+    `;
+  } else {
+    const seedCount = window.TRIM_OPTIONS_SEED ? Object.keys(window.TRIM_OPTIONS_SEED).length : 0;
+    info.textContent = state.master.length
+      ? `엔카마스터 ${state.master.length}건 / AI 시드 ${seedCount}개 sub 로드됨. 차량을 선택하세요.`
+      : '엔카마스터 로딩중…';
+    meta.style.display = 'none';
+    meta.innerHTML = '';
+  }
+}
+
+function setMode(mode) {
+  state.mode = mode;
+  document.body.classList.toggle('view-mode', mode === 'view');
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+}
+
+function toggleOption(id) {
+  if (state.mode === 'view') return;
+  if (state.has.has(id)) state.has.delete(id);
+  else state.has.add(id);
+  renderOptions();
+}
+
+function getStorageKey() {
+  if (!state.selected) return '';
+  return state.selected._key + (state.trim ? ':' + state.trim : '');
+}
+
+function loadPackagesForCurrent() {
+  const key = getStorageKey();
+  if (!key) { state.packages = []; return; }
+  try {
+    const all = JSON.parse(localStorage.getItem(PKG_KEY) || '{}');
+    state.packages = Array.isArray(all[key]) ? all[key] : [];
+  } catch { state.packages = []; }
+}
+
+function savePackagesForCurrent() {
+  const key = getStorageKey();
+  if (!key) return;
+  let all = {};
+  try { all = JSON.parse(localStorage.getItem(PKG_KEY) || '{}'); } catch {}
+  all[key] = state.packages;
+  localStorage.setItem(PKG_KEY, JSON.stringify(all));
+}
+
+function onPkgAdd() {
+  if (!state.selected) { alert('차량을 먼저 선택하세요'); return; }
+  const name = $('pkgName').value.trim();
+  const price = parseInt($('pkgPrice').value) || 0;
+  if (!name) { alert('패키지명을 입력하세요'); return; }
+  state.packages.push({ name, price });
+  savePackagesForCurrent();
+  $('pkgName').value = '';
+  $('pkgPrice').value = '';
+  renderPackages();
+}
+
+/** 패키지 텍스트 1건을 옵션ID 배열로 매핑 (가장 긴 키 매칭 우선) */
+function matchPackage(text) {
+  const norm = text.replace(/\s+/g,'').toLowerCase();
+  let bestKey = '', bestLen = 0;
+  for (const key of Object.keys(PACKAGE_DICT)) {
+    const k = key.replace(/\s+/g,'').toLowerCase();
+    if (norm.includes(k) && k.length > bestLen) {
+      bestKey = key; bestLen = k.length;
+    }
+  }
+  return bestKey ? { key: bestKey, options: PACKAGE_DICT[bestKey] } : null;
+}
+
+/** 입력 텍스트 분석 → 패키지별 매핑 결과 */
+function analyzePackagesText(text) {
+  // 구분자: / | , ; 줄바꿈 모두 인식
+  const items = text.split(/[\/|,;\n]+/).map(s => s.trim()).filter(Boolean);
+  const results = [];
+  for (const raw of items) {
+    const wheelMatch = raw.match(WHEEL_SIZE_RE);
+    const m = matchPackage(raw);
+    const opts = m ? [...m.options] : [];
+    if (m && m.options.includes('ALUMINUM_WHEEL') === false && raw.includes('휠') && wheelMatch) {
+      opts.push('ALUMINUM_WHEEL');
+    }
+    results.push({
+      raw,
+      matched: m ? m.key : null,
+      options: opts,
+      wheel: wheelMatch ? wheelMatch[1] + '인치' : null
+    });
+  }
+  return results;
+}
+
+let _pendingAnalysis = null;
+
+function onPkgAnalyze() {
+  if (!state.selected) { alert('차량을 먼저 선택하세요'); return; }
+  const text = $('pkgPaste').value.trim();
+  if (!text) { alert('선택옵션을 입력하세요'); return; }
+  const results = analyzePackagesText(text);
+  _pendingAnalysis = results;
+
+  // 추가될 옵션 통합
+  const newOpts = new Set();
+  results.forEach(r => r.options.forEach(o => { if (!state.has.has(o)) newOpts.add(o); }));
+
+  let html = '';
+  results.forEach(r => {
+    if (r.matched) {
+      const opNames = r.options.map(id => optName(id)).filter(Boolean).join(', ') || '(매핑 옵션 없음)';
+      html += `<div class="ok">✓ ${r.raw} → <b>${r.matched}</b> :: ${opNames}${r.wheel ? ' [휠 ' + r.wheel + ']' : ''}</div>`;
+    } else if (r.wheel) {
+      html += `<div class="neu">• ${r.raw} → 휠 사이즈만 매칭 [${r.wheel}]</div>`;
+    } else {
+      html += `<div class="fail">✗ ${r.raw} → 매핑 못 찾음 (수동 추가 필요)</div>`;
+    }
+  });
+  html += `<div style="margin-top:10px;padding-top:8px;border-top:1px dashed #cbd5e1">
+    <b>추가 체크될 옵션: ${newOpts.size}개</b>
+    <div style="margin-top:8px;display:flex;gap:6px">
+      <button class="primary" id="pkgApply" style="padding:6px 14px;background:#3b82f6;color:#fff;border:none;border-radius:6px;cursor:pointer">적용</button>
+      <button id="pkgCancel" style="padding:6px 14px;border:1px solid #cbd5e1;background:#fff;border-radius:6px;cursor:pointer">취소</button>
+    </div>
+  </div>`;
+
+  const pre = $('pkgPreview');
+  pre.style.display = 'block';
+  pre.innerHTML = html;
+  $('pkgApply').addEventListener('click', applyAnalysis);
+  $('pkgCancel').addEventListener('click', () => { pre.style.display = 'none'; _pendingAnalysis = null; });
+}
+
+function optName(id) {
+  for (const cat of Object.values(OPTIONS)) {
+    const it = cat.items.find(([cid]) => cid === id);
+    if (it) return it[1];
+  }
+  return null;
+}
+
+function applyAnalysis() {
+  if (!_pendingAnalysis) return;
+  for (const r of _pendingAnalysis) {
+    r.options.forEach(o => state.has.add(o));
+    if (r.matched || r.wheel) {
+      state.packages.push({
+        name: r.raw,
+        price: 0,
+        wheel: r.wheel || null,
+        matched: r.matched || null,
+        opts: r.options
+      });
+    }
+  }
+  savePackagesForCurrent();
+  _pendingAnalysis = null;
+  $('pkgPaste').value = '';
+  $('pkgPreview').style.display = 'none';
+  renderOptions();
+  renderPackages();
+}
+
+function onPkgDelete(idx) {
+  state.packages.splice(idx, 1);
+  savePackagesForCurrent();
+  renderPackages();
+}
+
+function renderPackages() {
+  const list = $('pkgList');
+  const summary = $('pkgSummary');
+  list.innerHTML = '';
+  const total = state.packages.reduce((s, p) => s + (Number(p.price) || 0), 0);
+  summary.innerHTML = state.packages.length
+    ? `${state.packages.length}개 적용 (총 <b>${total.toLocaleString()}원</b>)`
+    : '0개 적용';
+  state.packages.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'pkg-item';
+    div.innerHTML = `
+      <span class="pname">${p.name}</span>
+      <span class="pprice">${(Number(p.price) || 0).toLocaleString()}원</span>
+      <button class="pdel" data-idx="${i}" title="삭제">×</button>
+    `;
+    list.appendChild(div);
+  });
+  list.querySelectorAll('.pdel').forEach(btn => {
+    btn.addEventListener('click', () => onPkgDelete(parseInt(btn.dataset.idx)));
+  });
+}
+
+function renderPopular() {
+  // 메인 주요옵션
+  const grid = $('popularGrid');
+  if (grid) {
+    grid.innerHTML = '';
+    let cnt = 0;
+    POPULAR_OPTIONS.forEach(([id, label, icon]) => {
+      const has = state.has.has(id);
+      if (has) cnt++;
+      const div = document.createElement('div');
+      div.className = 'pop-card' + (has ? ' has' : '');
+      div.innerHTML = `
+        <div class="icon"><i data-lucide="${icon}" style="width:32px;height:32px"></i></div>
+        <div class="lbl">${label}</div>`;
+      div.addEventListener('click', () => toggleOption(id));
+      grid.appendChild(div);
+    });
+    const sum = $('popSummary');
+    if (sum) sum.textContent = `${cnt} / ${POPULAR_OPTIONS.length}`;
+  }
+  // 부가옵션
+  const subGrid = $('popularSubGrid');
+  if (subGrid) {
+    subGrid.innerHTML = '';
+    let cnt = 0;
+    SUB_POPULAR_OPTIONS.forEach(([id, label, icon]) => {
+      const has = state.has.has(id);
+      if (has) cnt++;
+      const div = document.createElement('div');
+      div.className = 'pop-card-sm' + (has ? ' has' : '');
+      div.innerHTML = `
+        <div class="icon"><i data-lucide="${icon}" style="width:18px;height:18px"></i></div>
+        <div class="lbl">${label}</div>`;
+      div.addEventListener('click', () => toggleOption(id));
+      subGrid.appendChild(div);
+    });
+    const sum = $('popSubSummary');
+    if (sum) sum.textContent = `${cnt} / ${SUB_POPULAR_OPTIONS.length}`;
+  }
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+}
+
+function renderOptions() {
+  const container = $('categories');
+  container.innerHTML = '';
+  let totalHas = 0;
+  Object.values(OPTIONS).forEach(cat => {
+    const cnt = cat.items.filter(([id]) => state.has.has(id)).length;
+    totalHas += cnt;
+    const div = document.createElement('div');
+    div.className = 'category';
+    div.innerHTML = `
+      <div class="category-header">${cat.label} <span class="count">${cnt} / ${cat.items.length}</span></div>
+      <div class="options-grid">
+        ${cat.items.map(([id, name, kind]) => {
+          const checked = state.has.has(id);
+          const cls = ['option'];
+          if (checked) cls.push('has');
+          if (kind === 'unc') cls.push('opt-uncertain');
+          let badge = '';
+          if (kind === 'opt') badge = '<span class="opt-badge" title="트림 무관 선택옵션 — 직원 수동 입력">선택</span>';
+          return `
+          <div class="${cls.join(' ')}" title="${kind === 'unc' ? '트림에 따라 다를 수 있는 옵션 — 검토 필요' : ''}">
+            <input type="checkbox" id="opt-${id}" ${checked ? 'checked' : ''} data-id="${id}">
+            <label for="opt-${id}">${name}${badge}</label>
+          </div>`;
+        }).join('')}
+      </div>`;
+    container.appendChild(div);
+  });
+  container.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', () => toggleOption(cb.dataset.id));
+  });
+  $('totalSummary').textContent = `${totalHas} / ${TOTAL}`;
+  renderPopular();
+}
+
+function onSave() {
+  if (!state.selected) {
+    alert('차량을 먼저 선택하세요');
+    return;
+  }
+  const storageKey = state.selected._key + (state.trim ? ':' + state.trim : '');
+  saveMapping(storageKey, state.has);
+  state.source = 'saved';
+  updateInfo();
+  alert(`저장됨: ${state.selected.maker} ${state.selected.model} ${state.selected.sub}${state.trim ? ' · ' + state.trim : ''} (${state.has.size}개 옵션)`);
+}
+
+function showJSON() {
+  if (!state.selected) {
+    alert('차량을 먼저 선택하세요');
+    return;
+  }
+  const out = {
+    vehicle_master_key: state.selected._key,
+    maker: state.selected.maker,
+    model: state.selected.model,
+    sub: state.selected.sub,
+    trim: state.trim || null,
+    source: state.source,
+    options: Array.from(state.has).sort()
+  };
+  const pre = $('jsonOut');
+  pre.style.display = 'block';
+  pre.textContent = JSON.stringify(out, null, 2);
+}
+
+function resetAll() {
+  state.has = new Set();
+  renderOptions();
+  updateInfo();
+}
+
+function exportAll() {
+  const all = loadSavedMapping();
+  const out = Object.entries(all).map(([key, v]) => {
+    const [masterKey, trim] = key.split(':');
+    const m = state.master.find(r => r._key === masterKey);
+    return {
+      vehicle_master_key: masterKey,
+      trim: trim || null,
+      maker: m?.maker || '',
+      model: m?.model || '',
+      sub: m?.sub || '',
+      options: v.options,
+      updated_at: v.updated_at
+    };
+  });
+  const pre = $('jsonOut');
+  pre.style.display = 'block';
+  pre.textContent = JSON.stringify(out, null, 2);
+}
+
+init();
+</script>
+</body>
+</html>
