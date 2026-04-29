@@ -538,11 +538,12 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     ${(condByLabel['기본연령'] || condByLabel['개인범위']) ? `<div class="detail-section">
       <div class="detail-section-label">3. 운전자 연령 및 범위</div>
       <div class="info-grid">
-        ${pair('기본 연령', condByLabel['기본연령'], '연령 상한', condByLabel['연령상한'])}
-        ${pair('연령 하한', condByLabel['연령하향'], '연령 하향 비용', condByLabel['연령하향비'])}
-        ${pair('개인 운전 범위', condByLabel['개인범위'], '사업자 운전 범위', condByLabel['사업자범위'])}
+        <div class="lab">기본 연령</div><div class="full">${esc(condByLabel['기본연령'] || '-')}</div>
+        ${pair('연령 상한', condByLabel['연령상한'], '연령 하한', condByLabel['연령하향'])}
+        ${pair('면허 취득', p._policy?.license_period || p.license_period, '연령 하향 비용', condByLabel['연령하향비'])}
+        <div class="lab">개인 운전 범위</div><div class="full">${esc(condByLabel['개인범위'] || '-')}</div>
+        <div class="lab">사업자 운전 범위</div><div class="full">${esc(condByLabel['사업자범위'] || '-')}</div>
         ${pair('추가 인원', condByLabel['추가인원'], '추가 운전 비용', condByLabel['추가운전비'])}
-        <div class="lab">면허 취득 기간</div><div class="full">${esc(p._policy?.license_period || p.license_period || '제한없음')}</div>
       </div>
     </div>` : ''}
 
