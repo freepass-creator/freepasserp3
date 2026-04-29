@@ -542,6 +542,9 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const basicByLabel = Object.fromEntries(basicRows.map(r => [r[0], r[1]]));
   const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
   const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
+  // 정책 미할당 차량은 정책 의존 섹션(3·4·5) 숨김 — 자동 임포트(autoplus 등) 차량 노이즈 제거.
+  //  policy_code 가 비어있으면 정책 미설정으로 간주.
+  const hasPolicy = !!(p.policy_code || p._policy?.policy_code);
 
   const body = card.querySelector('.ws4-body');
   body.innerHTML = `
@@ -584,8 +587,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       })()}
     </div>` : ''}
 
-    <!-- 3. 운전자 연령 및 범위 -->
-    ${(condByLabel['기본연령'] || condByLabel['개인범위']) ? `<div class="detail-section">
+    <!-- 3. 운전자 연령 및 범위 — 정책 있을 때만 -->
+    ${hasPolicy ? `<div class="detail-section">
       <div class="detail-section-label">3. 운전자 연령 및 범위</div>
       <div class="info-grid">
         <div class="lab">기본 연령</div><div class="full">${esc(condByLabel['기본연령'] || '-')}</div>
@@ -597,8 +600,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       </div>
     </div>` : ''}
 
-    <!-- 4. 보험 내용 — 6 항목 (대인·대물·자손·무보험차·자차·긴급출동) -->
-    ${(() => {
+    <!-- 4. 보험 내용 — 정책 있을 때만 -->
+    ${hasPolicy ? (() => {
       const pol = p._policy || (store.policies || []).find(po => po.policy_code === p.policy_code) || {};
       // 자차 면책금 — 수리비율·최소·최대 조합. 정액이면 1줄, 비율형이면 2줄.
       //  2줄: "수리비의 20%" / "최소 30만 ~ 최대 100만"
@@ -637,10 +640,10 @@ export function renderSearchDetail(p, targetCard, options = {}) {
           <tbody>${insTableRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${r[2] || '-'}</td></tr>`).join('')}</tbody>
         </table>
       </div>`;
-    })()}
+    })() : ''}
 
-    <!-- 5. 대여 조건 — 연간주행부터 위 섹션에 미언급 항목 전부 -->
-    ${(condByLabel['약정 주행거리'] || condByLabel['심사여부'] || condByLabel['정비서비스']) ? `<div class="detail-section">
+    <!-- 5. 대여 조건 — 정책 있을 때만 -->
+    ${hasPolicy ? `<div class="detail-section">
       <div class="detail-section-label">5. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
       <div class="info-grid">
         ${pair('약정 주행거리', String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, ''), '1만Km 추가비', condByLabel['1만km추가'])}
