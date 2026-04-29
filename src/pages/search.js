@@ -535,14 +535,14 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <tbody>${priceRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${r.rent ? Math.round(r.rent/10000) + '만' : '-'}</td><td class="num">${r.dep ? Math.round(r.dep/10000) + '만' : '-'}</td></tr>`).join('')}</tbody>
       </table>
       ${(() => {
-        const parts = [
-          condByLabel['기본연령'],
-          condByLabel['연간약정주행'],
-          condByLabel['보험 포함'],
-        ].filter(Boolean);
+        // 가격 산정 조건 — 나이 / 약정주행거리 / 보험포함 여부
+        const age = condByLabel['기본연령'];
+        const mileage = String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, '');
+        const insurance = condByLabel['보험 포함'];
+        const parts = [age, mileage, insurance].filter(Boolean);
         return parts.length
           ? `<div style="margin-top:8px; padding:8px 10px; background:var(--bg-stripe); border-radius:4px; font-size:11px; color:var(--text-sub);">
-               * ${parts.join(', ')} 기준 금액입니다.
+               * ${esc(parts.join(' · '))} 기준 금액입니다.
              </div>`
           : '';
       })()}
