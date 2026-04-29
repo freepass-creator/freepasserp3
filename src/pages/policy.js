@@ -30,7 +30,7 @@ export const POLICY_OPTS = {
   additional_driver_allowance_count: ['불가','1인','2인','3인','무제한'],
   additional_driver_cost: ['없음','월 1만원','월 2만원','월 3만원','월 5만원','협의'],
   age_lowering_cost: ['대여료의 5%','대여료의 7%','대여료의 10%','5만원','7만원','10만원','월15만원 추가'],
-  annual_mileage: ['연간 1만Km 주행','연간 2만Km 주행','연간 3만Km 주행','연간 4만Km 주행','연간 5만Km 주행'],
+  annual_mileage: ['연간 1만Km','연간 2만Km','연간 3만Km','연간 4만Km','연간 5만Km'],
   mileage_upcharge_per_10000km: ['없음','1만원','2만원','3만원','5만원','10만원','협의'],
   deposit_installment: ['불가능','협의','가능'],
   deposit_card_payment: ['가능','협의','불가'],
@@ -134,7 +134,7 @@ export function renderPolicyDetail(pol) {
         ${ffi('정책설명',   'term_description',               pol.term_description,               dis)}
         ${ffs('심사기준',   'screening_criteria',             pol.screening_criteria,             O.screening_criteria, dis)}
         ${ffs('신용등급',   'credit_grade',                   pol.credit_grade,                   O.credit_grade, dis)}
-        ${ffs('약정주행',   'annual_mileage',                 pol.annual_mileage,                 O.annual_mileage, dis)}
+        ${ffs('약정 주행거리', 'annual_mileage',               pol.annual_mileage,                 O.annual_mileage, dis)}
         ${ffs('1만km추가',  'mileage_upcharge_per_10000km',   pol.mileage_upcharge_per_10000km,   O.mileage_upcharge_per_10000km, dis)}
         ${ffs('보증금분납', 'deposit_installment',            pol.deposit_installment,            O.deposit_installment, dis)}
         ${ffs('보증카드',   'deposit_card_payment',           pol.deposit_card_payment,           O.deposit_card_payment, dis)}

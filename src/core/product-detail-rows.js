@@ -80,7 +80,7 @@ export function extractProductDetailRows(p, options = {}) {
     ['심사여부',     needsReview(p, pol) ? '심사필요' : '무심사'],
     ['심사기준',     creditDisplay],
     ['보험 포함',    pol.insurance_included ?? p.insurance_included],
-    ['연간약정주행', pol.annual_mileage || p.annual_mileage],
+    ['약정 주행거리', pol.annual_mileage || p.annual_mileage],
     ['1만km추가',    pol.mileage_upcharge_per_10000km],
     ['보증금분납',   pol.deposit_installment],
     ['보증카드',     pol.deposit_card_payment],

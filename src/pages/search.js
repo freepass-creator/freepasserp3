@@ -604,10 +604,10 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     })()}
 
     <!-- 5. 대여 조건 — 연간주행부터 위 섹션에 미언급 항목 전부 -->
-    ${(condByLabel['연간약정주행'] || condByLabel['심사여부'] || condByLabel['정비서비스']) ? `<div class="detail-section">
+    ${(condByLabel['약정 주행거리'] || condByLabel['심사여부'] || condByLabel['정비서비스']) ? `<div class="detail-section">
       <div class="detail-section-label">5. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
       <div class="info-grid">
-        ${pair('약정 주행거리', condByLabel['연간약정주행'], '1만km 추가', condByLabel['1만km추가'])}
+        ${pair('약정 주행거리', condByLabel['약정 주행거리'], '1만km 추가', condByLabel['1만km추가'])}
         ${pair('대여 지역', condByLabel['대여지역'], '탁송비', condByLabel['탁송비'])}
         ${pair('보증금 분납', condByLabel['보증금분납'], '보증 카드', condByLabel['보증카드'])}
         ${pair('결제 방식', condByLabel['결제방식'], '위약금', condByLabel['위약금'])}
