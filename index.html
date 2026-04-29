@@ -1152,13 +1152,14 @@
 
   /* info-grid — 한 줄에 한 항목: [라벨 80px][값 1fr] (form-grid 와 통일된 규격) */
   .info-grid {
-    display: grid; grid-template-columns: 80px 1fr;
+    display: grid; grid-template-columns: 90px 1fr;
     border-top: 1px solid var(--border-soft);
     min-width: 0;
   }
   .info-grid > div {
-    padding: 4px 8px; border-bottom: 1px solid var(--border-soft);
+    padding: 8px 12px; border-bottom: 1px solid var(--border-soft);
     min-width: 0; overflow-wrap: break-word;
+    line-height: 1.5;
   }
   .info-grid > .lab {
     background: var(--bg-stripe); color: var(--text-weak);
