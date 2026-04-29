@@ -33,9 +33,13 @@ export function setSearchCallbacks({ onCreateRoom }) {
 export function updateSearchStats() {
   const el = document.getElementById('ptTbSearchStats');
   if (!el) return;
-  const products = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted');
+  // 출고불가 제외 — 즉시·가능·협의 만 카운트 (불가는 상품찾기 페이지에서 숨김)
+  const products = (store.products || []).filter(p => {
+    if (p._deleted || p.status === 'deleted') return false;
+    return shortStatus(p.vehicle_status || '') !== '불가';
+  });
   const total = products.length;
-  const counts = { '즉시': 0, '가능': 0, '협의': 0, '불가': 0 };
+  const counts = { '즉시': 0, '가능': 0, '협의': 0 };
   for (const p of products) {
     const s = shortStatus(p.vehicle_status || '');
     if (counts[s] !== undefined) counts[s]++;
@@ -45,7 +49,6 @@ export function updateSearchStats() {
     <span class="stat-즉시">즉시 ${counts['즉시']}</span>
     <span class="stat-가능">가능 ${counts['가능']}</span>
     <span class="stat-협의">협의 ${counts['협의']}</span>
-    <span class="stat-불가">불가 ${counts['불가']}</span>
   `;
 }
 // 다른 모듈에서 호출하기 쉽게 window 에도 노출 (showPage non-module 스크립트용)
@@ -1468,10 +1471,11 @@ function filterProductsExcept(exceptField) {
   const all = store.products || [];
   const f = _searchFilter;
   return all.filter(p => {
+    const norm = shortStatus(p.vehicle_status || '');
+    // 기본 필터 — '불가' 차량은 명시적으로 chip='불가' 선택했을 때만 표시 (출고완료/출고불가)
+    if (norm === '불가' && f.chip !== '불가') return false;
     if (f.chip !== 'all') {
-      const s = p.vehicle_status || '';
       // 정규화된 상태로 매칭 (즉시 / 가능 / 협의 / 불가)
-      const norm = shortStatus(s);
       if (f.chip === '즉시' && norm !== '즉시') return false;
       if (f.chip === '가능' && norm !== '가능') return false;
       if (f.chip === '협의' && norm !== '협의') return false;
