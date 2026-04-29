@@ -640,7 +640,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
     <!-- 7. 수수료 정보 (영업자/관리자만 — 데이터 없어도 섹션 표시) -->
     ${canSeeFee ? `<div class="detail-section">
-      <div class="detail-section-label">7. 수수료 정보 <span style="color:var(--text-muted); font-weight:400; font-size:11px;">(내부용 · 영업자만)</span></div>
+      <div class="detail-section-label">7. 수수료 정보</div>
       ${feeRows.length ? `
         <table class="table">
           <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
