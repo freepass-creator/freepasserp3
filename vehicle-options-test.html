@@ -110,14 +110,14 @@
 <h1>차량 옵션 매핑 테스트</h1>
 
 <div class="panel">
-  <h2>차량 선택 (엔카마스터 기준)</h2>
+  <h2>차량 선택 (차종마스터 기준)</h2>
   <div class="selector-row">
     <select id="maker" disabled><option value="">제조사 로딩중…</option></select>
     <select id="model" disabled><option value="">모델</option></select>
     <select id="sub" disabled><option value="">세부모델</option></select>
     <select id="trim" disabled><option value="">트림</option></select>
   </div>
-  <div class="summary" id="trimInfo">엔카마스터 데이터 로딩중…</div>
+  <div class="summary" id="trimInfo">차종마스터 데이터 로딩중…</div>
   <div class="vehicle-meta" id="vehicleMeta" style="display:none"></div>
   <div class="mode-toggle">
     <button class="mode-btn active" data-mode="edit">직원 입력</button>
@@ -362,27 +362,47 @@ function within15Years(row) {
   return (row.production_start || '0000-00') >= cutoff;
 }
 
-// 세부모델 표기 정규화 — 괄호 제거 + 기아 N세대 → 개발코드
-const KIA_GEN_CODE_MAP = {
-  'K5': { '3세대': 'DL3', '2세대': 'JF' },
-  'K9': { '2세대': 'RJ' },
-  '카니발': { '4세대': 'KA4' },
-  '스포티지': { '5세대': 'NQ5' },
-  '쏘렌토': { '4세대': 'MQ4' },
-  '셀토스': { '2세대': 'SP3' },
-  'K3': { '2세대': 'BD' }
+// 세부모델 표기 정규화 — 괄호 제거 + 메이커별 N세대 → 개발코드 통일
+const GEN_CODE_MAP = {
+  '기아': {
+    'K5': { '3세대': 'DL3', '2세대': 'JF' },
+    'K9': { '2세대': 'RJ' },
+    '카니발': { '4세대': 'KA4' },
+    '스포티지': { '5세대': 'NQ5' },
+    '쏘렌토': { '4세대': 'MQ4' },
+    '셀토스': { '2세대': 'SP3' },
+    'K3': { '2세대': 'BD' }
+  }
+};
+const GENESIS_DEFAULT_CODE = {
+  'G70': 'IK', 'G80': 'RG3', 'G90': 'RS4',
+  'GV60': 'JW', 'GV70': 'JK1', 'GV80': 'JX1'
 };
 function normalizeSub(row) {
   let s = (row.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
-  if (row.maker === '기아') {
-    const codes = KIA_GEN_CODE_MAP[row.model];
-    if (codes) {
-      for (const [gen, code] of Object.entries(codes)) {
-        s = s.replace(new RegExp(gen + '\\b', 'g'), code);
-      }
+  const codes = GEN_CODE_MAP[row.maker]?.[row.model];
+  if (codes) {
+    for (const [gen, code] of Object.entries(codes)) {
+      s = s.replace(new RegExp(gen + '\\b', 'g'), code);
+    }
+  }
+  if (row.maker === '제네시스') {
+    const defaultCode = GENESIS_DEFAULT_CODE[row.model];
+    if (defaultCode && !/[A-Z]+\d+|RJ|JF|DH|RS3/i.test(s)) {
+      const ps = row.production_start || '';
+      let codeUsed = defaultCode;
+      if (row.model === 'G80' && ps < '2020-01') codeUsed = 'DH';
+      else if (row.model === 'G90' && ps < '2022-01') codeUsed = 'RS3';
+      s = s.replace(new RegExp('\\b' + row.model + '\\b'), row.model + ' ' + codeUsed).replace(/\s+/g, ' ');
     }
   }
   return s;
+}
+function formatYearRange(row) {
+  const ps = (row.production_start || '').slice(0, 4);
+  const pe = (row.production_end || '').slice(0, 4);
+  if (!ps) return '';
+  return ps + '~' + (pe || '현재');
 }
 
 const state = {
@@ -451,12 +471,12 @@ async function init() {
   // 마스터 로드
   const data = await loadMaster();
   if (!data) {
-    $('trimInfo').textContent = '⚠️  엔카마스터 로드 실패 — Vite dev 서버에서 열어주세요 (npm run dev → http://localhost:5173/vehicle-options-test.html)';
+    $('trimInfo').textContent = '⚠️  차종마스터 로드 실패 — Vite dev 서버에서 열어주세요 (npm run dev → http://localhost:5173/vehicle-options-test.html)';
     $('trimInfo').classList.add('warn');
     return;
   }
   state.master = data;
-  $('trimInfo').textContent = `엔카마스터 ${data.length}건 로드 완료. 차량을 선택하세요.`;
+  $('trimInfo').textContent = `차종마스터 ${data.length}건 로드 완료. 차량을 선택하세요.`;
 
   // 제조사 채우기
   fillMakers();
@@ -750,8 +770,8 @@ function updateInfo() {
   } else {
     const seedCount = window.TRIM_OPTIONS_SEED ? Object.keys(window.TRIM_OPTIONS_SEED).length : 0;
     info.textContent = state.master.length
-      ? `엔카마스터 ${state.master.length}건 / AI 시드 ${seedCount}개 sub 로드됨. 차량을 선택하세요.`
-      : '엔카마스터 로딩중…';
+      ? `차종마스터 ${state.master.length}건 / AI 시드 ${seedCount}개 sub 로드됨. 차량을 선택하세요.`
+      : '차종마스터 로딩중…';
     meta.style.display = 'none';
     meta.innerHTML = '';
   }

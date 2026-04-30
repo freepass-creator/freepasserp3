@@ -72,7 +72,13 @@
     <select id="sub" disabled><option>세부모델</option></select>
     <select id="trim" disabled><option>트림</option></select>
   </div>
-  <div class="meta" id="status">엔카마스터 로딩…</div>
+  <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+    <label style="font-size:11px;color:#6b7280;cursor:pointer;display:inline-flex;align-items:center;gap:4px">
+      <input type="checkbox" id="showYear" checked style="margin:0">
+      세부모델에 생산기간 표시
+    </label>
+  </div>
+  <div class="meta" id="status">차종마스터 로딩…</div>
 </div>
 
 <div class="panel" id="catalogPanel" style="display:none">
@@ -91,32 +97,53 @@
 const $ = id => document.getElementById(id);
 const state = {
   master: [],
-  selected: null,        // 엔카마스터 row
+  selected: null,        // 차종마스터 row
   catalog: null,         // car-options-catalog JSON
   activeTrim: null,
   selectedPkgs: new Set() // 선택한 패키지 인덱스
 };
 
 // 그랜저 HG 출시(2011-01)가 컷오프. 그 이전 출시 모델 제외
-// 세부모델 표기 정규화 — 괄호 제거 + 기아 N세대 → 개발코드
-const KIA_GEN_CODE_MAP = {
-  'K5': { '3세대': 'DL3', '2세대': 'JF' },
-  'K9': { '2세대': 'RJ' },
-  '카니발': { '4세대': 'KA4' },
-  '스포티지': { '5세대': 'NQ5' },
-  '쏘렌토': { '4세대': 'MQ4' },
-  '셀토스': { '2세대': 'SP3' },
-  '쏘울 부스터': {},  // 부스터는 그대로
-  'K3': { '2세대': 'BD' }
+// 세부모델 표기 정규화 — 괄호 제거 + 메이커별 N세대 → 개발코드 통일
+const GEN_CODE_MAP = {
+  '기아': {
+    'K5': { '3세대': 'DL3', '2세대': 'JF' },
+    'K9': { '2세대': 'RJ' },
+    '카니발': { '4세대': 'KA4' },
+    '스포티지': { '5세대': 'NQ5' },
+    '쏘렌토': { '4세대': 'MQ4' },
+    '셀토스': { '2세대': 'SP3' },
+    'K3': { '2세대': 'BD' }
+  }
+};
+// 제네시스는 sub 에 코드명 거의 없음 → 모델별 기본 코드 부여
+const GENESIS_DEFAULT_CODE = {
+  'G70': 'IK',
+  'G80': 'RG3',     // RG3 = 현재 / DH = 이전
+  'G90': 'RS4',     // RS4 = 현재 / RS3 = 이전 (EQ900)
+  'GV60': 'JW',
+  'GV70': 'JK1',
+  'GV80': 'JX1'
 };
 function normalizeSub(row) {
   let s = (row.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
-  if (row.maker === '기아') {
-    const codes = KIA_GEN_CODE_MAP[row.model];
-    if (codes) {
-      for (const [gen, code] of Object.entries(codes)) {
-        s = s.replace(new RegExp(gen + '\\b', 'g'), code);
-      }
+  // 1) 기아 N세대 → 코드
+  const codes = GEN_CODE_MAP[row.maker]?.[row.model];
+  if (codes) {
+    for (const [gen, code] of Object.entries(codes)) {
+      s = s.replace(new RegExp(gen + '\\b', 'g'), code);
+    }
+  }
+  // 2) 제네시스: 코드 없으면 기본 코드 부여 + 이전 세대 구분
+  if (row.maker === '제네시스') {
+    const defaultCode = GENESIS_DEFAULT_CODE[row.model];
+    if (defaultCode && !/[A-Z]+\d+|RJ|JF|DH|RS3/i.test(s)) {
+      // 이전 세대 식별 (production_start 로): G80 2017 = DH, G90 2017 = RS3
+      const ps = row.production_start || '';
+      let codeUsed = defaultCode;
+      if (row.model === 'G80' && ps < '2020-01') codeUsed = 'DH';
+      else if (row.model === 'G90' && ps < '2022-01') codeUsed = 'RS3';
+      s = s.replace(new RegExp('\\b' + row.model + '\\b'), row.model + ' ' + codeUsed).replace(/\s+/g, ' ');
     }
   }
   return s;
@@ -245,7 +272,8 @@ function onModelChange() {
     const opt = document.createElement('option');
     opt.value = r._key;
     const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
-    opt.textContent = `${normalizeSub(r)} (${yr})`;
+    const showYear = $('showYear')?.checked;
+    opt.textContent = showYear ? `${normalizeSub(r)} (${yr})` : normalizeSub(r);
     sel.appendChild(opt);
   });
   sel.disabled = false;
@@ -440,17 +468,20 @@ function renderCatalog() {
 async function init() {
   const data = await loadMaster();
   if (!data) {
-    $('status').textContent = '⚠️ 엔카마스터 로드 실패';
+    $('status').textContent = '⚠️ 차종마스터 로드 실패';
     $('status').classList.add('warn');
     return;
   }
   state.master = data;
-  $('status').textContent = `엔카마스터 ${data.length}건 로드 완료.`;
+  $('status').textContent = `차종마스터 ${data.length}건 로드 완료.`;
   fillMakers();
   $('maker').addEventListener('change', onMakerChange);
   $('model').addEventListener('change', onModelChange);
   $('sub').addEventListener('change', onSubChange);
   $('trim').addEventListener('change', onTrimChange);
+  $('showYear').addEventListener('change', () => {
+    if ($('model').value) onModelChange();   // sub dropdown 다시 그림
+  });
   $('rawToggle').addEventListener('click', () => {
     const pre = $('rawJson');
     pre.style.display = pre.style.display === 'none' ? 'block' : 'none';
