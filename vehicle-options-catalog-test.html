@@ -345,11 +345,134 @@ function renderFpOptions() {
   if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
 
+/* 카탈로그(제조사 실데이터) ↔ 프리패스 표준 옵션 매칭 */
+function _normName(s) {
+  return (s || '').toLowerCase()
+    .replace(/[\(\)\[\]_\-\/\.,]/g, '')
+    .replace(/\s+/g, '');
+}
+// 카탈로그 옵션명 → FP 옵션 ID 직접 매핑 (매칭 안 되는 케이스 보정)
+const FP_NAME_MAP = {
+  '차체자세제어': 'VDC', '차체자세제어장치': 'VDC',
+  '미끄럼방지': 'TCS', '제동도움장치': 'BAS',
+  '급제동경보': 'ESS', '급제동경보시스템': 'ESS',
+  '경사로밀림방지': 'HAC', '경사로저속주행': 'DBC',
+  '운전자주의경고': 'DAW', '전방추돌경보': 'FCWS',
+  '차선이탈경보': 'LDWS', '차선유지보조': 'LKAS',
+  '고속도로주행지원시스템': 'HDA', '고속도로주행보조': 'HDA',
+  '후측방경보시스템': 'RCTA', '후측방경보': 'RCTA',
+  '어라운드뷰': 'AVMS', '서라운드뷰': 'AVMS',
+  '주차조향보조시스템': 'SPAS',
+  '타이어공기압감지': 'TPMS',
+  '전자식파킹브레이크': 'EPB', '오토홀드': 'EPB',
+  '풋파킹브레이크': 'FOOT_PARKING',
+  '자동긴급제동시스템': 'AEB', '자동긴급제동': 'AEB',
+  '에어백운전석': 'AIRBAG_DR', '에어백동승석': 'AIRBAG_PS',
+  '에어백사이드': 'AIRBAG_SIDE', '에어백무릎보호': 'AIRBAG_KNEE',
+  '후방카메라': 'CAM_REAR', '전방카메라': 'CAM_FRONT',
+  '후방감지센서': 'SENSOR_REAR', '전방감지센서': 'SENSOR_FRONT',
+  '파노라마썬루프': 'SUNROOF_PANO', '파노라마선루프': 'SUNROOF_PANO',
+  '와이드썬루프': 'SUNROOF_PANO', '와이드선루프': 'SUNROOF_PANO',
+  '세이프티썬루프': 'SUNROOF_SAFETY',
+  '썬루프일반': 'SUNROOF',
+  'led헤드램프': 'HEAD_LED', '제논헤드램프': 'HEAD_HID', 'hid헤드램프': 'HEAD_HID',
+  'led포지션램프': 'POSITION_LED',
+  '주간주행등': 'DRL',
+  '에스코트헤드램프': 'HEAD_ESCORT',
+  '전동접이사이드미러': 'MIRROR_FOLD',
+  '전동조절사이드미러': 'MIRROR_ADJ',
+  '루프랙': 'ROOF_RACK',
+  '알루미늄휠': 'ALUMINUM_WHEEL',
+  '안개등led': 'FOG_LED',
+  'led리어콤비네이션램프': 'REAR_LED_COMBI',
+  '크루즈컨트롤': 'CRUISE',
+  '스티어링휠리모컨': 'STR_REMOTE',
+  '오토라이트컨트롤': 'AUTO_LIGHT',
+  '파워스티어링': 'POWER_STR',
+  '핸즈프리': 'HANDS_FREE',
+  '열선스티어링휠': 'HEAT_STR',
+  '전동시트운전석': 'POWER_SEAT_DR', '전동시트동승석': 'POWER_SEAT_PS',
+  '메모리시트운전석': 'MEMORY_SEAT_DR', '메모리시트동승석': 'MEMORY_SEAT_PS',
+  '열선시트앞좌석': 'HEAT_SEAT_FRONT', '열선시트뒷좌석': 'HEAT_SEAT_REAR',
+  '통풍시트운전석': 'VENT_SEAT_DR', '통풍시트동승석': 'VENT_SEAT_PS',
+  '가죽시트': 'SEAT_LEATHER', '직물시트': 'SEAT_FABRIC', '직물가죽시트': 'SEAT_MIX',
+  'ecm룸미러': 'ECM_MIRROR',
+  '하이패스룸미러': 'HIPASS_MIRROR', '후방룸미러': 'REAR_MIRROR',
+  '내비게이션': 'NAVIGATION',
+  '하이패스': 'HIPASS',
+  '블랙박스': 'BLACKBOX', '빌트인캠': 'BUILTIN_CAM',
+  '버튼시동': 'BUTTON_START',
+  '스마트키': 'SMART_KEY',
+  '무선도어잠금장치': 'REMOTE_LOCK',
+  '원격시동': 'REMOTE_START',
+  '자동에어컨': 'AUTO_AC', '자동에어컨뒷좌석': 'AUTO_AC_REAR',
+  '매뉴얼에어컨': 'MANUAL_AC',
+  '파워슬라이딩도어': 'SLIDING_DOOR',
+  '스마트트렁크테일게이트': 'SMART_TRUNK', '핸즈프리테일게이트': 'SMART_TRUNK',
+  '파워트렁크': 'POWER_TRUNK',
+  '파워윈도우': 'POWER_WINDOW',
+  '커튼수동식': 'CURTAIN_M', '커튼전동식': 'CURTAIN_E',
+  '경제운전안내액티브': 'ECO_GUIDE', '경제운전안내': 'ECO_GUIDE',
+  '무선충전시스템': 'WPC', '무선충전': 'WPC', 'wpc': 'WPC',
+  'cd플레이어': 'CD_PLAYER', 'mp3': 'MP3',
+  '뒷자석tv': 'REAR_TV', '뒷좌석tv': 'REAR_TV',
+  '블루투스': 'BLUETOOTH', 'aux단자': 'AUX', 'usb단자': 'USB',
+  '미러링': 'MIRRORING', '미러링tmap': 'MIRRORING',
+  '무선카플레이': 'MIRRORING_WIRELESS', '무선안드로이드오토': 'MIRRORING_WIRELESS',
+  '웰컴시스템': 'WELCOME', '음성인식시스템': 'VOICE_RECOG',
+  '헤드업디스플레이': 'HUD',
+  '전자제어서스펜션': 'ECS',
+  '전자식룸미러mts': 'MTS_E_MIRROR',
+  'abs': 'ABS', 'tcs': 'TCS', 'bas': 'BAS', 'tpms': 'TPMS', 'esc': 'VDC',
+  'aeb': 'AEB', 'lkas': 'LKAS', 'ldws': 'LDWS', 'fcws': 'FCWS',
+  'rcta': 'RCTA', 'hda': 'HDA', 'avms': 'AVMS', 'spas': 'SPAS',
+  'hud': 'HUD', 'wpc': 'WPC', 'epb': 'EPB', 'hac': 'HAC',
+};
+
+// 카탈로그 옵션 이름으로 FP 옵션 ID 찾기
+function matchFpByName(name) {
+  if (!name) return null;
+  const n = _normName(name);
+  if (FP_NAME_MAP[n]) return FP_NAME_MAP[n];
+  // FP_NAME_MAP 부분 일치 (긴 키 우선)
+  const keys = Object.keys(FP_NAME_MAP).sort((a, b) => b.length - a.length);
+  for (const k of keys) {
+    if (k.length >= 3 && n.includes(k)) return FP_NAME_MAP[k];
+  }
+  // 95 옵션 라벨로 fallback
+  for (const cat of Object.values(OPTIONS)) {
+    for (const [id, label] of cat.items) {
+      const nl = _normName(label.replace(/<[^>]+>/g, ''));
+      if (nl.length >= 4 && (n === nl || n.includes(nl) || nl.includes(n))) return id;
+    }
+  }
+  return null;
+}
+
+function matchCatalogToFp(catalog, trimName) {
+  const matched = new Set();
+  const t = catalog.trims[trimName];
+  if (!t || !Array.isArray(t.basic)) return matched;
+  for (const optId of t.basic) {
+    const info = catalog.options[optId];
+    if (!info) continue;
+    const fpId = matchFpByName(info.name);
+    if (fpId) matched.add(fpId);
+  }
+  return matched;
+}
+
 function prefillFpFromSeed() {
   state.fpOptions = new Set();
   if (!state.selected || !state.activeTrim) return;
+  // 1순위: 카탈로그 (제조사 실데이터)
+  if (state.catalog) {
+    const matched = matchCatalogToFp(state.catalog, state.activeTrim);
+    matched.forEach(id => state.fpOptions.add(id));
+  }
+  // 2순위: AI 시드 (카탈로그 못 잡은 옵션 보완)
   const seed = window.TRIM_OPTIONS_SEED?.[state.selected._key]?.trims?.[state.activeTrim];
-  if (Array.isArray(seed)) state.fpOptions = new Set(seed);
+  if (Array.isArray(seed)) seed.forEach(id => state.fpOptions.add(id));
 }
 
 // 그랜저 HG 출시(2011-01)가 컷오프. 그 이전 출시 모델 제외
