@@ -807,13 +807,12 @@ function startHydration() {
   bindAdminChatButton();
 }
 
-/* 관리자 문의 — 사이드바 하단 버튼. 역할별 다른 동작:
- *  비admin (공급사·영업자): 본인의 1:1 관리자 문의 룸 (`ADMIN_${uid}`) 생성/열기
- *  admin: workspace 로 이동 (받은 모든 관리자 문의 룸은 is_admin_chat 으로 필터 가능) */
+/* 관리자 문의 — 사이드바 하단 버튼. 별도 오버레이 (workspace 와 분리, 채팅만).
+ *  비admin: 본인 1:1 관리자 룸 (`ADMIN_${uid}`)
+ *  admin:  관리자 문의 룸 목록 → 선택 → 채팅 */
 function bindAdminChatButton() {
   const btn = document.getElementById('sbAdminChat');
   if (!btn) return;
-  // 역할별 라벨 갱신 — boot 시점엔 currentUser 없을 수 있어 동적 갱신
   const updateLabel = () => {
     const me = store.currentUser || {};
     const label = btn.querySelector('.sb-label');
@@ -826,51 +825,184 @@ function bindAdminChatButton() {
     }
   };
   updateLabel();
-  // currentUser 로드 후 한 번 더 갱신
   setTimeout(updateLabel, 1000);
 
   btn.addEventListener('click', async (e) => {
     e.preventDefault();
     const me = store.currentUser || {};
     if (!me.uid) return;
+    openAdminChatOverlay();
+  });
+}
 
-    if (me.role === 'admin') {
-      // 관리자 — workspace 로 이동, 첫 admin chat 룸 자동 선택
-      location.hash = 'workspace';
-      setTimeout(() => {
-        const adminRoom = (store.rooms || []).find(r => r.is_admin_chat);
-        if (adminRoom) selectRoom(adminRoom._key);
-      }, 300);
+/* 관리자 문의 전용 오버레이 — 우측 슬라이드 인. 채팅만. 다른 패널 X.
+ *  비admin: 본인 룸 자동 열기 / admin: 사용자 선택 후 룸 열기 */
+let _adminChatUnsub = null;
+let _adminChatRoomKey = null;
+async function openAdminChatOverlay() {
+  // 이미 열려있으면 무시
+  if (document.querySelector('.admin-chat-overlay')) return;
+
+  const me = store.currentUser || {};
+  const isAdmin = me.role === 'admin';
+
+  const overlay = document.createElement('div');
+  overlay.className = 'admin-chat-overlay';
+  overlay.innerHTML = `
+    <div class="admin-chat-panel">
+      <div class="admin-chat-head">
+        <i class="ph ph-headset"></i>
+        <span class="admin-chat-title">관리자 문의</span>
+        <span class="admin-chat-sub" id="adminChatSub"></span>
+        <button class="admin-chat-close" id="adminChatClose" title="닫기"><i class="ph ph-x"></i></button>
+      </div>
+      ${isAdmin ? `
+        <div class="admin-chat-list" id="adminChatList">
+          <div style="padding:24px;text-align:center;color:var(--text-muted);">로딩 중...</div>
+        </div>
+      ` : ''}
+      <div class="admin-chat-body" id="adminChatBody"${isAdmin ? ' hidden' : ''}>
+        <div style="padding:24px;text-align:center;color:var(--text-muted);">대화방 준비 중...</div>
+      </div>
+      <div class="admin-chat-input" id="adminChatInputWrap"${isAdmin ? ' hidden' : ''}>
+        <input type="text" class="input" id="adminChatInput" placeholder="메시지 입력..." enterkeyhint="send">
+        <button class="btn btn-sm btn-primary" id="adminChatSend"><i class="ph ph-paper-plane-tilt"></i></button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const close = () => {
+    if (_adminChatUnsub) { try { _adminChatUnsub(); } catch (_) {} _adminChatUnsub = null; }
+    _adminChatRoomKey = null;
+    overlay.remove();
+  };
+  overlay.querySelector('#adminChatClose').addEventListener('click', close);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+  if (isAdmin) {
+    // admin — 받은 문의 목록 표시. 클릭하면 우측 채팅 영역 열림.
+    const renderAdminList = () => {
+      const rooms = (store.rooms || []).filter(r => r.is_admin_chat && !r._deleted)
+        .sort((a, b) => (b.last_message_at || b.created_at || 0) - (a.last_message_at || a.created_at || 0));
+      const listEl = overlay.querySelector('#adminChatList');
+      if (!rooms.length) {
+        listEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);">받은 문의 없음</div>';
+        return;
+      }
+      listEl.innerHTML = rooms.map(r => `
+        <button class="admin-chat-list-item" data-rid="${r._key}">
+          <i class="ph ph-user-circle"></i>
+          <div>
+            <div class="admin-chat-list-name">${esc(r.agent_name || r.agent_code || r._key)}</div>
+            <div class="admin-chat-list-sub">${esc((r.last_message || '대화 없음').slice(0, 40))}</div>
+          </div>
+        </button>
+      `).join('');
+      listEl.querySelectorAll('[data-rid]').forEach(btn => {
+        btn.addEventListener('click', () => openAdminChatRoom(btn.dataset.rid, overlay));
+      });
+    };
+    renderAdminList();
+    return;
+  }
+
+  // 비admin — 본인 룸 자동 열기/생성
+  const roomKey = `ADMIN_${me.uid}`;
+  try {
+    const existing = (store.rooms || []).find(r => r._key === roomKey);
+    if (!existing) {
+      await setRecord(`rooms/${roomKey}`, {
+        room_id: roomKey,
+        chat_code: roomKey,
+        is_admin_chat: true,
+        agent_uid: me.uid,
+        agent_name: me.name || '',
+        agent_code: me.user_code || '',
+        agent_channel_code: me.role === 'provider' ? 'PROVIDER' : (me.agent_channel_code || me.company_code || ''),
+        provider_company_code: me.role === 'provider' ? (me.company_code || '') : '',
+        subject: `${me.name || me.email} 관리자 문의`,
+        unread: 0,
+        created_at: Date.now(),
+        created_by: me.uid,
+      });
+    }
+    openAdminChatRoom(roomKey, overlay);
+  } catch (err) {
+    console.error('[admin-chat]', err);
+    showToast('관리자 문의 생성 실패', 'error');
+    close();
+  }
+}
+
+/* 관리자 문의 룸 열기 — 메시지 구독 + 입력 바인딩 */
+function openAdminChatRoom(roomKey, overlay) {
+  const me = store.currentUser || {};
+  _adminChatRoomKey = roomKey;
+  const body = overlay.querySelector('#adminChatBody');
+  const inputWrap = overlay.querySelector('#adminChatInputWrap');
+  const sub = overlay.querySelector('#adminChatSub');
+
+  body.hidden = false;
+  inputWrap.hidden = false;
+  body.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-muted);">메시지 불러오는 중...</div>';
+
+  const room = (store.rooms || []).find(r => r._key === roomKey);
+  if (room && sub) sub.textContent = room.agent_name || room.subject || '';
+
+  // 메시지 구독
+  if (_adminChatUnsub) { try { _adminChatUnsub(); } catch (_) {} }
+  _adminChatUnsub = watchCollection(`messages/${roomKey}`, (msgs) => {
+    if (_adminChatRoomKey !== roomKey) return;
+    if (!msgs.length) {
+      body.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);font-size:12px;">대화를 시작해보세요</div>';
       return;
     }
-
-    // 비admin — 본인 관리자 문의 룸 생성/열기
-    const roomKey = `ADMIN_${me.uid}`;
-    try {
-      const existing = (store.rooms || []).find(r => r._key === roomKey);
-      if (!existing) {
-        await setRecord(`rooms/${roomKey}`, {
-          room_id: roomKey,
-          chat_code: roomKey,
-          is_admin_chat: true,
-          agent_uid: me.uid,
-          agent_name: me.name || '',
-          agent_code: me.user_code || '',
-          agent_channel_code: me.role === 'provider' ? 'PROVIDER' : (me.agent_channel_code || me.company_code || ''),
-          provider_company_code: me.role === 'provider' ? (me.company_code || '') : '',
-          subject: `${me.name || me.email} 관리자 문의`,
-          unread: 0,
-          created_at: Date.now(),
-          created_by: me.uid,
-        });
-      }
-      location.hash = 'workspace';
-      setTimeout(() => selectRoom(roomKey), 200);
-    } catch (err) {
-      console.error('[admin-chat]', err);
-      showToast('관리자 문의 생성 실패', 'error');
-    }
+    body.innerHTML = msgs.map(m => {
+      const mine = m.sender_uid === me.uid;
+      const dt = m.created_at ? new Date(m.created_at).toLocaleTimeString('ko', { hour: '2-digit', minute: '2-digit' }) : '';
+      return `
+        <div class="adm-chat-row ${mine ? 'is-mine' : 'is-other'}">
+          ${!mine ? `<div class="adm-chat-sender">${esc(m.sender_name || m.sender_role || '')}</div>` : ''}
+          <div class="adm-chat-bubble">${esc(m.text || '')}</div>
+          <div class="adm-chat-time">${dt}</div>
+        </div>`;
+    }).join('');
+    body.scrollTop = body.scrollHeight;
   });
+
+  const input = overlay.querySelector('#adminChatInput');
+  const sendBtn = overlay.querySelector('#adminChatSend');
+  const send = async () => {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    try {
+      await pushRecord(`messages/${roomKey}`, {
+        text,
+        sender_uid: me.uid,
+        sender_name: me.name || me.email || '',
+        sender_role: me.role || '',
+        created_at: Date.now(),
+      });
+      // 룸의 last_message 갱신
+      await updateRecord(`rooms/${roomKey}`, {
+        last_message: text,
+        last_message_at: Date.now(),
+        last_sender_role: me.role || '',
+        last_sender_code: me.user_code || '',
+      });
+    } catch (err) {
+      console.error('[admin-chat send]', err);
+      showToast('전송 실패', 'error');
+      input.value = text;
+    }
+  };
+  sendBtn.addEventListener('click', send);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  setTimeout(() => input.focus(), 100);
 }
 
 /* 패널 안의 라벨 길이 변화 감지 → 자동 폰트 축소 (모든 페이지 일괄) */

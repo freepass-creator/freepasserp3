@@ -880,6 +880,89 @@
   /* 개발도구는 admin 만 */
   body:not(.role-admin) .pt-sb-bottom-dev { display: none; }
   /* 관리자 문의 — 모든 역할 노출. admin 은 받은 문의 목록 보기 / 비admin 은 새 문의 시작 */
+
+  /* 관리자 문의 오버레이 — 우측 슬라이드 인 패널, 채팅 전용 (workspace 와 분리) */
+  .admin-chat-overlay {
+    position: fixed; inset: 0; z-index: 1500;
+    background: rgba(0,0,0,0.35);
+    display: flex; justify-content: flex-end;
+    animation: fadeIn 0.15s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .admin-chat-panel {
+    width: min(420px, 100%);
+    height: 100%;
+    background: var(--bg-card);
+    display: flex; flex-direction: column;
+    box-shadow: -4px 0 16px rgba(0,0,0,0.15);
+    animation: slideRight 0.18s ease;
+  }
+  @keyframes slideRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  .admin-chat-head {
+    height: var(--panel-head-h);
+    padding: 0 var(--sp-3);
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: var(--sp-2);
+    flex-shrink: 0;
+  }
+  .admin-chat-title { font-weight: 500; color: var(--text-main); }
+  .admin-chat-sub { color: var(--text-sub); font-size: 11px; flex: 1; }
+  .admin-chat-close { background: none; border: 0; cursor: pointer; padding: 4px; color: var(--text-sub); }
+  .admin-chat-close:hover { color: var(--text-main); }
+  /* admin: 받은 문의 목록 — 좌측에 패널 위쪽, 클릭 시 우측 채팅 활성화. 단순 구현 (목록만 위, 채팅 아래) */
+  .admin-chat-list {
+    border-bottom: 1px solid var(--border);
+    max-height: 35%;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .admin-chat-list-item {
+    width: 100%;
+    display: flex; align-items: center; gap: var(--sp-2);
+    padding: 8px var(--sp-3);
+    background: none; border: 0; border-bottom: 1px solid var(--border-soft);
+    text-align: left; cursor: pointer;
+    color: var(--text-main); font-family: inherit; font-size: var(--font-size);
+  }
+  .admin-chat-list-item:hover { background: var(--bg-stripe); }
+  .admin-chat-list-item > i { font-size: 18px; color: var(--text-muted); flex-shrink: 0; }
+  .admin-chat-list-name { font-weight: 500; }
+  .admin-chat-list-sub { color: var(--text-muted); font-size: 11px; margin-top: 1px; }
+  /* 채팅 본문 */
+  .admin-chat-body {
+    flex: 1; overflow-y: auto;
+    padding: var(--sp-3);
+    display: flex; flex-direction: column; gap: 6px;
+    background: var(--bg-page);
+  }
+  .adm-chat-row {
+    display: flex; flex-direction: column;
+    max-width: 80%;
+  }
+  .adm-chat-row.is-mine { align-self: flex-end; align-items: flex-end; }
+  .adm-chat-row.is-other { align-self: flex-start; align-items: flex-start; }
+  .adm-chat-sender { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+  .adm-chat-bubble {
+    padding: 6px 10px; border-radius: 8px;
+    font-size: var(--font-size); line-height: 1.4;
+    white-space: pre-wrap; word-break: break-word;
+    background: var(--bg-card); border: 1px solid var(--border);
+  }
+  .adm-chat-row.is-mine .adm-chat-bubble {
+    background: var(--text-main); color: var(--text-inverse); border-color: var(--text-main);
+  }
+  .adm-chat-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  /* 입력바 */
+  .admin-chat-input {
+    padding: var(--sp-2) var(--sp-3);
+    border-top: 1px solid var(--border);
+    display: flex; gap: var(--sp-2); align-items: center;
+    flex-shrink: 0;
+    background: var(--bg-card);
+  }
+  .admin-chat-input .input { flex: 1; height: 30px; }
+  .admin-chat-input button { flex-shrink: 0; }
   body.role-provider .pt-sb a[data-page="partners"],
   body.role-provider .pt-sb a[data-page="users"] { display: none; }
   body.role-agent_admin .pt-sb a[data-page="product"],
