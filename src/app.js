@@ -924,19 +924,10 @@ function openAdminChatRoomInPage(roomKey) {
       body.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);font-size:12px;">대화를 시작해보세요</div>';
       return;
     }
-    // 시간순 정렬 (오래된 게 위, 최신이 아래) — watchCollection 기본은 desc 라 reverse 필요
+    // 시간순 (오래된 게 위) + workspace 와 동일한 chat-render 사용 — 색상/배지/읽음표시 통일
     const sorted = [...msgs].sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
-    body.innerHTML = sorted.map(m => {
-      const mine = m.sender_uid === me.uid;
-      const dt = m.created_at ? new Date(m.created_at).toLocaleTimeString('ko', { hour: '2-digit', minute: '2-digit' }) : '';
-      return `
-        <div class="adm-chat-row ${mine ? 'is-mine' : 'is-other'}">
-          ${!mine ? `<div class="adm-chat-sender">${esc(m.sender_name || m.sender_role || '')}</div>` : ''}
-          <div class="adm-chat-bubble">${esc(m.text || '')}</div>
-          <div class="adm-chat-time">${dt}</div>
-        </div>`;
-    }).join('');
-    body.scrollTop = body.scrollHeight;     // 최신 메시지로 스크롤
+    body.innerHTML = v2RenderChatMessages(sorted, { uid: me.uid, peerReadAt: null });
+    body.scrollTop = body.scrollHeight;
   });
 
   // 입력바 send 핸들러 — 매번 재바인딩 (단순)
