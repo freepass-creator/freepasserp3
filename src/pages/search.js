@@ -338,7 +338,15 @@ export async function searchActionContract(p) {
       showToast(`UID 불일치 — 재로그인 필요`, 'error'); return;
     }
   } catch (_) {}
-  const { pickOrCreateCustomer } = await import('../core/dialogs.js');
+  const { pickOrCreateCustomer, pickAgent } = await import('../core/dialogs.js');
+
+  // 관리자는 영업자 배정 — 어느 영업자의 계약인지 선택
+  let assignedAgent = null;
+  if (me.role === 'admin') {
+    assignedAgent = await pickAgent();
+    if (!assignedAgent) return;     // 취소
+  }
+
   const r = await pickOrCreateCustomer(p);
   if (!r) return;
 
@@ -386,10 +394,12 @@ export async function searchActionContract(p) {
       policy_name_snapshot: p._policy?.policy_name || p.policy_name || '',
       provider_company_code: p.provider_company_code || '',
       partner_code: p.partner_code || p.provider_company_code || '',
-      agent_uid: me.uid,
-      agent_name: me.name || '',
-      agent_code: me.user_code || '',
-      agent_channel_code: me.agent_channel_code || me.channel_code || me.company_code || '',
+      // 관리자가 만들면 선택된 영업자 정보로, 영업자가 만들면 본인 정보로
+      agent_uid: assignedAgent?.uid || me.uid,
+      agent_name: assignedAgent?.name || me.name || '',
+      agent_code: assignedAgent?.user_code || me.user_code || '',
+      agent_channel_code: assignedAgent?.agent_channel_code || assignedAgent?.channel_code || assignedAgent?.company_code
+        || me.agent_channel_code || me.channel_code || me.company_code || '',
       created_by: me.uid,
     });
     showToast(`가계약 생성됨 — ${tempCode} (완료 시 실코드 부여)`, 'success');
@@ -439,12 +449,14 @@ export function searchToggleQuickFilter(key, anchorEl) {
       range.max = maxS ? Number(maxS) * 10000 : null;
     }
     applySearchFilter();
+    window.refreshPageActions?.('search');
     return;
   }
   if (set.has(key)) set.delete(key); else set.add(key);
   if (key === 'new' && set.has('new')) set.delete('used');
   if (key === 'used' && set.has('used')) set.delete('new');
   applySearchFilter();
+  window.refreshPageActions?.('search');   // chip 활성 상태 시각 갱신
 }
 
 /** 퀵 필터 활성 상태 — 액션바에서 chip 의 active 표시용 */
@@ -1329,16 +1341,16 @@ function openRangePopover(chip, key) {
     const maxV = pop.querySelector('#rngMax').value;
     range.min = minV ? Number(minV) * 10000 : null;
     range.max = maxV ? Number(maxV) * 10000 : null;
-    chip.classList.toggle('is-active', range.min != null || range.max != null);
     pop.remove();
     applySearchFilter();
+    window.refreshPageActions?.('search');     // chip is-active 갱신
   });
   pop.querySelector('[data-act="reset"]').addEventListener('click', (e) => {
     e.stopPropagation();
     range.min = null; range.max = null;
-    chip.classList.remove('is-active');
     pop.remove();
     applySearchFilter();
+    window.refreshPageActions?.('search');
   });
   pop.querySelector('[data-act="close"]').addEventListener('click', (e) => {
     e.stopPropagation();
@@ -1508,7 +1520,20 @@ function filterProductsExcept(exceptField) {
     }
     if (f.search) {
       const opts = Array.isArray(p.options) ? p.options.join(' ') : (p.options || '');
-      const hay = [p.car_number, p.maker, p.model, p.sub_model, p.trim_name, p.fuel_type, p.ext_color, opts].filter(Boolean).join(' ').toLowerCase();
+      // 공급사 코드 → 회사명 lookup (검색어에 회사명 입력해도 매칭되도록)
+      const providerCode = p.provider_company_code || p.partner_code || '';
+      const providerName = providerCode
+        ? ((store.partners || []).find(x => (x.partner_code === providerCode || x.company_code === providerCode) && !x._deleted)?.partner_name || '')
+        : '';
+      const hay = [
+        p.car_number, p.vin, p.product_code,
+        p.maker, p.model, p.sub_model, p.trim_name, p.trim,
+        p.fuel_type, p.year, p.ext_color, p.int_color,
+        p.vehicle_status, p.product_type, p.vehicle_class, p.location,
+        opts,
+        providerCode, providerName,
+        p.policy_code, p._policy?.policy_name, p._policy?.credit_grade,
+      ].filter(Boolean).join(' ').toLowerCase();
       if (!hay.includes(f.search)) return false;
     }
     // 퀵 필터 (하단바)

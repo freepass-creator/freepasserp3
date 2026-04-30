@@ -27,3 +27,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.sw?
+
+# 옵션 카탈로그 빌드 캐시 / 일회성 스크래치 (재현 가능)
+_cache/
+_ocr_test/
+_pal*
+_kia_*
+_gen_*
+_wiki_*
+_ocr_*
+_extract_*
+_parse_*
+_products.json

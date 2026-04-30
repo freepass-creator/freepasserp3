@@ -2,6 +2,20 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<!-- 긴급 SW 정리 — v2/이전 버전의 stale SW 가 옛 코드 캐시해서 로그인 안 되는 이슈 차단.
+     인라인 스크립트로 가장 먼저 실행되어 모든 SW unregister + cache 비움. -->
+<script>
+(function () {
+  try {
+    if (navigator.serviceWorker?.getRegistrations) {
+      navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister().catch(()=>{}))).catch(()=>{});
+    }
+    if (typeof caches !== 'undefined' && caches.keys) {
+      caches.keys().then(ks => Promise.all(ks.map(k => caches.delete(k)))).catch(()=>{});
+    }
+  } catch (_) {}
+})();
+</script>
 <title>freepass ERP</title>
 <meta name="viewport" content="width=1280">
 
@@ -865,6 +879,7 @@
   body.role-agent .pt-sb a[data-page="users"] { display: none; }
   /* 개발도구는 admin 만 */
   body:not(.role-admin) .pt-sb-bottom-dev { display: none; }
+  /* 관리자 문의 — 모든 역할 노출. admin 은 받은 문의 목록 보기 / 비admin 은 새 문의 시작 */
   body.role-provider .pt-sb a[data-page="partners"],
   body.role-provider .pt-sb a[data-page="users"] { display: none; }
   body.role-agent_admin .pt-sb a[data-page="product"],
@@ -2466,8 +2481,9 @@
   <a href="#policy" data-page="policy" title="정책 관리"><i class="ph ph-shield-check"></i><span class="sb-label">정책 관리</span><span class="cnt"></span></a>
   <a href="#partners" data-page="partners" title="파트너 관리"><i class="ph ph-handshake"></i><span class="sb-label">파트너 관리</span><span class="cnt"></span></a>
   <a href="#users" data-page="users" title="사용자 관리"><i class="ph ph-users-three"></i><span class="sb-label">사용자 관리</span><span class="cnt"></span></a>
-  <!-- 사이드바 하단 그룹 — 개발도구 (admin) + 설정. 사이 구분선 없이 같이 묶음 -->
+  <!-- 사이드바 하단 그룹 — 관리자 문의(비admin) + 개발도구(admin) + 설정 -->
   <div class="pt-sb-bottom-group">
+    <a href="javascript:void(0)" class="pt-sb-bottom-link pt-sb-bottom-admin-chat" id="sbAdminChat" title="관리자에게 문의 (별도 창)"><i class="ph ph-headset"></i><span class="sb-label">관리자 문의</span></a>
     <a href="#dev" class="pt-sb-bottom-link pt-sb-bottom-dev" data-page="dev" title="개발도구"><i class="ph ph-code"></i><span class="sb-label">개발도구</span></a>
     <a href="#settings" class="pt-sb-bottom-link" data-page="settings" title="설정"><i class="ph ph-gear"></i><span class="sb-label">설정</span></a>
   </div>

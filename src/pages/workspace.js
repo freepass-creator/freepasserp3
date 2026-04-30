@@ -378,6 +378,9 @@ export async function createRoomFromProduct(product) {
     const me = store.currentUser || {};
     const isAgent = me.role === 'agent' || me.role === 'agent_admin';
     const isProvider = me.role === 'provider';
+    const isAdmin = me.role === 'admin';
+    // 관리자가 공급사에 문의 시 — admin 이 영업자 역할 (admin_uid + agent_uid 동일하게)
+    // 채팅에서 admin 메시지는 영업자 측 메시지로 표시됨
     const ref = await pushRecord('rooms', {
       car_number: product.car_number,
       maker: product.maker,
@@ -387,10 +390,14 @@ export async function createRoomFromProduct(product) {
       product_uid: product._key,
       provider_company_code: product.provider_company_code,
       partner_code: product.partner_code,
-      // Firebase rule 통과용 — agent 가 만든 룸이면 agent_uid 필수
-      agent_uid: isAgent ? (me.uid || '') : '',
+      // 관리자/영업자 모두 agent_uid 채워서 공급사 측에서 "영업자가 문의" 형태로 받음
+      agent_uid: (isAgent || isAdmin) ? (me.uid || '') : '',
+      agent_name: (isAgent || isAdmin) ? (me.name || '') : '',
+      agent_code: (isAgent || isAdmin) ? (me.user_code || '') : '',
+      agent_channel_code: isAgent ? (me.agent_channel_code || me.channel_code || me.company_code || '') : (isAdmin ? 'ADMIN' : ''),
       provider_uid: isProvider ? (me.uid || '') : '',
-      agent_channel_code: isAgent ? (me.agent_channel_code || me.channel_code || me.company_code || '') : '',
+      // admin 이 만들었음을 별도 표시 (UI 에서 "관리자 문의" 라벨 등 활용 가능)
+      created_by_admin: isAdmin || false,
       unread: 0,
       created_at: Date.now(),
       created_by: me.uid || '',

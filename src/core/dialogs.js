@@ -61,19 +61,22 @@ export function pickAgent() {
   return new Promise(resolve => {
     const overlay = document.createElement('div');
     overlay.className = 'pick-overlay';
+    const renderItem = (a) => `
+      <button class="pick-item" data-uid="${esc(a.uid || a._key)}">
+        <i class="ph ph-user-circle"></i>
+        <div>
+          <div class="pick-item-name">${esc(a.name || a.email || '-')}</div>
+          <div class="pick-item-sub">${esc([a.user_code, a.company_name, a.role === 'agent_admin' ? '영업관리' : '영업'].filter(Boolean).join(' | '))}</div>
+        </div>
+      </button>`;
     overlay.innerHTML = `
       <div class="pick-card">
         <div class="pick-head">영업자 선택</div>
-        <div class="pick-body">
-          ${agents.map(a => `
-            <button class="pick-item" data-uid="${esc(a.uid || a._key)}">
-              <i class="ph ph-user-circle"></i>
-              <div>
-                <div class="pick-item-name">${esc(a.name || a.email || '-')}</div>
-                <div class="pick-item-sub">${esc([a.user_code, a.company_name, a.role === 'agent_admin' ? '영업관리' : '영업'].filter(Boolean).join(' | '))}</div>
-              </div>
-            </button>
-          `).join('')}
+        <div style="padding: 8px 12px; border-bottom: 1px solid var(--border);">
+          <input type="search" class="input" id="pickSearch" placeholder="이름·코드·회사명 검색..." autofocus style="width:100%;">
+        </div>
+        <div class="pick-body" id="pickList">
+          ${agents.map(renderItem).join('')}
         </div>
         <div class="pick-foot">
           <button class="btn btn-sm" id="pickCancel">취소</button>
@@ -82,11 +85,23 @@ export function pickAgent() {
     `;
     document.body.appendChild(overlay);
     const close = (val) => { overlay.remove(); resolve(val); };
-    overlay.querySelectorAll('.pick-item').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const uid = btn.dataset.uid;
-        close(agents.find(x => (x.uid || x._key) === uid));
+    const list = overlay.querySelector('#pickList');
+    const bindClicks = () => {
+      list.querySelectorAll('.pick-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const uid = btn.dataset.uid;
+          close(agents.find(x => (x.uid || x._key) === uid));
+        });
       });
+    };
+    bindClicks();
+    overlay.querySelector('#pickSearch').addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      const filtered = q
+        ? agents.filter(a => [a.name, a.email, a.user_code, a.company_name, a.company_code].filter(Boolean).join(' ').toLowerCase().includes(q))
+        : agents;
+      list.innerHTML = filtered.length ? filtered.map(renderItem).join('') : '<div style="padding:24px;text-align:center;color:var(--text-muted);">검색 결과 없음</div>';
+      bindClicks();
     });
     overlay.querySelector('#pickCancel').addEventListener('click', () => close(null));
     overlay.addEventListener('click', (e) => { if (e.target === overlay) close(null); });

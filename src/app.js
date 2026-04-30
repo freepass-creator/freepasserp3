@@ -651,36 +651,20 @@ async function boot() {
   requestAnimationFrame(() => document.body.classList.remove('is-loading'));
 }
 
-/* PWA Service Worker 등록 — v3 PWA 활성화 ("앱 설치" prompt 가능).
- *  과거 v2 SW 가 stale 캐시 가지고 있으면 먼저 unregister + 캐시 삭제 후 v3 SW 등록.
- *  localStorage 플래그로 v2 cleanup 1회만 실행. */
+/* Service Worker 일괄 정리 — 기존 SW 가 캐시한 stale 자산이 로그인 막던 이슈 해결.
+ *  PWA 설치는 manifest 만으로 가능. SW 는 일단 비활성 (캐시 문제 우선 차단).
+ *  필요하면 차후 sw.js 재등록 — 현재는 항상 unregister. */
 function cleanupStaleServiceWorkers() {
   if (typeof navigator === 'undefined' || !navigator.serviceWorker) return;
-  const swPath = '/sw.js';
-  const registerV3 = () => navigator.serviceWorker.register(swPath, { scope: '/' }).catch(e => console.warn('[SW] register failed', e));
-
-  // v2 cleanup — 한 번만
-  if (localStorage.getItem('v3-sw-cleaned') !== '1') {
-    navigator.serviceWorker.getRegistrations?.().then(regs => {
-      const v2Regs = regs.filter(r => !r.active?.scriptURL?.endsWith('/sw.js') || (r.active?.scriptURL && !r.scope.endsWith('/')));
-      Promise.all(v2Regs.map(r => r.unregister())).then(() => {
-        if (typeof caches !== 'undefined') {
-          // v2 캐시만 삭제 (이름에 'freepass-' 가 있으면 v3 캐시이므로 보존)
-          caches.keys().then(keys => Promise.all(
-            keys.filter(k => !k.startsWith('freepass-')).map(k => caches.delete(k))
-          )).finally(() => {
-            localStorage.setItem('v3-sw-cleaned', '1');
-            registerV3();
-          });
-        } else {
-          localStorage.setItem('v3-sw-cleaned', '1');
-          registerV3();
-        }
-      });
-    }).catch(() => registerV3());
-  } else {
-    registerV3();
-  }
+  navigator.serviceWorker.getRegistrations?.().then(regs => {
+    if (!regs.length) return;
+    Promise.all(regs.map(r => r.unregister())).then(() => {
+      if (typeof caches !== 'undefined') {
+        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
+          .catch(() => {});
+      }
+    });
+  }).catch(() => {});
 }
 
 /* 목록 패널(.ws4-list) 에만 빈 ws4-foot 자동 주입 — 다른 패널(상세/조건 등)은 제외 */
@@ -820,6 +804,73 @@ function startHydration() {
   bindPhotoClicks();
   bindSearchSelection();
   setupAutoFitObserver();
+  bindAdminChatButton();
+}
+
+/* 관리자 문의 — 사이드바 하단 버튼. 역할별 다른 동작:
+ *  비admin (공급사·영업자): 본인의 1:1 관리자 문의 룸 (`ADMIN_${uid}`) 생성/열기
+ *  admin: workspace 로 이동 (받은 모든 관리자 문의 룸은 is_admin_chat 으로 필터 가능) */
+function bindAdminChatButton() {
+  const btn = document.getElementById('sbAdminChat');
+  if (!btn) return;
+  // 역할별 라벨 갱신 — boot 시점엔 currentUser 없을 수 있어 동적 갱신
+  const updateLabel = () => {
+    const me = store.currentUser || {};
+    const label = btn.querySelector('.sb-label');
+    if (me.role === 'admin') {
+      btn.title = '받은 관리자 문의 보기';
+      if (label) label.textContent = '문의 받기';
+    } else {
+      btn.title = '관리자에게 문의 (별도 창)';
+      if (label) label.textContent = '관리자 문의';
+    }
+  };
+  updateLabel();
+  // currentUser 로드 후 한 번 더 갱신
+  setTimeout(updateLabel, 1000);
+
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const me = store.currentUser || {};
+    if (!me.uid) return;
+
+    if (me.role === 'admin') {
+      // 관리자 — workspace 로 이동, 첫 admin chat 룸 자동 선택
+      location.hash = 'workspace';
+      setTimeout(() => {
+        const adminRoom = (store.rooms || []).find(r => r.is_admin_chat);
+        if (adminRoom) selectRoom(adminRoom._key);
+      }, 300);
+      return;
+    }
+
+    // 비admin — 본인 관리자 문의 룸 생성/열기
+    const roomKey = `ADMIN_${me.uid}`;
+    try {
+      const existing = (store.rooms || []).find(r => r._key === roomKey);
+      if (!existing) {
+        await setRecord(`rooms/${roomKey}`, {
+          room_id: roomKey,
+          chat_code: roomKey,
+          is_admin_chat: true,
+          agent_uid: me.uid,
+          agent_name: me.name || '',
+          agent_code: me.user_code || '',
+          agent_channel_code: me.role === 'provider' ? 'PROVIDER' : (me.agent_channel_code || me.company_code || ''),
+          provider_company_code: me.role === 'provider' ? (me.company_code || '') : '',
+          subject: `${me.name || me.email} 관리자 문의`,
+          unread: 0,
+          created_at: Date.now(),
+          created_by: me.uid,
+        });
+      }
+      location.hash = 'workspace';
+      setTimeout(() => selectRoom(roomKey), 200);
+    } catch (err) {
+      console.error('[admin-chat]', err);
+      showToast('관리자 문의 생성 실패', 'error');
+    }
+  });
 }
 
 /* 패널 안의 라벨 길이 변화 감지 → 자동 폰트 축소 (모든 페이지 일괄) */
@@ -1086,34 +1137,85 @@ function applyGlobalSearch() {
   }
 
   // 다른 페이지 — store 데이터 필터 후 재렌더.
-  // store.X 가 undefined (= watchCollection 콜백 미실행 = 미로드/권한 부족) 면 UI 손대지 않음 (prototype 보존)
   const matches = (haystack) => !q || haystack.toLowerCase().includes(q);
+  // 코드 → 회사명 매핑 (검색어에 회사명 입력해도 코드로 매칭되도록 haystack 에 양쪽 포함)
+  const provName = (code) => {
+    if (!code) return '';
+    const p = (store.partners || []).find(x => (x.partner_code === code || x.company_code === code) && !x._deleted);
+    return p?.partner_name || p?.company_name || '';
+  };
+  const optionsStr = (opts) => Array.isArray(opts) ? opts.join(' ') : (opts || '');
+
   if (page === 'workspace') {
     if (!store.rooms) return;
-    const filtered = store.rooms.filter(r => matches([r.car_number, r.maker, r.model, r.last_message_text, r.partner_name].filter(Boolean).join(' ')));
+    const filtered = store.rooms.filter(r => matches([
+      r.car_number, r.vehicle_number, r.maker, r.model, r.sub_model,
+      r.provider_company_code, provName(r.provider_company_code || r.provider_code),
+      r.agent_channel_code, r.agent_code, r.agent_name,
+      r.chat_code, r.room_id, r._key,
+      r.last_message, r.last_message_text,        // 대화내용
+    ].filter(Boolean).join(' ')));
     renderRoomList(filtered);
   } else if (page === 'contract') {
     if (!store.contracts) return;
-    const filtered = store.contracts.filter(c => matches([c.contract_id, c.customer_name, c.car_number, c.maker, c.model, c.agent_name].filter(Boolean).join(' ')));
+    const filtered = store.contracts.filter(c => matches([
+      c.contract_code, c.contract_id, c._key,
+      c.customer_name, c.customer_phone, c.customer_birth, c.company_name,
+      c.car_number_snapshot, c.car_number,
+      c.maker_snapshot, c.maker, c.model_snapshot, c.model, c.sub_model_snapshot,
+      c.fuel_type_snapshot, c.year_snapshot, c.ext_color_snapshot,
+      c.provider_company_code, provName(c.provider_company_code),
+      c.agent_channel_code, c.agent_code, c.agent_name,
+      c.contract_status,
+    ].filter(Boolean).join(' ')));
     renderContractList(filtered);
   } else if (page === 'settle') {
     if (!store.settlements) return;
-    const filtered = store.settlements.filter(s => matches([s.contract_id, s.customer_name, s.car_number, s.maker, s.model, s.agent_name].filter(Boolean).join(' ')));
+    const filtered = store.settlements.filter(s => matches([
+      s.contract_code, s.contract_id, s._key,
+      s.customer_name, s.car_number, s.maker, s.model, s.sub_model_snapshot,
+      s.provider_company_code, provName(s.provider_company_code),
+      s.agent_channel_code, s.agent_code, s.agent_name,
+      s.settlement_status, s.status,
+    ].filter(Boolean).join(' ')));
     renderSettlementList(filtered);
   } else if (page === 'product') {
     if (!store.products) return;
-    const filtered = store.products.filter(p => matches([p.car_number, p.maker, p.model, p.sub_model, p.trim_name, Array.isArray(p.options) ? p.options.join(' ') : p.options].filter(Boolean).join(' ')));
+    const filtered = store.products.filter(p => matches([
+      p.car_number, p.vin, p.product_code, p.product_uid,
+      p.maker, p.model, p.sub_model, p.trim_name, p.trim,
+      optionsStr(p.options),
+      p.year, p.fuel_type, p.ext_color, p.int_color, p.vehicle_class, p.product_type,
+      p.vehicle_status, p.location, p.partner_memo,
+      p.provider_company_code, p.partner_code, provName(p.provider_company_code || p.partner_code),
+      p.policy_code, p._policy?.policy_name,
+    ].filter(Boolean).join(' ')));
     renderProductList(filtered);
   } else if (page === 'policy') {
     if (!store.policies) return;
-    const filtered = store.policies.filter(p => matches([p.policy_name, p.policy_code, p.provider_company_code, p.provider_name, p.credit_grade].filter(Boolean).join(' ')));
+    const filtered = store.policies.filter(p => matches([
+      p.policy_name, p.policy_code, p._key,
+      p.provider_company_code, provName(p.provider_company_code), p.provider_name,
+      p.credit_grade, p.screening_criteria,
+      p.term_description, p.description,
+      p.status,
+    ].filter(Boolean).join(' ')));
     renderPolicyList(filtered);
   } else if (page === 'partners') {
     if (!store.partners) return;
-    const filtered = store.partners.filter(p => matches([p.partner_name, p.partner_code, p.company_name, p.company_code, p.contact_name, p.phone, p.email, p.partner_type].filter(Boolean).join(' ')));
+    const filtered = store.partners.filter(p => matches([
+      p.partner_name, p.partner_code, p.company_name, p.company_code, p._key,
+      p.partner_type, p.ceo_name, p.business_number,
+      p.contact_name, p.contact_title, p.phone, p.email, p.address, p.memo,
+    ].filter(Boolean).join(' ')));
     renderPartnerList(filtered);
   } else if (page === 'users') {
-    const filtered = (store.users || []).filter(u => matches([u.name, u.email, u.company_name, u.role, u.phone].filter(Boolean).join(' ')));
+    const filtered = (store.users || []).filter(u => matches([
+      u.name, u.email, u.user_code, u._key,
+      u.position, u.role, u.status,
+      u.company_name, u.company_code, provName(u.company_code),
+      u.agent_channel_code, u.phone,
+    ].filter(Boolean).join(' ')));
     renderUserList(filtered);
   }
 }
@@ -1272,27 +1374,20 @@ function buildContextMenuItems(page, id, item) {
     const p = (store.products || []).find(x => x._key === id);
     if (!p) return [];
     const car = p.car_number || '';
+    const role = store.currentUser?.role;
+    const isAgent = role === 'agent' || role === 'agent_admin' || role === 'admin';
     return [
-      { icon: 'ph ph-link', label: '상품 링크 복사', action: () => {
-        const url = `${location.origin}/catalog.html?car=${encodeURIComponent(car)}`;
-        navigator.clipboard?.writeText(url).then(() => {
-          import('./core/toast.js').then(m => m.showToast(`상품 링크 복사됨 — ${car}`));
-        });
-      }},
+      ...(isAgent ? [
+        { icon: 'ph ph-chat-circle-dots', label: '소통 (대화방 생성)', action: () => searchActionChat(p) },
+        { icon: 'ph ph-file-text', label: '계약 생성', action: () => searchActionContract(p) },
+        { divider: true },
+      ] : []),
+      { icon: 'ph ph-share-network', label: '공유 (카탈로그 링크)', action: () => searchActionShare(p) },
       { icon: 'ph ph-copy', label: '상품 내용 복사', action: () => {
         const text = formatProductForCopy(p);
         navigator.clipboard?.writeText(text).then(() => {
           import('./core/toast.js').then(m => m.showToast(`상품 내용 복사됨 — ${car}`));
         });
-      }},
-      { divider: true },
-      { icon: 'ph ph-chat-circle-dots', label: '문의 하기', action: () => {
-        const btn = document.querySelector('[data-page="search"] .ws4-card:nth-child(2) #srchChat');
-        btn?.click();
-      }},
-      { icon: 'ph ph-file-text', label: '계약 생성', action: () => {
-        const btn = document.querySelector('[data-page="search"] .ws4-card:nth-child(2) #srchContract');
-        btn?.click();
       }},
     ];
   }

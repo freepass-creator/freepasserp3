@@ -14,12 +14,16 @@ import {
 } from '../core/ui-helpers.js';
 
 const ROLE_BADGE = {
-  admin:        { txt: '관리', tone: 'red' },
-  provider:     { txt: '공급', tone: 'blue' },
-  agent_admin:  { txt: '영관', tone: 'orange' },
-  agent:        { txt: '영업', tone: 'orange' },
+  admin:         { txt: '관리', tone: 'red' },
+  provider:      { txt: '공급', tone: 'blue' },
+  agent_admin:   { txt: '영관', tone: 'orange' },
+  agent_manager: { txt: '영관', tone: 'orange' },   // 동일 역할의 다른 표기
+  agent:         { txt: '영업', tone: 'orange' },
 };
-const ROLE_LABEL = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업' };
+const ROLE_LABEL = {
+  admin: '관리자', provider: '공급', agent: '영업',
+  agent_admin: '영업관리자', agent_manager: '영업관리자',
+};
 
 export function renderUserList(users) {
   const body = listBody('users');
@@ -29,7 +33,7 @@ export function renderUserList(users) {
   const sorted = [...users].sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ko'));
   body.innerHTML = sorted.map((u, i) => {
     const rb = ROLE_BADGE[u.role] || { txt: '-', tone: 'gray' };
-    const roleLabel = ({ admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업관리자' }[u.role]) || u.role || '-';
+    const roleLabel = ROLE_LABEL[u.role] || u.role || '-';
     const status = u.status === 'pending' ? '승인 대기' : (u.status === 'rejected' ? '반려' : (u.is_active === false ? '비활성' : '승인됨'));
     // 메인: 이름 직급  /  우측: 마지막 로그인
     const namePos = [u.name || u.email?.split('@')[0] || u._key.slice(0, 8), u.position].filter(Boolean).join(' ');
