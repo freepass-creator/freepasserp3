@@ -126,6 +126,21 @@
 
 <h1>프리패스 차종 매트릭스 <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:6px">트림 × 옵션 × 패키지</span></h1>
 
+<!-- 가격표 오버레이 모달 (자체 표 — 외부 iframe X) -->
+<div id="priceModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:8px;width:100%;max-width:900px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+    <div style="padding:14px 18px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
+      <h3 id="priceModalTitle" style="margin:0;font-size:14px;font-weight:600">📄 가격표</h3>
+      <button id="priceModalClose" style="background:transparent;border:none;font-size:22px;cursor:pointer;color:#6b7280;padding:0 4px;line-height:1">×</button>
+    </div>
+    <div id="priceModalBody" style="padding:18px;overflow-y:auto;flex:1"></div>
+    <div style="padding:10px 16px;border-top:1px solid #e5e7eb;font-size:11px;color:#6b7280;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;background:#fafafa">
+      <span id="priceModalFooter"></span>
+      <a id="priceModalSource" href="#" target="_blank" rel="noopener" style="color:#3b82f6;text-decoration:underline">출처 원본 ↗</a>
+    </div>
+  </div>
+</div>
+
 <!-- selector + 트림 bar 묶음 sticky (한 박스로 위에 고정) -->
 <div id="stickyZone">
   <div class="panel" id="selectorPanel">
@@ -686,6 +701,64 @@ function matchCatalogToFp(catalog, trimName) {
   return matched;
 }
 
+/* 자체 가격표 생성 — 카탈로그 데이터 기반 */
+function buildPriceTable(cat) {
+  const fmt = v => v ? Math.round(v / 10000).toLocaleString() + '만원' : '-';
+  const trims = Object.keys(cat.trims);
+
+  let html = `<h4 style="margin:0 0 10px;font-size:13px;font-weight:600">트림별 가격 (${trims.length})</h4>`;
+  html += `<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">
+    <thead><tr style="background:#f9fafb">
+      <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">트림</th>
+      <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">기본가</th>
+      <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">개소세 5%</th>
+      <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">개소세 3.5%</th>
+    </tr></thead><tbody>`;
+  for (const t of trims) {
+    const p = cat.trims[t].price || {};
+    html += `<tr>
+      <td style="padding:8px 10px;border-bottom:1px solid #f3f4f6;font-weight:500">${t}</td>
+      <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums">${fmt(p.base)}</td>
+      <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums">${fmt(p.tax_5_after || p.tax_5_before || p.tax_5)}</td>
+      <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums;color:#dc2626;font-weight:500">${fmt(p.tax_3_5_after || p.tax_3_5_before || p.tax_3_5)}</td>
+    </tr>`;
+  }
+  html += `</tbody></table>`;
+
+  // 패키지 — 전 트림에서 unique
+  const pkgs = new Map();
+  for (const t of trims) {
+    const groups = cat.trims[t].select_groups || [];
+    for (const g of groups) {
+      if (Array.isArray(g)) continue;
+      const key = g.name || (g.codes || []).join('|');
+      if (!key || pkgs.has(key)) continue;
+      const codes = g.codes || [];
+      const names = codes.map(c => cat.options[c]?.name || c);
+      const display = g.name || names.join(' + ');
+      pkgs.set(key, { display, price: g.price || 0, items: names });
+    }
+  }
+  if (pkgs.size > 0) {
+    html += `<h4 style="margin:0 0 10px;font-size:13px;font-weight:600">선택 패키지 (${pkgs.size})</h4>`;
+    html += `<table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="background:#f9fafb">
+        <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">패키지</th>
+        <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600;white-space:nowrap">가격</th>
+      </tr></thead><tbody>`;
+    [...pkgs.values()].sort((a, b) => b.price - a.price).forEach(p => {
+      const sub = (p.display !== p.items.join(' + ') && p.items.length)
+        ? `<div style="font-size:10px;color:#6b7280;margin-top:2px">${p.items.join(' · ')}</div>` : '';
+      html += `<tr>
+        <td style="padding:8px 10px;border-bottom:1px solid #f3f4f6"><div style="font-weight:500">${p.display}</div>${sub}</td>
+        <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums;color:#dc2626;font-weight:500;white-space:nowrap">${fmt(p.price)}</td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+  }
+  return html;
+}
+
 function prefillFpFromSeed() {
   state.fpOptions = new Set();
   if (!state.selected || !state.activeTrim) return;
@@ -1119,6 +1192,29 @@ async function init() {
     const w = $('fpAllWrap');
     w.classList.toggle('open');
     $('fpChevron').textContent = w.classList.contains('open') ? '▴' : '▾';
+  });
+  // 가격표 모달
+  $('priceSheetLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (!state.catalog) return;
+    $('priceModalTitle').textContent = `📄 ${state.catalog.title} — 가격표`;
+    $('priceModalBody').innerHTML = buildPriceTable(state.catalog);
+    const srcUrl = (state.catalog.source_urls || [])[0] || '#';
+    $('priceModalSource').href = srcUrl;
+    $('priceModalSource').style.display = srcUrl !== '#' ? 'inline' : 'none';
+    $('priceModalFooter').textContent = `source: ${state.catalog.source} · fetched: ${state.catalog.fetched_at}`;
+    $('priceModal').style.display = 'flex';
+  });
+  $('priceModalClose').addEventListener('click', () => {
+    $('priceModal').style.display = 'none';
+  });
+  $('priceModal').addEventListener('click', (e) => {
+    if (e.target === $('priceModal')) $('priceModal').style.display = 'none';
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $('priceModal').style.display === 'flex') {
+      $('priceModal').style.display = 'none';
+    }
   });
 }
 
