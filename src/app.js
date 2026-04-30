@@ -925,6 +925,7 @@ function openAdminChatRoomInPage(roomKey) {
     try {
       await pushRecord(`messages/${roomKey}`, {
         text, sender_uid: me.uid, sender_name: me.name || me.email || '',
+        sender_code: me.user_code || '',
         sender_role: me.role || '', created_at: Date.now(),
       });
       await updateRecord(`rooms/${roomKey}`, {
