@@ -141,7 +141,10 @@
         세부모델에 생산기간 표시
       </label>
     </div>
-    <div class="meta" id="status">프리패스 차종 매트릭스 로딩…</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;flex-wrap:wrap">
+      <div class="meta" id="status">프리패스 차종 매트릭스 로딩…</div>
+      <a id="priceSheetLink" href="#" target="_blank" rel="noopener" style="display:none;font-size:12px;color:#3b82f6;text-decoration:none;padding:4px 10px;border:1px solid #bfdbfe;border-radius:4px;background:#eff6ff;font-weight:500;white-space:nowrap">📄 가격표 보기 ↗</a>
+    </div>
   </div>
   <!-- 트림 bar (selector 아래 같은 sticky 묶음) -->
   <div id="trimBarWrap" class="trim-bar"></div>
@@ -893,6 +896,17 @@ async function onSubChange() {
   state.catalog = cat;
   $('status').textContent = `${cat.title} | source: ${cat.source} | fetched: ${cat.fetched_at}`;
   $('status').classList.add('ok');
+  // 가격표 링크 활성화
+  const sourceUrl = (cat.source_urls || [])[0];
+  const link = $('priceSheetLink');
+  if (sourceUrl) {
+    link.href = sourceUrl;
+    const isWikicar = /wikicar/.test(sourceUrl);
+    link.textContent = isWikicar ? '📄 시즌 가격표 보기 ↗' : '📄 제조사 가격표 ↗';
+    link.style.display = 'inline-flex';
+  } else {
+    link.style.display = 'none';
+  }
   $('emptyPanel').style.display = 'none';
   $('catalogPanel').style.display = 'block';
   // 트림 드롭다운 채우기
@@ -933,6 +947,7 @@ function resetCatalog() {
   $('trimBarWrap').innerHTML = '';
   state.fpOptions = new Set();
   $('fpOptionsSection').style.display = 'none';
+  $('priceSheetLink').style.display = 'none';
 }
 
 function renderCatalog() {
