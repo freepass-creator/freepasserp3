@@ -155,23 +155,21 @@ export function renderContractDetail(c) {
 
     // 1) 계약자 정보
     const customerRows = [
-      ['계약자', customerLabel, true],
+      ['계약자', customerLabel],
       ['생년월일', c.customer_birth],
-      ['연락처', c.customer_phone, true],
+      ['연락처', c.customer_phone],
       ['사업자', c.customer_is_business ? '예' : ''],
-      ['사업자번호', c.customer_business_number, true],
-      ['법인/상호명', c.customer_company_name, true],
-      ['배송지', c.delivery_region, true],
+      ['사업자번호', c.customer_business_number],
+      ['법인/상호명', c.customer_company_name],
+      ['배송지', c.delivery_region],
     ].filter(([, v]) => v);
 
-    // 2) 차량 정보
+    // 2) 차량 정보 — 차량명은 모델·세부모델 중복 가능성 있어 한 줄에 합쳐서 표시
+    const vehicleLine = [c.maker_snapshot, c.model_snapshot, c.sub_model_snapshot].filter(Boolean).join(' ');
     const carRows = [
       ['차량번호', c.car_number_snapshot],
-      ['제조사', c.maker_snapshot],
-      ['모델', c.model_snapshot],
-      ['세부모델', c.sub_model_snapshot, true],
-      ['차량명', c.vehicle_name_snapshot, true],
-      ['연식', c.year_snapshot],
+      ['차량명', vehicleLine || c.vehicle_name_snapshot],
+      ['연식', c.year_snapshot ? c.year_snapshot + '년' : ''],
       ['연료', c.fuel_type_snapshot],
       ['색상', c.ext_color_snapshot],
     ].filter(([, v]) => v);
@@ -179,28 +177,31 @@ export function renderContractDetail(c) {
     // 3) 대여 조건 정보
     const rentRows = [
       ['대여기간', termN ? termN + '개월' : ''],
-      ['월대여료', rentN ? Math.round(Number(rentN)/10000) + '만' : ''],
-      ['보증금', depN ? Math.round(Number(depN)/10000) + '만' : ''],
-      ['계약일', fmtDate(c.contract_date), true],
-      ['심사기준', c.credit_grade_snapshot, true],
-      ['정책명', c.policy_name_snapshot, true],
+      ['월대여료', rentN ? Math.round(Number(rentN)/10000) + '만원' : ''],
+      ['보증금', depN ? Math.round(Number(depN)/10000) + '만원' : ''],
+      ['계약일', fmtDate(c.contract_date)],
+      ['심사기준', c.credit_grade_snapshot],
+      ['정책명', c.policy_name_snapshot],
     ].filter(([, v]) => v);
 
     // 4) 관계자 정보 — 공급사는 회사명(한글), 나머지는 코드
     const providerName = providerNameByCode(c.provider_company_code || c.partner_code, store);
     const partyRows = [
-      ['공급사', providerName, true],
+      ['공급사', providerName || c.provider_company_code],
       ['영업채널', c.agent_channel_code],
       ['영업자', c.agent_code],
       ['정책코드', c.policy_code],
-      ['계약코드', c.contract_code + (c.is_draft ? ' | 임시' : ''), true],
+      ['계약코드', c.contract_code + (c.is_draft ? ' (임시)' : '')],
     ].filter(([, v]) => v);
 
-    const renderRows = (rows) => `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;
-    const sectionTitle = (icon, label) => `<div style="color:var(--text-sub);margin:12px 0 4px;font-size:12px;font-weight:500;"><i class="ph ph-${icon}"></i> ${label}</div>`;
+    // 단순 2열 (라벨 + 값) — 모든 행 동일 폭으로 정렬, 빈 칸 안 만들어짐
+    const renderRows = (rows) => `<div class="cd-grid">${rows.map(([l, v]) =>
+      `<div class="cd-row"><span class="cd-lab">${esc(l)}</span><span class="cd-val">${esc(v)}</span></div>`
+    ).join('')}</div>`;
+    const sectionTitle = (icon, label) => `<div class="cd-section-title"><i class="ph ph-${icon}"></i> ${esc(label)}</div>`;
 
     detailCard.querySelector('.ws4-body').innerHTML = `
-      ${customerRows.length ? `<div style="color:var(--text-sub);margin-bottom:4px;font-size:12px;font-weight:500;"><i class="ph ph-user"></i> 계약자 정보</div>${renderRows(customerRows)}` : ''}
+      ${customerRows.length ? sectionTitle('user', '계약자 정보') + renderRows(customerRows) : ''}
       ${carRows.length ? sectionTitle('car-simple', '차량 정보') + renderRows(carRows) : ''}
       ${rentRows.length ? sectionTitle('currency-krw', '대여조건 정보') + renderRows(rentRows) : ''}
       ${partyRows.length ? sectionTitle('users', '관계자 정보') + renderRows(partyRows) : ''}
