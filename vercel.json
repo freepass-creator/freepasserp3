@@ -6,6 +6,6 @@
     { "source": "/proposal.html", "destination": "/proposal.html" },
     { "source": "/sign.html", "destination": "/sign.html" },
     { "source": "/vehicle-options-catalog-test.html", "destination": "/vehicle-options-catalog-test.html" },
-    { "source": "/((?!assets|manifest|favicon|icons|robots|api).*)", "destination": "/index.html" }
+    { "source": "/((?!assets|manifest|favicon|icons|robots|api|data).*)", "destination": "/index.html" }
   ]
 }
