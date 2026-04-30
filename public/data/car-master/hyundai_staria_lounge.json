@@ -1,0 +1,745 @@
+{
+  "catalog_id": "hyundai_staria_lounge",
+  "title": "현대 스타리아 라운지",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/us4-pe-lounge7_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "US04001",
+      "US04002",
+      "US04003",
+      "US04006"
+    ],
+    "안전": [
+      "US04023",
+      "US04024",
+      "US04025",
+      "US04033",
+      "US04027",
+      "US04028",
+      "US04029",
+      "US04030",
+      "US04032",
+      "US04031"
+    ],
+    "지능형 안전 기술": [
+      "US04009",
+      "US04010",
+      "US04011",
+      "US04021",
+      "US04012",
+      "US04016",
+      "US04017",
+      "US04020",
+      "US04013",
+      "US04014",
+      "US04019",
+      "US04015",
+      "US04022"
+    ],
+    "외관": [
+      "US04056",
+      "US04057",
+      "US04058",
+      "US04047",
+      "US04048",
+      "US04059",
+      "US04060",
+      "US04066",
+      "US04061",
+      "US04035",
+      "US04036",
+      "US04067",
+      "US04045",
+      "US04062",
+      "US04037",
+      "US04063",
+      "US04052",
+      "US04053",
+      "US04040"
+    ],
+    "내장": [
+      "US04080",
+      "US04081",
+      "US04070",
+      "US04082",
+      "US04083"
+    ],
+    "시트": [
+      "US04099",
+      "US04100",
+      "US04101",
+      "US04091",
+      "US04102",
+      "US04103",
+      "US04104"
+    ],
+    "편의": [
+      "US04134",
+      "US04122",
+      "US04106",
+      "US04107",
+      "US04108",
+      "US04143",
+      "US04129",
+      "US04114",
+      "US04119",
+      "US04118",
+      "US04137",
+      "US04138",
+      "US04130",
+      "US04112",
+      "US04123",
+      "US04125",
+      "US04141",
+      "US04126",
+      "US04132",
+      "US04133",
+      "US04117",
+      "US04111"
+    ],
+    "인포테인먼트": [
+      "US04146"
+    ],
+    "선택사양": [
+      "US04054",
+      "US04150",
+      "US04P29",
+      "US04P13",
+      "US04P14",
+      "US04157",
+      "US04158",
+      "US04155",
+      "US04P21",
+      "US04152"
+    ]
+  },
+  "options": {
+    "US04001": {
+      "name": "스마트스트림 LPG 3.5엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "US04002": {
+      "name": "8단 자동변속기",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "US04003": {
+      "name": "통합 주행 모드",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "US04006": {
+      "name": "후륜 멀티 링크 서스펜션",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "US04023": {
+      "name": "7에어백 시스템(1열 에어백/사이드, 운전석 무릎, 전복대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04024": {
+      "name": "전좌석 3점식 시트벨트",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04025": {
+      "name": "전좌석 헤드레스트",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04033": {
+      "name": "세이프티 파워 윈도우(1열)",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04027": {
+      "name": "다중 충돌방지 자동 제동시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04028": {
+      "name": "횡풍안정제어",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04029": {
+      "name": "개별 타이어 공기압 경보 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04030": {
+      "name": "타이어 응급처치 키트",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04032": {
+      "name": "유아용 시트 고정장치(2열2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04031": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "US04009": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04010": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04011": {
+      "name": "후측방 충돌방지 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04021": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04012": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04016": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04017": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04020": {
+      "name": "어드밴스드 후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04013": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04014": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04019": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04015": {
+      "name": "전방 차량 출발 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04022": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "US04056": {
+      "name": "라운지 전용 디자인(크롬 라디에이터 그릴, 범퍼, 아웃사이드 도어 핸들)",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04057": {
+      "name": "라운지 전용 18인치 알로이 휠",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04058": {
+      "name": "Full LED 헤드램프(프로젝션)",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04047": {
+      "name": "LED 주간주행등",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04048": {
+      "name": "LED 포지셔닝 램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04059": {
+      "name": "LED 방향지시등(앞)",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04060": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04066": {
+      "name": "순차 점등 방향 지시등(뒤)",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04061": {
+      "name": "다이나믹 웰컴 라이트",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04035": {
+      "name": "리어 스포일러",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04036": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04067": {
+      "name": "바디컬러 아웃사이드 미러(열선, 전동접이, 전동조절, LED방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04045": {
+      "name": "자외선 차단 유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04062": {
+      "name": "이중접합 차음유리(윈드실드, 1열도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04037": {
+      "name": "리어글래스 열선",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04063": {
+      "name": "에어로 타입 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04052": {
+      "name": "후석 파노라믹 윈도우",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04053": {
+      "name": "유광 필라 가니쉬",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04040": {
+      "name": "전/후륜 디스크 브레이크",
+      "category": "외관",
+      "is_package": false
+    },
+    "US04080": {
+      "name": "라운지 전용 디자인(스웨이드 내장재, 풀사이즈 센터 콘솔, 앰비언트 무드램프, 메탈 도어 스커프, 메탈 페달, 반펀칭 가죽 스티어링 휠)",
+      "category": "내장",
+      "is_package": false
+    },
+    "US04081": {
+      "name": "LED실내등(맵램프, 룸램프, 선바이저)",
+      "category": "내장",
+      "is_package": false
+    },
+    "US04070": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "US04082": {
+      "name": "슬라이딩 선바이저 & 거울",
+      "category": "내장",
+      "is_package": false
+    },
+    "US04083": {
+      "name": "러기지 네트",
+      "category": "내장",
+      "is_package": false
+    },
+    "US04099": {
+      "name": "2열 프리미엄 릴렉션 시트(원터치 릴렉션, 전동 리클라이닝/쿠션 틸팅/4way 레그서포트, 윙타입 헤드레스트, 워크인 스위치)",
+      "category": "시트",
+      "is_package": false
+    },
+    "US04100": {
+      "name": "나파가죽 시트(블랙/엔트러사이트 브라운/보르도 브라운/로토루아 크림)",
+      "category": "시트",
+      "is_package": false
+    },
+    "US04101": {
+      "name": "1/2열 통풍/열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "US04091": {
+      "name": "운전석 전동시트(8way, 4way 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "US04102": {
+      "name": "동승석 전동 시트(4way, 워크인 디바이스)",
+      "category": "시트",
+      "is_package": false
+    },
+    "US04103": {
+      "name": "2열~3열 슬라이딩 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "US04104": {
+      "name": "3열 쿠션 팁업 시트(폴딩)",
+      "category": "시트",
+      "is_package": false
+    },
+    "US04134": {
+      "name": "스마트 파워 슬라이딩 도어",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04122": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04106": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04107": {
+      "name": "스마트키 원격시동",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04108": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04143": {
+      "name": "열선 스티어링 휠(진동 경고)",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04129": {
+      "name": "후석 루프 에어 벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04114": {
+      "name": "마이크로 에어 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04119": {
+      "name": "하이패스",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04118": {
+      "name": "ECM 룸미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04137": {
+      "name": "패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04138": {
+      "name": "220V 인버터",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04130": {
+      "name": "파워 아웃렛(1열1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04112": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04123": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04125": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04141": {
+      "name": "터치타입 아웃사이드 도어 핸들",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04126": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04132": {
+      "name": "후석 뷰",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04133": {
+      "name": "후석 음성 인식",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04117": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04111": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "US04146": {
+      "name": "샤크핀 안테나",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "US04054": {
+      "name": "듀얼 와이드 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "US04150": {
+      "name": "BOSE 프리미엄 사운드(12스피커, 외장앰프)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "US04P29": {
+      "name": "빌트인 캠 2 PLUS, 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "US04P13": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "US04P14": {
+      "name": "트레일러 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "US04157": {
+      "name": "빌트인 공기청정기",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "US04158": {
+      "name": "후석 전동식 사이드 스텝(우측)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "US04155": {
+      "name": "멀티행거",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "US04P21": {
+      "name": "러기지 파티션 테이블",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "US04152": {
+      "name": "차량 보호 필름",
+      "category": "선택사양",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "인스퍼레이션": {
+      "slug": "n",
+      "name_en": null,
+      "price": {
+        "tax_5": 47780000,
+        "tax_3_5": 47050000
+      },
+      "basic": [
+        "US04001",
+        "US04002",
+        "US04003",
+        "US04006",
+        "US04023",
+        "US04024",
+        "US04025",
+        "US04033",
+        "US04027",
+        "US04028",
+        "US04029",
+        "US04030",
+        "US04032",
+        "US04031",
+        "US04009",
+        "US04010",
+        "US04011",
+        "US04021",
+        "US04012",
+        "US04016",
+        "US04017",
+        "US04020",
+        "US04013",
+        "US04014",
+        "US04019",
+        "US04015",
+        "US04022",
+        "US04056",
+        "US04057",
+        "US04058",
+        "US04047",
+        "US04048",
+        "US04059",
+        "US04060",
+        "US04066",
+        "US04061",
+        "US04035",
+        "US04036",
+        "US04067",
+        "US04045",
+        "US04062",
+        "US04037",
+        "US04063",
+        "US04052",
+        "US04053",
+        "US04040",
+        "US04080",
+        "US04081",
+        "US04070",
+        "US04082",
+        "US04083",
+        "US04099",
+        "US04100",
+        "US04101",
+        "US04091",
+        "US04102",
+        "US04103",
+        "US04104",
+        "US04134",
+        "US04122",
+        "US04106",
+        "US04107",
+        "US04108",
+        "US04143",
+        "US04129",
+        "US04114",
+        "US04119",
+        "US04118",
+        "US04137",
+        "US04138",
+        "US04130",
+        "US04112",
+        "US04123",
+        "US04125",
+        "US04141",
+        "US04126",
+        "US04132",
+        "US04133",
+        "US04117",
+        "US04111",
+        "US04146"
+      ],
+      "select": [
+        "US04054",
+        "US04150",
+        "US04P29",
+        "US04P13",
+        "US04P14",
+        "US04157",
+        "US04158",
+        "US04155",
+        "US04P21",
+        "US04152"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "US04054"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "US04150"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "US04P29"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "US04P13"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "US04P14"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "US04157"
+          ],
+          "price": 420000
+        },
+        {
+          "codes": [
+            "US04158"
+          ],
+          "price": 680000
+        },
+        {
+          "codes": [
+            "US04155"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "US04P21"
+          ],
+          "price": 350000
+        },
+        {
+          "codes": [
+            "US04152"
+          ],
+          "price": 490000
+        }
+      ]
+    }
+  }
+}

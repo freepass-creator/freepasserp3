@@ -1,0 +1,773 @@
+{
+  "catalog_id": "hyundai_avante_n",
+  "title": "현대 아반떼 N",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/cn7-n-26-G2.0T_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "CNN6001",
+      "CNN6002",
+      "CNN6003",
+      "CNN6004",
+      "CNN6005",
+      "CNN6006",
+      "CNN6007",
+      "CNN6008",
+      "CNN6009",
+      "CNN6010"
+    ],
+    "안전": [
+      "CNN6028",
+      "CNN6029",
+      "CNN6030",
+      "CNN6031",
+      "CNN6032",
+      "CNN6033",
+      "CNN6034"
+    ],
+    "지능형 안전 기술": [
+      "CNN6012",
+      "CNN6013",
+      "CNN6014",
+      "CNN6015",
+      "CNN6016",
+      "CNN6017",
+      "CNN6018"
+    ],
+    "외관": [
+      "CNN6035",
+      "CNN6036",
+      "CNN6037",
+      "CNN6038",
+      "CNN6039",
+      "CNN6040",
+      "CNN6041",
+      "CNN6042",
+      "CNN6043",
+      "CNN6044"
+    ],
+    "내장": [
+      "CNN6047",
+      "CNN6048",
+      "CNN6049",
+      "CNN6050",
+      "CNN6051",
+      "CNN6053",
+      "CNN6054"
+    ],
+    "시트": [
+      "CNN6057",
+      "CNN6058",
+      "CNN6059",
+      "CNN6060"
+    ],
+    "편의": [
+      "CNN6066",
+      "CNN6067",
+      "CNN6068",
+      "CNN6069",
+      "CNN6070",
+      "CNN6071",
+      "CNN6072",
+      "CNN6073",
+      "CNN6074",
+      "CNN6075",
+      "CNN6076",
+      "CNN6077",
+      "CNN6078",
+      "CNN6079",
+      "CNN6080",
+      "CNN6081",
+      "CNN6082",
+      "CNN6083",
+      "CNN6084",
+      "CNN6085"
+    ],
+    "인포테인먼트": [
+      "CNN6094",
+      "CNN6095",
+      "CNN6096",
+      "CNN6097"
+    ],
+    "선택사양": [
+      "CNN6046",
+      "CNN6P01",
+      "CNN6P02",
+      "CNN6P03",
+      "CNN6045",
+      "CNN6P04",
+      "CNN6P05",
+      "CNN6P06",
+      "CNN6P16",
+      "CNN6P17",
+      "CNN6P07",
+      "CNN6P08",
+      "CNN6P09",
+      "CNN6P10",
+      "CNN6P14",
+      "CNN6104",
+      "CNN6103",
+      "CNN6P12",
+      "CNN6P13"
+    ]
+  },
+  "options": {
+    "CNN6001": {
+      "name": "N 전용 가솔린 2.0 터보 플랫파워 엔진(280마력)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6002": {
+      "name": "N 전용 6단 수동변속기(레브 매칭 기능 포함)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6003": {
+      "name": "N 전용 대용량 고성능 브레이크",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6004": {
+      "name": "N 코너 카빙 디퍼렌셜(e-LSD)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6005": {
+      "name": "전자 제어 서스펜션(ECS)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6006": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6007": {
+      "name": "N 그린 컨트롤 시스템(멀티 커스텀 모드, 주행 정보 표시)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6008": {
+      "name": "N 사운드 이퀄라이저(NSE)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6009": {
+      "name": "능동 가변 배기 시스템",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6010": {
+      "name": "랙 구동형 전동식 파워 스티어링(R-MDPS)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "CNN6028": {
+      "name": "8에어백 시스템(1열 어드밴스드/사이드, 2열 사이드, 전복 대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "CNN6029": {
+      "name": "유아용 시트 고정장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "CNN6030": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "CNN6031": {
+      "name": "타이어 응급처치 키트",
+      "category": "안전",
+      "is_package": false
+    },
+    "CNN6032": {
+      "name": "개별 타이어 공기압 경보장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "CNN6033": {
+      "name": "후석 승객 알림",
+      "category": "안전",
+      "is_package": false
+    },
+    "CNN6034": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "CNN6012": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CNN6013": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CNN6014": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CNN6015": {
+      "name": "운전자 주의경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CNN6016": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CNN6017": {
+      "name": "전방 차량 출발 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CNN6018": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CNN6035": {
+      "name": "N 전용 디자인(프론트/리어 범퍼, 라디에이터 그릴, 19인치 알로이 휠 & 미쉐린 파일럿 스포츠 4S 썸머 타이어(245/35ZR19), 레드 브레이크 캘리퍼, 윙타입 리어 스포일러, 유광 블랙 DLO 몰딩(벨트라인 포함), 블랙 아웃사이드 미러 커버, 사이드 스커트, 역삼각형 리어 리플렉터, 리어 디퓨저, 듀얼 싱글 팁 머플러, N 외장 엠블럼, N 휠캡)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6036": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6037": {
+      "name": "LED 방향지시등(앞)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6038": {
+      "name": "LED 주간주행등(DRL, 포지셔닝 포함)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6039": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6040": {
+      "name": "LED 리어 콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6041": {
+      "name": "아웃사이드 미러(열선, 전동 접이, 전동 조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6042": {
+      "name": "도어 포켓 라이팅(앞)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6043": {
+      "name": "에어로 타입 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6044": {
+      "name": "이중접합 차음 유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CNN6047": {
+      "name": "N 전용 디자인(반펀칭 가죽 스티어링 휠(열선 포함) & 변속기 노브, 다크 메탈 페인트 인사이드 도어 핸들, 메탈 도어 스커프, 퍼포먼스 블루 내장 액센트, 블랙 헤드라이닝 & 선바이저 & 필라 트림, 클러스터(10.25인치 컬러 LCD), 클러스터/내비게이션 일체형 글라스 및 N 전용 그래픽 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "CNN6048": {
+      "name": "리어 스티프 바",
+      "category": "내장",
+      "is_package": false
+    },
+    "CNN6049": {
+      "name": "앰비언트 무드램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "CNN6050": {
+      "name": "메탈 페달 & 풋레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "CNN6051": {
+      "name": "인조가죽 적용 내장(도어 센터 트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "CNN6053": {
+      "name": "소프트 페인트 내장재",
+      "category": "내장",
+      "is_package": false
+    },
+    "CNN6054": {
+      "name": "LED 실내등(맵램프, 룸램프, 선바이저 램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "CNN6057": {
+      "name": "N 전용 천연가죽 시트(퍼포먼스 블루 스티치, 착좌면 N 로고 스웨이드 패치 적용)",
+      "category": "시트",
+      "is_package": false
+    },
+    "CNN6058": {
+      "name": "1열 열선/통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "CNN6059": {
+      "name": "운전석 수동 높이 조절",
+      "category": "시트",
+      "is_package": false
+    },
+    "CNN6060": {
+      "name": "2열 벤치 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "CNN6066": {
+      "name": "버튼시동 & N 로고 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6067": {
+      "name": "듀얼 풀오토 에어컨(오토 디포그/미세먼지 센서/공기청정모드/애프터블로우 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6068": {
+      "name": "마이크로 에어 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6069": {
+      "name": "세이프티 파워 윈도우(운전석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6070": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6071": {
+      "name": "스티어링 휠 리모컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6072": {
+      "name": "운전석 공조 연동 자동 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6073": {
+      "name": "핸드 파킹 브레이크",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6074": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6075": {
+      "name": "후방 모니터(조향 연동, 주행 중 후방 뷰)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6076": {
+      "name": "전방 주차거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6077": {
+      "name": "후방 주차거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6078": {
+      "name": "파워 아웃렛(1열 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6079": {
+      "name": "USB-C 충전기(1열 1개, 2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6080": {
+      "name": "크루즈 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6081": {
+      "name": "스마트 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6082": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6083": {
+      "name": "하이패스",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6084": {
+      "name": "ECM 룸미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6085": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "CNN6094": {
+      "name": "10.25인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트, 발레모드)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CNN6095": {
+      "name": "내비게이션 무선 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CNN6096": {
+      "name": "N 전용 인포테인먼트 모드(N 트랙 맵, 현대 N 앱)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CNN6097": {
+      "name": "BOSE 프리미엄 사운드(8스피커, 외장앰프 포함)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CNN6046": {
+      "name": "선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CNN6P01": {
+      "name": "N DCT 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P02": {
+      "name": "빌트인 캠(보조배터리 포함)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P03": {
+      "name": "N 라이트 스포츠 버켓 시트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6045": {
+      "name": "19인치 초경량 단조 휠",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CNN6P04": {
+      "name": "N 현대 스마트센스Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P05": {
+      "name": "N 현대 스마트센스Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P06": {
+      "name": "N 컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P16": {
+      "name": "시티 팩(City Pack)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P17": {
+      "name": "트랙 팩(Track Pack)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P07": {
+      "name": "[N 퍼포먼스 파츠]카본 익스테리어 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P08": {
+      "name": "[N 퍼포먼스 파츠]카본 듀얼 싱글팁 머플러",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P09": {
+      "name": "[N 퍼포먼스 파츠]퍼포먼스 인테이크킷",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P10": {
+      "name": "[N 퍼포먼스 파츠]모노블록 브레이크 & 19인치 단조 휠(매트블랙) 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P14": {
+      "name": "[N 퍼포먼스 파츠]모노블록 브레이크 & 19인치 단조 휠(전면가공) 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6104": {
+      "name": "[N 퍼포먼스 파츠]19인치 매트 블랙 단조 휠(리얼 카본 휠캡)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CNN6103": {
+      "name": "[N 퍼포먼스 파츠]19인치 전면가공 단조 휠(리얼 카본 휠캡)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CNN6P12": {
+      "name": "[N 퍼포먼스 파츠]알칸타라 인테리어 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CNN6P13": {
+      "name": "[N 퍼포먼스 파츠]워크인 인테리어 패키지",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "n": {
+      "slug": "n",
+      "name_en": "AVANTE N",
+      "price": {
+        "tax_5": 33600000,
+        "tax_3_5": 33090000
+      },
+      "basic": [
+        "CNN6001",
+        "CNN6002",
+        "CNN6003",
+        "CNN6004",
+        "CNN6005",
+        "CNN6006",
+        "CNN6007",
+        "CNN6008",
+        "CNN6009",
+        "CNN6010",
+        "CNN6028",
+        "CNN6029",
+        "CNN6030",
+        "CNN6031",
+        "CNN6032",
+        "CNN6033",
+        "CNN6034",
+        "CNN6012",
+        "CNN6013",
+        "CNN6014",
+        "CNN6015",
+        "CNN6016",
+        "CNN6017",
+        "CNN6018",
+        "CNN6035",
+        "CNN6036",
+        "CNN6037",
+        "CNN6038",
+        "CNN6039",
+        "CNN6040",
+        "CNN6041",
+        "CNN6042",
+        "CNN6043",
+        "CNN6044",
+        "CNN6047",
+        "CNN6048",
+        "CNN6049",
+        "CNN6050",
+        "CNN6051",
+        "CNN6053",
+        "CNN6054",
+        "CNN6057",
+        "CNN6058",
+        "CNN6059",
+        "CNN6060",
+        "CNN6066",
+        "CNN6067",
+        "CNN6068",
+        "CNN6069",
+        "CNN6070",
+        "CNN6071",
+        "CNN6072",
+        "CNN6073",
+        "CNN6074",
+        "CNN6075",
+        "CNN6076",
+        "CNN6077",
+        "CNN6078",
+        "CNN6079",
+        "CNN6080",
+        "CNN6081",
+        "CNN6082",
+        "CNN6083",
+        "CNN6084",
+        "CNN6085",
+        "CNN6094",
+        "CNN6095",
+        "CNN6096",
+        "CNN6097"
+      ],
+      "select": [
+        "CNN6046",
+        "CNN6P01",
+        "CNN6P02",
+        "CNN6P03",
+        "CNN6045",
+        "CNN6P04",
+        "CNN6P05",
+        "CNN6P06",
+        "CNN6P16",
+        "CNN6P17",
+        "CNN6P07",
+        "CNN6P08",
+        "CNN6P09",
+        "CNN6P10",
+        "CNN6P14",
+        "CNN6104",
+        "CNN6103",
+        "CNN6P12",
+        "CNN6P13"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "CNN6046"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "CNN6P01",
+            "CNN6P02"
+          ],
+          "price": 2080000
+        },
+        {
+          "codes": [
+            "CNN6P03"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "CNN6045"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "CNN6P04"
+          ],
+          "price": 1290000
+        },
+        {
+          "codes": [
+            "CNN6P05"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "CNN6P06"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "CNN6P16"
+          ],
+          "price": 3650000
+        },
+        {
+          "codes": [
+            "CNN6P17"
+          ],
+          "price": 4150000
+        },
+        {
+          "codes": [
+            "CNN6P07"
+          ],
+          "price": 2920000
+        },
+        {
+          "codes": [
+            "CNN6P08"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "CNN6P09"
+          ],
+          "price": 480000
+        },
+        {
+          "codes": [
+            "CNN6P10"
+          ],
+          "price": 3510000
+        },
+        {
+          "codes": [
+            "CNN6P14"
+          ],
+          "price": 3660000
+        },
+        {
+          "codes": [
+            "CNN6104"
+          ],
+          "price": 2270000
+        },
+        {
+          "codes": [
+            "CNN6103"
+          ],
+          "price": 2420000
+        },
+        {
+          "codes": [
+            "CNN6P12"
+          ],
+          "price": 660000
+        },
+        {
+          "codes": [
+            "CNN6P13"
+          ],
+          "price": 300000
+        }
+      ]
+    }
+  }
+}

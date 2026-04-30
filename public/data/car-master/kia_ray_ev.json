@@ -1,0 +1,902 @@
+{
+  "catalog_id": "kia_ray_ev",
+  "title": "기아 더 뉴 레이 EV",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/ray-ev/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRTM258001",
+      "KRTM258002",
+      "KRTM258003",
+      "KRTM258004"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRTM258019",
+      "KRTM258020",
+      "KRTM258021",
+      "KRTM258022",
+      "KRTM258023",
+      "KRTM258024",
+      "KRTM258025",
+      "KRTM258112",
+      "KRTM258026",
+      "KRTM258027"
+    ],
+    "안전": [
+      "KRTM258005",
+      "KRTM258007",
+      "KRTM258008",
+      "KRTM258009",
+      "KRTM258010",
+      "KRTM258011",
+      "KRTM258012",
+      "KRTM258014",
+      "KRTM258015",
+      "KRTM258016",
+      "KRTM258113",
+      "KRTM258017",
+      "KRTM258018",
+      "KRTM258104",
+      "KRTM258013"
+    ],
+    "외장": [
+      "KRTM258028",
+      "KRTM258029",
+      "KRTM258030",
+      "KRTM258031",
+      "KRTM258032",
+      "KRTM258033",
+      "KRTM258034",
+      "KRTM258035",
+      "KRTM258037",
+      "KRTM258038",
+      "KRTM258039",
+      "KRTM258040",
+      "KRTM258036"
+    ],
+    "내장": [
+      "KRTM258041",
+      "KRTM258042",
+      "KRTM258050",
+      "KRTM258043",
+      "KRTM258044",
+      "KRTM258051",
+      "KRTM258046",
+      "KRTM258047",
+      "KRTM258048",
+      "KRTM258049",
+      "KRTM258052",
+      "KRTM258053",
+      "KRTM258107"
+    ],
+    "시트": [
+      "KRTM258054",
+      "KRTM258055",
+      "KRTM258056",
+      "KRTM258057",
+      "KRTM258058",
+      "KRTM258059",
+      "KRTM258060",
+      "KRTM258066",
+      "KRTM258061",
+      "KRTM258062",
+      "KRTM258067",
+      "KRTM258063",
+      "KRTM258064",
+      "KRTM258065",
+      "KRTM258109",
+      "KRTM258110"
+    ],
+    "편의": [
+      "KRTM258069",
+      "KRTM258086",
+      "KRTM258070",
+      "KRTM258071",
+      "KRTM258072",
+      "KRTM258073",
+      "KRTM258087",
+      "KRTM258074",
+      "KRTM258075",
+      "KRTM258088",
+      "KRTM258076",
+      "KRTM258077",
+      "KRTM258078",
+      "KRTM258079",
+      "KRTM258080",
+      "KRTM258081",
+      "KRTM258082",
+      "KRTM258083",
+      "KRTM258084",
+      "KRTM258085",
+      "KRTM258091",
+      "KRTM258092",
+      "KRTM258089",
+      "KRTM258093",
+      "KRTM258094",
+      "KRTM258090",
+      "KRTM258108",
+      "KRTM258095",
+      "KRTM258096"
+    ],
+    "인포테인먼트": [
+      "KRTM258097",
+      "KRTM258098",
+      "KRTM258099",
+      "KRTM258100",
+      "KRTM258101",
+      "KRTM258102",
+      "KRTM258103"
+    ],
+    "선택사양": [
+      "KRTM258P02",
+      "KRTM258P04",
+      "KRTM258P05",
+      "KRTM258P07",
+      "KRTM258114",
+      "KRTM258P08",
+      "KRTM258P10",
+      "KRTM258P09"
+    ]
+  },
+  "options": {
+    "KRTM258001": {
+      "name": "35.2kWh 리튬인산철 배터리",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRTM258002": {
+      "name": "회생제동 브레이크 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRTM258003": {
+      "name": "속도감응형 전동식 파워스티어링(MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRTM258004": {
+      "name": "배터리 히팅 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRTM258019": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258020": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258021": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258022": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258023": {
+      "name": "차로 유지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258024": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258005": {
+      "name": "6에어백(운전석, 동승석, 전복감지 커튼, 앞좌석 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258007": {
+      "name": "후방 주차거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258008": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258009": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258010": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258011": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258012": {
+      "name": "앞좌석/뒷좌석 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258014": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258015": {
+      "name": "전/후륜 디스크 브레이크",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258016": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258113": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258017": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258028": {
+      "name": "175/60 R14 타이어&amp;스틸 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258029": {
+      "name": "풀사이즈 휠커버",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258030": {
+      "name": "바디칼라 아웃사이드 미러(전동접이, 전동조절, 열선, 락폴딩)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258031": {
+      "name": "바디칼라 아웃사이드 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258032": {
+      "name": "윈드쉴드 틴티드 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258033": {
+      "name": "블랙 하이그로시(센터 가니쉬 테두리, 프론트 범퍼 로워, 테일게이트 가니쉬)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258034": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258041": {
+      "name": "블랙 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258042": {
+      "name": "슈퍼비전 클러스터(10.25인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258050": {
+      "name": "가죽 스티어링 휠(블랙 하이그로시 가니쉬 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258043": {
+      "name": "맵램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258044": {
+      "name": "룸램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258051": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258046": {
+      "name": "선글라스 케이스",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258047": {
+      "name": "대용량 루프콘솔",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258048": {
+      "name": "슬라이딩 선바이저(거울)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258054": {
+      "name": "직물시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258055": {
+      "name": "뒷좌석 벤치폴딩시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258056": {
+      "name": "앞좌석 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258057": {
+      "name": "운전석 시트 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258058": {
+      "name": "동승석 시트백 테이블",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258069": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258086": {
+      "name": "하이패스 자동결제 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258070": {
+      "name": "컬럼 타입 전자식 변속 레버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258071": {
+      "name": "회생제동 컨트롤 패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258072": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258073": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258087": {
+      "name": "크루즈 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258074": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258075": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258088": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258076": {
+      "name": "수동식 틸트 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258077": {
+      "name": "앞좌석/뒷좌석 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258078": {
+      "name": "파워도어록",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258079": {
+      "name": "속도 감응형 도어잠금장치",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258080": {
+      "name": "풀오토 에어컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258081": {
+      "name": "공기청정 모드",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258082": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258083": {
+      "name": "파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258084": {
+      "name": "별물형 USB 충전기",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258085": {
+      "name": "뒷유리 와이퍼&amp;와셔 노즐",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258097": {
+      "name": "8인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRTM258098": {
+      "name": "내비게이션 무선 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRTM258099": {
+      "name": "6스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRTM258100": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRTM258101": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRTM258102": {
+      "name": "USB 단자(데이터리딩용)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRTM258P02": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRTM258P04": {
+      "name": "컴포트 Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRTM258P05": {
+      "name": "컴포트 Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRTM258P07": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRTM258114": {
+      "name": "그레이 투톤 패키지",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRTM258025": {
+      "name": "후측방 충돌 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258112": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258026": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258027": {
+      "name": "안전 하차 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRTM258035": {
+      "name": "14인치 알로이 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258037": {
+      "name": "프로젝션 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258038": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258039": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258040": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258036": {
+      "name": "LED 리피터 일체형 아웃사이드 미러",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRTM258049": {
+      "name": "블랙 인테리어 또는 라이트 그레이 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258052": {
+      "name": "선바이저 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258053": {
+      "name": "고급형 센터콘솔",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258059": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258060": {
+      "name": "앞좌석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258066": {
+      "name": "뒷좌석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258061": {
+      "name": "운전석 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258062": {
+      "name": "운전석 풀 폴딩시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258067": {
+      "name": "뒷좌석 슬라이딩 6:4 폴딩시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258063": {
+      "name": "운전석 시트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258064": {
+      "name": "운전석 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258065": {
+      "name": "운전석 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258091": {
+      "name": "운전석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258092": {
+      "name": "뒷좌석 C타입 USB 단자(충전용)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258089": {
+      "name": "동승석 시트 언더트레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258093": {
+      "name": "러기지 보드",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258094": {
+      "name": "러기지 언더트레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258090": {
+      "name": "러기지 네트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258018": {
+      "name": "앞좌석 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258107": {
+      "name": "슬라이딩 선바이저",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRTM258108": {
+      "name": "앞좌석 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258095": {
+      "name": "격벽",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258096": {
+      "name": "보호봉",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRTM258103": {
+      "name": "2스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRTM258P08": {
+      "name": "컴포트 Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRTM258P10": {
+      "name": "컴포트 Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRTM258104": {
+      "name": "4에어백(운전석, 전복감지 커튼, 운전석 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258013": {
+      "name": "운전석 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRTM258109": {
+      "name": "운전석 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRTM258P09": {
+      "name": "컴포트 Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRTM258110": {
+      "name": "운전석 열선시트",
+      "category": "시트",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "라이트": {
+      "slug": "라이트",
+      "price": {
+        "base": 27950000
+      },
+      "basic": [
+        "KRTM258001",
+        "KRTM258002",
+        "KRTM258003",
+        "KRTM258004",
+        "KRTM258019",
+        "KRTM258020",
+        "KRTM258021",
+        "KRTM258022",
+        "KRTM258023",
+        "KRTM258024",
+        "KRTM258104",
+        "KRTM258007",
+        "KRTM258008",
+        "KRTM258009",
+        "KRTM258010",
+        "KRTM258011",
+        "KRTM258013",
+        "KRTM258015",
+        "KRTM258016",
+        "KRTM258113",
+        "KRTM258017",
+        "KRTM258028",
+        "KRTM258029",
+        "KRTM258030",
+        "KRTM258031",
+        "KRTM258032",
+        "KRTM258033",
+        "KRTM258034",
+        "KRTM258041",
+        "KRTM258042",
+        "KRTM258043",
+        "KRTM258044",
+        "KRTM258051",
+        "KRTM258046",
+        "KRTM258047",
+        "KRTM258107",
+        "KRTM258054",
+        "KRTM258109",
+        "KRTM258069",
+        "KRTM258086",
+        "KRTM258070",
+        "KRTM258071",
+        "KRTM258072",
+        "KRTM258073",
+        "KRTM258087",
+        "KRTM258074",
+        "KRTM258076",
+        "KRTM258108",
+        "KRTM258078",
+        "KRTM258079",
+        "KRTM258080",
+        "KRTM258081",
+        "KRTM258082",
+        "KRTM258083",
+        "KRTM258084",
+        "KRTM258095",
+        "KRTM258096",
+        "KRTM258097",
+        "KRTM258098",
+        "KRTM258103",
+        "KRTM258100",
+        "KRTM258101",
+        "KRTM258102"
+      ],
+      "select": [
+        "KRTM258P09",
+        "KRTM258P07"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRTM258P09"
+          ],
+          "price": 350000
+        },
+        {
+          "codes": [
+            "KRTM258P07"
+          ],
+          "price": 300000
+        }
+      ]
+    },
+    "에어": {
+      "slug": "에어",
+      "price": {
+        "base": 28400000
+      },
+      "basic": [
+        "KRTM258050",
+        "KRTM258059",
+        "KRTM258110",
+        "KRTM258057",
+        "KRTM258063",
+        "KRTM258064",
+        "KRTM258088",
+        "KRTM258085",
+        "KRTM258001",
+        "KRTM258002",
+        "KRTM258003",
+        "KRTM258004",
+        "KRTM258019",
+        "KRTM258020",
+        "KRTM258021",
+        "KRTM258022",
+        "KRTM258023",
+        "KRTM258024",
+        "KRTM258104",
+        "KRTM258007",
+        "KRTM258008",
+        "KRTM258009",
+        "KRTM258010",
+        "KRTM258011",
+        "KRTM258013",
+        "KRTM258015",
+        "KRTM258016",
+        "KRTM258113",
+        "KRTM258017",
+        "KRTM258028",
+        "KRTM258029",
+        "KRTM258030",
+        "KRTM258031",
+        "KRTM258032",
+        "KRTM258033",
+        "KRTM258034",
+        "KRTM258041",
+        "KRTM258042",
+        "KRTM258043",
+        "KRTM258044",
+        "KRTM258051",
+        "KRTM258046",
+        "KRTM258047",
+        "KRTM258107",
+        "KRTM258109",
+        "KRTM258069",
+        "KRTM258086",
+        "KRTM258070",
+        "KRTM258071",
+        "KRTM258072",
+        "KRTM258073",
+        "KRTM258087",
+        "KRTM258074",
+        "KRTM258076",
+        "KRTM258108",
+        "KRTM258078",
+        "KRTM258079",
+        "KRTM258080",
+        "KRTM258081",
+        "KRTM258082",
+        "KRTM258083",
+        "KRTM258084",
+        "KRTM258095",
+        "KRTM258096",
+        "KRTM258097",
+        "KRTM258098",
+        "KRTM258103",
+        "KRTM258100",
+        "KRTM258101",
+        "KRTM258102"
+      ],
+      "select": [
+        "KRTM258P07"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRTM258P07"
+          ],
+          "price": 300000
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,2794 @@
+{
+  "catalog_id": "hyundai_sonata_dn8_edge",
+  "title": "현대 쏘나타 디 엣지 (DN8)",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/sonata26-J-G2.0_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/sonata26-J-L2.0_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/sonata-nline-26_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/sonata26-H_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/sonata26-R_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/sonata26-J-G1.6_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "DN07008",
+      "DN07009",
+      "DN07003",
+      "DN07010",
+      "DN07005",
+      "DN07006",
+      "DN07007",
+      "DN07011",
+      "DN07012",
+      "DN07001",
+      "DN07002",
+      "DN07004",
+      "DN07018"
+    ],
+    "안전": [
+      "DN07038",
+      "DN07039",
+      "DN07040",
+      "DN07041",
+      "DN07042",
+      "DN07043",
+      "DN07150"
+    ],
+    "지능형 안전 기술": [
+      "DN07021",
+      "DN07022",
+      "DN07023",
+      "DN07024",
+      "DN07026",
+      "DN07027",
+      "DN07028",
+      "DN07029",
+      "DN07030",
+      "DN07031",
+      "DN07032",
+      "DN07033",
+      "DN07034",
+      "DN07036",
+      "DN07035",
+      "DN07020",
+      "DN07025",
+      "DN07037"
+    ],
+    "외관": [
+      "DN07045",
+      "DN07046",
+      "DN07047",
+      "DN07048",
+      "DN07049",
+      "DN07050",
+      "DN07051",
+      "DN07052",
+      "DN07053",
+      "DN07054",
+      "DN07055",
+      "DN07056",
+      "DN07057",
+      "DN07058",
+      "DN07059",
+      "DN07060",
+      "DN07061",
+      "DN07063",
+      "DN07064",
+      "DN07065",
+      "DN07066",
+      "DN07067"
+    ],
+    "내장": [
+      "DN07069",
+      "DN07070",
+      "DN07071",
+      "DN07072",
+      "DN07074",
+      "DN07075",
+      "DN07076",
+      "DN07077",
+      "DN07078",
+      "DN07079",
+      "DN07073",
+      "DN07080",
+      "DN07081",
+      "DN07082",
+      "DN07083"
+    ],
+    "시트": [
+      "DN07084",
+      "DN07085",
+      "DN07086",
+      "DN07087",
+      "DN07088",
+      "DN07089",
+      "DN07090",
+      "DN07091",
+      "DN07093",
+      "DN07094",
+      "DN07095",
+      "DN07096",
+      "DN07097",
+      "DN07098",
+      "DN07099",
+      "DN07100",
+      "DN07101"
+    ],
+    "편의": [
+      "DN07102",
+      "DN07103",
+      "DN07104",
+      "DN07105",
+      "DN07106",
+      "DN07107",
+      "DN07108",
+      "DN07109",
+      "DN07110",
+      "DN07111",
+      "DN07112",
+      "DN07113",
+      "DN07114",
+      "DN07115",
+      "DN07116",
+      "DN07134",
+      "DN07118",
+      "DN07119",
+      "DN07121",
+      "DN07122",
+      "DN07127",
+      "DN07128",
+      "DN07129",
+      "DN07130",
+      "DN07131",
+      "DN07117",
+      "DN07151"
+    ],
+    "인포테인먼트": [
+      "DN07135",
+      "DN07136",
+      "DN07137",
+      "DN07139",
+      "DN07141"
+    ],
+    "선택사양": [
+      "DN07P19",
+      "DN07P01",
+      "DN07P02",
+      "DN07P08",
+      "DN07P09",
+      "DN07P10",
+      "DN07P06",
+      "DN07120",
+      "DN07P15",
+      "DN07P04",
+      "DN07062",
+      "DN07138",
+      "DN07P03",
+      "DN07P11",
+      "DN07P07",
+      "DN07P12",
+      "DN07P16",
+      "DN07P17",
+      "DN07P18",
+      "DN07092",
+      "DN07P22",
+      "DN07P23",
+      "DN07P20",
+      "DN07P14",
+      "DN07P05"
+    ]
+  },
+  "options": {
+    "DN07008": {
+      "name": "스마트스트림 가솔린 2.0 엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07009": {
+      "name": "6단 자동변속기",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07003": {
+      "name": "ISG시스템",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07010": {
+      "name": "전동식 파워 스티어링",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07005": {
+      "name": "전자식 변속 칼럼",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07006": {
+      "name": "통합 주행 모드",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07007": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07038": {
+      "name": "9에어백 시스템(1열 어드밴스드, 운전석 무릎, 1/2열 사이드, 전복대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "DN07039": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "DN07040": {
+      "name": "유아용 시트 고정장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "DN07041": {
+      "name": "개별 타이어 공기압 경보 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "DN07042": {
+      "name": "타이어 응급처치 키트",
+      "category": "안전",
+      "is_package": false
+    },
+    "DN07043": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "DN07150": {
+      "name": "시트 벨트 프리텐셔너(1/2열)",
+      "category": "안전",
+      "is_package": false
+    },
+    "DN07021": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07022": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07023": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07024": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07026": {
+      "name": "전방 차량 출발 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07027": {
+      "name": "진동경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07028": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07045": {
+      "name": "심리스 호라이즌 램프(수평형 LED 램프-주간주행등, 방향지시등(앞), 포지셔닝 램프)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07046": {
+      "name": "Full LED 헤드램프(MFR타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07047": {
+      "name": "LED 방향지시등(뒤)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07048": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07049": {
+      "name": "도어 포켓 라이팅(1열)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07050": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07051": {
+      "name": "크롬 DLO몰딩",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07052": {
+      "name": "17인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07053": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07054": {
+      "name": "펜더 LED 방향지시등",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07055": {
+      "name": "이중접합 차음유리(윈드실드, 1열도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07069": {
+      "name": "클러스터(4.2인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07070": {
+      "name": "가죽 스티어링 휠(열선포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07071": {
+      "name": "인조가죽 적용 내장(도어 센터트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07072": {
+      "name": "LED 실내등(맵램프, 룸램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07084": {
+      "name": "인조가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07085": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07086": {
+      "name": "운전석 전동시트(8way, 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07087": {
+      "name": "시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07102": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07103": {
+      "name": "스마트키 원격시동",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07104": {
+      "name": "스마트 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07105": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07106": {
+      "name": "매뉴얼 에어컨(애프터 블로우 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07107": {
+      "name": "세이프티 파워 윈도우(전좌석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07108": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07109": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07110": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07111": {
+      "name": "후드 가스 리프터",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07112": {
+      "name": "패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07113": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07114": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07115": {
+      "name": "마이크로 에어 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07116": {
+      "name": "C타입 USB 포트(1열 2개, 2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07135": {
+      "name": "12.3인치 디스플레이 오디오(블루링크, 폰 프로젝션, 6스피커, 라디오, MP3, 블루투스 핸즈프리)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "DN07136": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "DN07P19": {
+      "name": "빌트인 캠 2, 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P01": {
+      "name": "인포테인먼트 내비 Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P02": {
+      "name": "파킹 어시스트Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P08": {
+      "name": "현대 스마트센스Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P09": {
+      "name": "컴포트Ⅰ(1열 편의)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P10": {
+      "name": "컴포트Ⅱ(2열 편의)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P06": {
+      "name": "익스테리어 디자인 Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07120": {
+      "name": "하이패스",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "DN07P15": {
+      "name": "LED 라이팅 플러스 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07029": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07030": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간/곡선로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07031": {
+      "name": "후측방 충돌 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07032": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07033": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07034": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07074": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07075": {
+      "name": "클러스터(12.3인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07088": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07134": {
+      "name": "듀얼 풀오토 에어컨(미세먼지센서/공기청정모드/오토 디포그)",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07118": {
+      "name": "운전석 공조 연동 자동 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07119": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07137": {
+      "name": "12.3인치 내비게이션(인카페이먼트/e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "DN07076": {
+      "name": "앰비언트 무드램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07077": {
+      "name": "크롬 인사이드 도어 핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07078": {
+      "name": "멜란지 니트 내장재(헤드라이닝/필라)",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07089": {
+      "name": "천연가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07090": {
+      "name": "운전석 자세 메모리 시스템",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07091": {
+      "name": "동승석 전동시트(4way, 릴렉션 컴포트, 워크인 디바이스)",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07121": {
+      "name": "스마트 파워 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07122": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07P04": {
+      "name": "플래티넘Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07062": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "DN07036": {
+      "name": "2열 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07056": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07057": {
+      "name": "다이내믹 웰컴 라이트(앞/뒤)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07058": {
+      "name": "순차 점등 방향지시등(앞)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07059": {
+      "name": "18인치 알로이 휠 & 피렐리 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07060": {
+      "name": "자외선 차단유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07061": {
+      "name": "터치타입 아웃사이드 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07079": {
+      "name": "인조가죽 적용 내장(크래쉬패드)",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07093": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07094": {
+      "name": "2열 6:4 분할 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07095": {
+      "name": "2열 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07127": {
+      "name": "헤드업 디스플레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07128": {
+      "name": "2열 수동식 도어커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07129": {
+      "name": "뒷면 전동식 커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07130": {
+      "name": "디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07131": {
+      "name": "실내 지문 인증 시스템(시동/결제)",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07138": {
+      "name": "BOSE 프리미엄 사운드(12스피커, 외장앰프)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "DN07011": {
+      "name": "스마트스트림 LPG 2.0 엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07012": {
+      "name": "원형 봄베",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07P03": {
+      "name": "파킹 어시스트 Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P11": {
+      "name": "컴포트 Ⅲ(2열 편의)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P07": {
+      "name": "익스테리어 디자인 Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07035": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07063": {
+      "name": "18인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07096": {
+      "name": "2열 암레스트(스키쓰루 포함)",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07001": {
+      "name": "스마트스트림 가솔린 1.6 터보 엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07002": {
+      "name": "8단 자동변속기",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07004": {
+      "name": "랙구동형 전동식 파워 스티어링(R-MDPS)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07020": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07025": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07064": {
+      "name": "N Line 전용 디자인(블랙 하이그로시 라디에이터 그릴, 프론트/리어 범퍼, 전면 에어 인테이크 홀, 블랙 투톤 아웃사이드 도어 핸들, 리어 스포일러, 듀얼 트윈팁 머플러 가니시, N 휠캡)",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07065": {
+      "name": "Full LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07066": {
+      "name": "19인치 알로이 휠 & 피렐리 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07073": {
+      "name": "ECM 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07080": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07081": {
+      "name": "다크 그레이 니트 내장재",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07097": {
+      "name": "전용 버킷 시트(1열)",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07098": {
+      "name": "스웨이드+나파가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07099": {
+      "name": "1열 열선/통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07100": {
+      "name": "운전석 전동시트(8way, 럼버서포트, 볼스터 전동조절, 자세 메모리 시스템)",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07117": {
+      "name": "듀얼 풀오토 에어컨(미세먼지센서/공기청정모드/오토 디포그/애프터 블로우)",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07139": {
+      "name": "12.3인치 내비게이션(블루링크, 인카페이먼트/e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "DN07P12": {
+      "name": "컴포트 Ⅳ(2열 편의)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P16": {
+      "name": "[N 퍼포먼스 파츠]모노블록 브레이크 & 19인치 경량 휠 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P17": {
+      "name": "[N 퍼포먼스 파츠]19인치 블랙 경량 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P18": {
+      "name": "[N 퍼포먼스 파츠]N 퍼포먼스 서스펜션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07082": {
+      "name": "가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07101": {
+      "name": "운전석 전동시트(8way, 럼버서포트, 자세 메모리 시스템)",
+      "category": "시트",
+      "is_package": false
+    },
+    "DN07141": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트/e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "DN07092": {
+      "name": "나파가죽 시트(카멜/그레이지/네이비)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "DN07018": {
+      "name": "6단 자동변속기(레버타입)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "DN07037": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "DN07067": {
+      "name": "16인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "DN07083": {
+      "name": "가죽 변속기 노브",
+      "category": "내장",
+      "is_package": false
+    },
+    "DN07151": {
+      "name": "크루즈 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "DN07P22": {
+      "name": "현대 스마트센스 Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P23": {
+      "name": "인포테인먼트 내비 Ⅲ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P20": {
+      "name": "익스테리어 디자인 Ⅲ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P14": {
+      "name": "하이패스 + ECM 룸미러",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "DN07P05": {
+      "name": "플래티넘 Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "프리미엄 (2.0)": {
+      "slug": "premium",
+      "name_en": null,
+      "price": {
+        "tax_5": 28700000,
+        "tax_3_5": 28260000
+      },
+      "basic": [
+        "DN07008",
+        "DN07009",
+        "DN07003",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07069",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07084",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07102",
+        "DN07103",
+        "DN07104",
+        "DN07105",
+        "DN07106",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07135",
+        "DN07136"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P01",
+        "DN07P02",
+        "DN07P08",
+        "DN07P09",
+        "DN07P10",
+        "DN07P06",
+        "DN07120",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P01"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "DN07P02"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "DN07P08"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P09"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P10"
+          ],
+          "price": 670000
+        },
+        {
+          "codes": [
+            "DN07P06"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07120"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "에스 (2.0)": {
+      "slug": "s",
+      "name_en": null,
+      "price": {
+        "tax_5": 30020000,
+        "tax_3_5": 29560000
+      },
+      "basic": [
+        "DN07008",
+        "DN07009",
+        "DN07003",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07084",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07088",
+        "DN07102",
+        "DN07103",
+        "DN07104",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07119",
+        "DN07120",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P02",
+        "DN07P06",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P02"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "DN07P06"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "익스클루시브 (2.0)": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "tax_5": 33100000,
+        "tax_3_5": 32600000
+      },
+      "basic": [
+        "DN07008",
+        "DN07009",
+        "DN07003",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07088",
+        "DN07089",
+        "DN07090",
+        "DN07091",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07119",
+        "DN07120",
+        "DN07121",
+        "DN07122",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P04",
+        "DN07P10",
+        "DN07P06",
+        "DN07062",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P04"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "DN07P10"
+          ],
+          "price": 670000
+        },
+        {
+          "codes": [
+            "DN07P06"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "인스퍼레이션 (2.0)": {
+      "slug": "inspiration",
+      "name_en": null,
+      "price": {
+        "tax_5": 36040000,
+        "tax_3_5": 35490000
+      },
+      "basic": [
+        "DN07008",
+        "DN07009",
+        "DN07003",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07036",
+        "DN07045",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07056",
+        "DN07057",
+        "DN07058",
+        "DN07059",
+        "DN07060",
+        "DN07061",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07079",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07088",
+        "DN07090",
+        "DN07091",
+        "DN07093",
+        "DN07094",
+        "DN07095",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07119",
+        "DN07120",
+        "DN07121",
+        "DN07122",
+        "DN07127",
+        "DN07128",
+        "DN07129",
+        "DN07130",
+        "DN07131",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07062",
+        "DN07138",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "DN07138"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "프리미엄 (LPG 2.0)": {
+      "slug": "premium",
+      "name_en": null,
+      "price": {
+        "tax_5": 29550000,
+        "tax_3_5": 29100000
+      },
+      "basic": [
+        "DN07011",
+        "DN07009",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07012",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07069",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07084",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07102",
+        "DN07103",
+        "DN07104",
+        "DN07105",
+        "DN07106",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07135",
+        "DN07136"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P01",
+        "DN07P03",
+        "DN07P08",
+        "DN07P09",
+        "DN07P11",
+        "DN07P07",
+        "DN07120"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P01"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "DN07P03"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "DN07P08"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P09"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P11"
+          ],
+          "price": 570000
+        },
+        {
+          "codes": [
+            "DN07P07"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07120"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "익스클루시브 (LPG 2.0)": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "tax_5": 33600000,
+        "tax_3_5": 33090000
+      },
+      "basic": [
+        "DN07011",
+        "DN07009",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07012",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07035",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07089",
+        "DN07088",
+        "DN07090",
+        "DN07091",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07120",
+        "DN07119",
+        "DN07121",
+        "DN07122",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P04",
+        "DN07P11",
+        "DN07P07",
+        "DN07062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P04"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "DN07P11"
+          ],
+          "price": 570000
+        },
+        {
+          "codes": [
+            "DN07P07"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1190000
+        }
+      ]
+    },
+    "인스퍼레이션 (LPG 2.0)": {
+      "slug": "inspiration",
+      "name_en": null,
+      "price": {
+        "tax_5": 36290000,
+        "tax_3_5": 35740000
+      },
+      "basic": [
+        "DN07011",
+        "DN07009",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07012",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07035",
+        "DN07036",
+        "DN07045",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07056",
+        "DN07057",
+        "DN07058",
+        "DN07063",
+        "DN07060",
+        "DN07061",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07079",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07088",
+        "DN07090",
+        "DN07091",
+        "DN07093",
+        "DN07096",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07120",
+        "DN07119",
+        "DN07121",
+        "DN07122",
+        "DN07127",
+        "DN07128",
+        "DN07129",
+        "DN07130",
+        "DN07131",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07062",
+        "DN07138"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "DN07138"
+          ],
+          "price": 640000
+        }
+      ]
+    },
+    "프리미엄 (N라인)": {
+      "slug": "premium",
+      "name_en": "N Line",
+      "price": {
+        "tax_5": 37310000,
+        "tax_3_5": 36740000
+      },
+      "basic": [
+        "DN07001",
+        "DN07002",
+        "DN07003",
+        "DN07004",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07020",
+        "DN07021",
+        "DN07022",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07029",
+        "DN07025",
+        "DN07030",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07034",
+        "DN07064",
+        "DN07045",
+        "DN07056",
+        "DN07057",
+        "DN07058",
+        "DN07054",
+        "DN07047",
+        "DN07065",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07066",
+        "DN07053",
+        "DN07061",
+        "DN07055",
+        "DN07060",
+        "DN07074",
+        "DN07075",
+        "DN07070",
+        "DN07071",
+        "DN07073",
+        "DN07077",
+        "DN07080",
+        "DN07081",
+        "DN07076",
+        "DN07072",
+        "DN07097",
+        "DN07098",
+        "DN07099",
+        "DN07100",
+        "DN07091",
+        "DN07095",
+        "DN07102",
+        "DN07103",
+        "DN07121",
+        "DN07105",
+        "DN07107",
+        "DN07117",
+        "DN07108",
+        "DN07115",
+        "DN07118",
+        "DN07109",
+        "DN07110",
+        "DN07120",
+        "DN07130",
+        "DN07131",
+        "DN07122",
+        "DN07119",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07116",
+        "DN07139",
+        "DN07136",
+        "DN07138"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07062",
+        "DN07P02",
+        "DN07P03",
+        "DN07P12",
+        "DN07P15",
+        "DN07P16",
+        "DN07P17",
+        "DN07P18"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "DN07P02"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "DN07P03"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "DN07P12"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "DN07P16"
+          ],
+          "price": 1960000
+        },
+        {
+          "codes": [
+            "DN07P17"
+          ],
+          "price": 870000
+        },
+        {
+          "codes": [
+            "DN07P18"
+          ],
+          "price": 940000
+        }
+      ]
+    },
+    "익스클루시브 (장애인용)": {
+      "slug": "exclusive-right-hand",
+      "name_en": null,
+      "price": {
+        "base": 33270000
+      },
+      "basic": [
+        "DN07011",
+        "DN07009",
+        "DN07010",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07012",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07020",
+        "DN07021",
+        "DN07022",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07029",
+        "DN07025",
+        "DN07030",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07034",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07060",
+        "DN07055",
+        "DN07061",
+        "DN07074",
+        "DN07075",
+        "DN07082",
+        "DN07071",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07072",
+        "DN07073",
+        "DN07089",
+        "DN07088",
+        "DN07085",
+        "DN07101",
+        "DN07091",
+        "DN07087",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07110",
+        "DN07109",
+        "DN07117",
+        "DN07118",
+        "DN07108",
+        "DN07121",
+        "DN07107",
+        "DN07120",
+        "DN07119",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07122",
+        "DN07130",
+        "DN07131",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07141",
+        "DN07136",
+        "DN07138"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "비즈니스1 (영업용)": {
+      "slug": "smart",
+      "name_en": "Business 1",
+      "price": {
+        "base": 25600000
+      },
+      "basic": [
+        "DN07011",
+        "DN07018",
+        "DN07010",
+        "DN07006",
+        "DN07007",
+        "DN07012",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07037",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07050",
+        "DN07049",
+        "DN07051",
+        "DN07067",
+        "DN07053",
+        "DN07054",
+        "DN07060",
+        "DN07055",
+        "DN07069",
+        "DN07070",
+        "DN07083",
+        "DN07071",
+        "DN07072",
+        "DN07084",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07102",
+        "DN07103",
+        "DN07104",
+        "DN07105",
+        "DN07107",
+        "DN07106",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07151",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07135",
+        "DN07136"
+      ],
+      "select": [
+        "DN07P22",
+        "DN07P23",
+        "DN07P09",
+        "DN07P20",
+        "DN07P14"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P22"
+          ],
+          "price": 730000
+        },
+        {
+          "codes": [
+            "DN07P23"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "DN07P09"
+          ],
+          "price": 610000
+        },
+        {
+          "codes": [
+            "DN07P20"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "DN07P14"
+          ],
+          "price": 230000
+        }
+      ]
+    },
+    "비즈니스2 (영업용)": {
+      "slug": "modern",
+      "name_en": "Business 2",
+      "price": {
+        "base": 29840000
+      },
+      "basic": [
+        "DN07011",
+        "DN07018",
+        "DN07010",
+        "DN07006",
+        "DN07007",
+        "DN07012",
+        "DN07005",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07037",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07045",
+        "DN07047",
+        "DN07048",
+        "DN07050",
+        "DN07049",
+        "DN07051",
+        "DN07053",
+        "DN07054",
+        "DN07060",
+        "DN07055",
+        "DN07056",
+        "DN07057",
+        "DN07058",
+        "DN07052",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07073",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07089",
+        "DN07088",
+        "DN07090",
+        "DN07091",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07151",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07120",
+        "DN07134",
+        "DN07119",
+        "DN07121",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P22",
+        "DN07P05",
+        "DN07P11",
+        "DN07062",
+        "DN07P19"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P22"
+          ],
+          "price": 730000
+        },
+        {
+          "codes": [
+            "DN07P05"
+          ],
+          "price": 1170000
+        },
+        {
+          "codes": [
+            "DN07P11"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1130000
+        },
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 420000
+        }
+      ]
+    },
+    "프리미엄 (1.6)": {
+      "slug": "premium",
+      "name_en": null,
+      "price": {
+        "tax_5": 29370000,
+        "tax_3_5": 28920000
+      },
+      "basic": [
+        "DN07001",
+        "DN07002",
+        "DN07003",
+        "DN07004",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07069",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07084",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07102",
+        "DN07103",
+        "DN07104",
+        "DN07105",
+        "DN07106",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07135",
+        "DN07136"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P01",
+        "DN07P02",
+        "DN07P08",
+        "DN07P09",
+        "DN07P10",
+        "DN07P06",
+        "DN07120",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P01"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "DN07P02"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "DN07P08"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P09"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P10"
+          ],
+          "price": 670000
+        },
+        {
+          "codes": [
+            "DN07P06"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07120"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "에스 (1.6)": {
+      "slug": "s",
+      "name_en": null,
+      "price": {
+        "tax_5": 30690000,
+        "tax_3_5": 30220000
+      },
+      "basic": [
+        "DN07001",
+        "DN07002",
+        "DN07003",
+        "DN07004",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07084",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07088",
+        "DN07102",
+        "DN07103",
+        "DN07104",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07119",
+        "DN07120",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P02",
+        "DN07P06",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P02"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "DN07P06"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "익스클루시브 (1.6)": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "tax_5": 33770000,
+        "tax_3_5": 33260000
+      },
+      "basic": [
+        "DN07001",
+        "DN07002",
+        "DN07003",
+        "DN07004",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07045",
+        "DN07046",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07052",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07088",
+        "DN07089",
+        "DN07090",
+        "DN07091",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07119",
+        "DN07120",
+        "DN07121",
+        "DN07122",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07P04",
+        "DN07P10",
+        "DN07P06",
+        "DN07062",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07P04"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "DN07P10"
+          ],
+          "price": 670000
+        },
+        {
+          "codes": [
+            "DN07P06"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "인스퍼레이션 (1.6)": {
+      "slug": "inspiration",
+      "name_en": null,
+      "price": {
+        "tax_5": 36710000,
+        "tax_3_5": 36150000
+      },
+      "basic": [
+        "DN07001",
+        "DN07002",
+        "DN07003",
+        "DN07004",
+        "DN07005",
+        "DN07006",
+        "DN07007",
+        "DN07038",
+        "DN07039",
+        "DN07040",
+        "DN07041",
+        "DN07042",
+        "DN07043",
+        "DN07150",
+        "DN07021",
+        "DN07022",
+        "DN07023",
+        "DN07024",
+        "DN07026",
+        "DN07027",
+        "DN07028",
+        "DN07029",
+        "DN07030",
+        "DN07031",
+        "DN07032",
+        "DN07033",
+        "DN07034",
+        "DN07036",
+        "DN07045",
+        "DN07047",
+        "DN07048",
+        "DN07049",
+        "DN07050",
+        "DN07051",
+        "DN07053",
+        "DN07054",
+        "DN07055",
+        "DN07056",
+        "DN07057",
+        "DN07058",
+        "DN07059",
+        "DN07060",
+        "DN07061",
+        "DN07070",
+        "DN07071",
+        "DN07072",
+        "DN07074",
+        "DN07075",
+        "DN07076",
+        "DN07077",
+        "DN07078",
+        "DN07079",
+        "DN07085",
+        "DN07086",
+        "DN07087",
+        "DN07088",
+        "DN07090",
+        "DN07091",
+        "DN07093",
+        "DN07094",
+        "DN07095",
+        "DN07102",
+        "DN07103",
+        "DN07105",
+        "DN07107",
+        "DN07108",
+        "DN07109",
+        "DN07110",
+        "DN07111",
+        "DN07112",
+        "DN07113",
+        "DN07114",
+        "DN07115",
+        "DN07116",
+        "DN07134",
+        "DN07118",
+        "DN07119",
+        "DN07120",
+        "DN07121",
+        "DN07122",
+        "DN07127",
+        "DN07128",
+        "DN07129",
+        "DN07130",
+        "DN07131",
+        "DN07136",
+        "DN07137"
+      ],
+      "select": [
+        "DN07P19",
+        "DN07062",
+        "DN07138",
+        "DN07P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "DN07P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "DN07062"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "DN07138"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "DN07P15"
+          ],
+          "price": 250000
+        }
+      ]
+    }
+  }
+}

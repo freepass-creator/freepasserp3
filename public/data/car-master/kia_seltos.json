@@ -1,0 +1,1763 @@
+{
+  "catalog_id": "kia_seltos",
+  "title": "기아 셀토스 2세대",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/seltos/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRST290001",
+      "KRST290002",
+      "KRST290005",
+      "KRST290006",
+      "KRST290007",
+      "KRST290003",
+      "KRST290004",
+      "KRST290012",
+      "KRST290010"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRST290013",
+      "KRST290014",
+      "KRST290015",
+      "KRST290016",
+      "KRST290017",
+      "KRST290018",
+      "KRST290019",
+      "KRST290020",
+      "KRST290021",
+      "KRST290022",
+      "KRST290023",
+      "KRST290024",
+      "KRST290025",
+      "KRST290026"
+    ],
+    "안전": [
+      "KRST290034",
+      "KRST290035",
+      "KRST290036",
+      "KRST290037",
+      "KRST290038",
+      "KRST290039",
+      "KRST290040",
+      "KRST290041",
+      "KRST290042",
+      "KRST290043",
+      "KRST290044",
+      "KRST290045",
+      "KRST290046",
+      "KRST290047"
+    ],
+    "외장": [
+      "KRST290049",
+      "KRST290050",
+      "KRST290051",
+      "KRST290052",
+      "KRST290053",
+      "KRST290054",
+      "KRST290055",
+      "KRST290056",
+      "KRST290057",
+      "KRST290058",
+      "KRST290059",
+      "KRST290060",
+      "KRST290061",
+      "KRST290062",
+      "KRST290063",
+      "KRST290064",
+      "KRST290065",
+      "KRST290066",
+      "KRST290067",
+      "KRST290068",
+      "KRST290069",
+      "KRST290070"
+    ],
+    "내장": [
+      "KRST290077",
+      "KRST290078",
+      "KRST290079",
+      "KRST290080",
+      "KRST290081",
+      "KRST290082",
+      "KRST290083",
+      "KRST290084",
+      "KRST290173",
+      "KRST290085",
+      "KRST290086",
+      "KRST290087",
+      "KRST290088",
+      "KRST290089",
+      "KRST290090",
+      "KRST290091",
+      "KRST290092",
+      "KRST290093",
+      "KRST290094"
+    ],
+    "시트": [
+      "KRST290100",
+      "KRST290101",
+      "KRST290102",
+      "KRST290103",
+      "KRST290104",
+      "KRST290105",
+      "KRST290106",
+      "KRST290107",
+      "KRST290108",
+      "KRST290109",
+      "KRST290110",
+      "KRST290111",
+      "KRST290112",
+      "KRST290113",
+      "KRST290114",
+      "KRST290115",
+      "KRST290116",
+      "KRST290117"
+    ],
+    "편의": [
+      "KRST290120",
+      "KRST290121",
+      "KRST290122",
+      "KRST290123",
+      "KRST290124",
+      "KRST290125",
+      "KRST290126",
+      "KRST290127",
+      "KRST290128",
+      "KRST290129",
+      "KRST290130",
+      "KRST290131",
+      "KRST290132",
+      "KRST290133",
+      "KRST290134",
+      "KRST290135",
+      "KRST290136",
+      "KRST290138",
+      "KRST290139",
+      "KRST290140",
+      "KRST290141",
+      "KRST290142",
+      "KRST290143",
+      "KRST290144",
+      "KRST290145",
+      "KRST290146",
+      "KRST290147",
+      "KRST290148",
+      "KRST290149",
+      "KRST290150",
+      "KRST290151",
+      "KRST290152"
+    ],
+    "인포테인먼트": [
+      "KRST290162",
+      "KRST290163",
+      "KRST290164",
+      "KRST290165",
+      "KRST290166",
+      "KRST290167",
+      "KRST290168",
+      "KRST290169"
+    ],
+    "선택사양": [
+      "KRST290073",
+      "KRST290P20",
+      "KRST290P01",
+      "KRST290P04",
+      "KRST290P05",
+      "KRST290P06",
+      "KRST290P07",
+      "KRST290P08",
+      "KRST290P09",
+      "KRST290P02",
+      "KRST290P10",
+      "KRST290P13",
+      "KRST290161",
+      "KRST290P14",
+      "KRST290P18",
+      "KRST290P03",
+      "KRST290P11",
+      "KRST290P15",
+      "KRST290P17",
+      "KRST290072",
+      "KRST290074",
+      "KRST290075",
+      "KRST290P12",
+      "KRST290P16",
+      "KRST290P21",
+      "KRST290P19"
+    ]
+  },
+  "options": {
+    "KRST290001": {
+      "name": "스마트스트림 G1.6 T-GDI 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290002": {
+      "name": "스마트스트림 8AT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290005": {
+      "name": "속도감응형 전동식 파워스티어링(MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290006": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290007": {
+      "name": "트랙션 모드(스노우/머드/샌드)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290013": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290014": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290015": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290016": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290017": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290018": {
+      "name": "차로 유지 보조 2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290019": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290020": {
+      "name": "스티어링 휠 진동 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290021": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290034": {
+      "name": "9 에어백(운전석/동승석 어드밴스드, 1열 센터 사이드, 전복감지 커튼, 1열/2열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290035": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290036": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290037": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290038": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290039": {
+      "name": "경사로 저속주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290040": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290041": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290042": {
+      "name": "1열/2열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290043": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290044": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290045": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290049": {
+      "name": "205/65 R16 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290050": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290051": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290052": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290053": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290054": {
+      "name": "LED 리피터 일체형 아웃사이드미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290055": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290056": {
+      "name": "윈드쉴드 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290057": {
+      "name": "리어스포일러",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290058": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290077": {
+      "name": "그레이 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290078": {
+      "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290079": {
+      "name": "인조가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290080": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290081": {
+      "name": "D/N 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290082": {
+      "name": "선바이저 거울",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290083": {
+      "name": "글로브박스 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290084": {
+      "name": "러기지 보드",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290173": {
+      "name": "기아 애드기어(기아 멀티 후크 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290100": {
+      "name": "직물시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290101": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290102": {
+      "name": "2열 6:4 폴딩시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290103": {
+      "name": "1열/2열 높이조절식 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290104": {
+      "name": "1열 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290105": {
+      "name": "운전석 시트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290106": {
+      "name": "1열 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290120": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290121": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290122": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290123": {
+      "name": "주행 중 후방 뷰",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290124": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290125": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290126": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290127": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290128": {
+      "name": "1열/2열 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290129": {
+      "name": "파워도어록",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290130": {
+      "name": "매뉴얼 에어컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290131": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290132": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290133": {
+      "name": "C타입 USB 단자(충전용, 1열 2개/1열 시트백 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290134": {
+      "name": "파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290135": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290162": {
+      "name": "12.3인치 디스플레이 오디오(기아 커넥트, 폰 프로젝션)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290163": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290164": {
+      "name": "6스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290165": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290166": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290167": {
+      "name": "USB 단자(데이터리딩용)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290073": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRST290P20": {
+      "name": "전자식 4WD",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P01": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P04": {
+      "name": "컨비니언스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P05": {
+      "name": "12.3인치 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P06": {
+      "name": "빌트인 캠 2 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P07": {
+      "name": "12.3인치 클러스터",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P08": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P09": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290022": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290023": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290059": {
+      "name": "215/55 R18 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290060": {
+      "name": "블랙하이그로시(라디에이터 그릴, 아웃사이드 미러, 벨트라인 몰딩)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290061": {
+      "name": "실버 프론트/리어 스키드 플레이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290062": {
+      "name": "실버 도어 가니쉬 피스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290063": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290085": {
+      "name": "파노라믹 와이드 디스플레이(인포/공조 통합형)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290086": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290087": {
+      "name": "슬라이딩 선바이저(LED 조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290088": {
+      "name": "소프트 재질(크래쉬패드 가니쉬, 1열 도어 어퍼/센터 트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290089": {
+      "name": "1열/2열 도어 암레스트 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290107": {
+      "name": "프리미엄 바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290108": {
+      "name": "운전석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290109": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290110": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290111": {
+      "name": "1열 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290136": {
+      "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290138": {
+      "name": "컬럼 타입 전자식 변속 레버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290139": {
+      "name": "패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290140": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290141": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290142": {
+      "name": "운전석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290143": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290144": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290145": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290168": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290169": {
+      "name": "기아 AI 어시스턴트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRST290P02": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P10": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P13": {
+      "name": "모니터링",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290161": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRST290P14": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P18": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290024": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290025": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290026": {
+      "name": "안전 하차 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRST290046": {
+      "name": "전자식 차일드락",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290047": {
+      "name": "후진 가이드 램프",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRST290064": {
+      "name": "오토 플러시 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290090": {
+      "name": "그레이 인테리어 또는 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290091": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290092": {
+      "name": "프리미엄 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290112": {
+      "name": "스퀘어 패턴 엠보 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290113": {
+      "name": "동승석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290114": {
+      "name": "1열 릴렉션 컴포트시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290115": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290116": {
+      "name": "동승석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290146": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290147": {
+      "name": "스마트 파워테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290148": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290149": {
+      "name": "1열 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290150": {
+      "name": "후진연동 자동하향 아웃사이드미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290151": {
+      "name": "동승석/2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290152": {
+      "name": "100W C타입 USB 단자(충전용, 1열 2개/정품 충전 케이블 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRST290P03": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P11": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P15": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P17": {
+      "name": "하만카돈 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290072": {
+      "name": "투톤루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRST290065": {
+      "name": "X-Line 전용 외장 디자인",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290066": {
+      "name": "프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290067": {
+      "name": "프론트/리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290068": {
+      "name": "다이내믹 웰컴 라이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290069": {
+      "name": "프리미엄 LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290070": {
+      "name": "LED 포그램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRST290093": {
+      "name": "그레이 인테리어 또는 브라운 인테리어 또는 블랙 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290094": {
+      "name": "X-Line 전용 내장 디자인(전용 스티어링 휠, 블랙 헤드라이닝, 메탈 페달, 메탈 도어 스커프, 1열 메쉬 헤드레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRST290117": {
+      "name": "X-Line 전용 패턴 엠보 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRST290074": {
+      "name": "아이보리 매트 실버",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRST290075": {
+      "name": "마그마 매트 레드",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRST290P12": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P16": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290003": {
+      "name": "스마트스트림 G1.6 하이브리드 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290004": {
+      "name": "6단 DCT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290012": {
+      "name": "32kW 구동 모터",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290010": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRST290P21": {
+      "name": "12.3인치 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRST290P19": {
+      "name": "실내 V2L",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "트렌디": {
+      "slug": "트렌디",
+      "price": {
+        "tax_5_before": 30440000,
+        "tax_5_after": 29440000,
+        "tax_3_5_before": 29980000,
+        "tax_3_5_after": 28980000
+      },
+      "basic": [
+        "KRST290003",
+        "KRST290004",
+        "KRST290012",
+        "KRST290005",
+        "KRST290006",
+        "KRST290010",
+        "KRST290013",
+        "KRST290014",
+        "KRST290015",
+        "KRST290016",
+        "KRST290017",
+        "KRST290018",
+        "KRST290019",
+        "KRST290020",
+        "KRST290021",
+        "KRST290034",
+        "KRST290035",
+        "KRST290036",
+        "KRST290037",
+        "KRST290038",
+        "KRST290039",
+        "KRST290040",
+        "KRST290041",
+        "KRST290042",
+        "KRST290043",
+        "KRST290044",
+        "KRST290045",
+        "KRST290049",
+        "KRST290050",
+        "KRST290051",
+        "KRST290052",
+        "KRST290053",
+        "KRST290054",
+        "KRST290055",
+        "KRST290056",
+        "KRST290057",
+        "KRST290058",
+        "KRST290077",
+        "KRST290085",
+        "KRST290078",
+        "KRST290079",
+        "KRST290080",
+        "KRST290081",
+        "KRST290082",
+        "KRST290083",
+        "KRST290084",
+        "KRST290173",
+        "KRST290100",
+        "KRST290101",
+        "KRST290102",
+        "KRST290103",
+        "KRST290104",
+        "KRST290105",
+        "KRST290106",
+        "KRST290120",
+        "KRST290138",
+        "KRST290139",
+        "KRST290121",
+        "KRST290122",
+        "KRST290123",
+        "KRST290124",
+        "KRST290125",
+        "KRST290126",
+        "KRST290127",
+        "KRST290128",
+        "KRST290129",
+        "KRST290143",
+        "KRST290131",
+        "KRST290144",
+        "KRST290145",
+        "KRST290132",
+        "KRST290133",
+        "KRST290134",
+        "KRST290135",
+        "KRST290162",
+        "KRST290163",
+        "KRST290164",
+        "KRST290165",
+        "KRST290166",
+        "KRST290167"
+      ],
+      "select": [
+        "KRST290073",
+        "KRST290P01",
+        "KRST290P04",
+        "KRST290P21",
+        "KRST290P06",
+        "KRST290P07",
+        "KRST290P08",
+        "KRST290P09"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRST290073"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRST290P01"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRST290P04"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRST290P21"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRST290P06"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRST290P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRST290P08"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRST290P09"
+          ],
+          "price": 1190000
+        }
+      ]
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": {
+        "tax_5_before": 33590000,
+        "tax_5_after": 32590000,
+        "tax_3_5_before": 33080000,
+        "tax_3_5_after": 32080000
+      },
+      "basic": [
+        "KRST290022",
+        "KRST290023",
+        "KRST290059",
+        "KRST290060",
+        "KRST290061",
+        "KRST290062",
+        "KRST290063",
+        "KRST290086",
+        "KRST290087",
+        "KRST290088",
+        "KRST290089",
+        "KRST290107",
+        "KRST290108",
+        "KRST290109",
+        "KRST290110",
+        "KRST290111",
+        "KRST290136",
+        "KRST290140",
+        "KRST290141",
+        "KRST290142",
+        "KRST290168",
+        "KRST290169",
+        "KRST290003",
+        "KRST290004",
+        "KRST290012",
+        "KRST290005",
+        "KRST290006",
+        "KRST290010",
+        "KRST290013",
+        "KRST290014",
+        "KRST290015",
+        "KRST290016",
+        "KRST290017",
+        "KRST290018",
+        "KRST290019",
+        "KRST290020",
+        "KRST290021",
+        "KRST290034",
+        "KRST290035",
+        "KRST290036",
+        "KRST290037",
+        "KRST290038",
+        "KRST290039",
+        "KRST290040",
+        "KRST290041",
+        "KRST290042",
+        "KRST290043",
+        "KRST290044",
+        "KRST290045",
+        "KRST290050",
+        "KRST290051",
+        "KRST290052",
+        "KRST290053",
+        "KRST290054",
+        "KRST290055",
+        "KRST290056",
+        "KRST290057",
+        "KRST290058",
+        "KRST290077",
+        "KRST290085",
+        "KRST290078",
+        "KRST290079",
+        "KRST290080",
+        "KRST290082",
+        "KRST290083",
+        "KRST290084",
+        "KRST290173",
+        "KRST290101",
+        "KRST290102",
+        "KRST290103",
+        "KRST290104",
+        "KRST290106",
+        "KRST290120",
+        "KRST290138",
+        "KRST290139",
+        "KRST290121",
+        "KRST290122",
+        "KRST290123",
+        "KRST290124",
+        "KRST290125",
+        "KRST290126",
+        "KRST290127",
+        "KRST290128",
+        "KRST290129",
+        "KRST290143",
+        "KRST290131",
+        "KRST290144",
+        "KRST290145",
+        "KRST290132",
+        "KRST290133",
+        "KRST290134",
+        "KRST290135",
+        "KRST290163",
+        "KRST290164",
+        "KRST290165",
+        "KRST290166",
+        "KRST290167"
+      ],
+      "select": [
+        "KRST290073",
+        "KRST290P02",
+        "KRST290P06",
+        "KRST290P07",
+        "KRST290P08",
+        "KRST290P10",
+        "KRST290P13",
+        "KRST290161",
+        "KRST290P14",
+        "KRST290P19",
+        "KRST290P18"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRST290073"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRST290P02"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRST290P06"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRST290P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRST290P08"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRST290P10"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRST290P13"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRST290161"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRST290P14"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRST290P19"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRST290P18"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": {
+        "tax_5_before": 36240000,
+        "tax_5_after": 35240000,
+        "tax_3_5_before": 35690000,
+        "tax_3_5_after": 34690000
+      },
+      "basic": [
+        "KRST290024",
+        "KRST290025",
+        "KRST290026",
+        "KRST290046",
+        "KRST290047",
+        "KRST290064",
+        "KRST290090",
+        "KRST290091",
+        "KRST290092",
+        "KRST290112",
+        "KRST290113",
+        "KRST290114",
+        "KRST290115",
+        "KRST290116",
+        "KRST290146",
+        "KRST290147",
+        "KRST290148",
+        "KRST290149",
+        "KRST290150",
+        "KRST290151",
+        "KRST290152",
+        "KRST290003",
+        "KRST290004",
+        "KRST290012",
+        "KRST290005",
+        "KRST290006",
+        "KRST290010",
+        "KRST290013",
+        "KRST290014",
+        "KRST290015",
+        "KRST290016",
+        "KRST290017",
+        "KRST290018",
+        "KRST290019",
+        "KRST290020",
+        "KRST290021",
+        "KRST290022",
+        "KRST290023",
+        "KRST290034",
+        "KRST290035",
+        "KRST290036",
+        "KRST290037",
+        "KRST290038",
+        "KRST290039",
+        "KRST290040",
+        "KRST290041",
+        "KRST290042",
+        "KRST290043",
+        "KRST290044",
+        "KRST290045",
+        "KRST290050",
+        "KRST290051",
+        "KRST290052",
+        "KRST290053",
+        "KRST290054",
+        "KRST290055",
+        "KRST290056",
+        "KRST290057",
+        "KRST290058",
+        "KRST290059",
+        "KRST290060",
+        "KRST290061",
+        "KRST290062",
+        "KRST290063",
+        "KRST290085",
+        "KRST290080",
+        "KRST290082",
+        "KRST290083",
+        "KRST290084",
+        "KRST290173",
+        "KRST290086",
+        "KRST290087",
+        "KRST290088",
+        "KRST290089",
+        "KRST290101",
+        "KRST290102",
+        "KRST290103",
+        "KRST290104",
+        "KRST290106",
+        "KRST290108",
+        "KRST290109",
+        "KRST290110",
+        "KRST290111",
+        "KRST290120",
+        "KRST290138",
+        "KRST290139",
+        "KRST290121",
+        "KRST290122",
+        "KRST290123",
+        "KRST290124",
+        "KRST290125",
+        "KRST290126",
+        "KRST290127",
+        "KRST290128",
+        "KRST290129",
+        "KRST290143",
+        "KRST290131",
+        "KRST290144",
+        "KRST290145",
+        "KRST290132",
+        "KRST290134",
+        "KRST290135",
+        "KRST290136",
+        "KRST290140",
+        "KRST290141",
+        "KRST290142",
+        "KRST290163",
+        "KRST290164",
+        "KRST290165",
+        "KRST290166",
+        "KRST290167",
+        "KRST290168",
+        "KRST290169"
+      ],
+      "select": [
+        "KRST290073",
+        "KRST290P03",
+        "KRST290P06",
+        "KRST290P11",
+        "KRST290P13",
+        "KRST290161",
+        "KRST290P15",
+        "KRST290P17",
+        "KRST290P19",
+        "KRST290P18",
+        "KRST290072"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRST290073"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRST290P03"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRST290P06"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRST290P11"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRST290P13"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRST290161"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRST290P15"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRST290P17"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRST290P19"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRST290P18"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRST290072"
+          ],
+          "price": 300000
+        }
+      ]
+    },
+    "X-Line": {
+      "slug": "X-Line",
+      "price": {
+        "tax_5_before": 37410000,
+        "tax_5_after": 36410000,
+        "tax_3_5_before": 36840000,
+        "tax_3_5_after": 35840000
+      },
+      "basic": [
+        "KRST290065",
+        "KRST290066",
+        "KRST290067",
+        "KRST290068",
+        "KRST290069",
+        "KRST290070",
+        "KRST290093",
+        "KRST290094",
+        "KRST290117",
+        "KRST290003",
+        "KRST290004",
+        "KRST290012",
+        "KRST290005",
+        "KRST290006",
+        "KRST290010",
+        "KRST290013",
+        "KRST290014",
+        "KRST290015",
+        "KRST290016",
+        "KRST290017",
+        "KRST290018",
+        "KRST290019",
+        "KRST290020",
+        "KRST290021",
+        "KRST290022",
+        "KRST290023",
+        "KRST290024",
+        "KRST290025",
+        "KRST290026",
+        "KRST290034",
+        "KRST290035",
+        "KRST290036",
+        "KRST290037",
+        "KRST290038",
+        "KRST290039",
+        "KRST290040",
+        "KRST290041",
+        "KRST290042",
+        "KRST290043",
+        "KRST290044",
+        "KRST290045",
+        "KRST290046",
+        "KRST290047",
+        "KRST290052",
+        "KRST290053",
+        "KRST290054",
+        "KRST290055",
+        "KRST290056",
+        "KRST290057",
+        "KRST290058",
+        "KRST290063",
+        "KRST290064",
+        "KRST290085",
+        "KRST290080",
+        "KRST290082",
+        "KRST290083",
+        "KRST290084",
+        "KRST290173",
+        "KRST290086",
+        "KRST290087",
+        "KRST290088",
+        "KRST290089",
+        "KRST290091",
+        "KRST290101",
+        "KRST290102",
+        "KRST290103",
+        "KRST290104",
+        "KRST290106",
+        "KRST290108",
+        "KRST290109",
+        "KRST290110",
+        "KRST290111",
+        "KRST290113",
+        "KRST290114",
+        "KRST290115",
+        "KRST290116",
+        "KRST290120",
+        "KRST290138",
+        "KRST290139",
+        "KRST290121",
+        "KRST290122",
+        "KRST290123",
+        "KRST290124",
+        "KRST290125",
+        "KRST290126",
+        "KRST290127",
+        "KRST290128",
+        "KRST290129",
+        "KRST290143",
+        "KRST290131",
+        "KRST290144",
+        "KRST290145",
+        "KRST290132",
+        "KRST290134",
+        "KRST290135",
+        "KRST290136",
+        "KRST290140",
+        "KRST290141",
+        "KRST290142",
+        "KRST290146",
+        "KRST290147",
+        "KRST290148",
+        "KRST290149",
+        "KRST290150",
+        "KRST290151",
+        "KRST290152",
+        "KRST290163",
+        "KRST290164",
+        "KRST290165",
+        "KRST290166",
+        "KRST290167",
+        "KRST290168",
+        "KRST290169"
+      ],
+      "select": [
+        "KRST290073",
+        "KRST290074",
+        "KRST290075",
+        "KRST290P06",
+        "KRST290P12",
+        "KRST290P13",
+        "KRST290161",
+        "KRST290P16",
+        "KRST290P17",
+        "KRST290P19",
+        "KRST290P18",
+        "KRST290072"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRST290073"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRST290074"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRST290075"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRST290P06"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRST290P12"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRST290P13"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRST290161"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRST290P16"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRST290P17"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRST290P19"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRST290P18"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRST290072"
+          ],
+          "price": 300000
+        }
+      ]
+    }
+  }
+}

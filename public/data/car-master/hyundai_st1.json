@@ -1,0 +1,885 @@
+{
+  "catalog_id": "hyundai_st1",
+  "title": "현대 ST1",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/st1-cargo-frozen_2025_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/st1-cargo-chassis_2025_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/st1-cargo-hightop_2025_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/st1-cargo_2025_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워일렉트릭/성능": [
+      "TS02001",
+      "TS02002",
+      "TS02003",
+      "TS02004",
+      "TS02005",
+      "TS02007",
+      "TS02006"
+    ],
+    "안전": [
+      "TS02019",
+      "TS02020",
+      "TS02021",
+      "TS02022",
+      "TS02023",
+      "TS02024",
+      "TS02025"
+    ],
+    "지능형 안전 기술": [
+      "TS02008",
+      "TS02009",
+      "TS02010",
+      "TS02011",
+      "TS02012",
+      "TS02013",
+      "TS02014",
+      "TS02015",
+      "TS02016",
+      "TS02017",
+      "TS02018"
+    ],
+    "외관": [
+      "TS02027",
+      "TS02028",
+      "TS02029",
+      "TS02030",
+      "TS02031",
+      "TS02032",
+      "TS02034",
+      "TS02033",
+      "TS02026",
+      "TS02035"
+    ],
+    "내장": [
+      "TS02036",
+      "TS02046",
+      "TS02037",
+      "TS02038",
+      "TS02039",
+      "TS02040",
+      "TS02048",
+      "TS02042",
+      "TS02041",
+      "TS02096",
+      "TS02047"
+    ],
+    "시트": [
+      "TS02049",
+      "TS02050",
+      "TS02051",
+      "TS02052",
+      "TS02053",
+      "TS02098",
+      "TS02054"
+    ],
+    "편의": [
+      "TS02057",
+      "TS02058",
+      "TS02059",
+      "TS02060",
+      "TS02061",
+      "TS02062",
+      "TS02063",
+      "TS02064",
+      "TS02065",
+      "TS02066",
+      "TS02067",
+      "TS02080",
+      "TS02068",
+      "TS02069",
+      "TS02070",
+      "TS02071",
+      "TS02072",
+      "TS02073",
+      "TS02074",
+      "TS02075",
+      "TS02076",
+      "TS02077",
+      "TS02078"
+    ],
+    "인포테인먼트": [
+      "TS02084",
+      "TS02082",
+      "TS02083"
+    ],
+    "선택사양": [
+      "TS02079",
+      "TS02P01",
+      "TS02P02",
+      "TS02P04",
+      "TS02P03",
+      "TS02081"
+    ],
+    "샤시캡 특화사양": [
+      "TS02094"
+    ],
+    "특장": [
+      "TS02085",
+      "TS02086",
+      "TS02087",
+      "TS02088",
+      "TS02089",
+      "TS02090",
+      "TS02091",
+      "TS02092",
+      "TS02093"
+    ]
+  },
+  "options": {
+    "TS02001": {
+      "name": "76.1kWh 리튬 이온 배터리",
+      "category": "파워일렉트릭/성능",
+      "is_package": false
+    },
+    "TS02002": {
+      "name": "후륜 리프스프링",
+      "category": "파워일렉트릭/성능",
+      "is_package": false
+    },
+    "TS02003": {
+      "name": "회생제동 시스템",
+      "category": "파워일렉트릭/성능",
+      "is_package": false
+    },
+    "TS02004": {
+      "name": "전자식 변속 버튼",
+      "category": "파워일렉트릭/성능",
+      "is_package": false
+    },
+    "TS02005": {
+      "name": "통합주행모드",
+      "category": "파워일렉트릭/성능",
+      "is_package": false
+    },
+    "TS02007": {
+      "name": "냉동기",
+      "category": "파워일렉트릭/성능",
+      "is_package": false
+    },
+    "TS02006": {
+      "name": "배터리 컨디셔닝 시스템",
+      "category": "파워일렉트릭/성능",
+      "is_package": false
+    },
+    "TS02019": {
+      "name": "1열 에어백",
+      "category": "안전",
+      "is_package": false
+    },
+    "TS02020": {
+      "name": "커튼 에어백",
+      "category": "안전",
+      "is_package": false
+    },
+    "TS02021": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "TS02022": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "TS02023": {
+      "name": "횡풍안정제어",
+      "category": "안전",
+      "is_package": false
+    },
+    "TS02024": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "TS02025": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "TS02008": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02009": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02010": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02011": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02012": {
+      "name": "전방 차량 출발 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02013": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02014": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02027": {
+      "name": "17인치 스틸 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02028": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02029": {
+      "name": "루프 스포일러",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02030": {
+      "name": "애드온프로텍터(프론트/리어 범퍼, 사이드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02031": {
+      "name": "이중접합 차음유리(윈드실드, 1열 도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02036": {
+      "name": "클러스터(12.3인치 컬러 LCD, 디지털)",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02046": {
+      "name": "가죽 스티어링 휠(열선)",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02037": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02038": {
+      "name": "리놀륨 플로어 카페트",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02039": {
+      "name": "LED 카고 램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02040": {
+      "name": "루프트레이(운전석/동승석 상단 수납함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02048": {
+      "name": "냉동부 단열재",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02042": {
+      "name": "센터 콘솔",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02049": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "TS02050": {
+      "name": "운전석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "TS02051": {
+      "name": "운전석 수동 높이 조절",
+      "category": "시트",
+      "is_package": false
+    },
+    "TS02052": {
+      "name": "운전석 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "TS02053": {
+      "name": "동승석 슬라이딩 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "TS02098": {
+      "name": "동승석 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "TS02057": {
+      "name": "카고 도어 열림 주행 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02058": {
+      "name": "리어 트윈 스윙 도어(마그넷 도어 체커, 전동식 락킹 시스템 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02059": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02060": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02061": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02062": {
+      "name": "풀오토 에어컨(애프터 블로우)",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02063": {
+      "name": "마이크로 에어 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02064": {
+      "name": "파워 아웃렛(1열 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02065": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02066": {
+      "name": "카고 후방 충돌 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02067": {
+      "name": "실내 V2L",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02080": {
+      "name": "카고 온도 이탈 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02084": {
+      "name": "10.25인치 내비게이션(T맵 AUTO, 폰 프로젝션, 라디오, MP3, USB, 블루투스 핸즈프리, 2스피커)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "TS02082": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "TS02083": {
+      "name": "냉동기 컨트롤러",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "TS02079": {
+      "name": "빌트인 캠",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "TS02P01": {
+      "name": "컨비니언스Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "TS02P02": {
+      "name": "테크",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "TS02015": {
+      "name": "후측방 충돌방지 보조(전진출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02016": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02017": {
+      "name": "원격 스마트 주차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02018": {
+      "name": "안전 하차 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "TS02032": {
+      "name": "바디컬러 아웃사이드 미러(LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02054": {
+      "name": "운전석 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "TS02068": {
+      "name": "파워 슬라이딩 도어",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02069": {
+      "name": "스마트 워크 어웨이",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02070": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02071": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02072": {
+      "name": "스마트 드라이브 레디",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02073": {
+      "name": "측방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02074": {
+      "name": "실외 V2L 커넥터",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02075": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02076": {
+      "name": "하이패스",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02077": {
+      "name": "세이프티 파워 윈도우(1열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02078": {
+      "name": "프렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "TS02P04": {
+      "name": "컨비니언스Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "TS02034": {
+      "name": "애드온프로텍터(프론트 범퍼, 사이드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02094": {
+      "name": "플러그 앤 플레이",
+      "category": "샤시캡 특화사양",
+      "is_package": false
+    },
+    "TS02P03": {
+      "name": "컨비니언스Ⅰ(샤시캡, 하이탑)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "TS02081": {
+      "name": "하이루프용 루프 브라켓",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "TS02033": {
+      "name": "아웃사이드 미러(열선, 전동조절, 전동접이)",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02085": {
+      "name": "알루미늄 방청 + 경량화 평판(알루미늄 + 단열재 30mm + 알루미늄)",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02086": {
+      "name": "화물실 LED등",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02087": {
+      "name": "고압축 목재바닥",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02088": {
+      "name": "수납식 리어스텝",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02089": {
+      "name": "사이드 스윙 도어",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02090": {
+      "name": "리어 트윈 스윙 도어",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02091": {
+      "name": "고급형 도어캐치(3pcs)",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02092": {
+      "name": "에어스포일러",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02093": {
+      "name": "리어탑 상단 후방카메라",
+      "category": "특장",
+      "is_package": false
+    },
+    "TS02026": {
+      "name": "아웃사이드 미러(전동조절, 전동접이)",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02041": {
+      "name": "카고 실내 우드 트림(하측)",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02096": {
+      "name": "운전석 카매트",
+      "category": "내장",
+      "is_package": false
+    },
+    "TS02035": {
+      "name": "아웃사이드 미러(열선)",
+      "category": "외관",
+      "is_package": false
+    },
+    "TS02047": {
+      "name": "카고 실내 우드 트림(상측)",
+      "category": "내장",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "스마트": {
+      "slug": "smart",
+      "name_en": null,
+      "price": {
+        "base": 68750000
+      },
+      "basic": [
+        "TS02001",
+        "TS02002",
+        "TS02003",
+        "TS02004",
+        "TS02005",
+        "TS02007",
+        "TS02006",
+        "TS02019",
+        "TS02020",
+        "TS02021",
+        "TS02022",
+        "TS02023",
+        "TS02024",
+        "TS02025",
+        "TS02008",
+        "TS02009",
+        "TS02010",
+        "TS02011",
+        "TS02012",
+        "TS02013",
+        "TS02014",
+        "TS02027",
+        "TS02028",
+        "TS02029",
+        "TS02030",
+        "TS02031",
+        "TS02036",
+        "TS02046",
+        "TS02037",
+        "TS02038",
+        "TS02039",
+        "TS02040",
+        "TS02048",
+        "TS02042",
+        "TS02049",
+        "TS02050",
+        "TS02051",
+        "TS02052",
+        "TS02053",
+        "TS02098",
+        "TS02057",
+        "TS02058",
+        "TS02059",
+        "TS02060",
+        "TS02061",
+        "TS02062",
+        "TS02063",
+        "TS02064",
+        "TS02065",
+        "TS02066",
+        "TS02067",
+        "TS02080",
+        "TS02084",
+        "TS02082",
+        "TS02083"
+      ],
+      "select": [
+        "TS02079",
+        "TS02P01",
+        "TS02P02"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "TS02079"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "TS02P01"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "TS02P02"
+          ],
+          "price": 1550000
+        }
+      ]
+    },
+    "프리미엄": {
+      "slug": "premium",
+      "name_en": null,
+      "price": {
+        "base": 72530000
+      },
+      "basic": [
+        "TS02001",
+        "TS02002",
+        "TS02003",
+        "TS02004",
+        "TS02005",
+        "TS02007",
+        "TS02006",
+        "TS02019",
+        "TS02020",
+        "TS02021",
+        "TS02022",
+        "TS02023",
+        "TS02024",
+        "TS02025",
+        "TS02008",
+        "TS02009",
+        "TS02010",
+        "TS02011",
+        "TS02012",
+        "TS02013",
+        "TS02014",
+        "TS02015",
+        "TS02016",
+        "TS02017",
+        "TS02018",
+        "TS02027",
+        "TS02028",
+        "TS02029",
+        "TS02030",
+        "TS02031",
+        "TS02032",
+        "TS02036",
+        "TS02046",
+        "TS02037",
+        "TS02038",
+        "TS02039",
+        "TS02040",
+        "TS02048",
+        "TS02042",
+        "TS02049",
+        "TS02050",
+        "TS02051",
+        "TS02052",
+        "TS02053",
+        "TS02098",
+        "TS02054",
+        "TS02057",
+        "TS02058",
+        "TS02059",
+        "TS02060",
+        "TS02061",
+        "TS02062",
+        "TS02063",
+        "TS02064",
+        "TS02065",
+        "TS02066",
+        "TS02067",
+        "TS02080",
+        "TS02068",
+        "TS02069",
+        "TS02070",
+        "TS02071",
+        "TS02072",
+        "TS02073",
+        "TS02074",
+        "TS02075",
+        "TS02076",
+        "TS02077",
+        "TS02078",
+        "TS02084",
+        "TS02082",
+        "TS02083"
+      ],
+      "select": [
+        "TS02079",
+        "TS02P04"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "TS02079"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "TS02P04"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "스타일": {
+      "slug": "style",
+      "name_en": null,
+      "price": {
+        "base": 58740000
+      },
+      "basic": [
+        "TS02001",
+        "TS02002",
+        "TS02003",
+        "TS02004",
+        "TS02005",
+        "TS02006",
+        "TS02019",
+        "TS02020",
+        "TS02021",
+        "TS02022",
+        "TS02023",
+        "TS02024",
+        "TS02025",
+        "TS02008",
+        "TS02009",
+        "TS02010",
+        "TS02011",
+        "TS02012",
+        "TS02013",
+        "TS02014",
+        "TS02026",
+        "TS02027",
+        "TS02028",
+        "TS02029",
+        "TS02030",
+        "TS02031",
+        "TS02036",
+        "TS02037",
+        "TS02038",
+        "TS02039",
+        "TS02040",
+        "TS02041",
+        "TS02096",
+        "TS02049",
+        "TS02050",
+        "TS02051",
+        "TS02052",
+        "TS02053",
+        "TS02098",
+        "TS02057",
+        "TS02058",
+        "TS02059",
+        "TS02060",
+        "TS02061",
+        "TS02062",
+        "TS02063",
+        "TS02064",
+        "TS02065",
+        "TS02066",
+        "TS02067",
+        "TS02084",
+        "TS02082"
+      ],
+      "select": [
+        "TS02079",
+        "TS02076",
+        "TS02P02"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "TS02079"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "TS02076"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "TS02P02"
+          ],
+          "price": 1550000
+        }
+      ]
+    }
+  }
+}

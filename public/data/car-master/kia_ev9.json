@@ -1,0 +1,2968 @@
+{
+  "catalog_id": "kia_ev9",
+  "title": "기아 EV9",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/ev9/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워 일렉트릭": [
+      "KRMV297013",
+      "KRMV297237",
+      "KRMV297016",
+      "KRMV297017",
+      "KRMV297018",
+      "KRMV297019",
+      "KRMV297020",
+      "KRMV297021",
+      "KRMV297022",
+      "KRMV297015",
+      "KRMV297023",
+      "KRMV297014",
+      "KRMV297024",
+      "KRMV297025",
+      "KRMV297026"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRMV297027",
+      "KRMV297028",
+      "KRMV297029",
+      "KRMV297030",
+      "KRMV297031",
+      "KRMV297032",
+      "KRMV297033",
+      "KRMV297034",
+      "KRMV297035",
+      "KRMV297036",
+      "KRMV297037",
+      "KRMV297038",
+      "KRMV297039",
+      "KRMV297040"
+    ],
+    "안전": [
+      "KRMV297041",
+      "KRMV297248",
+      "KRMV297043",
+      "KRMV297044",
+      "KRMV297045",
+      "KRMV297046",
+      "KRMV297047",
+      "KRMV297048",
+      "KRMV297049",
+      "KRMV297050",
+      "KRMV297051",
+      "KRMV297052",
+      "KRMV297053",
+      "KRMV297054",
+      "KRMV297241",
+      "KRMV297055",
+      "KRMV297204"
+    ],
+    "외장": [
+      "KRMV297060",
+      "KRMV297063",
+      "KRMV297064",
+      "KRMV297065",
+      "KRMV297066",
+      "KRMV297067",
+      "KRMV297068",
+      "KRMV297069",
+      "KRMV297070",
+      "KRMV297206",
+      "KRMV297072",
+      "KRMV297073",
+      "KRMV297074",
+      "KRMV297075",
+      "KRMV297076",
+      "KRMV297077",
+      "KRMV297078",
+      "KRMV297079",
+      "KRMV297238",
+      "KRMV297239",
+      "KRMV297081",
+      "KRMV297240"
+    ],
+    "내장": [
+      "KRMV297244",
+      "KRMV297001",
+      "KRMV297094",
+      "KRMV297095",
+      "KRMV297207",
+      "KRMV297096",
+      "KRMV297097",
+      "KRMV297098",
+      "KRMV297100",
+      "KRMV297101",
+      "KRMV297099",
+      "KRMV297245",
+      "KRMV297103",
+      "KRMV297093",
+      "KRMV297113",
+      "KRMV297246",
+      "KRMV297002",
+      "KRMV297004",
+      "KRMV297104",
+      "KRMV297105",
+      "KRMV297109",
+      "KRMV297106",
+      "KRMV297107",
+      "KRMV297108",
+      "KRMV297110",
+      "KRMV297111",
+      "KRMV297231"
+    ],
+    "시트": [
+      "KRMV297114",
+      "KRMV297115",
+      "KRMV297116",
+      "KRMV297117",
+      "KRMV297118",
+      "KRMV297119",
+      "KRMV297120",
+      "KRMV297121",
+      "KRMV297122",
+      "KRMV297123",
+      "KRMV297124",
+      "KRMV297125",
+      "KRMV297126",
+      "KRMV297127",
+      "KRMV297128",
+      "KRMV297129",
+      "KRMV297208",
+      "KRMV297247",
+      "KRMV297209",
+      "KRMV297006",
+      "KRMV297131",
+      "KRMV297007",
+      "KRMV297132",
+      "KRMV297133"
+    ],
+    "편의": [
+      "KRMV297136",
+      "KRMV297137",
+      "KRMV297003",
+      "KRMV297139",
+      "KRMV297140",
+      "KRMV297141",
+      "KRMV297142",
+      "KRMV297143",
+      "KRMV297144",
+      "KRMV297145",
+      "KRMV297146",
+      "KRMV297147",
+      "KRMV297148",
+      "KRMV297149",
+      "KRMV297150",
+      "KRMV297151",
+      "KRMV297152",
+      "KRMV297154",
+      "KRMV297155",
+      "KRMV297156",
+      "KRMV297157",
+      "KRMV297158",
+      "KRMV297159",
+      "KRMV297160",
+      "KRMV297161",
+      "KRMV297162",
+      "KRMV297163",
+      "KRMV297168",
+      "KRMV297210",
+      "KRMV297165",
+      "KRMV297166",
+      "KRMV297167",
+      "KRMV297243",
+      "KRMV297169",
+      "KRMV297170",
+      "KRMV297171",
+      "KRMV297172",
+      "KRMV297173",
+      "KRMV297174",
+      "KRMV297175",
+      "KRMV297082"
+    ],
+    "인포테인먼트": [
+      "KRMV297185",
+      "KRMV297186",
+      "KRMV297187",
+      "KRMV297188",
+      "KRMV297189",
+      "KRMV297190",
+      "KRMV297191",
+      "KRMV297005",
+      "KRMV297192"
+    ],
+    "선택사양": [
+      "KRMV297083",
+      "KRMV297084",
+      "KRMV297P02",
+      "KRMV297P07",
+      "KRMV297164",
+      "KRMV297P05",
+      "KRMV297P24",
+      "KRMV297200",
+      "KRMV297201",
+      "KRMV297202",
+      "KRMV297203",
+      "KRMV297P04",
+      "KRMV297P06",
+      "KRMV297P09",
+      "KRMV297177",
+      "KRMV297P21",
+      "KRMV297P10",
+      "KRMV297P14",
+      "KRMV297P22",
+      "KRMV297P23",
+      "KRMV297211",
+      "KRMV297P11",
+      "KRMV297P19",
+      "KRMV297P12",
+      "KRMV297P13",
+      "KRMV297P18"
+    ]
+  },
+  "options": {
+    "KRMV297013": {
+      "name": "차세대 일체형 PE시스템(싱글 모터 2WD)",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297237": {
+      "name": "76.1kWh 리튬이온 배터리",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297016": {
+      "name": "400V/800V 멀티 충전 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297017": {
+      "name": "회생제동 브레이크 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297018": {
+      "name": "랙 구동형 전동식 파워스티어링(R-MDPS)",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297019": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297020": {
+      "name": "히트 펌프",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297021": {
+      "name": "배터리 히팅 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297022": {
+      "name": "실내 V2L 콘센트",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297027": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/교차 차량/정면 대향차/측방 접근차/추월시 대향차/회피 조향 보조 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297028": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297029": {
+      "name": "후측방 충돌방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297030": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297031": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297032": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297033": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발, 운전 스타일 연동 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297034": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로/진출입로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297035": {
+      "name": "차로 유지 보조 2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297036": {
+      "name": "고속도로 주행 보조 2(차로변경 보조 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297037": {
+      "name": "안전 하차 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297038": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297039": {
+      "name": "스티어링 휠 진동경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297040": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMV297041": {
+      "name": "10에어백(운전석/동승석 어드밴스드, 운전석 무릎, 1열 센터 사이드, 전복감지 커튼, 1열/2열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297248": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297043": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297044": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297045": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297046": {
+      "name": "경사로 저속주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297047": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297048": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297049": {
+      "name": "1열/2열/3열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297050": {
+      "name": "유아용 시트 고정 장치(2열/3열)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297051": {
+      "name": "전자식 차일드락",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297052": {
+      "name": "타이어 임시 수리 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297053": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297054": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297060": {
+      "name": "255/60 R19 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297063": {
+      "name": "슬림 프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297064": {
+      "name": "프론트/리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297065": {
+      "name": "다이내믹 웰컴 라이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297066": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297067": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297068": {
+      "name": "LED 보조 제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297069": {
+      "name": "LED 리피터 일체형 아웃사이드 미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297070": {
+      "name": "터치타입 아웃사이드 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297206": {
+      "name": "오토 플러시 도어핸들(워크 어웨이 락 포함)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297072": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297073": {
+      "name": "윈드쉴드/1열/2열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297074": {
+      "name": "윈드쉴드 자외선차단 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297075": {
+      "name": "크롬 벨트라인 몰딩",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297076": {
+      "name": "블랙하이그로시 B/C 필라 가니쉬",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297077": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297078": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297244": {
+      "name": "블랙 또는 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297001": {
+      "name": "파노라믹 와이드 디스플레이(인포/공조 통합형)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297094": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297095": {
+      "name": "인조가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297207": {
+      "name": "프리미엄 투톤 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297096": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297097": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297098": {
+      "name": "슬라이딩 선바이저(거울, LED 조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297100": {
+      "name": "고급형 카매트(폐어망 재활용)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297101": {
+      "name": "프론트 트렁크",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297099": {
+      "name": "1열 메쉬 헤드레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297245": {
+      "name": "패브릭 감싸기(크래시 패드 센터 가니쉬, 도어 암레스트 가니쉬, 센터콘솔 사이드 커버 가니쉬)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297103": {
+      "name": "센터콘솔 베젤 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297114": {
+      "name": "7인승",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297115": {
+      "name": "프리미엄 바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297116": {
+      "name": "1열 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297117": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297118": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297119": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297120": {
+      "name": "1열 에어셀타입 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297121": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297122": {
+      "name": "2열 6:4 슬라이딩 폴딩시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297123": {
+      "name": "2열 원터치 워크인",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297124": {
+      "name": "2열 원터치 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297125": {
+      "name": "3열 5:5 폴딩 시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297126": {
+      "name": "1열/2열 높이조절식 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297127": {
+      "name": "1열 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297128": {
+      "name": "1열 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297129": {
+      "name": "1열 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297208": {
+      "name": "1열 시트백 상단 패브릭 감싸기",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297136": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297137": {
+      "name": "하이패스 자동결제 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297003": {
+      "name": "컬럼 타입 전자식 변속 레버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297139": {
+      "name": "회생제동 컨트롤 패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297140": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297141": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297142": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297143": {
+      "name": "지문 인증 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297144": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297145": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297146": {
+      "name": "후석 승객 알림(센서 타입)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297147": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297148": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297149": {
+      "name": "1열/2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297150": {
+      "name": "3존 독립제어 풀오토 에어컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297151": {
+      "name": "항균 처리 고성능 콤비 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297152": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297154": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297155": {
+      "name": "운전석 자동쾌적 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297156": {
+      "name": "외부공기 유입방지 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297157": {
+      "name": "확산형 루프 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297158": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297159": {
+      "name": "C타입 USB 단자(충전용, 1열 1개/1열 시트백 2개/3열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297160": {
+      "name": "1열 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297161": {
+      "name": "러기지 네트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297162": {
+      "name": "전자식 후드 래치",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297163": {
+      "name": "전동식 충전 도어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297185": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트/e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297186": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297187": {
+      "name": "8스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297188": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297189": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297190": {
+      "name": "C타입 USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297191": {
+      "name": "후석 취침모드&amp;대화모드",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297083": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297084": {
+      "name": "아이보리 매트 실버",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297P02": {
+      "name": "6인승",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P07": {
+      "name": "컨비니언스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297164": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297P05": {
+      "name": "빌트인 캠 2",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P24": {
+      "name": "모니터링 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297200": {
+      "name": "사이드 스텝",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297201": {
+      "name": "리버서블 러기지 매트",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297202": {
+      "name": "차량 보호 필름Ⅰ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297203": {
+      "name": "차량 보호 필름Ⅱ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297015": {
+      "name": "99.8kWh 리튬이온 배터리",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297P04": {
+      "name": "20인치 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297241": {
+      "name": "측방 주차거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297055": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297204": {
+      "name": "전/측방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMV297093": {
+      "name": "블랙, 라이트 그레이 또는 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297113": {
+      "name": "스웨이드 헤드라이닝",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297246": {
+      "name": "스웨이드 감싸기(크래시 패드 센터 가니쉬, 도어 암레스트 가니쉬, 센터콘솔 사이드 커버 가니쉬)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297247": {
+      "name": "1열 시트백 상단 스웨이드 감싸기",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297168": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297210": {
+      "name": "원격 스마트 주차 보조 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297165": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297166": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297167": {
+      "name": "리모트 360도 뷰(내 차 주변 영상)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297243": {
+      "name": "100W C타입 USB 단자(충전용, 1열 1개/1열 시트백 2개/3열 2개/정품 충전 케이블 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297P06": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P09": {
+      "name": "메리디안 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297177": {
+      "name": "듀얼 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297P21": {
+      "name": "캠핑 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297023": {
+      "name": "실외 V2L 커넥터",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297079": {
+      "name": "블랙 하이그로시(프론트/리어 범퍼 로워, 프론트 가니쉬, 도어 가니쉬, 휠아치 몰딩)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297002": {
+      "name": "스티어링 휠 엠블럼 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297004": {
+      "name": "듀얼 칼라 앰비언트 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297104": {
+      "name": "1열 컵홀더 커버",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297105": {
+      "name": "파라볼릭 모션 글로브박스",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297109": {
+      "name": "크롬 인사이드 도어 핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297106": {
+      "name": "메탈 페달&amp;풋레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297107": {
+      "name": "메탈 도어 스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297108": {
+      "name": "메탈 트랜스버스 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297110": {
+      "name": "고급형 카페트(폐어망 재활용)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297209": {
+      "name": "스트라이프 퀼팅 패턴 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297006": {
+      "name": "1열 릴렉션 컴포트시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297131": {
+      "name": "운전석 4WAY 에어셀타입 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297007": {
+      "name": "운전석 에르고 모션 시트(볼스터 전동조절, 컴포트 스트레칭 포함)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297132": {
+      "name": "1열 파워 레그서포트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297133": {
+      "name": "2열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMV297169": {
+      "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297170": {
+      "name": "스마트 파워테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297171": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 스티어링 휠, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297172": {
+      "name": "1열 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297173": {
+      "name": "후진연동 자동하향 아웃사이드 미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297174": {
+      "name": "2열 측면 수동 선커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297175": {
+      "name": "러기지 파워 아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297005": {
+      "name": "메리디안 프리미엄 사운드(14스피커, 외장앰프)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297192": {
+      "name": "액티브 사운드 디자인(e-ASD)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMV297014": {
+      "name": "차세대 일체형 PE시스템(듀얼 모터 4WD)",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297024": {
+      "name": "터레인 모드(오토/스노우/머드/샌드)",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297P10": {
+      "name": "6인승(스위블)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P14": {
+      "name": "21인치 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P22": {
+      "name": "트레일러 패키지(19인치 휠)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P23": {
+      "name": "트레일러 패키지(21인치 휠)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297211": {
+      "name": "후석 스마트 엔터테인먼트 시스템",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMV297P11": {
+      "name": "6인승(릴렉션)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P19": {
+      "name": "라운지 패키지(6인승 릴렉션 시트 적용 시 선택 가능)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P12": {
+      "name": "6인승(릴렉션)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297025": {
+      "name": "부스트(전륜 모터 최대 토크 개선(0 - 100km/h 도달 시간 단축 : 6.0 → 5.3초))",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297026": {
+      "name": "셀프 레벨라이저",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRMV297238": {
+      "name": "GT-Line 전용 285/45 R21 미쉐린 타이어 &amp; 다크 실버 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297239": {
+      "name": "GT-Line 전용 외장 디자인(전용 프론트/리어 범퍼, 전용 도어 가니쉬, 다크 메탈 그릴 가니쉬, 블랙 벨트라인 몰딩, 블랙 아웃사이드 미러 커버, 전용 엠블럼)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297081": {
+      "name": "스몰 큐브 프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297240": {
+      "name": "브릿지 타입 블랙 루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMV297111": {
+      "name": "GT-Line 전용 블랙&amp;화이트, 브라운 또는 네이비 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297231": {
+      "name": "블랙 스웨이드 헤드라이닝",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMV297082": {
+      "name": "지능형 헤드램프(IFS)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMV297P13": {
+      "name": "6인승(릴렉션)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMV297P18": {
+      "name": "하이테크",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "라이트 스탠다드": {
+      "slug": "라이트_스탠다드",
+      "price": {
+        "tax_5_before": 65270000,
+        "tax_5_after": 61970000,
+        "tax_3_5_before": 64280000,
+        "tax_3_5_after": 61970000
+      },
+      "basic": [
+        "KRMV297013",
+        "KRMV297237",
+        "KRMV297016",
+        "KRMV297017",
+        "KRMV297018",
+        "KRMV297019",
+        "KRMV297020",
+        "KRMV297021",
+        "KRMV297022",
+        "KRMV297027",
+        "KRMV297028",
+        "KRMV297029",
+        "KRMV297030",
+        "KRMV297031",
+        "KRMV297032",
+        "KRMV297033",
+        "KRMV297034",
+        "KRMV297035",
+        "KRMV297036",
+        "KRMV297037",
+        "KRMV297038",
+        "KRMV297039",
+        "KRMV297040",
+        "KRMV297041",
+        "KRMV297248",
+        "KRMV297043",
+        "KRMV297044",
+        "KRMV297045",
+        "KRMV297046",
+        "KRMV297047",
+        "KRMV297048",
+        "KRMV297049",
+        "KRMV297050",
+        "KRMV297051",
+        "KRMV297052",
+        "KRMV297053",
+        "KRMV297054",
+        "KRMV297060",
+        "KRMV297063",
+        "KRMV297064",
+        "KRMV297065",
+        "KRMV297066",
+        "KRMV297067",
+        "KRMV297068",
+        "KRMV297069",
+        "KRMV297070",
+        "KRMV297206",
+        "KRMV297072",
+        "KRMV297073",
+        "KRMV297074",
+        "KRMV297075",
+        "KRMV297076",
+        "KRMV297077",
+        "KRMV297078",
+        "KRMV297244",
+        "KRMV297001",
+        "KRMV297094",
+        "KRMV297095",
+        "KRMV297207",
+        "KRMV297096",
+        "KRMV297097",
+        "KRMV297098",
+        "KRMV297100",
+        "KRMV297101",
+        "KRMV297099",
+        "KRMV297245",
+        "KRMV297103",
+        "KRMV297114",
+        "KRMV297115",
+        "KRMV297116",
+        "KRMV297117",
+        "KRMV297118",
+        "KRMV297119",
+        "KRMV297120",
+        "KRMV297121",
+        "KRMV297122",
+        "KRMV297123",
+        "KRMV297124",
+        "KRMV297125",
+        "KRMV297126",
+        "KRMV297127",
+        "KRMV297128",
+        "KRMV297129",
+        "KRMV297208",
+        "KRMV297136",
+        "KRMV297137",
+        "KRMV297003",
+        "KRMV297139",
+        "KRMV297140",
+        "KRMV297141",
+        "KRMV297142",
+        "KRMV297143",
+        "KRMV297144",
+        "KRMV297145",
+        "KRMV297146",
+        "KRMV297147",
+        "KRMV297148",
+        "KRMV297149",
+        "KRMV297150",
+        "KRMV297151",
+        "KRMV297152",
+        "KRMV297154",
+        "KRMV297155",
+        "KRMV297156",
+        "KRMV297157",
+        "KRMV297158",
+        "KRMV297159",
+        "KRMV297160",
+        "KRMV297161",
+        "KRMV297162",
+        "KRMV297163",
+        "KRMV297185",
+        "KRMV297186",
+        "KRMV297187",
+        "KRMV297188",
+        "KRMV297189",
+        "KRMV297190",
+        "KRMV297191"
+      ],
+      "select": [
+        "KRMV297083",
+        "KRMV297084",
+        "KRMV297P02",
+        "KRMV297P07",
+        "KRMV297164",
+        "KRMV297P05",
+        "KRMV297P24",
+        "KRMV297200",
+        "KRMV297201",
+        "KRMV297202",
+        "KRMV297203"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMV297083"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297084"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P02"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P07"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMV297164"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297P05"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297P24"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "KRMV297200"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRMV297201"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297202"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "KRMV297203"
+          ],
+          "price": 520000
+        }
+      ]
+    },
+    "라이트 롱레인지": {
+      "slug": "라이트_롱레인지",
+      "price": {
+        "tax_5_before": 73630000,
+        "tax_5_after": 69900000,
+        "tax_3_5_before": 72510000,
+        "tax_3_5_after": 69900000
+      },
+      "basic": [
+        "KRMV297014",
+        "KRMV297015",
+        "KRMV297016",
+        "KRMV297017",
+        "KRMV297018",
+        "KRMV297019",
+        "KRMV297020",
+        "KRMV297021",
+        "KRMV297022",
+        "KRMV297024",
+        "KRMV297027",
+        "KRMV297028",
+        "KRMV297029",
+        "KRMV297030",
+        "KRMV297031",
+        "KRMV297032",
+        "KRMV297033",
+        "KRMV297034",
+        "KRMV297035",
+        "KRMV297036",
+        "KRMV297037",
+        "KRMV297038",
+        "KRMV297039",
+        "KRMV297040",
+        "KRMV297041",
+        "KRMV297248",
+        "KRMV297043",
+        "KRMV297044",
+        "KRMV297045",
+        "KRMV297046",
+        "KRMV297047",
+        "KRMV297048",
+        "KRMV297049",
+        "KRMV297050",
+        "KRMV297051",
+        "KRMV297052",
+        "KRMV297053",
+        "KRMV297054",
+        "KRMV297060",
+        "KRMV297063",
+        "KRMV297064",
+        "KRMV297065",
+        "KRMV297066",
+        "KRMV297067",
+        "KRMV297068",
+        "KRMV297069",
+        "KRMV297070",
+        "KRMV297206",
+        "KRMV297072",
+        "KRMV297073",
+        "KRMV297074",
+        "KRMV297075",
+        "KRMV297076",
+        "KRMV297077",
+        "KRMV297078",
+        "KRMV297244",
+        "KRMV297001",
+        "KRMV297094",
+        "KRMV297095",
+        "KRMV297207",
+        "KRMV297096",
+        "KRMV297097",
+        "KRMV297098",
+        "KRMV297100",
+        "KRMV297101",
+        "KRMV297099",
+        "KRMV297245",
+        "KRMV297103",
+        "KRMV297114",
+        "KRMV297115",
+        "KRMV297116",
+        "KRMV297117",
+        "KRMV297118",
+        "KRMV297119",
+        "KRMV297120",
+        "KRMV297121",
+        "KRMV297122",
+        "KRMV297123",
+        "KRMV297124",
+        "KRMV297125",
+        "KRMV297126",
+        "KRMV297127",
+        "KRMV297128",
+        "KRMV297129",
+        "KRMV297208",
+        "KRMV297136",
+        "KRMV297137",
+        "KRMV297003",
+        "KRMV297139",
+        "KRMV297140",
+        "KRMV297141",
+        "KRMV297142",
+        "KRMV297143",
+        "KRMV297144",
+        "KRMV297145",
+        "KRMV297146",
+        "KRMV297147",
+        "KRMV297148",
+        "KRMV297149",
+        "KRMV297150",
+        "KRMV297151",
+        "KRMV297152",
+        "KRMV297154",
+        "KRMV297155",
+        "KRMV297156",
+        "KRMV297157",
+        "KRMV297158",
+        "KRMV297159",
+        "KRMV297160",
+        "KRMV297161",
+        "KRMV297162",
+        "KRMV297163",
+        "KRMV297185",
+        "KRMV297186",
+        "KRMV297187",
+        "KRMV297188",
+        "KRMV297189",
+        "KRMV297190",
+        "KRMV297191"
+      ],
+      "select": [
+        "KRMV297083",
+        "KRMV297084",
+        "KRMV297P10",
+        "KRMV297P07",
+        "KRMV297164",
+        "KRMV297P14",
+        "KRMV297P05",
+        "KRMV297P24",
+        "KRMV297P22",
+        "KRMV297P23",
+        "KRMV297P21",
+        "KRMV297200",
+        "KRMV297211",
+        "KRMV297201",
+        "KRMV297202",
+        "KRMV297203"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMV297083"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297084"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P10"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRMV297P07"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMV297164"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297P14"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P05"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297P24"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "KRMV297P22"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "KRMV297P23"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KRMV297P21"
+          ],
+          "price": 940000
+        },
+        {
+          "codes": [
+            "KRMV297200"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRMV297211"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "KRMV297201"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297202"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "KRMV297203"
+          ],
+          "price": 520000
+        }
+      ]
+    },
+    "에어 스탠다드": {
+      "slug": "에어_스탠다드",
+      "price": {
+        "tax_5_before": 67540000,
+        "tax_5_after": 64120000,
+        "tax_3_5_before": 66510000,
+        "tax_3_5_after": 64120000
+      },
+      "basic": [
+        "KRMV297241",
+        "KRMV297055",
+        "KRMV297204",
+        "KRMV297093",
+        "KRMV297113",
+        "KRMV297246",
+        "KRMV297247",
+        "KRMV297168",
+        "KRMV297210",
+        "KRMV297165",
+        "KRMV297166",
+        "KRMV297167",
+        "KRMV297243",
+        "KRMV297013",
+        "KRMV297237",
+        "KRMV297016",
+        "KRMV297017",
+        "KRMV297018",
+        "KRMV297019",
+        "KRMV297020",
+        "KRMV297021",
+        "KRMV297022",
+        "KRMV297027",
+        "KRMV297028",
+        "KRMV297029",
+        "KRMV297030",
+        "KRMV297031",
+        "KRMV297032",
+        "KRMV297033",
+        "KRMV297034",
+        "KRMV297035",
+        "KRMV297036",
+        "KRMV297037",
+        "KRMV297038",
+        "KRMV297039",
+        "KRMV297040",
+        "KRMV297041",
+        "KRMV297248",
+        "KRMV297043",
+        "KRMV297044",
+        "KRMV297045",
+        "KRMV297046",
+        "KRMV297047",
+        "KRMV297048",
+        "KRMV297049",
+        "KRMV297050",
+        "KRMV297051",
+        "KRMV297052",
+        "KRMV297053",
+        "KRMV297054",
+        "KRMV297060",
+        "KRMV297063",
+        "KRMV297064",
+        "KRMV297065",
+        "KRMV297066",
+        "KRMV297067",
+        "KRMV297068",
+        "KRMV297069",
+        "KRMV297070",
+        "KRMV297206",
+        "KRMV297072",
+        "KRMV297073",
+        "KRMV297074",
+        "KRMV297075",
+        "KRMV297076",
+        "KRMV297077",
+        "KRMV297078",
+        "KRMV297001",
+        "KRMV297094",
+        "KRMV297095",
+        "KRMV297207",
+        "KRMV297096",
+        "KRMV297097",
+        "KRMV297098",
+        "KRMV297100",
+        "KRMV297101",
+        "KRMV297099",
+        "KRMV297103",
+        "KRMV297114",
+        "KRMV297115",
+        "KRMV297116",
+        "KRMV297117",
+        "KRMV297118",
+        "KRMV297119",
+        "KRMV297120",
+        "KRMV297121",
+        "KRMV297122",
+        "KRMV297123",
+        "KRMV297124",
+        "KRMV297125",
+        "KRMV297126",
+        "KRMV297127",
+        "KRMV297128",
+        "KRMV297129",
+        "KRMV297136",
+        "KRMV297137",
+        "KRMV297003",
+        "KRMV297139",
+        "KRMV297140",
+        "KRMV297141",
+        "KRMV297142",
+        "KRMV297143",
+        "KRMV297144",
+        "KRMV297145",
+        "KRMV297146",
+        "KRMV297147",
+        "KRMV297148",
+        "KRMV297149",
+        "KRMV297150",
+        "KRMV297151",
+        "KRMV297152",
+        "KRMV297154",
+        "KRMV297155",
+        "KRMV297156",
+        "KRMV297157",
+        "KRMV297158",
+        "KRMV297160",
+        "KRMV297161",
+        "KRMV297162",
+        "KRMV297163",
+        "KRMV297185",
+        "KRMV297186",
+        "KRMV297187",
+        "KRMV297188",
+        "KRMV297189",
+        "KRMV297190",
+        "KRMV297191"
+      ],
+      "select": [
+        "KRMV297083",
+        "KRMV297084",
+        "KRMV297P02",
+        "KRMV297P07",
+        "KRMV297164",
+        "KRMV297P06",
+        "KRMV297P09",
+        "KRMV297P05",
+        "KRMV297177",
+        "KRMV297P21",
+        "KRMV297200",
+        "KRMV297201",
+        "KRMV297202",
+        "KRMV297203"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMV297083"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297084"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P02"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P07"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMV297164"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297P06"
+          ],
+          "price": 1480000
+        },
+        {
+          "codes": [
+            "KRMV297P09"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P05"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297177"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P21"
+          ],
+          "price": 940000
+        },
+        {
+          "codes": [
+            "KRMV297200"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRMV297201"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297202"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "KRMV297203"
+          ],
+          "price": 520000
+        }
+      ]
+    },
+    "에어 롱레인지": {
+      "slug": "에어_롱레인지",
+      "price": {
+        "tax_5_before": 75880000,
+        "tax_5_after": 72050000,
+        "tax_3_5_before": 74730000,
+        "tax_3_5_after": 72050000
+      },
+      "basic": [
+        "KRMV297241",
+        "KRMV297055",
+        "KRMV297204",
+        "KRMV297093",
+        "KRMV297113",
+        "KRMV297246",
+        "KRMV297247",
+        "KRMV297168",
+        "KRMV297210",
+        "KRMV297165",
+        "KRMV297166",
+        "KRMV297167",
+        "KRMV297243",
+        "KRMV297014",
+        "KRMV297015",
+        "KRMV297016",
+        "KRMV297017",
+        "KRMV297018",
+        "KRMV297019",
+        "KRMV297020",
+        "KRMV297021",
+        "KRMV297022",
+        "KRMV297024",
+        "KRMV297027",
+        "KRMV297028",
+        "KRMV297029",
+        "KRMV297030",
+        "KRMV297031",
+        "KRMV297032",
+        "KRMV297033",
+        "KRMV297034",
+        "KRMV297035",
+        "KRMV297036",
+        "KRMV297037",
+        "KRMV297038",
+        "KRMV297039",
+        "KRMV297040",
+        "KRMV297041",
+        "KRMV297248",
+        "KRMV297043",
+        "KRMV297044",
+        "KRMV297045",
+        "KRMV297046",
+        "KRMV297047",
+        "KRMV297048",
+        "KRMV297049",
+        "KRMV297050",
+        "KRMV297051",
+        "KRMV297052",
+        "KRMV297053",
+        "KRMV297054",
+        "KRMV297060",
+        "KRMV297063",
+        "KRMV297064",
+        "KRMV297065",
+        "KRMV297066",
+        "KRMV297067",
+        "KRMV297068",
+        "KRMV297069",
+        "KRMV297070",
+        "KRMV297206",
+        "KRMV297072",
+        "KRMV297073",
+        "KRMV297074",
+        "KRMV297075",
+        "KRMV297076",
+        "KRMV297077",
+        "KRMV297078",
+        "KRMV297001",
+        "KRMV297094",
+        "KRMV297095",
+        "KRMV297207",
+        "KRMV297096",
+        "KRMV297097",
+        "KRMV297098",
+        "KRMV297100",
+        "KRMV297101",
+        "KRMV297099",
+        "KRMV297103",
+        "KRMV297114",
+        "KRMV297115",
+        "KRMV297116",
+        "KRMV297117",
+        "KRMV297118",
+        "KRMV297119",
+        "KRMV297120",
+        "KRMV297121",
+        "KRMV297122",
+        "KRMV297123",
+        "KRMV297124",
+        "KRMV297125",
+        "KRMV297126",
+        "KRMV297127",
+        "KRMV297128",
+        "KRMV297129",
+        "KRMV297136",
+        "KRMV297137",
+        "KRMV297003",
+        "KRMV297139",
+        "KRMV297140",
+        "KRMV297141",
+        "KRMV297142",
+        "KRMV297143",
+        "KRMV297144",
+        "KRMV297145",
+        "KRMV297146",
+        "KRMV297147",
+        "KRMV297148",
+        "KRMV297149",
+        "KRMV297150",
+        "KRMV297151",
+        "KRMV297152",
+        "KRMV297154",
+        "KRMV297155",
+        "KRMV297156",
+        "KRMV297157",
+        "KRMV297158",
+        "KRMV297160",
+        "KRMV297161",
+        "KRMV297162",
+        "KRMV297163",
+        "KRMV297185",
+        "KRMV297186",
+        "KRMV297187",
+        "KRMV297188",
+        "KRMV297189",
+        "KRMV297190",
+        "KRMV297191"
+      ],
+      "select": [
+        "KRMV297083",
+        "KRMV297084",
+        "KRMV297P10",
+        "KRMV297P11",
+        "KRMV297P07",
+        "KRMV297164",
+        "KRMV297P14",
+        "KRMV297P09",
+        "KRMV297P05",
+        "KRMV297177",
+        "KRMV297P19",
+        "KRMV297P22",
+        "KRMV297P23",
+        "KRMV297P21",
+        "KRMV297200",
+        "KRMV297211",
+        "KRMV297201",
+        "KRMV297202",
+        "KRMV297203"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMV297083"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297084"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P10"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRMV297P11"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "KRMV297P07"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMV297164"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297P14"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P09"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P05"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297177"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P19"
+          ],
+          "price": 5440000
+        },
+        {
+          "codes": [
+            "KRMV297P22"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "KRMV297P23"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KRMV297P21"
+          ],
+          "price": 940000
+        },
+        {
+          "codes": [
+            "KRMV297200"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRMV297211"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "KRMV297201"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297202"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "KRMV297203"
+          ],
+          "price": 520000
+        }
+      ]
+    },
+    "어스 스탠다드": {
+      "slug": "어스_스탠다드",
+      "price": {
+        "tax_5_before": 72580000,
+        "tax_5_after": 68910000,
+        "tax_3_5_before": 71480000,
+        "tax_3_5_after": 68910000
+      },
+      "basic": [
+        "KRMV297023",
+        "KRMV297079",
+        "KRMV297002",
+        "KRMV297004",
+        "KRMV297104",
+        "KRMV297105",
+        "KRMV297109",
+        "KRMV297106",
+        "KRMV297107",
+        "KRMV297108",
+        "KRMV297110",
+        "KRMV297209",
+        "KRMV297006",
+        "KRMV297131",
+        "KRMV297007",
+        "KRMV297132",
+        "KRMV297133",
+        "KRMV297164",
+        "KRMV297169",
+        "KRMV297170",
+        "KRMV297171",
+        "KRMV297172",
+        "KRMV297173",
+        "KRMV297174",
+        "KRMV297175",
+        "KRMV297005",
+        "KRMV297192",
+        "KRMV297013",
+        "KRMV297237",
+        "KRMV297016",
+        "KRMV297017",
+        "KRMV297018",
+        "KRMV297019",
+        "KRMV297020",
+        "KRMV297021",
+        "KRMV297022",
+        "KRMV297027",
+        "KRMV297028",
+        "KRMV297029",
+        "KRMV297030",
+        "KRMV297031",
+        "KRMV297032",
+        "KRMV297033",
+        "KRMV297034",
+        "KRMV297035",
+        "KRMV297036",
+        "KRMV297037",
+        "KRMV297038",
+        "KRMV297039",
+        "KRMV297040",
+        "KRMV297041",
+        "KRMV297248",
+        "KRMV297043",
+        "KRMV297044",
+        "KRMV297045",
+        "KRMV297046",
+        "KRMV297047",
+        "KRMV297048",
+        "KRMV297049",
+        "KRMV297050",
+        "KRMV297051",
+        "KRMV297052",
+        "KRMV297053",
+        "KRMV297054",
+        "KRMV297241",
+        "KRMV297055",
+        "KRMV297204",
+        "KRMV297060",
+        "KRMV297063",
+        "KRMV297064",
+        "KRMV297065",
+        "KRMV297066",
+        "KRMV297067",
+        "KRMV297068",
+        "KRMV297069",
+        "KRMV297070",
+        "KRMV297206",
+        "KRMV297072",
+        "KRMV297073",
+        "KRMV297074",
+        "KRMV297075",
+        "KRMV297076",
+        "KRMV297077",
+        "KRMV297078",
+        "KRMV297001",
+        "KRMV297094",
+        "KRMV297095",
+        "KRMV297207",
+        "KRMV297096",
+        "KRMV297097",
+        "KRMV297098",
+        "KRMV297100",
+        "KRMV297101",
+        "KRMV297099",
+        "KRMV297103",
+        "KRMV297093",
+        "KRMV297113",
+        "KRMV297246",
+        "KRMV297114",
+        "KRMV297117",
+        "KRMV297118",
+        "KRMV297119",
+        "KRMV297120",
+        "KRMV297121",
+        "KRMV297122",
+        "KRMV297123",
+        "KRMV297124",
+        "KRMV297125",
+        "KRMV297126",
+        "KRMV297127",
+        "KRMV297128",
+        "KRMV297129",
+        "KRMV297247",
+        "KRMV297136",
+        "KRMV297137",
+        "KRMV297003",
+        "KRMV297139",
+        "KRMV297140",
+        "KRMV297141",
+        "KRMV297142",
+        "KRMV297143",
+        "KRMV297144",
+        "KRMV297145",
+        "KRMV297146",
+        "KRMV297147",
+        "KRMV297149",
+        "KRMV297150",
+        "KRMV297151",
+        "KRMV297152",
+        "KRMV297154",
+        "KRMV297155",
+        "KRMV297156",
+        "KRMV297157",
+        "KRMV297158",
+        "KRMV297160",
+        "KRMV297161",
+        "KRMV297162",
+        "KRMV297163",
+        "KRMV297168",
+        "KRMV297210",
+        "KRMV297165",
+        "KRMV297166",
+        "KRMV297167",
+        "KRMV297243",
+        "KRMV297185",
+        "KRMV297186",
+        "KRMV297188",
+        "KRMV297189",
+        "KRMV297190",
+        "KRMV297191"
+      ],
+      "select": [
+        "KRMV297083",
+        "KRMV297084",
+        "KRMV297P02",
+        "KRMV297P06",
+        "KRMV297P05",
+        "KRMV297177",
+        "KRMV297P21",
+        "KRMV297200",
+        "KRMV297201",
+        "KRMV297202",
+        "KRMV297203"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMV297083"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297084"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P02"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P06"
+          ],
+          "price": 1480000
+        },
+        {
+          "codes": [
+            "KRMV297P05"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297177"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P21"
+          ],
+          "price": 940000
+        },
+        {
+          "codes": [
+            "KRMV297200"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRMV297201"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297202"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "KRMV297203"
+          ],
+          "price": 520000
+        }
+      ]
+    },
+    "어스 롱레인지": {
+      "slug": "어스_롱레인지",
+      "price": {
+        "tax_5_before": 80990000,
+        "tax_5_after": 76890000,
+        "tax_3_5_before": 79760000,
+        "tax_3_5_after": 76890000
+      },
+      "basic": [
+        "KRMV297023",
+        "KRMV297079",
+        "KRMV297002",
+        "KRMV297004",
+        "KRMV297104",
+        "KRMV297105",
+        "KRMV297109",
+        "KRMV297106",
+        "KRMV297107",
+        "KRMV297108",
+        "KRMV297110",
+        "KRMV297209",
+        "KRMV297006",
+        "KRMV297131",
+        "KRMV297007",
+        "KRMV297132",
+        "KRMV297133",
+        "KRMV297164",
+        "KRMV297169",
+        "KRMV297170",
+        "KRMV297171",
+        "KRMV297172",
+        "KRMV297173",
+        "KRMV297174",
+        "KRMV297175",
+        "KRMV297005",
+        "KRMV297192",
+        "KRMV297014",
+        "KRMV297015",
+        "KRMV297016",
+        "KRMV297017",
+        "KRMV297018",
+        "KRMV297019",
+        "KRMV297020",
+        "KRMV297021",
+        "KRMV297022",
+        "KRMV297024",
+        "KRMV297027",
+        "KRMV297028",
+        "KRMV297029",
+        "KRMV297030",
+        "KRMV297031",
+        "KRMV297032",
+        "KRMV297033",
+        "KRMV297034",
+        "KRMV297035",
+        "KRMV297036",
+        "KRMV297037",
+        "KRMV297038",
+        "KRMV297039",
+        "KRMV297040",
+        "KRMV297041",
+        "KRMV297248",
+        "KRMV297043",
+        "KRMV297044",
+        "KRMV297045",
+        "KRMV297046",
+        "KRMV297047",
+        "KRMV297048",
+        "KRMV297049",
+        "KRMV297050",
+        "KRMV297051",
+        "KRMV297052",
+        "KRMV297053",
+        "KRMV297054",
+        "KRMV297241",
+        "KRMV297055",
+        "KRMV297204",
+        "KRMV297060",
+        "KRMV297063",
+        "KRMV297064",
+        "KRMV297065",
+        "KRMV297066",
+        "KRMV297067",
+        "KRMV297068",
+        "KRMV297069",
+        "KRMV297070",
+        "KRMV297206",
+        "KRMV297072",
+        "KRMV297073",
+        "KRMV297074",
+        "KRMV297075",
+        "KRMV297076",
+        "KRMV297077",
+        "KRMV297078",
+        "KRMV297001",
+        "KRMV297094",
+        "KRMV297095",
+        "KRMV297207",
+        "KRMV297096",
+        "KRMV297097",
+        "KRMV297098",
+        "KRMV297100",
+        "KRMV297101",
+        "KRMV297099",
+        "KRMV297103",
+        "KRMV297093",
+        "KRMV297113",
+        "KRMV297246",
+        "KRMV297114",
+        "KRMV297117",
+        "KRMV297118",
+        "KRMV297119",
+        "KRMV297120",
+        "KRMV297121",
+        "KRMV297122",
+        "KRMV297123",
+        "KRMV297124",
+        "KRMV297125",
+        "KRMV297126",
+        "KRMV297127",
+        "KRMV297128",
+        "KRMV297129",
+        "KRMV297247",
+        "KRMV297136",
+        "KRMV297137",
+        "KRMV297003",
+        "KRMV297139",
+        "KRMV297140",
+        "KRMV297141",
+        "KRMV297142",
+        "KRMV297143",
+        "KRMV297144",
+        "KRMV297145",
+        "KRMV297146",
+        "KRMV297147",
+        "KRMV297149",
+        "KRMV297150",
+        "KRMV297151",
+        "KRMV297152",
+        "KRMV297154",
+        "KRMV297155",
+        "KRMV297156",
+        "KRMV297157",
+        "KRMV297158",
+        "KRMV297160",
+        "KRMV297161",
+        "KRMV297162",
+        "KRMV297163",
+        "KRMV297168",
+        "KRMV297210",
+        "KRMV297165",
+        "KRMV297166",
+        "KRMV297167",
+        "KRMV297243",
+        "KRMV297185",
+        "KRMV297186",
+        "KRMV297188",
+        "KRMV297189",
+        "KRMV297190",
+        "KRMV297191"
+      ],
+      "select": [
+        "KRMV297083",
+        "KRMV297084",
+        "KRMV297P10",
+        "KRMV297P12",
+        "KRMV297P14",
+        "KRMV297P05",
+        "KRMV297177",
+        "KRMV297P19",
+        "KRMV297P22",
+        "KRMV297P23",
+        "KRMV297P21",
+        "KRMV297200",
+        "KRMV297211",
+        "KRMV297201",
+        "KRMV297202",
+        "KRMV297203"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMV297083"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297084"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P10"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRMV297P12"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "KRMV297P14"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P05"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297177"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P19"
+          ],
+          "price": 5440000
+        },
+        {
+          "codes": [
+            "KRMV297P22"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "KRMV297P23"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KRMV297P21"
+          ],
+          "price": 940000
+        },
+        {
+          "codes": [
+            "KRMV297200"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRMV297211"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "KRMV297201"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297202"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "KRMV297203"
+          ],
+          "price": 520000
+        }
+      ]
+    },
+    "GT-Line 롱레인지": {
+      "slug": "GT-Line_롱레인지",
+      "price": {
+        "tax_5_before": 83390000,
+        "tax_5_after": 79170000,
+        "tax_3_5_before": 82120000,
+        "tax_3_5_after": 79170000
+      },
+      "basic": [
+        "KRMV297025",
+        "KRMV297026",
+        "KRMV297204",
+        "KRMV297238",
+        "KRMV297239",
+        "KRMV297081",
+        "KRMV297240",
+        "KRMV297111",
+        "KRMV297231",
+        "KRMV297210",
+        "KRMV297082",
+        "KRMV297014",
+        "KRMV297015",
+        "KRMV297016",
+        "KRMV297017",
+        "KRMV297018",
+        "KRMV297019",
+        "KRMV297020",
+        "KRMV297021",
+        "KRMV297022",
+        "KRMV297024",
+        "KRMV297023",
+        "KRMV297027",
+        "KRMV297028",
+        "KRMV297029",
+        "KRMV297030",
+        "KRMV297031",
+        "KRMV297033",
+        "KRMV297034",
+        "KRMV297035",
+        "KRMV297036",
+        "KRMV297037",
+        "KRMV297038",
+        "KRMV297039",
+        "KRMV297040",
+        "KRMV297041",
+        "KRMV297248",
+        "KRMV297043",
+        "KRMV297044",
+        "KRMV297045",
+        "KRMV297046",
+        "KRMV297047",
+        "KRMV297048",
+        "KRMV297049",
+        "KRMV297050",
+        "KRMV297051",
+        "KRMV297052",
+        "KRMV297053",
+        "KRMV297054",
+        "KRMV297241",
+        "KRMV297055",
+        "KRMV297064",
+        "KRMV297065",
+        "KRMV297066",
+        "KRMV297067",
+        "KRMV297068",
+        "KRMV297069",
+        "KRMV297070",
+        "KRMV297206",
+        "KRMV297072",
+        "KRMV297073",
+        "KRMV297074",
+        "KRMV297076",
+        "KRMV297078",
+        "KRMV297001",
+        "KRMV297094",
+        "KRMV297095",
+        "KRMV297207",
+        "KRMV297096",
+        "KRMV297097",
+        "KRMV297098",
+        "KRMV297100",
+        "KRMV297101",
+        "KRMV297099",
+        "KRMV297103",
+        "KRMV297246",
+        "KRMV297002",
+        "KRMV297004",
+        "KRMV297104",
+        "KRMV297105",
+        "KRMV297109",
+        "KRMV297106",
+        "KRMV297107",
+        "KRMV297108",
+        "KRMV297110",
+        "KRMV297114",
+        "KRMV297117",
+        "KRMV297118",
+        "KRMV297119",
+        "KRMV297120",
+        "KRMV297121",
+        "KRMV297122",
+        "KRMV297123",
+        "KRMV297124",
+        "KRMV297125",
+        "KRMV297126",
+        "KRMV297127",
+        "KRMV297128",
+        "KRMV297129",
+        "KRMV297247",
+        "KRMV297209",
+        "KRMV297006",
+        "KRMV297131",
+        "KRMV297007",
+        "KRMV297132",
+        "KRMV297133",
+        "KRMV297136",
+        "KRMV297137",
+        "KRMV297003",
+        "KRMV297139",
+        "KRMV297140",
+        "KRMV297141",
+        "KRMV297142",
+        "KRMV297143",
+        "KRMV297144",
+        "KRMV297145",
+        "KRMV297146",
+        "KRMV297147",
+        "KRMV297149",
+        "KRMV297150",
+        "KRMV297151",
+        "KRMV297152",
+        "KRMV297154",
+        "KRMV297155",
+        "KRMV297156",
+        "KRMV297157",
+        "KRMV297158",
+        "KRMV297160",
+        "KRMV297161",
+        "KRMV297162",
+        "KRMV297163",
+        "KRMV297168",
+        "KRMV297165",
+        "KRMV297166",
+        "KRMV297167",
+        "KRMV297243",
+        "KRMV297164",
+        "KRMV297169",
+        "KRMV297170",
+        "KRMV297171",
+        "KRMV297172",
+        "KRMV297173",
+        "KRMV297174",
+        "KRMV297175",
+        "KRMV297185",
+        "KRMV297186",
+        "KRMV297188",
+        "KRMV297189",
+        "KRMV297190",
+        "KRMV297191",
+        "KRMV297005",
+        "KRMV297192"
+      ],
+      "select": [
+        "KRMV297083",
+        "KRMV297084",
+        "KRMV297P10",
+        "KRMV297P13",
+        "KRMV297P05",
+        "KRMV297177",
+        "KRMV297P18",
+        "KRMV297P19",
+        "KRMV297P23",
+        "KRMV297P21",
+        "KRMV297200",
+        "KRMV297211",
+        "KRMV297201",
+        "KRMV297202",
+        "KRMV297203"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMV297083"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297084"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRMV297P10"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRMV297P13"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "KRMV297P05"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMV297177"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMV297P18"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "KRMV297P19"
+          ],
+          "price": 5440000
+        },
+        {
+          "codes": [
+            "KRMV297P23"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KRMV297P21"
+          ],
+          "price": 940000
+        },
+        {
+          "codes": [
+            "KRMV297200"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "KRMV297211"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "KRMV297201"
+          ],
+          "price": 100000
+        },
+        {
+          "codes": [
+            "KRMV297202"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "KRMV297203"
+          ],
+          "price": 520000
+        }
+      ]
+    }
+  }
+}

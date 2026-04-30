@@ -1,0 +1,2566 @@
+{
+  "catalog_id": "kia_carnival_ka4",
+  "title": "기아 더 뉴 카니발 4세대 (KA4)",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/carnival/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "첨단 운전자 보조(ADAS)": [
+      "KRKP256010",
+      "KRKP256011",
+      "KRKP256012",
+      "KRKP256013",
+      "KRKP256184",
+      "KRKP256015",
+      "KRKP256016",
+      "KRKP256017",
+      "KRKP256018",
+      "KRKP256019",
+      "KRKP256183"
+    ],
+    "안전": [
+      "KRKP256028",
+      "KRKP256029",
+      "KRKP256030",
+      "KRKP256031",
+      "KRKP256032",
+      "KRKP256033",
+      "KRKP256034",
+      "KRKP256035",
+      "KRKP256036",
+      "KRKP256037",
+      "KRKP256038",
+      "KRKP256039"
+    ],
+    "외장": [
+      "KRKP256040",
+      "KRKP256041",
+      "KRKP256042",
+      "KRKP256043",
+      "KRKP256044",
+      "KRKP256045",
+      "KRKP256046",
+      "KRKP256047",
+      "KRKP256048",
+      "KRKP256049",
+      "KRKP256063",
+      "KRKP256050",
+      "KRKP256051",
+      "KRKP256052",
+      "KRKP256053",
+      "KRKP256185",
+      "KRKP256060",
+      "KRKP256188",
+      "KRKP256187",
+      "KRKP256057",
+      "KRKP256058",
+      "KRKP256189",
+      "KRKP256062",
+      "KRKP256163",
+      "KRKP256186"
+    ],
+    "내장": [
+      "KRKP256161",
+      "KRKP256064",
+      "KRKP256065",
+      "KRKP256067",
+      "KRKP256068",
+      "KRKP256071",
+      "KRKP256162",
+      "KRKP256069",
+      "KRKP256070",
+      "KRKP256072",
+      "KRKP256073",
+      "KRKP256074",
+      "KRKP256075",
+      "KRKP256076"
+    ],
+    "시트": [
+      "KRKP256077",
+      "KRKP256078",
+      "KRKP256079",
+      "KRKP256080",
+      "KRKP256081",
+      "KRKP256082",
+      "KRKP256083",
+      "KRKP256084",
+      "KRKP256085",
+      "KRKP256086",
+      "KRKP256087",
+      "KRKP256088",
+      "KRKP256089",
+      "KRKP256164",
+      "KRKP256169",
+      "KRKP256165",
+      "KRKP256095",
+      "KRKP256092"
+    ],
+    "편의": [
+      "KRKP256096",
+      "KRKP256097",
+      "KRKP256098",
+      "KRKP256099",
+      "KRKP256100",
+      "KRKP256101",
+      "KRKP256102",
+      "KRKP256103",
+      "KRKP256121",
+      "KRKP256104",
+      "KRKP256105",
+      "KRKP256106",
+      "KRKP256107",
+      "KRKP256108",
+      "KRKP256109",
+      "KRKP256110",
+      "KRKP256111",
+      "KRKP256112",
+      "KRKP256113",
+      "KRKP256114",
+      "KRKP256115",
+      "KRKP256116",
+      "KRKP256117",
+      "KRKP256118",
+      "KRKP256182",
+      "KRKP256120",
+      "KRKP256122",
+      "KRKP256123",
+      "KRKP256124",
+      "KRKP256125",
+      "KRKP256144",
+      "KRKP256126",
+      "KRKP256127",
+      "KRKP256128",
+      "KRKP256129",
+      "KRKP256166",
+      "KRKP256167",
+      "KRKP256130",
+      "KRKP214168"
+    ],
+    "인포테인먼트": [
+      "KRKP256147",
+      "KRKP256148",
+      "KRKP256149",
+      "KRKP256150",
+      "KRKP256151",
+      "KRKP256152",
+      "KRKP256153",
+      "KRKP256154"
+    ],
+    "선택사양": [
+      "KRKP256P01",
+      "KRKP256P03",
+      "KRKP256054",
+      "KRKP256P04",
+      "KRKP256P05",
+      "KRKP256P14",
+      "KRKP256P15",
+      "KRKP256P19",
+      "KRKP256P06",
+      "KRKP256P09",
+      "KRKP256P13",
+      "KRKP256P16",
+      "KRKP256P20",
+      "KRKP256P23",
+      "KRKP256061",
+      "KRKP256P26",
+      "KRKP256P27",
+      "KRKP256P07",
+      "KRKP256P10",
+      "KRKP256P17",
+      "KRKP256P21",
+      "KRKP256P24",
+      "KRKP256P11",
+      "KRKP256P18",
+      "KRKP256P22",
+      "KRKP256P31",
+      "KRKP256P08",
+      "KRKP256P12",
+      "KRKP256P25",
+      "KRKP256P28",
+      "KRKP256P02",
+      "KRKP256P30"
+    ],
+    "첨단 운전자 보조 (ADAS)": [
+      "KRKP256020",
+      "KRKP256172",
+      "KRKP256021",
+      "KRKP256022"
+    ]
+  },
+  "options": {
+    "KRKP256010": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256011": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256012": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256013": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256184": {
+      "name": "차로 유지 보조 2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256015": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256016": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256017": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256018": {
+      "name": "스티어링 휠 진동 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256019": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256183": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRKP256028": {
+      "name": "8에어백(운전석/동승석 어드밴스드, 운전석 무릎, 1열 센터 사이드, 전복감지 커튼, 1열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256029": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256030": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256031": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256032": {
+      "name": "횡풍안정제어",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256033": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256034": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256035": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256036": {
+      "name": "전좌석 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256037": {
+      "name": "2열/3열 유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256038": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256039": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRKP256040": {
+      "name": "235/60 R18 외산 타이어 &amp; 전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256041": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256042": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256043": {
+      "name": "LED 리피터 일체형 아웃사이드 미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256044": {
+      "name": "크롬 아웃사이드 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256045": {
+      "name": "도어손잡이 조명(프론트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256046": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256047": {
+      "name": "윈드쉴드 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256048": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256049": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256161": {
+      "name": "토프 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256064": {
+      "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256065": {
+      "name": "가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256067": {
+      "name": "슬라이딩 선바이저(거울, LED 조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256068": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256071": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256077": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256078": {
+      "name": "1열/2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256079": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256080": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256081": {
+      "name": "2열 독립시트(전/후 슬라이딩, 리클라이닝, 워크인)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256082": {
+      "name": "3열 독립시트(쿠션 팁업&amp;전/후 슬라이딩, 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256083": {
+      "name": "4열 팝업 싱킹 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256096": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256097": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256098": {
+      "name": "전자식 변속 다이얼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256099": {
+      "name": "패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256100": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256101": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256102": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256103": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256121": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256104": {
+      "name": "운전석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256105": {
+      "name": "동승석/2열 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256106": {
+      "name": "승하차 스팟램프",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256107": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석/후석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256108": {
+      "name": "인포테인먼트/공조 전환 조작계",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256109": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256110": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256111": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256112": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256113": {
+      "name": "후석 보조 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256114": {
+      "name": "운전석 자동쾌적 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256115": {
+      "name": "외부공기 유입방지 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256116": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256117": {
+      "name": "C타입 USB 단자(충전용, 1열 1개/1열 시트백 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256118": {
+      "name": "파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256182": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256147": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256148": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256149": {
+      "name": "8스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256150": {
+      "name": "후석 대화 모드",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256151": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256152": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256153": {
+      "name": "C타입 USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256P01": {
+      "name": "3.5 가솔린",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P03": {
+      "name": "터보 하이브리드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256054": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P04": {
+      "name": "컨비니언스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P05": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P14": {
+      "name": "12.3인치 클러스터",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P15": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P19": {
+      "name": "모니터링 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256020": {
+      "name": "후측방 충돌 경고",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRKP256172": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRKP256021": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRKP256022": {
+      "name": "안전 하차 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRKP256063": {
+      "name": "터치타입 아웃사이드 도어핸들(1열)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256050": {
+      "name": "1열/2열 도어 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256051": {
+      "name": "크롬 몰딩(범퍼, 도어 하단)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256052": {
+      "name": "크롬 가니쉬(C필라, 테일게이트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256053": {
+      "name": "블랙 하이그로시 도어 프레임 가니쉬",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256162": {
+      "name": "토프 인테리어 또는 코튼 베이지 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256069": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256070": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256072": {
+      "name": "블랙 하이그로시 기어 인디케이터 커버",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256073": {
+      "name": "1열 크롬 인사이드 도어핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256084": {
+      "name": "1열 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256085": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256086": {
+      "name": "운전석 4WAY 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256120": {
+      "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256122": {
+      "name": "스마트 파워 슬라이딩 도어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256123": {
+      "name": "2열/3열 측면 수동 선커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256124": {
+      "name": "동승석/2열 세이프티 파워 윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256125": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256144": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256154": {
+      "name": "멀티존 음성인식",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRKP256P06": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P09": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P13": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P16": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P20": {
+      "name": "모니터링 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P23": {
+      "name": "HUD + 빌트인 캠 2",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256061": {
+      "name": "듀얼 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P26": {
+      "name": "후석 스마트 엔터테인먼트 시스템",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P27": {
+      "name": "마이컴포트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256185": {
+      "name": "리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256060": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256074": {
+      "name": "블랙 하이그로시 내장재(크래쉬 패드, 도어 가니쉬)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256075": {
+      "name": "앰비언트 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256076": {
+      "name": "1열 도어 센터트림 스티치",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRKP256087": {
+      "name": "가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256088": {
+      "name": "운전석 에르고 모션 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256089": {
+      "name": "2열 시트벨트 버클 조명",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256126": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256127": {
+      "name": "운전석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256128": {
+      "name": "후진연동 자동하향 아웃사이드미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256129": {
+      "name": "220V 인버터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256P07": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P10": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P17": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P21": {
+      "name": "모니터링 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P24": {
+      "name": "BOSE 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256188": {
+      "name": "X-Line 전용 외장 디자인(235/55 R19 외산 타이어 &amp; 블랙 휠, 블랙 라디에이터 그릴, 블랙 엠블럼, X-Line 전용 엠블럼)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256187": {
+      "name": "X-Line 전용 칼라(라디에이터 그릴 하단 몰딩, 아웃사이드 미러 커버, 루프랙 상단, 도어 하단 몰딩 , 프론트/리어 스키드 플레이트, C필라/테일게이트 가니쉬)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256057": {
+      "name": "프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256058": {
+      "name": "LED 포그램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256189": {
+      "name": "프론트 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256P11": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P18": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P22": {
+      "name": "모니터링 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P31": {
+      "name": "X-Line 전용 사이드 스텝 / LED 테일게이트 램프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256062": {
+      "name": "235/55 R19 외산 타이어 &amp; 전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256163": {
+      "name": "윈드쉴드/1열/2열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256164": {
+      "name": "1열/2열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256169": {
+      "name": "2열 프리미엄 릴렉션 시트(원터치 릴렉션 모드, 파워 리클라이닝, 파워 레그서포트, 윙타입 헤드레스트, 전/후/좌/우 슬라이딩)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256165": {
+      "name": "3열 6:4 싱킹 시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256166": {
+      "name": "전좌석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256167": {
+      "name": "도어타입 러기지 트레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256130": {
+      "name": "확장형 센터콘솔",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP214168": {
+      "name": "C타입 USB 단자(충전용, 1열 1개/1열 시트백 2개/3열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRKP256P08": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P12": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P25": {
+      "name": "후석 스마트엔터테인먼트 시스템",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256P28": {
+      "name": "마이컴포트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256095": {
+      "name": "2열 통풍시트(쿠션)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256092": {
+      "name": "나파가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRKP256P02": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRKP256186": {
+      "name": "X-Line 전용 외장 디자인(블랙 휠, 블랙 라디에이터 그릴, 블랙 엠블럼, X-Line 전용 엠블럼)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRKP256P30": {
+      "name": "X-Line 전용 사이드 스텝 / LED 테일게이트 램프",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "프레스티지(9인)": {
+      "slug": "프레스티지(9인)",
+      "price": {
+        "base": 36360000
+      },
+      "basic": [
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256040",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256047",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256161",
+        "KRKP256064",
+        "KRKP256065",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256071",
+        "KRKP256077",
+        "KRKP256078",
+        "KRKP256079",
+        "KRKP256080",
+        "KRKP256081",
+        "KRKP256082",
+        "KRKP256083",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256121",
+        "KRKP256104",
+        "KRKP256105",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256117",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P04",
+        "KRKP256P05",
+        "KRKP256P14",
+        "KRKP256P15",
+        "KRKP256P19"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4550000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P04"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "KRKP256P05"
+          ],
+          "price": 1000000
+        },
+        {
+          "codes": [
+            "KRKP256P14"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRKP256P15"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRKP256P19"
+          ],
+          "price": 900000
+        }
+      ]
+    },
+    "노블레스(9인)": {
+      "slug": "노블레스(9인)",
+      "price": {
+        "base": 40710000
+      },
+      "basic": [
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022",
+        "KRKP256063",
+        "KRKP256050",
+        "KRKP256051",
+        "KRKP256052",
+        "KRKP256053",
+        "KRKP256162",
+        "KRKP256069",
+        "KRKP256070",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256086",
+        "KRKP256120",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256124",
+        "KRKP256125",
+        "KRKP256144",
+        "KRKP256154",
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256040",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256047",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256065",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256071",
+        "KRKP256077",
+        "KRKP256078",
+        "KRKP256079",
+        "KRKP256081",
+        "KRKP256082",
+        "KRKP256083",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256121",
+        "KRKP256104",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256117",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P06",
+        "KRKP256P09",
+        "KRKP256P13",
+        "KRKP256P16",
+        "KRKP256P20",
+        "KRKP256P23",
+        "KRKP256061",
+        "KRKP256P26",
+        "KRKP256P27"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4550000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P06"
+          ],
+          "price": 1000000
+        },
+        {
+          "codes": [
+            "KRKP256P09"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "KRKP256P13"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRKP256P16"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRKP256P20"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRKP256P23"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRKP256061"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "KRKP256P26"
+          ],
+          "price": 2680000
+        },
+        {
+          "codes": [
+            "KRKP256P27"
+          ],
+          "price": 1260000
+        }
+      ]
+    },
+    "시그니처(9인)": {
+      "slug": "시그니처(9인)",
+      "price": {
+        "base": 44260000
+      },
+      "basic": [
+        "KRKP256185",
+        "KRKP256060",
+        "KRKP256162",
+        "KRKP256074",
+        "KRKP256075",
+        "KRKP256076",
+        "KRKP256087",
+        "KRKP256088",
+        "KRKP256089",
+        "KRKP256126",
+        "KRKP256127",
+        "KRKP256128",
+        "KRKP256129",
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256040",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256047",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256063",
+        "KRKP256050",
+        "KRKP256051",
+        "KRKP256052",
+        "KRKP256053",
+        "KRKP256065",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256071",
+        "KRKP256069",
+        "KRKP256070",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256078",
+        "KRKP256079",
+        "KRKP256081",
+        "KRKP256082",
+        "KRKP256083",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256121",
+        "KRKP256104",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256117",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256120",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256124",
+        "KRKP256125",
+        "KRKP256144",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153",
+        "KRKP256154"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P07",
+        "KRKP256P10",
+        "KRKP256P13",
+        "KRKP256P17",
+        "KRKP256P21",
+        "KRKP256P23",
+        "KRKP256P24",
+        "KRKP256061",
+        "KRKP256P26",
+        "KRKP256P27"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4550000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P07"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "KRKP256P10"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "KRKP256P13"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRKP256P17"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRKP256P21"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRKP256P23"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRKP256P24"
+          ],
+          "price": 900000
+        },
+        {
+          "codes": [
+            "KRKP256061"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "KRKP256P26"
+          ],
+          "price": 2680000
+        },
+        {
+          "codes": [
+            "KRKP256P27"
+          ],
+          "price": 1260000
+        }
+      ]
+    },
+    "X-Line(9인)": {
+      "slug": "X-Line(9인)",
+      "price": {
+        "base": 45020000
+      },
+      "basic": [
+        "KRKP256188",
+        "KRKP256187",
+        "KRKP256057",
+        "KRKP256058",
+        "KRKP256189",
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256047",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256063",
+        "KRKP256050",
+        "KRKP256053",
+        "KRKP256185",
+        "KRKP256060",
+        "KRKP256065",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256071",
+        "KRKP256069",
+        "KRKP256070",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256162",
+        "KRKP256074",
+        "KRKP256075",
+        "KRKP256076",
+        "KRKP256078",
+        "KRKP256079",
+        "KRKP256081",
+        "KRKP256082",
+        "KRKP256083",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256087",
+        "KRKP256088",
+        "KRKP256089",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256121",
+        "KRKP256104",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256117",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256120",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256124",
+        "KRKP256125",
+        "KRKP256144",
+        "KRKP256126",
+        "KRKP256127",
+        "KRKP256128",
+        "KRKP256129",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153",
+        "KRKP256154"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P11",
+        "KRKP256P13",
+        "KRKP256P18",
+        "KRKP256P22",
+        "KRKP256P23",
+        "KRKP256P24",
+        "KRKP256061",
+        "KRKP256P31",
+        "KRKP256P26",
+        "KRKP256P27"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4550000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P11"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "KRKP256P13"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRKP256P18"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRKP256P22"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRKP256P23"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRKP256P24"
+          ],
+          "price": 900000
+        },
+        {
+          "codes": [
+            "KRKP256061"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "KRKP256P31"
+          ],
+          "price": 570000
+        },
+        {
+          "codes": [
+            "KRKP256P26"
+          ],
+          "price": 2680000
+        },
+        {
+          "codes": [
+            "KRKP256P27"
+          ],
+          "price": 1260000
+        }
+      ]
+    },
+    "노블레스(7인)": {
+      "slug": "노블레스(7인)",
+      "price": {
+        "base": 43310000,
+        "tax_3_5_after": 42650000
+      },
+      "basic": [
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256062",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256063",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256163",
+        "KRKP256051",
+        "KRKP256052",
+        "KRKP256053",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256162",
+        "KRKP256069",
+        "KRKP256070",
+        "KRKP256065",
+        "KRKP256071",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256087",
+        "KRKP256078",
+        "KRKP256164",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256086",
+        "KRKP256169",
+        "KRKP256165",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256166",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256120",
+        "KRKP256121",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256125",
+        "KRKP256144",
+        "KRKP256167",
+        "KRKP256130",
+        "KRKP214168",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153",
+        "KRKP256154"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P08",
+        "KRKP256P12",
+        "KRKP256P13",
+        "KRKP256P16",
+        "KRKP256P20",
+        "KRKP256P23",
+        "KRKP256061",
+        "KRKP256P25",
+        "KRKP256P28"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4500000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P08"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P12"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRKP256P13"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P16"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P20"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256P23"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256061"
+          ],
+          "price": 840000
+        },
+        {
+          "codes": [
+            "KRKP256P25"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "KRKP256P28"
+          ],
+          "price": 1330000
+        }
+      ]
+    },
+    "노블레스 아웃도어(7인)": {
+      "slug": "노블레스_아웃도어(7인)",
+      "price": {
+        "base": 42320000,
+        "tax_3_5_after": 41680000
+      },
+      "basic": [
+        "KRKP256081",
+        "KRKP256095",
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256062",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256063",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256163",
+        "KRKP256051",
+        "KRKP256052",
+        "KRKP256053",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256162",
+        "KRKP256069",
+        "KRKP256070",
+        "KRKP256065",
+        "KRKP256071",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256087",
+        "KRKP256078",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256086",
+        "KRKP256165",
+        "KRKP256079",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256166",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256120",
+        "KRKP256121",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256125",
+        "KRKP256144",
+        "KRKP256167",
+        "KRKP256130",
+        "KRKP214168",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153",
+        "KRKP256154"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P08",
+        "KRKP256P13",
+        "KRKP256P16",
+        "KRKP256P20",
+        "KRKP256P23",
+        "KRKP256061"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4500000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P08"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P13"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P16"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P20"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256P23"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256061"
+          ],
+          "price": 840000
+        }
+      ]
+    },
+    "시그니처(7인)": {
+      "slug": "시그니처(7인)",
+      "price": {
+        "base": 47080000,
+        "tax_3_5_after": 46370000
+      },
+      "basic": [
+        "KRKP256185",
+        "KRKP256060",
+        "KRKP256162",
+        "KRKP256074",
+        "KRKP256075",
+        "KRKP256076",
+        "KRKP256092",
+        "KRKP256088",
+        "KRKP256089",
+        "KRKP256126",
+        "KRKP256127",
+        "KRKP256128",
+        "KRKP256129",
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256062",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256063",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256163",
+        "KRKP256051",
+        "KRKP256052",
+        "KRKP256053",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256069",
+        "KRKP256070",
+        "KRKP256065",
+        "KRKP256071",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256078",
+        "KRKP256164",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256169",
+        "KRKP256165",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256166",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256120",
+        "KRKP256121",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256125",
+        "KRKP256144",
+        "KRKP256167",
+        "KRKP256130",
+        "KRKP214168",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153",
+        "KRKP256154"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P02",
+        "KRKP256P12",
+        "KRKP256P13",
+        "KRKP256P17",
+        "KRKP256P21",
+        "KRKP256P23",
+        "KRKP256P24",
+        "KRKP256061",
+        "KRKP256P25",
+        "KRKP256P28"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4500000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P02"
+          ],
+          "price": 470000
+        },
+        {
+          "codes": [
+            "KRKP256P12"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRKP256P13"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P17"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P21"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256P23"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256P24"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "KRKP256061"
+          ],
+          "price": 840000
+        },
+        {
+          "codes": [
+            "KRKP256P25"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "KRKP256P28"
+          ],
+          "price": 1330000
+        }
+      ]
+    },
+    "X-Line(7인)": {
+      "slug": "X-Line(7인)",
+      "price": {
+        "base": 47610000,
+        "tax_3_5_after": 46890000
+      },
+      "basic": [
+        "KRKP256186",
+        "KRKP256187",
+        "KRKP256057",
+        "KRKP256058",
+        "KRKP256189",
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256019",
+        "KRKP256183",
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256063",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256163",
+        "KRKP256053",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256185",
+        "KRKP256060",
+        "KRKP256069",
+        "KRKP256070",
+        "KRKP256065",
+        "KRKP256071",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256162",
+        "KRKP256074",
+        "KRKP256075",
+        "KRKP256076",
+        "KRKP256078",
+        "KRKP256164",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256169",
+        "KRKP256165",
+        "KRKP256092",
+        "KRKP256088",
+        "KRKP256089",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256166",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256120",
+        "KRKP256121",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256125",
+        "KRKP256144",
+        "KRKP256167",
+        "KRKP256130",
+        "KRKP214168",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256126",
+        "KRKP256127",
+        "KRKP256128",
+        "KRKP256129",
+        "KRKP256147",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153",
+        "KRKP256154"
+      ],
+      "select": [
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P12",
+        "KRKP256P13",
+        "KRKP256P18",
+        "KRKP256P22",
+        "KRKP256P23",
+        "KRKP256P24",
+        "KRKP256061",
+        "KRKP256P30",
+        "KRKP256P25",
+        "KRKP256P28"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRKP256P01"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "KRKP256P03"
+          ],
+          "price": 4500000
+        },
+        {
+          "codes": [
+            "KRKP256054"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRKP256P12"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRKP256P13"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P18"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRKP256P22"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256P23"
+          ],
+          "price": 1270000
+        },
+        {
+          "codes": [
+            "KRKP256P24"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "KRKP256061"
+          ],
+          "price": 840000
+        },
+        {
+          "codes": [
+            "KRKP256P30"
+          ],
+          "price": 560000
+        },
+        {
+          "codes": [
+            "KRKP256P25"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "KRKP256P28"
+          ],
+          "price": 1330000
+        }
+      ]
+    }
+  }
+}

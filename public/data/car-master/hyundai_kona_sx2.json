@@ -1,0 +1,1726 @@
+{
+  "catalog_id": "hyundai_kona_sx2",
+  "title": "현대 코나 (SX2)",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/kona-27-J-G2.0_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/kona-27-J-G1.6T_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "SX04006",
+      "SX04004",
+      "SX04007",
+      "SX04008",
+      "SX04002",
+      "SX04005",
+      "SX04003"
+    ],
+    "안전": [
+      "SX04027",
+      "SX04032",
+      "SX04030",
+      "SX04029",
+      "SX04031"
+    ],
+    "지능형 안전 기술": [
+      "SX04016",
+      "SX04020",
+      "SX04019",
+      "SX04017",
+      "SX04014",
+      "SX04021",
+      "SX04023",
+      "SX04024",
+      "SX04025",
+      "SX04022",
+      "SX04013",
+      "SX04018",
+      "SX04015",
+      "SX04010",
+      "SX04012",
+      "SX04011"
+    ],
+    "외관": [
+      "SX04044",
+      "SX04051",
+      "SX04043",
+      "SX04041",
+      "SX04040",
+      "SX04035",
+      "SX04054",
+      "SX04055",
+      "SX04057",
+      "SX04048",
+      "SX04036",
+      "SX04053",
+      "SX04046",
+      "SX04049",
+      "SX04052",
+      "SX04047",
+      "SX04038",
+      "SX04039",
+      "SX04045"
+    ],
+    "내장": [
+      "SX04072",
+      "SX04064",
+      "SX04069",
+      "SX04060",
+      "SX04070",
+      "SX04067",
+      "SX04073",
+      "SX04061"
+    ],
+    "시트": [
+      "SX04077",
+      "SX04082",
+      "SX04075",
+      "SX04085",
+      "SX04083",
+      "SX04076",
+      "SX04078",
+      "SX04087",
+      "SX04084",
+      "SX04080",
+      "SX04079"
+    ],
+    "편의": [
+      "SX04095",
+      "SX04091",
+      "SX04105",
+      "SX04100",
+      "SX04096",
+      "SX04102",
+      "SX04106",
+      "SX04113",
+      "SX04111",
+      "SX04108",
+      "SX04104",
+      "SX04110",
+      "SX04099",
+      "SX04090",
+      "SX04089",
+      "SX04092",
+      "SX04094",
+      "SX04107",
+      "SX04101",
+      "SX04103",
+      "SX04093",
+      "SX04109"
+    ],
+    "인포테인먼트": [
+      "SX04116",
+      "SX04119",
+      "SX04118",
+      "SX04115"
+    ],
+    "선택사양": [
+      "SX04112",
+      "SX04P06",
+      "SX04P02",
+      "SX04P05",
+      "SX04P04",
+      "SX04P07",
+      "SX04P03",
+      "SX04071",
+      "SX04P09",
+      "SX04P10",
+      "SX04P01",
+      "SX04001",
+      "SX04056",
+      "SX04P08",
+      "SX04037",
+      "SX04P11",
+      "SX04117",
+      "SX04058",
+      "SX04P12",
+      "SX04P13"
+    ]
+  },
+  "options": {
+    "SX04006": {
+      "name": "스마트스트림 가솔린 2.0 엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "SX04004": {
+      "name": "스마트스트림 IVT",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "SX04007": {
+      "name": "전자식 변속 칼럼",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "SX04008": {
+      "name": "통합주행모드",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "SX04002": {
+      "name": "ISG 시스템",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "SX04027": {
+      "name": "6에어백 시스템(1열 어드밴스드/사이드, 전복대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "SX04032": {
+      "name": "유아용 시트 고정 장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "SX04030": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "SX04029": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "SX04031": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "SX04016": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04020": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04019": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04017": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04014": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04021": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04023": {
+      "name": "후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04044": {
+      "name": "LED 헤드램프(MFR 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04051": {
+      "name": "수평형 LED 램프(심리스 호라이즌 램프 - 주간 주행등, 포지셔닝 램프)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04043": {
+      "name": "LED 테일램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04041": {
+      "name": "LED 제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04040": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04035": {
+      "name": "17인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04054": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04055": {
+      "name": "에어로 타입 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04057": {
+      "name": "이중접합 차음 유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04072": {
+      "name": "클러스터(4.2인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04064": {
+      "name": "가죽 스티어링 휠(열선 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04077": {
+      "name": "2열 6:4 분할 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04082": {
+      "name": "운전석 수동 높이 조절",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04075": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04095": {
+      "name": "매뉴얼 에어컨(마이크로 에어필터)",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04091": {
+      "name": "USB C타입 단자(1열 충전 1개/충전·데이터 스위치타입 1개, 2열 충전 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04105": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04100": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04096": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04102": {
+      "name": "스마트키 원격시동",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04106": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04113": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04111": {
+      "name": "패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04108": {
+      "name": "크루즈컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04104": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04110": {
+      "name": "파워 아웃렛(1열 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04116": {
+      "name": "12.3인치 디스플레이 오디오(블루링크, 폰 프로젝션, 블루투스 핸즈프리)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "SX04119": {
+      "name": "일반 오디오 시스템(6스피커)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "SX04118": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "SX04112": {
+      "name": "하이패스",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "SX04P06": {
+      "name": "내비게이션 패키지Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04P02": {
+      "name": "현대 스마트센스Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04P05": {
+      "name": "컴포트 초이스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04024": {
+      "name": "후측방 충돌 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04025": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04022": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04013": {
+      "name": "안전 하차 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04048": {
+      "name": "루프랙",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04069": {
+      "name": "인조가죽 적용 내장(동승석 오픈 트레이, 도어 센터 트림, 도어 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04060": {
+      "name": "LED 실내등(맵램프, 룸램프, 선바이저램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04085": {
+      "name": "인조가죽 시트(동승석 시트백 포켓 포함)",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04083": {
+      "name": "운전석 전동시트(8way, 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04076": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04099": {
+      "name": "세이프티 파워 윈도우(1열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04090": {
+      "name": "ECM 룸미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04089": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04P04": {
+      "name": "베스트 셀렉션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04P07": {
+      "name": "스타일 Lite",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04P03": {
+      "name": "현대 스마트센스Ⅲ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04071": {
+      "name": "클러스터(12.3인치 컬러 LCD)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "SX04P09": {
+      "name": "파킹어시스트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04P10": {
+      "name": "컨비니언스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04P01": {
+      "name": "빌트인 캠 2, 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04005": {
+      "name": "스마트스트림 가솔린 1.6 터보 엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "SX04003": {
+      "name": "스마트스트림 8단 자동변속기",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "SX04036": {
+      "name": "18인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04053": {
+      "name": "실버 스키드 플레이트",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04046": {
+      "name": "다크그레이 컬러 도장 클래딩/사이드 몰딩/범퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04049": {
+      "name": "벨트라인 크롬몰딩",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04052": {
+      "name": "스포일러 가니쉬",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04047": {
+      "name": "도어 포켓 라이팅(1열)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04070": {
+      "name": "직물 루프 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04078": {
+      "name": "2열 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04092": {
+      "name": "듀얼 풀오토 에어컨(오토 디포그/미세먼지 센서/공기청정모드/애프터블로우 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04094": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04107": {
+      "name": "커버링 쉘프",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04101": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04103": {
+      "name": "스마트폰 무선 충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04093": {
+      "name": "디지털 키 2 터치",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04109": {
+      "name": "터치타입 아웃사이드 도어 핸들(1열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "SX04115": {
+      "name": "12.3인치 내비게이션(인카페이먼트/e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "SX04001": {
+      "name": "HTRAC(험로주행모드)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "SX04056": {
+      "name": "와이드 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "SX04P08": {
+      "name": "시트플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04037": {
+      "name": "19인치 알로이 휠 & 타이어",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "SX04P11": {
+      "name": "실내 컬러 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04018": {
+      "name": "진동 경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04015": {
+      "name": "전방 충돌방지 보조(교차로 대향차/정면 대향차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04010": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04012": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04011": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간/곡선로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "SX04038": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04039": {
+      "name": "LED 방향지시등(앞/뒤)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04067": {
+      "name": "앰비언트 무드램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04073": {
+      "name": "우븐 패브릭 감싸기 적용 내장(도어 트림, 오픈트레이)",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04087": {
+      "name": "천연가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04084": {
+      "name": "운전석 전동시트(릴렉션 컴포트, 자세 메모리 시스템)",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04080": {
+      "name": "동승석 전동시트(8way, 릴렉션 컴포트, 워크인 디바이스)",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04079": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "SX04117": {
+      "name": "BOSE 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "SX04058": {
+      "name": "투톤 컬러 루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "SX04P12": {
+      "name": "에코패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "SX04045": {
+      "name": "N Line 전용 외관 디자인(바디컬러 클래딩, 전/후면 범퍼 디자인, 19인치 알로이 휠, 사이드 스커트, 윙타입 스포일러, 싱글 트윈팁 머플러, 블랙 아웃사이드 미러 커버, 벨트라인 무광블랙 몰딩)",
+      "category": "외관",
+      "is_package": false
+    },
+    "SX04061": {
+      "name": "N Line 전용 내장 디자인(전용 디자인 천연가죽/알칸타라 콤비 시트, 메탈 페달, 메탈 도어 스커프, 레드 컬러 포인트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "SX04P13": {
+      "name": "알칸타라 인테리어 패키지",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "모던 (2.0)": {
+      "slug": "modern",
+      "name_en": null,
+      "price": {
+        "tax_5": 23960000,
+        "tax_3_5": 23600000
+      },
+      "basic": [
+        "SX04006",
+        "SX04004",
+        "SX04007",
+        "SX04008",
+        "SX04002",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04044",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04035",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04072",
+        "SX04064",
+        "SX04077",
+        "SX04082",
+        "SX04075",
+        "SX04095",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04116",
+        "SX04119",
+        "SX04118"
+      ],
+      "select": [
+        "SX04112",
+        "SX04P06",
+        "SX04P02",
+        "SX04P05"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04112"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "SX04P06"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "SX04P02"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "SX04P05"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "H-Pick (2.0)": {
+      "slug": "H-Pick",
+      "name_en": null,
+      "price": {
+        "tax_5": 26280000,
+        "tax_3_5": 25880000
+      },
+      "basic": [
+        "SX04006",
+        "SX04004",
+        "SX04007",
+        "SX04008",
+        "SX04002",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04024",
+        "SX04025",
+        "SX04022",
+        "SX04013",
+        "SX04044",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04048",
+        "SX04072",
+        "SX04064",
+        "SX04069",
+        "SX04060",
+        "SX04077",
+        "SX04075",
+        "SX04085",
+        "SX04083",
+        "SX04076",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04099",
+        "SX04090",
+        "SX04089",
+        "SX04119",
+        "SX04118"
+      ],
+      "select": [
+        "SX04112",
+        "SX04P04",
+        "SX04P07",
+        "SX04P03",
+        "SX04071",
+        "SX04P09",
+        "SX04P10",
+        "SX04P01"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04112"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "SX04P04"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "SX04P07"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "SX04P03"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "SX04071"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "SX04P09"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "SX04P10"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "SX04P01"
+          ],
+          "price": 450000
+        }
+      ]
+    },
+    "모던 (1.6T)": {
+      "slug": "modern",
+      "name_en": null,
+      "price": {
+        "tax_5": 24660000,
+        "tax_3_5": 24290000
+      },
+      "basic": [
+        "SX04005",
+        "SX04003",
+        "SX04007",
+        "SX04008",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04044",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04035",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04072",
+        "SX04064",
+        "SX04077",
+        "SX04082",
+        "SX04075",
+        "SX04095",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04116",
+        "SX04119",
+        "SX04118"
+      ],
+      "select": [
+        "SX04112",
+        "SX04P06",
+        "SX04P02",
+        "SX04P05"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04112"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "SX04P06"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "SX04P02"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "SX04P05"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "H-Pick (1.6T)": {
+      "slug": "H-Pick",
+      "name_en": null,
+      "price": {
+        "tax_5": 26880000,
+        "tax_3_5": 26470000
+      },
+      "basic": [
+        "SX04005",
+        "SX04003",
+        "SX04007",
+        "SX04008",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04024",
+        "SX04025",
+        "SX04022",
+        "SX04013",
+        "SX04044",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04048",
+        "SX04072",
+        "SX04064",
+        "SX04069",
+        "SX04060",
+        "SX04077",
+        "SX04075",
+        "SX04085",
+        "SX04083",
+        "SX04076",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04099",
+        "SX04090",
+        "SX04089",
+        "SX04119",
+        "SX04118"
+      ],
+      "select": [
+        "SX04112",
+        "SX04P04",
+        "SX04P07",
+        "SX04P03",
+        "SX04071",
+        "SX04P09",
+        "SX04P10",
+        "SX04P01"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04112"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "SX04P04"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "SX04P07"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "SX04P03"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "SX04071"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "SX04P09"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "SX04P10"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "SX04P01"
+          ],
+          "price": 450000
+        }
+      ]
+    },
+    "프리미엄 (1.6T)": {
+      "slug": "premium",
+      "name_en": null,
+      "price": {
+        "tax_5": 29190000,
+        "tax_3_5": 28750000
+      },
+      "basic": [
+        "SX04005",
+        "SX04003",
+        "SX04007",
+        "SX04008",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04024",
+        "SX04025",
+        "SX04022",
+        "SX04013",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04048",
+        "SX04036",
+        "SX04053",
+        "SX04046",
+        "SX04049",
+        "SX04052",
+        "SX04047",
+        "SX04072",
+        "SX04064",
+        "SX04069",
+        "SX04060",
+        "SX04070",
+        "SX04077",
+        "SX04075",
+        "SX04085",
+        "SX04083",
+        "SX04076",
+        "SX04078",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04092",
+        "SX04094",
+        "SX04099",
+        "SX04090",
+        "SX04089",
+        "SX04112",
+        "SX04107",
+        "SX04101",
+        "SX04103",
+        "SX04093",
+        "SX04109",
+        "SX04119",
+        "SX04118",
+        "SX04115"
+      ],
+      "select": [
+        "SX04001",
+        "SX04056",
+        "SX04P01",
+        "SX04P04",
+        "SX04P03",
+        "SX04071",
+        "SX04P09",
+        "SX04P08",
+        "SX04037",
+        "SX04P11"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04001"
+          ],
+          "price": 2030000
+        },
+        {
+          "codes": [
+            "SX04056"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "SX04P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "SX04P04"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "SX04P03"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "SX04071"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "SX04P09"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "SX04P08"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "SX04037"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "SX04P11"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "인스퍼레이션 (1.6T)": {
+      "slug": "inspiration",
+      "name_en": null,
+      "price": {
+        "tax_5": 31500000,
+        "tax_3_5": 31020000
+      },
+      "basic": [
+        "SX04005",
+        "SX04003",
+        "SX04007",
+        "SX04008",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04024",
+        "SX04025",
+        "SX04022",
+        "SX04013",
+        "SX04018",
+        "SX04015",
+        "SX04010",
+        "SX04012",
+        "SX04011",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04048",
+        "SX04053",
+        "SX04046",
+        "SX04049",
+        "SX04052",
+        "SX04047",
+        "SX04038",
+        "SX04039",
+        "SX04037",
+        "SX04064",
+        "SX04069",
+        "SX04060",
+        "SX04070",
+        "SX04067",
+        "SX04071",
+        "SX04073",
+        "SX04077",
+        "SX04075",
+        "SX04083",
+        "SX04076",
+        "SX04078",
+        "SX04087",
+        "SX04084",
+        "SX04080",
+        "SX04079",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04092",
+        "SX04094",
+        "SX04099",
+        "SX04090",
+        "SX04089",
+        "SX04112",
+        "SX04107",
+        "SX04101",
+        "SX04103",
+        "SX04093",
+        "SX04109",
+        "SX04119",
+        "SX04118",
+        "SX04115"
+      ],
+      "select": [
+        "SX04001",
+        "SX04056",
+        "SX04P01",
+        "SX04P09",
+        "SX04117",
+        "SX04058",
+        "SX04P11",
+        "SX04P12"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04001"
+          ],
+          "price": 2030000
+        },
+        {
+          "codes": [
+            "SX04056"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "SX04P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "SX04P09"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "SX04117"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "SX04058"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "SX04P11"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "SX04P12"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "블랙 익스테리어 (1.6T)": {
+      "slug": "black-exterior",
+      "name_en": null,
+      "price": {
+        "tax_5": 31850000,
+        "tax_3_5": 31370000
+      },
+      "basic": [
+        "SX04005",
+        "SX04003",
+        "SX04007",
+        "SX04008",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04024",
+        "SX04025",
+        "SX04022",
+        "SX04013",
+        "SX04018",
+        "SX04015",
+        "SX04010",
+        "SX04012",
+        "SX04011",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04048",
+        "SX04047",
+        "SX04038",
+        "SX04039",
+        "SX04064",
+        "SX04069",
+        "SX04060",
+        "SX04070",
+        "SX04067",
+        "SX04071",
+        "SX04073",
+        "SX04077",
+        "SX04075",
+        "SX04083",
+        "SX04076",
+        "SX04078",
+        "SX04087",
+        "SX04084",
+        "SX04080",
+        "SX04079",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04092",
+        "SX04094",
+        "SX04099",
+        "SX04090",
+        "SX04089",
+        "SX04112",
+        "SX04107",
+        "SX04101",
+        "SX04103",
+        "SX04093",
+        "SX04109",
+        "SX04119",
+        "SX04118",
+        "SX04115"
+      ],
+      "select": [
+        "SX04001",
+        "SX04056",
+        "SX04P01",
+        "SX04P09",
+        "SX04117",
+        "SX04058",
+        "SX04P11",
+        "SX04P12"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04001"
+          ],
+          "price": 2030000
+        },
+        {
+          "codes": [
+            "SX04056"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "SX04P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "SX04P09"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "SX04117"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "SX04058"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "SX04P11"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "SX04P12"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "N Line (1.6T)": {
+      "slug": "n-line",
+      "name_en": null,
+      "price": {
+        "tax_5": 32490000,
+        "tax_3_5": 31990000
+      },
+      "basic": [
+        "SX04005",
+        "SX04003",
+        "SX04007",
+        "SX04008",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04024",
+        "SX04025",
+        "SX04022",
+        "SX04013",
+        "SX04018",
+        "SX04015",
+        "SX04010",
+        "SX04012",
+        "SX04011",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04048",
+        "SX04047",
+        "SX04038",
+        "SX04039",
+        "SX04037",
+        "SX04045",
+        "SX04064",
+        "SX04069",
+        "SX04060",
+        "SX04070",
+        "SX04067",
+        "SX04071",
+        "SX04073",
+        "SX04061",
+        "SX04077",
+        "SX04075",
+        "SX04083",
+        "SX04076",
+        "SX04078",
+        "SX04084",
+        "SX04080",
+        "SX04079",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04092",
+        "SX04094",
+        "SX04099",
+        "SX04090",
+        "SX04089",
+        "SX04112",
+        "SX04107",
+        "SX04101",
+        "SX04103",
+        "SX04093",
+        "SX04109",
+        "SX04119",
+        "SX04118",
+        "SX04115"
+      ],
+      "select": [
+        "SX04001",
+        "SX04056",
+        "SX04P01",
+        "SX04P09",
+        "SX04117",
+        "SX04058",
+        "SX04P13"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04001"
+          ],
+          "price": 2030000
+        },
+        {
+          "codes": [
+            "SX04056"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "SX04P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "SX04P09"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "SX04117"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "SX04058"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "SX04P13"
+          ],
+          "price": 370000
+        }
+      ]
+    }
+  }
+}

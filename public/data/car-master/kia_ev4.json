@@ -1,0 +1,2203 @@
+{
+  "catalog_id": "kia_ev4",
+  "title": "기아 EV4",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/ev4/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워 일렉트릭": [
+      "KRCT294001",
+      "KRCT294002",
+      "KRCT294003",
+      "KRCT294004",
+      "KRCT294005",
+      "KRCT294006",
+      "KRCT294007",
+      "KRCT294008"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRCT294011",
+      "KRCT294012",
+      "KRCT294013",
+      "KRCT294014",
+      "KRCT294015",
+      "KRCT294016",
+      "KRCT294017",
+      "KRCT294018",
+      "KRCT294019",
+      "KRCT294020",
+      "KRCT294021"
+    ],
+    "안전": [
+      "KRCT294032",
+      "KRCT294033",
+      "KRCT294034",
+      "KRCT294035",
+      "KRCT294036",
+      "KRCT294037",
+      "KRCT294038",
+      "KRCT294039",
+      "KRCT294040",
+      "KRCT294041",
+      "KRCT294042",
+      "KRCT294043",
+      "KRCT294044",
+      "KRCT294166",
+      "KRCT294167",
+      "KRCT294022",
+      "KRCT294023"
+    ],
+    "외장": [
+      "KRCT294047",
+      "KRCT294048",
+      "KRCT294049",
+      "KRCT294050",
+      "KRCT294051",
+      "KRCT294052",
+      "KRCT294053",
+      "KRCT294054",
+      "KRCT294055",
+      "KRCT294056",
+      "KRCT294057",
+      "KRCT294058",
+      "KRCT294059",
+      "KRCT294060",
+      "KRCT294061",
+      "KRCT294062",
+      "KRCT294063",
+      "KRCT294064",
+      "KRCT294065",
+      "KRCT294066",
+      "KRCT294168"
+    ],
+    "내장": [
+      "KRCT294072",
+      "KRCT294073",
+      "KRCT294074",
+      "KRCT294075",
+      "KRCT294076",
+      "KRCT294077",
+      "KRCT294078",
+      "KRCT294079",
+      "KRCT294080",
+      "KRCT294081",
+      "KRCT294160",
+      "KRCT294082",
+      "KRCT294169",
+      "KRCT294084",
+      "KRCT294085",
+      "KRCT294083",
+      "KRCT294087",
+      "KRCT294088",
+      "KRCT294089",
+      "KRCT294090",
+      "KRCT294086"
+    ],
+    "시트": [
+      "KRCT294091",
+      "KRCT294092",
+      "KRCT294093",
+      "KRCT294094",
+      "KRCT294095",
+      "KRCT294096",
+      "KRCT294106",
+      "KRCT294097",
+      "KRCT294099",
+      "KRCT294100",
+      "KRCT294098",
+      "KRCT294101",
+      "KRCT294102",
+      "KRCT294103",
+      "KRCT294104",
+      "KRCT294105",
+      "KRCT294107",
+      "KRCT294108"
+    ],
+    "편의": [
+      "KRCT294109",
+      "KRCT294110",
+      "KRCT294111",
+      "KRCT294112",
+      "KRCT294113",
+      "KRCT294114",
+      "KRCT294115",
+      "KRCT294171",
+      "KRCT294117",
+      "KRCT294118",
+      "KRCT294119",
+      "KRCT294120",
+      "KRCT294121",
+      "KRCT294122",
+      "KRCT294123",
+      "KRCT294124",
+      "KRCT294125",
+      "KRCT294126",
+      "KRCT294127",
+      "KRCT294128",
+      "KRCT294130",
+      "KRCT294131",
+      "KRCT294132",
+      "KRCT294133",
+      "KRCT294134",
+      "KRCT294135",
+      "KRCT294136",
+      "KRCT294137",
+      "KRCT294024",
+      "KRCT294138",
+      "KRCT294145",
+      "KRCT294139",
+      "KRCT294140",
+      "KRCT294141",
+      "KRCT294142",
+      "KRCT294143",
+      "KRCT294144"
+    ],
+    "인포테인먼트": [
+      "KRCT294149",
+      "KRCT294150",
+      "KRCT294151",
+      "KRCT294152",
+      "KRCT294153",
+      "KRCT294154",
+      "KRCT294164"
+    ],
+    "선택사양": [
+      "KRCT294161",
+      "KRCT294162",
+      "KRCT294P01",
+      "KRCT294P02",
+      "KRCT294P03",
+      "KRCT294P04",
+      "KRCT294P05",
+      "KRCT294P06",
+      "KRCT294P07",
+      "KRCT294067",
+      "KRCT294P09",
+      "KRCT294148",
+      "KRCT294165",
+      "KRCT294P10",
+      "KRCT294P08",
+      "KRCT294163"
+    ]
+  },
+  "options": {
+    "KRCT294001": {
+      "name": "차세대 일체형 PE 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294002": {
+      "name": "58.3kWh 리튬이온 배터리",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294003": {
+      "name": "회생제동 브레이크 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294004": {
+      "name": "히트 펌프",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294005": {
+      "name": "배터리 히팅 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294006": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294007": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294011": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294012": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294013": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294014": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294015": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294016": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294017": {
+      "name": "차로 유지 보조2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294018": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294019": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294020": {
+      "name": "스티어링 휠 진동경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294021": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRCT294032": {
+      "name": "9 에어백(운전석/동승석 어드밴스드, 앞좌석 센터 사이드, 전복감지 커튼, 앞좌석/뒷좌석 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294033": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294034": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294035": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294036": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294037": {
+      "name": "경사로 저속주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294038": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294039": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294040": {
+      "name": "앞좌석/뒷좌석 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294041": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294042": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294043": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294044": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294166": {
+      "name": "페달 오조작 안전 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294167": {
+      "name": "가속 제한 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294047": {
+      "name": "215/60 R17 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294048": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294049": {
+      "name": "프론트/리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294050": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294051": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294052": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294053": {
+      "name": "LED 리피터 일체형 아웃사이드미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294054": {
+      "name": "오토 플러시 도어 핸들(워크 어웨이 락 포함)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294055": {
+      "name": "도어손잡이 조명(프론트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294056": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294057": {
+      "name": "윈드쉴드/앞좌석 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294058": {
+      "name": "듀얼 루프 스포일러",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294059": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294072": {
+      "name": "블랙 또는 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294073": {
+      "name": "파노라믹 와이드 디스플레이(인포/공조 통합형)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294074": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294075": {
+      "name": "인조가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294076": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294077": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294078": {
+      "name": "슬라이딩 선바이저(거울, LED조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294079": {
+      "name": "글로브박스 LED 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294080": {
+      "name": "소프트 재질 크래쉬패드",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294081": {
+      "name": "도어 암레스트 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294160": {
+      "name": "러기지 언더트레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294091": {
+      "name": "프리미엄 바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294092": {
+      "name": "앞좌석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294093": {
+      "name": "앞좌석/뒷좌석 높이조절식 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294094": {
+      "name": "앞좌석 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294095": {
+      "name": "앞좌석 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294096": {
+      "name": "앞좌석 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294109": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294110": {
+      "name": "스마트 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294111": {
+      "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294112": {
+      "name": "컬럼 타입 전자식 변속 레버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294113": {
+      "name": "회생제동 컨트롤 패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294114": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294115": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294171": {
+      "name": "스마트폰 무선충전 시스템(듀얼)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294117": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294118": {
+      "name": "레인 센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294119": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294120": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294121": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294122": {
+      "name": "운전석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294123": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294124": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294125": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294126": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294127": {
+      "name": "뒷좌석 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294128": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294130": {
+      "name": "100W C타입 USB 단자(충전용, 앞좌석 2개/정품 충전 케이블 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294131": {
+      "name": "C타입 USB 단자(충전용, 앞좌석 시트백 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294132": {
+      "name": "앞좌석 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294133": {
+      "name": "충전구 LED 조명",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294149": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRCT294150": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRCT294151": {
+      "name": "6 스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRCT294152": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRCT294153": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRCT294154": {
+      "name": "C타입 USB 단자(데이터/충전 겸용)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRCT294164": {
+      "name": "기아 AI 어시스턴트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRCT294161": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRCT294162": {
+      "name": "아이보리 매트 실버",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRCT294P01": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294P02": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294P03": {
+      "name": "컨비니언스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294P04": {
+      "name": "19인치 휠 &amp; 타이어",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294P05": {
+      "name": "모니터링",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294P06": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294P07": {
+      "name": "유틸리티",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294067": {
+      "name": "와이드 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRCT294P09": {
+      "name": "빌트인 캠2 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294148": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRCT294008": {
+      "name": "81.4kWh 리튬이온 배터리",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KRCT294165": {
+      "name": "듀얼 모터 4WD",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRCT294P10": {
+      "name": "애프터마켓용 컬렉션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294022": {
+      "name": "측방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294023": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRCT294060": {
+      "name": "스몰 큐브 프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294061": {
+      "name": "다이내믹 웰컴/에스코트 라이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294062": {
+      "name": "블랙 하이그로시 서라운드 몰딩",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294063": {
+      "name": "블랙 하이그로시 프론트 범퍼 센터 그릴",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294064": {
+      "name": "블랙 하이그로시 리어 스키드 플레이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294065": {
+      "name": "프론트 범퍼 새틴 크롬 가니쉬",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294082": {
+      "name": "블랙, 브라운 또는 그레이 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294169": {
+      "name": "그레이 니트 헤드라이닝",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294084": {
+      "name": "다이내믹 앰비언트 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294085": {
+      "name": "패브릭 감싸기(도어 암레스트, 크래쉬패드)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294083": {
+      "name": "도어 센터트림 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294087": {
+      "name": "메탈 페달&amp;풋레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294088": {
+      "name": "메탈 도어 스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294089": {
+      "name": "앞좌석 메쉬 헤드레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294106": {
+      "name": "다이아몬드 패턴 엠보 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294097": {
+      "name": "앞좌석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294099": {
+      "name": "앞좌석 릴렉션 컴포트시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294100": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294098": {
+      "name": "앞좌석 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294101": {
+      "name": "앞좌석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294102": {
+      "name": "뒷좌석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294103": {
+      "name": "뒷좌석 6:4 폴딩시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294104": {
+      "name": "뒷좌석 센터 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294105": {
+      "name": "앞좌석 시트백 상단 패브릭 감싸기",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294134": {
+      "name": "지능형 헤드램프(IFS)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294135": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294136": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294137": {
+      "name": "리모트 360도 뷰(내 차 주변 영상)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294024": {
+      "name": "원격 스마트 주차 보조",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294138": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294145": {
+      "name": "후석 승객 알림(센서 타입)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294139": {
+      "name": "인테리어 모드(휴식/감상모드)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294140": {
+      "name": "스마트 파워 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294141": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294142": {
+      "name": "앞좌석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294143": {
+      "name": "후진연동 자동하향 아웃사이드 미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294144": {
+      "name": "동승석/뒷좌석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRCT294P08": {
+      "name": "하만카돈 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRCT294066": {
+      "name": "GT-Line 전용 외장 디자인(215/50 R19 타이어&amp;GT-Line 전용 전면가공 휠, 전용 프론트/리어 범퍼, 블랙 하이그로시 도어 가니쉬, 블랙 하이그로시 휠아치 몰딩, 블랙 아웃사이드 미러 커버, 블랙 하이그로시 루프 몰딩, 전용 엠블럼)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294168": {
+      "name": "뒷좌석 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRCT294090": {
+      "name": "GT-Line 전용 내장 디자인(블랙&amp;화이트 인테리어, 블랙 니트 헤드라이닝, 전용 스티어링 휠, 소프트 재질 크래쉬패드, 도어 암레스트 인조가죽 감싸기)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294086": {
+      "name": "슬라이딩 콘솔 테이블(회전형 암레스트 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRCT294107": {
+      "name": "GT-Line 전용 스트라이프 패턴 엠보 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294108": {
+      "name": "앞좌석 시트백 상단 인조가죽 감싸기",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRCT294163": {
+      "name": "요트 매트 블루",
+      "category": "선택사양",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "에어 스탠다드": {
+      "slug": "에어_스탠다드",
+      "price": {
+        "tax_5_before": 42570000,
+        "tax_5_after": 40420000,
+        "tax_3_5_before": 41920000,
+        "tax_3_5_after": 40420000
+      },
+      "basic": [
+        "KRCT294001",
+        "KRCT294002",
+        "KRCT294003",
+        "KRCT294004",
+        "KRCT294005",
+        "KRCT294006",
+        "KRCT294007",
+        "KRCT294011",
+        "KRCT294012",
+        "KRCT294013",
+        "KRCT294014",
+        "KRCT294015",
+        "KRCT294016",
+        "KRCT294017",
+        "KRCT294018",
+        "KRCT294019",
+        "KRCT294020",
+        "KRCT294021",
+        "KRCT294032",
+        "KRCT294033",
+        "KRCT294034",
+        "KRCT294035",
+        "KRCT294036",
+        "KRCT294037",
+        "KRCT294038",
+        "KRCT294039",
+        "KRCT294040",
+        "KRCT294041",
+        "KRCT294042",
+        "KRCT294043",
+        "KRCT294044",
+        "KRCT294166",
+        "KRCT294167",
+        "KRCT294047",
+        "KRCT294048",
+        "KRCT294049",
+        "KRCT294050",
+        "KRCT294051",
+        "KRCT294052",
+        "KRCT294053",
+        "KRCT294054",
+        "KRCT294055",
+        "KRCT294056",
+        "KRCT294057",
+        "KRCT294058",
+        "KRCT294059",
+        "KRCT294072",
+        "KRCT294073",
+        "KRCT294074",
+        "KRCT294075",
+        "KRCT294076",
+        "KRCT294077",
+        "KRCT294078",
+        "KRCT294079",
+        "KRCT294080",
+        "KRCT294081",
+        "KRCT294160",
+        "KRCT294091",
+        "KRCT294092",
+        "KRCT294093",
+        "KRCT294094",
+        "KRCT294095",
+        "KRCT294096",
+        "KRCT294109",
+        "KRCT294110",
+        "KRCT294111",
+        "KRCT294112",
+        "KRCT294113",
+        "KRCT294114",
+        "KRCT294115",
+        "KRCT294171",
+        "KRCT294117",
+        "KRCT294118",
+        "KRCT294119",
+        "KRCT294120",
+        "KRCT294121",
+        "KRCT294122",
+        "KRCT294123",
+        "KRCT294124",
+        "KRCT294125",
+        "KRCT294126",
+        "KRCT294127",
+        "KRCT294128",
+        "KRCT294130",
+        "KRCT294131",
+        "KRCT294132",
+        "KRCT294133",
+        "KRCT294149",
+        "KRCT294150",
+        "KRCT294151",
+        "KRCT294152",
+        "KRCT294153",
+        "KRCT294154",
+        "KRCT294164"
+      ],
+      "select": [
+        "KRCT294161",
+        "KRCT294162",
+        "KRCT294P01",
+        "KRCT294P02",
+        "KRCT294P03",
+        "KRCT294P04",
+        "KRCT294P05",
+        "KRCT294P06",
+        "KRCT294P07",
+        "KRCT294067",
+        "KRCT294P09",
+        "KRCT294148"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRCT294161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRCT294162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294P01"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRCT294P02"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRCT294P03"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRCT294P04"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRCT294P05"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRCT294P06"
+          ],
+          "price": 1280000
+        },
+        {
+          "codes": [
+            "KRCT294P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRCT294067"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P09"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRCT294148"
+          ],
+          "price": 590000
+        }
+      ]
+    },
+    "에어 롱레인지": {
+      "slug": "에어_롱레인지",
+      "price": {
+        "tax_5_before": 47000000,
+        "tax_5_after": 44620000,
+        "tax_3_5_before": 46290000,
+        "tax_3_5_after": 44620000
+      },
+      "basic": [
+        "KRCT294008",
+        "KRCT294001",
+        "KRCT294003",
+        "KRCT294004",
+        "KRCT294005",
+        "KRCT294006",
+        "KRCT294007",
+        "KRCT294011",
+        "KRCT294012",
+        "KRCT294013",
+        "KRCT294014",
+        "KRCT294015",
+        "KRCT294016",
+        "KRCT294017",
+        "KRCT294018",
+        "KRCT294019",
+        "KRCT294020",
+        "KRCT294021",
+        "KRCT294032",
+        "KRCT294033",
+        "KRCT294034",
+        "KRCT294035",
+        "KRCT294036",
+        "KRCT294037",
+        "KRCT294038",
+        "KRCT294039",
+        "KRCT294040",
+        "KRCT294041",
+        "KRCT294042",
+        "KRCT294043",
+        "KRCT294044",
+        "KRCT294166",
+        "KRCT294167",
+        "KRCT294047",
+        "KRCT294048",
+        "KRCT294049",
+        "KRCT294050",
+        "KRCT294051",
+        "KRCT294052",
+        "KRCT294053",
+        "KRCT294054",
+        "KRCT294055",
+        "KRCT294056",
+        "KRCT294057",
+        "KRCT294058",
+        "KRCT294059",
+        "KRCT294072",
+        "KRCT294073",
+        "KRCT294074",
+        "KRCT294075",
+        "KRCT294076",
+        "KRCT294077",
+        "KRCT294078",
+        "KRCT294079",
+        "KRCT294080",
+        "KRCT294081",
+        "KRCT294160",
+        "KRCT294091",
+        "KRCT294092",
+        "KRCT294093",
+        "KRCT294094",
+        "KRCT294095",
+        "KRCT294096",
+        "KRCT294109",
+        "KRCT294110",
+        "KRCT294111",
+        "KRCT294112",
+        "KRCT294113",
+        "KRCT294114",
+        "KRCT294115",
+        "KRCT294171",
+        "KRCT294117",
+        "KRCT294118",
+        "KRCT294119",
+        "KRCT294120",
+        "KRCT294121",
+        "KRCT294122",
+        "KRCT294123",
+        "KRCT294124",
+        "KRCT294125",
+        "KRCT294126",
+        "KRCT294127",
+        "KRCT294128",
+        "KRCT294130",
+        "KRCT294131",
+        "KRCT294132",
+        "KRCT294133",
+        "KRCT294149",
+        "KRCT294150",
+        "KRCT294151",
+        "KRCT294152",
+        "KRCT294153",
+        "KRCT294154",
+        "KRCT294164"
+      ],
+      "select": [
+        "KRCT294161",
+        "KRCT294162",
+        "KRCT294P01",
+        "KRCT294P02",
+        "KRCT294P03",
+        "KRCT294P04",
+        "KRCT294P05",
+        "KRCT294P06",
+        "KRCT294P07",
+        "KRCT294067",
+        "KRCT294P09",
+        "KRCT294148",
+        "KRCT294165",
+        "KRCT294P10"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRCT294161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRCT294162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294P01"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRCT294P02"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRCT294P03"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRCT294P04"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRCT294P05"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRCT294P06"
+          ],
+          "price": 1280000
+        },
+        {
+          "codes": [
+            "KRCT294P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRCT294067"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P09"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRCT294148"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRCT294165"
+          ],
+          "price": 2270000
+        },
+        {
+          "codes": [
+            "KRCT294P10"
+          ],
+          "price": 150000
+        }
+      ]
+    },
+    "어스 스탠다드": {
+      "slug": "어스_스탠다드",
+      "price": {
+        "tax_5_before": 47410000,
+        "tax_5_after": 45010000,
+        "tax_3_5_before": 46690000,
+        "tax_3_5_after": 45010000
+      },
+      "basic": [
+        "KRCT294022",
+        "KRCT294023",
+        "KRCT294060",
+        "KRCT294061",
+        "KRCT294062",
+        "KRCT294063",
+        "KRCT294064",
+        "KRCT294065",
+        "KRCT294082",
+        "KRCT294169",
+        "KRCT294084",
+        "KRCT294085",
+        "KRCT294083",
+        "KRCT294087",
+        "KRCT294088",
+        "KRCT294089",
+        "KRCT294106",
+        "KRCT294097",
+        "KRCT294099",
+        "KRCT294100",
+        "KRCT294098",
+        "KRCT294101",
+        "KRCT294102",
+        "KRCT294103",
+        "KRCT294104",
+        "KRCT294105",
+        "KRCT294134",
+        "KRCT294135",
+        "KRCT294136",
+        "KRCT294137",
+        "KRCT294024",
+        "KRCT294138",
+        "KRCT294145",
+        "KRCT294139",
+        "KRCT294140",
+        "KRCT294141",
+        "KRCT294142",
+        "KRCT294143",
+        "KRCT294144",
+        "KRCT294001",
+        "KRCT294002",
+        "KRCT294003",
+        "KRCT294004",
+        "KRCT294005",
+        "KRCT294006",
+        "KRCT294007",
+        "KRCT294011",
+        "KRCT294012",
+        "KRCT294013",
+        "KRCT294015",
+        "KRCT294016",
+        "KRCT294017",
+        "KRCT294018",
+        "KRCT294019",
+        "KRCT294020",
+        "KRCT294021",
+        "KRCT294032",
+        "KRCT294033",
+        "KRCT294034",
+        "KRCT294035",
+        "KRCT294036",
+        "KRCT294037",
+        "KRCT294038",
+        "KRCT294039",
+        "KRCT294040",
+        "KRCT294041",
+        "KRCT294042",
+        "KRCT294043",
+        "KRCT294044",
+        "KRCT294166",
+        "KRCT294167",
+        "KRCT294047",
+        "KRCT294049",
+        "KRCT294050",
+        "KRCT294051",
+        "KRCT294052",
+        "KRCT294053",
+        "KRCT294054",
+        "KRCT294055",
+        "KRCT294056",
+        "KRCT294057",
+        "KRCT294058",
+        "KRCT294059",
+        "KRCT294073",
+        "KRCT294074",
+        "KRCT294075",
+        "KRCT294076",
+        "KRCT294077",
+        "KRCT294078",
+        "KRCT294079",
+        "KRCT294160",
+        "KRCT294092",
+        "KRCT294093",
+        "KRCT294094",
+        "KRCT294095",
+        "KRCT294096",
+        "KRCT294109",
+        "KRCT294111",
+        "KRCT294112",
+        "KRCT294113",
+        "KRCT294114",
+        "KRCT294115",
+        "KRCT294171",
+        "KRCT294117",
+        "KRCT294118",
+        "KRCT294120",
+        "KRCT294121",
+        "KRCT294122",
+        "KRCT294123",
+        "KRCT294124",
+        "KRCT294125",
+        "KRCT294126",
+        "KRCT294127",
+        "KRCT294128",
+        "KRCT294130",
+        "KRCT294131",
+        "KRCT294132",
+        "KRCT294133",
+        "KRCT294149",
+        "KRCT294150",
+        "KRCT294151",
+        "KRCT294152",
+        "KRCT294153",
+        "KRCT294154",
+        "KRCT294164"
+      ],
+      "select": [
+        "KRCT294161",
+        "KRCT294162",
+        "KRCT294P04",
+        "KRCT294P06",
+        "KRCT294P07",
+        "KRCT294067",
+        "KRCT294P08",
+        "KRCT294P09",
+        "KRCT294148"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRCT294161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRCT294162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294P04"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRCT294P06"
+          ],
+          "price": 1280000
+        },
+        {
+          "codes": [
+            "KRCT294P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRCT294067"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P08"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P09"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRCT294148"
+          ],
+          "price": 590000
+        }
+      ]
+    },
+    "어스 롱레인지": {
+      "slug": "어스_롱레인지",
+      "price": {
+        "tax_5_before": 51830000,
+        "tax_5_after": 49210000,
+        "tax_3_5_before": 51040000,
+        "tax_3_5_after": 49210000
+      },
+      "basic": [
+        "KRCT294008",
+        "KRCT294001",
+        "KRCT294003",
+        "KRCT294004",
+        "KRCT294005",
+        "KRCT294006",
+        "KRCT294007",
+        "KRCT294011",
+        "KRCT294012",
+        "KRCT294013",
+        "KRCT294015",
+        "KRCT294016",
+        "KRCT294017",
+        "KRCT294018",
+        "KRCT294019",
+        "KRCT294020",
+        "KRCT294021",
+        "KRCT294032",
+        "KRCT294033",
+        "KRCT294034",
+        "KRCT294035",
+        "KRCT294036",
+        "KRCT294037",
+        "KRCT294038",
+        "KRCT294039",
+        "KRCT294040",
+        "KRCT294041",
+        "KRCT294042",
+        "KRCT294043",
+        "KRCT294044",
+        "KRCT294166",
+        "KRCT294167",
+        "KRCT294022",
+        "KRCT294023",
+        "KRCT294047",
+        "KRCT294049",
+        "KRCT294050",
+        "KRCT294051",
+        "KRCT294052",
+        "KRCT294053",
+        "KRCT294054",
+        "KRCT294055",
+        "KRCT294056",
+        "KRCT294057",
+        "KRCT294058",
+        "KRCT294059",
+        "KRCT294060",
+        "KRCT294061",
+        "KRCT294062",
+        "KRCT294063",
+        "KRCT294064",
+        "KRCT294065",
+        "KRCT294073",
+        "KRCT294074",
+        "KRCT294075",
+        "KRCT294076",
+        "KRCT294077",
+        "KRCT294078",
+        "KRCT294079",
+        "KRCT294160",
+        "KRCT294082",
+        "KRCT294169",
+        "KRCT294084",
+        "KRCT294085",
+        "KRCT294083",
+        "KRCT294087",
+        "KRCT294088",
+        "KRCT294089",
+        "KRCT294092",
+        "KRCT294093",
+        "KRCT294094",
+        "KRCT294095",
+        "KRCT294096",
+        "KRCT294106",
+        "KRCT294097",
+        "KRCT294099",
+        "KRCT294100",
+        "KRCT294098",
+        "KRCT294101",
+        "KRCT294102",
+        "KRCT294103",
+        "KRCT294104",
+        "KRCT294105",
+        "KRCT294109",
+        "KRCT294111",
+        "KRCT294112",
+        "KRCT294113",
+        "KRCT294114",
+        "KRCT294115",
+        "KRCT294171",
+        "KRCT294117",
+        "KRCT294118",
+        "KRCT294120",
+        "KRCT294121",
+        "KRCT294122",
+        "KRCT294123",
+        "KRCT294124",
+        "KRCT294125",
+        "KRCT294126",
+        "KRCT294127",
+        "KRCT294128",
+        "KRCT294130",
+        "KRCT294131",
+        "KRCT294132",
+        "KRCT294133",
+        "KRCT294134",
+        "KRCT294135",
+        "KRCT294136",
+        "KRCT294137",
+        "KRCT294024",
+        "KRCT294138",
+        "KRCT294145",
+        "KRCT294139",
+        "KRCT294140",
+        "KRCT294141",
+        "KRCT294142",
+        "KRCT294143",
+        "KRCT294144",
+        "KRCT294149",
+        "KRCT294150",
+        "KRCT294151",
+        "KRCT294152",
+        "KRCT294153",
+        "KRCT294154",
+        "KRCT294164"
+      ],
+      "select": [
+        "KRCT294161",
+        "KRCT294162",
+        "KRCT294P04",
+        "KRCT294P06",
+        "KRCT294P07",
+        "KRCT294067",
+        "KRCT294P08",
+        "KRCT294P09",
+        "KRCT294148",
+        "KRCT294165",
+        "KRCT294P10"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRCT294161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRCT294162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294P04"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRCT294P06"
+          ],
+          "price": 1280000
+        },
+        {
+          "codes": [
+            "KRCT294P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRCT294067"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P08"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P09"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRCT294148"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRCT294165"
+          ],
+          "price": 2270000
+        },
+        {
+          "codes": [
+            "KRCT294P10"
+          ],
+          "price": 150000
+        }
+      ]
+    },
+    "GT-Line 스탠다드": {
+      "slug": "GT-Line_스탠다드",
+      "price": {
+        "tax_5_before": 48570000,
+        "tax_5_after": 46110000,
+        "tax_3_5_before": 47830000,
+        "tax_3_5_after": 46110000
+      },
+      "basic": [
+        "KRCT294066",
+        "KRCT294168",
+        "KRCT294090",
+        "KRCT294086",
+        "KRCT294107",
+        "KRCT294108",
+        "KRCT294001",
+        "KRCT294002",
+        "KRCT294003",
+        "KRCT294004",
+        "KRCT294005",
+        "KRCT294006",
+        "KRCT294007",
+        "KRCT294011",
+        "KRCT294012",
+        "KRCT294013",
+        "KRCT294015",
+        "KRCT294016",
+        "KRCT294017",
+        "KRCT294018",
+        "KRCT294019",
+        "KRCT294020",
+        "KRCT294021",
+        "KRCT294032",
+        "KRCT294033",
+        "KRCT294034",
+        "KRCT294035",
+        "KRCT294036",
+        "KRCT294037",
+        "KRCT294038",
+        "KRCT294039",
+        "KRCT294040",
+        "KRCT294041",
+        "KRCT294042",
+        "KRCT294043",
+        "KRCT294044",
+        "KRCT294166",
+        "KRCT294167",
+        "KRCT294022",
+        "KRCT294023",
+        "KRCT294049",
+        "KRCT294050",
+        "KRCT294051",
+        "KRCT294052",
+        "KRCT294053",
+        "KRCT294054",
+        "KRCT294055",
+        "KRCT294056",
+        "KRCT294057",
+        "KRCT294058",
+        "KRCT294059",
+        "KRCT294060",
+        "KRCT294061",
+        "KRCT294062",
+        "KRCT294063",
+        "KRCT294064",
+        "KRCT294073",
+        "KRCT294074",
+        "KRCT294075",
+        "KRCT294076",
+        "KRCT294077",
+        "KRCT294078",
+        "KRCT294079",
+        "KRCT294160",
+        "KRCT294169",
+        "KRCT294084",
+        "KRCT294083",
+        "KRCT294087",
+        "KRCT294088",
+        "KRCT294089",
+        "KRCT294092",
+        "KRCT294093",
+        "KRCT294094",
+        "KRCT294095",
+        "KRCT294096",
+        "KRCT294097",
+        "KRCT294099",
+        "KRCT294100",
+        "KRCT294098",
+        "KRCT294101",
+        "KRCT294102",
+        "KRCT294103",
+        "KRCT294104",
+        "KRCT294109",
+        "KRCT294111",
+        "KRCT294112",
+        "KRCT294113",
+        "KRCT294114",
+        "KRCT294115",
+        "KRCT294171",
+        "KRCT294117",
+        "KRCT294118",
+        "KRCT294120",
+        "KRCT294121",
+        "KRCT294122",
+        "KRCT294123",
+        "KRCT294124",
+        "KRCT294125",
+        "KRCT294126",
+        "KRCT294127",
+        "KRCT294128",
+        "KRCT294130",
+        "KRCT294131",
+        "KRCT294132",
+        "KRCT294133",
+        "KRCT294134",
+        "KRCT294135",
+        "KRCT294136",
+        "KRCT294137",
+        "KRCT294024",
+        "KRCT294138",
+        "KRCT294145",
+        "KRCT294139",
+        "KRCT294140",
+        "KRCT294141",
+        "KRCT294142",
+        "KRCT294143",
+        "KRCT294144",
+        "KRCT294149",
+        "KRCT294150",
+        "KRCT294151",
+        "KRCT294152",
+        "KRCT294153",
+        "KRCT294154",
+        "KRCT294164"
+      ],
+      "select": [
+        "KRCT294161",
+        "KRCT294162",
+        "KRCT294163",
+        "KRCT294P06",
+        "KRCT294P07",
+        "KRCT294067",
+        "KRCT294P08",
+        "KRCT294P09",
+        "KRCT294148"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRCT294161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRCT294162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294163"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294P06"
+          ],
+          "price": 1280000
+        },
+        {
+          "codes": [
+            "KRCT294P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRCT294067"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P08"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P09"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRCT294148"
+          ],
+          "price": 590000
+        }
+      ]
+    },
+    "GT-Line 롱레인지": {
+      "slug": "GT-Line_롱레인지",
+      "price": {
+        "tax_5_before": 52990000,
+        "tax_5_after": 50310000,
+        "tax_3_5_before": 52190000,
+        "tax_3_5_after": 50310000
+      },
+      "basic": [
+        "KRCT294008",
+        "KRCT294001",
+        "KRCT294003",
+        "KRCT294004",
+        "KRCT294005",
+        "KRCT294006",
+        "KRCT294007",
+        "KRCT294011",
+        "KRCT294012",
+        "KRCT294013",
+        "KRCT294015",
+        "KRCT294016",
+        "KRCT294017",
+        "KRCT294018",
+        "KRCT294019",
+        "KRCT294020",
+        "KRCT294021",
+        "KRCT294032",
+        "KRCT294033",
+        "KRCT294034",
+        "KRCT294035",
+        "KRCT294036",
+        "KRCT294037",
+        "KRCT294038",
+        "KRCT294039",
+        "KRCT294040",
+        "KRCT294041",
+        "KRCT294042",
+        "KRCT294043",
+        "KRCT294044",
+        "KRCT294166",
+        "KRCT294167",
+        "KRCT294022",
+        "KRCT294023",
+        "KRCT294049",
+        "KRCT294050",
+        "KRCT294051",
+        "KRCT294052",
+        "KRCT294053",
+        "KRCT294054",
+        "KRCT294055",
+        "KRCT294056",
+        "KRCT294057",
+        "KRCT294058",
+        "KRCT294059",
+        "KRCT294060",
+        "KRCT294061",
+        "KRCT294062",
+        "KRCT294063",
+        "KRCT294064",
+        "KRCT294066",
+        "KRCT294168",
+        "KRCT294073",
+        "KRCT294074",
+        "KRCT294075",
+        "KRCT294076",
+        "KRCT294077",
+        "KRCT294078",
+        "KRCT294079",
+        "KRCT294160",
+        "KRCT294169",
+        "KRCT294084",
+        "KRCT294083",
+        "KRCT294087",
+        "KRCT294088",
+        "KRCT294089",
+        "KRCT294090",
+        "KRCT294086",
+        "KRCT294092",
+        "KRCT294093",
+        "KRCT294094",
+        "KRCT294095",
+        "KRCT294096",
+        "KRCT294097",
+        "KRCT294099",
+        "KRCT294100",
+        "KRCT294098",
+        "KRCT294101",
+        "KRCT294102",
+        "KRCT294103",
+        "KRCT294104",
+        "KRCT294107",
+        "KRCT294108",
+        "KRCT294109",
+        "KRCT294111",
+        "KRCT294112",
+        "KRCT294113",
+        "KRCT294114",
+        "KRCT294115",
+        "KRCT294171",
+        "KRCT294117",
+        "KRCT294118",
+        "KRCT294120",
+        "KRCT294121",
+        "KRCT294122",
+        "KRCT294123",
+        "KRCT294124",
+        "KRCT294125",
+        "KRCT294126",
+        "KRCT294127",
+        "KRCT294128",
+        "KRCT294130",
+        "KRCT294131",
+        "KRCT294132",
+        "KRCT294133",
+        "KRCT294134",
+        "KRCT294135",
+        "KRCT294136",
+        "KRCT294137",
+        "KRCT294024",
+        "KRCT294138",
+        "KRCT294145",
+        "KRCT294139",
+        "KRCT294140",
+        "KRCT294141",
+        "KRCT294142",
+        "KRCT294143",
+        "KRCT294144",
+        "KRCT294149",
+        "KRCT294150",
+        "KRCT294151",
+        "KRCT294152",
+        "KRCT294153",
+        "KRCT294154",
+        "KRCT294164"
+      ],
+      "select": [
+        "KRCT294161",
+        "KRCT294162",
+        "KRCT294163",
+        "KRCT294P06",
+        "KRCT294P07",
+        "KRCT294067",
+        "KRCT294P08",
+        "KRCT294P09",
+        "KRCT294148",
+        "KRCT294165"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRCT294161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRCT294162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294163"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRCT294P06"
+          ],
+          "price": 1280000
+        },
+        {
+          "codes": [
+            "KRCT294P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRCT294067"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P08"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRCT294P09"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRCT294148"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRCT294165"
+          ],
+          "price": 2270000
+        }
+      ]
+    }
+  }
+}

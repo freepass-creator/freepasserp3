@@ -1,0 +1,863 @@
+{
+  "catalog_id": "hyundai_ioniq5_n",
+  "title": "현대 아이오닉5 N",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/ioniq5-n-26_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "E-GMP 플랫폼/성능": [
+      "NEN6019",
+      "NEN6020",
+      "NEN6021",
+      "NEN6022",
+      "NEN6023",
+      "NEN6024",
+      "NEN6025",
+      "NEN6026",
+      "NEN6029",
+      "NEN6027",
+      "NEN6028"
+    ],
+    "Eco-Friendly Line": [
+      "NEN6030",
+      "NEN6031",
+      "NEN6032"
+    ],
+    "안전": [
+      "NEN6048",
+      "NEN6049",
+      "NEN6050",
+      "NEN6051",
+      "NEN6052",
+      "NEN6053",
+      "NEN6054",
+      "NEN6055",
+      "NEN6056"
+    ],
+    "지능형 안전 기술": [
+      "NEN6115",
+      "NEN6034",
+      "NEN6035",
+      "NEN6116",
+      "NEN6117",
+      "NEN6037",
+      "NEN6038",
+      "NEN6118",
+      "NEN6040",
+      "NEN6119",
+      "NEN6042",
+      "NEN6120",
+      "NEN6044",
+      "NEN6045",
+      "NEN6121",
+      "NEN6036",
+      "NEN6122",
+      "NEN6123",
+      "NEN6043"
+    ],
+    "외관": [
+      "NEN6058",
+      "NEN6059",
+      "NEN6060",
+      "NEN6061",
+      "NEN6063",
+      "NEN6064",
+      "NEN6065",
+      "NEN6066",
+      "NEN6062"
+    ],
+    "내장": [
+      "NEN6069",
+      "NEN6070",
+      "NEN6071",
+      "NEN6072",
+      "NEN6073"
+    ],
+    "시트": [
+      "NEN6075",
+      "NEN6076"
+    ],
+    "편의": [
+      "NEN6078",
+      "NEN6079",
+      "NEN6126",
+      "NEN6081",
+      "NEN6082",
+      "NEN6083",
+      "NEN6084",
+      "NEN6085",
+      "NEN6086",
+      "NEN6087",
+      "NEN6088",
+      "NEN6089",
+      "NEN6090",
+      "NEN6091",
+      "NEN6092",
+      "NEN6104",
+      "NEN6127",
+      "NEN6093",
+      "NEN6094",
+      "NEN6095"
+    ],
+    "인포테인먼트": [
+      "NEN6106",
+      "NEN6108",
+      "NEN6109"
+    ],
+    "선택사양": [
+      "NEN6P03",
+      "NEN6P06",
+      "NEN6113",
+      "NEN6114",
+      "NEN6P01",
+      "NEN6P02",
+      "NEN6P04",
+      "NEN6P05",
+      "NEN6103",
+      "NEN6067"
+    ]
+  },
+  "options": {
+    "NEN6019": {
+      "name": "차세대 일체형 PE 시스템(전/후륜 모터, 감속기, 인버터)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6020": {
+      "name": "84.0kWh 리튬 이온 배터리",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6021": {
+      "name": "400V/800V 멀티 충전 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6022": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6023": {
+      "name": "랙 구동형 전동식 파워 스티어링 (R-MDPS)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6024": {
+      "name": "전자식 변속 칼럼",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6025": {
+      "name": "히트 펌프 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6026": {
+      "name": "배터리 컨디셔닝 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6029": {
+      "name": "통합 주행 모드",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6030": {
+      "name": "BIO PET 원사 헤드라이닝/선바이저",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NEN6031": {
+      "name": "BIO TPO 크래쉬패드",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NEN6032": {
+      "name": "BIO 페인트 크래쉬패드/도어트림/혼커버",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NEN6048": {
+      "name": "6에어백 시스템(1열 어드밴스드/사이드, 전복대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6049": {
+      "name": "전방/후방 주차거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6050": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6051": {
+      "name": "유아용 시트 고정장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6052": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6053": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6054": {
+      "name": "1/2열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6055": {
+      "name": "전자식 차일드락",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6056": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "NEN6115": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/ 정면 대향차 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6034": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6035": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6116": {
+      "name": "후측방 충돌방지 보조(출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6117": {
+      "name": "후측방 충돌방지 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6037": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6038": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6118": {
+      "name": "스마트 크루즈 컨트롤 (스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6040": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6119": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤 (안전구간/곡선로 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6042": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6120": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6044": {
+      "name": "후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6045": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6058": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6059": {
+      "name": "LED 주간주행등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6060": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6061": {
+      "name": "LED 방향지시등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6063": {
+      "name": "오토 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6064": {
+      "name": "블랙 하이그로시 벨트라인 몰딩",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6065": {
+      "name": "이중접합 차음유리(윈드실드, 1/2열)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6066": {
+      "name": "리어 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6069": {
+      "name": "클러스터(12.3인치 컬러 LCD, N 전용 그래픽 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NEN6070": {
+      "name": "앰비언트 무드램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "NEN6071": {
+      "name": "LED 실내등(맵램프, 룸램프, 선바이저 램프, 러기지 램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NEN6072": {
+      "name": "슬라이딩 선바이저 & 거울",
+      "category": "내장",
+      "is_package": false
+    },
+    "NEN6073": {
+      "name": "2열 에어벤트",
+      "category": "내장",
+      "is_package": false
+    },
+    "NEN6075": {
+      "name": "1열 시트벨트 높이조절 장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "NEN6076": {
+      "name": "2열 시트(6:4 분할 폴딩, 슬라이딩, 리클라이닝, 높이 조절 헤드레스트, 센터 암레스트 포함)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NEN6078": {
+      "name": "버튼시동 및 N 전용 블랙 스마트키(원격시동 및 N 로고 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6079": {
+      "name": "듀얼 풀오토 에어컨 (마이크로 에어필터/오토 디포그/미세먼지 센서/공기청정모드/애프터 블로우)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6126": {
+      "name": "세이프티 파워 윈도우(1열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6081": {
+      "name": "USB C 타입 단자(1열 충전 1개 및 충전·데이터 스위치 타입 1개/ 센터콘솔 중앙 1개/2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6082": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6083": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6084": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6085": {
+      "name": "N 브레이크 리젠 컨트롤 패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6086": {
+      "name": "후방모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6087": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6088": {
+      "name": "전동식 충전 도어",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6089": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6090": {
+      "name": "파워아웃렛(센터콘솔 1개, 러기지 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6091": {
+      "name": "ECM 룸미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6092": {
+      "name": "하이패스",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6104": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6106": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트/ e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NEN6108": {
+      "name": "무선 소프트웨어 업데이트 (OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NEN6109": {
+      "name": "BOSE 프리미엄 사운드(8스피커, 외장앰프 포함)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NEN6P03": {
+      "name": "컴포트 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NEN6P06": {
+      "name": "파킹 어시스트 Lite",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NEN6113": {
+      "name": "차량 보호 필름 Ⅰ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NEN6114": {
+      "name": "차량 보호 필름 Ⅱ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NEN6P01": {
+      "name": "[N 퍼포먼스 파츠]알칸타라 인테리어 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NEN6P02": {
+      "name": "[N 퍼포먼스 파츠]워크인 인테리어 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NEN6027": {
+      "name": "실내 V2L",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6028": {
+      "name": "실외 V2L 커넥터",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NEN6121": {
+      "name": "전방 충돌방지 보조(교차차량/추월시 대향차/측방 접근차/ 회피 조향 보조 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6036": {
+      "name": "후측방 충돌방지 보조(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6122": {
+      "name": "스마트 크루즈 컨트롤 (운전스타일 연동 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6123": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6043": {
+      "name": "고속도로 주행 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NEN6062": {
+      "name": "지능형 헤드램프(IFS)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NEN6127": {
+      "name": "세이프티 파워 윈도우(2열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6093": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6094": {
+      "name": "디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6095": {
+      "name": "헤드업 디스플레이(N 그래픽 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NEN6P04": {
+      "name": "파킹 어시스트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NEN6P05": {
+      "name": "빌트인 캠 2, 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NEN6103": {
+      "name": "디지털 센터 미러",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NEN6067": {
+      "name": "비전루프",
+      "category": "선택사양",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "아이오닉 5 N 에센셜": {
+      "slug": "e-value-plus",
+      "name_en": null,
+      "price": {
+        "tax_5": 78892170,
+        "tax_3_5": 77690000
+      },
+      "basic": [
+        "NEN6019",
+        "NEN6020",
+        "NEN6021",
+        "NEN6022",
+        "NEN6023",
+        "NEN6024",
+        "NEN6025",
+        "NEN6026",
+        "NEN6029",
+        "NEN6030",
+        "NEN6031",
+        "NEN6032",
+        "NEN6048",
+        "NEN6049",
+        "NEN6050",
+        "NEN6051",
+        "NEN6052",
+        "NEN6053",
+        "NEN6054",
+        "NEN6055",
+        "NEN6056",
+        "NEN6115",
+        "NEN6034",
+        "NEN6035",
+        "NEN6116",
+        "NEN6117",
+        "NEN6037",
+        "NEN6038",
+        "NEN6118",
+        "NEN6040",
+        "NEN6119",
+        "NEN6042",
+        "NEN6120",
+        "NEN6044",
+        "NEN6045",
+        "NEN6058",
+        "NEN6059",
+        "NEN6060",
+        "NEN6061",
+        "NEN6063",
+        "NEN6064",
+        "NEN6065",
+        "NEN6066",
+        "NEN6069",
+        "NEN6070",
+        "NEN6071",
+        "NEN6072",
+        "NEN6073",
+        "NEN6075",
+        "NEN6076",
+        "NEN6078",
+        "NEN6079",
+        "NEN6126",
+        "NEN6081",
+        "NEN6082",
+        "NEN6083",
+        "NEN6084",
+        "NEN6085",
+        "NEN6086",
+        "NEN6087",
+        "NEN6088",
+        "NEN6089",
+        "NEN6090",
+        "NEN6091",
+        "NEN6092",
+        "NEN6104",
+        "NEN6106",
+        "NEN6108",
+        "NEN6109"
+      ],
+      "select": [
+        "NEN6P03",
+        "NEN6P06",
+        "NEN6113",
+        "NEN6114",
+        "NEN6P01",
+        "NEN6P02"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NEN6P03"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "NEN6P06"
+          ],
+          "price": 900000
+        },
+        {
+          "codes": [
+            "NEN6113"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NEN6114"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NEN6P01"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "NEN6P02"
+          ],
+          "price": 300000
+        }
+      ]
+    },
+    "아이오닉 5 N": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "tax_5": 81525420,
+        "tax_3_5": 80290000
+      },
+      "basic": [
+        "NEN6019",
+        "NEN6020",
+        "NEN6021",
+        "NEN6022",
+        "NEN6023",
+        "NEN6024",
+        "NEN6025",
+        "NEN6026",
+        "NEN6029",
+        "NEN6027",
+        "NEN6028",
+        "NEN6030",
+        "NEN6031",
+        "NEN6032",
+        "NEN6048",
+        "NEN6049",
+        "NEN6050",
+        "NEN6051",
+        "NEN6052",
+        "NEN6053",
+        "NEN6054",
+        "NEN6055",
+        "NEN6056",
+        "NEN6115",
+        "NEN6034",
+        "NEN6035",
+        "NEN6116",
+        "NEN6117",
+        "NEN6037",
+        "NEN6038",
+        "NEN6118",
+        "NEN6040",
+        "NEN6119",
+        "NEN6044",
+        "NEN6045",
+        "NEN6121",
+        "NEN6036",
+        "NEN6122",
+        "NEN6123",
+        "NEN6043",
+        "NEN6058",
+        "NEN6059",
+        "NEN6060",
+        "NEN6061",
+        "NEN6063",
+        "NEN6064",
+        "NEN6065",
+        "NEN6066",
+        "NEN6062",
+        "NEN6069",
+        "NEN6070",
+        "NEN6071",
+        "NEN6072",
+        "NEN6073",
+        "NEN6075",
+        "NEN6076",
+        "NEN6078",
+        "NEN6079",
+        "NEN6126",
+        "NEN6081",
+        "NEN6082",
+        "NEN6083",
+        "NEN6084",
+        "NEN6085",
+        "NEN6086",
+        "NEN6087",
+        "NEN6088",
+        "NEN6089",
+        "NEN6090",
+        "NEN6091",
+        "NEN6092",
+        "NEN6104",
+        "NEN6127",
+        "NEN6093",
+        "NEN6094",
+        "NEN6095",
+        "NEN6106",
+        "NEN6108",
+        "NEN6109"
+      ],
+      "select": [
+        "NEN6P03",
+        "NEN6P04",
+        "NEN6P05",
+        "NEN6103",
+        "NEN6067",
+        "NEN6113",
+        "NEN6114",
+        "NEN6P01",
+        "NEN6P02"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NEN6P03"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "NEN6P04"
+          ],
+          "price": 1680000
+        },
+        {
+          "codes": [
+            "NEN6P05"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NEN6103"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "NEN6067"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "NEN6113"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NEN6114"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NEN6P01"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "NEN6P02"
+          ],
+          "price": 300000
+        }
+      ]
+    }
+  }
+}

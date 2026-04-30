@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>차량 옵션 카탈로그 (제조사 원본)</title>
+<script src="./public/data/encar-master-seed.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,sans-serif;font-size:12px;background:#f8fafc;color:#111827;padding:20px;max-width:1200px;margin:0 auto}
+  h1{font-size:14px;font-weight:600;margin-bottom:14px}
+  .panel{background:#fff;border:1px solid #e5e7eb;border-radius:4px;padding:16px;margin-bottom:12px}
+  .selector-row{display:grid;grid-template-columns:1fr 1.2fr 2fr 1.4fr;gap:6px;margin-bottom:8px}
+  select{padding:8px 10px;border:1px solid #d1d5db;border-radius:4px;font-size:12px;font-family:inherit;background:#fff;color:#111827}
+  select:disabled{background:#f3f4f6;color:#9ca3af}
+  .meta{font-size:11px;color:#6b7280;margin-top:4px}
+  .meta.warn{color:#dc2626}
+  .meta.ok{color:#059669}
+  .trim-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .trim-btn{padding:7px 12px;border:1px solid #d1d5db;background:#fff;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;color:#374151;display:inline-flex;flex-direction:column;align-items:flex-start;gap:2px;line-height:1.2}
+  .trim-btn .trim-name{font-size:12px}
+  .trim-btn .trim-price{font-size:11px;color:#6b7280;font-variant-numeric:tabular-nums}
+  .trim-btn.active{background:#111827;color:#fff;border-color:#111827}
+  .trim-btn.active .trim-price{color:#9ca3af}
+  .trim-btn:hover:not(.active){background:#f3f4f6}
+  .summary{display:flex;gap:18px;font-size:11px;color:#6b7280;margin-bottom:14px}
+  .summary b{color:#111827;font-weight:500}
+  .category-block{margin-bottom:14px}
+  .cat-title{font-size:12px;color:#6b7280;font-weight:500;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between}
+  .cat-title .count{color:#9ca3af}
+  .opt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:3px 18px}
+  .opt{padding:5px 0;font-size:12px;line-height:1.4;color:#9ca3af;display:flex;align-items:flex-start;gap:6px}
+  .opt.basic{color:#111827}
+  .opt.select{color:#6b7280}
+  .opt::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:#d1d5db;margin-top:6px;flex-shrink:0}
+  .opt.basic::before{background:#111827}
+  .opt.select::before{background:#6b7280}
+  .opt .badge{display:inline-block;font-size:10px;color:#9ca3af;padding:1px 4px;border:1px solid #e5e7eb;border-radius:2px;margin-left:6px;flex-shrink:0}
+  .opt.select .badge{color:#6b7280}
+  .pkg-section{margin-bottom:14px}
+  .pkg-title{font-size:12px;color:#6b7280;font-weight:500;margin-bottom:8px;display:flex;justify-content:space-between;align-items:baseline}
+  .pkg-title .hint{font-size:10px;color:#9ca3af;font-weight:400}
+  .pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+  .pkg{padding:8px 10px;border:1px solid #e5e7eb;border-radius:4px;background:#fafafa;cursor:pointer;transition:background .1s,border-color .1s;user-select:none}
+  .pkg:hover{background:#f3f4f6;border-color:#d1d5db}
+  .pkg.selected{background:#eff6ff;border-color:#3b82f6}
+  .pkg.selected .pkg-head, .pkg.selected .pkg-name{color:#1e40af}
+  .pkg.disabled{opacity:.5;cursor:not-allowed}
+  .pkg .pkg-head{font-size:11px;color:#111827;font-weight:500;display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
+  .pkg .pkg-name{font-size:11px;color:#111827;line-height:1.3;font-weight:500;display:flex;justify-content:space-between;gap:8px}
+  .pkg .pkg-price{color:#dc2626;font-variant-numeric:tabular-nums;flex-shrink:0}
+  .pkg .pkg-items{font-size:10px;color:#6b7280;line-height:1.4}
+  .price-calc{display:flex;justify-content:space-between;align-items:baseline;padding:12px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:4px;margin-bottom:14px}
+  .price-calc .breakdown{font-size:11px;color:#6b7280;font-variant-numeric:tabular-nums}
+  .price-calc .breakdown .add{color:#3b82f6;margin-left:8px}
+  .price-calc .breakdown .muted{color:#9ca3af}
+  .price-calc .total{font-size:15px;font-weight:600;color:#111827;font-variant-numeric:tabular-nums}
+  .price-calc .total .label{font-size:11px;color:#6b7280;font-weight:400;margin-right:6px}
+  .empty{font-size:11px;color:#9ca3af;padding:24px 0;text-align:center}
+  .raw-toggle{font-size:11px;color:#6b7280;cursor:pointer;text-decoration:underline;margin-top:14px}
+  pre{background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;padding:10px;font-size:11px;overflow:auto;max-height:400px;margin-top:8px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+
+<h1>차량 옵션 카탈로그 (제조사 원본 데이터)</h1>
+
+<div class="panel">
+  <div class="selector-row">
+    <select id="maker" disabled><option>제조사 로딩중…</option></select>
+    <select id="model" disabled><option>모델</option></select>
+    <select id="sub" disabled><option>세부모델</option></select>
+    <select id="trim" disabled><option>트림</option></select>
+  </div>
+  <div class="meta" id="status">엔카마스터 로딩…</div>
+</div>
+
+<div class="panel" id="catalogPanel" style="display:none">
+  <div class="trim-bar" id="trimBar"></div>
+  <div class="summary" id="summary"></div>
+  <div id="trimContent"></div>
+  <div class="raw-toggle" id="rawToggle">▾ 원본 JSON 보기</div>
+  <pre id="rawJson" style="display:none"></pre>
+</div>
+
+<div class="panel" id="emptyPanel">
+  <div class="empty" id="emptyMsg">차종을 선택하세요.</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = {
+  master: [],
+  selected: null,        // 엔카마스터 row
+  catalog: null,         // car-options-catalog JSON
+  activeTrim: null,
+  selectedPkgs: new Set() // 선택한 패키지 인덱스
+};
+
+// 그랜저 HG 출시(2011-01)가 컷오프. 그 이전 출시 모델 제외
+function withinScope(row) {
+  const ps = row.production_start || '';
+  return ps >= '2011-01';
+}
+
+async function loadMaster() {
+  if (Array.isArray(window.ENCAR_MASTER) && window.ENCAR_MASTER.length) {
+    return window.ENCAR_MASTER
+      .filter(r => r && !r.archived && r.status !== 'deleted')
+      .filter(withinScope);
+  }
+  return null;
+}
+
+// 매번 최신 데이터 — dev 단계라 캐시 안 잡힘
+const _cb = () => '?t=' + Date.now();
+async function loadIndex() {
+  const candidates = [
+    '/data/car-master/_index.json',
+    './public/data/car-master/_index.json',
+    'public/data/car-master/_index.json'
+  ];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url + _cb(), { cache: 'no-store' });
+      if (res.ok) return await res.json();
+    } catch {}
+  }
+  return {};
+}
+
+async function loadCatalog(encarKey) {
+  const idx = await loadIndex();
+  // _index.json 의 source.encar 에서 encarKey 찾아서 catalog_id 매핑
+  const entry = Object.values(idx).find(v => (v.source?.encar || []).includes(encarKey));
+  if (!entry) return null;
+  const candidates = [
+    `/data/car-master/${entry.id}.json`,
+    `./public/data/car-master/${entry.id}.json`,
+    `public/data/car-master/${entry.id}.json`
+  ];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url + _cb(), { cache: 'no-store' });
+      if (res.ok) return await res.json();
+    } catch {}
+  }
+  return null;
+}
+
+function uniqueSorted(arr) {
+  return [...new Set(arr.filter(Boolean))].sort((a,b) => a.localeCompare(b,'ko'));
+}
+
+// 인기순 (국산 → 수입 인기 → 가나다)
+const MAKER_RANK = {
+  '현대':1,'기아':2,'제네시스':3,'쉐보레':4,'KGM':5,'르노':6,
+  'BMW':10,'벤츠':11,'아우디':12,'렉서스':13,'미니':14,'볼보':15,
+  '포르쉐':16,'폭스바겐':17,'랜드로버':18,'포드':19,'혼다':20,
+  '도요타':21,'닛산':22,'테슬라':23,'마세라티':24,'재규어':25,
+  '지프':26,'캐딜락':27,'링컨':28,'페라리':29,'람보르기니':30
+};
+function makerRank(m) { return MAKER_RANK[m] !== undefined ? MAKER_RANK[m] : 50; }
+
+function fillMakers() {
+  const sel = $('maker');
+  sel.innerHTML = '<option value="">제조사 선택</option>';
+  const makers = [...new Set(state.master.map(r => r.maker).filter(Boolean))];
+  makers.sort((a,b) => {
+    const r = makerRank(a) - makerRank(b);
+    return r !== 0 ? r : a.localeCompare(b,'ko');
+  });
+  makers.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m; opt.textContent = m;
+    sel.appendChild(opt);
+  });
+  sel.disabled = false;
+}
+
+function onMakerChange() {
+  const m = $('maker').value;
+  const sel = $('model');
+  sel.innerHTML = '<option value="">모델</option>';
+  if (!m) { sel.disabled = true; resetCatalog(); return; }
+  // 모델 정렬: 같은 maker 내 sub_model 수 desc → 가나다
+  const modelCounts = {};
+  state.master.filter(r => r.maker === m).forEach(r => {
+    if (r.model) modelCounts[r.model] = (modelCounts[r.model]||0) + 1;
+  });
+  const models = Object.keys(modelCounts).sort((a,b) => {
+    const cd = modelCounts[b] - modelCounts[a];
+    return cd !== 0 ? cd : a.localeCompare(b,'ko');
+  });
+  models.forEach(mod => {
+    const opt = document.createElement('option');
+    opt.value = mod; opt.textContent = mod;
+    sel.appendChild(opt);
+  });
+  sel.disabled = false;
+  $('sub').innerHTML = '<option>세부모델</option>'; $('sub').disabled = true;
+  $('trim').innerHTML = '<option>트림</option>'; $('trim').disabled = true;
+  resetCatalog();
+}
+
+function onModelChange() {
+  const maker = $('maker').value;
+  const model = $('model').value;
+  const sel = $('sub');
+  sel.innerHTML = '<option value="">세부모델</option>';
+  if (!model) { sel.disabled = true; resetCatalog(); return; }
+  const subs = state.master.filter(r => r.maker === maker && r.model === model);
+  subs.sort((a,b) => (b.production_start||'').localeCompare(a.production_start||''));
+  subs.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r._key;
+    const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
+    opt.textContent = `${r.sub} (${yr})`;
+    sel.appendChild(opt);
+  });
+  sel.disabled = false;
+  $('trim').innerHTML = '<option>트림</option>'; $('trim').disabled = true;
+  resetCatalog();
+}
+
+async function onSubChange() {
+  const key = $('sub').value;
+  if (!key) { resetCatalog(); return; }
+  state.selected = state.master.find(r => r._key === key);
+  state.selectedPkgs.clear();
+  $('status').textContent = '카탈로그 로딩…';
+  const cat = await loadCatalog(key);
+  if (!cat) {
+    state.catalog = null;
+    $('catalogPanel').style.display = 'none';
+    $('emptyPanel').style.display = 'block';
+    $('emptyMsg').textContent = `이 차종(${key})의 옵션 카탈로그가 아직 매핑 안 됨.`;
+    $('status').textContent = '';
+    $('status').classList.remove('ok');
+    return;
+  }
+  state.catalog = cat;
+  $('status').textContent = `${cat.title} | source: ${cat.source} | fetched: ${cat.fetched_at}`;
+  $('status').classList.add('ok');
+  $('emptyPanel').style.display = 'none';
+  $('catalogPanel').style.display = 'block';
+  // 트림 드롭다운 채우기
+  const trimSel = $('trim');
+  const trims = Object.keys(cat.trims);
+  trimSel.innerHTML = '';
+  trims.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t; opt.textContent = t;
+    trimSel.appendChild(opt);
+  });
+  trimSel.disabled = false;
+  state.activeTrim = trims[0];
+  trimSel.value = state.activeTrim;
+  renderCatalog();
+}
+
+function onTrimChange() {
+  if (!state.catalog) return;
+  state.activeTrim = $('trim').value;
+  state.selectedPkgs.clear();
+  renderCatalog();
+}
+
+function resetCatalog() {
+  state.selected = null;
+  state.catalog = null;
+  state.activeTrim = null;
+  state.selectedPkgs.clear();
+  $('trim').innerHTML = '<option>트림</option>';
+  $('trim').disabled = true;
+  $('catalogPanel').style.display = 'none';
+  $('emptyPanel').style.display = 'block';
+  $('emptyMsg').textContent = '차종을 선택하세요.';
+  $('status').textContent = '';
+  $('status').classList.remove('ok');
+}
+
+function renderCatalog() {
+  const cat = state.catalog;
+  if (!cat) return;
+  const trims = Object.keys(cat.trims);
+  state.activeTrim = state.activeTrim && trims.includes(state.activeTrim) ? state.activeTrim : trims[0];
+
+  const bar = $('trimBar');
+  bar.innerHTML = '';
+  trims.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'trim-btn' + (t === state.activeTrim ? ' active' : '');
+    const tInfo = cat.trims[t];
+    const p = tInfo.price || {};
+    const mainPrice = p.tax_5_after || p.tax_5_before || p.tax_5 || p.tax_3_5_after || p.tax_3_5_before || p.tax_3_5 || p.base || null;
+    const priceTxt = mainPrice ? `<span class="trim-price">${(mainPrice/10000).toFixed(0)}만</span>` : '';
+    btn.innerHTML = `<span class="trim-name">${t}</span>${priceTxt}`;
+    btn.addEventListener('click', () => {
+      if (state.activeTrim !== t) state.selectedPkgs.clear();
+      state.activeTrim = t;
+      $('trim').value = t;
+      renderCatalog();
+    });
+    bar.appendChild(btn);
+  });
+  $('trim').value = state.activeTrim;
+
+  const t = cat.trims[state.activeTrim];
+  $('summary').innerHTML = `
+    <span>총 옵션 <b>${Object.keys(cat.options).length}</b></span>
+    <span>기본 <b>${t.basic.length}</b></span>
+    <span>선택 <b>${t.select.length}</b></span>
+    <span>패키지 그룹 <b>${t.select_groups.length}</b></span>
+    <span>카테고리 <b>${Object.keys(cat.categories).length}</b></span>
+  `;
+
+  const content = $('trimContent');
+  content.innerHTML = '';
+
+  // 트림 기본가 — fallback 체인은 trim-btn 과 동일
+  const priceObj = t.price || {};
+  const basePrice = priceObj.tax_5_after || priceObj.tax_5_before || priceObj.tax_5
+    || priceObj.tax_3_5_after || priceObj.tax_3_5_before || priceObj.tax_3_5
+    || priceObj.base || 0;
+
+  // 1) 선택 패키지 — 트림 바로 아래, 클릭 토글
+  let pkgTotal = 0;
+  let pkgPricedCount = 0;
+  if (t.select_groups.length > 0) {
+    const pkg = document.createElement('div');
+    pkg.className = 'pkg-section';
+    pkg.innerHTML = `<div class="pkg-title"><span>선택 패키지 (${t.select_groups.length}개)</span><span class="hint">클릭해서 추가</span></div><div class="pkg-grid"></div>`;
+    const grid = pkg.querySelector('.pkg-grid');
+    t.select_groups.forEach((group, idx) => {
+      // 새 형식: { codes, price, name? }, 또는 옛 형식: [code, code]
+      const codes = Array.isArray(group) ? group : (group.codes || []);
+      const price = Array.isArray(group) ? null : group.price;
+      const pkgName = !Array.isArray(group) && group.name ? group.name : null;
+      const names = codes.map(c => cat.options[c]?.name || c);
+      const isSelected = state.selectedPkgs.has(idx);
+      if (isSelected && price) { pkgTotal += price; pkgPricedCount++; }
+      const div = document.createElement('div');
+      div.className = 'pkg' + (isSelected ? ' selected' : '');
+      const head = pkgName && pkgName !== names[0] ? `<div class="pkg-head">${pkgName}${price ? ` <span class="pkg-price">${(price/10000).toFixed(0)}만</span>` : ''}</div>` : '';
+      const body = pkgName && pkgName !== names[0] ? `<div class="pkg-items">${names.join(' · ')}</div>` : `<div class="pkg-name">${names.join(' + ')}${price ? ` <span class="pkg-price">${(price/10000).toFixed(0)}만</span>` : ''}</div>`;
+      div.innerHTML = head + body;
+      div.addEventListener('click', () => {
+        if (state.selectedPkgs.has(idx)) state.selectedPkgs.delete(idx);
+        else state.selectedPkgs.add(idx);
+        renderCatalog();
+      });
+      grid.appendChild(div);
+    });
+    content.appendChild(pkg);
+  }
+
+  // 2) 가격 합계 — 트림 기본가 + 선택 패키지
+  if (basePrice) {
+    const total = basePrice + pkgTotal;
+    const calc = document.createElement('div');
+    calc.className = 'price-calc';
+    const baseTxt = `${(basePrice/10000).toFixed(0)}만`;
+    let extraTxt = '';
+    if (state.selectedPkgs.size > 0) {
+      if (pkgTotal > 0) {
+        extraTxt = ` <span class="add">+ ${(pkgTotal/10000).toFixed(0)}만 (패키지 ${pkgPricedCount}개)</span>`;
+        if (state.selectedPkgs.size > pkgPricedCount) {
+          extraTxt += ` <span class="muted">+ 가격미상 ${state.selectedPkgs.size - pkgPricedCount}개</span>`;
+        }
+      } else {
+        extraTxt = ` <span class="muted">+ 가격미상 ${state.selectedPkgs.size}개</span>`;
+      }
+    }
+    calc.innerHTML = `
+      <div class="breakdown">기본가 ${baseTxt}${extraTxt}</div>
+      <div class="total"><span class="label">합계</span>${(total/10000).toFixed(0)}만원</div>
+    `;
+    content.appendChild(calc);
+  }
+
+  // 3) 카테고리별 표시 — 해당 트림에서 적용되는 옵션만 필터, but 적용 안 된 것도 흐리게 표시
+  const catKeys = Object.keys(cat.categories).filter(k => k !== '선택사양');
+  const basicSet = new Set(t.basic);
+  const selectSet = new Set(t.select);
+  catKeys.forEach(catName => {
+    const codes = cat.categories[catName];
+    const block = document.createElement('div');
+    block.className = 'category-block';
+    const applied = codes.filter(c => basicSet.has(c) || selectSet.has(c));
+    block.innerHTML = `<div class="cat-title"><span>${catName}</span><span class="count">${applied.length} / ${codes.length}</span></div><div class="opt-grid"></div>`;
+    const grid = block.querySelector('.opt-grid');
+    codes.forEach(code => {
+      const info = cat.options[code];
+      const isBasic = basicSet.has(code);
+      const isSelect = selectSet.has(code);
+      const cls = isBasic ? 'basic' : (isSelect ? 'select' : '');
+      const div = document.createElement('div');
+      div.className = 'opt ' + cls;
+      const badge = isBasic ? '' : (isSelect ? '<span class="badge">선택</span>' : '<span class="badge">미적용</span>');
+      div.innerHTML = `<span>${info.name}</span>${badge}`;
+      grid.appendChild(div);
+    });
+    content.appendChild(block);
+  });
+
+  $('rawJson').textContent = JSON.stringify(cat, null, 2);
+}
+
+async function init() {
+  const data = await loadMaster();
+  if (!data) {
+    $('status').textContent = '⚠️ 엔카마스터 로드 실패';
+    $('status').classList.add('warn');
+    return;
+  }
+  state.master = data;
+  $('status').textContent = `엔카마스터 ${data.length}건 로드 완료.`;
+  fillMakers();
+  $('maker').addEventListener('change', onMakerChange);
+  $('model').addEventListener('change', onModelChange);
+  $('sub').addEventListener('change', onSubChange);
+  $('trim').addEventListener('change', onTrimChange);
+  $('rawToggle').addEventListener('click', () => {
+    const pre = $('rawJson');
+    pre.style.display = pre.style.display === 'none' ? 'block' : 'none';
+    $('rawToggle').textContent = pre.style.display === 'none' ? '▾ 원본 JSON 보기' : '▴ 원본 JSON 숨기기';
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>

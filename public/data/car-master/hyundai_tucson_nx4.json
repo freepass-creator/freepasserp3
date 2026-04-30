@@ -1,0 +1,1793 @@
+{
+  "catalog_id": "hyundai_tucson_nx4",
+  "title": "현대 투싼 (NX4)",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/nx4-2026_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "NX05001",
+      "NX05002",
+      "NX05003",
+      "NX05004",
+      "NX05005"
+    ],
+    "안전": [
+      "NX05029",
+      "NX05030",
+      "NX05031",
+      "NX05032",
+      "NX05034"
+    ],
+    "지능형 안전 기술": [
+      "NX05011",
+      "NX05012",
+      "NX05013",
+      "NX05014",
+      "NX05015",
+      "NX05016",
+      "NX05017",
+      "NX05018"
+    ],
+    "외관": [
+      "NX05035",
+      "NX05036",
+      "NX05037",
+      "NX05038",
+      "NX05039",
+      "NX05040",
+      "NX05041",
+      "NX05042",
+      "NX05043",
+      "NX05044",
+      "NX05045",
+      "NX05046",
+      "NX05050",
+      "NX05048",
+      "NX05049",
+      "NX05052",
+      "NX05053",
+      "NX05051"
+    ],
+    "내장": [
+      "NX05058",
+      "NX05059",
+      "NX05063",
+      "NX05061",
+      "NX05062",
+      "NX05069",
+      "NX05070",
+      "NX05071",
+      "NX05066",
+      "NX05067",
+      "NX05064",
+      "NX05065"
+    ],
+    "시트": [
+      "NX05072",
+      "NX05073",
+      "NX05074",
+      "NX05076",
+      "NX05077",
+      "NX05078"
+    ],
+    "편의": [
+      "NX05086",
+      "NX05117",
+      "NX05087",
+      "NX05089",
+      "NX05090",
+      "NX05091",
+      "NX05092",
+      "NX05093",
+      "NX05094",
+      "NX05095",
+      "NX05096",
+      "NX05097",
+      "NX05098",
+      "NX05099",
+      "NX05100",
+      "NX05106",
+      "NX05102",
+      "NX05104",
+      "NX05105",
+      "NX05108",
+      "NX05110",
+      "NX05111",
+      "NX05112"
+    ],
+    "인포테인먼트": [
+      "NX05118",
+      "NX05119",
+      "NX05121"
+    ],
+    "선택사양": [
+      "NX05009",
+      "NX05033",
+      "NX05P01",
+      "NX05P14",
+      "NX05P03",
+      "NX05P06",
+      "NX05P04",
+      "NX05P17",
+      "NX05132",
+      "NX05135",
+      "NX05P18",
+      "NX05P23",
+      "NX05P21",
+      "NX05P02",
+      "NX05047",
+      "NX05P15",
+      "NX05P07",
+      "NX05P05",
+      "NX05P11",
+      "NX05131",
+      "NX05P19",
+      "NX05P20",
+      "NX05P13",
+      "NX05P09",
+      "NX05P16",
+      "NX05055",
+      "NX05054"
+    ]
+  },
+  "options": {
+    "NX05001": {
+      "name": "스마트스트림 가솔린 1.6 터보 엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NX05002": {
+      "name": "스마트스트림 7단 DCT",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NX05003": {
+      "name": "ISG 시스템",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NX05004": {
+      "name": "통합 주행 모드",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NX05005": {
+      "name": "전/후륜 디스크 브레이크",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NX05029": {
+      "name": "8에어백(1열 어드밴스드/사이드, 전복대응커튼, 2열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NX05030": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "NX05031": {
+      "name": "유아용 시트 고정장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NX05032": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "NX05034": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "NX05011": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05012": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05013": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05014": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05015": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05016": {
+      "name": "진동 경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05017": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05018": {
+      "name": "후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NX05035": {
+      "name": "다크 크롬 라디에이터 그릴",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05036": {
+      "name": "유광블랙 B/C 필라",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05037": {
+      "name": "아웃사이드 미러 크롬 가니쉬",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05038": {
+      "name": "Full LED 헤드램프(MFR 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05039": {
+      "name": "LED 방향지시등(앞)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05040": {
+      "name": "LED 주간주행등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05041": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05042": {
+      "name": "리어 스포일러",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05043": {
+      "name": "17인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05044": {
+      "name": "이중접합 차음유리(윈드쉴드, 1열 도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05045": {
+      "name": "도어 포켓 라이팅(1열)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05046": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05050": {
+      "name": "에어로 타입 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05058": {
+      "name": "클러스터(4.2인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05059": {
+      "name": "LED 실내등(맵램프, 룸램프, 선바이저램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05072": {
+      "name": "인조가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NX05073": {
+      "name": "운전석 2way 럼버서포트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NX05074": {
+      "name": "2열 폴드 & 다이브 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NX05086": {
+      "name": "버튼 시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05117": {
+      "name": "스마트키 원격시동",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05087": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05089": {
+      "name": "매뉴얼 에어컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05090": {
+      "name": "마이크로 에어 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05091": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05092": {
+      "name": "크루즈 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05093": {
+      "name": "USB C타입 단자(1열 충전 1개/충전·데이터 스위치타입 1개, 2열 충전 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05094": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05095": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05096": {
+      "name": "패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05097": {
+      "name": "파워 아웃렛(1열 1개, 러기지 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05098": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05099": {
+      "name": "ECM 룸미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05100": {
+      "name": "실내 지문 인증 시스템(개인화, 시동)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05106": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05118": {
+      "name": "12.3인치 디스플레이 오디오(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 6스피커)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NX05119": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NX05009": {
+      "name": "HTRAC",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NX05033": {
+      "name": "경사로 저속 주행장치",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NX05P01": {
+      "name": "파노라마 선루프 + 루프랙",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P14": {
+      "name": "익스테리어 디자인Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P03": {
+      "name": "인포테인먼트 내비",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P06": {
+      "name": "현대 스마트센스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P04": {
+      "name": "컴포트Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P17": {
+      "name": "H Genuine Accessories 라이프스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05132": {
+      "name": "사이드 스텝",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NX05135": {
+      "name": "블랙 사이드 스텝",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NX05P18": {
+      "name": "프로텍션 매트 패키지Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P23": {
+      "name": "프로텍션 매트 패키지Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P21": {
+      "name": "러기지 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05048": {
+      "name": "18인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05049": {
+      "name": "루프랙",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05063": {
+      "name": "리얼 스티치(크래쉬패드/도어 어퍼/도어 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05061": {
+      "name": "패브릭 감싸기(크래쉬패드 가니쉬/도어 센터)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05062": {
+      "name": "블랙 하이그로시 도어 암레스트 몰딩",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05076": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NX05077": {
+      "name": "인조가죽 시트(패턴)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NX05102": {
+      "name": "듀얼 풀오토 에어컨(오토 디포그/미세먼지 센서/공기청정모드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05104": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05105": {
+      "name": "하이패스",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05108": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05110": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05121": {
+      "name": "12.3인치 내비게이션(인카페이먼트/e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NX05P02": {
+      "name": "빌트인 캠 2, 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05047": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NX05P15": {
+      "name": "익스테리어 디자인Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P07": {
+      "name": "파킹어시스트Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P05": {
+      "name": "컴포트Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P11": {
+      "name": "플래티넘",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05131": {
+      "name": "빌트인 공기청정기",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NX05P19": {
+      "name": "[N 퍼포먼스 파츠] 모노블록 브레이크 & 19인치 경량 휠(매트블랙) 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P20": {
+      "name": "[N 퍼포먼스 파츠] 19인치 매트블랙 경량 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05052": {
+      "name": "Full LED 헤드램프(프로젝션 타입, 히든라이팅 주간주행등/지능형 헤드램프 포함)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05053": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05069": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05070": {
+      "name": "클러스터(12.3인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05071": {
+      "name": "앰비언트 무드램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05066": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05067": {
+      "name": "메탈 도어스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05111": {
+      "name": "디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05112": {
+      "name": "헤드업 디스플레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "NX05P13": {
+      "name": "베스트 셀렉션 Ⅲ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P09": {
+      "name": "파킹어시스트Ⅲ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05P16": {
+      "name": "BOSE 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NX05055": {
+      "name": "19인치 알로이 휠 & 미쉐린 타이어",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NX05051": {
+      "name": "N Line 전용 디자인(라디에이터 그릴(전용 엠블럼 포함), 범퍼(프론트/리어), 스키드 플레이트(프론트/리어), 바디컬러 사이드 가니쉬, 바디컬러 클래딩, 19인치 전용 알로이 휠, 리어 스포일러, 블랙 아웃사이드 미러 커버, 블랙 DLO 몰딩, 싱글 트윈팁 머플러)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NX05064": {
+      "name": "N Line 전용 디자인(스티어링 휠/시트(전용 엠블럼 포함), 레드스티치 포인트(스티어링 휠/시트/크래쉬패드/도어/콘솔))",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05065": {
+      "name": "블랙 헤드라이닝",
+      "category": "내장",
+      "is_package": false
+    },
+    "NX05078": {
+      "name": "N Line 전용 스웨이드 + 천연가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NX05054": {
+      "name": "미쉐린 타이어",
+      "category": "선택사양",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "모던": {
+      "slug": "modern",
+      "name_en": null,
+      "price": {
+        "tax_5": 28480000,
+        "tax_3_5": 28050000
+      },
+      "basic": [
+        "NX05001",
+        "NX05002",
+        "NX05003",
+        "NX05004",
+        "NX05005",
+        "NX05029",
+        "NX05030",
+        "NX05031",
+        "NX05032",
+        "NX05034",
+        "NX05011",
+        "NX05012",
+        "NX05013",
+        "NX05014",
+        "NX05015",
+        "NX05016",
+        "NX05017",
+        "NX05018",
+        "NX05035",
+        "NX05036",
+        "NX05037",
+        "NX05038",
+        "NX05039",
+        "NX05040",
+        "NX05041",
+        "NX05042",
+        "NX05043",
+        "NX05044",
+        "NX05045",
+        "NX05046",
+        "NX05050",
+        "NX05058",
+        "NX05059",
+        "NX05072",
+        "NX05073",
+        "NX05074",
+        "NX05086",
+        "NX05117",
+        "NX05087",
+        "NX05089",
+        "NX05090",
+        "NX05091",
+        "NX05092",
+        "NX05093",
+        "NX05094",
+        "NX05095",
+        "NX05096",
+        "NX05097",
+        "NX05098",
+        "NX05099",
+        "NX05100",
+        "NX05106",
+        "NX05118",
+        "NX05119"
+      ],
+      "select": [
+        "NX05009",
+        "NX05033",
+        "NX05P01",
+        "NX05P14",
+        "NX05P03",
+        "NX05P06",
+        "NX05P04",
+        "NX05P17",
+        "NX05132",
+        "NX05135",
+        "NX05P18",
+        "NX05P23",
+        "NX05P21"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NX05009",
+            "NX05033"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "NX05P01"
+          ],
+          "price": 1160000
+        },
+        {
+          "codes": [
+            "NX05P14"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "NX05P03"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "NX05P06"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NX05P04"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "NX05P17"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05132"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "NX05135"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05P18"
+          ],
+          "price": 230000
+        },
+        {
+          "codes": [
+            "NX05P23"
+          ],
+          "price": 150000
+        },
+        {
+          "codes": [
+            "NX05P21"
+          ],
+          "price": 120000
+        }
+      ]
+    },
+    "프리미엄": {
+      "slug": "premium",
+      "name_en": null,
+      "price": {
+        "tax_5": 31160000,
+        "tax_3_5": 30690000
+      },
+      "basic": [
+        "NX05001",
+        "NX05002",
+        "NX05003",
+        "NX05004",
+        "NX05005",
+        "NX05029",
+        "NX05030",
+        "NX05031",
+        "NX05032",
+        "NX05034",
+        "NX05011",
+        "NX05012",
+        "NX05013",
+        "NX05014",
+        "NX05015",
+        "NX05016",
+        "NX05017",
+        "NX05018",
+        "NX05035",
+        "NX05036",
+        "NX05037",
+        "NX05038",
+        "NX05039",
+        "NX05040",
+        "NX05041",
+        "NX05042",
+        "NX05044",
+        "NX05045",
+        "NX05046",
+        "NX05050",
+        "NX05048",
+        "NX05049",
+        "NX05058",
+        "NX05059",
+        "NX05063",
+        "NX05061",
+        "NX05062",
+        "NX05073",
+        "NX05074",
+        "NX05076",
+        "NX05077",
+        "NX05086",
+        "NX05117",
+        "NX05087",
+        "NX05090",
+        "NX05091",
+        "NX05092",
+        "NX05093",
+        "NX05094",
+        "NX05095",
+        "NX05096",
+        "NX05097",
+        "NX05098",
+        "NX05099",
+        "NX05100",
+        "NX05106",
+        "NX05102",
+        "NX05104",
+        "NX05105",
+        "NX05108",
+        "NX05110",
+        "NX05119",
+        "NX05121"
+      ],
+      "select": [
+        "NX05009",
+        "NX05033",
+        "NX05P02",
+        "NX05047",
+        "NX05P15",
+        "NX05P07",
+        "NX05P05",
+        "NX05P06",
+        "NX05P11",
+        "NX05P17",
+        "NX05132",
+        "NX05135",
+        "NX05P18",
+        "NX05P23",
+        "NX05P21",
+        "NX05131",
+        "NX05P19",
+        "NX05P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NX05009",
+            "NX05033"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "NX05P02"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NX05047"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "NX05P15"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "NX05P07"
+          ],
+          "price": 1230000
+        },
+        {
+          "codes": [
+            "NX05P05"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "NX05P06"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NX05P11"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "NX05P17"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05132"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "NX05135"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05P18"
+          ],
+          "price": 230000
+        },
+        {
+          "codes": [
+            "NX05P23"
+          ],
+          "price": 150000
+        },
+        {
+          "codes": [
+            "NX05P21"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NX05131"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NX05P19"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "NX05P20"
+          ],
+          "price": 1140000
+        }
+      ]
+    },
+    "에이치-픽": {
+      "slug": "h-pick",
+      "name_en": null,
+      "price": {
+        "tax_5": 32050000,
+        "tax_3_5": 31560000
+      },
+      "basic": [
+        "NX05001",
+        "NX05002",
+        "NX05003",
+        "NX05004",
+        "NX05005",
+        "NX05029",
+        "NX05030",
+        "NX05031",
+        "NX05032",
+        "NX05034",
+        "NX05011",
+        "NX05012",
+        "NX05013",
+        "NX05014",
+        "NX05015",
+        "NX05016",
+        "NX05017",
+        "NX05018",
+        "NX05035",
+        "NX05036",
+        "NX05037",
+        "NX05038",
+        "NX05039",
+        "NX05040",
+        "NX05041",
+        "NX05042",
+        "NX05044",
+        "NX05045",
+        "NX05046",
+        "NX05050",
+        "NX05048",
+        "NX05049",
+        "NX05058",
+        "NX05059",
+        "NX05063",
+        "NX05061",
+        "NX05062",
+        "NX05073",
+        "NX05074",
+        "NX05076",
+        "NX05077",
+        "NX05086",
+        "NX05117",
+        "NX05087",
+        "NX05090",
+        "NX05091",
+        "NX05092",
+        "NX05093",
+        "NX05094",
+        "NX05095",
+        "NX05096",
+        "NX05097",
+        "NX05098",
+        "NX05099",
+        "NX05100",
+        "NX05106",
+        "NX05102",
+        "NX05104",
+        "NX05105",
+        "NX05108",
+        "NX05110",
+        "NX05119",
+        "NX05121"
+      ],
+      "select": [
+        "NX05009",
+        "NX05033",
+        "NX05P02",
+        "NX05047",
+        "NX05P15",
+        "NX05P07",
+        "NX05P11",
+        "NX05P17",
+        "NX05132",
+        "NX05135",
+        "NX05P18",
+        "NX05P23",
+        "NX05P21",
+        "NX05131",
+        "NX05P19",
+        "NX05P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NX05009",
+            "NX05033"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "NX05P02"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NX05047"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "NX05P15"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "NX05P07"
+          ],
+          "price": 1230000
+        },
+        {
+          "codes": [
+            "NX05P11"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "NX05P17"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05132"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "NX05135"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05P18"
+          ],
+          "price": 230000
+        },
+        {
+          "codes": [
+            "NX05P23"
+          ],
+          "price": 150000
+        },
+        {
+          "codes": [
+            "NX05P21"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NX05131"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NX05P19"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "NX05P20"
+          ],
+          "price": 1140000
+        }
+      ]
+    },
+    "인스퍼레이션": {
+      "slug": "inspiration",
+      "name_en": null,
+      "price": {
+        "tax_5": 34600000,
+        "tax_3_5": 34070000
+      },
+      "basic": [
+        "NX05001",
+        "NX05002",
+        "NX05003",
+        "NX05004",
+        "NX05005",
+        "NX05029",
+        "NX05030",
+        "NX05031",
+        "NX05032",
+        "NX05034",
+        "NX05011",
+        "NX05012",
+        "NX05013",
+        "NX05014",
+        "NX05015",
+        "NX05016",
+        "NX05017",
+        "NX05018",
+        "NX05035",
+        "NX05036",
+        "NX05037",
+        "NX05039",
+        "NX05040",
+        "NX05041",
+        "NX05042",
+        "NX05044",
+        "NX05045",
+        "NX05046",
+        "NX05050",
+        "NX05048",
+        "NX05049",
+        "NX05052",
+        "NX05053",
+        "NX05059",
+        "NX05063",
+        "NX05061",
+        "NX05062",
+        "NX05069",
+        "NX05070",
+        "NX05071",
+        "NX05066",
+        "NX05067",
+        "NX05073",
+        "NX05074",
+        "NX05076",
+        "NX05086",
+        "NX05117",
+        "NX05087",
+        "NX05090",
+        "NX05091",
+        "NX05092",
+        "NX05093",
+        "NX05094",
+        "NX05095",
+        "NX05096",
+        "NX05097",
+        "NX05098",
+        "NX05099",
+        "NX05100",
+        "NX05106",
+        "NX05102",
+        "NX05104",
+        "NX05105",
+        "NX05108",
+        "NX05110",
+        "NX05111",
+        "NX05112",
+        "NX05119",
+        "NX05121"
+      ],
+      "select": [
+        "NX05009",
+        "NX05033",
+        "NX05P13",
+        "NX05P02",
+        "NX05047",
+        "NX05P09",
+        "NX05P16",
+        "NX05055",
+        "NX05P17",
+        "NX05132",
+        "NX05135",
+        "NX05P18",
+        "NX05P23",
+        "NX05P21",
+        "NX05131",
+        "NX05P19",
+        "NX05P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NX05009",
+            "NX05033"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "NX05P13"
+          ],
+          "price": 1220000
+        },
+        {
+          "codes": [
+            "NX05P02"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NX05047"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "NX05P09"
+          ],
+          "price": 830000
+        },
+        {
+          "codes": [
+            "NX05P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "NX05055"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NX05P17"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05132"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "NX05135"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05P18"
+          ],
+          "price": 230000
+        },
+        {
+          "codes": [
+            "NX05P23"
+          ],
+          "price": 150000
+        },
+        {
+          "codes": [
+            "NX05P21"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NX05131"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NX05P19"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "NX05P20"
+          ],
+          "price": 1140000
+        }
+      ]
+    },
+    "블랙 익스테리어": {
+      "slug": "black-exterior",
+      "name_en": null,
+      "price": {
+        "tax_5": 35050000,
+        "tax_3_5": 34520000
+      },
+      "basic": [
+        "NX05001",
+        "NX05002",
+        "NX05003",
+        "NX05004",
+        "NX05005",
+        "NX05029",
+        "NX05030",
+        "NX05031",
+        "NX05032",
+        "NX05034",
+        "NX05011",
+        "NX05012",
+        "NX05013",
+        "NX05014",
+        "NX05015",
+        "NX05016",
+        "NX05017",
+        "NX05018",
+        "NX05035",
+        "NX05036",
+        "NX05039",
+        "NX05040",
+        "NX05041",
+        "NX05042",
+        "NX05044",
+        "NX05045",
+        "NX05046",
+        "NX05050",
+        "NX05049",
+        "NX05052",
+        "NX05053",
+        "NX05059",
+        "NX05063",
+        "NX05061",
+        "NX05062",
+        "NX05069",
+        "NX05070",
+        "NX05071",
+        "NX05066",
+        "NX05067",
+        "NX05073",
+        "NX05074",
+        "NX05076",
+        "NX05086",
+        "NX05117",
+        "NX05087",
+        "NX05090",
+        "NX05091",
+        "NX05092",
+        "NX05093",
+        "NX05094",
+        "NX05095",
+        "NX05096",
+        "NX05097",
+        "NX05098",
+        "NX05099",
+        "NX05100",
+        "NX05106",
+        "NX05102",
+        "NX05104",
+        "NX05105",
+        "NX05108",
+        "NX05110",
+        "NX05111",
+        "NX05112",
+        "NX05119",
+        "NX05121"
+      ],
+      "select": [
+        "NX05009",
+        "NX05033",
+        "NX05P13",
+        "NX05P02",
+        "NX05047",
+        "NX05P09",
+        "NX05P16",
+        "NX05P17",
+        "NX05132",
+        "NX05135",
+        "NX05P18",
+        "NX05P23",
+        "NX05P21",
+        "NX05131",
+        "NX05P19",
+        "NX05P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NX05009",
+            "NX05033"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "NX05P13"
+          ],
+          "price": 1220000
+        },
+        {
+          "codes": [
+            "NX05P02"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NX05047"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "NX05P09"
+          ],
+          "price": 830000
+        },
+        {
+          "codes": [
+            "NX05P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "NX05P17"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05132"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "NX05135"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05P18"
+          ],
+          "price": 230000
+        },
+        {
+          "codes": [
+            "NX05P23"
+          ],
+          "price": 150000
+        },
+        {
+          "codes": [
+            "NX05P21"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NX05131"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NX05P19"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "NX05P20"
+          ],
+          "price": 1140000
+        }
+      ]
+    },
+    "N Line": {
+      "slug": "n-inspiration",
+      "name_en": null,
+      "price": {
+        "tax_5": 35450000,
+        "tax_3_5": 34910000
+      },
+      "basic": [
+        "NX05001",
+        "NX05002",
+        "NX05003",
+        "NX05004",
+        "NX05005",
+        "NX05029",
+        "NX05030",
+        "NX05031",
+        "NX05032",
+        "NX05034",
+        "NX05011",
+        "NX05012",
+        "NX05013",
+        "NX05014",
+        "NX05015",
+        "NX05016",
+        "NX05017",
+        "NX05018",
+        "NX05036",
+        "NX05039",
+        "NX05040",
+        "NX05041",
+        "NX05044",
+        "NX05045",
+        "NX05046",
+        "NX05050",
+        "NX05049",
+        "NX05052",
+        "NX05053",
+        "NX05051",
+        "NX05059",
+        "NX05061",
+        "NX05062",
+        "NX05069",
+        "NX05070",
+        "NX05071",
+        "NX05066",
+        "NX05067",
+        "NX05064",
+        "NX05065",
+        "NX05073",
+        "NX05074",
+        "NX05076",
+        "NX05078",
+        "NX05086",
+        "NX05117",
+        "NX05087",
+        "NX05090",
+        "NX05091",
+        "NX05092",
+        "NX05093",
+        "NX05094",
+        "NX05095",
+        "NX05096",
+        "NX05097",
+        "NX05098",
+        "NX05099",
+        "NX05100",
+        "NX05106",
+        "NX05102",
+        "NX05104",
+        "NX05105",
+        "NX05108",
+        "NX05110",
+        "NX05111",
+        "NX05112",
+        "NX05119",
+        "NX05121"
+      ],
+      "select": [
+        "NX05009",
+        "NX05033",
+        "NX05P13",
+        "NX05P02",
+        "NX05047",
+        "NX05P09",
+        "NX05P16",
+        "NX05054",
+        "NX05P17",
+        "NX05132",
+        "NX05135",
+        "NX05P18",
+        "NX05P23",
+        "NX05P21",
+        "NX05131",
+        "NX05P19",
+        "NX05P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NX05009",
+            "NX05033"
+          ],
+          "price": 1980000
+        },
+        {
+          "codes": [
+            "NX05P13"
+          ],
+          "price": 1220000
+        },
+        {
+          "codes": [
+            "NX05P02"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NX05047"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "NX05P09"
+          ],
+          "price": 830000
+        },
+        {
+          "codes": [
+            "NX05P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "NX05054"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "NX05P17"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05132"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "NX05135"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "NX05P18"
+          ],
+          "price": 230000
+        },
+        {
+          "codes": [
+            "NX05P23"
+          ],
+          "price": 150000
+        },
+        {
+          "codes": [
+            "NX05P21"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NX05131"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NX05P19"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "NX05P20"
+          ],
+          "price": 1140000
+        }
+      ]
+    }
+  }
+}

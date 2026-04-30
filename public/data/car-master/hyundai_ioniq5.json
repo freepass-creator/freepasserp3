@@ -1,0 +1,1907 @@
+{
+  "catalog_id": "hyundai_ioniq5",
+  "title": "현대 더 뉴 아이오닉5",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/ne25-J-long_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/ne25-J-taxi_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/ne25-J-standard_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "E-GMP 플랫폼/성능": [
+      "NE05001",
+      "NE05002",
+      "NE05004",
+      "NE05005",
+      "NE05006",
+      "NE05007",
+      "NE05008",
+      "NE05009",
+      "NE05010",
+      "NE05011",
+      "NE05012",
+      "NE05013",
+      "NE05003"
+    ],
+    "Eco-Friendly Line": [
+      "NE05015",
+      "NE05016",
+      "NE05017",
+      "NE05018",
+      "NE05019",
+      "NE05020",
+      "NE05021",
+      "NE05022",
+      "NE05023"
+    ],
+    "안전": [
+      "NE05042",
+      "NE05044",
+      "NE05046",
+      "NE05047",
+      "NE05048",
+      "NE05049",
+      "NE05051",
+      "NE05052",
+      "NE05168"
+    ],
+    "지능형 안전 기술": [
+      "NE05024",
+      "NE05025",
+      "NE05026",
+      "NE05027",
+      "NE05028",
+      "NE05029",
+      "NE05030",
+      "NE05031",
+      "NE05032",
+      "NE05033",
+      "NE05169",
+      "NE05170",
+      "NE05034",
+      "NE05035",
+      "NE05036",
+      "NE05037",
+      "NE05038",
+      "NE05039",
+      "NE05040"
+    ],
+    "외관": [
+      "NE05053",
+      "NE05055",
+      "NE05056",
+      "NE05060",
+      "NE05061",
+      "NE05062",
+      "NE05063",
+      "NE05064",
+      "NE05066",
+      "NE05067",
+      "NE05068",
+      "NE05071",
+      "NE05070",
+      "NE05073",
+      "NE05074",
+      "NE05075",
+      "NE05076",
+      "NE05077",
+      "NE05069",
+      "NE05065",
+      "NE05078"
+    ],
+    "내장": [
+      "NE05082",
+      "NE05084",
+      "NE05086",
+      "NE05088",
+      "NE05089",
+      "NE05090",
+      "NE05092",
+      "NE05093",
+      "NE05096",
+      "NE05097",
+      "NE05098",
+      "NE05099",
+      "NE05100",
+      "NE05101",
+      "NE05094"
+    ],
+    "시트": [
+      "NE05104",
+      "NE05105",
+      "NE05112",
+      "NE05107",
+      "NE05116",
+      "NE05109",
+      "NE05113",
+      "NE05115",
+      "NE05117"
+    ],
+    "편의": [
+      "NE05127",
+      "NE05128",
+      "NE05129",
+      "NE05130",
+      "NE05132",
+      "NE05133",
+      "NE05134",
+      "NE05135",
+      "NE05136",
+      "NE05137",
+      "NE05138",
+      "NE05140",
+      "NE05141",
+      "NE05142",
+      "NE05131",
+      "NE05147",
+      "NE05146"
+    ],
+    "인포테인먼트": [
+      "NE05160",
+      "NE05162",
+      "NE05163",
+      "NE05158"
+    ],
+    "선택사양": [
+      "NE05014",
+      "NE05157",
+      "NE05P01",
+      "NE05054",
+      "NE05P02",
+      "NE05P06",
+      "NE05P05",
+      "NE05P08",
+      "NE05P13",
+      "NE05P11",
+      "NE05172",
+      "NE05173",
+      "NE05P10",
+      "NE05P07",
+      "NE05080",
+      "NE05P09",
+      "NE05P03",
+      "NE05P12",
+      "NE05P04"
+    ],
+    "내장/시트": [
+      "NE05095",
+      "NE05124",
+      "NE05110",
+      "NE05111",
+      "NE05102"
+    ],
+    "편의/인포테인먼트": [
+      "NE05143",
+      "NE05144",
+      "NE05145",
+      "NE05164",
+      "NE05165"
+    ],
+    "시트/편의": [
+      "NE05114"
+    ]
+  },
+  "options": {
+    "NE05001": {
+      "name": "차세대 일체형 PE 시스템(후륜 모터, 감속기, 인버터)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05002": {
+      "name": "84.0kWh 리튬 이온 배터리",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05004": {
+      "name": "400V/800V 멀티 급속 충전 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05005": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05006": {
+      "name": "랙구동형 전동식 파워 스티어링(R-MDPS)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05007": {
+      "name": "회생제동 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05008": {
+      "name": "전자식 변속 칼럼",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05009": {
+      "name": "히트 펌프 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05010": {
+      "name": "배터리 컨디셔닝 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05011": {
+      "name": "통합 주행 모드",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05012": {
+      "name": "실내 V2L",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05013": {
+      "name": "실외 V2L 커넥터",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05015": {
+      "name": "BIO PET 원사 헤드라이닝",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05016": {
+      "name": "에코 프로세스 인조가죽 시트",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05017": {
+      "name": "BIO TPO 크래쉬패드",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05018": {
+      "name": "BIO 페인트 크래쉬패드/도어트림/혼커버",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05042": {
+      "name": "8에어백 시스템(운전석/동승석 어드밴스드 에어백, 1열 사이드, 2열 사이드 및 커튼 에어백, 전복감지센서 포함)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05044": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05046": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05047": {
+      "name": "유아용 시트 고정장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05048": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05049": {
+      "name": "다중 충돌방지 자동 제어 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05051": {
+      "name": "타이어 응급처치 키트",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05052": {
+      "name": "개별 타이어 공기압 경보장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05168": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "NE05024": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05025": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05026": {
+      "name": "차로 유지 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05027": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05028": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05029": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05030": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05031": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05032": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05033": {
+      "name": "후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05169": {
+      "name": "스티어링 휠 그립감지",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05170": {
+      "name": "진동 경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05053": {
+      "name": "19인치 알로이 휠 & 미쉐린 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05055": {
+      "name": "LED 헤드램프(MFR 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05056": {
+      "name": "LED 주간주행등/리어 콤비램프/보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05060": {
+      "name": "리어 스포일러",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05061": {
+      "name": "오토 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05062": {
+      "name": "블랙 하이그로시 벨트라인 몰딩",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05063": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05064": {
+      "name": "이중접합 차음 유리(윈드실드, 1열/2열 도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05066": {
+      "name": "리어 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05082": {
+      "name": "클러스터(12.3인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05084": {
+      "name": "가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05086": {
+      "name": "선바이저(거울, 조명 및 슬라이딩)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05088": {
+      "name": "소프트 재질 크래쉬패드",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05089": {
+      "name": "2열 에어벤트",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05090": {
+      "name": "LED 램프(맵램프, 룸램프, 선바이저 램프, 러기지 램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05092": {
+      "name": "ECM 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05093": {
+      "name": "유니버설 아일랜드",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05104": {
+      "name": "인조가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05105": {
+      "name": "운전석 전동시트(8way, 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05112": {
+      "name": "동승석 전동시트(8way, 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05107": {
+      "name": "1열 열선/통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05116": {
+      "name": "2열 6:4 분할 폴딩 시트(슬라이딩 & 리클라이닝 및 암레스트 포함)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05109": {
+      "name": "2열 리모트 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05127": {
+      "name": "듀얼 풀오토 에어컨(마이크로 에어필터/오토 디포그/미세먼지 센서/공기청정모드/애프터 블로우)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05128": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05129": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05130": {
+      "name": "USB-C 타입 단자(충전·데이터 스위치 타입 1개/유니버설 아일랜드 하단 2개/2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05132": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05133": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05134": {
+      "name": "세이프티 파워 윈도우(전좌석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05135": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05136": {
+      "name": "회생제동 컨트롤 패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05137": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05138": {
+      "name": "전동식 충전 도어(조명 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05140": {
+      "name": "하이패스",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05141": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05142": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05160": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트, e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NE05162": {
+      "name": "일반 오디오 시스템(6스피커)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NE05163": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NE05014": {
+      "name": "HTRAC",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NE05157": {
+      "name": "디지털 센터 미러",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NE05P01": {
+      "name": "빌트인 캠 2,증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05054": {
+      "name": "20인치 알로이 휠 & 미쉐린 타이어",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NE05P02": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05P06": {
+      "name": "현대 스마트센스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05P05": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05P08": {
+      "name": "파킹 어시스트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05P13": {
+      "name": "파킹 어시스트 Lite",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05P11": {
+      "name": "러기지 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05172": {
+      "name": "차량 보호 필름Ⅰ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NE05173": {
+      "name": "차량 보호 필름Ⅱ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NE05067": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05068": {
+      "name": "지능형 헤드램프(IFS)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05071": {
+      "name": "외장 고급화(메탈페인트 범퍼하단/도어 사이드, 도어 사이드 크롬 몰딩)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05070": {
+      "name": "LED 방향지시등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05073": {
+      "name": "N Line 전용 디자인(프론트/리어 범퍼, 바디컬러 도어 사이드 및 휠아치 몰딩)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05074": {
+      "name": "블랙 아웃사이드 미러 커버",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05075": {
+      "name": "N Line 엠블럼(그릴 및 좌/우 프론트 펜더)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05076": {
+      "name": "N Line 전용 20인치 알로이 휠(N 휠캡 포함) & 미쉐린 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05077": {
+      "name": "N Line 전용 가니쉬 히든 라이팅(충전 표시등 포함)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05096": {
+      "name": "메탈 도어 스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05097": {
+      "name": "N Line 전용 반펀칭 가죽 스티어링 휠(열선, 그립감지, 진동경고 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05098": {
+      "name": "블랙 내장재(헤드라이닝/선바이저/필러 트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05099": {
+      "name": "N Line 전용 메탈 페달 & 풋레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05100": {
+      "name": "레드 스티치 포인트(스티어링 휠, 크래쉬패드, 1열 도어트림, 1/2열 도어 암레스트, 센터콘솔 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05101": {
+      "name": "다크메탈 인사이드 도어핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05094": {
+      "name": "앰비언트 무드램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "NE05113": {
+      "name": "N Line 전용 천연가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05P10": {
+      "name": "알칸타라/천연가죽 시트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05019": {
+      "name": "에코 프로세스 천연가죽 시트(리사이클 PET 원단 콤비)",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05020": {
+      "name": "리사이클 PET 원사 도어 암레스트",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05021": {
+      "name": "BIO TPO 크래쉬패드/도어트림(리얼스티치)",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05022": {
+      "name": "BIO 페인트/페이퍼렛 도어가니시",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05023": {
+      "name": "BIO PET 플로어 카펫/카매트",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "NE05034": {
+      "name": "전방 충돌방지 보조(교차차량/추월시 대향차/측방 접근차, 회피 조향 보조 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05035": {
+      "name": "후측방 충돌방지 보조(주행, 전진출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05036": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05037": {
+      "name": "스마트 크루즈 컨트롤(운전 스타일 연동 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05038": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05039": {
+      "name": "고속도로 주행 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05040": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NE05069": {
+      "name": "가니쉬 히든 라이팅(충전 표시등 포함)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05095": {
+      "name": "메탈 페달 & 풋레스트",
+      "category": "내장/시트",
+      "is_package": false
+    },
+    "NE05124": {
+      "name": "2열 열선시트",
+      "category": "내장/시트",
+      "is_package": false
+    },
+    "NE05110": {
+      "name": "천연가죽 시트",
+      "category": "내장/시트",
+      "is_package": false
+    },
+    "NE05111": {
+      "name": "운전석 전동시트(레그레스트, 릴렉션 컴포트, 자세 메모리 시스템)",
+      "category": "내장/시트",
+      "is_package": false
+    },
+    "NE05102": {
+      "name": "전자식 차일드락",
+      "category": "내장/시트",
+      "is_package": false
+    },
+    "NE05143": {
+      "name": "헤드업 디스플레이",
+      "category": "편의/인포테인먼트",
+      "is_package": false
+    },
+    "NE05144": {
+      "name": "디지털 키 2",
+      "category": "편의/인포테인먼트",
+      "is_package": false
+    },
+    "NE05145": {
+      "name": "스마트폰 무선충전",
+      "category": "편의/인포테인먼트",
+      "is_package": false
+    },
+    "NE05164": {
+      "name": "BOSE 프리미엄 사운드(8스피커, 외장앰프 포함)",
+      "category": "편의/인포테인먼트",
+      "is_package": false
+    },
+    "NE05165": {
+      "name": "전기차 액티브 사운드 디자인(e-ASD)",
+      "category": "편의/인포테인먼트",
+      "is_package": false
+    },
+    "NE05P07": {
+      "name": "컴포트 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05080": {
+      "name": "비전루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NE05P09": {
+      "name": "디지털 사이드 미러",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05065": {
+      "name": "이중접합 차음 유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05078": {
+      "name": "수동 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "NE05115": {
+      "name": "2열 6:4 분할 폴딩 시트(슬라이딩 & 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05114": {
+      "name": "직물시트",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "NE05131": {
+      "name": "USB-C 타입 단자(충전·데이터 스위치 타입 1개/2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05147": {
+      "name": "세이프티 파워 윈도우(운전석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05158": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NE05003": {
+      "name": "63.0kWh 리튬 이온 배터리",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "NE05146": {
+      "name": "USB-C 타입 단자(충전·데이터 스위치 타입 1개/센터 콘솔 하단 2개/2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NE05P03": {
+      "name": "컴포트 초이스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05P12": {
+      "name": "스타일(기본형 E-Value+)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NE05117": {
+      "name": "2열 6:4 분할 폴딩 시트(암레스트 포함)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NE05P04": {
+      "name": "컴포트Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "익스클루시브": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "base": 57400000
+      },
+      "basic": [
+        "NE05001",
+        "NE05002",
+        "NE05004",
+        "NE05005",
+        "NE05006",
+        "NE05007",
+        "NE05008",
+        "NE05009",
+        "NE05010",
+        "NE05011",
+        "NE05012",
+        "NE05013",
+        "NE05015",
+        "NE05016",
+        "NE05017",
+        "NE05018",
+        "NE05042",
+        "NE05044",
+        "NE05046",
+        "NE05047",
+        "NE05048",
+        "NE05049",
+        "NE05051",
+        "NE05052",
+        "NE05168",
+        "NE05024",
+        "NE05025",
+        "NE05026",
+        "NE05027",
+        "NE05028",
+        "NE05029",
+        "NE05030",
+        "NE05031",
+        "NE05032",
+        "NE05033",
+        "NE05169",
+        "NE05170",
+        "NE05053",
+        "NE05055",
+        "NE05056",
+        "NE05060",
+        "NE05061",
+        "NE05062",
+        "NE05063",
+        "NE05064",
+        "NE05066",
+        "NE05082",
+        "NE05084",
+        "NE05086",
+        "NE05088",
+        "NE05089",
+        "NE05090",
+        "NE05092",
+        "NE05093",
+        "NE05104",
+        "NE05105",
+        "NE05112",
+        "NE05107",
+        "NE05116",
+        "NE05109",
+        "NE05127",
+        "NE05128",
+        "NE05129",
+        "NE05130",
+        "NE05132",
+        "NE05133",
+        "NE05134",
+        "NE05135",
+        "NE05136",
+        "NE05137",
+        "NE05138",
+        "NE05140",
+        "NE05141",
+        "NE05142",
+        "NE05160",
+        "NE05162",
+        "NE05163"
+      ],
+      "select": [
+        "NE05014",
+        "NE05157",
+        "NE05P01",
+        "NE05054",
+        "NE05P02",
+        "NE05P06",
+        "NE05P05",
+        "NE05P08",
+        "NE05P13",
+        "NE05P11",
+        "NE05172",
+        "NE05173"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NE05014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "NE05157"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "NE05P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NE05054"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "NE05P02"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "NE05P06"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "NE05P05"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "NE05P08"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "NE05P13"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "NE05P11"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NE05172"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NE05173"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "n-line-exclusive": {
+      "slug": "n-line-exclusive",
+      "name_en": "N Line Exclusive",
+      "price": {
+        "base": 59510000
+      },
+      "basic": [
+        "NE05001",
+        "NE05002",
+        "NE05004",
+        "NE05005",
+        "NE05006",
+        "NE05007",
+        "NE05008",
+        "NE05009",
+        "NE05010",
+        "NE05011",
+        "NE05012",
+        "NE05013",
+        "NE05015",
+        "NE05017",
+        "NE05018",
+        "NE05042",
+        "NE05044",
+        "NE05046",
+        "NE05047",
+        "NE05048",
+        "NE05049",
+        "NE05051",
+        "NE05052",
+        "NE05168",
+        "NE05024",
+        "NE05025",
+        "NE05026",
+        "NE05027",
+        "NE05028",
+        "NE05029",
+        "NE05030",
+        "NE05031",
+        "NE05032",
+        "NE05033",
+        "NE05056",
+        "NE05060",
+        "NE05061",
+        "NE05062",
+        "NE05063",
+        "NE05064",
+        "NE05066",
+        "NE05067",
+        "NE05068",
+        "NE05071",
+        "NE05070",
+        "NE05073",
+        "NE05074",
+        "NE05075",
+        "NE05076",
+        "NE05077",
+        "NE05082",
+        "NE05086",
+        "NE05088",
+        "NE05089",
+        "NE05090",
+        "NE05092",
+        "NE05093",
+        "NE05096",
+        "NE05097",
+        "NE05098",
+        "NE05099",
+        "NE05100",
+        "NE05101",
+        "NE05094",
+        "NE05105",
+        "NE05112",
+        "NE05107",
+        "NE05116",
+        "NE05109",
+        "NE05113",
+        "NE05127",
+        "NE05128",
+        "NE05129",
+        "NE05130",
+        "NE05132",
+        "NE05133",
+        "NE05134",
+        "NE05135",
+        "NE05136",
+        "NE05137",
+        "NE05138",
+        "NE05140",
+        "NE05141",
+        "NE05142",
+        "NE05160",
+        "NE05162",
+        "NE05163"
+      ],
+      "select": [
+        "NE05014",
+        "NE05157",
+        "NE05P01",
+        "NE05P02",
+        "NE05P06",
+        "NE05P08",
+        "NE05P13",
+        "NE05P10",
+        "NE05P11",
+        "NE05172",
+        "NE05173"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NE05014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "NE05157"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "NE05P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NE05P02"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "NE05P06"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "NE05P08"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "NE05P13"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "NE05P10"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NE05P11"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NE05172"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NE05173"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "name_en": null,
+      "price": {
+        "base": 62300000
+      },
+      "basic": [
+        "NE05001",
+        "NE05002",
+        "NE05004",
+        "NE05005",
+        "NE05006",
+        "NE05007",
+        "NE05008",
+        "NE05009",
+        "NE05010",
+        "NE05011",
+        "NE05012",
+        "NE05013",
+        "NE05015",
+        "NE05019",
+        "NE05020",
+        "NE05021",
+        "NE05022",
+        "NE05023",
+        "NE05042",
+        "NE05044",
+        "NE05046",
+        "NE05047",
+        "NE05048",
+        "NE05049",
+        "NE05051",
+        "NE05052",
+        "NE05168",
+        "NE05024",
+        "NE05025",
+        "NE05026",
+        "NE05027",
+        "NE05028",
+        "NE05029",
+        "NE05030",
+        "NE05031",
+        "NE05032",
+        "NE05033",
+        "NE05169",
+        "NE05170",
+        "NE05034",
+        "NE05035",
+        "NE05036",
+        "NE05037",
+        "NE05038",
+        "NE05039",
+        "NE05040",
+        "NE05053",
+        "NE05056",
+        "NE05060",
+        "NE05061",
+        "NE05062",
+        "NE05063",
+        "NE05064",
+        "NE05066",
+        "NE05067",
+        "NE05068",
+        "NE05069",
+        "NE05070",
+        "NE05071",
+        "NE05082",
+        "NE05084",
+        "NE05086",
+        "NE05088",
+        "NE05089",
+        "NE05090",
+        "NE05092",
+        "NE05093",
+        "NE05094",
+        "NE05095",
+        "NE05096",
+        "NE05124",
+        "NE05105",
+        "NE05112",
+        "NE05107",
+        "NE05116",
+        "NE05109",
+        "NE05110",
+        "NE05111",
+        "NE05102",
+        "NE05127",
+        "NE05128",
+        "NE05129",
+        "NE05130",
+        "NE05132",
+        "NE05133",
+        "NE05134",
+        "NE05135",
+        "NE05136",
+        "NE05137",
+        "NE05138",
+        "NE05140",
+        "NE05141",
+        "NE05142",
+        "NE05143",
+        "NE05144",
+        "NE05145",
+        "NE05160",
+        "NE05163",
+        "NE05164",
+        "NE05165"
+      ],
+      "select": [
+        "NE05014",
+        "NE05157",
+        "NE05P01",
+        "NE05054",
+        "NE05P08",
+        "NE05P13",
+        "NE05P07",
+        "NE05080",
+        "NE05P09",
+        "NE05P11",
+        "NE05172",
+        "NE05173"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NE05014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "NE05157"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "NE05P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NE05054"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "NE05P08"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "NE05P13"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "NE05P07"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "NE05080"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "NE05P09"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "NE05P11"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NE05172"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NE05173"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "n-line-prestige": {
+      "slug": "n-line-prestige",
+      "name_en": "N Line Prestige",
+      "price": {
+        "base": 63460000
+      },
+      "basic": [
+        "NE05001",
+        "NE05002",
+        "NE05004",
+        "NE05005",
+        "NE05006",
+        "NE05007",
+        "NE05008",
+        "NE05009",
+        "NE05010",
+        "NE05011",
+        "NE05012",
+        "NE05013",
+        "NE05015",
+        "NE05019",
+        "NE05020",
+        "NE05021",
+        "NE05022",
+        "NE05023",
+        "NE05042",
+        "NE05044",
+        "NE05046",
+        "NE05047",
+        "NE05048",
+        "NE05049",
+        "NE05051",
+        "NE05052",
+        "NE05168",
+        "NE05024",
+        "NE05025",
+        "NE05026",
+        "NE05027",
+        "NE05028",
+        "NE05029",
+        "NE05030",
+        "NE05031",
+        "NE05032",
+        "NE05033",
+        "NE05034",
+        "NE05035",
+        "NE05036",
+        "NE05037",
+        "NE05038",
+        "NE05039",
+        "NE05040",
+        "NE05056",
+        "NE05060",
+        "NE05061",
+        "NE05062",
+        "NE05063",
+        "NE05064",
+        "NE05066",
+        "NE05067",
+        "NE05068",
+        "NE05070",
+        "NE05073",
+        "NE05074",
+        "NE05075",
+        "NE05076",
+        "NE05077",
+        "NE05082",
+        "NE05086",
+        "NE05088",
+        "NE05089",
+        "NE05090",
+        "NE05092",
+        "NE05093",
+        "NE05094",
+        "NE05096",
+        "NE05124",
+        "NE05097",
+        "NE05098",
+        "NE05099",
+        "NE05100",
+        "NE05101",
+        "NE05105",
+        "NE05112",
+        "NE05107",
+        "NE05116",
+        "NE05109",
+        "NE05111",
+        "NE05102",
+        "NE05113",
+        "NE05127",
+        "NE05128",
+        "NE05129",
+        "NE05130",
+        "NE05132",
+        "NE05133",
+        "NE05134",
+        "NE05135",
+        "NE05136",
+        "NE05137",
+        "NE05138",
+        "NE05140",
+        "NE05141",
+        "NE05142",
+        "NE05143",
+        "NE05144",
+        "NE05145",
+        "NE05160",
+        "NE05163",
+        "NE05164",
+        "NE05165"
+      ],
+      "select": [
+        "NE05014",
+        "NE05157",
+        "NE05P01",
+        "NE05P08",
+        "NE05P13",
+        "NE05P07",
+        "NE05080",
+        "NE05P09",
+        "NE05P10",
+        "NE05P11",
+        "NE05172",
+        "NE05173"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NE05014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "NE05157"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "NE05P01"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "NE05P08"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "NE05P13"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "NE05P07"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "NE05080"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "NE05P09"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "NE05P10"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "NE05P11"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NE05172"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NE05173"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "이-라이트": {
+      "slug": "e-lite",
+      "name_en": null,
+      "price": {
+        "base": 53340000
+      },
+      "basic": [
+        "NE05001",
+        "NE05002",
+        "NE05004",
+        "NE05005",
+        "NE05006",
+        "NE05007",
+        "NE05008",
+        "NE05009",
+        "NE05010",
+        "NE05011",
+        "NE05015",
+        "NE05017",
+        "NE05018",
+        "NE05042",
+        "NE05044",
+        "NE05046",
+        "NE05047",
+        "NE05048",
+        "NE05049",
+        "NE05051",
+        "NE05052",
+        "NE05168",
+        "NE05024",
+        "NE05025",
+        "NE05026",
+        "NE05027",
+        "NE05028",
+        "NE05029",
+        "NE05030",
+        "NE05031",
+        "NE05032",
+        "NE05033",
+        "NE05169",
+        "NE05170",
+        "NE05053",
+        "NE05055",
+        "NE05056",
+        "NE05060",
+        "NE05063",
+        "NE05065",
+        "NE05066",
+        "NE05078",
+        "NE05082",
+        "NE05086",
+        "NE05088",
+        "NE05089",
+        "NE05090",
+        "NE05115",
+        "NE05109",
+        "NE05114",
+        "NE05127",
+        "NE05128",
+        "NE05129",
+        "NE05131",
+        "NE05132",
+        "NE05133",
+        "NE05147",
+        "NE05135",
+        "NE05136",
+        "NE05137",
+        "NE05138",
+        "NE05158",
+        "NE05162",
+        "NE05163"
+      ],
+      "select": [
+        "NE05014",
+        "NE05P11",
+        "NE05172",
+        "NE05173"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NE05014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "NE05P11"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NE05172"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NE05173"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "영업용": {
+      "slug": "taxi",
+      "name_en": null,
+      "price": {
+        "base": 53800000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "이-밸류 플러스": {
+      "slug": "e-value-plus",
+      "name_en": null,
+      "price": {
+        "base": 49930000
+      },
+      "basic": [
+        "NE05001",
+        "NE05003",
+        "NE05004",
+        "NE05005",
+        "NE05006",
+        "NE05007",
+        "NE05008",
+        "NE05009",
+        "NE05010",
+        "NE05011",
+        "NE05012",
+        "NE05015",
+        "NE05017",
+        "NE05018",
+        "NE05042",
+        "NE05044",
+        "NE05046",
+        "NE05047",
+        "NE05048",
+        "NE05049",
+        "NE05051",
+        "NE05052",
+        "NE05168",
+        "NE05024",
+        "NE05025",
+        "NE05026",
+        "NE05027",
+        "NE05028",
+        "NE05029",
+        "NE05030",
+        "NE05031",
+        "NE05032",
+        "NE05033",
+        "NE05169",
+        "NE05170",
+        "NE05053",
+        "NE05055",
+        "NE05056",
+        "NE05060",
+        "NE05063",
+        "NE05064",
+        "NE05066",
+        "NE05082",
+        "NE05086",
+        "NE05089",
+        "NE05090",
+        "NE05092",
+        "NE05114",
+        "NE05115",
+        "NE05127",
+        "NE05128",
+        "NE05146",
+        "NE05132",
+        "NE05133",
+        "NE05147",
+        "NE05135",
+        "NE05136",
+        "NE05137",
+        "NE05138",
+        "NE05158",
+        "NE05162",
+        "NE05163"
+      ],
+      "select": [
+        "NE05P06",
+        "NE05P03",
+        "NE05P12",
+        "NE05P13",
+        "NE05P11",
+        "NE05172",
+        "NE05173"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NE05P06"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "NE05P03"
+          ],
+          "price": 1000000
+        },
+        {
+          "codes": [
+            "NE05P12"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "NE05P13"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "NE05P11"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "NE05172"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "NE05173"
+          ],
+          "price": 400000
+        }
+      ]
+    }
+  }
+}

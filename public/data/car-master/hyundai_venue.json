@@ -1,0 +1,820 @@
+{
+  "catalog_id": "hyundai_venue",
+  "title": "현대 베뉴",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/venue-2025-R-L1.6_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/venue-2025-E-L1.6_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/venue-J-2025_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "QX05001",
+      "QX05002",
+      "QX05003"
+    ],
+    "안전": [
+      "QX05014",
+      "QX05016",
+      "QX05015",
+      "QX05072"
+    ],
+    "지능형 안전 기술": [
+      "QX05004",
+      "QX05005",
+      "QX05006",
+      "QX05007",
+      "QX05008"
+    ],
+    "외관": [
+      "QX05020",
+      "QX05022",
+      "QX05024",
+      "QX05018",
+      "QX05019",
+      "QX05023",
+      "QX05017",
+      "QX05025",
+      "QX05026",
+      "QX05027",
+      "QX05028"
+    ],
+    "내장": [
+      "QX05033",
+      "QX05036",
+      "QX05037",
+      "QX05035",
+      "QX05034",
+      "QX05038"
+    ],
+    "시트": [
+      "QX05039",
+      "QX05041",
+      "QX05042",
+      "QX05043",
+      "QX05040"
+    ],
+    "편의": [
+      "QX05046",
+      "QX05052",
+      "QX05053",
+      "QX05054",
+      "QX05055",
+      "QX05056",
+      "QX05048",
+      "QX05047",
+      "QX05051",
+      "QX05057",
+      "QX05073",
+      "QX05058",
+      "QX05059"
+    ],
+    "인포테인먼트": [
+      "QX05060",
+      "QX05062",
+      "QX05063",
+      "QX05064",
+      "QX05065",
+      "QX05061",
+      "QX05066"
+    ],
+    "선택사양": [
+      "QX05P07",
+      "QX05050",
+      "QX05021",
+      "QX05P05",
+      "QX05030",
+      "QX05029",
+      "QX05P02",
+      "QX05P03",
+      "QX05071",
+      "QX05P06",
+      "QX05067"
+    ]
+  },
+  "options": {
+    "QX05001": {
+      "name": "스마트스트림 가솔린1.6엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "QX05002": {
+      "name": "스마트스트림 IVT(무단변속기)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "QX05003": {
+      "name": "통합 주행모드",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "QX05014": {
+      "name": "6에어백 시스템(1열 어드밴스드/사이드, 전복대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "QX05016": {
+      "name": "유아용 시트 고정장치(2열2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "QX05015": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "QX05072": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "QX05004": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "QX05005": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "QX05006": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "QX05007": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "QX05008": {
+      "name": "차로 유지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "QX05020": {
+      "name": "15인치 스틸 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05022": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05024": {
+      "name": "크롬 라디에이터 그릴",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05018": {
+      "name": "LED 주간주행등",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05019": {
+      "name": "LED 포지셔닝램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05033": {
+      "name": "클러스터(4.2인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "QX05036": {
+      "name": "메탈 페인트 인사이드 도어 핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "QX05037": {
+      "name": "2단 러기지 보드",
+      "category": "내장",
+      "is_package": false
+    },
+    "QX05035": {
+      "name": "선바이저 거울",
+      "category": "내장",
+      "is_package": false
+    },
+    "QX05039": {
+      "name": "인조가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "QX05041": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "QX05042": {
+      "name": "운전석 수동 높이 조절",
+      "category": "시트",
+      "is_package": false
+    },
+    "QX05043": {
+      "name": "2열 6:4 분할 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "QX05046": {
+      "name": "수동식 틸트 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05052": {
+      "name": "주차 거리 경고(후방)",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05053": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05054": {
+      "name": "파워아웃렛(1열1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05055": {
+      "name": "2WD험로 주행모드(스노우/샌드/머드)",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05056": {
+      "name": "크루즈 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05060": {
+      "name": "8인치 디스플레이 오디오(4스피커, 라디오, MP3, 블루투스 핸즈프리)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "QX05062": {
+      "name": "후방모니터",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "QX05063": {
+      "name": "USB A타입 단자(1열 데이터 타입 1개)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "QX05064": {
+      "name": "USB C타입 단자(1열 충전 1개/2열 충전 2개)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "QX05P07": {
+      "name": "모던 초이스 I",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "QX05050": {
+      "name": "하이패스",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "QX05023": {
+      "name": "아웃사이드 미러(열선, 전동 조절)",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05048": {
+      "name": "매뉴얼 에어컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05065": {
+      "name": "블랭킹 트레이 핸드폰 홀더",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "QX05021": {
+      "name": "15인치 알로이 휠 & 타이어",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "QX05P05": {
+      "name": "프로텍션 매트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "QX05017": {
+      "name": "LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05034": {
+      "name": "선바이저 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "QX05040": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "QX05047": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05051": {
+      "name": "ECM 룸미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05057": {
+      "name": "세이프티 파워 윈도우(운전석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05073": {
+      "name": "커버링 쉘프",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05061": {
+      "name": "8인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "QX05066": {
+      "name": "일반 오디오 시스템(6스피커)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "QX05030": {
+      "name": "선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "QX05029": {
+      "name": "투톤 컬러 루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "QX05P02": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "QX05P03": {
+      "name": "테크",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "QX05071": {
+      "name": "적외선 무릎 워머",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "QX05P06": {
+      "name": "프리미엄 스피커",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "QX05067": {
+      "name": "17인치 블랙 알로이 휠",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "QX05025": {
+      "name": "17인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05026": {
+      "name": "LED 리어 콤비 램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05027": {
+      "name": "루프랙",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05028": {
+      "name": "스페셜 디자인 셀렉션 (FLUX 전용 크롬 도금 라디에이터 그릴, 블랙 리어스키드 플레이트, C필러 뱃지(지급품))",
+      "category": "외관",
+      "is_package": false
+    },
+    "QX05038": {
+      "name": "인조가죽 적용내장(도어 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "QX05058": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "QX05059": {
+      "name": "디지털 키 2 터치",
+      "category": "편의",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "스마트 (영업용 LPG 1.6)": {
+      "slug": "smart",
+      "name_en": null,
+      "price": {
+        "tax_5": 18490000,
+        "tax_3_5": 18210000
+      },
+      "basic": [
+        "QX05001",
+        "QX05002",
+        "QX05003",
+        "QX05014",
+        "QX05016",
+        "QX05015",
+        "QX05072",
+        "QX05004",
+        "QX05005",
+        "QX05006",
+        "QX05007",
+        "QX05008",
+        "QX05020",
+        "QX05022",
+        "QX05024",
+        "QX05018",
+        "QX05019",
+        "QX05033",
+        "QX05036",
+        "QX05037",
+        "QX05035",
+        "QX05039",
+        "QX05041",
+        "QX05042",
+        "QX05043",
+        "QX05046",
+        "QX05052",
+        "QX05053",
+        "QX05054",
+        "QX05055",
+        "QX05056",
+        "QX05060",
+        "QX05062",
+        "QX05063",
+        "QX05064"
+      ],
+      "select": [
+        "QX05P07",
+        "QX05050"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "QX05P07"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "QX05050"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "운전교습용 (LPG 1.6)": {
+      "slug": "smart",
+      "name_en": null,
+      "price": {
+        "tax_5": 16420000,
+        "tax_3_5": 16170000
+      },
+      "basic": [
+        "QX05002",
+        "QX05003",
+        "QX05014",
+        "QX05016",
+        "QX05015",
+        "QX05072",
+        "QX05020",
+        "QX05023",
+        "QX05033",
+        "QX05035",
+        "QX05036",
+        "QX05037",
+        "QX05042",
+        "QX05043",
+        "QX05048",
+        "QX05046",
+        "QX05052",
+        "QX05053",
+        "QX05054",
+        "QX05065",
+        "QX05063"
+      ],
+      "select": [
+        "QX05039",
+        "QX05041"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "QX05039",
+            "QX05041"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "스마트": {
+      "slug": "Smart",
+      "name_en": null,
+      "price": {
+        "tax_5": 19560000,
+        "tax_3_5": 19260000
+      },
+      "basic": [
+        "QX05001",
+        "QX05002",
+        "QX05003",
+        "QX05014",
+        "QX05016",
+        "QX05015",
+        "QX05072",
+        "QX05004",
+        "QX05005",
+        "QX05006",
+        "QX05007",
+        "QX05008",
+        "QX05020",
+        "QX05022",
+        "QX05024",
+        "QX05018",
+        "QX05019",
+        "QX05033",
+        "QX05036",
+        "QX05037",
+        "QX05035",
+        "QX05039",
+        "QX05041",
+        "QX05042",
+        "QX05043",
+        "QX05046",
+        "QX05052",
+        "QX05053",
+        "QX05054",
+        "QX05055",
+        "QX05056",
+        "QX05060",
+        "QX05062",
+        "QX05063",
+        "QX05064"
+      ],
+      "select": [
+        "QX05021",
+        "QX05050",
+        "QX05P05"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "QX05021"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "QX05050"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "QX05P05"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "프리미엄": {
+      "slug": "Premium",
+      "name_en": null,
+      "price": {
+        "tax_5": 22460000,
+        "tax_3_5": 22120000
+      },
+      "basic": [
+        "QX05001",
+        "QX05002",
+        "QX05003",
+        "QX05014",
+        "QX05016",
+        "QX05015",
+        "QX05072",
+        "QX05004",
+        "QX05005",
+        "QX05006",
+        "QX05007",
+        "QX05008",
+        "QX05022",
+        "QX05024",
+        "QX05018",
+        "QX05019",
+        "QX05017",
+        "QX05021",
+        "QX05033",
+        "QX05036",
+        "QX05037",
+        "QX05035",
+        "QX05034",
+        "QX05039",
+        "QX05041",
+        "QX05042",
+        "QX05043",
+        "QX05040",
+        "QX05052",
+        "QX05053",
+        "QX05054",
+        "QX05055",
+        "QX05056",
+        "QX05047",
+        "QX05050",
+        "QX05051",
+        "QX05057",
+        "QX05073",
+        "QX05062",
+        "QX05063",
+        "QX05064",
+        "QX05061",
+        "QX05066"
+      ],
+      "select": [
+        "QX05030",
+        "QX05029",
+        "QX05P02",
+        "QX05P03",
+        "QX05071",
+        "QX05P06",
+        "QX05067",
+        "QX05P05"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "QX05030"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "QX05029"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "QX05P02"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "QX05P03"
+          ],
+          "price": 350000
+        },
+        {
+          "codes": [
+            "QX05071"
+          ],
+          "price": 280000
+        },
+        {
+          "codes": [
+            "QX05P06"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "QX05067"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "QX05P05"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "플럭스": {
+      "slug": "flux",
+      "name_en": null,
+      "price": {
+        "tax_5": 24230000,
+        "tax_3_5": 23860000
+      },
+      "basic": [
+        "QX05001",
+        "QX05002",
+        "QX05003",
+        "QX05014",
+        "QX05016",
+        "QX05015",
+        "QX05072",
+        "QX05004",
+        "QX05005",
+        "QX05006",
+        "QX05007",
+        "QX05008",
+        "QX05022",
+        "QX05018",
+        "QX05019",
+        "QX05017",
+        "QX05025",
+        "QX05026",
+        "QX05027",
+        "QX05028",
+        "QX05033",
+        "QX05036",
+        "QX05037",
+        "QX05035",
+        "QX05034",
+        "QX05038",
+        "QX05039",
+        "QX05041",
+        "QX05042",
+        "QX05043",
+        "QX05040",
+        "QX05052",
+        "QX05053",
+        "QX05054",
+        "QX05055",
+        "QX05056",
+        "QX05047",
+        "QX05050",
+        "QX05051",
+        "QX05057",
+        "QX05073",
+        "QX05058",
+        "QX05059",
+        "QX05062",
+        "QX05063",
+        "QX05064",
+        "QX05061",
+        "QX05066"
+      ],
+      "select": [
+        "QX05030",
+        "QX05029",
+        "QX05071",
+        "QX05P06",
+        "QX05067",
+        "QX05P05"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "QX05030"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "QX05029"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "QX05071"
+          ],
+          "price": 280000
+        },
+        {
+          "codes": [
+            "QX05P06"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "QX05067"
+          ],
+          "price": 540000
+        },
+        {
+          "codes": [
+            "QX05P05"
+          ],
+          "price": 250000
+        }
+      ]
+    }
+  }
+}

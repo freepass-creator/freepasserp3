@@ -1,0 +1,962 @@
+{
+  "catalog_id": "hyundai_nexo_nh2",
+  "title": "현대 디 올 뉴 넥쏘 (NH2)",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/nh2-25_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "NH01002",
+      "NH01003",
+      "NH01004"
+    ],
+    "안전": [
+      "NH01030",
+      "NH01031",
+      "NH01032",
+      "NH01033",
+      "NH01034",
+      "NH01035",
+      "NH01036"
+    ],
+    "지능형 안전 기술": [
+      "NH01007",
+      "NH01008",
+      "NH01009",
+      "NH01010",
+      "NH01011",
+      "NH01012",
+      "NH01013",
+      "NH01014",
+      "NH01015",
+      "NH01016",
+      "NH01017",
+      "NH01018",
+      "NH01020",
+      "NH01021",
+      "NH01022",
+      "NH01023",
+      "NH01025",
+      "NH01026",
+      "NH01028"
+    ],
+    "외관": [
+      "NH01038",
+      "NH01039",
+      "NH01040",
+      "NH01041",
+      "NH01042",
+      "NH01043",
+      "NH01044",
+      "NH01045",
+      "NH01047",
+      "NH01048",
+      "NH01049",
+      "NH01050",
+      "NH01051",
+      "NH01052",
+      "NH01053",
+      "NH01054",
+      "NH01055",
+      "NH01056"
+    ],
+    "내장": [
+      "NH01061",
+      "NH01062",
+      "NH01063",
+      "NH01064",
+      "NH01066",
+      "NH01068",
+      "NH01069"
+    ],
+    "시트": [
+      "NH01070",
+      "NH01071",
+      "NH01072",
+      "NH01073",
+      "NH01074",
+      "NH01076",
+      "NH01077",
+      "NH01078",
+      "NH01079",
+      "NH01080"
+    ],
+    "편의": [
+      "NH01083",
+      "NH01084",
+      "NH01085",
+      "NH01086",
+      "NH01087",
+      "NH01088",
+      "NH01089",
+      "NH01091",
+      "NH01092",
+      "NH01093",
+      "NH01094",
+      "NH01095",
+      "NH01096",
+      "NH01097",
+      "NH01102",
+      "NH01103",
+      "NH01027",
+      "NH01105",
+      "NH01107",
+      "NH01108",
+      "NH01109"
+    ],
+    "인포테인먼트": [
+      "NH01114",
+      "NH01115",
+      "NH01116",
+      "NH01118",
+      "NH01119"
+    ],
+    "선택사양": [
+      "NH01101",
+      "NH01P01",
+      "NH01P02",
+      "NH01P03",
+      "NH01P04",
+      "NH01059",
+      "NH01057",
+      "NH01058",
+      "NH01P05"
+    ]
+  },
+  "options": {
+    "NH01002": {
+      "name": "회생제동 시스템",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NH01003": {
+      "name": "전자식 변속 칼럼(진동 경고)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NH01004": {
+      "name": "통합 주행 모드",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "NH01030": {
+      "name": "9에어백 시스템(1열 어드밴스드/센터사이드, 1/2열 사이드, 전복 대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NH01031": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "NH01032": {
+      "name": "액티브 후드 시스템(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NH01033": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "NH01034": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NH01035": {
+      "name": "유아용 시트 고정 장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "NH01036": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "NH01007": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01008": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01009": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01010": {
+      "name": "차로 유지 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01011": {
+      "name": "후측방 충돌 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01012": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01013": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01014": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01015": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01016": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01017": {
+      "name": "어드밴스드 후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01018": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01020": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01021": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01022": {
+      "name": "진동 경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01038": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01039": {
+      "name": "LED 방향지시등(앞/뒤)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01040": {
+      "name": "LED 주간주행등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01041": {
+      "name": "LED 포지셔닝 램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01042": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01043": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01044": {
+      "name": "18인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01045": {
+      "name": "자외선 차단 유리(윈드쉴드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01047": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01048": {
+      "name": "오토 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01049": {
+      "name": "블랙 도어 가니쉬",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01061": {
+      "name": "클러스터(12.3인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NH01062": {
+      "name": "가죽 스티어링 휠(열선, 투톤, 인터랙티브 픽셀 라이트 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NH01063": {
+      "name": "LED 실내등(맵램프, 퍼스널램프, 선바이저램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NH01064": {
+      "name": "메탈 도어 스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "NH01070": {
+      "name": "인조가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01071": {
+      "name": "1열 매뉴얼 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01072": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01073": {
+      "name": "2열 6:4 분할 폴딩 시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01083": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01084": {
+      "name": "스마트키 원격시동",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01085": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01086": {
+      "name": "회생제동 컨트롤 패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01087": {
+      "name": "듀얼 풀오토 에어컨(항균 처리 고성능 콤비필터, 오토디포그, 미세먼지 센서, 공기청정모드, 애프터 블로우 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01088": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01089": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01091": {
+      "name": "ECM 룸미러(프레임리스)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01092": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01093": {
+      "name": "세이프티 파워 윈도우(1/2열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01094": {
+      "name": "파워아울렛(1열 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01095": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01096": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01097": {
+      "name": "스마트폰 무선충전(싱글)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01114": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NH01115": {
+      "name": "일반 오디오 시스템(6스피커)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NH01116": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NH01101": {
+      "name": "하이패스(e hi-pass 포함)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NH01023": {
+      "name": "전방 충돌방지 보조(교차 차량/추월시 대향차/측방 접근차/회피 조향 보조 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01025": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01050": {
+      "name": "루프랙",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01066": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "NH01074": {
+      "name": "인조가죽 시트(패치 적용)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01076": {
+      "name": "동승석 전동시트(8way)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01077": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01078": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01102": {
+      "name": "실내 지문 인증 시스템 (개인화, 시동, 결제 등)",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01103": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01P01": {
+      "name": "빌트인 캠 2 Plus, 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NH01P02": {
+      "name": "실내외 V2L",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NH01P03": {
+      "name": "파킹어시스트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NH01P04": {
+      "name": "Audio by BANG & OLUFSEN 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "NH01059": {
+      "name": "19인치 알로이 휠 & 타이어",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NH01026": {
+      "name": "원격 스마트 주차 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01028": {
+      "name": "전방/후방/측방 주차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "NH01051": {
+      "name": "지능형 헤드램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01052": {
+      "name": "다이내믹 웰컴/에스코트 라이트 1종",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01053": {
+      "name": "LED 순차점등 방향지시등(앞/뒤)",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01054": {
+      "name": "앰비언트 라이팅 오토 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01055": {
+      "name": "투톤 도어 가니쉬",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01056": {
+      "name": "글로시 블랙 리어 디퓨저",
+      "category": "외관",
+      "is_package": false
+    },
+    "NH01068": {
+      "name": "리사이클 PET 스웨이드 내장재(헤드라이닝/선바이저)",
+      "category": "내장",
+      "is_package": false
+    },
+    "NH01069": {
+      "name": "크래쉬패드 패브릭 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "NH01079": {
+      "name": "바이오 프로세스 천연가죽 시트(메탈패치 적용, 엠보싱 디자인 펀칭)",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01080": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "NH01027": {
+      "name": "측방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01105": {
+      "name": "디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01107": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01108": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01109": {
+      "name": "LED 후진 가이드 램프",
+      "category": "편의",
+      "is_package": false
+    },
+    "NH01118": {
+      "name": "액티브 로드 노이즈 컨트롤",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NH01119": {
+      "name": "액티브 사운드 디자인",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "NH01057": {
+      "name": "비전루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NH01058": {
+      "name": "디지털 사이드 미러",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "NH01P05": {
+      "name": "카메라 패키지",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "익스클루시브": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "base": 80509000
+      },
+      "basic": [
+        "NH01002",
+        "NH01003",
+        "NH01004",
+        "NH01030",
+        "NH01031",
+        "NH01032",
+        "NH01033",
+        "NH01034",
+        "NH01035",
+        "NH01036",
+        "NH01007",
+        "NH01008",
+        "NH01009",
+        "NH01010",
+        "NH01011",
+        "NH01012",
+        "NH01013",
+        "NH01014",
+        "NH01015",
+        "NH01016",
+        "NH01017",
+        "NH01018",
+        "NH01020",
+        "NH01021",
+        "NH01022",
+        "NH01038",
+        "NH01039",
+        "NH01040",
+        "NH01041",
+        "NH01042",
+        "NH01043",
+        "NH01044",
+        "NH01045",
+        "NH01047",
+        "NH01048",
+        "NH01049",
+        "NH01061",
+        "NH01062",
+        "NH01063",
+        "NH01064",
+        "NH01070",
+        "NH01071",
+        "NH01072",
+        "NH01073",
+        "NH01083",
+        "NH01084",
+        "NH01085",
+        "NH01086",
+        "NH01087",
+        "NH01088",
+        "NH01089",
+        "NH01091",
+        "NH01092",
+        "NH01093",
+        "NH01094",
+        "NH01095",
+        "NH01096",
+        "NH01097",
+        "NH01114",
+        "NH01115",
+        "NH01116"
+      ],
+      "select": [
+        "NH01101"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NH01101"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "익스클루시브 스페셜": {
+      "slug": "exclusive-special",
+      "name_en": null,
+      "price": {
+        "base": 83500000
+      },
+      "basic": [
+        "NH01002",
+        "NH01003",
+        "NH01004",
+        "NH01030",
+        "NH01031",
+        "NH01032",
+        "NH01033",
+        "NH01034",
+        "NH01035",
+        "NH01036",
+        "NH01007",
+        "NH01008",
+        "NH01009",
+        "NH01010",
+        "NH01011",
+        "NH01012",
+        "NH01013",
+        "NH01014",
+        "NH01015",
+        "NH01016",
+        "NH01017",
+        "NH01018",
+        "NH01021",
+        "NH01022",
+        "NH01023",
+        "NH01025",
+        "NH01038",
+        "NH01039",
+        "NH01040",
+        "NH01041",
+        "NH01042",
+        "NH01043",
+        "NH01044",
+        "NH01045",
+        "NH01047",
+        "NH01048",
+        "NH01049",
+        "NH01050",
+        "NH01061",
+        "NH01062",
+        "NH01063",
+        "NH01064",
+        "NH01066",
+        "NH01072",
+        "NH01073",
+        "NH01074",
+        "NH01076",
+        "NH01077",
+        "NH01078",
+        "NH01083",
+        "NH01084",
+        "NH01085",
+        "NH01086",
+        "NH01087",
+        "NH01088",
+        "NH01089",
+        "NH01091",
+        "NH01092",
+        "NH01093",
+        "NH01094",
+        "NH01095",
+        "NH01096",
+        "NH01097",
+        "NH01101",
+        "NH01102",
+        "NH01103",
+        "NH01114",
+        "NH01115",
+        "NH01116"
+      ],
+      "select": [
+        "NH01P01",
+        "NH01P02",
+        "NH01P03",
+        "NH01P04",
+        "NH01059"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NH01P01"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "NH01P02"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "NH01P03"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "NH01P04"
+          ],
+          "price": 1150000
+        },
+        {
+          "codes": [
+            "NH01059"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "name_en": null,
+      "price": {
+        "base": 87893000
+      },
+      "basic": [
+        "NH01002",
+        "NH01003",
+        "NH01004",
+        "NH01030",
+        "NH01031",
+        "NH01032",
+        "NH01033",
+        "NH01034",
+        "NH01035",
+        "NH01036",
+        "NH01007",
+        "NH01008",
+        "NH01009",
+        "NH01010",
+        "NH01011",
+        "NH01012",
+        "NH01013",
+        "NH01014",
+        "NH01015",
+        "NH01017",
+        "NH01018",
+        "NH01021",
+        "NH01022",
+        "NH01023",
+        "NH01025",
+        "NH01026",
+        "NH01028",
+        "NH01038",
+        "NH01040",
+        "NH01041",
+        "NH01042",
+        "NH01043",
+        "NH01044",
+        "NH01045",
+        "NH01047",
+        "NH01050",
+        "NH01051",
+        "NH01052",
+        "NH01053",
+        "NH01054",
+        "NH01055",
+        "NH01056",
+        "NH01061",
+        "NH01062",
+        "NH01063",
+        "NH01064",
+        "NH01066",
+        "NH01068",
+        "NH01069",
+        "NH01072",
+        "NH01073",
+        "NH01076",
+        "NH01077",
+        "NH01078",
+        "NH01079",
+        "NH01080",
+        "NH01083",
+        "NH01084",
+        "NH01085",
+        "NH01086",
+        "NH01087",
+        "NH01088",
+        "NH01089",
+        "NH01091",
+        "NH01092",
+        "NH01093",
+        "NH01094",
+        "NH01095",
+        "NH01096",
+        "NH01101",
+        "NH01102",
+        "NH01103",
+        "NH01027",
+        "NH01105",
+        "NH01107",
+        "NH01108",
+        "NH01109",
+        "NH01114",
+        "NH01116",
+        "NH01118",
+        "NH01119"
+      ],
+      "select": [
+        "NH01P01",
+        "NH01P02",
+        "NH01057",
+        "NH01058",
+        "NH01P05",
+        "NH01059"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "NH01P01"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "NH01P02"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "NH01057"
+          ],
+          "price": 900000
+        },
+        {
+          "codes": [
+            "NH01058"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "NH01P05"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "NH01059"
+          ],
+          "price": 250000
+        }
+      ]
+    }
+  }
+}

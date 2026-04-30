@@ -1,0 +1,3614 @@
+{
+  "catalog_id": "kia_k5_dl3",
+  "title": "기아 더 뉴 K5 (DL3)",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/k5/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRDL243009",
+      "KRDL243010",
+      "KRDL243011",
+      "KRDL243004",
+      "KRDL243005",
+      "KRDL243001",
+      "KRDL243162",
+      "KRDL243003",
+      "KRDL243002",
+      "KRDL243006",
+      "KRDL243007",
+      "KRDL243008",
+      "KRDL243012",
+      "KRDL243013"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRDL243014",
+      "KRDL243015",
+      "KRDL243016",
+      "KRDL243017",
+      "KRDL243018",
+      "KRDL243019",
+      "KRDL243147"
+    ],
+    "안전": [
+      "KRDL243029",
+      "KRDL243030",
+      "KRDL243031",
+      "KRDL243032",
+      "KRDL243033",
+      "KRDL243034",
+      "KRDL243035",
+      "KRDL243036",
+      "KRDL243037",
+      "KRDL243169",
+      "KRDL243038",
+      "KRDL243039"
+    ],
+    "외장": [
+      "KRDL243064",
+      "KRDL243041",
+      "KRDL243042",
+      "KRDL243043",
+      "KRDL243044",
+      "KRDL243045",
+      "KRDL243046",
+      "KRDL243047",
+      "KRDL243048",
+      "KRDL243049",
+      "KRDL243050",
+      "KRDL243051",
+      "KRDL243054",
+      "KRDL243055",
+      "KRDL243056",
+      "KRDL243065",
+      "KRDL243052",
+      "KRDL243163",
+      "KRDL243057",
+      "KRDL243066",
+      "KRDL243170",
+      "KRDL243040",
+      "KRDL243053",
+      "KRDL243159"
+    ],
+    "내장": [
+      "KRDL243067",
+      "KRDL243068",
+      "KRDL243075",
+      "KRDL243069",
+      "KRDL243070",
+      "KRDL243071",
+      "KRDL243072",
+      "KRDL243088",
+      "KRDL243073",
+      "KRDL243074",
+      "KRDL243076",
+      "KRDL243077",
+      "KRDL243078",
+      "KRDL243079",
+      "KRDL243080",
+      "KRDL243081",
+      "KRDL243082",
+      "KRDL243083",
+      "KRDL243084",
+      "KRDL243085",
+      "KRDL243086",
+      "KRDL243090",
+      "KRDL243089"
+    ],
+    "시트": [
+      "KRDL243091",
+      "KRDL243092",
+      "KRDL243093",
+      "KRDL243094",
+      "KRDL243095",
+      "KRDL243096",
+      "KRDL243160",
+      "KRDL243161",
+      "KRDL243102",
+      "KRDL243101",
+      "KRDL243097",
+      "KRDL243098",
+      "KRDL243099",
+      "KRDL243100",
+      "KRDL243103",
+      "KRDL243104"
+    ],
+    "편의": [
+      "KRDL243109",
+      "KRDL243110",
+      "KRDL243111",
+      "KRDL243112",
+      "KRDL243113",
+      "KRDL243114",
+      "KRDL243115",
+      "KRDL243116",
+      "KRDL243117",
+      "KRDL243134",
+      "KRDL243171",
+      "KRDL243118",
+      "KRDL243119",
+      "KRDL243137",
+      "KRDL243122",
+      "KRDL243138",
+      "KRDL243139",
+      "KRDL243140",
+      "KRDL243123",
+      "KRDL243124",
+      "KRDL243125",
+      "KRDL243126",
+      "KRDL243135",
+      "KRDL243127",
+      "KRDL243168",
+      "KRDL243142",
+      "KRDL243143",
+      "KRDL243144",
+      "KRDL243128",
+      "KRDL243129",
+      "KRDL243130",
+      "KRDL243131",
+      "KRDL243132",
+      "KRDL243133",
+      "KRDL243141",
+      "KRDL243136",
+      "KRDL243150",
+      "KRDL243172",
+      "KRDL243173",
+      "KRDL243121",
+      "KRDL243175"
+    ],
+    "인포테인먼트": [
+      "KRDL243151",
+      "KRDL243152",
+      "KRDL243153",
+      "KRDL243154",
+      "KRDL243155",
+      "KRDL243156",
+      "KRDL243174"
+    ],
+    "선택사양": [
+      "KRDL243058",
+      "KRDL243P01",
+      "KRDL243P05",
+      "KRDL243P10",
+      "KRDL243P13",
+      "KRDL243P14",
+      "KRDL243P15",
+      "KRDL243P17",
+      "KRDL243062",
+      "KRDL243P28",
+      "KRDL243P26",
+      "KRDL243P07",
+      "KRDL243P11",
+      "KRDL243P18",
+      "KRDL243P21",
+      "KRDL243P08",
+      "KRDL243P19",
+      "KRDL243P24",
+      "KRDL243P23",
+      "KRDL243P12",
+      "KRDL243167",
+      "KRDL243P02",
+      "KRDL243P06",
+      "KRDL243P16",
+      "KRDL243P25",
+      "KRDL243P03",
+      "KRDL243P04",
+      "KRDL243P20",
+      "KRDL243P22",
+      "KRDL243P09"
+    ],
+    "첨단 운전자 보조 (ADAS)": [
+      "KRDL243020",
+      "KRDL243021",
+      "KRDL243022",
+      "KRDL243023",
+      "KRDL243025",
+      "KRDL243026",
+      "KRDL243027",
+      "KRDL243028",
+      "KRDL243024"
+    ]
+  },
+  "options": {
+    "KRDL243009": {
+      "name": "스마트스트림 G2.0 하이브리드 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243010": {
+      "name": "스마트스트림 6AT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243011": {
+      "name": "38.6kw 구동모터",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243004": {
+      "name": "속도감응형 전동식 파워스티어링(MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243005": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243014": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRDL243015": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRDL243016": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRDL243017": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRDL243018": {
+      "name": "차로 유지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRDL243019": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRDL243147": {
+      "name": "스티어링 휠 진동 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRDL243029": {
+      "name": "9에어백(운전석/동승석 어드밴스드, 운전석 무릎, 전복감지 커튼, 앞좌석/뒷좌석 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243030": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243031": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243032": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243033": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243034": {
+      "name": "앞좌석/뒷좌석 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243035": {
+      "name": "유아용 시트고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243036": {
+      "name": "전자식 차일드락",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243037": {
+      "name": "타이어 임시수리 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243169": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243064": {
+      "name": "205/65 R16 타이어&amp;하이브리드 전용 전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243041": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243042": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243043": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243044": {
+      "name": "LED 리피터 일체형 아웃사이드 미러(전동조절, 전동접이, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243045": {
+      "name": "에어로 타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243046": {
+      "name": "바디칼라 아웃사이드 도어 핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243047": {
+      "name": "도어손잡이 조명(프론트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243048": {
+      "name": "윈드쉴드/앞좌석 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243049": {
+      "name": "크롬 실루엣 몰딩",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243050": {
+      "name": "블랙 하이그로시 가니쉬(윈드쉴드 사이드/ B/C필라, 아웃사이드 미러 베이스부)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243051": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243067": {
+      "name": "블랙 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243068": {
+      "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243075": {
+      "name": "가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243069": {
+      "name": "LED 실내등(맵램프, 룸램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243070": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243071": {
+      "name": "슬라이딩 선바이저(거울, LED 조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243072": {
+      "name": "블랙하이그로시 센터 콘솔",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243091": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243092": {
+      "name": "앞좌석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243093": {
+      "name": "앞좌석 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243094": {
+      "name": "운전석 시트 높이조절 장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243095": {
+      "name": "앞좌석 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243096": {
+      "name": "앞좌석 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243109": {
+      "name": "버튼시동 스마트키 시스템(스마트키 원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243110": {
+      "name": "스마트 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243111": {
+      "name": "전자식 변속 다이얼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243112": {
+      "name": "패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243113": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243114": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243115": {
+      "name": "주행 중 후방 뷰",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243116": {
+      "name": "크루즈 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243117": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243134": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243171": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243118": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243119": {
+      "name": "전좌석 세이프티 파워 윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243137": {
+      "name": "터치타입 독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243122": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243138": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243139": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243140": {
+      "name": "외부공기 유입방지 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243123": {
+      "name": "뒷좌석 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243124": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243125": {
+      "name": "C타입 USB 단자(충전용, 앞좌석 1개, 뒷좌석 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243126": {
+      "name": "앞좌석 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243135": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243151": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRDL243152": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRDL243153": {
+      "name": "6스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRDL243154": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRDL243155": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRDL243156": {
+      "name": "C타입 USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRDL243058": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRDL243P01": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P05": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P10": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P13": {
+      "name": "12.3인치 클러스터 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P14": {
+      "name": "HUD + 빌트인 캠 2",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P15": {
+      "name": "KRELL 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P17": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243062": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRDL243020": {
+      "name": "전방 충돌방지 보조(교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243021": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243022": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243023": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243025": {
+      "name": "후측방 충돌 경고",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243026": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243027": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243028": {
+      "name": "안전 하차 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243054": {
+      "name": "프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243055": {
+      "name": "프론트 LED 턴시그널 램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243056": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243088": {
+      "name": "블랙 스웨이드 헤드라이닝&amp;A/B필라",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243160": {
+      "name": "앞좌석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243161": {
+      "name": "앞좌석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243102": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243101": {
+      "name": "동승석 릴렉션 컴포트시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243127": {
+      "name": "하이패스 자동결제 시스템(e hi-pass)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243168": {
+      "name": "동승석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243P28": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P26": {
+      "name": "빌트인 캠 2",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243024": {
+      "name": "원격 스마트 주차 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRDL243038": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243039": {
+      "name": "측방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRDL243065": {
+      "name": "215/55 R17 타이어&amp;하이브리드 전용 전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243052": {
+      "name": "터치타입 아웃사이드 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243073": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243074": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243076": {
+      "name": "인조가죽감싸기(크래쉬패드/도어 센터트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243077": {
+      "name": "블랙하이그로시 도어 암레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243078": {
+      "name": "우드 그레인 내장재",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243079": {
+      "name": "니트 내장재 A/B필라 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243080": {
+      "name": "크롬 가니쉬(크래쉬패드/도어)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243081": {
+      "name": "크롬 인사이드 도어핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243097": {
+      "name": "운전석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243098": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243142": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243143": {
+      "name": "운전석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243144": {
+      "name": "후진연동 자동하향 아웃사이드 미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243128": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243129": {
+      "name": "리모트 360도 뷰(내 차 주변 영상)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243130": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243131": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243132": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243133": {
+      "name": "지문 인증 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243P07": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P11": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P18": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243163": {
+      "name": "215/55 R17 피렐리 타이어&amp;하이브리드 전용 전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243057": {
+      "name": "뒷좌석 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243082": {
+      "name": "블랙 또는 마션 브라운 또는 샌드 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243083": {
+      "name": "앰비언트 라이트(주행모드 연동 가능)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243084": {
+      "name": "도어 센터트림 스티치",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243085": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243086": {
+      "name": "메탈 도어스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243099": {
+      "name": "퀼팅 가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243100": {
+      "name": "동승석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243103": {
+      "name": "동승석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243104": {
+      "name": "뒷좌석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRDL243141": {
+      "name": "스마트 파워 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243136": {
+      "name": "뒷좌석 측면 수동 선커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243P21": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P08": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P19": {
+      "name": "블랙 핏",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243001": {
+      "name": "스마트스트림 G2.0 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243162": {
+      "name": "6단 자동변속기(수동 겸용, 부츠타입)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243003": {
+      "name": "고급형 ISG",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243066": {
+      "name": "205/65 R16 타이어&amp;알로이 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243170": {
+      "name": "스마트 셀렉션 전용 디자인(프론트/리어 범퍼, 라디에이터 그릴 패턴)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243090": {
+      "name": "D/N 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243150": {
+      "name": "풋파킹 브레이크",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243172": {
+      "name": "운전석 세이프티 파워 윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243173": {
+      "name": "동승석/뒷좌석 파워 윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243121": {
+      "name": "매뉴얼 에어컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243174": {
+      "name": "12.3인치 디스플레이 오디오(기아 커넥트, 폰 프로젝션)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRDL243P24": {
+      "name": "12.3인치 클러스터 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P23": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243002": {
+      "name": "6단 자동변속기",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243040": {
+      "name": "215/55 R17 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243P12": {
+      "name": "12.3인치 클러스터 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243053": {
+      "name": "235/45 R18 피렐리 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRDL243006": {
+      "name": "스마트스트림 G1.6 T-GDI 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243007": {
+      "name": "스마트스트림 8AT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243008": {
+      "name": "랙 구동형 전동식 파워스티어링(R-MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243089": {
+      "name": "D컷 가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRDL243167": {
+      "name": "문스케이프 매트 그레이",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRDL243P02": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P06": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P16": {
+      "name": "KRELL 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P25": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P03": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P04": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243P20": {
+      "name": "블랙 핏",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243012": {
+      "name": "스마트스트림 L2.0 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243013": {
+      "name": "원형 봄베",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRDL243P22": {
+      "name": "12.3인치 클러스터 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243175": {
+      "name": "앞좌석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRDL243P09": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRDL243159": {
+      "name": "235/45 R18 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": {
+        "tax_5_before": 33930000,
+        "tax_5_after": 32930000,
+        "tax_3_5_before": 33410000,
+        "tax_3_5_after": 32410000
+      },
+      "basic": [
+        "KRDL243009",
+        "KRDL243010",
+        "KRDL243011",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243064",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243094",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243134",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243137",
+        "KRDL243122",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P01",
+        "KRDL243P05",
+        "KRDL243P10",
+        "KRDL243P13",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243P17",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P01"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P05"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "KRDL243P10"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRDL243P13"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P17"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "베스트 셀렉션": {
+      "slug": "베스트_셀렉션",
+      "price": {
+        "tax_5_before": 35020000,
+        "tax_5_after": 34020000,
+        "tax_3_5_before": 34490000,
+        "tax_3_5_after": 33490000
+      },
+      "basic": [
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243025",
+        "KRDL243026",
+        "KRDL243027",
+        "KRDL243028",
+        "KRDL243054",
+        "KRDL243055",
+        "KRDL243056",
+        "KRDL243088",
+        "KRDL243160",
+        "KRDL243161",
+        "KRDL243102",
+        "KRDL243101",
+        "KRDL243127",
+        "KRDL243168",
+        "KRDL243009",
+        "KRDL243010",
+        "KRDL243011",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243064",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243134",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243137",
+        "KRDL243122",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P28",
+        "KRDL243P26",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P28"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "KRDL243P26"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": {
+        "tax_5_before": 37300000,
+        "tax_5_after": 36300000,
+        "tax_3_5_before": 36730000,
+        "tax_3_5_after": 35730000
+      },
+      "basic": [
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243024",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243065",
+        "KRDL243052",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243097",
+        "KRDL243098",
+        "KRDL243142",
+        "KRDL243143",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243009",
+        "KRDL243010",
+        "KRDL243011",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243134",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243137",
+        "KRDL243122",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P01",
+        "KRDL243P07",
+        "KRDL243P11",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243P18",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P01"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243P07"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243P11"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P18"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": {
+        "tax_5_before": 40290000,
+        "tax_5_after": 39290000,
+        "tax_3_5_before": 39680000,
+        "tax_3_5_after": 38680000
+      },
+      "basic": [
+        "KRDL243025",
+        "KRDL243026",
+        "KRDL243027",
+        "KRDL243028",
+        "KRDL243163",
+        "KRDL243054",
+        "KRDL243055",
+        "KRDL243056",
+        "KRDL243057",
+        "KRDL243082",
+        "KRDL243083",
+        "KRDL243084",
+        "KRDL243085",
+        "KRDL243086",
+        "KRDL243099",
+        "KRDL243100",
+        "KRDL243101",
+        "KRDL243102",
+        "KRDL243103",
+        "KRDL243104",
+        "KRDL243141",
+        "KRDL243168",
+        "KRDL243136",
+        "KRDL243009",
+        "KRDL243010",
+        "KRDL243011",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243024",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243052",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243097",
+        "KRDL243098",
+        "KRDL243109",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243134",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243137",
+        "KRDL243122",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243142",
+        "KRDL243143",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P21",
+        "KRDL243P08",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243P19",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P21"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "KRDL243P08"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P19"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "스마트 셀렉션": {
+      "slug": "스마트_셀렉션",
+      "price": {
+        "base": 27660000,
+        "tax_3_5_after": 27240000
+      },
+      "basic": [
+        "KRDL243001",
+        "KRDL243162",
+        "KRDL243003",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243066",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243170",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243069",
+        "KRDL243090",
+        "KRDL243071",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243094",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243150",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243172",
+        "KRDL243173",
+        "KRDL243121",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243174",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P24",
+        "KRDL243P23",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P24"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "KRDL243P23"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "프레스티지 (2)": {
+      "slug": "프레스티지_(2)",
+      "price": {
+        "base": 28510000,
+        "tax_3_5_after": 28080000
+      },
+      "basic": [
+        "KRDL243001",
+        "KRDL243002",
+        "KRDL243003",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243040",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243094",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243121",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P01",
+        "KRDL243P05",
+        "KRDL243P10",
+        "KRDL243P12",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243P17",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P01"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243P05"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "KRDL243P10"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRDL243P12"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P17"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "베스트 셀렉션 (2)": {
+      "slug": "베스트_셀렉션_(2)",
+      "price": {
+        "base": 29730000,
+        "tax_3_5_after": 29280000
+      },
+      "basic": [
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243025",
+        "KRDL243026",
+        "KRDL243027",
+        "KRDL243028",
+        "KRDL243054",
+        "KRDL243055",
+        "KRDL243056",
+        "KRDL243088",
+        "KRDL243160",
+        "KRDL243161",
+        "KRDL243102",
+        "KRDL243101",
+        "KRDL243127",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243168",
+        "KRDL243001",
+        "KRDL243002",
+        "KRDL243003",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243040",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P28",
+        "KRDL243P26",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P28"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRDL243P26"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "노블레스 (2)": {
+      "slug": "노블레스_(2)",
+      "price": {
+        "base": 32030000,
+        "tax_3_5_after": 31540000
+      },
+      "basic": [
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243024",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243052",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243097",
+        "KRDL243098",
+        "KRDL243142",
+        "KRDL243143",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243001",
+        "KRDL243002",
+        "KRDL243003",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243040",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P18",
+        "KRDL243P07",
+        "KRDL243P11",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P18"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243P07"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243P11"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P18"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "시그니처 (2)": {
+      "slug": "시그니처_(2)",
+      "price": {
+        "base": 35220000,
+        "tax_3_5_after": 34690000
+      },
+      "basic": [
+        "KRDL243025",
+        "KRDL243026",
+        "KRDL243027",
+        "KRDL243028",
+        "KRDL243053",
+        "KRDL243054",
+        "KRDL243055",
+        "KRDL243056",
+        "KRDL243057",
+        "KRDL243082",
+        "KRDL243083",
+        "KRDL243084",
+        "KRDL243085",
+        "KRDL243086",
+        "KRDL243099",
+        "KRDL243100",
+        "KRDL243101",
+        "KRDL243102",
+        "KRDL243103",
+        "KRDL243104",
+        "KRDL243141",
+        "KRDL243168",
+        "KRDL243136",
+        "KRDL243001",
+        "KRDL243002",
+        "KRDL243003",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243024",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243052",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243097",
+        "KRDL243098",
+        "KRDL243109",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243142",
+        "KRDL243143",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P08",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243P19",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P08"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P19"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "프레스티지 (3)": {
+      "slug": "프레스티지_(3)",
+      "price": {
+        "base": 29320000,
+        "tax_3_5_after": 28870000
+      },
+      "basic": [
+        "KRDL243006",
+        "KRDL243007",
+        "KRDL243003",
+        "KRDL243008",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243040",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243089",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243094",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243121",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243167",
+        "KRDL243P02",
+        "KRDL243P06",
+        "KRDL243P10",
+        "KRDL243P12",
+        "KRDL243P14",
+        "KRDL243P16",
+        "KRDL243P17",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243167"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243P02"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRDL243P06"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "KRDL243P10"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRDL243P12"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P17"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "베스트 셀렉션 (3)": {
+      "slug": "베스트_셀렉션_(3)",
+      "price": {
+        "base": 30540000,
+        "tax_3_5_after": 30080000
+      },
+      "basic": [
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243025",
+        "KRDL243026",
+        "KRDL243027",
+        "KRDL243028",
+        "KRDL243054",
+        "KRDL243055",
+        "KRDL243056",
+        "KRDL243088",
+        "KRDL243160",
+        "KRDL243161",
+        "KRDL243102",
+        "KRDL243101",
+        "KRDL243127",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243168",
+        "KRDL243006",
+        "KRDL243007",
+        "KRDL243003",
+        "KRDL243008",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243040",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243167",
+        "KRDL243P25",
+        "KRDL243P26",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243167"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243P25"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "KRDL243P26"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "노블레스 (3)": {
+      "slug": "노블레스_(3)",
+      "price": {
+        "base": 33270000,
+        "tax_3_5_after": 32760000
+      },
+      "basic": [
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243024",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243053",
+        "KRDL243052",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243097",
+        "KRDL243098",
+        "KRDL243142",
+        "KRDL243143",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243006",
+        "KRDL243007",
+        "KRDL243003",
+        "KRDL243008",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243089",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243167",
+        "KRDL243P03",
+        "KRDL243P07",
+        "KRDL243P11",
+        "KRDL243P14",
+        "KRDL243P16",
+        "KRDL243P18",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243167"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243P03"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRDL243P07"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRDL243P11"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P18"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "시그니처 (3)": {
+      "slug": "시그니처_(3)",
+      "price": {
+        "base": 36010000,
+        "tax_3_5_after": 35460000
+      },
+      "basic": [
+        "KRDL243025",
+        "KRDL243026",
+        "KRDL243027",
+        "KRDL243028",
+        "KRDL243054",
+        "KRDL243055",
+        "KRDL243056",
+        "KRDL243057",
+        "KRDL243082",
+        "KRDL243083",
+        "KRDL243084",
+        "KRDL243085",
+        "KRDL243086",
+        "KRDL243099",
+        "KRDL243100",
+        "KRDL243101",
+        "KRDL243102",
+        "KRDL243103",
+        "KRDL243104",
+        "KRDL243141",
+        "KRDL243168",
+        "KRDL243136",
+        "KRDL243006",
+        "KRDL243007",
+        "KRDL243003",
+        "KRDL243008",
+        "KRDL243005",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243024",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243053",
+        "KRDL243052",
+        "KRDL243089",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243097",
+        "KRDL243098",
+        "KRDL243109",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243142",
+        "KRDL243143",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243167",
+        "KRDL243P04",
+        "KRDL243P08",
+        "KRDL243P14",
+        "KRDL243P16",
+        "KRDL243P20",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243167"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243P04"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243P08"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P20"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "프레스티지 (4)": {
+      "slug": "프레스티지_(4)",
+      "price": {
+        "base": 29200000,
+        "tax_3_5_after": 28760000
+      },
+      "basic": [
+        "KRDL243012",
+        "KRDL243002",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243013",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243040",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243046",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243068",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243094",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243121",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P10",
+        "KRDL243P22",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P10"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRDL243P22"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "노블레스 (4)": {
+      "slug": "노블레스_(4)",
+      "price": {
+        "base": 32820000,
+        "tax_3_5_after": 32320000
+      },
+      "basic": [
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243056",
+        "KRDL243052",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243160",
+        "KRDL243101",
+        "KRDL243102",
+        "KRDL243161",
+        "KRDL243142",
+        "KRDL243175",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243012",
+        "KRDL243002",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243013",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243040",
+        "KRDL243041",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243067",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243091",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243109",
+        "KRDL243110",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P09",
+        "KRDL243P11",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243P18",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P09"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P11"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243P18"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    },
+    "시그니처 (4)": {
+      "slug": "시그니처_(4)",
+      "price": {
+        "base": 35370000,
+        "tax_3_5_after": 34830000
+      },
+      "basic": [
+        "KRDL243025",
+        "KRDL243026",
+        "KRDL243027",
+        "KRDL243028",
+        "KRDL243159",
+        "KRDL243054",
+        "KRDL243055",
+        "KRDL243057",
+        "KRDL243083",
+        "KRDL243084",
+        "KRDL243086",
+        "KRDL243099",
+        "KRDL243104",
+        "KRDL243141",
+        "KRDL243136",
+        "KRDL243012",
+        "KRDL243002",
+        "KRDL243004",
+        "KRDL243005",
+        "KRDL243013",
+        "KRDL243014",
+        "KRDL243015",
+        "KRDL243016",
+        "KRDL243017",
+        "KRDL243018",
+        "KRDL243019",
+        "KRDL243147",
+        "KRDL243020",
+        "KRDL243021",
+        "KRDL243022",
+        "KRDL243023",
+        "KRDL243029",
+        "KRDL243030",
+        "KRDL243031",
+        "KRDL243032",
+        "KRDL243033",
+        "KRDL243034",
+        "KRDL243035",
+        "KRDL243036",
+        "KRDL243037",
+        "KRDL243169",
+        "KRDL243038",
+        "KRDL243039",
+        "KRDL243042",
+        "KRDL243043",
+        "KRDL243044",
+        "KRDL243045",
+        "KRDL243047",
+        "KRDL243048",
+        "KRDL243049",
+        "KRDL243050",
+        "KRDL243051",
+        "KRDL243056",
+        "KRDL243052",
+        "KRDL243067",
+        "KRDL243075",
+        "KRDL243069",
+        "KRDL243070",
+        "KRDL243071",
+        "KRDL243072",
+        "KRDL243073",
+        "KRDL243074",
+        "KRDL243076",
+        "KRDL243077",
+        "KRDL243078",
+        "KRDL243079",
+        "KRDL243080",
+        "KRDL243081",
+        "KRDL243092",
+        "KRDL243093",
+        "KRDL243095",
+        "KRDL243096",
+        "KRDL243160",
+        "KRDL243101",
+        "KRDL243102",
+        "KRDL243161",
+        "KRDL243109",
+        "KRDL243111",
+        "KRDL243112",
+        "KRDL243113",
+        "KRDL243114",
+        "KRDL243115",
+        "KRDL243116",
+        "KRDL243117",
+        "KRDL243171",
+        "KRDL243118",
+        "KRDL243119",
+        "KRDL243122",
+        "KRDL243140",
+        "KRDL243123",
+        "KRDL243124",
+        "KRDL243125",
+        "KRDL243126",
+        "KRDL243135",
+        "KRDL243142",
+        "KRDL243175",
+        "KRDL243144",
+        "KRDL243127",
+        "KRDL243128",
+        "KRDL243129",
+        "KRDL243130",
+        "KRDL243131",
+        "KRDL243132",
+        "KRDL243133",
+        "KRDL243134",
+        "KRDL243137",
+        "KRDL243138",
+        "KRDL243139",
+        "KRDL243151",
+        "KRDL243152",
+        "KRDL243153",
+        "KRDL243154",
+        "KRDL243155",
+        "KRDL243156"
+      ],
+      "select": [
+        "KRDL243058",
+        "KRDL243P25",
+        "KRDL243P14",
+        "KRDL243P15",
+        "KRDL243062"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRDL243058"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRDL243P25"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRDL243P14"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRDL243P15"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRDL243062"
+          ],
+          "price": 1090000
+        }
+      ]
+    }
+  }
+}

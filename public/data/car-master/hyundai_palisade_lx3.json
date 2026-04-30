@@ -1,0 +1,2248 @@
+{
+  "catalog_id": "hyundai_palisade_lx3",
+  "title": "현대 디 올 뉴 팰리세이드 (LX3)",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/palisade-G2.5-9_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/palisade-G2.5-7_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인/성능": [
+      "FX01001",
+      "FX01002",
+      "FX01003",
+      "FX01004",
+      "FX01005",
+      "FX01006",
+      "FX01007"
+    ],
+    "안전": [
+      "FX01035",
+      "FX01036",
+      "FX01037",
+      "FX01038",
+      "FX01039"
+    ],
+    "지능형 안전 기술": [
+      "FX01010",
+      "FX01011",
+      "FX01012",
+      "FX01013",
+      "FX01014",
+      "FX01015",
+      "FX01016",
+      "FX01017",
+      "FX01018",
+      "FX01019",
+      "FX01020",
+      "FX01021",
+      "FX01022",
+      "FX01023",
+      "FX01024",
+      "FX01025",
+      "FX01125",
+      "FX01026",
+      "FX01027",
+      "FX01028",
+      "FX01029",
+      "FX01030",
+      "FX01031"
+    ],
+    "외관": [
+      "FX01040",
+      "FX01041",
+      "FX01042",
+      "FX01043",
+      "FX01044",
+      "FX01047",
+      "FX01045",
+      "FX01046",
+      "FX01048",
+      "FX01049",
+      "FX01050",
+      "FX01051",
+      "FX01052",
+      "FX01053",
+      "FX01054",
+      "FX01172",
+      "FX01055",
+      "FX01056",
+      "FX01057",
+      "FX01058",
+      "FX01059",
+      "FX01060"
+    ],
+    "내장": [
+      "FX01062",
+      "FX01063",
+      "FX01064",
+      "FX01065",
+      "FX01066",
+      "FX01067",
+      "FX01068",
+      "FX01069",
+      "FX01071",
+      "FX01072",
+      "FX01073",
+      "FX01087",
+      "FX01075",
+      "FX01076",
+      "FX01077",
+      "FX01084",
+      "FX01079",
+      "FX01080",
+      "FX01081",
+      "FX01083",
+      "FX01070",
+      "FX01074",
+      "FX01078",
+      "FX01082"
+    ],
+    "시트": [
+      "FX01088",
+      "FX01089",
+      "FX01090",
+      "FX01110",
+      "FX01091",
+      "FX01112",
+      "FX01093",
+      "FX01094",
+      "FX01095",
+      "FX01096",
+      "FX01097",
+      "FX01098",
+      "FX01099",
+      "FX01100",
+      "FX01101",
+      "FX01102",
+      "FX01113",
+      "FX01104",
+      "FX01106",
+      "FX01107",
+      "FX01108",
+      "FX01109",
+      "FX01092",
+      "FX01103",
+      "FX01105"
+    ],
+    "편의": [
+      "FX01120",
+      "FX01121",
+      "FX01122",
+      "FX01123",
+      "FX01124",
+      "FX01126",
+      "FX01127",
+      "FX01128",
+      "FX01178",
+      "FX01129",
+      "FX01174",
+      "FX01131",
+      "FX01132",
+      "FX01133",
+      "FX01134",
+      "FX01135",
+      "FX01136",
+      "FX01137",
+      "FX01138",
+      "FX01139",
+      "FX01140",
+      "FX01141",
+      "FX01142",
+      "FX01143",
+      "FX01032",
+      "FX01144",
+      "FX01145",
+      "FX01146",
+      "FX01147",
+      "FX01148",
+      "FX01149"
+    ],
+    "인포테인먼트": [
+      "FX01157",
+      "FX01156",
+      "FX01155",
+      "FX01158",
+      "FX01159"
+    ],
+    "선택사양": [
+      "FX01008",
+      "FX01009",
+      "FX01034",
+      "FX01150",
+      "FX01P07",
+      "FX01P01",
+      "FX01P02",
+      "FX01P18",
+      "FX01P27",
+      "FX01P16",
+      "FX01P17",
+      "FX01P03",
+      "FX01033",
+      "FX01P04",
+      "FX01P22",
+      "FX01P23",
+      "FX01P08",
+      "FX01P05",
+      "FX01P19",
+      "FX01P26",
+      "FX01P20",
+      "FX01P21",
+      "FX01P06",
+      "FX01114",
+      "FX01P24",
+      "FX01P25",
+      "FX01P09"
+    ]
+  },
+  "options": {
+    "FX01001": {
+      "name": "스마트스트림 가솔린 2.5 터보 엔진",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "FX01002": {
+      "name": "8단 자동변속기",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "FX01003": {
+      "name": "ISG 시스템",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "FX01004": {
+      "name": "랙구동형 전동식 파워 스티어링(R-MDPS)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "FX01005": {
+      "name": "통합주행모드",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "FX01006": {
+      "name": "전자식 변속 칼럼(진동 경고)",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "FX01007": {
+      "name": "셀프레벨라이저",
+      "category": "파워트레인/성능",
+      "is_package": false
+    },
+    "FX01035": {
+      "name": "10에어백 시스템(1열 어드밴스드/센터사이드, 1/2열 사이드,운전석 무릎, 전복대응커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "FX01036": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "FX01037": {
+      "name": "유아용 시트 고정장치(2열 2개, 3열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "FX01038": {
+      "name": "시트벨트 프리텐셔너(1/2/3열)",
+      "category": "안전",
+      "is_package": false
+    },
+    "FX01039": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "FX01010": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01011": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01012": {
+      "name": "차로 유지 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01013": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01014": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01015": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01016": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01017": {
+      "name": "후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01018": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01019": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01020": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01021": {
+      "name": "후측방 충돌 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01022": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01023": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01024": {
+      "name": "스티어링 휠 그립감지",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01025": {
+      "name": "진동 경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01125": {
+      "name": "운전자 모니터링 시스템",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01040": {
+      "name": "크롬 라디에이터 그릴",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01041": {
+      "name": "18인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01042": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01043": {
+      "name": "LED 주간주행등",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01044": {
+      "name": "LED 방향지시등",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01047": {
+      "name": "LED 포지셔닝 램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01045": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01046": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01048": {
+      "name": "자외선 차단 유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01049": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01050": {
+      "name": "도어 포켓 라이팅(1열)",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01051": {
+      "name": "후진 가이드 램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01052": {
+      "name": "이중접합 차음유리(윈드실드, 1/2열 도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01053": {
+      "name": "리어 스포일러",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01054": {
+      "name": "크롬 DLO 몰딩",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01172": {
+      "name": "테일게이트 블랙 가니쉬",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01055": {
+      "name": "루프랙",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01062": {
+      "name": "클러스터(4.2인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01063": {
+      "name": "베젤리스 인사이드 미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01064": {
+      "name": "가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01065": {
+      "name": "도어 암레스트 리얼 스티치",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01066": {
+      "name": "LED 실내등(맵램프, 퍼스널 램프, 선바이저램프,러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01088": {
+      "name": "인조가죽 시트(블랙)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01089": {
+      "name": "운전석 전동시트(8way, 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01090": {
+      "name": "동승석 전동시트(8way)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01110": {
+      "name": "1열 센터시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01091": {
+      "name": "1열 열선/통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01112": {
+      "name": "2열 6:4 분할 시트(폴딩, 슬라이딩, 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01093": {
+      "name": "2열 리모트 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01094": {
+      "name": "2열 원터치 틸팅형 워크인",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01095": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01096": {
+      "name": "3열 6:4 분할 시트(폴드 & 다이브, 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01120": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01121": {
+      "name": "스마트키 원격시동",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01122": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01123": {
+      "name": "패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01124": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01126": {
+      "name": "3존 독립제어 풀오토 에어컨(항균 처리 고성능 콤비 필터/오토 디포그/미세먼지센서/공기청정모드/애프터블로우)",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01127": {
+      "name": "전후석 통합 터치식 공조 컨트롤러",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01128": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01178": {
+      "name": "하이패스",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01129": {
+      "name": "100W USB C타입 단자(1열 충전 2개, 2열 충전 2개, 3열 충전 2개, 전용 충전 케이블 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01174": {
+      "name": "충전 및 데이터 스위치타입 USB C타입 단자",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01131": {
+      "name": "파워 아웃렛(1열 1개, 3열 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01132": {
+      "name": "세이프티 파워 윈도우(1/2열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01133": {
+      "name": "후방 모니터(카메라 클리닝 시스템 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01134": {
+      "name": "확산형 루프 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01135": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01136": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01137": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01138": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01139": {
+      "name": "2열 버클 조명",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01140": {
+      "name": "2열 어시스트 그립핸들",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01141": {
+      "name": "현대 AI 어시스턴트",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01157": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트/e hi-pass, 아케이드 게임(6종))",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "FX01156": {
+      "name": "일반 사운드 시스템(8스피커, 블루투스 핸즈프리)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "FX01155": {
+      "name": "후석 취침/대화모드",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "FX01158": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "FX01008": {
+      "name": "HTRAC",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "FX01009": {
+      "name": "험로주행모드",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "FX01034": {
+      "name": "경사로 저속 주행장치",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "FX01150": {
+      "name": "듀얼 와이드 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "FX01P07": {
+      "name": "빌트인 캠 2 Plus, 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P01": {
+      "name": "현대 스마트센스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P02": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P18": {
+      "name": "사이드 스텝(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P27": {
+      "name": "빌트인 공기청정기(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P16": {
+      "name": "프로텍션 매트 패키지 1(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P17": {
+      "name": "프로텍션 매트 패키지 2(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01026": {
+      "name": "전방 충돌방지 보조(교차 차량/추월시 대향차/측방 접근차/회피 조향 보조 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01027": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01028": {
+      "name": "고속도로 주행 보조2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01029": {
+      "name": "후측방 충돌방지 보조(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01030": {
+      "name": "어드밴스드 후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01031": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "FX01056": {
+      "name": "히든라이팅 주간주행등/포지셔닝 램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01057": {
+      "name": "20인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01058": {
+      "name": "발수 적용 1열 유리",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01067": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01068": {
+      "name": "클러스터(12.3인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01069": {
+      "name": "인조가죽 감싸기(크래쉬패드 가니쉬, 도어 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01071": {
+      "name": "멜란지 니트 내장재(헤드라이닝/필라/선바이저)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01072": {
+      "name": "메탈 도어스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01097": {
+      "name": "천연가죽 시트(블랙/그레이)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01098": {
+      "name": "운전석 전동시트(4way 럼버서포트, 자세 메모리 시스템)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01099": {
+      "name": "동승석 전동시트(럼버서포트, 워크인 디바이스)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01142": {
+      "name": "전동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01143": {
+      "name": "스마트 파워 테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01032": {
+      "name": "측방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01144": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01145": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01146": {
+      "name": "실내 지문 인증 시스템(개인화, 시동, 결제 등)",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01P03": {
+      "name": "컴포트 플러스(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01033": {
+      "name": "원격 스마트 주차 보조",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "FX01P04": {
+      "name": "플래티넘",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P22": {
+      "name": "차량 보호 필름 1(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P23": {
+      "name": "차량 보호 필름 2(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P08": {
+      "name": "H Genuine Accessories 라이프스타일(9인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01059": {
+      "name": "캘리그래피 전용 디자인(20인치 알로이 휠 & 타이어, 라디에이터 그릴 & 가니쉬, 인테이크 그릴, 스키드 플레이트, 바디컬러 클래딩, 테일게이트 바디컬러 가니쉬)",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01060": {
+      "name": "다이내믹 웰컴/에스코트 라이트(1종)",
+      "category": "외관",
+      "is_package": false
+    },
+    "FX01073": {
+      "name": "투톤 가죽 스티어링 휠(블랙 인테리어 선택 시 미적용)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01087": {
+      "name": "고급형 인조가죽 감싸기(크래쉬패드 가니쉬, 1/2열 도어 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01075": {
+      "name": "스웨이드 내장재(헤드라이닝/필라/선바이저)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01076": {
+      "name": "메탈 트랜스버스 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01077": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01084": {
+      "name": "우드 인테리어(크래쉬패드 가니쉬, 센터시트 어퍼커버)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01079": {
+      "name": "실버 메탈 데코 몰딩(2열 도어, 러기지 트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01080": {
+      "name": "주행모드 연동 앰비언트 무드램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01081": {
+      "name": "디지털 센터 미러(카메라 클리닝 시스템 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01083": {
+      "name": "고급 카매트",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01100": {
+      "name": "나파가죽 시트(리얼 메탈 패치 적용)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01101": {
+      "name": "운전석 에르고 모션 시트(18way, 4way 럼버서포트, 볼스터 전동조절, 스트레칭 모드)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01102": {
+      "name": "1열 릴렉션 컴포트 시트(레그레스트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01113": {
+      "name": "2열 6:4 분할 시트(전동 폴딩, 수동 슬라이딩, 전동 리클라이닝, 윙아웃 헤드레스트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01104": {
+      "name": "2열 리모트 폴딩 & 언폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01106": {
+      "name": "2열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01107": {
+      "name": "3열 전동 6:4 분할 시트(폴드 & 다이브, 슬라이딩, 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01108": {
+      "name": "3열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01109": {
+      "name": "운전석 스마트 자세제어 시스템",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01147": {
+      "name": "헤드업 디스플레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01148": {
+      "name": "2열 수동식 도어 커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01149": {
+      "name": "디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "FX01159": {
+      "name": "BOSE 프리미엄 사운드(14스피커, 외장앰프 포함)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "FX01P05": {
+      "name": "프리뷰 전자제어 서스펜션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01092": {
+      "name": "2열 독립시트(폴딩, 슬라이딩, 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01P19": {
+      "name": "사이드 스텝(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P26": {
+      "name": "빌트인 공기청정기(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P20": {
+      "name": "프로텍션 매트 패키지 1(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P21": {
+      "name": "프로텍션 매트 패키지 2(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01070": {
+      "name": "인조가죽 감싸기(크래쉬패드 가니쉬, 콘솔 사이드, 도어 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01P06": {
+      "name": "컴포트 플러스(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01114": {
+      "name": "2열 다이내믹 바디케어 시트",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "FX01P24": {
+      "name": "차량 보호 필름 1(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P25": {
+      "name": "차량 보호 필름 2(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01P09": {
+      "name": "H Genuine Accessories 라이프스타일(7인승)",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "FX01074": {
+      "name": "고급형 인조가죽 감싸기(크래쉬패드 가니쉬, 콘솔 사이드, 1/2열 도어 암레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01078": {
+      "name": "우드 인테리어(크래쉬패드 가니쉬, 센터콘솔 어퍼커버)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01082": {
+      "name": "양문형 멀티콘솔(UV-C 살균 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "FX01103": {
+      "name": "2열 전동 독립시트(폴딩, 슬라이딩, 리클라이닝, 릴렉션 컴포트, 윙아웃 헤드레스트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "FX01105": {
+      "name": "2열 전동식 틸팅형 워크인",
+      "category": "시트",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "익스클루시브 (2.5 9인승)": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "base": 43830000
+      },
+      "basic": [
+        "FX01001",
+        "FX01002",
+        "FX01003",
+        "FX01004",
+        "FX01005",
+        "FX01006",
+        "FX01007",
+        "FX01035",
+        "FX01036",
+        "FX01037",
+        "FX01038",
+        "FX01039",
+        "FX01010",
+        "FX01011",
+        "FX01012",
+        "FX01013",
+        "FX01014",
+        "FX01015",
+        "FX01016",
+        "FX01017",
+        "FX01018",
+        "FX01019",
+        "FX01020",
+        "FX01021",
+        "FX01022",
+        "FX01023",
+        "FX01024",
+        "FX01025",
+        "FX01125",
+        "FX01040",
+        "FX01041",
+        "FX01042",
+        "FX01043",
+        "FX01044",
+        "FX01047",
+        "FX01045",
+        "FX01046",
+        "FX01048",
+        "FX01049",
+        "FX01050",
+        "FX01051",
+        "FX01052",
+        "FX01053",
+        "FX01054",
+        "FX01172",
+        "FX01055",
+        "FX01062",
+        "FX01063",
+        "FX01064",
+        "FX01065",
+        "FX01066",
+        "FX01088",
+        "FX01089",
+        "FX01090",
+        "FX01110",
+        "FX01091",
+        "FX01112",
+        "FX01093",
+        "FX01094",
+        "FX01095",
+        "FX01096",
+        "FX01120",
+        "FX01121",
+        "FX01122",
+        "FX01123",
+        "FX01124",
+        "FX01126",
+        "FX01127",
+        "FX01128",
+        "FX01178",
+        "FX01129",
+        "FX01174",
+        "FX01131",
+        "FX01132",
+        "FX01133",
+        "FX01134",
+        "FX01135",
+        "FX01136",
+        "FX01137",
+        "FX01138",
+        "FX01139",
+        "FX01140",
+        "FX01141",
+        "FX01157",
+        "FX01156",
+        "FX01155",
+        "FX01158"
+      ],
+      "select": [
+        "FX01008",
+        "FX01009",
+        "FX01034",
+        "FX01150",
+        "FX01P07",
+        "FX01P01",
+        "FX01P02",
+        "FX01P18",
+        "FX01P27",
+        "FX01P16",
+        "FX01P17"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "FX01008",
+            "FX01009",
+            "FX01034"
+          ],
+          "price": 2280000
+        },
+        {
+          "codes": [
+            "FX01150"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "FX01P07"
+          ],
+          "price": 660000
+        },
+        {
+          "codes": [
+            "FX01P01"
+          ],
+          "price": 1330000
+        },
+        {
+          "codes": [
+            "FX01P02"
+          ],
+          "price": 1330000
+        },
+        {
+          "codes": [
+            "FX01P18"
+          ],
+          "price": 430000
+        },
+        {
+          "codes": [
+            "FX01P27"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "FX01P16"
+          ],
+          "price": 240000
+        },
+        {
+          "codes": [
+            "FX01P17"
+          ],
+          "price": 160000
+        }
+      ]
+    },
+    "프레스티지 (2.5 9인승)": {
+      "slug": "prestige",
+      "name_en": null,
+      "price": {
+        "base": 49360000
+      },
+      "basic": [
+        "FX01001",
+        "FX01002",
+        "FX01003",
+        "FX01004",
+        "FX01005",
+        "FX01006",
+        "FX01007",
+        "FX01035",
+        "FX01036",
+        "FX01037",
+        "FX01038",
+        "FX01039",
+        "FX01010",
+        "FX01011",
+        "FX01012",
+        "FX01013",
+        "FX01014",
+        "FX01015",
+        "FX01016",
+        "FX01018",
+        "FX01019",
+        "FX01020",
+        "FX01021",
+        "FX01022",
+        "FX01023",
+        "FX01024",
+        "FX01025",
+        "FX01125",
+        "FX01026",
+        "FX01027",
+        "FX01028",
+        "FX01029",
+        "FX01030",
+        "FX01031",
+        "FX01040",
+        "FX01042",
+        "FX01043",
+        "FX01044",
+        "FX01047",
+        "FX01045",
+        "FX01046",
+        "FX01048",
+        "FX01049",
+        "FX01050",
+        "FX01051",
+        "FX01052",
+        "FX01053",
+        "FX01054",
+        "FX01172",
+        "FX01055",
+        "FX01056",
+        "FX01057",
+        "FX01058",
+        "FX01063",
+        "FX01064",
+        "FX01065",
+        "FX01066",
+        "FX01067",
+        "FX01068",
+        "FX01069",
+        "FX01071",
+        "FX01072",
+        "FX01089",
+        "FX01090",
+        "FX01110",
+        "FX01091",
+        "FX01112",
+        "FX01093",
+        "FX01094",
+        "FX01095",
+        "FX01096",
+        "FX01097",
+        "FX01098",
+        "FX01099",
+        "FX01120",
+        "FX01121",
+        "FX01122",
+        "FX01123",
+        "FX01126",
+        "FX01127",
+        "FX01128",
+        "FX01178",
+        "FX01129",
+        "FX01174",
+        "FX01131",
+        "FX01132",
+        "FX01133",
+        "FX01134",
+        "FX01135",
+        "FX01136",
+        "FX01137",
+        "FX01138",
+        "FX01139",
+        "FX01140",
+        "FX01141",
+        "FX01142",
+        "FX01143",
+        "FX01032",
+        "FX01144",
+        "FX01145",
+        "FX01146",
+        "FX01157",
+        "FX01156",
+        "FX01155",
+        "FX01158"
+      ],
+      "select": [
+        "FX01008",
+        "FX01009",
+        "FX01034",
+        "FX01150",
+        "FX01P07",
+        "FX01P03",
+        "FX01033",
+        "FX01P04",
+        "FX01P18",
+        "FX01P27",
+        "FX01P22",
+        "FX01P23",
+        "FX01P16",
+        "FX01P17",
+        "FX01P08"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "FX01008",
+            "FX01009",
+            "FX01034"
+          ],
+          "price": 2280000
+        },
+        {
+          "codes": [
+            "FX01150"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "FX01P07"
+          ],
+          "price": 660000
+        },
+        {
+          "codes": [
+            "FX01P03"
+          ],
+          "price": 1850000
+        },
+        {
+          "codes": [
+            "FX01033"
+          ],
+          "price": 660000
+        },
+        {
+          "codes": [
+            "FX01P04"
+          ],
+          "price": 1710000
+        },
+        {
+          "codes": [
+            "FX01P18"
+          ],
+          "price": 430000
+        },
+        {
+          "codes": [
+            "FX01P27"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "FX01P22"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "FX01P23"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "FX01P16"
+          ],
+          "price": 240000
+        },
+        {
+          "codes": [
+            "FX01P17"
+          ],
+          "price": 160000
+        },
+        {
+          "codes": [
+            "FX01P08"
+          ],
+          "price": 630000
+        }
+      ]
+    },
+    "캘리그래피 (2.5 9인승)": {
+      "slug": "calligraphy",
+      "name_en": null,
+      "price": {
+        "base": 55860000
+      },
+      "basic": [
+        "FX01001",
+        "FX01002",
+        "FX01003",
+        "FX01004",
+        "FX01005",
+        "FX01006",
+        "FX01007",
+        "FX01035",
+        "FX01036",
+        "FX01037",
+        "FX01038",
+        "FX01039",
+        "FX01010",
+        "FX01011",
+        "FX01012",
+        "FX01013",
+        "FX01014",
+        "FX01015",
+        "FX01016",
+        "FX01018",
+        "FX01019",
+        "FX01020",
+        "FX01021",
+        "FX01022",
+        "FX01023",
+        "FX01024",
+        "FX01025",
+        "FX01125",
+        "FX01026",
+        "FX01027",
+        "FX01028",
+        "FX01029",
+        "FX01030",
+        "FX01031",
+        "FX01033",
+        "FX01042",
+        "FX01043",
+        "FX01044",
+        "FX01047",
+        "FX01045",
+        "FX01046",
+        "FX01048",
+        "FX01049",
+        "FX01050",
+        "FX01051",
+        "FX01052",
+        "FX01053",
+        "FX01054",
+        "FX01055",
+        "FX01056",
+        "FX01058",
+        "FX01059",
+        "FX01060",
+        "FX01064",
+        "FX01065",
+        "FX01066",
+        "FX01067",
+        "FX01068",
+        "FX01072",
+        "FX01073",
+        "FX01087",
+        "FX01075",
+        "FX01076",
+        "FX01077",
+        "FX01084",
+        "FX01079",
+        "FX01080",
+        "FX01081",
+        "FX01083",
+        "FX01090",
+        "FX01110",
+        "FX01091",
+        "FX01094",
+        "FX01095",
+        "FX01099",
+        "FX01100",
+        "FX01101",
+        "FX01102",
+        "FX01113",
+        "FX01104",
+        "FX01106",
+        "FX01107",
+        "FX01108",
+        "FX01109",
+        "FX01120",
+        "FX01121",
+        "FX01122",
+        "FX01123",
+        "FX01126",
+        "FX01127",
+        "FX01128",
+        "FX01178",
+        "FX01129",
+        "FX01174",
+        "FX01131",
+        "FX01132",
+        "FX01133",
+        "FX01134",
+        "FX01135",
+        "FX01136",
+        "FX01137",
+        "FX01138",
+        "FX01139",
+        "FX01140",
+        "FX01141",
+        "FX01142",
+        "FX01143",
+        "FX01032",
+        "FX01144",
+        "FX01145",
+        "FX01146",
+        "FX01147",
+        "FX01148",
+        "FX01149",
+        "FX01157",
+        "FX01155",
+        "FX01158",
+        "FX01159"
+      ],
+      "select": [
+        "FX01008",
+        "FX01009",
+        "FX01034",
+        "FX01150",
+        "FX01P07",
+        "FX01P05",
+        "FX01P18",
+        "FX01P27",
+        "FX01P22",
+        "FX01P23",
+        "FX01P16",
+        "FX01P17",
+        "FX01P08"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "FX01008",
+            "FX01009",
+            "FX01034"
+          ],
+          "price": 2280000
+        },
+        {
+          "codes": [
+            "FX01150"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "FX01P07"
+          ],
+          "price": 660000
+        },
+        {
+          "codes": [
+            "FX01P05"
+          ],
+          "price": 1230000
+        },
+        {
+          "codes": [
+            "FX01P18"
+          ],
+          "price": 430000
+        },
+        {
+          "codes": [
+            "FX01P27"
+          ],
+          "price": 520000
+        },
+        {
+          "codes": [
+            "FX01P22"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "FX01P23"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "FX01P16"
+          ],
+          "price": 240000
+        },
+        {
+          "codes": [
+            "FX01P17"
+          ],
+          "price": 160000
+        },
+        {
+          "codes": [
+            "FX01P08"
+          ],
+          "price": 630000
+        }
+      ]
+    },
+    "익스클루시브 (2.5 7인승)": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "tax_5": 45160000,
+        "tax_3_5": 44470000
+      },
+      "basic": [
+        "FX01001",
+        "FX01002",
+        "FX01003",
+        "FX01004",
+        "FX01005",
+        "FX01006",
+        "FX01007",
+        "FX01035",
+        "FX01036",
+        "FX01037",
+        "FX01038",
+        "FX01039",
+        "FX01010",
+        "FX01011",
+        "FX01012",
+        "FX01013",
+        "FX01014",
+        "FX01015",
+        "FX01016",
+        "FX01017",
+        "FX01018",
+        "FX01019",
+        "FX01020",
+        "FX01021",
+        "FX01022",
+        "FX01023",
+        "FX01024",
+        "FX01025",
+        "FX01125",
+        "FX01040",
+        "FX01041",
+        "FX01042",
+        "FX01043",
+        "FX01044",
+        "FX01047",
+        "FX01045",
+        "FX01046",
+        "FX01048",
+        "FX01049",
+        "FX01050",
+        "FX01051",
+        "FX01052",
+        "FX01053",
+        "FX01054",
+        "FX01172",
+        "FX01055",
+        "FX01062",
+        "FX01063",
+        "FX01064",
+        "FX01065",
+        "FX01066",
+        "FX01088",
+        "FX01089",
+        "FX01090",
+        "FX01091",
+        "FX01092",
+        "FX01093",
+        "FX01094",
+        "FX01095",
+        "FX01096",
+        "FX01120",
+        "FX01121",
+        "FX01122",
+        "FX01123",
+        "FX01124",
+        "FX01126",
+        "FX01127",
+        "FX01128",
+        "FX01178",
+        "FX01129",
+        "FX01174",
+        "FX01131",
+        "FX01132",
+        "FX01133",
+        "FX01134",
+        "FX01135",
+        "FX01136",
+        "FX01137",
+        "FX01138",
+        "FX01139",
+        "FX01140",
+        "FX01141",
+        "FX01157",
+        "FX01156",
+        "FX01155",
+        "FX01158"
+      ],
+      "select": [
+        "FX01008",
+        "FX01009",
+        "FX01034",
+        "FX01150",
+        "FX01P07",
+        "FX01P01",
+        "FX01P02",
+        "FX01P19",
+        "FX01P26",
+        "FX01P20",
+        "FX01P21"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "FX01008",
+            "FX01009",
+            "FX01034"
+          ],
+          "price": 2400000
+        },
+        {
+          "codes": [
+            "FX01150"
+          ],
+          "price": 900000
+        },
+        {
+          "codes": [
+            "FX01P07"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "FX01P01"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "FX01P02"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "FX01P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "FX01P26"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "FX01P20"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "FX01P21"
+          ],
+          "price": 170000
+        }
+      ]
+    },
+    "프레스티지 (2.5 7인승)": {
+      "slug": "prestige",
+      "name_en": null,
+      "price": {
+        "tax_5": 50990000,
+        "tax_3_5": 50220000
+      },
+      "basic": [
+        "FX01001",
+        "FX01002",
+        "FX01003",
+        "FX01004",
+        "FX01005",
+        "FX01006",
+        "FX01007",
+        "FX01035",
+        "FX01036",
+        "FX01037",
+        "FX01038",
+        "FX01039",
+        "FX01010",
+        "FX01011",
+        "FX01012",
+        "FX01013",
+        "FX01014",
+        "FX01015",
+        "FX01016",
+        "FX01018",
+        "FX01019",
+        "FX01020",
+        "FX01021",
+        "FX01022",
+        "FX01023",
+        "FX01024",
+        "FX01025",
+        "FX01125",
+        "FX01026",
+        "FX01027",
+        "FX01028",
+        "FX01029",
+        "FX01030",
+        "FX01031",
+        "FX01040",
+        "FX01042",
+        "FX01043",
+        "FX01044",
+        "FX01047",
+        "FX01045",
+        "FX01046",
+        "FX01048",
+        "FX01049",
+        "FX01050",
+        "FX01051",
+        "FX01052",
+        "FX01053",
+        "FX01054",
+        "FX01172",
+        "FX01055",
+        "FX01056",
+        "FX01057",
+        "FX01058",
+        "FX01063",
+        "FX01064",
+        "FX01065",
+        "FX01066",
+        "FX01067",
+        "FX01068",
+        "FX01070",
+        "FX01071",
+        "FX01072",
+        "FX01089",
+        "FX01090",
+        "FX01091",
+        "FX01092",
+        "FX01093",
+        "FX01094",
+        "FX01095",
+        "FX01096",
+        "FX01097",
+        "FX01098",
+        "FX01099",
+        "FX01120",
+        "FX01121",
+        "FX01122",
+        "FX01123",
+        "FX01126",
+        "FX01127",
+        "FX01128",
+        "FX01178",
+        "FX01129",
+        "FX01174",
+        "FX01131",
+        "FX01132",
+        "FX01133",
+        "FX01134",
+        "FX01135",
+        "FX01136",
+        "FX01137",
+        "FX01138",
+        "FX01139",
+        "FX01140",
+        "FX01141",
+        "FX01142",
+        "FX01143",
+        "FX01032",
+        "FX01144",
+        "FX01145",
+        "FX01146",
+        "FX01157",
+        "FX01156",
+        "FX01155",
+        "FX01158"
+      ],
+      "select": [
+        "FX01008",
+        "FX01009",
+        "FX01034",
+        "FX01150",
+        "FX01P07",
+        "FX01P06",
+        "FX01114",
+        "FX01033",
+        "FX01P04",
+        "FX01P19",
+        "FX01P26",
+        "FX01P24",
+        "FX01P25",
+        "FX01P20",
+        "FX01P21",
+        "FX01P09"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "FX01008",
+            "FX01009",
+            "FX01034"
+          ],
+          "price": 2400000
+        },
+        {
+          "codes": [
+            "FX01150"
+          ],
+          "price": 900000
+        },
+        {
+          "codes": [
+            "FX01P07"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "FX01P06"
+          ],
+          "price": 2200000
+        },
+        {
+          "codes": [
+            "FX01114"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "FX01033"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "FX01P04"
+          ],
+          "price": 1800000
+        },
+        {
+          "codes": [
+            "FX01P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "FX01P26"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "FX01P24"
+          ],
+          "price": 410000
+        },
+        {
+          "codes": [
+            "FX01P25"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "FX01P20"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "FX01P21"
+          ],
+          "price": 170000
+        },
+        {
+          "codes": [
+            "FX01P09"
+          ],
+          "price": 700000
+        }
+      ]
+    },
+    "캘리그래피 (2.5 7인승)": {
+      "slug": "calligraphy",
+      "name_en": null,
+      "price": {
+        "tax_5": 57940000,
+        "tax_3_5": 57060000
+      },
+      "basic": [
+        "FX01001",
+        "FX01002",
+        "FX01003",
+        "FX01004",
+        "FX01005",
+        "FX01006",
+        "FX01007",
+        "FX01035",
+        "FX01036",
+        "FX01037",
+        "FX01038",
+        "FX01039",
+        "FX01010",
+        "FX01011",
+        "FX01012",
+        "FX01013",
+        "FX01014",
+        "FX01015",
+        "FX01016",
+        "FX01018",
+        "FX01019",
+        "FX01020",
+        "FX01021",
+        "FX01022",
+        "FX01023",
+        "FX01024",
+        "FX01025",
+        "FX01125",
+        "FX01026",
+        "FX01027",
+        "FX01028",
+        "FX01029",
+        "FX01030",
+        "FX01031",
+        "FX01033",
+        "FX01042",
+        "FX01043",
+        "FX01044",
+        "FX01047",
+        "FX01045",
+        "FX01046",
+        "FX01048",
+        "FX01049",
+        "FX01050",
+        "FX01051",
+        "FX01052",
+        "FX01053",
+        "FX01054",
+        "FX01055",
+        "FX01056",
+        "FX01058",
+        "FX01059",
+        "FX01060",
+        "FX01064",
+        "FX01065",
+        "FX01066",
+        "FX01067",
+        "FX01068",
+        "FX01072",
+        "FX01073",
+        "FX01074",
+        "FX01075",
+        "FX01076",
+        "FX01077",
+        "FX01078",
+        "FX01079",
+        "FX01080",
+        "FX01081",
+        "FX01082",
+        "FX01083",
+        "FX01090",
+        "FX01091",
+        "FX01095",
+        "FX01099",
+        "FX01100",
+        "FX01101",
+        "FX01102",
+        "FX01103",
+        "FX01104",
+        "FX01105",
+        "FX01106",
+        "FX01107",
+        "FX01108",
+        "FX01109",
+        "FX01120",
+        "FX01121",
+        "FX01122",
+        "FX01123",
+        "FX01126",
+        "FX01127",
+        "FX01128",
+        "FX01178",
+        "FX01129",
+        "FX01174",
+        "FX01131",
+        "FX01132",
+        "FX01133",
+        "FX01134",
+        "FX01135",
+        "FX01136",
+        "FX01137",
+        "FX01138",
+        "FX01139",
+        "FX01140",
+        "FX01141",
+        "FX01142",
+        "FX01143",
+        "FX01032",
+        "FX01144",
+        "FX01145",
+        "FX01146",
+        "FX01147",
+        "FX01148",
+        "FX01149",
+        "FX01157",
+        "FX01155",
+        "FX01158",
+        "FX01159"
+      ],
+      "select": [
+        "FX01008",
+        "FX01009",
+        "FX01034",
+        "FX01150",
+        "FX01P07",
+        "FX01114",
+        "FX01P05",
+        "FX01P19",
+        "FX01P26",
+        "FX01P24",
+        "FX01P25",
+        "FX01P20",
+        "FX01P21",
+        "FX01P09"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "FX01008",
+            "FX01009",
+            "FX01034"
+          ],
+          "price": 2400000
+        },
+        {
+          "codes": [
+            "FX01150"
+          ],
+          "price": 900000
+        },
+        {
+          "codes": [
+            "FX01P07"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "FX01114"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "FX01P05"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "FX01P19"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "FX01P26"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "FX01P24"
+          ],
+          "price": 410000
+        },
+        {
+          "codes": [
+            "FX01P25"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "FX01P20"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "FX01P21"
+          ],
+          "price": 170000
+        },
+        {
+          "codes": [
+            "FX01P09"
+          ],
+          "price": 700000
+        }
+      ]
+    }
+  }
+}

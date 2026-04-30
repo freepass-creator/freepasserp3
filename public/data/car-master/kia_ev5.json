@@ -1,0 +1,2185 @@
+{
+  "catalog_id": "kia_ev5",
+  "title": "기아 EV5",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/ev5/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워 일렉트릭": [
+      "KROV262001",
+      "KROV262164",
+      "KROV262003",
+      "KROV262004",
+      "KROV262005",
+      "KROV262006",
+      "KROV262007",
+      "KROV262008",
+      "KROV262009",
+      "KROV262002",
+      "KROV262010"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KROV262011",
+      "KROV262012",
+      "KROV262013",
+      "KROV262014",
+      "KROV262015",
+      "KROV262016",
+      "KROV262017",
+      "KROV262018",
+      "KROV262019",
+      "KROV262020",
+      "KROV262021"
+    ],
+    "안전": [
+      "KROV262031",
+      "KROV262032",
+      "KROV262033",
+      "KROV262034",
+      "KROV262035",
+      "KROV262036",
+      "KROV262037",
+      "KROV262038",
+      "KROV262039",
+      "KROV262040",
+      "KROV262041",
+      "KROV262042",
+      "KROV262043",
+      "KROV262044",
+      "KROV262045"
+    ],
+    "외장": [
+      "KROV262047",
+      "KROV262048",
+      "KROV262049",
+      "KROV262050",
+      "KROV262051",
+      "KROV262052",
+      "KROV262053",
+      "KROV262054",
+      "KROV262055",
+      "KROV262056",
+      "KROV262057",
+      "KROV262058",
+      "KROV262059",
+      "KROV262060",
+      "KROV262061",
+      "KROV262062",
+      "KROV262063",
+      "KROV262064",
+      "KROV262065",
+      "KROV262066",
+      "KROV262166",
+      "KROV262167",
+      "KROV262169"
+    ],
+    "내장": [
+      "KROV262069",
+      "KROV262070",
+      "KROV262071",
+      "KROV262072",
+      "KROV262073",
+      "KROV262074",
+      "KROV262075",
+      "KROV262076",
+      "KROV262077",
+      "KROV262078",
+      "KROV262171",
+      "KROV262079",
+      "KROV262080",
+      "KROV262081",
+      "KROV262082",
+      "KROV262083",
+      "KROV262084",
+      "KROV262085",
+      "KROV262086",
+      "KROV262170",
+      "KROV262087"
+    ],
+    "시트": [
+      "KROV262088",
+      "KROV262089",
+      "KROV262090",
+      "KROV262091",
+      "KROV262092",
+      "KROV262093",
+      "KROV262094",
+      "KROV262095",
+      "KROV262096",
+      "KROV262097",
+      "KROV262098",
+      "KROV262099",
+      "KROV262100",
+      "KROV262101",
+      "KROV262102",
+      "KROV262103",
+      "KROV262104"
+    ],
+    "편의": [
+      "KROV262109",
+      "KROV262110",
+      "KROV262111",
+      "KROV262112",
+      "KROV262113",
+      "KROV262114",
+      "KROV262115",
+      "KROV262116",
+      "KROV262117",
+      "KROV262118",
+      "KROV262119",
+      "KROV262120",
+      "KROV262121",
+      "KROV262122",
+      "KROV262123",
+      "KROV262124",
+      "KROV262125",
+      "KROV262126",
+      "KROV262127",
+      "KROV262128",
+      "KROV262129",
+      "KROV262130",
+      "KROV262131",
+      "KROV262132",
+      "KROV262133",
+      "KROV262134",
+      "KROV262135",
+      "KROV262136",
+      "KROV262137",
+      "KROV262138",
+      "KROV262139"
+    ],
+    "인포테인먼트": [
+      "KROV262151",
+      "KROV262152",
+      "KROV262153",
+      "KROV262154",
+      "KROV262155",
+      "KROV262156",
+      "KROV262157"
+    ],
+    "선택사양": [
+      "KROV262161",
+      "KROV262162",
+      "KROV262P01",
+      "KROV262P02",
+      "KROV262P04",
+      "KROV262P05",
+      "KROV262P08",
+      "KROV262P09",
+      "KROV262P10",
+      "KROV262P12",
+      "KROV262165",
+      "KROV262P03",
+      "KROV262P06",
+      "KROV262068",
+      "KROV262P11",
+      "KROV262P13",
+      "KROV262168",
+      "KROV262P07",
+      "KROV262P14"
+    ]
+  },
+  "options": {
+    "KROV262001": {
+      "name": "차세대 일체형 PE 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262164": {
+      "name": "60.3kWh 리튬이온 배터리",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262003": {
+      "name": "회생제동 브레이크 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262004": {
+      "name": "히트 펌프",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262005": {
+      "name": "배터리 히팅 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262006": {
+      "name": "실내 V2L 콘센트",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262007": {
+      "name": "랙 구동형 전동식 파워스티어링(R-MDPS)",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262008": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262009": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262011": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262012": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262013": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262014": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262015": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262016": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262017": {
+      "name": "차로 유지 보조 2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262018": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262019": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262020": {
+      "name": "스티어링 휠 진동 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262021": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KROV262031": {
+      "name": "9에어백(운전석/동승석 어드밴스드, 1열 센터 사이드, 전복감지 커튼, 1열/2열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262032": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262033": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262034": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262035": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262036": {
+      "name": "경사로 저속주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262037": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262038": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262039": {
+      "name": "1열/2열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262040": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262041": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262042": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262043": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262044": {
+      "name": "페달 오조작 안전 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262045": {
+      "name": "가속 제한 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KROV262047": {
+      "name": "235/60 R18 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262048": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262049": {
+      "name": "프론트/리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262050": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262051": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262052": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262053": {
+      "name": "LED 리피터 일체형 아웃사이드미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262054": {
+      "name": "오토 플러시 도어 핸들(워크 어웨이 락 포함)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262055": {
+      "name": "도어손잡이 조명(프론트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262056": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262057": {
+      "name": "윈드쉴드/1열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262058": {
+      "name": "리어 스포일러",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262059": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262069": {
+      "name": "블랙 또는 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262070": {
+      "name": "파노라믹 와이드 디스플레이(인포/공조 통합형)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262071": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262072": {
+      "name": "인조가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262073": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지 램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262074": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262075": {
+      "name": "슬라이딩 선바이저(거울, LED조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262076": {
+      "name": "글로브박스 LED 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262077": {
+      "name": "러기지 보드",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262078": {
+      "name": "프론트 트렁크",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262171": {
+      "name": "기아 애드기어(기아 멀티 후크 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262088": {
+      "name": "프리미엄 바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262089": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262090": {
+      "name": "2열 6:4 폴드&amp;다이브 시트(풀플랫, 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262091": {
+      "name": "2열 리모트 폴딩 레버",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262092": {
+      "name": "1열/2열 높이조절식 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262093": {
+      "name": "1열 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262094": {
+      "name": "2열 센터 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262095": {
+      "name": "1열 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262096": {
+      "name": "1열 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262097": {
+      "name": "스키쓰루",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262109": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262110": {
+      "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262111": {
+      "name": "컬럼 타입 전자식 변속 레버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262112": {
+      "name": "회생제동 컨트롤 패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262113": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262114": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262115": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262116": {
+      "name": "레인 센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262117": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262118": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262119": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262120": {
+      "name": "1열/2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262121": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262122": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262123": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262124": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262125": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262126": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262127": {
+      "name": "확장형 센터콘솔",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262128": {
+      "name": "C타입 USB 단자(충전용, 1열 1개/1열 시트백 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262129": {
+      "name": "1열 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262130": {
+      "name": "전동식 충전 도어(LED 조명)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262151": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KROV262152": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KROV262153": {
+      "name": "6 스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KROV262154": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KROV262155": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KROV262156": {
+      "name": "C타입 USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KROV262157": {
+      "name": "기아 AI 어시스턴트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KROV262161": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KROV262162": {
+      "name": "아이스버그 매트 그린",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KROV262P01": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P02": {
+      "name": "컴포트 I",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P04": {
+      "name": "19인치 휠 &amp; 타이어",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P05": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P08": {
+      "name": "모니터링",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P09": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P10": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P12": {
+      "name": "빌트인캠 2 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262002": {
+      "name": "81.4kWh 리튬이온 배터리",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262165": {
+      "name": "듀얼 모터 4WD",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KROV262010": {
+      "name": "실외 V2L 커넥터",
+      "category": "파워 일렉트릭",
+      "is_package": false
+    },
+    "KROV262060": {
+      "name": "프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262061": {
+      "name": "프론트 LED 센터 포지셔닝 램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262062": {
+      "name": "순차점등 턴시그널램프(프론트/리어)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262063": {
+      "name": "다이내믹 웰컴 라이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262064": {
+      "name": "블랙하이그로시(프론트 범퍼 로워, 리어 범퍼 로워, 도어 사이드 몰딩, 휠아치 몰딩)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262065": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262079": {
+      "name": "블랙 또는 브라운 또는 그레이 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262080": {
+      "name": "프리미엄 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262081": {
+      "name": "다이내믹 앰비언트 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262082": {
+      "name": "도어 센터트림 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262083": {
+      "name": "메탈 페달&amp;풋레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262084": {
+      "name": "메탈 도어 스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262085": {
+      "name": "1열 메쉬 헤드레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262098": {
+      "name": "1열 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262099": {
+      "name": "운전석 릴렉션 컴포트시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262100": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262101": {
+      "name": "1열 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262102": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262103": {
+      "name": "1열 시트백 테이블",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262131": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262132": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262133": {
+      "name": "스마트 파워테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262134": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262135": {
+      "name": "운전석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262136": {
+      "name": "후진연동 자동하향 아웃사이드 미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262137": {
+      "name": "3존 공조(2열 온도 제어)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262138": {
+      "name": "에어컨 광촉매 살균 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262139": {
+      "name": "2열 센터 암레스트 슬라이딩 컵홀더",
+      "category": "편의",
+      "is_package": false
+    },
+    "KROV262P03": {
+      "name": "컴포트 II",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P06": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262068": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KROV262P11": {
+      "name": "하만카돈 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P13": {
+      "name": "빌트인캠 2 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262066": {
+      "name": "GT-Line 전용 외장 디자인(235/55 R19 타이어&amp;GT-Line 전용 전면가공 휠, 프론트/리어 범퍼, 전용 엠블럼)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262166": {
+      "name": "다크 메탈 프론트 범퍼 센터 가니쉬",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262167": {
+      "name": "블랙하이그로시(아웃사이드 미러, 벨트라인 몰딩)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262169": {
+      "name": "바디칼라 도어 가니쉬",
+      "category": "외장",
+      "is_package": false
+    },
+    "KROV262086": {
+      "name": "GT-Line 전용 내장 디자인(블랙&amp;화이트 인테리어, 전용 스티어링 휠, 1열 전용 헤드레스트)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262170": {
+      "name": "블랙 헤드라이닝",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262087": {
+      "name": "메탈 트랜스버스 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "KROV262104": {
+      "name": "GT-Line 전용 프리미엄 바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KROV262168": {
+      "name": "투톤 루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KROV262P07": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KROV262P14": {
+      "name": "빌트인캠 2 플러스",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "에어 스탠다드": {
+      "slug": "에어_스탠다드",
+      "price": {
+        "tax_5_before": 43760000,
+        "tax_3_5_before": 43100000
+      },
+      "basic": [
+        "KROV262001",
+        "KROV262164",
+        "KROV262003",
+        "KROV262004",
+        "KROV262005",
+        "KROV262006",
+        "KROV262007",
+        "KROV262008",
+        "KROV262009",
+        "KROV262011",
+        "KROV262012",
+        "KROV262013",
+        "KROV262014",
+        "KROV262015",
+        "KROV262016",
+        "KROV262017",
+        "KROV262018",
+        "KROV262019",
+        "KROV262020",
+        "KROV262021",
+        "KROV262031",
+        "KROV262032",
+        "KROV262033",
+        "KROV262034",
+        "KROV262035",
+        "KROV262036",
+        "KROV262037",
+        "KROV262038",
+        "KROV262039",
+        "KROV262040",
+        "KROV262041",
+        "KROV262042",
+        "KROV262043",
+        "KROV262044",
+        "KROV262045",
+        "KROV262047",
+        "KROV262048",
+        "KROV262049",
+        "KROV262050",
+        "KROV262051",
+        "KROV262052",
+        "KROV262053",
+        "KROV262054",
+        "KROV262055",
+        "KROV262056",
+        "KROV262057",
+        "KROV262058",
+        "KROV262059",
+        "KROV262069",
+        "KROV262070",
+        "KROV262071",
+        "KROV262072",
+        "KROV262073",
+        "KROV262074",
+        "KROV262075",
+        "KROV262076",
+        "KROV262077",
+        "KROV262078",
+        "KROV262171",
+        "KROV262088",
+        "KROV262089",
+        "KROV262090",
+        "KROV262091",
+        "KROV262092",
+        "KROV262093",
+        "KROV262094",
+        "KROV262095",
+        "KROV262096",
+        "KROV262097",
+        "KROV262109",
+        "KROV262110",
+        "KROV262111",
+        "KROV262112",
+        "KROV262113",
+        "KROV262114",
+        "KROV262115",
+        "KROV262116",
+        "KROV262117",
+        "KROV262118",
+        "KROV262119",
+        "KROV262120",
+        "KROV262121",
+        "KROV262122",
+        "KROV262123",
+        "KROV262124",
+        "KROV262125",
+        "KROV262126",
+        "KROV262127",
+        "KROV262128",
+        "KROV262129",
+        "KROV262130",
+        "KROV262151",
+        "KROV262152",
+        "KROV262153",
+        "KROV262154",
+        "KROV262155",
+        "KROV262156",
+        "KROV262157"
+      ],
+      "select": [
+        "KROV262161",
+        "KROV262162",
+        "KROV262P01",
+        "KROV262P02",
+        "KROV262P04",
+        "KROV262P05",
+        "KROV262P08",
+        "KROV262P09",
+        "KROV262P10",
+        "KROV262P12"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KROV262161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KROV262162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P01"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KROV262P02"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P04"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P05"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262P08"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P09"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262P10"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KROV262P12"
+          ],
+          "price": 590000
+        }
+      ]
+    },
+    "에어 롱레인지": {
+      "slug": "에어_롱레인지",
+      "price": {
+        "tax_5_before": 48190000,
+        "tax_5_after": 45750000,
+        "tax_3_5_before": 47460000,
+        "tax_3_5_after": 45750000
+      },
+      "basic": [
+        "KROV262002",
+        "KROV262001",
+        "KROV262003",
+        "KROV262004",
+        "KROV262005",
+        "KROV262006",
+        "KROV262007",
+        "KROV262008",
+        "KROV262009",
+        "KROV262011",
+        "KROV262012",
+        "KROV262013",
+        "KROV262014",
+        "KROV262015",
+        "KROV262016",
+        "KROV262017",
+        "KROV262018",
+        "KROV262019",
+        "KROV262020",
+        "KROV262021",
+        "KROV262031",
+        "KROV262032",
+        "KROV262033",
+        "KROV262034",
+        "KROV262035",
+        "KROV262036",
+        "KROV262037",
+        "KROV262038",
+        "KROV262039",
+        "KROV262040",
+        "KROV262041",
+        "KROV262042",
+        "KROV262043",
+        "KROV262044",
+        "KROV262045",
+        "KROV262047",
+        "KROV262048",
+        "KROV262049",
+        "KROV262050",
+        "KROV262051",
+        "KROV262052",
+        "KROV262053",
+        "KROV262054",
+        "KROV262055",
+        "KROV262056",
+        "KROV262057",
+        "KROV262058",
+        "KROV262059",
+        "KROV262069",
+        "KROV262070",
+        "KROV262071",
+        "KROV262072",
+        "KROV262073",
+        "KROV262074",
+        "KROV262075",
+        "KROV262076",
+        "KROV262077",
+        "KROV262078",
+        "KROV262171",
+        "KROV262088",
+        "KROV262089",
+        "KROV262090",
+        "KROV262091",
+        "KROV262092",
+        "KROV262093",
+        "KROV262094",
+        "KROV262095",
+        "KROV262096",
+        "KROV262097",
+        "KROV262109",
+        "KROV262110",
+        "KROV262111",
+        "KROV262112",
+        "KROV262113",
+        "KROV262114",
+        "KROV262115",
+        "KROV262116",
+        "KROV262117",
+        "KROV262118",
+        "KROV262119",
+        "KROV262120",
+        "KROV262121",
+        "KROV262122",
+        "KROV262123",
+        "KROV262124",
+        "KROV262125",
+        "KROV262126",
+        "KROV262127",
+        "KROV262128",
+        "KROV262129",
+        "KROV262130",
+        "KROV262151",
+        "KROV262152",
+        "KROV262153",
+        "KROV262154",
+        "KROV262155",
+        "KROV262156",
+        "KROV262157"
+      ],
+      "select": [
+        "KROV262165",
+        "KROV262161",
+        "KROV262162",
+        "KROV262P01",
+        "KROV262P02",
+        "KROV262P04",
+        "KROV262P05",
+        "KROV262P08",
+        "KROV262P09",
+        "KROV262P10",
+        "KROV262P12"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KROV262165"
+          ],
+          "price": 2370000
+        },
+        {
+          "codes": [
+            "KROV262161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KROV262162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P01"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KROV262P02"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P04"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P05"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262P08"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P09"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262P10"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KROV262P12"
+          ],
+          "price": 590000
+        }
+      ]
+    },
+    "어스 스탠다드": {
+      "slug": "어스_스탠다드",
+      "price": {
+        "tax_5_before": 47710000,
+        "tax_3_5_before": 46990000
+      },
+      "basic": [
+        "KROV262010",
+        "KROV262060",
+        "KROV262061",
+        "KROV262062",
+        "KROV262063",
+        "KROV262064",
+        "KROV262065",
+        "KROV262079",
+        "KROV262080",
+        "KROV262081",
+        "KROV262082",
+        "KROV262083",
+        "KROV262084",
+        "KROV262085",
+        "KROV262098",
+        "KROV262099",
+        "KROV262100",
+        "KROV262101",
+        "KROV262102",
+        "KROV262103",
+        "KROV262131",
+        "KROV262132",
+        "KROV262133",
+        "KROV262134",
+        "KROV262135",
+        "KROV262136",
+        "KROV262137",
+        "KROV262138",
+        "KROV262139",
+        "KROV262001",
+        "KROV262164",
+        "KROV262003",
+        "KROV262004",
+        "KROV262005",
+        "KROV262006",
+        "KROV262007",
+        "KROV262008",
+        "KROV262009",
+        "KROV262011",
+        "KROV262012",
+        "KROV262013",
+        "KROV262014",
+        "KROV262015",
+        "KROV262016",
+        "KROV262017",
+        "KROV262018",
+        "KROV262019",
+        "KROV262020",
+        "KROV262021",
+        "KROV262031",
+        "KROV262032",
+        "KROV262033",
+        "KROV262034",
+        "KROV262035",
+        "KROV262036",
+        "KROV262037",
+        "KROV262038",
+        "KROV262039",
+        "KROV262040",
+        "KROV262041",
+        "KROV262042",
+        "KROV262043",
+        "KROV262044",
+        "KROV262045",
+        "KROV262047",
+        "KROV262049",
+        "KROV262050",
+        "KROV262051",
+        "KROV262052",
+        "KROV262053",
+        "KROV262054",
+        "KROV262055",
+        "KROV262056",
+        "KROV262057",
+        "KROV262058",
+        "KROV262059",
+        "KROV262070",
+        "KROV262071",
+        "KROV262073",
+        "KROV262074",
+        "KROV262075",
+        "KROV262076",
+        "KROV262077",
+        "KROV262078",
+        "KROV262171",
+        "KROV262088",
+        "KROV262089",
+        "KROV262090",
+        "KROV262091",
+        "KROV262092",
+        "KROV262093",
+        "KROV262094",
+        "KROV262095",
+        "KROV262096",
+        "KROV262097",
+        "KROV262109",
+        "KROV262110",
+        "KROV262111",
+        "KROV262112",
+        "KROV262113",
+        "KROV262114",
+        "KROV262115",
+        "KROV262116",
+        "KROV262117",
+        "KROV262118",
+        "KROV262119",
+        "KROV262120",
+        "KROV262121",
+        "KROV262122",
+        "KROV262123",
+        "KROV262124",
+        "KROV262125",
+        "KROV262126",
+        "KROV262127",
+        "KROV262128",
+        "KROV262129",
+        "KROV262130",
+        "KROV262151",
+        "KROV262152",
+        "KROV262153",
+        "KROV262154",
+        "KROV262155",
+        "KROV262156",
+        "KROV262157"
+      ],
+      "select": [
+        "KROV262161",
+        "KROV262162",
+        "KROV262P03",
+        "KROV262P04",
+        "KROV262P06",
+        "KROV262P08",
+        "KROV262P09",
+        "KROV262068",
+        "KROV262P11",
+        "KROV262P13"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KROV262161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KROV262162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KROV262P04"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P06"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KROV262P08"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P09"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262068"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KROV262P11"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KROV262P13"
+          ],
+          "price": 450000
+        }
+      ]
+    },
+    "어스 롱레인지": {
+      "slug": "어스_롱레인지",
+      "price": {
+        "tax_5_before": 52140000,
+        "tax_5_after": 49500000,
+        "tax_3_5_before": 51350000,
+        "tax_3_5_after": 49500000
+      },
+      "basic": [
+        "KROV262002",
+        "KROV262001",
+        "KROV262003",
+        "KROV262004",
+        "KROV262005",
+        "KROV262006",
+        "KROV262007",
+        "KROV262008",
+        "KROV262009",
+        "KROV262010",
+        "KROV262011",
+        "KROV262012",
+        "KROV262013",
+        "KROV262014",
+        "KROV262015",
+        "KROV262016",
+        "KROV262017",
+        "KROV262018",
+        "KROV262019",
+        "KROV262020",
+        "KROV262021",
+        "KROV262031",
+        "KROV262032",
+        "KROV262033",
+        "KROV262034",
+        "KROV262035",
+        "KROV262036",
+        "KROV262037",
+        "KROV262038",
+        "KROV262039",
+        "KROV262040",
+        "KROV262041",
+        "KROV262042",
+        "KROV262043",
+        "KROV262044",
+        "KROV262045",
+        "KROV262047",
+        "KROV262049",
+        "KROV262050",
+        "KROV262051",
+        "KROV262052",
+        "KROV262053",
+        "KROV262054",
+        "KROV262055",
+        "KROV262056",
+        "KROV262057",
+        "KROV262058",
+        "KROV262059",
+        "KROV262060",
+        "KROV262061",
+        "KROV262062",
+        "KROV262063",
+        "KROV262064",
+        "KROV262065",
+        "KROV262070",
+        "KROV262071",
+        "KROV262073",
+        "KROV262074",
+        "KROV262075",
+        "KROV262076",
+        "KROV262077",
+        "KROV262078",
+        "KROV262171",
+        "KROV262079",
+        "KROV262080",
+        "KROV262081",
+        "KROV262082",
+        "KROV262083",
+        "KROV262084",
+        "KROV262085",
+        "KROV262088",
+        "KROV262089",
+        "KROV262090",
+        "KROV262091",
+        "KROV262092",
+        "KROV262093",
+        "KROV262094",
+        "KROV262095",
+        "KROV262096",
+        "KROV262097",
+        "KROV262098",
+        "KROV262099",
+        "KROV262100",
+        "KROV262101",
+        "KROV262102",
+        "KROV262103",
+        "KROV262109",
+        "KROV262110",
+        "KROV262111",
+        "KROV262112",
+        "KROV262113",
+        "KROV262114",
+        "KROV262115",
+        "KROV262116",
+        "KROV262117",
+        "KROV262118",
+        "KROV262119",
+        "KROV262120",
+        "KROV262121",
+        "KROV262122",
+        "KROV262123",
+        "KROV262124",
+        "KROV262125",
+        "KROV262126",
+        "KROV262127",
+        "KROV262128",
+        "KROV262129",
+        "KROV262130",
+        "KROV262131",
+        "KROV262132",
+        "KROV262133",
+        "KROV262134",
+        "KROV262135",
+        "KROV262136",
+        "KROV262137",
+        "KROV262138",
+        "KROV262139",
+        "KROV262151",
+        "KROV262152",
+        "KROV262153",
+        "KROV262154",
+        "KROV262155",
+        "KROV262156",
+        "KROV262157"
+      ],
+      "select": [
+        "KROV262165",
+        "KROV262161",
+        "KROV262162",
+        "KROV262P03",
+        "KROV262P04",
+        "KROV262P06",
+        "KROV262P08",
+        "KROV262P09",
+        "KROV262068",
+        "KROV262P11",
+        "KROV262P13"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KROV262165"
+          ],
+          "price": 2370000
+        },
+        {
+          "codes": [
+            "KROV262161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KROV262162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KROV262P04"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P06"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KROV262P08"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P09"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262068"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KROV262P11"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KROV262P13"
+          ],
+          "price": 450000
+        }
+      ]
+    },
+    "GT-Line 스탠다드": {
+      "slug": "GT-Line_스탠다드",
+      "price": {
+        "tax_5_before": 48870000,
+        "tax_3_5_before": 48130000
+      },
+      "basic": [
+        "KROV262066",
+        "KROV262166",
+        "KROV262167",
+        "KROV262169",
+        "KROV262086",
+        "KROV262170",
+        "KROV262087",
+        "KROV262104",
+        "KROV262001",
+        "KROV262164",
+        "KROV262003",
+        "KROV262004",
+        "KROV262005",
+        "KROV262006",
+        "KROV262007",
+        "KROV262008",
+        "KROV262009",
+        "KROV262010",
+        "KROV262011",
+        "KROV262012",
+        "KROV262013",
+        "KROV262014",
+        "KROV262015",
+        "KROV262016",
+        "KROV262017",
+        "KROV262018",
+        "KROV262019",
+        "KROV262020",
+        "KROV262021",
+        "KROV262031",
+        "KROV262032",
+        "KROV262033",
+        "KROV262034",
+        "KROV262035",
+        "KROV262036",
+        "KROV262037",
+        "KROV262038",
+        "KROV262039",
+        "KROV262040",
+        "KROV262041",
+        "KROV262042",
+        "KROV262043",
+        "KROV262044",
+        "KROV262045",
+        "KROV262049",
+        "KROV262050",
+        "KROV262051",
+        "KROV262052",
+        "KROV262053",
+        "KROV262054",
+        "KROV262055",
+        "KROV262056",
+        "KROV262057",
+        "KROV262058",
+        "KROV262059",
+        "KROV262060",
+        "KROV262061",
+        "KROV262062",
+        "KROV262063",
+        "KROV262065",
+        "KROV262070",
+        "KROV262071",
+        "KROV262073",
+        "KROV262074",
+        "KROV262075",
+        "KROV262076",
+        "KROV262077",
+        "KROV262078",
+        "KROV262171",
+        "KROV262081",
+        "KROV262082",
+        "KROV262083",
+        "KROV262084",
+        "KROV262089",
+        "KROV262090",
+        "KROV262091",
+        "KROV262092",
+        "KROV262093",
+        "KROV262094",
+        "KROV262095",
+        "KROV262096",
+        "KROV262097",
+        "KROV262098",
+        "KROV262099",
+        "KROV262100",
+        "KROV262101",
+        "KROV262102",
+        "KROV262103",
+        "KROV262109",
+        "KROV262110",
+        "KROV262111",
+        "KROV262112",
+        "KROV262113",
+        "KROV262114",
+        "KROV262115",
+        "KROV262116",
+        "KROV262117",
+        "KROV262118",
+        "KROV262119",
+        "KROV262120",
+        "KROV262121",
+        "KROV262122",
+        "KROV262123",
+        "KROV262124",
+        "KROV262125",
+        "KROV262126",
+        "KROV262127",
+        "KROV262128",
+        "KROV262129",
+        "KROV262130",
+        "KROV262131",
+        "KROV262132",
+        "KROV262133",
+        "KROV262134",
+        "KROV262135",
+        "KROV262136",
+        "KROV262137",
+        "KROV262138",
+        "KROV262139",
+        "KROV262151",
+        "KROV262152",
+        "KROV262153",
+        "KROV262154",
+        "KROV262155",
+        "KROV262156",
+        "KROV262157"
+      ],
+      "select": [
+        "KROV262168",
+        "KROV262161",
+        "KROV262162",
+        "KROV262P03",
+        "KROV262P07",
+        "KROV262P08",
+        "KROV262P09",
+        "KROV262068",
+        "KROV262P11",
+        "KROV262P14"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KROV262168"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KROV262161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KROV262162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KROV262P07"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KROV262P08"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P09"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262068"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KROV262P11"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KROV262P14"
+          ],
+          "price": 450000
+        }
+      ]
+    },
+    "GT-Line 롱레인지": {
+      "slug": "GT-Line_롱레인지",
+      "price": {
+        "tax_5_before": 53300000,
+        "tax_5_after": 50600000,
+        "tax_3_5_before": 52490000,
+        "tax_3_5_after": 50600000
+      },
+      "basic": [
+        "KROV262002",
+        "KROV262001",
+        "KROV262003",
+        "KROV262004",
+        "KROV262005",
+        "KROV262006",
+        "KROV262007",
+        "KROV262008",
+        "KROV262009",
+        "KROV262010",
+        "KROV262011",
+        "KROV262012",
+        "KROV262013",
+        "KROV262014",
+        "KROV262015",
+        "KROV262016",
+        "KROV262017",
+        "KROV262018",
+        "KROV262019",
+        "KROV262020",
+        "KROV262021",
+        "KROV262031",
+        "KROV262032",
+        "KROV262033",
+        "KROV262034",
+        "KROV262035",
+        "KROV262036",
+        "KROV262037",
+        "KROV262038",
+        "KROV262039",
+        "KROV262040",
+        "KROV262041",
+        "KROV262042",
+        "KROV262043",
+        "KROV262044",
+        "KROV262045",
+        "KROV262049",
+        "KROV262050",
+        "KROV262051",
+        "KROV262052",
+        "KROV262053",
+        "KROV262054",
+        "KROV262055",
+        "KROV262056",
+        "KROV262057",
+        "KROV262058",
+        "KROV262059",
+        "KROV262060",
+        "KROV262061",
+        "KROV262062",
+        "KROV262063",
+        "KROV262065",
+        "KROV262066",
+        "KROV262166",
+        "KROV262167",
+        "KROV262169",
+        "KROV262070",
+        "KROV262071",
+        "KROV262073",
+        "KROV262074",
+        "KROV262075",
+        "KROV262076",
+        "KROV262077",
+        "KROV262078",
+        "KROV262171",
+        "KROV262081",
+        "KROV262082",
+        "KROV262083",
+        "KROV262084",
+        "KROV262086",
+        "KROV262170",
+        "KROV262087",
+        "KROV262089",
+        "KROV262090",
+        "KROV262091",
+        "KROV262092",
+        "KROV262093",
+        "KROV262094",
+        "KROV262095",
+        "KROV262096",
+        "KROV262097",
+        "KROV262098",
+        "KROV262099",
+        "KROV262100",
+        "KROV262101",
+        "KROV262102",
+        "KROV262103",
+        "KROV262104",
+        "KROV262109",
+        "KROV262110",
+        "KROV262111",
+        "KROV262112",
+        "KROV262113",
+        "KROV262114",
+        "KROV262115",
+        "KROV262116",
+        "KROV262117",
+        "KROV262118",
+        "KROV262119",
+        "KROV262120",
+        "KROV262121",
+        "KROV262122",
+        "KROV262123",
+        "KROV262124",
+        "KROV262125",
+        "KROV262126",
+        "KROV262127",
+        "KROV262128",
+        "KROV262129",
+        "KROV262130",
+        "KROV262131",
+        "KROV262132",
+        "KROV262133",
+        "KROV262134",
+        "KROV262135",
+        "KROV262136",
+        "KROV262137",
+        "KROV262138",
+        "KROV262139",
+        "KROV262151",
+        "KROV262152",
+        "KROV262153",
+        "KROV262154",
+        "KROV262155",
+        "KROV262156",
+        "KROV262157"
+      ],
+      "select": [
+        "KROV262165",
+        "KROV262168",
+        "KROV262161",
+        "KROV262162",
+        "KROV262P03",
+        "KROV262P07",
+        "KROV262P08",
+        "KROV262P09",
+        "KROV262068",
+        "KROV262P11",
+        "KROV262P14"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KROV262165"
+          ],
+          "price": 2370000
+        },
+        {
+          "codes": [
+            "KROV262168"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KROV262161"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KROV262162"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KROV262P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KROV262P07"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KROV262P08"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KROV262P09"
+          ],
+          "price": 1340000
+        },
+        {
+          "codes": [
+            "KROV262068"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KROV262P11"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KROV262P14"
+          ],
+          "price": 450000
+        }
+      ]
+    }
+  }
+}

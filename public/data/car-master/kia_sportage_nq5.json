@@ -1,0 +1,1818 @@
+{
+  "catalog_id": "kia_sportage_nq5",
+  "title": "기아 더 뉴 스포티지 (NQ5)",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/sportage/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRNQ259001",
+      "KRNQ259005",
+      "KRNQ259008",
+      "KRNQ259009",
+      "KRNQ259010",
+      "KRNQ259002",
+      "KRNQ259004",
+      "KRNQ259011",
+      "KRNQ259003",
+      "KRNQ259006",
+      "KRNQ259007"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRNQ259014",
+      "KRNQ259015",
+      "KRNQ259016",
+      "KRNQ259017",
+      "KRNQ259018",
+      "KRNQ259019",
+      "KRNQ259020",
+      "KRNQ259021",
+      "KRNQ259022"
+    ],
+    "안전": [
+      "KRNQ259034",
+      "KRNQ259035",
+      "KRNQ259036",
+      "KRNQ259037",
+      "KRNQ259038",
+      "KRNQ259039",
+      "KRNQ259040",
+      "KRNQ259041",
+      "KRNQ259042",
+      "KRNQ259043",
+      "KRNQ259044"
+    ],
+    "외장": [
+      "KRNQ259045",
+      "KRNQ259047",
+      "KRNQ259048",
+      "KRNQ259049",
+      "KRNQ259050",
+      "KRNQ259051",
+      "KRNQ259052",
+      "KRNQ259053",
+      "KRNQ259054",
+      "KRNQ259055",
+      "KRNQ259056",
+      "KRNQ259064",
+      "KRNQ259057",
+      "KRNQ259058",
+      "KRNQ259059",
+      "KRNQ259060",
+      "KRNQ259061",
+      "KRNQ259062",
+      "KRNQ259063",
+      "KRNQ259065",
+      "KRNQ259068"
+    ],
+    "내장": [
+      "KRNQ259070",
+      "KRNQ259071",
+      "KRNQ259072",
+      "KRNQ259073",
+      "KRNQ259074",
+      "KRNQ259075",
+      "KRNQ259076",
+      "KRNQ259077",
+      "KRNQ259078",
+      "KRNQ259079",
+      "KRNQ259080",
+      "KRNQ259081",
+      "KRNQ259082",
+      "KRNQ259083",
+      "KRNQ259084",
+      "KRNQ259085",
+      "KRNQ259086",
+      "KRNQ259087",
+      "KRNQ259088",
+      "KRNQ259089"
+    ],
+    "시트": [
+      "KRNQ259092",
+      "KRNQ259093",
+      "KRNQ259094",
+      "KRNQ259096",
+      "KRNQ259097",
+      "KRNQ259098",
+      "KRNQ259099",
+      "KRNQ259100",
+      "KRNQ259101",
+      "KRNQ259102",
+      "KRNQ259103",
+      "KRNQ259104",
+      "KRNQ259172",
+      "KRNQ259105",
+      "KRNQ259106",
+      "KRNQ259107",
+      "KRNQ259108",
+      "KRNQ259095"
+    ],
+    "편의": [
+      "KRNQ259110",
+      "KRNQ259111",
+      "KRNQ259112",
+      "KRNQ259113",
+      "KRNQ259128",
+      "KRNQ259114",
+      "KRNQ259115",
+      "KRNQ259116",
+      "KRNQ259117",
+      "KRNQ259130",
+      "KRNQ259119",
+      "KRNQ259131",
+      "KRNQ259132",
+      "KRNQ259120",
+      "KRNQ259121",
+      "KRNQ259122",
+      "KRNQ259123",
+      "KRNQ259124",
+      "KRNQ259125",
+      "KRNQ259126",
+      "KRNQ259127",
+      "KRNQ259129",
+      "KRNQ259141",
+      "KRNQ259133",
+      "KRNQ259134",
+      "KRNQ259135",
+      "KRNQ259136",
+      "KRNQ259137",
+      "KRNQ259138",
+      "KRNQ259139",
+      "KRNQ259140",
+      "KRNQ259148"
+    ],
+    "인포테인먼트": [
+      "KRNQ259150",
+      "KRNQ259151",
+      "KRNQ259152",
+      "KRNQ259153",
+      "KRNQ259154",
+      "KRNQ259155",
+      "KRNQ259156"
+    ],
+    "선택사양": [
+      "KRNQ259170",
+      "KRNQ259P17",
+      "KRNQ259P01",
+      "KRNQ259P02",
+      "KRNQ259P03",
+      "KRNQ259P04",
+      "KRNQ259P19",
+      "KRNQ259166",
+      "KRNQ259167",
+      "KRNQ259168",
+      "KRNQ259P05",
+      "KRNQ259P06",
+      "KRNQ259P07",
+      "KRNQ259P08",
+      "KRNQ259P09",
+      "KRNQ259P10",
+      "KRNQ259069",
+      "KRNQ259P18",
+      "KRNQ259169",
+      "KRNQ259P11",
+      "KRNQ259P12",
+      "KRNQ259171",
+      "KRNQ259158",
+      "KRNQ259P13",
+      "KRNQ259P14",
+      "KRNQ259P15",
+      "KRNQ259P16"
+    ],
+    "첨단 운전자 보조 (ADAS)": [
+      "KRNQ259023",
+      "KRNQ259024"
+    ]
+  },
+  "options": {
+    "KRNQ259001": {
+      "name": "스마트스트림 G1.6 T-GDI엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259005": {
+      "name": "스마트스트림 8AT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259008": {
+      "name": "속도감응형 전동식 파워 스티어링(MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259009": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259010": {
+      "name": "고급형 ISG",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259014": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259015": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259016": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259017": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259018": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259019": {
+      "name": "차로 유지 보조 2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259020": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259021": {
+      "name": "스티어링 휠 진동 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259022": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRNQ259034": {
+      "name": "8에어백(운전석/동승석 어드밴스드, 전복 감지 커튼, 1열/2열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259035": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259036": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259037": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259038": {
+      "name": "경사로 밀림 방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259039": {
+      "name": "경사로 저속주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259040": {
+      "name": "개별 타이어 공기압 경보시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259041": {
+      "name": "1열/2열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259042": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259043": {
+      "name": "타이어 임시수리 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259044": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRNQ259045": {
+      "name": "235/65 R17 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259047": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259048": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259049": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259050": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259051": {
+      "name": "LED 리피터 일체형 아웃사이드 미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259052": {
+      "name": "도어손잡이 조명(프론트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259053": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259054": {
+      "name": "윈드쉴드/1열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259055": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259070": {
+      "name": "블랙 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259071": {
+      "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259072": {
+      "name": "가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259073": {
+      "name": "가죽 변속기 노브",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259074": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259075": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259076": {
+      "name": "슬라이딩 선바이저(거울, LED 조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259092": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259093": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259094": {
+      "name": "2열 6:4 폴드&amp;다이브 시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259096": {
+      "name": "운전석 시트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259097": {
+      "name": "1열 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259098": {
+      "name": "1열 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259110": {
+      "name": "버튼시동 스마트키 시스템(스마트키 원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259111": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259112": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259113": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259128": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259114": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259115": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259116": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259117": {
+      "name": "운전석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259130": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259119": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259131": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259132": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259120": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259121": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259122": {
+      "name": "C타입 USB 단자(충전용, 1열 1개/2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259123": {
+      "name": "파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259150": {
+      "name": "12.3인치 디스플레이 오디오(기아 커넥트, 폰 프로젝션)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRNQ259151": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRNQ259152": {
+      "name": "6스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRNQ259153": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRNQ259154": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRNQ259155": {
+      "name": "USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRNQ259170": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259P17": {
+      "name": "전자식 4WD",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P01": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P02": {
+      "name": "12.3인치 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P03": {
+      "name": "빌트인 캠 2",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P04": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P19": {
+      "name": "러기지 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259166": {
+      "name": "차량 보호 필름 I",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259167": {
+      "name": "차량 보호 필름 II",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259168": {
+      "name": "사이드 스텝",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259023": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRNQ259024": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRNQ259056": {
+      "name": "235/60 R18 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259064": {
+      "name": "2열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259057": {
+      "name": "블랙 하이그로시(프론트 범퍼 로워, 리어 범퍼, 도어 사이드 몰딩, 휠아치 몰딩, 테일게이트 가니쉬, 아웃사이드 미러 베이스)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259058": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259077": {
+      "name": "블랙 또는 라운지 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259078": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259079": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259080": {
+      "name": "패드 프린트 가니쉬(크래쉬패드, 콘솔 어퍼커버, 도어 트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259081": {
+      "name": "도어 암레스트 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259082": {
+      "name": "크롬 인사이드 도어 핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259099": {
+      "name": "운전석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259100": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259101": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259124": {
+      "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259125": {
+      "name": "전자식 변속 다이얼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259126": {
+      "name": "패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259127": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259129": {
+      "name": "스마트 파워테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259141": {
+      "name": "동승석/2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259133": {
+      "name": "C타입 USB 단자(충전용, 1열 시트백 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259134": {
+      "name": "러기지 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259156": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRNQ259P05": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P06": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P07": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P08": {
+      "name": "모니터링",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P09": {
+      "name": "KRELL 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P10": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259069": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259P18": {
+      "name": "LED 라이팅 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259169": {
+      "name": "빌트인 공기청정기",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259059": {
+      "name": "프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259060": {
+      "name": "프론트/리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259061": {
+      "name": "다이내믹 웰컴 라이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259062": {
+      "name": "LED 포그램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259063": {
+      "name": "터치타입 아웃사이드 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259083": {
+      "name": "블랙 또는 라운지 브라운 또는 네이비 그레이 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259084": {
+      "name": "앰비언트 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259085": {
+      "name": "우드 그레인 가니쉬(크래쉬패드, 콘솔 어퍼커버, 도어 트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259086": {
+      "name": "크래쉬패드 리얼 스티치",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259087": {
+      "name": "도어 센터트림 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259102": {
+      "name": "프리미엄 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259103": {
+      "name": "동승석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259104": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259172": {
+      "name": "동승석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259105": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259106": {
+      "name": "2열 리모트 폴딩 레버",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259107": {
+      "name": "1열 시트백 미니포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259108": {
+      "name": "옷걸이형 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259135": {
+      "name": "헤드업 디스플레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259136": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259137": {
+      "name": "지문 인증 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259138": {
+      "name": "운전석 메모리시트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259139": {
+      "name": "운전석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259140": {
+      "name": "후진연동 자동하향 아웃사이드미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259P11": {
+      "name": "19인치 전면가공 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P12": {
+      "name": "프리미엄",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259065": {
+      "name": "X-Line 전용 외장 디자인",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259088": {
+      "name": "블랙 스웨이드 헤드라이닝",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259089": {
+      "name": "프리미엄 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRNQ259171": {
+      "name": "쉐도우 매트 그레이",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259002": {
+      "name": "스마트스트림 L2.0 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259004": {
+      "name": "6단 자동변속기",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259011": {
+      "name": "원형 봄베",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259095": {
+      "name": "2열 6:4 폴딩 시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRNQ259158": {
+      "name": "KRELL 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRNQ259003": {
+      "name": "스마트스트림 터보 하이브리드",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259006": {
+      "name": "스마트스트림 6AT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259007": {
+      "name": "47.7kW 구동 모터",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRNQ259148": {
+      "name": "PTC 보조 히터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRNQ259P13": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P14": {
+      "name": "12.3인치 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259068": {
+      "name": "235/60 R18 컨티넨탈 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRNQ259P15": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRNQ259P16": {
+      "name": "19인치 전면가공 휠",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": {
+        "tax_5_before": 34990000,
+        "tax_5_after": 33990000,
+        "tax_3_5_before": 34460000,
+        "tax_3_5_after": 33460000
+      },
+      "basic": [
+        "KRNQ259003",
+        "KRNQ259006",
+        "KRNQ259007",
+        "KRNQ259008",
+        "KRNQ259009",
+        "KRNQ259014",
+        "KRNQ259015",
+        "KRNQ259016",
+        "KRNQ259017",
+        "KRNQ259018",
+        "KRNQ259019",
+        "KRNQ259020",
+        "KRNQ259021",
+        "KRNQ259022",
+        "KRNQ259034",
+        "KRNQ259035",
+        "KRNQ259036",
+        "KRNQ259037",
+        "KRNQ259038",
+        "KRNQ259039",
+        "KRNQ259040",
+        "KRNQ259041",
+        "KRNQ259042",
+        "KRNQ259043",
+        "KRNQ259044",
+        "KRNQ259045",
+        "KRNQ259047",
+        "KRNQ259048",
+        "KRNQ259049",
+        "KRNQ259050",
+        "KRNQ259051",
+        "KRNQ259052",
+        "KRNQ259053",
+        "KRNQ259054",
+        "KRNQ259055",
+        "KRNQ259070",
+        "KRNQ259071",
+        "KRNQ259072",
+        "KRNQ259074",
+        "KRNQ259075",
+        "KRNQ259076",
+        "KRNQ259092",
+        "KRNQ259093",
+        "KRNQ259095",
+        "KRNQ259096",
+        "KRNQ259097",
+        "KRNQ259098",
+        "KRNQ259110",
+        "KRNQ259125",
+        "KRNQ259126",
+        "KRNQ259111",
+        "KRNQ259112",
+        "KRNQ259113",
+        "KRNQ259128",
+        "KRNQ259114",
+        "KRNQ259115",
+        "KRNQ259116",
+        "KRNQ259117",
+        "KRNQ259130",
+        "KRNQ259119",
+        "KRNQ259131",
+        "KRNQ259132",
+        "KRNQ259120",
+        "KRNQ259121",
+        "KRNQ259122",
+        "KRNQ259123",
+        "KRNQ259148",
+        "KRNQ259150",
+        "KRNQ259151",
+        "KRNQ259152",
+        "KRNQ259153",
+        "KRNQ259154",
+        "KRNQ259155"
+      ],
+      "select": [
+        "KRNQ259170",
+        "KRNQ259P17",
+        "KRNQ259P13",
+        "KRNQ259P14",
+        "KRNQ259P03",
+        "KRNQ259P04",
+        "KRNQ259P19",
+        "KRNQ259166",
+        "KRNQ259167",
+        "KRNQ259168"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRNQ259170"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRNQ259P17"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "KRNQ259P13"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRNQ259P14"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRNQ259P03"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRNQ259P04"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRNQ259P19"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "KRNQ259166"
+          ],
+          "price": 290000
+        },
+        {
+          "codes": [
+            "KRNQ259167"
+          ],
+          "price": 320000
+        },
+        {
+          "codes": [
+            "KRNQ259168"
+          ],
+          "price": 340000
+        }
+      ]
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": {
+        "tax_5_before": 38280000,
+        "tax_5_after": 37280000,
+        "tax_3_5_before": 37700000,
+        "tax_3_5_after": 36700000
+      },
+      "basic": [
+        "KRNQ259023",
+        "KRNQ259024",
+        "KRNQ259068",
+        "KRNQ259064",
+        "KRNQ259057",
+        "KRNQ259058",
+        "KRNQ259077",
+        "KRNQ259078",
+        "KRNQ259079",
+        "KRNQ259080",
+        "KRNQ259081",
+        "KRNQ259082",
+        "KRNQ259099",
+        "KRNQ259100",
+        "KRNQ259101",
+        "KRNQ259124",
+        "KRNQ259127",
+        "KRNQ259129",
+        "KRNQ259141",
+        "KRNQ259133",
+        "KRNQ259134",
+        "KRNQ259156",
+        "KRNQ259003",
+        "KRNQ259006",
+        "KRNQ259007",
+        "KRNQ259008",
+        "KRNQ259009",
+        "KRNQ259014",
+        "KRNQ259015",
+        "KRNQ259016",
+        "KRNQ259017",
+        "KRNQ259018",
+        "KRNQ259019",
+        "KRNQ259020",
+        "KRNQ259021",
+        "KRNQ259022",
+        "KRNQ259034",
+        "KRNQ259035",
+        "KRNQ259036",
+        "KRNQ259037",
+        "KRNQ259038",
+        "KRNQ259039",
+        "KRNQ259040",
+        "KRNQ259041",
+        "KRNQ259042",
+        "KRNQ259043",
+        "KRNQ259044",
+        "KRNQ259047",
+        "KRNQ259048",
+        "KRNQ259049",
+        "KRNQ259050",
+        "KRNQ259051",
+        "KRNQ259052",
+        "KRNQ259053",
+        "KRNQ259054",
+        "KRNQ259055",
+        "KRNQ259072",
+        "KRNQ259074",
+        "KRNQ259075",
+        "KRNQ259076",
+        "KRNQ259092",
+        "KRNQ259093",
+        "KRNQ259095",
+        "KRNQ259097",
+        "KRNQ259098",
+        "KRNQ259110",
+        "KRNQ259125",
+        "KRNQ259126",
+        "KRNQ259111",
+        "KRNQ259112",
+        "KRNQ259113",
+        "KRNQ259128",
+        "KRNQ259114",
+        "KRNQ259115",
+        "KRNQ259116",
+        "KRNQ259117",
+        "KRNQ259130",
+        "KRNQ259119",
+        "KRNQ259131",
+        "KRNQ259132",
+        "KRNQ259120",
+        "KRNQ259121",
+        "KRNQ259122",
+        "KRNQ259123",
+        "KRNQ259148",
+        "KRNQ259151",
+        "KRNQ259152",
+        "KRNQ259153",
+        "KRNQ259154",
+        "KRNQ259155"
+      ],
+      "select": [
+        "KRNQ259170",
+        "KRNQ259P17",
+        "KRNQ259P15",
+        "KRNQ259P06",
+        "KRNQ259P07",
+        "KRNQ259P03",
+        "KRNQ259P08",
+        "KRNQ259158",
+        "KRNQ259P10",
+        "KRNQ259069",
+        "KRNQ259P18",
+        "KRNQ259P19",
+        "KRNQ259166",
+        "KRNQ259167",
+        "KRNQ259168",
+        "KRNQ259169"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRNQ259170"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRNQ259P17"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "KRNQ259P15"
+          ],
+          "price": 890000
+        },
+        {
+          "codes": [
+            "KRNQ259P06"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRNQ259P07"
+          ],
+          "price": 1240000
+        },
+        {
+          "codes": [
+            "KRNQ259P03"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRNQ259P08"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRNQ259158"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRNQ259P10"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRNQ259069"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRNQ259P18"
+          ],
+          "price": 350000
+        },
+        {
+          "codes": [
+            "KRNQ259P19"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "KRNQ259166"
+          ],
+          "price": 290000
+        },
+        {
+          "codes": [
+            "KRNQ259167"
+          ],
+          "price": 320000
+        },
+        {
+          "codes": [
+            "KRNQ259168"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "KRNQ259169"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": {
+        "tax_5_before": 40930000,
+        "tax_5_after": 39930000,
+        "tax_3_5_before": 40310000,
+        "tax_3_5_after": 39310000
+      },
+      "basic": [
+        "KRNQ259059",
+        "KRNQ259060",
+        "KRNQ259061",
+        "KRNQ259062",
+        "KRNQ259063",
+        "KRNQ259083",
+        "KRNQ259084",
+        "KRNQ259085",
+        "KRNQ259086",
+        "KRNQ259087",
+        "KRNQ259102",
+        "KRNQ259103",
+        "KRNQ259104",
+        "KRNQ259172",
+        "KRNQ259105",
+        "KRNQ259106",
+        "KRNQ259107",
+        "KRNQ259108",
+        "KRNQ259135",
+        "KRNQ259136",
+        "KRNQ259137",
+        "KRNQ259138",
+        "KRNQ259139",
+        "KRNQ259140",
+        "KRNQ259003",
+        "KRNQ259006",
+        "KRNQ259007",
+        "KRNQ259008",
+        "KRNQ259009",
+        "KRNQ259014",
+        "KRNQ259015",
+        "KRNQ259016",
+        "KRNQ259017",
+        "KRNQ259018",
+        "KRNQ259019",
+        "KRNQ259020",
+        "KRNQ259021",
+        "KRNQ259022",
+        "KRNQ259023",
+        "KRNQ259024",
+        "KRNQ259034",
+        "KRNQ259035",
+        "KRNQ259036",
+        "KRNQ259037",
+        "KRNQ259038",
+        "KRNQ259039",
+        "KRNQ259040",
+        "KRNQ259041",
+        "KRNQ259042",
+        "KRNQ259043",
+        "KRNQ259044",
+        "KRNQ259048",
+        "KRNQ259049",
+        "KRNQ259050",
+        "KRNQ259051",
+        "KRNQ259052",
+        "KRNQ259053",
+        "KRNQ259054",
+        "KRNQ259055",
+        "KRNQ259068",
+        "KRNQ259064",
+        "KRNQ259057",
+        "KRNQ259058",
+        "KRNQ259072",
+        "KRNQ259074",
+        "KRNQ259075",
+        "KRNQ259076",
+        "KRNQ259078",
+        "KRNQ259079",
+        "KRNQ259081",
+        "KRNQ259082",
+        "KRNQ259093",
+        "KRNQ259095",
+        "KRNQ259097",
+        "KRNQ259098",
+        "KRNQ259099",
+        "KRNQ259100",
+        "KRNQ259101",
+        "KRNQ259110",
+        "KRNQ259125",
+        "KRNQ259126",
+        "KRNQ259111",
+        "KRNQ259112",
+        "KRNQ259113",
+        "KRNQ259128",
+        "KRNQ259114",
+        "KRNQ259115",
+        "KRNQ259116",
+        "KRNQ259117",
+        "KRNQ259130",
+        "KRNQ259119",
+        "KRNQ259131",
+        "KRNQ259132",
+        "KRNQ259120",
+        "KRNQ259121",
+        "KRNQ259122",
+        "KRNQ259123",
+        "KRNQ259148",
+        "KRNQ259124",
+        "KRNQ259127",
+        "KRNQ259129",
+        "KRNQ259141",
+        "KRNQ259133",
+        "KRNQ259134",
+        "KRNQ259151",
+        "KRNQ259152",
+        "KRNQ259153",
+        "KRNQ259154",
+        "KRNQ259155",
+        "KRNQ259156"
+      ],
+      "select": [
+        "KRNQ259170",
+        "KRNQ259P17",
+        "KRNQ259P16",
+        "KRNQ259P12",
+        "KRNQ259P07",
+        "KRNQ259P03",
+        "KRNQ259P08",
+        "KRNQ259158",
+        "KRNQ259069",
+        "KRNQ259P18",
+        "KRNQ259P19",
+        "KRNQ259166",
+        "KRNQ259167",
+        "KRNQ259168",
+        "KRNQ259169"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRNQ259170"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRNQ259P17"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "KRNQ259P16"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "KRNQ259P12"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRNQ259P07"
+          ],
+          "price": 1240000
+        },
+        {
+          "codes": [
+            "KRNQ259P03"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRNQ259P08"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRNQ259158"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRNQ259069"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRNQ259P18"
+          ],
+          "price": 350000
+        },
+        {
+          "codes": [
+            "KRNQ259P19"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "KRNQ259166"
+          ],
+          "price": 290000
+        },
+        {
+          "codes": [
+            "KRNQ259167"
+          ],
+          "price": 320000
+        },
+        {
+          "codes": [
+            "KRNQ259168"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "KRNQ259169"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "시그니처 X-Line": {
+      "slug": "시그니처_X-Line",
+      "price": {
+        "tax_5_before": 41580000,
+        "tax_5_after": 40580000,
+        "tax_3_5_before": 40950000,
+        "tax_3_5_after": 39950000
+      },
+      "basic": [
+        "KRNQ259065",
+        "KRNQ259088",
+        "KRNQ259089",
+        "KRNQ259003",
+        "KRNQ259006",
+        "KRNQ259007",
+        "KRNQ259008",
+        "KRNQ259009",
+        "KRNQ259014",
+        "KRNQ259015",
+        "KRNQ259016",
+        "KRNQ259017",
+        "KRNQ259018",
+        "KRNQ259019",
+        "KRNQ259020",
+        "KRNQ259021",
+        "KRNQ259022",
+        "KRNQ259023",
+        "KRNQ259024",
+        "KRNQ259034",
+        "KRNQ259035",
+        "KRNQ259036",
+        "KRNQ259037",
+        "KRNQ259038",
+        "KRNQ259039",
+        "KRNQ259040",
+        "KRNQ259041",
+        "KRNQ259042",
+        "KRNQ259043",
+        "KRNQ259044",
+        "KRNQ259048",
+        "KRNQ259049",
+        "KRNQ259050",
+        "KRNQ259051",
+        "KRNQ259052",
+        "KRNQ259053",
+        "KRNQ259054",
+        "KRNQ259055",
+        "KRNQ259064",
+        "KRNQ259059",
+        "KRNQ259060",
+        "KRNQ259061",
+        "KRNQ259062",
+        "KRNQ259063",
+        "KRNQ259074",
+        "KRNQ259075",
+        "KRNQ259076",
+        "KRNQ259078",
+        "KRNQ259079",
+        "KRNQ259081",
+        "KRNQ259082",
+        "KRNQ259083",
+        "KRNQ259084",
+        "KRNQ259085",
+        "KRNQ259086",
+        "KRNQ259087",
+        "KRNQ259093",
+        "KRNQ259095",
+        "KRNQ259097",
+        "KRNQ259098",
+        "KRNQ259099",
+        "KRNQ259100",
+        "KRNQ259101",
+        "KRNQ259102",
+        "KRNQ259103",
+        "KRNQ259104",
+        "KRNQ259172",
+        "KRNQ259105",
+        "KRNQ259106",
+        "KRNQ259107",
+        "KRNQ259108",
+        "KRNQ259110",
+        "KRNQ259125",
+        "KRNQ259126",
+        "KRNQ259111",
+        "KRNQ259112",
+        "KRNQ259113",
+        "KRNQ259128",
+        "KRNQ259114",
+        "KRNQ259115",
+        "KRNQ259116",
+        "KRNQ259117",
+        "KRNQ259130",
+        "KRNQ259119",
+        "KRNQ259131",
+        "KRNQ259132",
+        "KRNQ259120",
+        "KRNQ259121",
+        "KRNQ259122",
+        "KRNQ259123",
+        "KRNQ259148",
+        "KRNQ259124",
+        "KRNQ259127",
+        "KRNQ259129",
+        "KRNQ259141",
+        "KRNQ259133",
+        "KRNQ259134",
+        "KRNQ259135",
+        "KRNQ259136",
+        "KRNQ259137",
+        "KRNQ259138",
+        "KRNQ259139",
+        "KRNQ259140",
+        "KRNQ259151",
+        "KRNQ259152",
+        "KRNQ259153",
+        "KRNQ259154",
+        "KRNQ259155",
+        "KRNQ259156"
+      ],
+      "select": [
+        "KRNQ259170",
+        "KRNQ259171",
+        "KRNQ259P17",
+        "KRNQ259P12",
+        "KRNQ259P07",
+        "KRNQ259P03",
+        "KRNQ259P08",
+        "KRNQ259158",
+        "KRNQ259069",
+        "KRNQ259P18",
+        "KRNQ259P19",
+        "KRNQ259166",
+        "KRNQ259167",
+        "KRNQ259168",
+        "KRNQ259169"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRNQ259170"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRNQ259171"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRNQ259P17"
+          ],
+          "price": 2230000
+        },
+        {
+          "codes": [
+            "KRNQ259P12"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRNQ259P07"
+          ],
+          "price": 1240000
+        },
+        {
+          "codes": [
+            "KRNQ259P03"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRNQ259P08"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRNQ259158"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRNQ259069"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRNQ259P18"
+          ],
+          "price": 350000
+        },
+        {
+          "codes": [
+            "KRNQ259P19"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "KRNQ259166"
+          ],
+          "price": 290000
+        },
+        {
+          "codes": [
+            "KRNQ259167"
+          ],
+          "price": 320000
+        },
+        {
+          "codes": [
+            "KRNQ259168"
+          ],
+          "price": 340000
+        },
+        {
+          "codes": [
+            "KRNQ259169"
+          ],
+          "price": 400000
+        }
+      ]
+    }
+  }
+}

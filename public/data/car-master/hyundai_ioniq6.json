@@ -1,0 +1,1846 @@
+{
+  "catalog_id": "hyundai_ioniq6",
+  "title": "현대 더 뉴 아이오닉6",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/ce-pe_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "E-GMP 플랫폼/성능": [
+      "CE03001",
+      "CE03002",
+      "CE03004",
+      "CE03005",
+      "CE03006",
+      "CE03007",
+      "CE03008",
+      "CE03009",
+      "CE03010",
+      "CE03011",
+      "CE03012",
+      "CE03013",
+      "CE03003"
+    ],
+    "Eco-Friendly Line": [
+      "CE03015",
+      "CE03016",
+      "CE03017",
+      "CE03018",
+      "CE03019",
+      "CE03020"
+    ],
+    "안전": [
+      "CE03042",
+      "CE03043",
+      "CE03044",
+      "CE03045",
+      "CE03046",
+      "CE03047",
+      "CE03048",
+      "CE03049"
+    ],
+    "지능형 안전 기술": [
+      "CE03021",
+      "CE03022",
+      "CE03023",
+      "CE03024",
+      "CE03025",
+      "CE03026",
+      "CE03027",
+      "CE03028",
+      "CE03029",
+      "CE03030",
+      "CE03031",
+      "CE03032",
+      "CE03033",
+      "CE03034",
+      "CE03035",
+      "CE03036",
+      "CE03037",
+      "CE03038",
+      "CE03039",
+      "CE03040",
+      "CE03041"
+    ],
+    "외관": [
+      "CE03051",
+      "CE03052",
+      "CE03053",
+      "CE03054",
+      "CE03055",
+      "CE03056",
+      "CE03057",
+      "CE03058",
+      "CE03059",
+      "CE03060",
+      "CE03061",
+      "CE03062",
+      "CE03063",
+      "CE03064",
+      "CE03066",
+      "CE03067",
+      "CE03068",
+      "CE03069",
+      "CE03070"
+    ],
+    "내장": [
+      "CE03072",
+      "CE03073",
+      "CE03074",
+      "CE03075",
+      "CE03076",
+      "CE03077",
+      "CE03078",
+      "CE03079",
+      "CE03080"
+    ],
+    "시트": [
+      "CE03087",
+      "CE03088",
+      "CE03089",
+      "CE03090",
+      "CE03091",
+      "CE03092"
+    ],
+    "편의": [
+      "CE03097",
+      "CE03098",
+      "CE03099",
+      "CE03100",
+      "CE03101",
+      "CE03102",
+      "CE03103",
+      "CE03104",
+      "CE03105",
+      "CE03106",
+      "CE03107",
+      "CE03108",
+      "CE03109"
+    ],
+    "인포테인먼트": [
+      "CE03128",
+      "CE03129",
+      "CE03130",
+      "CE03131",
+      "CE03133"
+    ],
+    "선택사양": [
+      "CE03127",
+      "CE03P01",
+      "CE03P02",
+      "CE03136",
+      "CE03137",
+      "CE03P04",
+      "CE03P03",
+      "CE03P08",
+      "CE03P05",
+      "CE03P06",
+      "CE03014",
+      "CE03071",
+      "CE03065",
+      "CE03P07",
+      "CE03P09",
+      "CE03P10",
+      "CE03085"
+    ],
+    "안전/편의": [
+      "CE03050",
+      "CE03110",
+      "CE03111",
+      "CE03112"
+    ],
+    "내장/시트": [
+      "CE03081"
+    ],
+    "외관/내장": [
+      "CE03082",
+      "CE03083",
+      "CE03084"
+    ],
+    "시트/편의": [
+      "CE03093",
+      "CE03094",
+      "CE03095",
+      "CE03096",
+      "CE03113",
+      "CE03114",
+      "CE03140",
+      "CE03116",
+      "CE03117",
+      "CE03118",
+      "CE03119",
+      "CE03120",
+      "CE03121",
+      "CE03122",
+      "CE03123"
+    ]
+  },
+  "options": {
+    "CE03001": {
+      "name": "차세대 일체형 PE 시스템(후륜 모터, 감속기, 인버터)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03002": {
+      "name": "63.0kWh 리튬 이온 배터리",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03004": {
+      "name": "400V/800V 멀티 충전 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03005": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03006": {
+      "name": "랙구동형 전동식 파워 스티어링(R-MDPS)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03007": {
+      "name": "회생제동 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03008": {
+      "name": "전자식 변속 칼럼",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03009": {
+      "name": "배터리 히팅 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03010": {
+      "name": "히트 펌프 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03011": {
+      "name": "실내 V2L",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03012": {
+      "name": "통합 주행 모드",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03013": {
+      "name": "EV 성능 튠업",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03015": {
+      "name": "BIO PET 원사 헤드라이닝",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "CE03016": {
+      "name": "BIO TPO 크래쉬패드",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "CE03017": {
+      "name": "BIO 페인트 도어트림",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "CE03018": {
+      "name": "Recycled Pigment 페인트 프론트/사이드/리어 하단 몰딩",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "CE03042": {
+      "name": "7에어백 시스템(1열 어드밴스드/센터사이드/사이드, 전복대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03043": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03044": {
+      "name": "세이프티 언락",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03045": {
+      "name": "유아용 시트 고정장치(2열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03046": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03047": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03048": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03049": {
+      "name": "페달 오조작 안전 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "CE03021": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03022": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03023": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03024": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03025": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03026": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03027": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03028": {
+      "name": "고속도로 주행 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03029": {
+      "name": "후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03030": {
+      "name": "진동경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03031": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03032": {
+      "name": "차로 유지 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03051": {
+      "name": "18인치 알로이 휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03052": {
+      "name": "LED 헤드램프(MFR 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03053": {
+      "name": "LED 주간주행등",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03054": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03055": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03056": {
+      "name": "LED 방향지시등",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03057": {
+      "name": "에어로 타입 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03058": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03059": {
+      "name": "이중접합 차음유리(윈드실드, 1열)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03060": {
+      "name": "수동 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03061": {
+      "name": "자외선 차단 유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03072": {
+      "name": "클러스터(12.3인치 컬러 LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03073": {
+      "name": "가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03074": {
+      "name": "슬라이딩 선바이저 & 거울",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03075": {
+      "name": "2열 에어벤트",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03076": {
+      "name": "슬라이딩 글로브 박스",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03077": {
+      "name": "LED 실내등(맵램프, 룸램프, 선바이저램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03078": {
+      "name": "소프트 재질 크래쉬패드",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03079": {
+      "name": "투명 재질 크래쉬패드 가니쉬/도어 맵포켓/콘솔 하단 커버",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03080": {
+      "name": "전/후석 도어 암레스트 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "CE03087": {
+      "name": "직물시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "CE03088": {
+      "name": "2열 6:4 분할 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "CE03097": {
+      "name": "듀얼 풀오토 에어컨(마이크로 에어필터/오토 디포그/미세먼지 센서/공기청정모드/애프터 블로우)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03098": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03099": {
+      "name": "세이프티 파워 윈도우(운전석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03100": {
+      "name": "100W USB C타입 단자(1열 1개, 2열 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03101": {
+      "name": "오토라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03102": {
+      "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03103": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03104": {
+      "name": "회생제동 컨트롤 패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03105": {
+      "name": "스마트 파워 트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03106": {
+      "name": "전동식 충전 도어",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03107": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03108": {
+      "name": "D&N 룸미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03109": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "CE03128": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CE03129": {
+      "name": "멀티미디어용 USB C 타입 단자(1열 1개)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CE03130": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CE03131": {
+      "name": "일반 오디오 시스템(6스피커)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CE03133": {
+      "name": "현대 AI 어시스턴트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "CE03127": {
+      "name": "빌트인 캠 2 Plus",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CE03P01": {
+      "name": "컴포트 초이스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03P02": {
+      "name": "현대 스마트센스Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03136": {
+      "name": "차량 보호 필름 Ⅰ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CE03137": {
+      "name": "차량 보호 필름 Ⅱ",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CE03050": {
+      "name": "전자식 차일드 락",
+      "category": "안전/편의",
+      "is_package": false
+    },
+    "CE03062": {
+      "name": "이중접합 차음유리(2열 도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03063": {
+      "name": "오토 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03064": {
+      "name": "블랙 하이그로시(도어 프레임 몰딩/도어 벨트라인 몰딩/도어 프레임 가니쉬)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03089": {
+      "name": "인조가죽 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "CE03090": {
+      "name": "1열 열선/통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "CE03091": {
+      "name": "운전석 전동시트(8way, 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "CE03092": {
+      "name": "2열 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "CE03110": {
+      "name": "세이프티 파워 윈도우(동승석, 2열)",
+      "category": "안전/편의",
+      "is_package": false
+    },
+    "CE03111": {
+      "name": "레인센서",
+      "category": "안전/편의",
+      "is_package": false
+    },
+    "CE03112": {
+      "name": "ECM 룸미러",
+      "category": "안전/편의",
+      "is_package": false
+    },
+    "CE03P04": {
+      "name": "컨비니언스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03P03": {
+      "name": "현대 스마트센스Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03P08": {
+      "name": "파킹 어시스트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03P05": {
+      "name": "컴포트 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03P06": {
+      "name": "플래티넘",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03003": {
+      "name": "84.0kWh 리튬 이온 배터리",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "CE03014": {
+      "name": "HTRAC(전륜 모터)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CE03071": {
+      "name": "와이드 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CE03065": {
+      "name": "20인치 휠 & 피렐리 타이어",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "CE03066": {
+      "name": "Full LED 헤드램프(프로젝션 타입)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03067": {
+      "name": "지능형 헤드램프(IFS)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03068": {
+      "name": "다이내믹 웰컴 라이트",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03069": {
+      "name": "순차 점등 방향지시등(앞)",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03070": {
+      "name": "N Line 전용 외관 디자인(프론트/리어 범퍼, 프론트 스커트, N 휠 & 휠 캡, 사이드 스커트, 유광 블랙 DLO 몰딩, 리어콤비램프, 리어 스커트, 순차 점등 방향지시등(뒤))",
+      "category": "외관",
+      "is_package": false
+    },
+    "CE03081": {
+      "name": "N Line 전용 내장 디자인(전용 디자인 천연가죽 시트, N 엠블럼 스티어링 휠, 메탈 페달/풋레스트/도어스커프, 버튼시동)",
+      "category": "내장/시트",
+      "is_package": false
+    },
+    "CE03019": {
+      "name": "에코 프로세스 천연가죽 시트",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "CE03020": {
+      "name": "Recycled 카펫/카매트",
+      "category": "Eco-Friendly Line",
+      "is_package": false
+    },
+    "CE03033": {
+      "name": "전방 충돌방지 보조(교차 차량/추월시 대향차/측방 접근차/회피 조향 보조)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03034": {
+      "name": "후측방 충돌 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03035": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03036": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03037": {
+      "name": "스마트 크루즈 컨트롤(운전 스타일 연동 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03038": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03039": {
+      "name": "고속도로 주행 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03040": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03041": {
+      "name": "운전자 모니터링 시스템",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "CE03082": {
+      "name": "투톤 가죽 스티어링 휠",
+      "category": "외관/내장",
+      "is_package": false
+    },
+    "CE03083": {
+      "name": "메탈 페달",
+      "category": "외관/내장",
+      "is_package": false
+    },
+    "CE03084": {
+      "name": "메탈 도어스커프",
+      "category": "외관/내장",
+      "is_package": false
+    },
+    "CE03093": {
+      "name": "천연가죽 시트",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03094": {
+      "name": "운전석 전동시트(릴렉션 컴포트, 자세 메모리 시스템)",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03095": {
+      "name": "동승석 전동시트(8way, 럼버서포트, 릴렉션 컴포트, 워크인 디바이스)",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03096": {
+      "name": "2열 열선시트",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03113": {
+      "name": "듀얼 컬러 앰비언트 무드램프(속도 연동 기능 포함)",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03114": {
+      "name": "스마트폰 무선충전",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03140": {
+      "name": "하이패스(e hi-pass 포함)",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03116": {
+      "name": "어드밴스드 후석 승객 알림",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03117": {
+      "name": "후측방 모니터",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03118": {
+      "name": "서라운드 뷰 모니터",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03119": {
+      "name": "측방 주차 거리 경고",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03120": {
+      "name": "전방/측방/후방 주차 충돌방지 보조",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03121": {
+      "name": "원격 스마트 주차 보조 2",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03122": {
+      "name": "헤드업 디스플레이",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03123": {
+      "name": "실외 V2L 커넥터",
+      "category": "시트/편의",
+      "is_package": false
+    },
+    "CE03P07": {
+      "name": "디지털 사이드 미러",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03P09": {
+      "name": "하이테크 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03P10": {
+      "name": "스웨이드 내장재",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "CE03085": {
+      "name": "알칸타라/천연가죽 시트",
+      "category": "선택사양",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "이-밸류 플러스": {
+      "slug": "e-Value+",
+      "name_en": null,
+      "price": {
+        "base": 51150000
+      },
+      "basic": [
+        "CE03001",
+        "CE03002",
+        "CE03004",
+        "CE03005",
+        "CE03006",
+        "CE03007",
+        "CE03008",
+        "CE03009",
+        "CE03010",
+        "CE03011",
+        "CE03012",
+        "CE03013",
+        "CE03015",
+        "CE03016",
+        "CE03017",
+        "CE03018",
+        "CE03042",
+        "CE03043",
+        "CE03044",
+        "CE03045",
+        "CE03046",
+        "CE03047",
+        "CE03048",
+        "CE03049",
+        "CE03021",
+        "CE03022",
+        "CE03023",
+        "CE03024",
+        "CE03025",
+        "CE03026",
+        "CE03027",
+        "CE03028",
+        "CE03029",
+        "CE03030",
+        "CE03031",
+        "CE03032",
+        "CE03051",
+        "CE03052",
+        "CE03053",
+        "CE03054",
+        "CE03055",
+        "CE03056",
+        "CE03057",
+        "CE03058",
+        "CE03059",
+        "CE03060",
+        "CE03061",
+        "CE03072",
+        "CE03073",
+        "CE03074",
+        "CE03075",
+        "CE03076",
+        "CE03077",
+        "CE03078",
+        "CE03079",
+        "CE03080",
+        "CE03087",
+        "CE03088",
+        "CE03097",
+        "CE03098",
+        "CE03099",
+        "CE03100",
+        "CE03101",
+        "CE03102",
+        "CE03103",
+        "CE03104",
+        "CE03105",
+        "CE03106",
+        "CE03107",
+        "CE03108",
+        "CE03109",
+        "CE03128",
+        "CE03129",
+        "CE03130",
+        "CE03131",
+        "CE03133"
+      ],
+      "select": [
+        "CE03127",
+        "CE03P01",
+        "CE03P02",
+        "CE03136",
+        "CE03137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "CE03127"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "CE03P01"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "CE03P02"
+          ],
+          "price": 1480000
+        },
+        {
+          "codes": [
+            "CE03136"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "CE03137"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "익스클루시브": {
+      "slug": "exclusive-long-range",
+      "name_en": null,
+      "price": {
+        "base": 58090000
+      },
+      "basic": [
+        "CE03001",
+        "CE03004",
+        "CE03005",
+        "CE03006",
+        "CE03007",
+        "CE03008",
+        "CE03009",
+        "CE03010",
+        "CE03011",
+        "CE03012",
+        "CE03013",
+        "CE03003",
+        "CE03015",
+        "CE03016",
+        "CE03017",
+        "CE03018",
+        "CE03042",
+        "CE03043",
+        "CE03044",
+        "CE03045",
+        "CE03046",
+        "CE03047",
+        "CE03048",
+        "CE03049",
+        "CE03050",
+        "CE03021",
+        "CE03022",
+        "CE03023",
+        "CE03024",
+        "CE03025",
+        "CE03026",
+        "CE03027",
+        "CE03028",
+        "CE03029",
+        "CE03030",
+        "CE03031",
+        "CE03032",
+        "CE03051",
+        "CE03052",
+        "CE03053",
+        "CE03054",
+        "CE03055",
+        "CE03056",
+        "CE03057",
+        "CE03058",
+        "CE03059",
+        "CE03061",
+        "CE03062",
+        "CE03063",
+        "CE03064",
+        "CE03072",
+        "CE03073",
+        "CE03074",
+        "CE03075",
+        "CE03076",
+        "CE03077",
+        "CE03078",
+        "CE03079",
+        "CE03080",
+        "CE03088",
+        "CE03089",
+        "CE03090",
+        "CE03091",
+        "CE03092",
+        "CE03097",
+        "CE03098",
+        "CE03099",
+        "CE03100",
+        "CE03101",
+        "CE03102",
+        "CE03103",
+        "CE03104",
+        "CE03105",
+        "CE03106",
+        "CE03107",
+        "CE03109",
+        "CE03110",
+        "CE03111",
+        "CE03112",
+        "CE03128",
+        "CE03129",
+        "CE03130",
+        "CE03131",
+        "CE03133"
+      ],
+      "select": [
+        "CE03127",
+        "CE03014",
+        "CE03071",
+        "CE03065",
+        "CE03P04",
+        "CE03P03",
+        "CE03P08",
+        "CE03P05",
+        "CE03P06",
+        "CE03136",
+        "CE03137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "CE03127"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "CE03014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "CE03071"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "CE03065"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "CE03P04"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "CE03P03"
+          ],
+          "price": 1510000
+        },
+        {
+          "codes": [
+            "CE03P08"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "CE03P05"
+          ],
+          "price": 680000
+        },
+        {
+          "codes": [
+            "CE03P06"
+          ],
+          "price": 710000
+        },
+        {
+          "codes": [
+            "CE03136"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "CE03137"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "익스클루시브 N Line": {
+      "slug": "exclusive-nline",
+      "name_en": null,
+      "price": {
+        "base": 60510000
+      },
+      "basic": [
+        "CE03001",
+        "CE03004",
+        "CE03005",
+        "CE03006",
+        "CE03007",
+        "CE03008",
+        "CE03009",
+        "CE03010",
+        "CE03011",
+        "CE03012",
+        "CE03013",
+        "CE03003",
+        "CE03015",
+        "CE03016",
+        "CE03017",
+        "CE03018",
+        "CE03042",
+        "CE03043",
+        "CE03044",
+        "CE03045",
+        "CE03046",
+        "CE03047",
+        "CE03048",
+        "CE03049",
+        "CE03050",
+        "CE03021",
+        "CE03022",
+        "CE03023",
+        "CE03024",
+        "CE03026",
+        "CE03027",
+        "CE03028",
+        "CE03029",
+        "CE03030",
+        "CE03031",
+        "CE03032",
+        "CE03053",
+        "CE03054",
+        "CE03055",
+        "CE03056",
+        "CE03057",
+        "CE03058",
+        "CE03059",
+        "CE03061",
+        "CE03062",
+        "CE03063",
+        "CE03064",
+        "CE03065",
+        "CE03066",
+        "CE03067",
+        "CE03068",
+        "CE03069",
+        "CE03070",
+        "CE03072",
+        "CE03073",
+        "CE03074",
+        "CE03075",
+        "CE03076",
+        "CE03077",
+        "CE03078",
+        "CE03079",
+        "CE03080",
+        "CE03081",
+        "CE03088",
+        "CE03090",
+        "CE03091",
+        "CE03092",
+        "CE03097",
+        "CE03098",
+        "CE03099",
+        "CE03100",
+        "CE03101",
+        "CE03102",
+        "CE03103",
+        "CE03104",
+        "CE03105",
+        "CE03106",
+        "CE03107",
+        "CE03109",
+        "CE03110",
+        "CE03111",
+        "CE03112",
+        "CE03128",
+        "CE03129",
+        "CE03130",
+        "CE03131",
+        "CE03133"
+      ],
+      "select": [
+        "CE03127",
+        "CE03014",
+        "CE03071",
+        "CE03065",
+        "CE03P04",
+        "CE03P03",
+        "CE03P08",
+        "CE03P05",
+        "CE03136",
+        "CE03137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "CE03127"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "CE03014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "CE03071"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "CE03065"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "CE03P04"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "CE03P03"
+          ],
+          "price": 1510000
+        },
+        {
+          "codes": [
+            "CE03P08"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "CE03P05"
+          ],
+          "price": 680000
+        },
+        {
+          "codes": [
+            "CE03136"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "CE03137"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "프레스티지": {
+      "slug": "prestige-long-range",
+      "name_en": null,
+      "price": {
+        "base": 62910000
+      },
+      "basic": [
+        "CE03001",
+        "CE03004",
+        "CE03005",
+        "CE03006",
+        "CE03007",
+        "CE03008",
+        "CE03009",
+        "CE03010",
+        "CE03011",
+        "CE03012",
+        "CE03013",
+        "CE03003",
+        "CE03015",
+        "CE03016",
+        "CE03017",
+        "CE03018",
+        "CE03019",
+        "CE03020",
+        "CE03042",
+        "CE03043",
+        "CE03044",
+        "CE03045",
+        "CE03046",
+        "CE03047",
+        "CE03048",
+        "CE03049",
+        "CE03050",
+        "CE03021",
+        "CE03022",
+        "CE03023",
+        "CE03024",
+        "CE03026",
+        "CE03027",
+        "CE03029",
+        "CE03030",
+        "CE03031",
+        "CE03032",
+        "CE03033",
+        "CE03034",
+        "CE03035",
+        "CE03036",
+        "CE03037",
+        "CE03038",
+        "CE03039",
+        "CE03040",
+        "CE03041",
+        "CE03051",
+        "CE03053",
+        "CE03054",
+        "CE03055",
+        "CE03056",
+        "CE03057",
+        "CE03058",
+        "CE03059",
+        "CE03061",
+        "CE03062",
+        "CE03063",
+        "CE03064",
+        "CE03066",
+        "CE03067",
+        "CE03068",
+        "CE03069",
+        "CE03072",
+        "CE03073",
+        "CE03074",
+        "CE03075",
+        "CE03076",
+        "CE03077",
+        "CE03078",
+        "CE03079",
+        "CE03080",
+        "CE03082",
+        "CE03083",
+        "CE03084",
+        "CE03088",
+        "CE03090",
+        "CE03091",
+        "CE03092",
+        "CE03093",
+        "CE03094",
+        "CE03095",
+        "CE03096",
+        "CE03097",
+        "CE03098",
+        "CE03099",
+        "CE03100",
+        "CE03101",
+        "CE03102",
+        "CE03103",
+        "CE03104",
+        "CE03105",
+        "CE03106",
+        "CE03107",
+        "CE03109",
+        "CE03110",
+        "CE03111",
+        "CE03112",
+        "CE03113",
+        "CE03114",
+        "CE03140",
+        "CE03116",
+        "CE03117",
+        "CE03118",
+        "CE03119",
+        "CE03120",
+        "CE03121",
+        "CE03122",
+        "CE03123",
+        "CE03128",
+        "CE03129",
+        "CE03130",
+        "CE03131",
+        "CE03133"
+      ],
+      "select": [
+        "CE03127",
+        "CE03014",
+        "CE03071",
+        "CE03065",
+        "CE03P07",
+        "CE03P09",
+        "CE03136",
+        "CE03137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "CE03127"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "CE03014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "CE03071"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "CE03065"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "CE03P07"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "CE03P09"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "CE03136"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "CE03137"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "프레스티지 N Line": {
+      "slug": "prestige-nline",
+      "name_en": null,
+      "price": {
+        "base": 64590000
+      },
+      "basic": [
+        "CE03001",
+        "CE03004",
+        "CE03005",
+        "CE03006",
+        "CE03007",
+        "CE03008",
+        "CE03009",
+        "CE03010",
+        "CE03011",
+        "CE03012",
+        "CE03013",
+        "CE03003",
+        "CE03015",
+        "CE03016",
+        "CE03017",
+        "CE03018",
+        "CE03019",
+        "CE03020",
+        "CE03042",
+        "CE03043",
+        "CE03044",
+        "CE03045",
+        "CE03046",
+        "CE03047",
+        "CE03048",
+        "CE03049",
+        "CE03050",
+        "CE03021",
+        "CE03022",
+        "CE03023",
+        "CE03024",
+        "CE03026",
+        "CE03027",
+        "CE03029",
+        "CE03030",
+        "CE03031",
+        "CE03032",
+        "CE03033",
+        "CE03034",
+        "CE03035",
+        "CE03036",
+        "CE03037",
+        "CE03038",
+        "CE03039",
+        "CE03040",
+        "CE03041",
+        "CE03053",
+        "CE03054",
+        "CE03055",
+        "CE03056",
+        "CE03057",
+        "CE03058",
+        "CE03059",
+        "CE03061",
+        "CE03062",
+        "CE03063",
+        "CE03064",
+        "CE03066",
+        "CE03067",
+        "CE03068",
+        "CE03069",
+        "CE03065",
+        "CE03070",
+        "CE03072",
+        "CE03073",
+        "CE03074",
+        "CE03075",
+        "CE03076",
+        "CE03077",
+        "CE03078",
+        "CE03079",
+        "CE03080",
+        "CE03082",
+        "CE03081",
+        "CE03088",
+        "CE03090",
+        "CE03091",
+        "CE03092",
+        "CE03094",
+        "CE03095",
+        "CE03096",
+        "CE03097",
+        "CE03098",
+        "CE03099",
+        "CE03100",
+        "CE03101",
+        "CE03102",
+        "CE03103",
+        "CE03104",
+        "CE03105",
+        "CE03106",
+        "CE03107",
+        "CE03109",
+        "CE03110",
+        "CE03111",
+        "CE03112",
+        "CE03113",
+        "CE03114",
+        "CE03140",
+        "CE03116",
+        "CE03117",
+        "CE03118",
+        "CE03119",
+        "CE03120",
+        "CE03121",
+        "CE03122",
+        "CE03123",
+        "CE03128",
+        "CE03129",
+        "CE03130",
+        "CE03131",
+        "CE03133"
+      ],
+      "select": [
+        "CE03127",
+        "CE03014",
+        "CE03071",
+        "CE03065",
+        "CE03P07",
+        "CE03P09",
+        "CE03P10",
+        "CE03085",
+        "CE03136",
+        "CE03137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "CE03127"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "CE03014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "CE03071"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "CE03065"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "CE03P07"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "CE03P09"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "CE03P10"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "CE03085"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "CE03136"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "CE03137"
+          ],
+          "price": 400000
+        }
+      ]
+    },
+    "이-라이트": {
+      "slug": "e-lite-long-range",
+      "name_en": null,
+      "price": {
+        "base": 53340000
+      },
+      "basic": [
+        "CE03001",
+        "CE03004",
+        "CE03005",
+        "CE03006",
+        "CE03007",
+        "CE03008",
+        "CE03009",
+        "CE03010",
+        "CE03011",
+        "CE03012",
+        "CE03013",
+        "CE03003",
+        "CE03015",
+        "CE03016",
+        "CE03017",
+        "CE03018",
+        "CE03042",
+        "CE03043",
+        "CE03044",
+        "CE03045",
+        "CE03046",
+        "CE03047",
+        "CE03048",
+        "CE03049",
+        "CE03021",
+        "CE03022",
+        "CE03023",
+        "CE03024",
+        "CE03025",
+        "CE03026",
+        "CE03027",
+        "CE03028",
+        "CE03029",
+        "CE03030",
+        "CE03031",
+        "CE03032",
+        "CE03051",
+        "CE03052",
+        "CE03053",
+        "CE03054",
+        "CE03055",
+        "CE03056",
+        "CE03057",
+        "CE03058",
+        "CE03059",
+        "CE03060",
+        "CE03061",
+        "CE03072",
+        "CE03073",
+        "CE03074",
+        "CE03075",
+        "CE03076",
+        "CE03077",
+        "CE03078",
+        "CE03079",
+        "CE03080",
+        "CE03087",
+        "CE03088",
+        "CE03097",
+        "CE03098",
+        "CE03099",
+        "CE03100",
+        "CE03101",
+        "CE03102",
+        "CE03103",
+        "CE03104",
+        "CE03105",
+        "CE03106",
+        "CE03107",
+        "CE03108",
+        "CE03109",
+        "CE03128",
+        "CE03129",
+        "CE03130",
+        "CE03131",
+        "CE03133"
+      ],
+      "select": [
+        "CE03014",
+        "CE03065",
+        "CE03136",
+        "CE03137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "CE03014"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "CE03065"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "CE03136"
+          ],
+          "price": 380000
+        },
+        {
+          "codes": [
+            "CE03137"
+          ],
+          "price": 400000
+        }
+      ]
+    }
+  }
+}

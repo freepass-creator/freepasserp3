@@ -1,0 +1,1191 @@
+{
+  "catalog_id": "kia_bongo3",
+  "title": "기아 봉고3",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/bongo3/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRB1267001",
+      "KRB1267002",
+      "KRB1267003"
+    ],
+    "첨단 운전자 보조 (ADAS)": [
+      "KRB1267009",
+      "KRB1267010"
+    ],
+    "안전": [
+      "KRB1267014",
+      "KRB1267015",
+      "KRB1267017",
+      "KRB1267011",
+      "KRB1267012",
+      "KRB1267013",
+      "KRB1267018",
+      "KRB1267016",
+      "KRB1267019",
+      "KRB1267020",
+      "KRB1267021",
+      "KRB1267095",
+      "KRB1267022"
+    ],
+    "외장": [
+      "KRB1267024",
+      "KRB1267025",
+      "KRB1267026",
+      "KRB1267027",
+      "KRB1267028",
+      "KRB1267042",
+      "KRB1267031",
+      "KRB1267032",
+      "KRB1267033",
+      "KRB1267029",
+      "KRB1267035",
+      "KRB1267034",
+      "KRB1267037",
+      "KRB1267038",
+      "KRB1267088",
+      "KRB1267039"
+    ],
+    "내장": [
+      "KRB1267050",
+      "KRB1267052",
+      "KRB1267045",
+      "KRB1267046",
+      "KRB1267047",
+      "KRB1267048",
+      "KRB1267049",
+      "KRB1267051",
+      "KRB1267053",
+      "KRB1267054",
+      "KRB1267055",
+      "KRB1267056"
+    ],
+    "시트": [
+      "KRB1267060",
+      "KRB1267061",
+      "KRB1267062",
+      "KRB1267064",
+      "KRB1267063",
+      "KRB1267066",
+      "KRB1267083",
+      "KRB1267065",
+      "KRB1267067"
+    ],
+    "편의": [
+      "KRB1267077",
+      "KRB1267072",
+      "KRB1267073",
+      "KRB1267069",
+      "KRB1267070",
+      "KRB1267068",
+      "KRB1267075",
+      "KRB1267074",
+      "KRB1267076",
+      "KRB1267071",
+      "KRB1267079",
+      "KRB1267078",
+      "KRB1267080",
+      "KRB1267081",
+      "KRB1267082",
+      "KRB1267084",
+      "KRB1267087",
+      "KRB1267086",
+      "KRB1267105",
+      "KRB1267094",
+      "KRB1267091",
+      "KRB1267092",
+      "KRB1267093"
+    ],
+    "인포테인먼트": [
+      "KRB1267096",
+      "KRB1267100",
+      "KRB1267099",
+      "KRB1267097",
+      "KRB1267098",
+      "KRB1267103",
+      "KRB1267101",
+      "KRB1267102"
+    ],
+    "선택사양": [
+      "KRB1267004",
+      "KRB1267005",
+      "KRB1267006",
+      "KRB1267P01",
+      "KRB1267085",
+      "KRB1267040",
+      "KRB1267P04",
+      "KRB1267P02",
+      "KRB1267P03"
+    ]
+  },
+  "options": {
+    "KRB1267001": {
+      "name": "스마트스트림 LPG 2.5 터보 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRB1267002": {
+      "name": "6단 수동변속기",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRB1267003": {
+      "name": "원형 봄베",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRB1267009": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRB1267010": {
+      "name": "차로 이탈 경고",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRB1267014": {
+      "name": "운전석 에어백",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267015": {
+      "name": "동승석 에어백",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267017": {
+      "name": "후방 주차거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267011": {
+      "name": "차체 자세 제어장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267012": {
+      "name": "경사로 밀림방지 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267013": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267018": {
+      "name": "시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267016": {
+      "name": "전륜 디스크 브레이크",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267019": {
+      "name": "후진 경고음 발생장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267020": {
+      "name": "이모빌라이저",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267021": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267095": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267024": {
+      "name": "전/후륜 래디얼 타이어(전륜 195R15 8PR, 후륜 145R13 8PR)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267025": {
+      "name": "풀사이즈 휠커버",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267026": {
+      "name": "4등식 헤드램프&amp;벌브 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267027": {
+      "name": "포그램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267028": {
+      "name": "측면 방향 지시등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267042": {
+      "name": "아웃사이드 미러(전동접이/전동조절/열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267031": {
+      "name": "간헐식 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267032": {
+      "name": "윈드쉴드 자외선 차단 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267033": {
+      "name": "선셰이드 밴드",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267029": {
+      "name": "바디칼라 범퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267035": {
+      "name": "스텝겸용 리어가드",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267034": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267050": {
+      "name": "고급형 클러스터(3.5인치 모노 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267052": {
+      "name": "D/N 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267045": {
+      "name": "도어 맵포켓",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267046": {
+      "name": "보조매트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267047": {
+      "name": "도어커티시 리플렉터",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267048": {
+      "name": "재떨이 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267049": {
+      "name": "선글라스 케이스&amp;룸램프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267051": {
+      "name": "센터시트백 콘솔박스",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267053": {
+      "name": "키홀 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267060": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267061": {
+      "name": "운전석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267062": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267064": {
+      "name": "앞좌석 리클라이닝",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267063": {
+      "name": "운전석 슬라이딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267077": {
+      "name": "폴딩타입 무선도어 리모컨키",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267072": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267073": {
+      "name": "원터치 트리플 턴 시그널",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267069": {
+      "name": "파워 윈도우(운전석 오토다운)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267070": {
+      "name": "파워 도어록",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267068": {
+      "name": "매뉴얼 에어컨",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267075": {
+      "name": "파워 아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267074": {
+      "name": "배터리세이버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267076": {
+      "name": "전원 일시유지 장치",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267071": {
+      "name": "파워 스티어링",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267079": {
+      "name": "가스식 쇽업쇼버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267078": {
+      "name": "적재함 발청 방지 실러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267080": {
+      "name": "승용형 연료 주입구",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267096": {
+      "name": "2단 MP3 오디오(CDP 미적용)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267100": {
+      "name": "도어 스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267099": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267097": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267098": {
+      "name": "USB 단자(데이터리딩용)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267004": {
+      "name": "5단 자동변속기",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRB1267005": {
+      "name": "하드 서스펜션",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRB1267006": {
+      "name": "PTO",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRB1267P01": {
+      "name": "10.25인치 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRB1267085": {
+      "name": "하이패스 자동결제 시스템",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRB1267037": {
+      "name": "적재함 브림커버",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267054": {
+      "name": "가죽 스티어링 휠&amp;변속기 노브",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267055": {
+      "name": "동승석 선바이저 거울",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267066": {
+      "name": "운전석 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267083": {
+      "name": "운전석 틸트 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267065": {
+      "name": "시트벨트 높이조절 장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRB1267081": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267082": {
+      "name": "수동식 틸트 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267084": {
+      "name": "크루즈 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267040": {
+      "name": "적재함 평바닥",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRB1267022": {
+      "name": "차동기어 잠금 장치(LD)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRB1267P04": {
+      "name": "10.25인치 내비게이션+하이패스 자동결제 시스템",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRB1267038": {
+      "name": "LED 리피터 일체형 아웃사이드 미러",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267103": {
+      "name": "트위터 스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267088": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267039": {
+      "name": "범퍼가드",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRB1267056": {
+      "name": "크롬 인사이드 도어핸들&amp;파킹브레이크 레버",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRB1267087": {
+      "name": "리어글라스 열선",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267086": {
+      "name": "야간 정비등",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267105": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267101": {
+      "name": "8인치 디스플레이 오디오(폰 프로젝션)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267102": {
+      "name": "C타입 USB 단자(충전용)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRB1267P02": {
+      "name": "10.25인치 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRB1267P03": {
+      "name": "플러스 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRB1267094": {
+      "name": "뒷좌석 파워 윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267091": {
+      "name": "승객석 실내등",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267092": {
+      "name": "뒷좌석 어시스트 그립",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267093": {
+      "name": "뒷좌석 공구박스(시트 하단)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRB1267067": {
+      "name": "동승석 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "L 라이트": {
+      "slug": "L_라이트",
+      "price": {
+        "base": 20450000
+      },
+      "basic": [
+        "KRB1267001",
+        "KRB1267002",
+        "KRB1267003",
+        "KRB1267009",
+        "KRB1267010",
+        "KRB1267014",
+        "KRB1267015",
+        "KRB1267017",
+        "KRB1267011",
+        "KRB1267012",
+        "KRB1267013",
+        "KRB1267018",
+        "KRB1267016",
+        "KRB1267019",
+        "KRB1267020",
+        "KRB1267021",
+        "KRB1267095",
+        "KRB1267024",
+        "KRB1267025",
+        "KRB1267026",
+        "KRB1267027",
+        "KRB1267028",
+        "KRB1267042",
+        "KRB1267031",
+        "KRB1267032",
+        "KRB1267033",
+        "KRB1267029",
+        "KRB1267035",
+        "KRB1267034",
+        "KRB1267050",
+        "KRB1267052",
+        "KRB1267045",
+        "KRB1267046",
+        "KRB1267047",
+        "KRB1267048",
+        "KRB1267049",
+        "KRB1267051",
+        "KRB1267053",
+        "KRB1267060",
+        "KRB1267061",
+        "KRB1267062",
+        "KRB1267064",
+        "KRB1267063",
+        "KRB1267077",
+        "KRB1267072",
+        "KRB1267073",
+        "KRB1267069",
+        "KRB1267070",
+        "KRB1267068",
+        "KRB1267075",
+        "KRB1267074",
+        "KRB1267076",
+        "KRB1267071",
+        "KRB1267079",
+        "KRB1267078",
+        "KRB1267080",
+        "KRB1267096",
+        "KRB1267100",
+        "KRB1267099",
+        "KRB1267097",
+        "KRB1267098"
+      ],
+      "select": [
+        "KRB1267004",
+        "KRB1267005",
+        "KRB1267006",
+        "KRB1267P01",
+        "KRB1267085"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRB1267004"
+          ],
+          "price": 1130000
+        },
+        {
+          "codes": [
+            "KRB1267005"
+          ],
+          "price": 60000
+        },
+        {
+          "codes": [
+            "KRB1267006"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "KRB1267P01"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "KRB1267085"
+          ],
+          "price": 100000
+        }
+      ]
+    },
+    "L": {
+      "slug": "L",
+      "price": {
+        "base": 21100000
+      },
+      "basic": [
+        "KRB1267037",
+        "KRB1267054",
+        "KRB1267055",
+        "KRB1267066",
+        "KRB1267083",
+        "KRB1267081",
+        "KRB1267082",
+        "KRB1267084",
+        "KRB1267001",
+        "KRB1267002",
+        "KRB1267003",
+        "KRB1267009",
+        "KRB1267010",
+        "KRB1267014",
+        "KRB1267015",
+        "KRB1267017",
+        "KRB1267011",
+        "KRB1267012",
+        "KRB1267013",
+        "KRB1267018",
+        "KRB1267016",
+        "KRB1267019",
+        "KRB1267020",
+        "KRB1267021",
+        "KRB1267095",
+        "KRB1267024",
+        "KRB1267025",
+        "KRB1267026",
+        "KRB1267027",
+        "KRB1267028",
+        "KRB1267042",
+        "KRB1267031",
+        "KRB1267032",
+        "KRB1267033",
+        "KRB1267029",
+        "KRB1267035",
+        "KRB1267034",
+        "KRB1267050",
+        "KRB1267052",
+        "KRB1267045",
+        "KRB1267046",
+        "KRB1267047",
+        "KRB1267048",
+        "KRB1267049",
+        "KRB1267051",
+        "KRB1267053",
+        "KRB1267060",
+        "KRB1267061",
+        "KRB1267062",
+        "KRB1267064",
+        "KRB1267063",
+        "KRB1267077",
+        "KRB1267072",
+        "KRB1267073",
+        "KRB1267069",
+        "KRB1267070",
+        "KRB1267068",
+        "KRB1267075",
+        "KRB1267074",
+        "KRB1267076",
+        "KRB1267071",
+        "KRB1267079",
+        "KRB1267078",
+        "KRB1267080",
+        "KRB1267096",
+        "KRB1267100",
+        "KRB1267099",
+        "KRB1267097",
+        "KRB1267098"
+      ],
+      "select": [
+        "KRB1267004",
+        "KRB1267005",
+        "KRB1267006",
+        "KRB1267040",
+        "KRB1267P01",
+        "KRB1267085"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRB1267004"
+          ],
+          "price": 1130000
+        },
+        {
+          "codes": [
+            "KRB1267005"
+          ],
+          "price": 60000
+        },
+        {
+          "codes": [
+            "KRB1267006"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "KRB1267040"
+          ],
+          "price": 280000
+        },
+        {
+          "codes": [
+            "KRB1267P01"
+          ],
+          "price": 1400000
+        },
+        {
+          "codes": [
+            "KRB1267085"
+          ],
+          "price": 100000
+        }
+      ]
+    },
+    "스마트 셀렉션": {
+      "slug": "스마트_셀렉션",
+      "price": {
+        "base": 22350000
+      },
+      "basic": [
+        "KRB1267004",
+        "KRB1267022",
+        "KRB1267005",
+        "KRB1267001",
+        "KRB1267003",
+        "KRB1267009",
+        "KRB1267010",
+        "KRB1267014",
+        "KRB1267015",
+        "KRB1267017",
+        "KRB1267011",
+        "KRB1267012",
+        "KRB1267013",
+        "KRB1267018",
+        "KRB1267016",
+        "KRB1267019",
+        "KRB1267020",
+        "KRB1267021",
+        "KRB1267095",
+        "KRB1267024",
+        "KRB1267025",
+        "KRB1267026",
+        "KRB1267027",
+        "KRB1267028",
+        "KRB1267042",
+        "KRB1267031",
+        "KRB1267032",
+        "KRB1267033",
+        "KRB1267029",
+        "KRB1267035",
+        "KRB1267034",
+        "KRB1267037",
+        "KRB1267050",
+        "KRB1267052",
+        "KRB1267045",
+        "KRB1267046",
+        "KRB1267047",
+        "KRB1267048",
+        "KRB1267049",
+        "KRB1267051",
+        "KRB1267053",
+        "KRB1267054",
+        "KRB1267055",
+        "KRB1267060",
+        "KRB1267061",
+        "KRB1267062",
+        "KRB1267064",
+        "KRB1267063",
+        "KRB1267083",
+        "KRB1267065",
+        "KRB1267077",
+        "KRB1267072",
+        "KRB1267073",
+        "KRB1267069",
+        "KRB1267070",
+        "KRB1267068",
+        "KRB1267075",
+        "KRB1267074",
+        "KRB1267076",
+        "KRB1267071",
+        "KRB1267079",
+        "KRB1267078",
+        "KRB1267080",
+        "KRB1267081",
+        "KRB1267082",
+        "KRB1267084",
+        "KRB1267096",
+        "KRB1267100",
+        "KRB1267099",
+        "KRB1267097",
+        "KRB1267098"
+      ],
+      "select": [
+        "KRB1267040",
+        "KRB1267P04",
+        "KRB1267066"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRB1267040"
+          ],
+          "price": 280000
+        },
+        {
+          "codes": [
+            "KRB1267P04"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "KRB1267066"
+          ],
+          "price": 200000
+        }
+      ]
+    },
+    "GL": {
+      "slug": "GL",
+      "price": {
+        "base": 21850000
+      },
+      "basic": [
+        "KRB1267022",
+        "KRB1267038",
+        "KRB1267085",
+        "KRB1267103",
+        "KRB1267001",
+        "KRB1267002",
+        "KRB1267003",
+        "KRB1267009",
+        "KRB1267010",
+        "KRB1267014",
+        "KRB1267015",
+        "KRB1267017",
+        "KRB1267011",
+        "KRB1267012",
+        "KRB1267013",
+        "KRB1267018",
+        "KRB1267016",
+        "KRB1267019",
+        "KRB1267020",
+        "KRB1267021",
+        "KRB1267095",
+        "KRB1267024",
+        "KRB1267025",
+        "KRB1267026",
+        "KRB1267027",
+        "KRB1267042",
+        "KRB1267031",
+        "KRB1267032",
+        "KRB1267033",
+        "KRB1267029",
+        "KRB1267035",
+        "KRB1267034",
+        "KRB1267037",
+        "KRB1267050",
+        "KRB1267052",
+        "KRB1267045",
+        "KRB1267046",
+        "KRB1267047",
+        "KRB1267048",
+        "KRB1267049",
+        "KRB1267051",
+        "KRB1267053",
+        "KRB1267054",
+        "KRB1267055",
+        "KRB1267060",
+        "KRB1267061",
+        "KRB1267062",
+        "KRB1267064",
+        "KRB1267063",
+        "KRB1267066",
+        "KRB1267083",
+        "KRB1267077",
+        "KRB1267072",
+        "KRB1267073",
+        "KRB1267069",
+        "KRB1267070",
+        "KRB1267068",
+        "KRB1267075",
+        "KRB1267074",
+        "KRB1267076",
+        "KRB1267071",
+        "KRB1267079",
+        "KRB1267078",
+        "KRB1267080",
+        "KRB1267081",
+        "KRB1267082",
+        "KRB1267084",
+        "KRB1267096",
+        "KRB1267100",
+        "KRB1267099",
+        "KRB1267097",
+        "KRB1267098"
+      ],
+      "select": [
+        "KRB1267004",
+        "KRB1267005",
+        "KRB1267006",
+        "KRB1267040",
+        "KRB1267P01"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRB1267004"
+          ],
+          "price": 1130000
+        },
+        {
+          "codes": [
+            "KRB1267005"
+          ],
+          "price": 60000
+        },
+        {
+          "codes": [
+            "KRB1267006"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "KRB1267040"
+          ],
+          "price": 280000
+        },
+        {
+          "codes": [
+            "KRB1267P01"
+          ],
+          "price": 1400000
+        }
+      ]
+    },
+    "GLS": {
+      "slug": "GLS",
+      "price": {
+        "base": 23050000
+      },
+      "basic": [
+        "KRB1267088",
+        "KRB1267039",
+        "KRB1267056",
+        "KRB1267087",
+        "KRB1267086",
+        "KRB1267105",
+        "KRB1267101",
+        "KRB1267102",
+        "KRB1267001",
+        "KRB1267002",
+        "KRB1267003",
+        "KRB1267009",
+        "KRB1267010",
+        "KRB1267014",
+        "KRB1267015",
+        "KRB1267017",
+        "KRB1267011",
+        "KRB1267012",
+        "KRB1267013",
+        "KRB1267018",
+        "KRB1267016",
+        "KRB1267019",
+        "KRB1267020",
+        "KRB1267021",
+        "KRB1267095",
+        "KRB1267022",
+        "KRB1267024",
+        "KRB1267025",
+        "KRB1267026",
+        "KRB1267027",
+        "KRB1267042",
+        "KRB1267031",
+        "KRB1267032",
+        "KRB1267033",
+        "KRB1267029",
+        "KRB1267035",
+        "KRB1267034",
+        "KRB1267037",
+        "KRB1267038",
+        "KRB1267050",
+        "KRB1267052",
+        "KRB1267045",
+        "KRB1267046",
+        "KRB1267047",
+        "KRB1267048",
+        "KRB1267049",
+        "KRB1267051",
+        "KRB1267053",
+        "KRB1267054",
+        "KRB1267055",
+        "KRB1267060",
+        "KRB1267061",
+        "KRB1267062",
+        "KRB1267064",
+        "KRB1267063",
+        "KRB1267066",
+        "KRB1267083",
+        "KRB1267077",
+        "KRB1267072",
+        "KRB1267073",
+        "KRB1267069",
+        "KRB1267070",
+        "KRB1267068",
+        "KRB1267075",
+        "KRB1267074",
+        "KRB1267076",
+        "KRB1267071",
+        "KRB1267079",
+        "KRB1267078",
+        "KRB1267080",
+        "KRB1267081",
+        "KRB1267082",
+        "KRB1267084",
+        "KRB1267085",
+        "KRB1267100",
+        "KRB1267099",
+        "KRB1267097",
+        "KRB1267098",
+        "KRB1267103"
+      ],
+      "select": [
+        "KRB1267004",
+        "KRB1267005",
+        "KRB1267006",
+        "KRB1267040",
+        "KRB1267P02",
+        "KRB1267P03"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRB1267004"
+          ],
+          "price": 1130000
+        },
+        {
+          "codes": [
+            "KRB1267005"
+          ],
+          "price": 60000
+        },
+        {
+          "codes": [
+            "KRB1267006"
+          ],
+          "price": 200000
+        },
+        {
+          "codes": [
+            "KRB1267040"
+          ],
+          "price": 280000
+        },
+        {
+          "codes": [
+            "KRB1267P02"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "KRB1267P03"
+          ],
+          "price": 40000
+        }
+      ]
+    }
+  }
+}

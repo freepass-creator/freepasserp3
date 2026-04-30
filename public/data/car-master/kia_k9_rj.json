@@ -1,0 +1,1512 @@
+{
+  "catalog_id": "kia_k9_rj",
+  "title": "기아 더 뉴 K9 (RJ)",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/k9/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRJR296001",
+      "KRJR296002",
+      "KRJR296003",
+      "KRJR296004",
+      "KRJR296005",
+      "KRJR296006",
+      "KRJR296009"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRJR296010",
+      "KRJR296011",
+      "KRJR296012",
+      "KRJR296013",
+      "KRJR296014",
+      "KRJR296015",
+      "KRJR296016",
+      "KRJR296017",
+      "KRJR296018",
+      "KRJR296019",
+      "KRJR296020",
+      "KRJR296021"
+    ],
+    "안전": [
+      "KRJR296022",
+      "KRJR296023",
+      "KRJR296024",
+      "KRJR296025",
+      "KRJR296026",
+      "KRJR296027",
+      "KRJR296028",
+      "KRJR296029",
+      "KRJR296030",
+      "KRJR296031",
+      "KRJR296139",
+      "KRJR296032",
+      "KRJR296033"
+    ],
+    "외장": [
+      "KRJR296034",
+      "KRJR296035",
+      "KRJR296036",
+      "KRJR296037",
+      "KRJR296038",
+      "KRJR296039",
+      "KRJR296040",
+      "KRJR296041",
+      "KRJR296042",
+      "KRJR296043",
+      "KRJR296044",
+      "KRJR296045",
+      "KRJR296046",
+      "KRJR296047",
+      "KRJR296138",
+      "KRJR296048"
+    ],
+    "내장": [
+      "KRJR296052",
+      "KRJR296064",
+      "KRJR296057",
+      "KRJR296058",
+      "KRJR296059",
+      "KRJR296060",
+      "KRJR296061",
+      "KRJR296062",
+      "KRJR296063",
+      "KRJR296071",
+      "KRJR296065",
+      "KRJR296066"
+    ],
+    "시트": [
+      "KRJR296072",
+      "KRJR296073",
+      "KRJR296074",
+      "KRJR296075",
+      "KRJR296076",
+      "KRJR296077",
+      "KRJR296078",
+      "KRJR296145",
+      "KRJR296079",
+      "KRJR296080",
+      "KRJR296081",
+      "KRJR296088",
+      "KRJR296087",
+      "KRJR296141",
+      "KRJR296089",
+      "KRJR296140"
+    ],
+    "편의": [
+      "KRJR296093",
+      "KRJR296094",
+      "KRJR296095",
+      "KRJR296096",
+      "KRJR296097",
+      "KRJR296098",
+      "KRJR296099",
+      "KRJR296100",
+      "KRJR296101",
+      "KRJR296102",
+      "KRJR296103",
+      "KRJR296104",
+      "KRJR296105",
+      "KRJR296142",
+      "KRJR296106",
+      "KRJR296107",
+      "KRJR296108",
+      "KRJR296109",
+      "KRJR296110",
+      "KRJR296111",
+      "KRJR296112",
+      "KRJR296113",
+      "KRJR296126",
+      "KRJR296115",
+      "KRJR296116",
+      "KRJR296117",
+      "KRJR296118",
+      "KRJR296119",
+      "KRJR296120",
+      "KRJR296121",
+      "KRJR296144"
+    ],
+    "인포테인먼트": [
+      "KRJR296127",
+      "KRJR296128",
+      "KRJR296129",
+      "KRJR296130",
+      "KRJR296132",
+      "KRJR296133",
+      "KRJR296134",
+      "KRJR296143",
+      "KRJR296135"
+    ],
+    "선택사양": [
+      "KRJR296051",
+      "KRJR296050",
+      "KRJR296124",
+      "KRJR296P01",
+      "KRJR296P02",
+      "KRJR296P07",
+      "KRJR296114",
+      "KRJR296008",
+      "KRJR296137",
+      "KRJR296P04",
+      "KRJR296131",
+      "KRJR296P05",
+      "KRJR296007",
+      "KRJR296136"
+    ],
+    "베스트 셀렉션Ⅰ": [
+      "KRJR296049",
+      "KRJR296P03"
+    ],
+    "베스트 셀렉션 Ⅱ": [
+      "KRJR296P06"
+    ]
+  },
+  "options": {
+    "KRJR296001": {
+      "name": "V6 람다Ⅱ 개선 3.8 GDI 가솔린 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRJR296002": {
+      "name": "8단 자동변속기",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRJR296003": {
+      "name": "랙 구동형 전동식 파워스티어링(R-MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRJR296004": {
+      "name": "가변 기어비 스티어링(VGR)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRJR296005": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRJR296006": {
+      "name": "전방 예측 변속 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRJR296010": {
+      "name": "전방 충돌방지 보조(보행자/차량/자전거 탑승자, 교차로 대향차, 교차 차량, 측방 접근차, 추월시 대향차, 회피 조향 보조 기능포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296011": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296012": {
+      "name": "후측방 충돌방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296013": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296014": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296015": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296016": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발, 운전스타일 연동 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296017": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로/진출입로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296018": {
+      "name": "차로 유지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296019": {
+      "name": "고속도로 주행 보조2(차로변경 보조 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296020": {
+      "name": "안전 하차 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296021": {
+      "name": "스티어링 휠 진동경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRJR296022": {
+      "name": "9에어백(운전석/동승석 어드밴스드 에어백, 운전석 무릎, 전복감지 커튼, 앞좌석/뒷좌석 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296023": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296024": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296025": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296026": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296027": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296028": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296029": {
+      "name": "앞좌석/뒷좌석 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296030": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296031": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296139": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296034": {
+      "name": "프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296035": {
+      "name": "프론트/리어 LED 턴시그널 램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296036": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296037": {
+      "name": "LED 리어 콤비네이션 램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296038": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296039": {
+      "name": "245/50 R18 외산 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296040": {
+      "name": "LED 리피터 일체형 아웃사이드 미러(전동접이, 전동조절, 열선, 퍼들램프)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296041": {
+      "name": "윈드쉴드/앞좌석/뒷좌석/백라이트 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296042": {
+      "name": "윈드쉴드/앞좌석/뒷좌석/백라이트 자외선 차단 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296043": {
+      "name": "도어 손잡이 조명(프론트/리어)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296044": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296045": {
+      "name": "듀얼머플러",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296046": {
+      "name": "다이내믹 웰컴 라이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296047": {
+      "name": "터치타입 아웃사이드 도어 핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296138": {
+      "name": "후진 가이드 램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296052": {
+      "name": "블랙 또는 마션 브라운 또는 베이지 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296064": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296057": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296058": {
+      "name": "가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296059": {
+      "name": "내추럴 우드그레인 내장재",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296060": {
+      "name": "도어 센터트림 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296061": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296062": {
+      "name": "양문형 콘솔암레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296063": {
+      "name": "메탈 트렌스버스 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296071": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296072": {
+      "name": "가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296073": {
+      "name": "앞좌석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296074": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296075": {
+      "name": "앞좌석/뒷좌석 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296076": {
+      "name": "앞좌석 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296077": {
+      "name": "운전석 에어셀타입 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296078": {
+      "name": "뒷좌석 다기능 센터 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296145": {
+      "name": "뒷좌석 시트벨트 버클 조명",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296093": {
+      "name": "버튼시동 스마트키 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296094": {
+      "name": "하이패스 자동결제 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296095": {
+      "name": "전자식 변속 레버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296096": {
+      "name": "전자식 파킹브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296097": {
+      "name": "앞좌석 스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296098": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296099": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296100": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296101": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296102": {
+      "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296103": {
+      "name": "스마트 파워트렁크",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296104": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석/뒷좌석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296105": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296142": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296106": {
+      "name": "외부공기 유입방지 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296107": {
+      "name": "운전석 자동쾌적 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296108": {
+      "name": "운전자세 메모리 시스템(시트, 스티어링 휠, 아웃사이드 미러, 스마트 자세제어 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296109": {
+      "name": "운전석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296110": {
+      "name": "앞좌석/뒷좌석 USB 단자(충전용)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296111": {
+      "name": "지문 인증 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296112": {
+      "name": "기아 디지털 키",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296113": {
+      "name": "공기청정 시스템(미세먼지 센서)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296126": {
+      "name": "항균 처리 고성능 콤비 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296127": {
+      "name": "14.5인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296128": {
+      "name": "내비게이션/클러스터 무선 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296129": {
+      "name": "필기인식 통합 컨트롤러",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296130": {
+      "name": "KRELL 프리미엄 사운드(14스피커, 외장앰프)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296132": {
+      "name": "액티브 엔진 사운드",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296133": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296134": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296143": {
+      "name": "USB 단자(데이터리딩용)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296051": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296050": {
+      "name": "선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296124": {
+      "name": "빌트인 캠",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296P01": {
+      "name": "모니터링팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRJR296P02": {
+      "name": "컴포트팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRJR296P07": {
+      "name": "19인치 휠 &amp; 타이어",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRJR296114": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296008": {
+      "name": "AWD",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296137": {
+      "name": "차량 보호 필름",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296049": {
+      "name": "19인치 휠&amp;타이어",
+      "category": "베스트 셀렉션Ⅰ",
+      "is_package": false
+    },
+    "KRJR296P03": {
+      "name": "시트 컨비니언스 팩",
+      "category": "베스트 셀렉션Ⅰ",
+      "is_package": false
+    },
+    "KRJR296P04": {
+      "name": "프리미엄 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRJR296131": {
+      "name": "Lexicon 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296P05": {
+      "name": "VIP 컬렉션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRJR296007": {
+      "name": "프리뷰 전자제어 서스펜션",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296136": {
+      "name": "뒷좌석 듀얼 모니터",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRJR296032": {
+      "name": "앞좌석 프리 액티브 시트벨트",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296033": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRJR296048": {
+      "name": "앞245/45 R19&amp;뒤275/40 R19 외산 타이어&amp;다크 스퍼터링 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRJR296065": {
+      "name": "인조가죽감싸기(크래쉬패드상단, 도어어퍼트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296066": {
+      "name": "스웨이드 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRJR296079": {
+      "name": "운전석 에르고 모션시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296080": {
+      "name": "운전석 전동 익스텐션 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296081": {
+      "name": "운전석 시트백 볼스터 전동조절 장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296088": {
+      "name": "동승석 메모리 시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296087": {
+      "name": "앞좌석 전동식 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296141": {
+      "name": "동승석 에르고 모션시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296089": {
+      "name": "동승석 에어셀타입 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296140": {
+      "name": "동승석 시트백 볼스터 전동조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRJR296115": {
+      "name": "서라운드뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296116": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296117": {
+      "name": "파워도어 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296118": {
+      "name": "뒷좌석 측면 수동 선커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296119": {
+      "name": "후면 전동 선커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296120": {
+      "name": "지능형 헤드램프",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296121": {
+      "name": "원격 스마트 주차 보조(직각 주차 및 평행 주차, 출차 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296144": {
+      "name": "동승석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRJR296135": {
+      "name": "증강현실 내비게이션",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRJR296P06": {
+      "name": "VIP 컬렉션+",
+      "category": "베스트 셀렉션 Ⅱ",
+      "is_package": false
+    },
+    "KRJR296009": {
+      "name": "V6 람다Ⅱ 개선 3.3 T-GDI 가솔린 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "플래티넘": {
+      "slug": "플래티넘",
+      "price": {
+        "base": 66960000,
+        "tax_3_5_after": 65940000
+      },
+      "basic": [
+        "KRJR296009",
+        "KRJR296007",
+        "KRJR296048",
+        "KRJR296002",
+        "KRJR296003",
+        "KRJR296004",
+        "KRJR296005",
+        "KRJR296006",
+        "KRJR296010",
+        "KRJR296011",
+        "KRJR296012",
+        "KRJR296013",
+        "KRJR296014",
+        "KRJR296015",
+        "KRJR296016",
+        "KRJR296017",
+        "KRJR296018",
+        "KRJR296019",
+        "KRJR296020",
+        "KRJR296021",
+        "KRJR296022",
+        "KRJR296023",
+        "KRJR296024",
+        "KRJR296025",
+        "KRJR296026",
+        "KRJR296027",
+        "KRJR296028",
+        "KRJR296029",
+        "KRJR296030",
+        "KRJR296031",
+        "KRJR296139",
+        "KRJR296034",
+        "KRJR296035",
+        "KRJR296036",
+        "KRJR296037",
+        "KRJR296038",
+        "KRJR296040",
+        "KRJR296041",
+        "KRJR296042",
+        "KRJR296043",
+        "KRJR296044",
+        "KRJR296045",
+        "KRJR296046",
+        "KRJR296047",
+        "KRJR296138",
+        "KRJR296052",
+        "KRJR296064",
+        "KRJR296057",
+        "KRJR296058",
+        "KRJR296059",
+        "KRJR296060",
+        "KRJR296061",
+        "KRJR296062",
+        "KRJR296063",
+        "KRJR296071",
+        "KRJR296072",
+        "KRJR296073",
+        "KRJR296074",
+        "KRJR296075",
+        "KRJR296076",
+        "KRJR296077",
+        "KRJR296078",
+        "KRJR296145",
+        "KRJR296093",
+        "KRJR296094",
+        "KRJR296095",
+        "KRJR296096",
+        "KRJR296097",
+        "KRJR296098",
+        "KRJR296099",
+        "KRJR296100",
+        "KRJR296101",
+        "KRJR296102",
+        "KRJR296103",
+        "KRJR296104",
+        "KRJR296105",
+        "KRJR296142",
+        "KRJR296106",
+        "KRJR296107",
+        "KRJR296108",
+        "KRJR296109",
+        "KRJR296110",
+        "KRJR296111",
+        "KRJR296112",
+        "KRJR296113",
+        "KRJR296126",
+        "KRJR296127",
+        "KRJR296128",
+        "KRJR296129",
+        "KRJR296130",
+        "KRJR296132",
+        "KRJR296133",
+        "KRJR296134",
+        "KRJR296143"
+      ],
+      "select": [
+        "KRJR296051",
+        "KRJR296050",
+        "KRJR296124",
+        "KRJR296P01",
+        "KRJR296P02",
+        "KRJR296114",
+        "KRJR296008",
+        "KRJR296137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRJR296051"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRJR296050"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRJR296124"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRJR296P01"
+          ],
+          "price": 1780000
+        },
+        {
+          "codes": [
+            "KRJR296P02"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRJR296114"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRJR296008"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "KRJR296137"
+          ],
+          "price": 540000
+        }
+      ]
+    },
+    "베스트 셀렉션Ⅰ": {
+      "slug": "베스트_셀렉션Ⅰ",
+      "price": {
+        "base": 74840000,
+        "tax_3_5_after": 73700000
+      },
+      "basic": [
+        "KRJR296P01",
+        "KRJR296P02",
+        "KRJR296114",
+        "KRJR296008",
+        "KRJR296P03",
+        "KRJR296002",
+        "KRJR296003",
+        "KRJR296004",
+        "KRJR296005",
+        "KRJR296006",
+        "KRJR296009",
+        "KRJR296007",
+        "KRJR296010",
+        "KRJR296011",
+        "KRJR296012",
+        "KRJR296013",
+        "KRJR296014",
+        "KRJR296015",
+        "KRJR296016",
+        "KRJR296017",
+        "KRJR296018",
+        "KRJR296019",
+        "KRJR296020",
+        "KRJR296021",
+        "KRJR296022",
+        "KRJR296023",
+        "KRJR296024",
+        "KRJR296025",
+        "KRJR296026",
+        "KRJR296027",
+        "KRJR296028",
+        "KRJR296029",
+        "KRJR296030",
+        "KRJR296031",
+        "KRJR296139",
+        "KRJR296034",
+        "KRJR296035",
+        "KRJR296036",
+        "KRJR296037",
+        "KRJR296038",
+        "KRJR296040",
+        "KRJR296041",
+        "KRJR296042",
+        "KRJR296043",
+        "KRJR296044",
+        "KRJR296045",
+        "KRJR296046",
+        "KRJR296047",
+        "KRJR296138",
+        "KRJR296048",
+        "KRJR296052",
+        "KRJR296064",
+        "KRJR296057",
+        "KRJR296058",
+        "KRJR296059",
+        "KRJR296060",
+        "KRJR296061",
+        "KRJR296062",
+        "KRJR296063",
+        "KRJR296071",
+        "KRJR296072",
+        "KRJR296074",
+        "KRJR296075",
+        "KRJR296076",
+        "KRJR296077",
+        "KRJR296078",
+        "KRJR296145",
+        "KRJR296093",
+        "KRJR296094",
+        "KRJR296095",
+        "KRJR296096",
+        "KRJR296097",
+        "KRJR296098",
+        "KRJR296099",
+        "KRJR296100",
+        "KRJR296101",
+        "KRJR296102",
+        "KRJR296103",
+        "KRJR296104",
+        "KRJR296105",
+        "KRJR296142",
+        "KRJR296106",
+        "KRJR296107",
+        "KRJR296108",
+        "KRJR296109",
+        "KRJR296110",
+        "KRJR296111",
+        "KRJR296112",
+        "KRJR296113",
+        "KRJR296126",
+        "KRJR296127",
+        "KRJR296128",
+        "KRJR296129",
+        "KRJR296130",
+        "KRJR296132",
+        "KRJR296133",
+        "KRJR296134",
+        "KRJR296143"
+      ],
+      "select": [
+        "KRJR296051",
+        "KRJR296050",
+        "KRJR296124",
+        "KRJR296P04",
+        "KRJR296131",
+        "KRJR296P05",
+        "KRJR296136",
+        "KRJR296137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRJR296051"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRJR296050"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRJR296124"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRJR296P04"
+          ],
+          "price": 3260000
+        },
+        {
+          "codes": [
+            "KRJR296131"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KRJR296P05"
+          ],
+          "price": 2570000
+        },
+        {
+          "codes": [
+            "KRJR296136"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "KRJR296137"
+          ],
+          "price": 540000
+        }
+      ]
+    },
+    "마스터즈": {
+      "slug": "마스터즈",
+      "price": {
+        "base": 80040000,
+        "tax_3_5_after": 78820000
+      },
+      "basic": [
+        "KRJR296009",
+        "KRJR296002",
+        "KRJR296003",
+        "KRJR296004",
+        "KRJR296005",
+        "KRJR296006",
+        "KRJR296007",
+        "KRJR296008",
+        "KRJR296010",
+        "KRJR296011",
+        "KRJR296012",
+        "KRJR296013",
+        "KRJR296014",
+        "KRJR296016",
+        "KRJR296017",
+        "KRJR296018",
+        "KRJR296019",
+        "KRJR296020",
+        "KRJR296021",
+        "KRJR296022",
+        "KRJR296023",
+        "KRJR296024",
+        "KRJR296025",
+        "KRJR296026",
+        "KRJR296027",
+        "KRJR296028",
+        "KRJR296029",
+        "KRJR296030",
+        "KRJR296031",
+        "KRJR296139",
+        "KRJR296032",
+        "KRJR296033",
+        "KRJR296034",
+        "KRJR296035",
+        "KRJR296036",
+        "KRJR296037",
+        "KRJR296038",
+        "KRJR296040",
+        "KRJR296041",
+        "KRJR296042",
+        "KRJR296043",
+        "KRJR296044",
+        "KRJR296045",
+        "KRJR296046",
+        "KRJR296047",
+        "KRJR296138",
+        "KRJR296048",
+        "KRJR296052",
+        "KRJR296064",
+        "KRJR296057",
+        "KRJR296058",
+        "KRJR296059",
+        "KRJR296060",
+        "KRJR296061",
+        "KRJR296062",
+        "KRJR296063",
+        "KRJR296071",
+        "KRJR296065",
+        "KRJR296066",
+        "KRJR296072",
+        "KRJR296074",
+        "KRJR296075",
+        "KRJR296076",
+        "KRJR296077",
+        "KRJR296078",
+        "KRJR296145",
+        "KRJR296079",
+        "KRJR296080",
+        "KRJR296081",
+        "KRJR296088",
+        "KRJR296087",
+        "KRJR296141",
+        "KRJR296089",
+        "KRJR296140",
+        "KRJR296093",
+        "KRJR296094",
+        "KRJR296095",
+        "KRJR296096",
+        "KRJR296097",
+        "KRJR296098",
+        "KRJR296099",
+        "KRJR296100",
+        "KRJR296101",
+        "KRJR296102",
+        "KRJR296103",
+        "KRJR296104",
+        "KRJR296105",
+        "KRJR296142",
+        "KRJR296106",
+        "KRJR296107",
+        "KRJR296108",
+        "KRJR296109",
+        "KRJR296110",
+        "KRJR296111",
+        "KRJR296112",
+        "KRJR296113",
+        "KRJR296126",
+        "KRJR296114",
+        "KRJR296115",
+        "KRJR296116",
+        "KRJR296117",
+        "KRJR296118",
+        "KRJR296119",
+        "KRJR296120",
+        "KRJR296121",
+        "KRJR296144",
+        "KRJR296127",
+        "KRJR296128",
+        "KRJR296129",
+        "KRJR296130",
+        "KRJR296132",
+        "KRJR296133",
+        "KRJR296134",
+        "KRJR296143",
+        "KRJR296135"
+      ],
+      "select": [
+        "KRJR296051",
+        "KRJR296050",
+        "KRJR296124",
+        "KRJR296P04",
+        "KRJR296131",
+        "KRJR296P05",
+        "KRJR296136",
+        "KRJR296137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRJR296051"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRJR296050"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRJR296124"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRJR296P04"
+          ],
+          "price": 3260000
+        },
+        {
+          "codes": [
+            "KRJR296131"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "KRJR296P05"
+          ],
+          "price": 2570000
+        },
+        {
+          "codes": [
+            "KRJR296136"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "KRJR296137"
+          ],
+          "price": 540000
+        }
+      ]
+    },
+    "베스트 셀렉션 Ⅱ": {
+      "slug": "베스트_셀렉션_Ⅱ",
+      "price": {
+        "base": 87140000,
+        "tax_3_5_after": 85820000
+      },
+      "basic": [
+        "KRJR296P04",
+        "KRJR296131",
+        "KRJR296P05",
+        "KRJR296P06",
+        "KRJR296002",
+        "KRJR296003",
+        "KRJR296004",
+        "KRJR296005",
+        "KRJR296006",
+        "KRJR296007",
+        "KRJR296008",
+        "KRJR296009",
+        "KRJR296010",
+        "KRJR296011",
+        "KRJR296012",
+        "KRJR296013",
+        "KRJR296014",
+        "KRJR296016",
+        "KRJR296017",
+        "KRJR296018",
+        "KRJR296019",
+        "KRJR296020",
+        "KRJR296021",
+        "KRJR296022",
+        "KRJR296023",
+        "KRJR296024",
+        "KRJR296025",
+        "KRJR296026",
+        "KRJR296027",
+        "KRJR296028",
+        "KRJR296029",
+        "KRJR296030",
+        "KRJR296031",
+        "KRJR296139",
+        "KRJR296032",
+        "KRJR296033",
+        "KRJR296034",
+        "KRJR296035",
+        "KRJR296036",
+        "KRJR296037",
+        "KRJR296038",
+        "KRJR296040",
+        "KRJR296041",
+        "KRJR296042",
+        "KRJR296043",
+        "KRJR296044",
+        "KRJR296045",
+        "KRJR296046",
+        "KRJR296047",
+        "KRJR296138",
+        "KRJR296048",
+        "KRJR296052",
+        "KRJR296064",
+        "KRJR296057",
+        "KRJR296058",
+        "KRJR296060",
+        "KRJR296061",
+        "KRJR296062",
+        "KRJR296063",
+        "KRJR296071",
+        "KRJR296066",
+        "KRJR296074",
+        "KRJR296075",
+        "KRJR296076",
+        "KRJR296077",
+        "KRJR296078",
+        "KRJR296145",
+        "KRJR296079",
+        "KRJR296080",
+        "KRJR296081",
+        "KRJR296088",
+        "KRJR296087",
+        "KRJR296141",
+        "KRJR296089",
+        "KRJR296140",
+        "KRJR296093",
+        "KRJR296094",
+        "KRJR296095",
+        "KRJR296096",
+        "KRJR296097",
+        "KRJR296098",
+        "KRJR296099",
+        "KRJR296100",
+        "KRJR296101",
+        "KRJR296102",
+        "KRJR296103",
+        "KRJR296105",
+        "KRJR296142",
+        "KRJR296106",
+        "KRJR296107",
+        "KRJR296108",
+        "KRJR296109",
+        "KRJR296110",
+        "KRJR296111",
+        "KRJR296112",
+        "KRJR296113",
+        "KRJR296126",
+        "KRJR296114",
+        "KRJR296115",
+        "KRJR296116",
+        "KRJR296117",
+        "KRJR296118",
+        "KRJR296119",
+        "KRJR296120",
+        "KRJR296121",
+        "KRJR296144",
+        "KRJR296127",
+        "KRJR296128",
+        "KRJR296129",
+        "KRJR296132",
+        "KRJR296133",
+        "KRJR296134",
+        "KRJR296143",
+        "KRJR296135"
+      ],
+      "select": [
+        "KRJR296051",
+        "KRJR296050",
+        "KRJR296124",
+        "KRJR296136",
+        "KRJR296137"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRJR296051"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRJR296050"
+          ],
+          "price": 790000
+        },
+        {
+          "codes": [
+            "KRJR296124"
+          ],
+          "price": 740000
+        },
+        {
+          "codes": [
+            "KRJR296136"
+          ],
+          "price": 2470000
+        },
+        {
+          "codes": [
+            "KRJR296137"
+          ],
+          "price": 540000
+        }
+      ]
+    }
+  }
+}

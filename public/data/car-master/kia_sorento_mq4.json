@@ -1,0 +1,1745 @@
+{
+  "catalog_id": "kia_sorento_mq4",
+  "title": "기아 더 뉴 쏘렌토 (MQ4)",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/sorento/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRMQ255001",
+      "KRMQ255002",
+      "KRMQ255003",
+      "KRMQ255004",
+      "KRMQ255005",
+      "KRMQ255009",
+      "KRMQ255010",
+      "KRMQ255011",
+      "KRMQ255007"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRMQ255012",
+      "KRMQ255013",
+      "KRMQ255014",
+      "KRMQ255015",
+      "KRMQ255017",
+      "KRMQ255018",
+      "KRMQ255174",
+      "KRMQ255019",
+      "KRMQ255175",
+      "KRMQ255168"
+    ],
+    "안전": [
+      "KRMQ255031",
+      "KRMQ255032",
+      "KRMQ255033",
+      "KRMQ255034",
+      "KRMQ255035",
+      "KRMQ255036",
+      "KRMQ255037",
+      "KRMQ255038",
+      "KRMQ255039",
+      "KRMQ255040",
+      "KRMQ255171",
+      "KRMQ255041",
+      "KRMQ255020",
+      "KRMQ255042"
+    ],
+    "외장": [
+      "KRMQ255044",
+      "KRMQ255045",
+      "KRMQ255046",
+      "KRMQ255047",
+      "KRMQ255048",
+      "KRMQ255049",
+      "KRMQ255050",
+      "KRMQ255051",
+      "KRMQ255062",
+      "KRMQ255053",
+      "KRMQ255052",
+      "KRMQ255054",
+      "KRMQ255055",
+      "KRMQ255158",
+      "KRMQ255056",
+      "KRMQ255057",
+      "KRMQ255172",
+      "KRMQ255060",
+      "KRMQ255061"
+    ],
+    "내장": [
+      "KRMQ255064",
+      "KRMQ255065",
+      "KRMQ255066",
+      "KRMQ255067",
+      "KRMQ255068",
+      "KRMQ255069",
+      "KRMQ255169",
+      "KRMQ255070",
+      "KRMQ255071",
+      "KRMQ255072",
+      "KRMQ255073",
+      "KRMQ255074",
+      "KRMQ255075",
+      "KRMQ255076",
+      "KRMQ255077",
+      "KRMQ255078",
+      "KRMQ255090",
+      "KRMQ255079"
+    ],
+    "시트": [
+      "KRMQ255080",
+      "KRMQ255081",
+      "KRMQ255082",
+      "KRMQ255083",
+      "KRMQ255084",
+      "KRMQ255085",
+      "KRMQ255086",
+      "KRMQ255087",
+      "KRMQ255088",
+      "KRMQ255089"
+    ],
+    "편의": [
+      "KRMQ255102",
+      "KRMQ255103",
+      "KRMQ255104",
+      "KRMQ255105",
+      "KRMQ255106",
+      "KRMQ255107",
+      "KRMQ255108",
+      "KRMQ255109",
+      "KRMQ255110",
+      "KRMQ255111",
+      "KRMQ255112",
+      "KRMQ255113",
+      "KRMQ255114",
+      "KRMQ255115",
+      "KRMQ255116",
+      "KRMQ255177",
+      "KRMQ255117",
+      "KRMQ255118",
+      "KRMQ255119",
+      "KRMQ255167",
+      "KRMQ255120",
+      "KRMQ255121",
+      "KRMQ255122",
+      "KRMQ255125",
+      "KRMQ255123",
+      "KRMQ255124",
+      "KRMQ255128",
+      "KRMQ255127",
+      "KRMQ255129",
+      "KRMQ255138",
+      "KRMQ255130",
+      "KRMQ255131",
+      "KRMQ255132",
+      "KRMQ255021",
+      "KRMQ255133",
+      "KRMQ255126",
+      "KRMQ255160"
+    ],
+    "인포테인먼트": [
+      "KRMQ255141",
+      "KRMQ255142",
+      "KRMQ255143",
+      "KRMQ255144",
+      "KRMQ255145",
+      "KRMQ255146"
+    ],
+    "선택사양": [
+      "KRMQ255159",
+      "KRMQ255P21",
+      "KRMQ255P01",
+      "KRMQ255P02",
+      "KRMQ255P03",
+      "KRMQ255P04",
+      "KRMQ255P10",
+      "KRMQ255P11",
+      "KRMQ255P12",
+      "KRMQ255063",
+      "KRMQ255P18",
+      "KRMQ255P19",
+      "KRMQ255157",
+      "KRMQ255165",
+      "KRMQ255P05",
+      "KRMQ255P14",
+      "KRMQ255P15",
+      "KRMQ255P20",
+      "KRMQ255P08",
+      "KRMQ255P22",
+      "KRMQ255P09",
+      "KRMQ255P23",
+      "KRMQ255P06",
+      "KRMQ255P07",
+      "KRMQ255P16",
+      "KRMQ255P24",
+      "KRMQ255P25"
+    ]
+  },
+  "options": {
+    "KRMQ255001": {
+      "name": "스마트스트림 G2.5 T-GDI 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255002": {
+      "name": "스마트스트림 습식 8DCT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255003": {
+      "name": "랙 구동형 전동식 파워스티어링(R-MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255004": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255005": {
+      "name": "고급형 ISG",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255012": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255013": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255014": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255015": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255017": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255018": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255174": {
+      "name": "차로 유지 보조 2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255019": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255175": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255168": {
+      "name": "스티어링 휠 진동 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRMQ255031": {
+      "name": "10 에어백(운전석/동승석 어드밴스드, 운전석 무릎, 1열 센터 사이드, 전복감지 커튼, 1열/2열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255032": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255033": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255034": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255035": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255036": {
+      "name": "경사로 저속주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255037": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255038": {
+      "name": "1열/2열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255039": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255040": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255171": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255044": {
+      "name": "235/60 R18 컨티넨탈 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255045": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255046": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255047": {
+      "name": "LED 포그램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255048": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255049": {
+      "name": "LED 리피터 일체형 아웃사이드미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255050": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255051": {
+      "name": "윈드쉴드/1열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255064": {
+      "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255065": {
+      "name": "가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255066": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255067": {
+      "name": "우드 그레인 내장재",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255068": {
+      "name": "다기능 접이식 러기지 양면 매트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255069": {
+      "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255169": {
+      "name": "슬라이딩 선바이저(거울, LED 조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255080": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255081": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255082": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255083": {
+      "name": "1열 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255084": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255085": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255086": {
+      "name": "2열 슬라이딩 6:4 폴딩시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255087": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255088": {
+      "name": "2열 원터치 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255102": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255103": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255104": {
+      "name": "전자식 변속 다이얼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255105": {
+      "name": "패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255106": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255107": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255108": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255109": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255110": {
+      "name": "인포테인먼트/공조 전환 조작계",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255111": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255112": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255113": {
+      "name": "1열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255114": {
+      "name": "C타입 USB 단자(충전용, 1열 프론트 콘솔 1개/1열 시트백 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255115": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255116": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255177": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255117": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255118": {
+      "name": "하이패스 자동결제 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255119": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255167": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255120": {
+      "name": "2열 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255121": {
+      "name": "운전석 자동쾌적 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255122": {
+      "name": "외부공기 유입방지 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255125": {
+      "name": "스마트 파워테일게이트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255141": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트/e hi-pass)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMQ255142": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMQ255143": {
+      "name": "6스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMQ255144": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMQ255145": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMQ255146": {
+      "name": "C타입 USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRMQ255159": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMQ255P21": {
+      "name": "2.2 디젤",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P01": {
+      "name": "전자식 4WD",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P02": {
+      "name": "6인승",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P03": {
+      "name": "7인승",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P04": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P10": {
+      "name": "12.3인치 클러스터",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P11": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P12": {
+      "name": "HUD + 빌트인 캠2",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255063": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMQ255P18": {
+      "name": "서스펜션 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P19": {
+      "name": "트레일러 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255157": {
+      "name": "빌트인 공기청정기",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMQ255165": {
+      "name": "사이드 스텝",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRMQ255041": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255020": {
+      "name": "측방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255062": {
+      "name": "터치타입 아웃사이드 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255053": {
+      "name": "새틴 크롬 프론트/리어 스키드 플레이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255052": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255070": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255071": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255072": {
+      "name": "프리미엄 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255073": {
+      "name": "인서트 필름 내장재",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255074": {
+      "name": "도어 센터트림 나파엠보 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255089": {
+      "name": "가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRMQ255123": {
+      "name": "2열 측면 수동 선커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255124": {
+      "name": "2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255128": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255127": {
+      "name": "리모트 360도 뷰(내 차 주변 영상)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255129": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255138": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255130": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255131": {
+      "name": "운전석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255132": {
+      "name": "후진연동 자동하향 아웃사이드미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255021": {
+      "name": "원격 스마트 주차 보조",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255P05": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P14": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P15": {
+      "name": "KRELL 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P20": {
+      "name": "러기지 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255042": {
+      "name": "후진 가이드 램프",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRMQ255054": {
+      "name": "255/45 R20 컨티넨탈 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255055": {
+      "name": "프로젝션 LED 헤드램프(시퀀셜 턴시그널)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255158": {
+      "name": "프론트/리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255056": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255057": {
+      "name": "2열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255075": {
+      "name": "니트 내장재 A/B 필라 트림",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255076": {
+      "name": "앰비언트 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255077": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255078": {
+      "name": "메탈 도어스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255133": {
+      "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255126": {
+      "name": "220V 인버터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255P08": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P22": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255172": {
+      "name": "X-Line 전용 외장 디자인",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255090": {
+      "name": "X-Line 전용 가죽시트(퀼팅 나파가죽 미적용)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255079": {
+      "name": "스웨이드 내장재",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRMQ255P09": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P23": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255009": {
+      "name": "스마트스트림 터보 하이브리드",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255010": {
+      "name": "스마트스트림 6AT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255011": {
+      "name": "47.7kW 구동 모터",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRMQ255060": {
+      "name": "235/65 R17 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255160": {
+      "name": "PTC 보조 히터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRMQ255P06": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P07": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P16": {
+      "name": "KRELL 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255061": {
+      "name": "235/60 R18 컨티넨탈 타이어&amp;블랙알로이 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRMQ255P24": {
+      "name": "19인치 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255P25": {
+      "name": "19인치 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRMQ255007": {
+      "name": "터레인 모드(오토/스노우/머드/샌드)",
+      "category": "파워트레인",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": {
+        "base": 42900000,
+        "tax_3_5_after": 42250000
+      },
+      "basic": [
+        "KRMQ255009",
+        "KRMQ255010",
+        "KRMQ255011",
+        "KRMQ255003",
+        "KRMQ255004",
+        "KRMQ255007",
+        "KRMQ255012",
+        "KRMQ255013",
+        "KRMQ255014",
+        "KRMQ255015",
+        "KRMQ255017",
+        "KRMQ255018",
+        "KRMQ255174",
+        "KRMQ255019",
+        "KRMQ255175",
+        "KRMQ255168",
+        "KRMQ255031",
+        "KRMQ255032",
+        "KRMQ255033",
+        "KRMQ255034",
+        "KRMQ255035",
+        "KRMQ255036",
+        "KRMQ255037",
+        "KRMQ255038",
+        "KRMQ255039",
+        "KRMQ255040",
+        "KRMQ255171",
+        "KRMQ255060",
+        "KRMQ255045",
+        "KRMQ255046",
+        "KRMQ255047",
+        "KRMQ255048",
+        "KRMQ255049",
+        "KRMQ255050",
+        "KRMQ255051",
+        "KRMQ255064",
+        "KRMQ255065",
+        "KRMQ255066",
+        "KRMQ255067",
+        "KRMQ255068",
+        "KRMQ255069",
+        "KRMQ255169",
+        "KRMQ255080",
+        "KRMQ255081",
+        "KRMQ255082",
+        "KRMQ255083",
+        "KRMQ255084",
+        "KRMQ255085",
+        "KRMQ255086",
+        "KRMQ255087",
+        "KRMQ255088",
+        "KRMQ255102",
+        "KRMQ255103",
+        "KRMQ255104",
+        "KRMQ255105",
+        "KRMQ255106",
+        "KRMQ255107",
+        "KRMQ255108",
+        "KRMQ255109",
+        "KRMQ255110",
+        "KRMQ255111",
+        "KRMQ255112",
+        "KRMQ255113",
+        "KRMQ255114",
+        "KRMQ255115",
+        "KRMQ255116",
+        "KRMQ255177",
+        "KRMQ255117",
+        "KRMQ255118",
+        "KRMQ255119",
+        "KRMQ255120",
+        "KRMQ255121",
+        "KRMQ255122",
+        "KRMQ255160",
+        "KRMQ255167",
+        "KRMQ255125",
+        "KRMQ255141",
+        "KRMQ255142",
+        "KRMQ255143",
+        "KRMQ255144",
+        "KRMQ255145",
+        "KRMQ255146"
+      ],
+      "select": [
+        "KRMQ255159",
+        "KRMQ255P02",
+        "KRMQ255P03",
+        "KRMQ255P06",
+        "KRMQ255P10",
+        "KRMQ255P11",
+        "KRMQ255P12",
+        "KRMQ255063",
+        "KRMQ255P19",
+        "KRMQ255157",
+        "KRMQ255165"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMQ255159"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRMQ255P02"
+          ],
+          "price": 840000
+        },
+        {
+          "codes": [
+            "KRMQ255P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRMQ255P06"
+          ],
+          "price": 1140000
+        },
+        {
+          "codes": [
+            "KRMQ255P10"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRMQ255P11"
+          ],
+          "price": 1290000
+        },
+        {
+          "codes": [
+            "KRMQ255P12"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMQ255063"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMQ255P19"
+          ],
+          "price": 1150000
+        },
+        {
+          "codes": [
+            "KRMQ255157"
+          ],
+          "price": 430000
+        },
+        {
+          "codes": [
+            "KRMQ255165"
+          ],
+          "price": 390000
+        }
+      ]
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": {
+        "base": 46160000,
+        "tax_3_5_after": 45460000
+      },
+      "basic": [
+        "KRMQ255041",
+        "KRMQ255020",
+        "KRMQ255062",
+        "KRMQ255053",
+        "KRMQ255052",
+        "KRMQ255070",
+        "KRMQ255071",
+        "KRMQ255072",
+        "KRMQ255073",
+        "KRMQ255074",
+        "KRMQ255089",
+        "KRMQ255123",
+        "KRMQ255124",
+        "KRMQ255128",
+        "KRMQ255127",
+        "KRMQ255129",
+        "KRMQ255138",
+        "KRMQ255130",
+        "KRMQ255131",
+        "KRMQ255132",
+        "KRMQ255021",
+        "KRMQ255009",
+        "KRMQ255010",
+        "KRMQ255011",
+        "KRMQ255003",
+        "KRMQ255004",
+        "KRMQ255007",
+        "KRMQ255012",
+        "KRMQ255013",
+        "KRMQ255014",
+        "KRMQ255015",
+        "KRMQ255017",
+        "KRMQ255018",
+        "KRMQ255174",
+        "KRMQ255019",
+        "KRMQ255175",
+        "KRMQ255168",
+        "KRMQ255031",
+        "KRMQ255032",
+        "KRMQ255033",
+        "KRMQ255034",
+        "KRMQ255035",
+        "KRMQ255036",
+        "KRMQ255037",
+        "KRMQ255038",
+        "KRMQ255039",
+        "KRMQ255040",
+        "KRMQ255171",
+        "KRMQ255060",
+        "KRMQ255045",
+        "KRMQ255046",
+        "KRMQ255047",
+        "KRMQ255048",
+        "KRMQ255049",
+        "KRMQ255050",
+        "KRMQ255051",
+        "KRMQ255066",
+        "KRMQ255068",
+        "KRMQ255069",
+        "KRMQ255169",
+        "KRMQ255081",
+        "KRMQ255082",
+        "KRMQ255083",
+        "KRMQ255084",
+        "KRMQ255085",
+        "KRMQ255086",
+        "KRMQ255087",
+        "KRMQ255088",
+        "KRMQ255102",
+        "KRMQ255103",
+        "KRMQ255104",
+        "KRMQ255105",
+        "KRMQ255106",
+        "KRMQ255107",
+        "KRMQ255108",
+        "KRMQ255109",
+        "KRMQ255110",
+        "KRMQ255111",
+        "KRMQ255112",
+        "KRMQ255113",
+        "KRMQ255114",
+        "KRMQ255115",
+        "KRMQ255116",
+        "KRMQ255177",
+        "KRMQ255117",
+        "KRMQ255118",
+        "KRMQ255119",
+        "KRMQ255120",
+        "KRMQ255121",
+        "KRMQ255122",
+        "KRMQ255160",
+        "KRMQ255167",
+        "KRMQ255125",
+        "KRMQ255141",
+        "KRMQ255142",
+        "KRMQ255143",
+        "KRMQ255144",
+        "KRMQ255145",
+        "KRMQ255146"
+      ],
+      "select": [
+        "KRMQ255159",
+        "KRMQ255P02",
+        "KRMQ255P03",
+        "KRMQ255P07",
+        "KRMQ255P11",
+        "KRMQ255P12",
+        "KRMQ255P14",
+        "KRMQ255P16",
+        "KRMQ255063",
+        "KRMQ255P19",
+        "KRMQ255157",
+        "KRMQ255165",
+        "KRMQ255P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMQ255159"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRMQ255P02"
+          ],
+          "price": 840000
+        },
+        {
+          "codes": [
+            "KRMQ255P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRMQ255P07"
+          ],
+          "price": 1040000
+        },
+        {
+          "codes": [
+            "KRMQ255P11"
+          ],
+          "price": 1290000
+        },
+        {
+          "codes": [
+            "KRMQ255P12"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMQ255P14"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "KRMQ255P16"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRMQ255063"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMQ255P19"
+          ],
+          "price": 1150000
+        },
+        {
+          "codes": [
+            "KRMQ255157"
+          ],
+          "price": 430000
+        },
+        {
+          "codes": [
+            "KRMQ255165"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "KRMQ255P20"
+          ],
+          "price": 440000
+        }
+      ]
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": {
+        "base": 48690000,
+        "tax_3_5_after": 47950000
+      },
+      "basic": [
+        "KRMQ255042",
+        "KRMQ255061",
+        "KRMQ255055",
+        "KRMQ255158",
+        "KRMQ255056",
+        "KRMQ255057",
+        "KRMQ255075",
+        "KRMQ255076",
+        "KRMQ255077",
+        "KRMQ255078",
+        "KRMQ255133",
+        "KRMQ255126",
+        "KRMQ255009",
+        "KRMQ255010",
+        "KRMQ255011",
+        "KRMQ255003",
+        "KRMQ255004",
+        "KRMQ255007",
+        "KRMQ255012",
+        "KRMQ255013",
+        "KRMQ255014",
+        "KRMQ255015",
+        "KRMQ255017",
+        "KRMQ255018",
+        "KRMQ255174",
+        "KRMQ255019",
+        "KRMQ255175",
+        "KRMQ255168",
+        "KRMQ255031",
+        "KRMQ255032",
+        "KRMQ255033",
+        "KRMQ255034",
+        "KRMQ255035",
+        "KRMQ255036",
+        "KRMQ255037",
+        "KRMQ255038",
+        "KRMQ255039",
+        "KRMQ255040",
+        "KRMQ255171",
+        "KRMQ255041",
+        "KRMQ255020",
+        "KRMQ255046",
+        "KRMQ255047",
+        "KRMQ255048",
+        "KRMQ255049",
+        "KRMQ255050",
+        "KRMQ255051",
+        "KRMQ255062",
+        "KRMQ255053",
+        "KRMQ255052",
+        "KRMQ255066",
+        "KRMQ255068",
+        "KRMQ255069",
+        "KRMQ255169",
+        "KRMQ255070",
+        "KRMQ255071",
+        "KRMQ255072",
+        "KRMQ255073",
+        "KRMQ255074",
+        "KRMQ255081",
+        "KRMQ255082",
+        "KRMQ255083",
+        "KRMQ255084",
+        "KRMQ255085",
+        "KRMQ255086",
+        "KRMQ255087",
+        "KRMQ255088",
+        "KRMQ255089",
+        "KRMQ255102",
+        "KRMQ255103",
+        "KRMQ255104",
+        "KRMQ255105",
+        "KRMQ255106",
+        "KRMQ255107",
+        "KRMQ255109",
+        "KRMQ255110",
+        "KRMQ255111",
+        "KRMQ255112",
+        "KRMQ255113",
+        "KRMQ255114",
+        "KRMQ255115",
+        "KRMQ255116",
+        "KRMQ255177",
+        "KRMQ255117",
+        "KRMQ255118",
+        "KRMQ255119",
+        "KRMQ255120",
+        "KRMQ255121",
+        "KRMQ255122",
+        "KRMQ255160",
+        "KRMQ255167",
+        "KRMQ255125",
+        "KRMQ255123",
+        "KRMQ255124",
+        "KRMQ255128",
+        "KRMQ255127",
+        "KRMQ255129",
+        "KRMQ255138",
+        "KRMQ255130",
+        "KRMQ255131",
+        "KRMQ255132",
+        "KRMQ255021",
+        "KRMQ255141",
+        "KRMQ255142",
+        "KRMQ255143",
+        "KRMQ255144",
+        "KRMQ255145",
+        "KRMQ255146"
+      ],
+      "select": [
+        "KRMQ255159",
+        "KRMQ255P02",
+        "KRMQ255P03",
+        "KRMQ255P08",
+        "KRMQ255P11",
+        "KRMQ255P12",
+        "KRMQ255P22",
+        "KRMQ255P16",
+        "KRMQ255063",
+        "KRMQ255P24",
+        "KRMQ255P19",
+        "KRMQ255157",
+        "KRMQ255165",
+        "KRMQ255P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMQ255159"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRMQ255P02"
+          ],
+          "price": 840000
+        },
+        {
+          "codes": [
+            "KRMQ255P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRMQ255P08"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMQ255P11"
+          ],
+          "price": 1290000
+        },
+        {
+          "codes": [
+            "KRMQ255P12"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMQ255P22"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "KRMQ255P16"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRMQ255063"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMQ255P24"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRMQ255P19"
+          ],
+          "price": 1150000
+        },
+        {
+          "codes": [
+            "KRMQ255157"
+          ],
+          "price": 430000
+        },
+        {
+          "codes": [
+            "KRMQ255165"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "KRMQ255P20"
+          ],
+          "price": 440000
+        }
+      ]
+    },
+    "X-Line": {
+      "slug": "X-Line",
+      "price": {
+        "base": 49630000,
+        "tax_3_5_after": 48880000
+      },
+      "basic": [
+        "KRMQ255172",
+        "KRMQ255090",
+        "KRMQ255079",
+        "KRMQ255009",
+        "KRMQ255010",
+        "KRMQ255011",
+        "KRMQ255003",
+        "KRMQ255004",
+        "KRMQ255007",
+        "KRMQ255012",
+        "KRMQ255013",
+        "KRMQ255014",
+        "KRMQ255015",
+        "KRMQ255017",
+        "KRMQ255018",
+        "KRMQ255174",
+        "KRMQ255019",
+        "KRMQ255175",
+        "KRMQ255168",
+        "KRMQ255031",
+        "KRMQ255032",
+        "KRMQ255033",
+        "KRMQ255034",
+        "KRMQ255035",
+        "KRMQ255036",
+        "KRMQ255037",
+        "KRMQ255038",
+        "KRMQ255039",
+        "KRMQ255040",
+        "KRMQ255171",
+        "KRMQ255041",
+        "KRMQ255020",
+        "KRMQ255042",
+        "KRMQ255046",
+        "KRMQ255047",
+        "KRMQ255048",
+        "KRMQ255049",
+        "KRMQ255050",
+        "KRMQ255051",
+        "KRMQ255062",
+        "KRMQ255055",
+        "KRMQ255158",
+        "KRMQ255056",
+        "KRMQ255057",
+        "KRMQ255066",
+        "KRMQ255068",
+        "KRMQ255069",
+        "KRMQ255169",
+        "KRMQ255070",
+        "KRMQ255071",
+        "KRMQ255072",
+        "KRMQ255073",
+        "KRMQ255074",
+        "KRMQ255076",
+        "KRMQ255077",
+        "KRMQ255078",
+        "KRMQ255081",
+        "KRMQ255082",
+        "KRMQ255083",
+        "KRMQ255084",
+        "KRMQ255085",
+        "KRMQ255086",
+        "KRMQ255087",
+        "KRMQ255088",
+        "KRMQ255102",
+        "KRMQ255103",
+        "KRMQ255104",
+        "KRMQ255105",
+        "KRMQ255106",
+        "KRMQ255107",
+        "KRMQ255109",
+        "KRMQ255110",
+        "KRMQ255111",
+        "KRMQ255112",
+        "KRMQ255113",
+        "KRMQ255114",
+        "KRMQ255115",
+        "KRMQ255116",
+        "KRMQ255177",
+        "KRMQ255117",
+        "KRMQ255118",
+        "KRMQ255119",
+        "KRMQ255120",
+        "KRMQ255121",
+        "KRMQ255122",
+        "KRMQ255160",
+        "KRMQ255167",
+        "KRMQ255125",
+        "KRMQ255123",
+        "KRMQ255124",
+        "KRMQ255128",
+        "KRMQ255127",
+        "KRMQ255129",
+        "KRMQ255138",
+        "KRMQ255130",
+        "KRMQ255131",
+        "KRMQ255132",
+        "KRMQ255021",
+        "KRMQ255133",
+        "KRMQ255126",
+        "KRMQ255141",
+        "KRMQ255142",
+        "KRMQ255143",
+        "KRMQ255144",
+        "KRMQ255145",
+        "KRMQ255146"
+      ],
+      "select": [
+        "KRMQ255159",
+        "KRMQ255P02",
+        "KRMQ255P03",
+        "KRMQ255P09",
+        "KRMQ255P11",
+        "KRMQ255P12",
+        "KRMQ255P23",
+        "KRMQ255P16",
+        "KRMQ255063",
+        "KRMQ255P25",
+        "KRMQ255P19",
+        "KRMQ255157",
+        "KRMQ255165",
+        "KRMQ255P20"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRMQ255159"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRMQ255P02"
+          ],
+          "price": 840000
+        },
+        {
+          "codes": [
+            "KRMQ255P03"
+          ],
+          "price": 690000
+        },
+        {
+          "codes": [
+            "KRMQ255P09"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRMQ255P11"
+          ],
+          "price": 1290000
+        },
+        {
+          "codes": [
+            "KRMQ255P12"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "KRMQ255P23"
+          ],
+          "price": 700000
+        },
+        {
+          "codes": [
+            "KRMQ255P16"
+          ],
+          "price": 640000
+        },
+        {
+          "codes": [
+            "KRMQ255063"
+          ],
+          "price": 1090000
+        },
+        {
+          "codes": [
+            "KRMQ255P25"
+          ],
+          "price": 300000
+        },
+        {
+          "codes": [
+            "KRMQ255P19"
+          ],
+          "price": 1150000
+        },
+        {
+          "codes": [
+            "KRMQ255157"
+          ],
+          "price": 430000
+        },
+        {
+          "codes": [
+            "KRMQ255165"
+          ],
+          "price": 390000
+        },
+        {
+          "codes": [
+            "KRMQ255P20"
+          ],
+          "price": 440000
+        }
+      ]
+    }
+  }
+}

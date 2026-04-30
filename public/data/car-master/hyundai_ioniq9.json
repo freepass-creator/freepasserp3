@@ -1,0 +1,2092 @@
+{
+  "catalog_id": "hyundai_ioniq9",
+  "title": "현대 아이오닉9",
+  "maker": "현대",
+  "source": "hyundai_official",
+  "source_urls": [
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/ioniq9-2027_6_price.content",
+    "https://www.hyundai.com/contents/repn-car/html/homepage/price/ioniq9-2027_7_price.content"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "E-GMP 플랫폼/성능": [
+      "ME02012",
+      "ME02003",
+      "ME02016",
+      "ME02006",
+      "ME02015",
+      "ME02011",
+      "ME02017",
+      "ME02007",
+      "ME02009",
+      "ME02013",
+      "ME02010",
+      "ME02008"
+    ],
+    "안전": [
+      "ME02035",
+      "ME02042",
+      "ME02038",
+      "ME02041",
+      "ME02036",
+      "ME02037",
+      "ME02039",
+      "ME02040"
+    ],
+    "지능형 안전 기술": [
+      "ME02029",
+      "ME02026",
+      "ME02024",
+      "ME02030",
+      "ME02028",
+      "ME02033",
+      "ME02034",
+      "ME02031",
+      "ME02020",
+      "ME02019",
+      "ME02022",
+      "ME02032",
+      "ME02021",
+      "ME02027",
+      "ME02023"
+    ],
+    "외관": [
+      "ME02048",
+      "ME02046",
+      "ME02047",
+      "ME02050",
+      "ME02065",
+      "ME02066",
+      "ME02055",
+      "ME02043",
+      "ME02057",
+      "ME02059",
+      "ME02058",
+      "ME02063",
+      "ME02051",
+      "ME02056",
+      "ME02061",
+      "ME02060",
+      "ME02049"
+    ],
+    "내장": [
+      "ME02077",
+      "ME02070",
+      "ME02069",
+      "ME02081",
+      "ME02084",
+      "ME02068",
+      "ME02086",
+      "ME02090",
+      "ME02080",
+      "ME02082",
+      "ME02067",
+      "ME02076",
+      "ME02075",
+      "ME02071",
+      "ME02088",
+      "ME02083",
+      "ME02085",
+      "ME02079"
+    ],
+    "시트": [
+      "ME02113",
+      "ME02110",
+      "ME02092",
+      "ME02096",
+      "ME02099",
+      "ME02102",
+      "ME02098",
+      "ME02091",
+      "ME02108",
+      "ME02104",
+      "ME02101",
+      "ME02177",
+      "ME02112",
+      "ME02106",
+      "ME02094",
+      "ME02100",
+      "ME02111"
+    ],
+    "편의": [
+      "ME02121",
+      "ME02126",
+      "ME02135",
+      "ME02146",
+      "ME02117",
+      "ME02139",
+      "ME02115",
+      "ME02144",
+      "ME02124",
+      "ME02147",
+      "ME02120",
+      "ME02136",
+      "ME02127",
+      "ME02133",
+      "ME02131",
+      "ME02138",
+      "ME02142",
+      "ME02119",
+      "ME02145",
+      "ME02123",
+      "ME02149",
+      "ME02128",
+      "ME02116",
+      "ME02134",
+      "ME02130",
+      "ME02118",
+      "ME02129"
+    ],
+    "인포테인먼트": [
+      "ME02150",
+      "ME02154",
+      "ME02157",
+      "ME02152",
+      "ME02153",
+      "ME02155"
+    ],
+    "선택사양": [
+      "ME02P01",
+      "ME02P02",
+      "ME02064",
+      "ME02P16",
+      "ME02P03",
+      "ME02P04",
+      "ME02P06",
+      "ME02P11",
+      "ME02162",
+      "ME02P14",
+      "ME02P15",
+      "ME02P07",
+      "ME02P08",
+      "ME02P09",
+      "ME02143",
+      "ME02P12",
+      "ME02163",
+      "ME02164",
+      "ME02P17",
+      "ME02044",
+      "ME02095",
+      "ME02P10",
+      "ME02167",
+      "ME02P13",
+      "ME02P05"
+    ]
+  },
+  "options": {
+    "ME02012": {
+      "name": "차세대 일체형 PE 시스템(160kW 후륜 모터, 감속기, 인버터)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02003": {
+      "name": "400V/800V 멀티 충전 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02016": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02006": {
+      "name": "랙구동형 전동식 파워 스티어링(R-MDPS)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02015": {
+      "name": "회생제동 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02011": {
+      "name": "전자식 변속 칼럼(진동 경고)",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02017": {
+      "name": "히트펌프 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02007": {
+      "name": "배터리 컨디셔닝 시스템",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02009": {
+      "name": "실내 V2L",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02013": {
+      "name": "통합 주행 모드",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02035": {
+      "name": "10 에어백 시스템(1열 어드밴스드/센터사이드, 1/2열 사이드, 운전석 무릎, 전복대응 커튼)",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02042": {
+      "name": "유아용 시트 고정장치(2열 2개, 3열 2개)",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02038": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02041": {
+      "name": "액티브 후드 시스템(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02036": {
+      "name": "가상 엔진 사운드(보행자 보호)",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02037": {
+      "name": "경사로 저속 주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02039": {
+      "name": "시트벨트 프리텐셔너(1/2/3열)",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02040": {
+      "name": "실내 소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "ME02029": {
+      "name": "차로 이탈방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02026": {
+      "name": "지능형 속도 제한 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02024": {
+      "name": "운전자 주의 경고",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02030": {
+      "name": "하이빔 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02028": {
+      "name": "차로 유지 보조 2",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02033": {
+      "name": "후측방 충돌 경고(주행)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02034": {
+      "name": "후측방 충돌방지 보조(전진 출차)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02031": {
+      "name": "후방 교차 충돌방지 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02020": {
+      "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02019": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로,진출입로)",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02022": {
+      "name": "안전 하차 보조",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02032": {
+      "name": "후석 승객 알림",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02021": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02027": {
+      "name": "진동 경고 스티어링 휠",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02023": {
+      "name": "운전자 모니터링 시스템",
+      "category": "지능형 안전 기술",
+      "is_package": false
+    },
+    "ME02048": {
+      "name": "LED 서브 로우 램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02046": {
+      "name": "LED 리어콤비램프",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02047": {
+      "name": "LED 보조제동등",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02050": {
+      "name": "루프랙",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02065": {
+      "name": "히든 리어 와이퍼",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02066": {
+      "name": "히든 안테나",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02055": {
+      "name": "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02043": {
+      "name": "19인치 알로이휠 & 타이어",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02057": {
+      "name": "오토 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02059": {
+      "name": "자외선 차단 유리(윈드실드)",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02058": {
+      "name": "이중접합 차음유리(윈드실드, 1/2열 도어)",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02063": {
+      "name": "크롬 윈도우라인 로워 몰딩",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02077": {
+      "name": "베젤리스 인사이드 미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02070": {
+      "name": "가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트 포함)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02069": {
+      "name": "LED 실내등(맵램프, 룸램프, 선바이저램프, 러기지램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02081": {
+      "name": "유니버설 아일랜드 2.0",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02084": {
+      "name": "인조가죽 감싸기(콘솔 암레스트, 시트백 커버)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02068": {
+      "name": "BIO PET 원사 헤드라이닝",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02113": {
+      "name": "인조가죽 시트(디지털 디자인 펀칭, 메탈패치 적용)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02110": {
+      "name": "운전석 자세 메모리 시스템(운전석 시트, 아웃사이드 미러 연동)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02092": {
+      "name": "1열 열선/통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02096": {
+      "name": "2열 리모트 폴딩",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02099": {
+      "name": "2열 원터치 워크인",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02102": {
+      "name": "3열 5:5 분할 폴딩 시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02121": {
+      "name": "버튼시동 & 스마트키",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02126": {
+      "name": "스마트키 원격시동",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02135": {
+      "name": "전동식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02146": {
+      "name": "회생제동 컨트롤 패들쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02117": {
+      "name": "3존 독립제어 풀오토 에어컨(항균 처리 고성능 콤비 필터/ 오토 디포그/미세먼지센서/공기청정모드/애프터블로우)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02139": {
+      "name": "전후석 통합 터치식 공조 컨트롤러",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02115": {
+      "name": "100W USB C타입 단자(1열 충전 2개, 2열 충전 2개, 3열 충전 2개, 충전 케이블 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02144": {
+      "name": "파워 아웃렛(1열 1개, 러기지 1개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02124": {
+      "name": "세이프티 파워 윈도우(1/2열)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02147": {
+      "name": "후방 모니터(카메라 클리닝 시스템 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02120": {
+      "name": "루프 에어 벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02136": {
+      "name": "전방/후방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02127": {
+      "name": "스마트폰 무선충전",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02133": {
+      "name": "전동식 충전도어(조명포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02131": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02138": {
+      "name": "전자식 후드 래치",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02150": {
+      "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트/e hi-pass, 아케이드 게임(6종))",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "ME02154": {
+      "name": "일반 사운드 시스템(8스피커, 블루투스 핸즈프리)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "ME02157": {
+      "name": "후석 취침/대화모드",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "ME02152": {
+      "name": "무선 소프트웨어 업데이트(OTA Software Update)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "ME02P01": {
+      "name": "HTRACⅠ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P02": {
+      "name": "HTRACⅡ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02064": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02P16": {
+      "name": "빌트인 캠 2(카메라 클리닝 시스템 포함), 증강현실 내비게이션",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P03": {
+      "name": "파킹 어시스트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P04": {
+      "name": "BOSE 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P06": {
+      "name": "6인승 컨비니언스 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P11": {
+      "name": "1열 릴렉션 컴포트 + 2열 프리미엄 릴렉션 시트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02162": {
+      "name": "사이드 스텝",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02P14": {
+      "name": "러기지 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P15": {
+      "name": "프로텍션 매트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02010": {
+      "name": "실외 V2L 커넥터",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02051": {
+      "name": "바디컬러 휠 아치 피스",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02056": {
+      "name": "앰비언트 라이팅 오토 플러시 도어 핸들",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02086": {
+      "name": "주행모드 연동 앰비언트 무드램프(크래쉬패드, 도어트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02090": {
+      "name": "파라볼릭 모션 글로브박스",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02080": {
+      "name": "우드 인테리어(크래쉬패드 센터 가니쉬)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02082": {
+      "name": "인조가죽 감싸기(3D 엠보 도어센터트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02067": {
+      "name": "1/2열 도어 스피커 메탈 그릴",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02076": {
+      "name": "반투명 맵포켓",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02098": {
+      "name": "2열 열선/통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02091": {
+      "name": "1열 릴렉션 컴포트 시트(14way, 럼버서포트, 레그레스트, 동승석 워크인 디바이스)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02108": {
+      "name": "운전석 자세 메모리 시스템(스티어링 휠 연동)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02142": {
+      "name": "측방 주차 거리 경고",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02119": {
+      "name": "디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02145": {
+      "name": "헤드업 디스플레이",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02123": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02149": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02128": {
+      "name": "실내 지문 인증 시스템(개인화, 시동, 결제 등)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02116": {
+      "name": "2열 수동식 도어커튼",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02134": {
+      "name": "전동식 틸트 & 텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02130": {
+      "name": "에어컨 광촉매 공기 살균 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02153": {
+      "name": "액티브 로드 노이즈 컨트롤",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "ME02155": {
+      "name": "전기차 액티브 사운드 디자인(e-ASD)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "ME02P07": {
+      "name": "21인치 휠 & 타이어",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P08": {
+      "name": "플래티넘",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02P09": {
+      "name": "컴포트 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02143": {
+      "name": "컴팩트 디지털 사이드 미러",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02P12": {
+      "name": "2열 프리미엄 릴렉션 시트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02163": {
+      "name": "차량 보호 필름 1",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02164": {
+      "name": "차량 보호 필름 2",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02P17": {
+      "name": "Essential Acc. 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02008": {
+      "name": "셀프레벨라이저",
+      "category": "E-GMP 플랫폼/성능",
+      "is_package": false
+    },
+    "ME02061": {
+      "name": "캘리그래피 전용 디자인(21인치 알로이 휠 & 미쉐린 타이어, 스키드 플레이트, 액티브 에어 플랩, 바디컬러 바디 사이드 클래딩, 도어 사이드 가니쉬, 리어범퍼 로워, 리어범퍼 가니쉬)",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02060": {
+      "name": "지능형 헤드램프(IFS)",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02049": {
+      "name": "다이내믹 웰컴/에스코트 라이트 1종",
+      "category": "외관",
+      "is_package": false
+    },
+    "ME02075": {
+      "name": "바이오 스웨이드 내장재(헤드라이닝/필라)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02071": {
+      "name": "리얼 알루미늄(크래쉬패드 센터 가니쉬)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02088": {
+      "name": "투톤 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02083": {
+      "name": "인조가죽 감싸기(디지털 디자인 펀칭 도어 센터트림)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02085": {
+      "name": "자외선 살균 시스템(프론트 콘솔)",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02104": {
+      "name": "3열 전동 5:5 분할 폴딩 시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02101": {
+      "name": "2열 프리미엄 릴렉션 시트(원터치 릴렉션, 전동 폴딩/리클라이닝/슬라이딩, 레그레스트, 윙타입 헤드레스트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02177": {
+      "name": "동승석 릴렉션 컴포트 시트(14way, 럼버서포트, 레그레스트, 동승석 워크인 디바이스)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02118": {
+      "name": "디지털 센터 미러(카메라 클리닝 시스템 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02129": {
+      "name": "어드밴스드 후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "ME02044": {
+      "name": "19인치 휠 & 타이어",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02095": {
+      "name": "2열 다이내믹 바디케어 시트",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02P10": {
+      "name": "블랙잉크",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02167": {
+      "name": "후석 스마트 엔터테인먼트 시스템",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "ME02P13": {
+      "name": "트레일러 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02079": {
+      "name": "양방향 멀티 콘솔",
+      "category": "내장",
+      "is_package": false
+    },
+    "ME02112": {
+      "name": "운전석 전동시트(8way, 럼버서포트)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02106": {
+      "name": "동승석 전동시트(8way, 럼버서포트, 워크인 디바이스)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02094": {
+      "name": "2열 6:4 분할 폴딩 시트(슬라이딩, 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02100": {
+      "name": "2열 원터치 틸팅형 워크인",
+      "category": "시트",
+      "is_package": false
+    },
+    "ME02P05": {
+      "name": "7인승 컨비니언스 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "ME02111": {
+      "name": "운전석 자세 메모리 시스템(운전석 시트, 아웃사이드 미러, 스티어링 휠 연동)",
+      "category": "시트",
+      "is_package": false
+    }
+  },
+  "trims": {
+    "익스클루시브 (6인승)": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "base": 71800000
+      },
+      "basic": [
+        "ME02012",
+        "ME02003",
+        "ME02016",
+        "ME02006",
+        "ME02015",
+        "ME02011",
+        "ME02017",
+        "ME02007",
+        "ME02009",
+        "ME02013",
+        "ME02035",
+        "ME02042",
+        "ME02038",
+        "ME02041",
+        "ME02036",
+        "ME02037",
+        "ME02039",
+        "ME02040",
+        "ME02029",
+        "ME02026",
+        "ME02024",
+        "ME02030",
+        "ME02028",
+        "ME02033",
+        "ME02034",
+        "ME02031",
+        "ME02020",
+        "ME02019",
+        "ME02022",
+        "ME02032",
+        "ME02021",
+        "ME02027",
+        "ME02023",
+        "ME02048",
+        "ME02046",
+        "ME02047",
+        "ME02050",
+        "ME02065",
+        "ME02066",
+        "ME02055",
+        "ME02043",
+        "ME02057",
+        "ME02059",
+        "ME02058",
+        "ME02063",
+        "ME02077",
+        "ME02070",
+        "ME02069",
+        "ME02081",
+        "ME02084",
+        "ME02068",
+        "ME02113",
+        "ME02110",
+        "ME02092",
+        "ME02096",
+        "ME02099",
+        "ME02102",
+        "ME02121",
+        "ME02126",
+        "ME02135",
+        "ME02146",
+        "ME02117",
+        "ME02139",
+        "ME02115",
+        "ME02144",
+        "ME02124",
+        "ME02147",
+        "ME02120",
+        "ME02136",
+        "ME02127",
+        "ME02133",
+        "ME02131",
+        "ME02138",
+        "ME02150",
+        "ME02154",
+        "ME02157",
+        "ME02152"
+      ],
+      "select": [
+        "ME02P01",
+        "ME02P02",
+        "ME02064",
+        "ME02P16",
+        "ME02P03",
+        "ME02P04",
+        "ME02P06",
+        "ME02P11",
+        "ME02162",
+        "ME02P14",
+        "ME02P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "ME02P01"
+          ],
+          "price": 2800000
+        },
+        {
+          "codes": [
+            "ME02P02"
+          ],
+          "price": 3700000
+        },
+        {
+          "codes": [
+            "ME02064"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "ME02P03"
+          ],
+          "price": 1350000
+        },
+        {
+          "codes": [
+            "ME02P04"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P06"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "ME02P11"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "ME02162"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "ME02P14"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "ME02P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "프레스티지 (6인승)": {
+      "slug": "prestige",
+      "name_en": null,
+      "price": {
+        "base": 77670000
+      },
+      "basic": [
+        "ME02012",
+        "ME02003",
+        "ME02016",
+        "ME02006",
+        "ME02015",
+        "ME02011",
+        "ME02017",
+        "ME02007",
+        "ME02009",
+        "ME02013",
+        "ME02010",
+        "ME02035",
+        "ME02042",
+        "ME02038",
+        "ME02041",
+        "ME02036",
+        "ME02037",
+        "ME02039",
+        "ME02040",
+        "ME02029",
+        "ME02026",
+        "ME02024",
+        "ME02030",
+        "ME02028",
+        "ME02033",
+        "ME02034",
+        "ME02031",
+        "ME02020",
+        "ME02019",
+        "ME02022",
+        "ME02032",
+        "ME02021",
+        "ME02027",
+        "ME02023",
+        "ME02048",
+        "ME02046",
+        "ME02047",
+        "ME02050",
+        "ME02065",
+        "ME02066",
+        "ME02055",
+        "ME02043",
+        "ME02059",
+        "ME02058",
+        "ME02063",
+        "ME02051",
+        "ME02056",
+        "ME02077",
+        "ME02070",
+        "ME02069",
+        "ME02081",
+        "ME02084",
+        "ME02068",
+        "ME02086",
+        "ME02090",
+        "ME02080",
+        "ME02082",
+        "ME02067",
+        "ME02076",
+        "ME02110",
+        "ME02092",
+        "ME02098",
+        "ME02096",
+        "ME02099",
+        "ME02102",
+        "ME02091",
+        "ME02108",
+        "ME02121",
+        "ME02126",
+        "ME02135",
+        "ME02146",
+        "ME02117",
+        "ME02139",
+        "ME02115",
+        "ME02144",
+        "ME02124",
+        "ME02147",
+        "ME02120",
+        "ME02136",
+        "ME02127",
+        "ME02133",
+        "ME02131",
+        "ME02138",
+        "ME02142",
+        "ME02119",
+        "ME02145",
+        "ME02123",
+        "ME02149",
+        "ME02128",
+        "ME02116",
+        "ME02134",
+        "ME02130",
+        "ME02150",
+        "ME02157",
+        "ME02152",
+        "ME02153",
+        "ME02155"
+      ],
+      "select": [
+        "ME02P01",
+        "ME02P02",
+        "ME02064",
+        "ME02P16",
+        "ME02P07",
+        "ME02P08",
+        "ME02P09",
+        "ME02143",
+        "ME02P12",
+        "ME02162",
+        "ME02P14",
+        "ME02P15",
+        "ME02163",
+        "ME02164",
+        "ME02P17"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "ME02P01"
+          ],
+          "price": 2800000
+        },
+        {
+          "codes": [
+            "ME02P02"
+          ],
+          "price": 3700000
+        },
+        {
+          "codes": [
+            "ME02064"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "ME02P07"
+          ],
+          "price": 1000000
+        },
+        {
+          "codes": [
+            "ME02P08"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "ME02P09"
+          ],
+          "price": 630000
+        },
+        {
+          "codes": [
+            "ME02143"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "ME02P12"
+          ],
+          "price": 1000000
+        },
+        {
+          "codes": [
+            "ME02162"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "ME02P14"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "ME02P15"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "ME02163"
+          ],
+          "price": 410000
+        },
+        {
+          "codes": [
+            "ME02164"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "ME02P17"
+          ],
+          "price": 320000
+        }
+      ]
+    },
+    "캘리그래피 (6인승)": {
+      "slug": "calligraphy",
+      "name_en": null,
+      "price": {
+        "base": 83840000
+      },
+      "basic": [
+        "ME02012",
+        "ME02003",
+        "ME02016",
+        "ME02006",
+        "ME02015",
+        "ME02011",
+        "ME02017",
+        "ME02007",
+        "ME02009",
+        "ME02013",
+        "ME02010",
+        "ME02008",
+        "ME02035",
+        "ME02042",
+        "ME02038",
+        "ME02041",
+        "ME02036",
+        "ME02037",
+        "ME02039",
+        "ME02040",
+        "ME02029",
+        "ME02026",
+        "ME02024",
+        "ME02028",
+        "ME02033",
+        "ME02034",
+        "ME02031",
+        "ME02020",
+        "ME02019",
+        "ME02022",
+        "ME02021",
+        "ME02027",
+        "ME02023",
+        "ME02048",
+        "ME02046",
+        "ME02047",
+        "ME02050",
+        "ME02065",
+        "ME02066",
+        "ME02055",
+        "ME02059",
+        "ME02058",
+        "ME02063",
+        "ME02051",
+        "ME02056",
+        "ME02061",
+        "ME02060",
+        "ME02049",
+        "ME02070",
+        "ME02069",
+        "ME02081",
+        "ME02084",
+        "ME02086",
+        "ME02090",
+        "ME02067",
+        "ME02076",
+        "ME02075",
+        "ME02071",
+        "ME02088",
+        "ME02083",
+        "ME02085",
+        "ME02110",
+        "ME02092",
+        "ME02096",
+        "ME02099",
+        "ME02108",
+        "ME02104",
+        "ME02101",
+        "ME02177",
+        "ME02121",
+        "ME02126",
+        "ME02135",
+        "ME02146",
+        "ME02117",
+        "ME02139",
+        "ME02115",
+        "ME02144",
+        "ME02124",
+        "ME02147",
+        "ME02120",
+        "ME02136",
+        "ME02127",
+        "ME02133",
+        "ME02131",
+        "ME02138",
+        "ME02142",
+        "ME02119",
+        "ME02145",
+        "ME02123",
+        "ME02149",
+        "ME02128",
+        "ME02116",
+        "ME02134",
+        "ME02130",
+        "ME02118",
+        "ME02129",
+        "ME02150",
+        "ME02157",
+        "ME02152",
+        "ME02153",
+        "ME02155"
+      ],
+      "select": [
+        "ME02P01",
+        "ME02P02",
+        "ME02064",
+        "ME02P16",
+        "ME02044",
+        "ME02143",
+        "ME02095",
+        "ME02P10",
+        "ME02167",
+        "ME02P13",
+        "ME02162",
+        "ME02P14",
+        "ME02P15",
+        "ME02163",
+        "ME02164",
+        "ME02P17"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "ME02P01"
+          ],
+          "price": 2800000
+        },
+        {
+          "codes": [
+            "ME02P02"
+          ],
+          "price": 3700000
+        },
+        {
+          "codes": [
+            "ME02064"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "ME02044"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "ME02143"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "ME02095"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "ME02P10"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "ME02167"
+          ],
+          "price": 2770000
+        },
+        {
+          "codes": [
+            "ME02P13"
+          ],
+          "price": 1350000
+        },
+        {
+          "codes": [
+            "ME02162"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "ME02P14"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "ME02P15"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "ME02163"
+          ],
+          "price": 410000
+        },
+        {
+          "codes": [
+            "ME02164"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "ME02P17"
+          ],
+          "price": 320000
+        }
+      ]
+    },
+    "익스클루시브 (7인승)": {
+      "slug": "exclusive",
+      "name_en": null,
+      "price": {
+        "base": 71190000
+      },
+      "basic": [
+        "ME02012",
+        "ME02003",
+        "ME02016",
+        "ME02006",
+        "ME02015",
+        "ME02011",
+        "ME02017",
+        "ME02007",
+        "ME02009",
+        "ME02013",
+        "ME02035",
+        "ME02042",
+        "ME02038",
+        "ME02041",
+        "ME02036",
+        "ME02037",
+        "ME02039",
+        "ME02040",
+        "ME02029",
+        "ME02026",
+        "ME02024",
+        "ME02030",
+        "ME02028",
+        "ME02033",
+        "ME02034",
+        "ME02031",
+        "ME02020",
+        "ME02019",
+        "ME02022",
+        "ME02032",
+        "ME02021",
+        "ME02027",
+        "ME02023",
+        "ME02048",
+        "ME02046",
+        "ME02047",
+        "ME02050",
+        "ME02065",
+        "ME02066",
+        "ME02055",
+        "ME02043",
+        "ME02057",
+        "ME02059",
+        "ME02058",
+        "ME02063",
+        "ME02077",
+        "ME02070",
+        "ME02069",
+        "ME02079",
+        "ME02084",
+        "ME02068",
+        "ME02113",
+        "ME02112",
+        "ME02106",
+        "ME02092",
+        "ME02094",
+        "ME02096",
+        "ME02100",
+        "ME02102",
+        "ME02121",
+        "ME02126",
+        "ME02135",
+        "ME02146",
+        "ME02117",
+        "ME02139",
+        "ME02115",
+        "ME02144",
+        "ME02124",
+        "ME02147",
+        "ME02120",
+        "ME02136",
+        "ME02127",
+        "ME02133",
+        "ME02131",
+        "ME02138",
+        "ME02150",
+        "ME02154",
+        "ME02157",
+        "ME02152"
+      ],
+      "select": [
+        "ME02P01",
+        "ME02P02",
+        "ME02064",
+        "ME02P16",
+        "ME02P03",
+        "ME02P04",
+        "ME02P05",
+        "ME02162",
+        "ME02P14",
+        "ME02P15"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "ME02P01"
+          ],
+          "price": 2800000
+        },
+        {
+          "codes": [
+            "ME02P02"
+          ],
+          "price": 3700000
+        },
+        {
+          "codes": [
+            "ME02064"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "ME02P03"
+          ],
+          "price": 1350000
+        },
+        {
+          "codes": [
+            "ME02P04"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P05"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "ME02162"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "ME02P14"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "ME02P15"
+          ],
+          "price": 250000
+        }
+      ]
+    },
+    "프레스티지 (7인승)": {
+      "slug": "prestige",
+      "name_en": null,
+      "price": {
+        "base": 77150000
+      },
+      "basic": [
+        "ME02012",
+        "ME02003",
+        "ME02016",
+        "ME02006",
+        "ME02015",
+        "ME02011",
+        "ME02017",
+        "ME02007",
+        "ME02009",
+        "ME02013",
+        "ME02010",
+        "ME02035",
+        "ME02042",
+        "ME02038",
+        "ME02041",
+        "ME02036",
+        "ME02037",
+        "ME02039",
+        "ME02040",
+        "ME02029",
+        "ME02026",
+        "ME02024",
+        "ME02030",
+        "ME02028",
+        "ME02033",
+        "ME02034",
+        "ME02031",
+        "ME02020",
+        "ME02019",
+        "ME02022",
+        "ME02032",
+        "ME02021",
+        "ME02027",
+        "ME02023",
+        "ME02048",
+        "ME02046",
+        "ME02047",
+        "ME02050",
+        "ME02065",
+        "ME02066",
+        "ME02055",
+        "ME02043",
+        "ME02059",
+        "ME02058",
+        "ME02063",
+        "ME02051",
+        "ME02056",
+        "ME02077",
+        "ME02070",
+        "ME02069",
+        "ME02079",
+        "ME02084",
+        "ME02068",
+        "ME02086",
+        "ME02090",
+        "ME02080",
+        "ME02082",
+        "ME02067",
+        "ME02076",
+        "ME02092",
+        "ME02094",
+        "ME02096",
+        "ME02100",
+        "ME02102",
+        "ME02111",
+        "ME02121",
+        "ME02126",
+        "ME02135",
+        "ME02146",
+        "ME02117",
+        "ME02139",
+        "ME02115",
+        "ME02144",
+        "ME02124",
+        "ME02147",
+        "ME02120",
+        "ME02136",
+        "ME02127",
+        "ME02133",
+        "ME02131",
+        "ME02138",
+        "ME02142",
+        "ME02119",
+        "ME02145",
+        "ME02123",
+        "ME02149",
+        "ME02128",
+        "ME02116",
+        "ME02134",
+        "ME02130",
+        "ME02150",
+        "ME02157",
+        "ME02152",
+        "ME02153",
+        "ME02155"
+      ],
+      "select": [
+        "ME02P01",
+        "ME02P02",
+        "ME02064",
+        "ME02P16",
+        "ME02P07",
+        "ME02P08",
+        "ME02P09",
+        "ME02143",
+        "ME02162",
+        "ME02P14",
+        "ME02P15",
+        "ME02163",
+        "ME02164",
+        "ME02P17"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "ME02P01"
+          ],
+          "price": 2800000
+        },
+        {
+          "codes": [
+            "ME02P02"
+          ],
+          "price": 3700000
+        },
+        {
+          "codes": [
+            "ME02064"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "ME02P07"
+          ],
+          "price": 1000000
+        },
+        {
+          "codes": [
+            "ME02P08"
+          ],
+          "price": 1100000
+        },
+        {
+          "codes": [
+            "ME02P09"
+          ],
+          "price": 630000
+        },
+        {
+          "codes": [
+            "ME02143"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "ME02162"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "ME02P14"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "ME02P15"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "ME02163"
+          ],
+          "price": 410000
+        },
+        {
+          "codes": [
+            "ME02164"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "ME02P17"
+          ],
+          "price": 320000
+        }
+      ]
+    },
+    "캘리그래피 (7인승)": {
+      "slug": "calligraphy",
+      "name_en": null,
+      "price": {
+        "base": 82270000
+      },
+      "basic": [
+        "ME02012",
+        "ME02003",
+        "ME02016",
+        "ME02006",
+        "ME02015",
+        "ME02011",
+        "ME02017",
+        "ME02007",
+        "ME02009",
+        "ME02013",
+        "ME02010",
+        "ME02008",
+        "ME02035",
+        "ME02042",
+        "ME02038",
+        "ME02041",
+        "ME02036",
+        "ME02037",
+        "ME02039",
+        "ME02040",
+        "ME02029",
+        "ME02026",
+        "ME02024",
+        "ME02028",
+        "ME02033",
+        "ME02034",
+        "ME02031",
+        "ME02020",
+        "ME02019",
+        "ME02022",
+        "ME02021",
+        "ME02027",
+        "ME02023",
+        "ME02048",
+        "ME02046",
+        "ME02047",
+        "ME02050",
+        "ME02065",
+        "ME02066",
+        "ME02055",
+        "ME02059",
+        "ME02058",
+        "ME02063",
+        "ME02051",
+        "ME02056",
+        "ME02061",
+        "ME02060",
+        "ME02049",
+        "ME02070",
+        "ME02069",
+        "ME02079",
+        "ME02084",
+        "ME02086",
+        "ME02090",
+        "ME02067",
+        "ME02076",
+        "ME02075",
+        "ME02071",
+        "ME02088",
+        "ME02083",
+        "ME02085",
+        "ME02092",
+        "ME02094",
+        "ME02096",
+        "ME02100",
+        "ME02111",
+        "ME02104",
+        "ME02177",
+        "ME02121",
+        "ME02126",
+        "ME02135",
+        "ME02146",
+        "ME02117",
+        "ME02139",
+        "ME02115",
+        "ME02144",
+        "ME02124",
+        "ME02147",
+        "ME02120",
+        "ME02136",
+        "ME02127",
+        "ME02133",
+        "ME02131",
+        "ME02138",
+        "ME02142",
+        "ME02119",
+        "ME02145",
+        "ME02123",
+        "ME02149",
+        "ME02128",
+        "ME02116",
+        "ME02134",
+        "ME02130",
+        "ME02118",
+        "ME02129",
+        "ME02150",
+        "ME02157",
+        "ME02152",
+        "ME02153",
+        "ME02155"
+      ],
+      "select": [
+        "ME02P01",
+        "ME02P02",
+        "ME02064",
+        "ME02P16",
+        "ME02044",
+        "ME02143",
+        "ME02P10",
+        "ME02P13",
+        "ME02162",
+        "ME02P14",
+        "ME02P15",
+        "ME02163",
+        "ME02164",
+        "ME02P17"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "ME02P01"
+          ],
+          "price": 2800000
+        },
+        {
+          "codes": [
+            "ME02P02"
+          ],
+          "price": 3700000
+        },
+        {
+          "codes": [
+            "ME02064"
+          ],
+          "price": 1190000
+        },
+        {
+          "codes": [
+            "ME02P16"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "ME02044"
+          ],
+          "price": null
+        },
+        {
+          "codes": [
+            "ME02143"
+          ],
+          "price": 1380000
+        },
+        {
+          "codes": [
+            "ME02P10"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "ME02P13"
+          ],
+          "price": 1350000
+        },
+        {
+          "codes": [
+            "ME02162"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "ME02P14"
+          ],
+          "price": 120000
+        },
+        {
+          "codes": [
+            "ME02P15"
+          ],
+          "price": 250000
+        },
+        {
+          "codes": [
+            "ME02163"
+          ],
+          "price": 410000
+        },
+        {
+          "codes": [
+            "ME02164"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "ME02P17"
+          ],
+          "price": 320000
+        }
+      ]
+    }
+  }
+}

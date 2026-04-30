@@ -1,0 +1,1323 @@
+{
+  "catalog_id": "kia_niro_sg2",
+  "title": "기아 디 올 뉴 니로 (SG2)",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/niro/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRSG300001",
+      "KRSG300002",
+      "KRSG300003",
+      "KRSG300004",
+      "KRSG300005",
+      "KRSG300006"
+    ],
+    "첨단 운전자 보조(ADAS)": [
+      "KRSG300007",
+      "KRSG300008",
+      "KRSG300009",
+      "KRSG300010",
+      "KRSG300011",
+      "KRSG300012",
+      "KRSG300013",
+      "KRSG300014",
+      "KRSG300015",
+      "KRSG300016",
+      "KRSG300017"
+    ],
+    "안전": [
+      "KRSG300027",
+      "KRSG300028",
+      "KRSG300029",
+      "KRSG300030",
+      "KRSG300031",
+      "KRSG300032",
+      "KRSG300033",
+      "KRSG300034",
+      "KRSG300035",
+      "KRSG300036",
+      "KRSG300037",
+      "KRSG300038",
+      "KRSG300039"
+    ],
+    "외장": [
+      "KRSG300041",
+      "KRSG300042",
+      "KRSG300043",
+      "KRSG300044",
+      "KRSG300045",
+      "KRSG300046",
+      "KRSG300047",
+      "KRSG300048",
+      "KRSG300049",
+      "KRSG300050",
+      "KRSG300051",
+      "KRSG300052",
+      "KRSG300053"
+    ],
+    "내장": [
+      "KRSG300064",
+      "KRSG300065",
+      "KRSG300066",
+      "KRSG300067",
+      "KRSG300068",
+      "KRSG300069",
+      "KRSG300070",
+      "KRSG300071",
+      "KRSG300072",
+      "KRSG300073",
+      "KRSG300074",
+      "KRSG300075",
+      "KRSG300076",
+      "KRSG300077",
+      "KRSG300078"
+    ],
+    "시트": [
+      "KRSG300084",
+      "KRSG300085",
+      "KRSG300086",
+      "KRSG300087",
+      "KRSG300088",
+      "KRSG300089",
+      "KRSG300090",
+      "KRSG300091",
+      "KRSG300092",
+      "KRSG300093",
+      "KRSG300094",
+      "KRSG300095"
+    ],
+    "편의": [
+      "KRSG300103",
+      "KRSG300104",
+      "KRSG300105",
+      "KRSG300106",
+      "KRSG300107",
+      "KRSG300108",
+      "KRSG300109",
+      "KRSG300110",
+      "KRSG300111",
+      "KRSG300112",
+      "KRSG300113",
+      "KRSG300114",
+      "KRSG300115",
+      "KRSG300116",
+      "KRSG300117",
+      "KRSG300118",
+      "KRSG300119",
+      "KRSG300120",
+      "KRSG300121",
+      "KRSG300122",
+      "KRSG300123",
+      "KRSG300124",
+      "KRSG300125",
+      "KRSG300126",
+      "KRSG300127",
+      "KRSG300128",
+      "KRSG300129",
+      "KRSG300130",
+      "KRSG300131",
+      "KRSG300132",
+      "KRSG300133"
+    ],
+    "인포테인먼트": [
+      "KRSG300144",
+      "KRSG300145",
+      "KRSG300146",
+      "KRSG300147",
+      "KRSG300148",
+      "KRSG300149",
+      "KRSG300150"
+    ],
+    "선택사양": [
+      "KRSG300063",
+      "KRSG300P01",
+      "KRSG300P03",
+      "KRSG300P05",
+      "KRSG300P06",
+      "KRSG300P10",
+      "KRSG300P16",
+      "KRSG300P02",
+      "KRSG300P04",
+      "KRSG300P07",
+      "KRSG300P08",
+      "KRSG300P09",
+      "KRSG300P11",
+      "KRSG300P13",
+      "KRSG300P15",
+      "KRSG300P12",
+      "KRSG300P14"
+    ]
+  },
+  "options": {
+    "KRSG300001": {
+      "name": "스마트스트림 G1.6 하이브리드 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRSG300002": {
+      "name": "6단 DCT",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRSG300003": {
+      "name": "32kW 구동 모터",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRSG300004": {
+      "name": "속도감응형 전동식 파워스티어링(MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRSG300005": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRSG300006": {
+      "name": "후륜 멀티링크 서스펜션",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRSG300007": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300008": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300009": {
+      "name": "스티어링 휠 진동 경고",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300010": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300011": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300012": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300013": {
+      "name": "차로 유지 보조 2",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300014": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300015": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300027": {
+      "name": "10에어백(운전석/동승석 어드밴스드, 운전석 무릎, 1열 센터 사이드, 전복감지 커튼, 1열/2열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300028": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300029": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300030": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300031": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300032": {
+      "name": "급제동 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300033": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300034": {
+      "name": "1열/2열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300035": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300036": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300037": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300041": {
+      "name": "205/60 R16 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300042": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300043": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300044": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300045": {
+      "name": "LED 보조제동등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300046": {
+      "name": "LED 리피터 일체형 아웃사이드미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300047": {
+      "name": "도어손잡이 조명(프론트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300048": {
+      "name": "윈드쉴드 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300049": {
+      "name": "리어스포일러",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300050": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300064": {
+      "name": "차콜 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300065": {
+      "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300066": {
+      "name": "인조가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300067": {
+      "name": "D/N 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300068": {
+      "name": "선바이저 거울",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300069": {
+      "name": "러기지 보드",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300070": {
+      "name": "1열 도어 암레스트 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300084": {
+      "name": "직물시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300085": {
+      "name": "2열 6:4 폴딩시트(리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300086": {
+      "name": "1열/2열 높이조절식 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300087": {
+      "name": "1열 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300088": {
+      "name": "운전석 시트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300089": {
+      "name": "1열 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300103": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300104": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300105": {
+      "name": "패들 쉬프트(회생제동 컨트롤 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300106": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300107": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300108": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300109": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300110": {
+      "name": "운전석 세이프티 파워 윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300111": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300112": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300113": {
+      "name": "공기청정 시스템(미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300114": {
+      "name": "오토 디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300115": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300116": {
+      "name": "C타입 USB 단자(충전용, 1열 프론트 콘솔 1개/1열 시트백 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300117": {
+      "name": "1열 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300118": {
+      "name": "PTC 보조히터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300119": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300144": {
+      "name": "12.3인치 디스플레이 오디오(기아 커넥트, 폰 프로젝션)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRSG300145": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRSG300146": {
+      "name": "인포테인먼트/공조 전환 조작계",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRSG300147": {
+      "name": "6스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRSG300148": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRSG300149": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRSG300150": {
+      "name": "C타입 USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRSG300063": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRSG300P01": {
+      "name": "컨비니언스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P03": {
+      "name": "18인치 휠",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P05": {
+      "name": "드라이브 와이즈 Ⅰ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P06": {
+      "name": "12.3인치 클러스터 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P10": {
+      "name": "빌트인 캠 2 플러스",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P16": {
+      "name": "마이 컴포트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300016": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300017": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조(ADAS)",
+      "is_package": false
+    },
+    "KRSG300051": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300071": {
+      "name": "차콜 또는 블루 그레이 또는 딥 네이비&amp;브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300072": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300073": {
+      "name": "선바이저 조명",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300090": {
+      "name": "인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300091": {
+      "name": "운전석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300092": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300093": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300094": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300095": {
+      "name": "1열 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRSG300120": {
+      "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300121": {
+      "name": "스마트폰 무선충전 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300122": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300123": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300124": {
+      "name": "운전석 자동쾌적 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300125": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300126": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300127": {
+      "name": "기아 AI 어시스턴트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300P02": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P04": {
+      "name": "프리미엄",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P07": {
+      "name": "12.3인치 클러스터 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P08": {
+      "name": "드라이브 와이즈 Ⅱ",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P09": {
+      "name": "HUD",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P11": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P13": {
+      "name": "스마트 커넥트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P15": {
+      "name": "선루프 + LED 실내등",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300038": {
+      "name": "측방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300039": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRSG300052": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300053": {
+      "name": "1열/2열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRSG300074": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300075": {
+      "name": "파노라믹 커브드 디스플레이",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300076": {
+      "name": "패드 프린트 가니쉬(크래쉬패드, 1열 도어 센터트림, 콘솔 어퍼커버)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300077": {
+      "name": "크롬 인사이드 도어핸들",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300078": {
+      "name": "2열 도어 암레스트 인조가죽 감싸기",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRSG300128": {
+      "name": "전자식 변속 다이얼",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300129": {
+      "name": "동승석/2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300130": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300131": {
+      "name": "리모트 360도 뷰(내 차 주변 영상)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300132": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300133": {
+      "name": "원격 스마트 주차 보조",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRSG300P12": {
+      "name": "컴포트",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRSG300P14": {
+      "name": "하만카돈 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "트렌디": {
+      "slug": "트렌디",
+      "price": {
+        "tax_5_before": 30310000,
+        "tax_5_after": 29310000,
+        "tax_3_5_before": 29850000,
+        "tax_3_5_after": 28850000
+      },
+      "basic": [
+        "KRSG300001",
+        "KRSG300002",
+        "KRSG300003",
+        "KRSG300004",
+        "KRSG300005",
+        "KRSG300006",
+        "KRSG300007",
+        "KRSG300008",
+        "KRSG300009",
+        "KRSG300010",
+        "KRSG300011",
+        "KRSG300012",
+        "KRSG300013",
+        "KRSG300014",
+        "KRSG300015",
+        "KRSG300027",
+        "KRSG300028",
+        "KRSG300029",
+        "KRSG300030",
+        "KRSG300031",
+        "KRSG300032",
+        "KRSG300033",
+        "KRSG300034",
+        "KRSG300035",
+        "KRSG300036",
+        "KRSG300037",
+        "KRSG300041",
+        "KRSG300042",
+        "KRSG300043",
+        "KRSG300044",
+        "KRSG300045",
+        "KRSG300046",
+        "KRSG300047",
+        "KRSG300048",
+        "KRSG300049",
+        "KRSG300050",
+        "KRSG300064",
+        "KRSG300065",
+        "KRSG300066",
+        "KRSG300067",
+        "KRSG300068",
+        "KRSG300069",
+        "KRSG300070",
+        "KRSG300084",
+        "KRSG300085",
+        "KRSG300086",
+        "KRSG300087",
+        "KRSG300088",
+        "KRSG300089",
+        "KRSG300103",
+        "KRSG300104",
+        "KRSG300105",
+        "KRSG300106",
+        "KRSG300107",
+        "KRSG300108",
+        "KRSG300109",
+        "KRSG300110",
+        "KRSG300111",
+        "KRSG300112",
+        "KRSG300113",
+        "KRSG300114",
+        "KRSG300115",
+        "KRSG300116",
+        "KRSG300117",
+        "KRSG300118",
+        "KRSG300119",
+        "KRSG300144",
+        "KRSG300145",
+        "KRSG300146",
+        "KRSG300147",
+        "KRSG300148",
+        "KRSG300149",
+        "KRSG300150"
+      ],
+      "select": [
+        "KRSG300063",
+        "KRSG300P01",
+        "KRSG300P03",
+        "KRSG300P05",
+        "KRSG300P06",
+        "KRSG300P10",
+        "KRSG300P16"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRSG300063"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRSG300P01"
+          ],
+          "price": 650000
+        },
+        {
+          "codes": [
+            "KRSG300P03"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRSG300P05"
+          ],
+          "price": 420000
+        },
+        {
+          "codes": [
+            "KRSG300P06"
+          ],
+          "price": 1150000
+        },
+        {
+          "codes": [
+            "KRSG300P10"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRSG300P16"
+          ],
+          "price": 100000
+        }
+      ]
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": {
+        "tax_5_before": 33460000,
+        "tax_5_after": 32460000,
+        "tax_3_5_before": 32950000,
+        "tax_3_5_after": 31950000
+      },
+      "basic": [
+        "KRSG300016",
+        "KRSG300017",
+        "KRSG300051",
+        "KRSG300071",
+        "KRSG300072",
+        "KRSG300073",
+        "KRSG300090",
+        "KRSG300091",
+        "KRSG300092",
+        "KRSG300093",
+        "KRSG300094",
+        "KRSG300095",
+        "KRSG300120",
+        "KRSG300121",
+        "KRSG300122",
+        "KRSG300123",
+        "KRSG300124",
+        "KRSG300125",
+        "KRSG300126",
+        "KRSG300127",
+        "KRSG300001",
+        "KRSG300002",
+        "KRSG300003",
+        "KRSG300004",
+        "KRSG300005",
+        "KRSG300006",
+        "KRSG300007",
+        "KRSG300008",
+        "KRSG300009",
+        "KRSG300010",
+        "KRSG300011",
+        "KRSG300012",
+        "KRSG300013",
+        "KRSG300014",
+        "KRSG300015",
+        "KRSG300027",
+        "KRSG300028",
+        "KRSG300029",
+        "KRSG300030",
+        "KRSG300031",
+        "KRSG300032",
+        "KRSG300033",
+        "KRSG300034",
+        "KRSG300035",
+        "KRSG300036",
+        "KRSG300037",
+        "KRSG300041",
+        "KRSG300042",
+        "KRSG300043",
+        "KRSG300044",
+        "KRSG300045",
+        "KRSG300046",
+        "KRSG300047",
+        "KRSG300048",
+        "KRSG300049",
+        "KRSG300050",
+        "KRSG300065",
+        "KRSG300066",
+        "KRSG300068",
+        "KRSG300069",
+        "KRSG300070",
+        "KRSG300085",
+        "KRSG300086",
+        "KRSG300087",
+        "KRSG300089",
+        "KRSG300103",
+        "KRSG300104",
+        "KRSG300105",
+        "KRSG300106",
+        "KRSG300107",
+        "KRSG300108",
+        "KRSG300109",
+        "KRSG300110",
+        "KRSG300111",
+        "KRSG300112",
+        "KRSG300113",
+        "KRSG300114",
+        "KRSG300115",
+        "KRSG300116",
+        "KRSG300117",
+        "KRSG300118",
+        "KRSG300119",
+        "KRSG300145",
+        "KRSG300146",
+        "KRSG300147",
+        "KRSG300148",
+        "KRSG300149",
+        "KRSG300150"
+      ],
+      "select": [
+        "KRSG300063",
+        "KRSG300P02",
+        "KRSG300P03",
+        "KRSG300P04",
+        "KRSG300P05",
+        "KRSG300P07",
+        "KRSG300P08",
+        "KRSG300P09",
+        "KRSG300P10",
+        "KRSG300P11",
+        "KRSG300P13",
+        "KRSG300P15",
+        "KRSG300P16"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRSG300063"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRSG300P02"
+          ],
+          "price": 970000
+        },
+        {
+          "codes": [
+            "KRSG300P03"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRSG300P04"
+          ],
+          "price": 1240000
+        },
+        {
+          "codes": [
+            "KRSG300P05"
+          ],
+          "price": 420000
+        },
+        {
+          "codes": [
+            "KRSG300P07"
+          ],
+          "price": 400000
+        },
+        {
+          "codes": [
+            "KRSG300P08"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "KRSG300P09"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRSG300P10"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRSG300P11"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRSG300P13"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "KRSG300P15"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRSG300P16"
+          ],
+          "price": 100000
+        }
+      ]
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": {
+        "tax_5_before": 36190000,
+        "tax_5_after": 35190000,
+        "tax_3_5_before": 35640000,
+        "tax_3_5_after": 34640000
+      },
+      "basic": [
+        "KRSG300038",
+        "KRSG300039",
+        "KRSG300052",
+        "KRSG300053",
+        "KRSG300071",
+        "KRSG300074",
+        "KRSG300075",
+        "KRSG300076",
+        "KRSG300077",
+        "KRSG300078",
+        "KRSG300128",
+        "KRSG300129",
+        "KRSG300130",
+        "KRSG300131",
+        "KRSG300132",
+        "KRSG300133",
+        "KRSG300001",
+        "KRSG300002",
+        "KRSG300003",
+        "KRSG300004",
+        "KRSG300005",
+        "KRSG300006",
+        "KRSG300007",
+        "KRSG300008",
+        "KRSG300009",
+        "KRSG300010",
+        "KRSG300011",
+        "KRSG300012",
+        "KRSG300013",
+        "KRSG300014",
+        "KRSG300015",
+        "KRSG300016",
+        "KRSG300017",
+        "KRSG300027",
+        "KRSG300028",
+        "KRSG300029",
+        "KRSG300030",
+        "KRSG300031",
+        "KRSG300032",
+        "KRSG300033",
+        "KRSG300034",
+        "KRSG300035",
+        "KRSG300036",
+        "KRSG300037",
+        "KRSG300041",
+        "KRSG300042",
+        "KRSG300043",
+        "KRSG300044",
+        "KRSG300045",
+        "KRSG300046",
+        "KRSG300047",
+        "KRSG300048",
+        "KRSG300049",
+        "KRSG300050",
+        "KRSG300051",
+        "KRSG300066",
+        "KRSG300068",
+        "KRSG300069",
+        "KRSG300070",
+        "KRSG300072",
+        "KRSG300073",
+        "KRSG300085",
+        "KRSG300086",
+        "KRSG300087",
+        "KRSG300089",
+        "KRSG300090",
+        "KRSG300091",
+        "KRSG300092",
+        "KRSG300093",
+        "KRSG300094",
+        "KRSG300095",
+        "KRSG300103",
+        "KRSG300104",
+        "KRSG300105",
+        "KRSG300106",
+        "KRSG300107",
+        "KRSG300108",
+        "KRSG300109",
+        "KRSG300110",
+        "KRSG300111",
+        "KRSG300112",
+        "KRSG300113",
+        "KRSG300114",
+        "KRSG300115",
+        "KRSG300116",
+        "KRSG300117",
+        "KRSG300118",
+        "KRSG300119",
+        "KRSG300120",
+        "KRSG300121",
+        "KRSG300122",
+        "KRSG300123",
+        "KRSG300124",
+        "KRSG300125",
+        "KRSG300126",
+        "KRSG300127",
+        "KRSG300145",
+        "KRSG300146",
+        "KRSG300147",
+        "KRSG300148",
+        "KRSG300149",
+        "KRSG300150"
+      ],
+      "select": [
+        "KRSG300063",
+        "KRSG300P02",
+        "KRSG300P03",
+        "KRSG300P04",
+        "KRSG300P05",
+        "KRSG300P08",
+        "KRSG300P09",
+        "KRSG300P10",
+        "KRSG300P12",
+        "KRSG300P13",
+        "KRSG300P14",
+        "KRSG300P15",
+        "KRSG300P16"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRSG300063"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRSG300P02"
+          ],
+          "price": 970000
+        },
+        {
+          "codes": [
+            "KRSG300P03"
+          ],
+          "price": 490000
+        },
+        {
+          "codes": [
+            "KRSG300P04"
+          ],
+          "price": 1240000
+        },
+        {
+          "codes": [
+            "KRSG300P05"
+          ],
+          "price": 420000
+        },
+        {
+          "codes": [
+            "KRSG300P08"
+          ],
+          "price": 990000
+        },
+        {
+          "codes": [
+            "KRSG300P09"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRSG300P10"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRSG300P12"
+          ],
+          "price": 550000
+        },
+        {
+          "codes": [
+            "KRSG300P13"
+          ],
+          "price": 850000
+        },
+        {
+          "codes": [
+            "KRSG300P14"
+          ],
+          "price": 590000
+        },
+        {
+          "codes": [
+            "KRSG300P15"
+          ],
+          "price": 450000
+        },
+        {
+          "codes": [
+            "KRSG300P16"
+          ],
+          "price": 100000
+        }
+      ]
+    }
+  }
+}

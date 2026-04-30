@@ -1,0 +1,1961 @@
+{
+  "catalog_id": "kia_tasman",
+  "title": "기아 타스만",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/tasman/price"
+  ],
+  "fetched_at": "2026-04-29",
+  "categories": {
+    "파워트레인": [
+      "KRPK222004",
+      "KRPK222001",
+      "KRPK222003",
+      "KRPK222006",
+      "KRPK222009",
+      "KRPK222007",
+      "KRPK222005",
+      "KRPK222002"
+    ],
+    "첨단 운전자 보조 (ADAS)": [
+      "KRPK222020",
+      "KRPK222023",
+      "KRPK222018",
+      "KRPK222024",
+      "KRPK222016",
+      "KRPK222013",
+      "KRPK222022",
+      "KRPK222011",
+      "KRPK222017",
+      "KRPK222021"
+    ],
+    "안전": [
+      "KRPK222028",
+      "KRPK222038",
+      "KRPK222029",
+      "KRPK222033",
+      "KRPK222031",
+      "KRPK222032",
+      "KRPK222030",
+      "KRPK222027",
+      "KRPK222036",
+      "KRPK222040",
+      "KRPK222034",
+      "KRPK222042",
+      "KRPK222037",
+      "KRPK222163"
+    ],
+    "외장": [
+      "KRPK222046",
+      "KRPK222051",
+      "KRPK222049",
+      "KRPK222047",
+      "KRPK222048",
+      "KRPK222054",
+      "KRPK222064",
+      "KRPK222065",
+      "KRPK222067",
+      "KRPK222056",
+      "KRPK222053",
+      "KRPK222070",
+      "KRPK222061",
+      "KRPK222044",
+      "KRPK222055",
+      "KRPK222045",
+      "KRPK222069",
+      "KRPK222071",
+      "KRPK222050",
+      "KRPK222068",
+      "KRPK222052",
+      "KRPK222066"
+    ],
+    "내장": [
+      "KRPK222078",
+      "KRPK222088",
+      "KRPK222082",
+      "KRPK222086",
+      "KRPK222073",
+      "KRPK222087",
+      "KRPK222083",
+      "KRPK222080",
+      "KRPK222081",
+      "KRPK222090",
+      "KRPK222072",
+      "KRPK222079",
+      "KRPK222084",
+      "KRPK222089",
+      "KRPK222075",
+      "KRPK222085",
+      "KRPK222077",
+      "KRPK222076"
+    ],
+    "시트": [
+      "KRPK222112",
+      "KRPK222096",
+      "KRPK222187",
+      "KRPK222106",
+      "KRPK222098",
+      "KRPK222091",
+      "KRPK222092",
+      "KRPK222095",
+      "KRPK222093",
+      "KRPK222188",
+      "KRPK222097",
+      "KRPK222117",
+      "KRPK222104",
+      "KRPK222102",
+      "KRPK222101",
+      "KRPK222094",
+      "KRPK222113",
+      "KRPK222109",
+      "KRPK222108",
+      "KRPK222118",
+      "KRPK222107",
+      "KRPK222110",
+      "KRPK222099",
+      "KRPK222111",
+      "KRPK222100",
+      "KRPK222105"
+    ],
+    "편의": [
+      "KRPK222138",
+      "KRPK222161",
+      "KRPK222155",
+      "KRPK222162",
+      "KRPK222147",
+      "KRPK222164",
+      "KRPK222146",
+      "KRPK222143",
+      "KRPK222150",
+      "KRPK222133",
+      "KRPK222129",
+      "KRPK222130",
+      "KRPK222148",
+      "KRPK222151",
+      "KRPK222149",
+      "KRPK222145",
+      "KRPK222125",
+      "KRPK222119",
+      "KRPK222059",
+      "KRPK222058",
+      "KRPK222074",
+      "KRPK222123",
+      "KRPK222103",
+      "KRPK222153",
+      "KRPK222158",
+      "KRPK222160",
+      "KRPK222144",
+      "KRPK222136",
+      "KRPK222122",
+      "KRPK222124",
+      "KRPK222140",
+      "KRPK222156",
+      "KRPK222132",
+      "KRPK222115",
+      "KRPK222114",
+      "KRPK222116",
+      "KRPK222134",
+      "KRPK222063",
+      "KRPK222127",
+      "KRPK222121",
+      "KRPK222057",
+      "KRPK222041",
+      "KRPK222175",
+      "KRPK222159",
+      "KRPK222141",
+      "KRPK222165",
+      "KRPK222137",
+      "KRPK222131",
+      "KRPK222120",
+      "KRPK222126",
+      "KRPK222174",
+      "KRPK222154"
+    ],
+    "인포테인먼트": [
+      "KRPK222167",
+      "KRPK222171",
+      "KRPK222168",
+      "KRPK222173",
+      "KRPK222172",
+      "KRPK222169",
+      "KRPK222170"
+    ],
+    "선택사양": [
+      "KRPK222062",
+      "KRPK222P01",
+      "KRPK222P02",
+      "KRPK222P03",
+      "KRPK222P04",
+      "KRPK222178",
+      "KRPK222182",
+      "KRPK222P05",
+      "KRPK222P06",
+      "KRPK222P07",
+      "KRPK222142",
+      "KRPK222P08",
+      "KRPK222P09",
+      "KRPK222P10",
+      "KRPK222P12",
+      "KRPK222P11",
+      "KRPK222P13",
+      "KRPK222179",
+      "KRPK222186",
+      "KRPK222P14",
+      "KRPK222P15",
+      "KRPK222P16",
+      "KRPK222P17",
+      "KRPK222P18",
+      "KRPK222P19"
+    ]
+  },
+  "options": {
+    "KRPK222004": {
+      "name": "스마트스트림 G2.5 T-GDI 엔진",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222001": {
+      "name": "8단 자동변속기",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222003": {
+      "name": "속도감응형 전동식 파워스티어링(MDPS)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222006": {
+      "name": "주행모드 통합제어 시스템",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222020": {
+      "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222023": {
+      "name": "차로 이탈방지 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222018": {
+      "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222024": {
+      "name": "하이빔 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222016": {
+      "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222013": {
+      "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222022": {
+      "name": "차로 유지 보조2",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222011": {
+      "name": "고속도로 주행 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222017": {
+      "name": "스티어링 휠 그립 감지",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222021": {
+      "name": "지능형 속도 제한 보조",
+      "category": "첨단 운전자 보조 (ADAS)",
+      "is_package": false
+    },
+    "KRPK222028": {
+      "name": "7에어백(운전석/동승석 어드밴스드, 1열 센터 사이드, 전복감지 커튼, 1열 사이드)",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222038": {
+      "name": "전/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222029": {
+      "name": "VSM",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222033": {
+      "name": "다중 충돌방지 자동 제동 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222031": {
+      "name": "경사로 밀림방지장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222032": {
+      "name": "경사로 저속주행장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222030": {
+      "name": "개별 타이어 공기압 경보 시스템",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222027": {
+      "name": "1열/2열 시트벨트 리마인더",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222036": {
+      "name": "유아용 시트 고정 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222040": {
+      "name": "타이어 임시수리장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222034": {
+      "name": "소화기",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222042": {
+      "name": "트레일러 안정성 보조 장치",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222046": {
+      "name": "265/65 R17 타이어&amp;알로이 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222051": {
+      "name": "LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222049": {
+      "name": "LED 주간 주행등",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222047": {
+      "name": "LED 리어 콤비네이션램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222048": {
+      "name": "LED 리피터 일체형 아웃사이드 미러(전동접이, 전동조절, 열선)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222054": {
+      "name": "도어손잡이 조명(프론트)",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222064": {
+      "name": "에어로타입 와이퍼",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222065": {
+      "name": "윈드쉴드 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222067": {
+      "name": "코너스텝",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222056": {
+      "name": "머드가드",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222053": {
+      "name": "메탈 언더 플레이트",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222070": {
+      "name": "프론트 견인고리",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222061": {
+      "name": "샤크핀 안테나",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222078": {
+      "name": "블랙 인테리어",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222088": {
+      "name": "파노라믹 와이드 디스플레이(인포/공조 통합형)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222082": {
+      "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222086": {
+      "name": "인조가죽 스티어링 휠",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222073": {
+      "name": "LED 실내등(맵램프, 룸램프)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222087": {
+      "name": "전자식 룸미러",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222083": {
+      "name": "슬라이딩 선바이저(거울, LED 조명)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222112": {
+      "name": "바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222096": {
+      "name": "1열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222187": {
+      "name": "2열 6:4 폴딩시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222106": {
+      "name": "2열 6:4 쿠션팁업시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222098": {
+      "name": "1열/2열 높이조절식 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222091": {
+      "name": "1열 슬라이딩 헤드레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222092": {
+      "name": "1열 시트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222095": {
+      "name": "1열 시트벨트 높이조절장치",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222093": {
+      "name": "1열 시트백 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222138": {
+      "name": "버튼시동 스마트키 시스템(원격시동 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222161": {
+      "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222155": {
+      "name": "전자식 파킹 브레이크(오토홀드 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222162": {
+      "name": "후방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222147": {
+      "name": "오토 라이트 컨트롤",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222164": {
+      "name": "후석 승객 알림",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222146": {
+      "name": "열선 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222143": {
+      "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222150": {
+      "name": "운전석 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222133": {
+      "name": "독립제어 풀오토 에어컨(운전석/동승석)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222129": {
+      "name": "고성능 에어컨 필터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222130": {
+      "name": "공기청정 시스템 (미세먼지 센서 포함)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222148": {
+      "name": "오토디포그",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222151": {
+      "name": "운전석 자동쾌적 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222149": {
+      "name": "외부공기 유입방지 제어",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222145": {
+      "name": "애프터 블로우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222125": {
+      "name": "1열 C타입 USB 단자(충전용)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222119": {
+      "name": "1열 파워아웃렛",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222059": {
+      "name": "베드 라이너",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222058": {
+      "name": "베드 고리",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222074": {
+      "name": "LED 베드램프",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222123": {
+      "name": "A/B 필라 어시스트 핸들",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222103": {
+      "name": "2열 시트 하단 스토리지",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222153": {
+      "name": "워크 어웨이 락",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222167": {
+      "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRPK222171": {
+      "name": "무선 소프트웨어 업데이트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRPK222168": {
+      "name": "6스피커",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRPK222173": {
+      "name": "스티어링 휠 오디오 리모컨",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRPK222172": {
+      "name": "블루투스 핸즈프리",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRPK222169": {
+      "name": "C타입 USB 단자(데이터/충전 전환형)",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRPK222170": {
+      "name": "기아 AI 어시스턴트",
+      "category": "인포테인먼트",
+      "is_package": false
+    },
+    "KRPK222062": {
+      "name": "스노우 화이트 펄",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRPK222P01": {
+      "name": "전자식 4WD",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P02": {
+      "name": "스타일",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P03": {
+      "name": "12.3인치 클러스터",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P04": {
+      "name": "드라이브 와이즈",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222178": {
+      "name": "사이드 스텝(보드타입)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRPK222182": {
+      "name": "토우히치",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRPK222044": {
+      "name": "1열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222055": {
+      "name": "루프랙",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222080": {
+      "name": "블랙 인테리어 또는 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222081": {
+      "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222090": {
+      "name": "폴딩 콘솔 테이블",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222072": {
+      "name": "1열 메쉬 헤드레스트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222188": {
+      "name": "운전석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222097": {
+      "name": "1열 통풍시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222117": {
+      "name": "운전석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222104": {
+      "name": "2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222102": {
+      "name": "2열 6:4 슬라이딩 연동 리클라이닝시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222101": {
+      "name": "2열 센터 암레스트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222094": {
+      "name": "1열 시트백 하드 커버&amp;듀얼 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222158": {
+      "name": "컬럼 타입 전자식 변속 레버",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222160": {
+      "name": "패들 쉬프트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222144": {
+      "name": "스마트폰 무선충전 시스템(듀얼)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222136": {
+      "name": "레인센서",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222122": {
+      "name": "2열 에어벤트",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222124": {
+      "name": "1열 시트백 C타입 USB 단자(충전용)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222140": {
+      "name": "사이드 스토리지",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222P05": {
+      "name": "모니터링",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P06": {
+      "name": "하이테크",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P07": {
+      "name": "하만카돈 프리미엄 사운드",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222142": {
+      "name": "선루프",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRPK222P08": {
+      "name": "베드커버 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P09": {
+      "name": "스포츠 바 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P10": {
+      "name": "싱글데커 캐노피 Ⅰ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P12": {
+      "name": "더블데커 캐노피 Ⅰ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222045": {
+      "name": "265/60 R18 타이어&amp;전면가공 휠",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222069": {
+      "name": "프로젝션 LED 헤드램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222071": {
+      "name": "프론트/리어 LED 턴시그널램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222050": {
+      "name": "LED 포그램프",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222068": {
+      "name": "터치타입 아웃사이드 도어핸들",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222079": {
+      "name": "블랙 인테리어 또는 브라운 인테리어 또는 딥 그린 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222084": {
+      "name": "앰비언트 라이트",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222089": {
+      "name": "패브릭 감싸기(크래쉬패드, 도어 가니쉬)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222113": {
+      "name": "엠보패턴 바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222109": {
+      "name": "동승석 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222108": {
+      "name": "동승석 워크인 디바이스",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222118": {
+      "name": "동승석 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222156": {
+      "name": "지문 인증 시스템",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222132": {
+      "name": "기아 디지털 키 2",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222115": {
+      "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222114": {
+      "name": "운전석 이지 억세스",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222116": {
+      "name": "후진연동 자동하향 아웃사이드미러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222134": {
+      "name": "동승석/2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222063": {
+      "name": "퍼들램프",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222127": {
+      "name": "크래쉬패드 C타입 USB 단자(충전용)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222121": {
+      "name": "220V 인버터(베드)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222057": {
+      "name": "베드 사이드 레일&amp;클릿",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222041": {
+      "name": "트레일러 브레이크 컨트롤러",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222175": {
+      "name": "트레일러 페이지",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222159": {
+      "name": "크래쉬패드 스토리지",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222P11": {
+      "name": "싱글데커 캐노피 Ⅱ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P13": {
+      "name": "더블데커 캐노피 Ⅱ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222009": {
+      "name": "전자식 4WD",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222007": {
+      "name": "터레인 모드(오토/스노우/머드/샌드/락)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222005": {
+      "name": "전자식 차동기어 잠금장치(e-LD)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222002": {
+      "name": "X-TREK(험로 저속 크루즈 컨트롤)",
+      "category": "파워트레인",
+      "is_package": false
+    },
+    "KRPK222037": {
+      "name": "전/측/후방 주차 거리 경고",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222163": {
+      "name": "후방 주차 충돌방지 보조",
+      "category": "안전",
+      "is_package": false
+    },
+    "KRPK222052": {
+      "name": "X-Pro 전용 외장 디자인",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222066": {
+      "name": "윈드쉴드/1열 이중접합 차음 글라스",
+      "category": "외장",
+      "is_package": false
+    },
+    "KRPK222075": {
+      "name": "블랙 인테리어 또는 딥 그린&amp;테라코타 브라운 인테리어 선택 가능",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222085": {
+      "name": "인조가죽 감싸기&amp;리얼 스티치(크래쉬패드, 도어 가니쉬)",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222077": {
+      "name": "메탈 페달",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222076": {
+      "name": "메탈 도어스커프",
+      "category": "내장",
+      "is_package": false
+    },
+    "KRPK222107": {
+      "name": "X-Pro 전용 퀼팅 바이오 인조가죽시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222110": {
+      "name": "1열 파워시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222099": {
+      "name": "1열/2열 열선시트",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222111": {
+      "name": "1열 전동식 허리지지대",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222100": {
+      "name": "2열 6:4 폴딩시트(슬라이딩 연동 리클라이닝)",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222105": {
+      "name": "2열 쿠션 센터 포켓",
+      "category": "시트",
+      "is_package": false
+    },
+    "KRPK222141": {
+      "name": "서라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222165": {
+      "name": "후측방 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222137": {
+      "name": "리모트 360도 뷰(내 차 주변 영상)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222131": {
+      "name": "그라운드 뷰 모니터",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222120": {
+      "name": "1열/2열 세이프티 파워윈도우",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222126": {
+      "name": "C타입 USB 단자(충전용, 1열 1개/1열 시트백 2개/크래쉬패드 2개)",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222174": {
+      "name": "오프로드 페이지",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222154": {
+      "name": "원격 스마트 주차 보조",
+      "category": "편의",
+      "is_package": false
+    },
+    "KRPK222179": {
+      "name": "사이드 스텝(오프로드 스타일)",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRPK222186": {
+      "name": "오프로드 스타일 휠",
+      "category": "선택사양",
+      "is_package": false
+    },
+    "KRPK222P14": {
+      "name": "베드커버 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P15": {
+      "name": "스포츠 바 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P16": {
+      "name": "싱글데커 캐노피 Ⅰ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P17": {
+      "name": "싱글데커 캐노피 Ⅱ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P18": {
+      "name": "더블데커 캐노피 Ⅰ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "KRPK222P19": {
+      "name": "더블데커 캐노피 Ⅱ 패키지",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
+  "trims": {
+    "다이내믹": {
+      "slug": "다이내믹",
+      "price": {
+        "base": 37500000
+      },
+      "basic": [
+        "KRPK222004",
+        "KRPK222001",
+        "KRPK222003",
+        "KRPK222006",
+        "KRPK222020",
+        "KRPK222023",
+        "KRPK222018",
+        "KRPK222024",
+        "KRPK222016",
+        "KRPK222013",
+        "KRPK222022",
+        "KRPK222011",
+        "KRPK222017",
+        "KRPK222021",
+        "KRPK222028",
+        "KRPK222038",
+        "KRPK222029",
+        "KRPK222033",
+        "KRPK222031",
+        "KRPK222032",
+        "KRPK222030",
+        "KRPK222027",
+        "KRPK222036",
+        "KRPK222040",
+        "KRPK222034",
+        "KRPK222042",
+        "KRPK222046",
+        "KRPK222051",
+        "KRPK222049",
+        "KRPK222047",
+        "KRPK222048",
+        "KRPK222054",
+        "KRPK222064",
+        "KRPK222065",
+        "KRPK222067",
+        "KRPK222056",
+        "KRPK222053",
+        "KRPK222070",
+        "KRPK222061",
+        "KRPK222078",
+        "KRPK222088",
+        "KRPK222082",
+        "KRPK222086",
+        "KRPK222073",
+        "KRPK222087",
+        "KRPK222083",
+        "KRPK222112",
+        "KRPK222096",
+        "KRPK222187",
+        "KRPK222106",
+        "KRPK222098",
+        "KRPK222091",
+        "KRPK222092",
+        "KRPK222095",
+        "KRPK222093",
+        "KRPK222138",
+        "KRPK222161",
+        "KRPK222155",
+        "KRPK222162",
+        "KRPK222147",
+        "KRPK222164",
+        "KRPK222146",
+        "KRPK222143",
+        "KRPK222150",
+        "KRPK222133",
+        "KRPK222129",
+        "KRPK222130",
+        "KRPK222148",
+        "KRPK222151",
+        "KRPK222149",
+        "KRPK222145",
+        "KRPK222125",
+        "KRPK222119",
+        "KRPK222059",
+        "KRPK222058",
+        "KRPK222074",
+        "KRPK222123",
+        "KRPK222103",
+        "KRPK222153",
+        "KRPK222167",
+        "KRPK222171",
+        "KRPK222168",
+        "KRPK222173",
+        "KRPK222172",
+        "KRPK222169",
+        "KRPK222170"
+      ],
+      "select": [
+        "KRPK222062",
+        "KRPK222P01",
+        "KRPK222P02",
+        "KRPK222P03",
+        "KRPK222P04",
+        "KRPK222178",
+        "KRPK222182"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRPK222062"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRPK222P01"
+          ],
+          "price": 2650000
+        },
+        {
+          "codes": [
+            "KRPK222P02"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRPK222P03"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222P04"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "KRPK222178"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222182"
+          ],
+          "price": 1300000
+        }
+      ]
+    },
+    "어드벤처": {
+      "slug": "어드벤처",
+      "price": {
+        "base": 41100000
+      },
+      "basic": [
+        "KRPK222044",
+        "KRPK222055",
+        "KRPK222080",
+        "KRPK222081",
+        "KRPK222090",
+        "KRPK222072",
+        "KRPK222188",
+        "KRPK222097",
+        "KRPK222117",
+        "KRPK222104",
+        "KRPK222102",
+        "KRPK222101",
+        "KRPK222094",
+        "KRPK222158",
+        "KRPK222160",
+        "KRPK222144",
+        "KRPK222136",
+        "KRPK222122",
+        "KRPK222124",
+        "KRPK222140",
+        "KRPK222004",
+        "KRPK222001",
+        "KRPK222003",
+        "KRPK222006",
+        "KRPK222020",
+        "KRPK222023",
+        "KRPK222018",
+        "KRPK222024",
+        "KRPK222016",
+        "KRPK222013",
+        "KRPK222022",
+        "KRPK222011",
+        "KRPK222017",
+        "KRPK222021",
+        "KRPK222028",
+        "KRPK222038",
+        "KRPK222029",
+        "KRPK222033",
+        "KRPK222031",
+        "KRPK222032",
+        "KRPK222030",
+        "KRPK222027",
+        "KRPK222036",
+        "KRPK222040",
+        "KRPK222034",
+        "KRPK222042",
+        "KRPK222046",
+        "KRPK222051",
+        "KRPK222049",
+        "KRPK222047",
+        "KRPK222048",
+        "KRPK222054",
+        "KRPK222064",
+        "KRPK222065",
+        "KRPK222067",
+        "KRPK222056",
+        "KRPK222053",
+        "KRPK222070",
+        "KRPK222061",
+        "KRPK222088",
+        "KRPK222086",
+        "KRPK222073",
+        "KRPK222087",
+        "KRPK222083",
+        "KRPK222112",
+        "KRPK222096",
+        "KRPK222187",
+        "KRPK222106",
+        "KRPK222098",
+        "KRPK222091",
+        "KRPK222095",
+        "KRPK222138",
+        "KRPK222161",
+        "KRPK222155",
+        "KRPK222162",
+        "KRPK222147",
+        "KRPK222164",
+        "KRPK222146",
+        "KRPK222143",
+        "KRPK222150",
+        "KRPK222133",
+        "KRPK222129",
+        "KRPK222130",
+        "KRPK222148",
+        "KRPK222151",
+        "KRPK222149",
+        "KRPK222145",
+        "KRPK222125",
+        "KRPK222119",
+        "KRPK222059",
+        "KRPK222058",
+        "KRPK222074",
+        "KRPK222123",
+        "KRPK222103",
+        "KRPK222153",
+        "KRPK222167",
+        "KRPK222171",
+        "KRPK222168",
+        "KRPK222173",
+        "KRPK222172",
+        "KRPK222169",
+        "KRPK222170"
+      ],
+      "select": [
+        "KRPK222062",
+        "KRPK222P01",
+        "KRPK222P02",
+        "KRPK222P04",
+        "KRPK222P05",
+        "KRPK222P06",
+        "KRPK222P07",
+        "KRPK222142",
+        "KRPK222178",
+        "KRPK222182",
+        "KRPK222P08",
+        "KRPK222P09",
+        "KRPK222P10",
+        "KRPK222P12"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRPK222062"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRPK222P01"
+          ],
+          "price": 2650000
+        },
+        {
+          "codes": [
+            "KRPK222P02"
+          ],
+          "price": 750000
+        },
+        {
+          "codes": [
+            "KRPK222P04"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "KRPK222P05"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRPK222P06"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "KRPK222P07"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222142"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "KRPK222178"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222182"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "KRPK222P08"
+          ],
+          "price": 2100000
+        },
+        {
+          "codes": [
+            "KRPK222P09"
+          ],
+          "price": 3100000
+        },
+        {
+          "codes": [
+            "KRPK222P10"
+          ],
+          "price": 3500000
+        },
+        {
+          "codes": [
+            "KRPK222P12"
+          ],
+          "price": 4200000
+        }
+      ]
+    },
+    "익스트림": {
+      "slug": "익스트림",
+      "price": {
+        "base": 44900000
+      },
+      "basic": [
+        "KRPK222045",
+        "KRPK222069",
+        "KRPK222071",
+        "KRPK222050",
+        "KRPK222068",
+        "KRPK222079",
+        "KRPK222084",
+        "KRPK222089",
+        "KRPK222113",
+        "KRPK222109",
+        "KRPK222108",
+        "KRPK222118",
+        "KRPK222156",
+        "KRPK222132",
+        "KRPK222115",
+        "KRPK222114",
+        "KRPK222116",
+        "KRPK222134",
+        "KRPK222063",
+        "KRPK222127",
+        "KRPK222121",
+        "KRPK222057",
+        "KRPK222041",
+        "KRPK222175",
+        "KRPK222159",
+        "KRPK222004",
+        "KRPK222001",
+        "KRPK222003",
+        "KRPK222006",
+        "KRPK222020",
+        "KRPK222023",
+        "KRPK222018",
+        "KRPK222024",
+        "KRPK222016",
+        "KRPK222013",
+        "KRPK222022",
+        "KRPK222011",
+        "KRPK222017",
+        "KRPK222021",
+        "KRPK222028",
+        "KRPK222038",
+        "KRPK222029",
+        "KRPK222033",
+        "KRPK222031",
+        "KRPK222032",
+        "KRPK222030",
+        "KRPK222027",
+        "KRPK222036",
+        "KRPK222040",
+        "KRPK222034",
+        "KRPK222042",
+        "KRPK222049",
+        "KRPK222047",
+        "KRPK222048",
+        "KRPK222054",
+        "KRPK222064",
+        "KRPK222065",
+        "KRPK222067",
+        "KRPK222056",
+        "KRPK222053",
+        "KRPK222070",
+        "KRPK222061",
+        "KRPK222044",
+        "KRPK222055",
+        "KRPK222088",
+        "KRPK222086",
+        "KRPK222073",
+        "KRPK222087",
+        "KRPK222083",
+        "KRPK222081",
+        "KRPK222090",
+        "KRPK222072",
+        "KRPK222096",
+        "KRPK222187",
+        "KRPK222106",
+        "KRPK222098",
+        "KRPK222091",
+        "KRPK222095",
+        "KRPK222188",
+        "KRPK222097",
+        "KRPK222117",
+        "KRPK222104",
+        "KRPK222102",
+        "KRPK222101",
+        "KRPK222094",
+        "KRPK222138",
+        "KRPK222161",
+        "KRPK222155",
+        "KRPK222162",
+        "KRPK222147",
+        "KRPK222164",
+        "KRPK222146",
+        "KRPK222143",
+        "KRPK222150",
+        "KRPK222133",
+        "KRPK222129",
+        "KRPK222130",
+        "KRPK222148",
+        "KRPK222151",
+        "KRPK222149",
+        "KRPK222145",
+        "KRPK222125",
+        "KRPK222119",
+        "KRPK222059",
+        "KRPK222058",
+        "KRPK222074",
+        "KRPK222123",
+        "KRPK222103",
+        "KRPK222153",
+        "KRPK222158",
+        "KRPK222160",
+        "KRPK222144",
+        "KRPK222136",
+        "KRPK222122",
+        "KRPK222124",
+        "KRPK222140",
+        "KRPK222167",
+        "KRPK222171",
+        "KRPK222168",
+        "KRPK222173",
+        "KRPK222172",
+        "KRPK222169",
+        "KRPK222170"
+      ],
+      "select": [
+        "KRPK222062",
+        "KRPK222P01",
+        "KRPK222P04",
+        "KRPK222P05",
+        "KRPK222P06",
+        "KRPK222P07",
+        "KRPK222142",
+        "KRPK222178",
+        "KRPK222182",
+        "KRPK222P08",
+        "KRPK222P09",
+        "KRPK222P10",
+        "KRPK222P11",
+        "KRPK222P12",
+        "KRPK222P13"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRPK222062"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRPK222P01"
+          ],
+          "price": 2650000
+        },
+        {
+          "codes": [
+            "KRPK222P04"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "KRPK222P05"
+          ],
+          "price": 1200000
+        },
+        {
+          "codes": [
+            "KRPK222P06"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "KRPK222P07"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222142"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "KRPK222178"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222182"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "KRPK222P08"
+          ],
+          "price": 2100000
+        },
+        {
+          "codes": [
+            "KRPK222P09"
+          ],
+          "price": 3100000
+        },
+        {
+          "codes": [
+            "KRPK222P10"
+          ],
+          "price": 3500000
+        },
+        {
+          "codes": [
+            "KRPK222P11"
+          ],
+          "price": 4820000
+        },
+        {
+          "codes": [
+            "KRPK222P12"
+          ],
+          "price": 4200000
+        },
+        {
+          "codes": [
+            "KRPK222P13"
+          ],
+          "price": 5520000
+        }
+      ]
+    },
+    "X-Pro": {
+      "slug": "X-Pro",
+      "price": {
+        "base": 52400000
+      },
+      "basic": [
+        "KRPK222004",
+        "KRPK222001",
+        "KRPK222003",
+        "KRPK222006",
+        "KRPK222009",
+        "KRPK222007",
+        "KRPK222005",
+        "KRPK222002",
+        "KRPK222020",
+        "KRPK222023",
+        "KRPK222018",
+        "KRPK222024",
+        "KRPK222016",
+        "KRPK222013",
+        "KRPK222022",
+        "KRPK222011",
+        "KRPK222017",
+        "KRPK222021",
+        "KRPK222028",
+        "KRPK222037",
+        "KRPK222163",
+        "KRPK222029",
+        "KRPK222033",
+        "KRPK222031",
+        "KRPK222032",
+        "KRPK222030",
+        "KRPK222027",
+        "KRPK222036",
+        "KRPK222040",
+        "KRPK222034",
+        "KRPK222042",
+        "KRPK222052",
+        "KRPK222069",
+        "KRPK222071",
+        "KRPK222049",
+        "KRPK222047",
+        "KRPK222050",
+        "KRPK222048",
+        "KRPK222068",
+        "KRPK222054",
+        "KRPK222064",
+        "KRPK222066",
+        "KRPK222067",
+        "KRPK222056",
+        "KRPK222061",
+        "KRPK222075",
+        "KRPK222088",
+        "KRPK222081",
+        "KRPK222086",
+        "KRPK222073",
+        "KRPK222087",
+        "KRPK222083",
+        "KRPK222084",
+        "KRPK222085",
+        "KRPK222090",
+        "KRPK222077",
+        "KRPK222076",
+        "KRPK222072",
+        "KRPK222107",
+        "KRPK222110",
+        "KRPK222108",
+        "KRPK222099",
+        "KRPK222097",
+        "KRPK222111",
+        "KRPK222100",
+        "KRPK222106",
+        "KRPK222098",
+        "KRPK222091",
+        "KRPK222101",
+        "KRPK222095",
+        "KRPK222094",
+        "KRPK222105",
+        "KRPK222138",
+        "KRPK222161",
+        "KRPK222158",
+        "KRPK222155",
+        "KRPK222160",
+        "KRPK222141",
+        "KRPK222165",
+        "KRPK222137",
+        "KRPK222131",
+        "KRPK222162",
+        "KRPK222144",
+        "KRPK222156",
+        "KRPK222132",
+        "KRPK222147",
+        "KRPK222136",
+        "KRPK222164",
+        "KRPK222146",
+        "KRPK222143",
+        "KRPK222115",
+        "KRPK222114",
+        "KRPK222116",
+        "KRPK222120",
+        "KRPK222063",
+        "KRPK222133",
+        "KRPK222129",
+        "KRPK222130",
+        "KRPK222148",
+        "KRPK222151",
+        "KRPK222149",
+        "KRPK222122",
+        "KRPK222145",
+        "KRPK222126",
+        "KRPK222119",
+        "KRPK222121",
+        "KRPK222059",
+        "KRPK222058",
+        "KRPK222057",
+        "KRPK222074",
+        "KRPK222140",
+        "KRPK222041",
+        "KRPK222175",
+        "KRPK222174",
+        "KRPK222123",
+        "KRPK222159",
+        "KRPK222103",
+        "KRPK222153",
+        "KRPK222154",
+        "KRPK222167",
+        "KRPK222171",
+        "KRPK222168",
+        "KRPK222173",
+        "KRPK222172",
+        "KRPK222169",
+        "KRPK222170"
+      ],
+      "select": [
+        "KRPK222062",
+        "KRPK222P04",
+        "KRPK222P06",
+        "KRPK222P07",
+        "KRPK222142",
+        "KRPK222179",
+        "KRPK222182",
+        "KRPK222186",
+        "KRPK222P14",
+        "KRPK222P15",
+        "KRPK222P16",
+        "KRPK222P17",
+        "KRPK222P18",
+        "KRPK222P19"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "KRPK222062"
+          ],
+          "price": 80000
+        },
+        {
+          "codes": [
+            "KRPK222P04"
+          ],
+          "price": 1500000
+        },
+        {
+          "codes": [
+            "KRPK222P06"
+          ],
+          "price": 950000
+        },
+        {
+          "codes": [
+            "KRPK222P07"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222142"
+          ],
+          "price": 500000
+        },
+        {
+          "codes": [
+            "KRPK222179"
+          ],
+          "price": 600000
+        },
+        {
+          "codes": [
+            "KRPK222182"
+          ],
+          "price": 1300000
+        },
+        {
+          "codes": [
+            "KRPK222186"
+          ],
+          "price": 800000
+        },
+        {
+          "codes": [
+            "KRPK222P14"
+          ],
+          "price": 2100000
+        },
+        {
+          "codes": [
+            "KRPK222P15"
+          ],
+          "price": 3100000
+        },
+        {
+          "codes": [
+            "KRPK222P16"
+          ],
+          "price": 3500000
+        },
+        {
+          "codes": [
+            "KRPK222P17"
+          ],
+          "price": 4820000
+        },
+        {
+          "codes": [
+            "KRPK222P18"
+          ],
+          "price": 4200000
+        },
+        {
+          "codes": [
+            "KRPK222P19"
+          ],
+          "price": 5520000
+        }
+      ]
+    }
+  }
+}
