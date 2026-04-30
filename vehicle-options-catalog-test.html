@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>차량 옵션 카탈로그 (제조사 원본)</title>
 <script src="./public/data/encar-master-seed.js"></script>
+<script src="./public/data/car-master/_bundle.js"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:system-ui,-apple-system,sans-serif;font-size:12px;background:#f8fafc;color:#111827;padding:20px;max-width:1200px;margin:0 auto}
@@ -114,6 +115,9 @@ async function loadMaster() {
 // 매번 최신 데이터 — dev 단계라 캐시 안 잡힘
 const _cb = () => '?t=' + Date.now();
 async function loadIndex() {
+  // 1) script 태그로 로드된 window.CAR_MASTER_INDEX (file:// 더블클릭 OK)
+  if (window.CAR_MASTER_INDEX) return window.CAR_MASTER_INDEX;
+  // 2) fetch fallback (Vite dev 서버 환경)
   const candidates = [
     '/data/car-master/_index.json',
     './public/data/car-master/_index.json',
@@ -130,9 +134,12 @@ async function loadIndex() {
 
 async function loadCatalog(encarKey) {
   const idx = await loadIndex();
-  // _index.json 의 source.encar 에서 encarKey 찾아서 catalog_id 매핑
+  // _index 의 source.encar 에서 encarKey 찾아서 catalog_id 매핑
   const entry = Object.values(idx).find(v => (v.source?.encar || []).includes(encarKey));
   if (!entry) return null;
+  // 1) script 로드된 번들에서
+  if (window.CAR_MASTER && window.CAR_MASTER[entry.id]) return window.CAR_MASTER[entry.id];
+  // 2) fetch fallback
   const candidates = [
     `/data/car-master/${entry.id}.json`,
     `./public/data/car-master/${entry.id}.json`,
