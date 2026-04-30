@@ -585,7 +585,8 @@ function fillSubs(maker, model) {
   out.forEach(r => {
     const o = document.createElement('option');
     o.value = r.sub;
-    o.textContent = subHasSeed(r) ? '✓ ' + r.sub : r.sub;
+    const cleanSub = (r.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
+    o.textContent = subHasSeed(r) ? '✓ ' + cleanSub : cleanSub;
     sel.appendChild(o);
   });
 }

@@ -221,7 +221,8 @@ function onModelChange() {
     const opt = document.createElement('option');
     opt.value = r._key;
     const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
-    opt.textContent = `${r.sub} (${yr})`;
+    const cleanSub = (r.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
+    opt.textContent = `${cleanSub} (${yr})`;
     sel.appendChild(opt);
   });
   sel.disabled = false;
