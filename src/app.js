@@ -616,7 +616,7 @@ async function boot() {
   }
 
   // 유효한 역할을 가진 사용자만 진입 — 그 외(미가입/role 없음/비활성/대기/거부) 모두 로그인 화면
-  const VALID_ROLES = ['admin', 'agent', 'agent_admin', 'provider'];
+  const VALID_ROLES = ['admin', 'agent', 'agent_admin', 'agent_manager', 'provider'];
   const status = user?.status || 'active';
   const hasValidRole = user && VALID_ROLES.includes(user.role);
   const isBlocked = user && (user.is_active === false || status === 'pending' || status === 'rejected');
@@ -1769,18 +1769,52 @@ function bindLoginForm() {
   loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = loginForm.querySelector('button[type="submit"]');
-    if (submitBtn?.disabled) return;          // 중복 submit 방어
+    if (submitBtn?.disabled) return;
     const email = document.getElementById('loginEmail').value.trim();
     const pw = document.getElementById('loginPw').value;
     const msg = document.getElementById('loginMsg');
     if (msg) msg.textContent = '';
     if (submitBtn) submitBtn.disabled = true;
-    try {
-      await fbLogin(email, pw);
-      // 로그인 후 항상 상품찾기로 진입 — hash 먼저 바꾸고 reload 로 auth 재초기화
+
+    // stale 토큰/캐시로 인한 실패 자동 복구 — 1회 재시도 후에도 실패면 진짜 인증 오류
+    const isRecoverable = (err) => {
+      const code = err?.code || '';
+      const m = (err?.message || '').toLowerCase();
+      // network-request-failed, internal-error, web-storage-unsupported 등 캐시·SW·토큰 의심 신호
+      return code === 'auth/network-request-failed'
+        || code === 'auth/internal-error'
+        || code === 'auth/web-storage-unsupported'
+        || m.includes('400')
+        || m.includes('quota');
+    };
+
+    const tryLogin = async () => {
+      try { await fbLogin(email, pw); return true; }
+      catch (err) { return err; }
+    };
+
+    let result = await tryLogin();
+    if (result !== true && isRecoverable(result)) {
+      // stale 의심 — 자동 정리 후 1회 재시도 (사용자 모름)
+      try {
+        window.nukeFirebaseStorage?.();
+        if (navigator.serviceWorker?.getRegistrations) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
+        }
+        if (typeof caches !== 'undefined') {
+          const ks = await caches.keys();
+          await Promise.all(ks.map(k => caches.delete(k)));
+        }
+      } catch (_) {}
+      result = await tryLogin();
+    }
+
+    if (result === true) {
       location.hash = 'search';
       location.reload();
-    } catch (err) {
+    } else {
+      const err = result;
       if (msg) msg.textContent = '로그인 실패 — ' + (err.code || err.message || err);
       if (submitBtn) submitBtn.disabled = false;
     }
