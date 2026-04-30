@@ -1,12 +1,16 @@
 {
-  "name": "freepass erp",
-  "short_name": "freepass erp",
-  "description": "업무용 차량 거래 플랫폼",
+  "name": "freepass ERP",
+  "short_name": "freepass",
+  "description": "장기 렌트카 ERP — 차량·계약·정산 관리",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#fafafa",
-  "theme_color": "#868e96",
+  "theme_color": "#0f172a",
+  "lang": "ko",
+  "categories": ["business", "productivity"],
   "icons": [
-    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

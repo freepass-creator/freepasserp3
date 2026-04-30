@@ -645,26 +645,36 @@ async function boot() {
   requestAnimationFrame(() => document.body.classList.remove('is-loading'));
 }
 
-/* v2 시절 등록된 sw.js 가 v3 요청 가로채는 문제 해결 — 모두 unregister + 캐시 삭제.
-   v3 는 SW 안 씀. localStorage 플래그로 1회만 실행 (재방문 시 매번 안 돌게) */
+/* PWA Service Worker 등록 — v3 PWA 활성화 ("앱 설치" prompt 가능).
+ *  과거 v2 SW 가 stale 캐시 가지고 있으면 먼저 unregister + 캐시 삭제 후 v3 SW 등록.
+ *  localStorage 플래그로 v2 cleanup 1회만 실행. */
 function cleanupStaleServiceWorkers() {
   if (typeof navigator === 'undefined' || !navigator.serviceWorker) return;
-  if (localStorage.getItem('v3-sw-cleaned') === '1') return;
-  navigator.serviceWorker.getRegistrations?.().then(regs => {
-    if (!regs.length) { localStorage.setItem('v3-sw-cleaned', '1'); return; }
-    Promise.all(regs.map(r => r.unregister())).then(() => {
-      if (typeof caches !== 'undefined') {
-        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
-          .finally(() => {
+  const swPath = '/sw.js';
+  const registerV3 = () => navigator.serviceWorker.register(swPath, { scope: '/' }).catch(e => console.warn('[SW] register failed', e));
+
+  // v2 cleanup — 한 번만
+  if (localStorage.getItem('v3-sw-cleaned') !== '1') {
+    navigator.serviceWorker.getRegistrations?.().then(regs => {
+      const v2Regs = regs.filter(r => !r.active?.scriptURL?.endsWith('/sw.js') || (r.active?.scriptURL && !r.scope.endsWith('/')));
+      Promise.all(v2Regs.map(r => r.unregister())).then(() => {
+        if (typeof caches !== 'undefined') {
+          // v2 캐시만 삭제 (이름에 'freepass-' 가 있으면 v3 캐시이므로 보존)
+          caches.keys().then(keys => Promise.all(
+            keys.filter(k => !k.startsWith('freepass-')).map(k => caches.delete(k))
+          )).finally(() => {
             localStorage.setItem('v3-sw-cleaned', '1');
-            location.reload();   // 캐시 비운 후 1회 새로고침 — 폰트/CSS 신선하게
+            registerV3();
           });
-      } else {
-        localStorage.setItem('v3-sw-cleaned', '1');
-        location.reload();
-      }
-    });
-  }).catch(() => {});
+        } else {
+          localStorage.setItem('v3-sw-cleaned', '1');
+          registerV3();
+        }
+      });
+    }).catch(() => registerV3());
+  } else {
+    registerV3();
+  }
 }
 
 /* 목록 패널(.ws4-list) 에만 빈 ws4-foot 자동 주입 — 다른 패널(상세/조건 등)은 제외 */
