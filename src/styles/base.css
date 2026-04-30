@@ -147,6 +147,8 @@ td.num, td.date, th.num, th.date {
   font-feature-settings: 'tnum' 1;
   letter-spacing: -0.2px;
 }
+/* 헤더 라벨은 한글 위주이므로 tight tracking 제외 — 본문 숫자 셀만 mono+tight */
+.table thead th.num, .table thead th.date { letter-spacing: 0; }
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -480,7 +482,7 @@ input[type="radio"] {
   box-sizing: border-box;
   vertical-align: middle;
   flex-shrink: 0;
-  border: 0;
+  border: 1px solid transparent;   /* 항상 1px — filled/light/empty 간 박스 크기 통일 (외부/내부 정렬) */
   white-space: nowrap;
   letter-spacing: -0.05em;
 }
