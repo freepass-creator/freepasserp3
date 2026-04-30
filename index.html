@@ -990,11 +990,17 @@
   /* brand bar 는 flex-start. brand-text 의 flex:1 이 토글을 우측으로 밀어내고,
      접힘 시 brand-text 폭 0 → 토글이 자연스럽게 X=12(메뉴 아이콘 위치)로 슬라이드 */
 
-  /* ══ 모든 "헤드" 띠 — 동일 32px 높이 ══
+  /* ══ "헤드" 띠 — 쉘(브랜드/토픽바) 은 살짝 큰 토픽바 높이, 패널/표 헤더는 컴팩트
      쉘(브랜드/토픽바)은 bg-card (사이드바와 통일)
      패널/표 헤더는 bg-header (본문과 구분) */
   .pt-sb-brand,
-  .pt-tb,
+  .pt-tb {
+    height: var(--topbar-h);
+    padding: 0 var(--sp-3);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-weak);
+    box-sizing: border-box;
+  }
   .ws4-head,
   .table thead th {
     height: var(--panel-head-h);
