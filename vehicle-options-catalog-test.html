@@ -719,13 +719,11 @@ function matchCatalogToFp(catalog, trimName) {
   return matched;
 }
 
-/* 가격표 — 위키카 원본 가격표 스타일 (트림 × 가격 × 기본품목 × 선택품목) */
+/* 가격표 — 위키카 원본 가격표 스타일 + 연료/유종별 그룹 분할 */
 function buildPriceTable(cat) {
   const fmtMan = v => v ? Math.round(v / 10000).toLocaleString() + '만' : '-';
-  const trims = Object.keys(cat.trims);
   const categories = cat.categories || {};
 
-  // 트림별 select_groups 통합 (이름/가격 unique)
   const collectSelects = (t) => {
     const items = [];
     (t.select_groups || []).forEach(g => {
@@ -738,56 +736,86 @@ function buildPriceTable(cat) {
     return items.sort((a, b) => b.price - a.price);
   };
 
-  let html = `<table style="width:100%;border-collapse:collapse;font-size:11px;line-height:1.55">`;
-  html += `<thead><tr style="background:#f9fafb">
-    <th style="text-align:center;padding:10px 8px;border-bottom:2px solid #d1d5db;width:90px;font-weight:600">트림</th>
-    <th style="text-align:center;padding:10px 8px;border-bottom:2px solid #d1d5db;width:110px;font-weight:600">판매가격</th>
-    <th style="text-align:left;padding:10px 12px;border-bottom:2px solid #d1d5db;font-weight:600">주요 기본 품목</th>
-    <th style="text-align:left;padding:10px 10px;border-bottom:2px solid #d1d5db;width:180px;font-weight:600">선택품목<br><span style="font-size:9px;color:#9ca3af;font-weight:400">(세제혜택 적용 전)</span></th>
-  </tr></thead><tbody>`;
+  const renderRows = (trimNames) => {
+    let h = `<table style="width:100%;border-collapse:collapse;font-size:11px;line-height:1.55;margin-bottom:18px">`;
+    h += `<thead><tr style="background:#f9fafb">
+      <th style="text-align:center;padding:10px 8px;border-bottom:2px solid #d1d5db;width:120px;font-weight:600">트림</th>
+      <th style="text-align:center;padding:10px 8px;border-bottom:2px solid #d1d5db;width:110px;font-weight:600">판매가격</th>
+      <th style="text-align:left;padding:10px 12px;border-bottom:2px solid #d1d5db;font-weight:600">주요 기본 품목</th>
+      <th style="text-align:left;padding:10px 10px;border-bottom:2px solid #d1d5db;width:200px;font-weight:600">선택품목<br><span style="font-size:9px;color:#9ca3af;font-weight:400">(세제혜택 적용 전 기준)</span></th>
+    </tr></thead><tbody>`;
 
-  for (const tname of trims) {
-    const t = cat.trims[tname];
-    const p = t.price || {};
-    const taxBefore = p.tax_5_before || p.tax_5 || p.base || 0;
-    const taxAfter  = p.tax_3_5_after || p.tax_3_5 || p.tax_3_5_before || 0;
+    for (const tname of trimNames) {
+      const t = cat.trims[tname];
+      const p = t.price || {};
+      const taxBefore = p.tax_5_before || p.tax_5 || p.base || 0;
+      const taxAfter  = p.tax_3_5_after || p.tax_3_5 || p.tax_3_5_before || 0;
 
-    // 카테고리별 트림 기본 옵션 그룹화
-    const basicSet = new Set(t.basic || []);
-    const groups = [];
-    for (const [catName, codes] of Object.entries(categories)) {
-      const items = codes.filter(c => basicSet.has(c)).map(c => cat.options[c]?.name || c).filter(Boolean);
-      if (items.length) groups.push({ catName, items });
+      const basicSet = new Set(t.basic || []);
+      const grpItems = [];
+      for (const [catName, codes] of Object.entries(categories)) {
+        const items = codes.filter(c => basicSet.has(c)).map(c => cat.options[c]?.name || c).filter(Boolean);
+        if (items.length) grpItems.push({ catName, items });
+      }
+      const selects = collectSelects(t);
+
+      h += `<tr style="vertical-align:top;border-bottom:1px solid #e5e7eb">
+        <td style="text-align:center;padding:14px 8px;font-weight:600;background:#fafafa;border-right:1px solid #e5e7eb">${tname}</td>
+        <td style="text-align:center;padding:14px 8px;border-right:1px solid #e5e7eb;font-variant-numeric:tabular-nums">
+          <div style="font-weight:600;color:#111827;font-size:12px">${fmtMan(taxBefore)}</div>
+          ${taxAfter ? `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed #e5e7eb;font-size:10px;color:#6b7280">친환경차<br>세제혜택 후</div>
+          <div style="font-weight:600;color:#dc2626;font-size:12px;margin-top:2px">${fmtMan(taxAfter)}</div>` : ''}
+        </td>
+        <td style="padding:14px 12px;border-right:1px solid #e5e7eb">
+          ${grpItems.length ? grpItems.map(g => `
+            <div style="margin-bottom:6px"><span style="font-weight:600;color:#111827">• ${g.catName}</span> <span style="color:#374151">: ${g.items.join(', ')}</span></div>
+          `).join('') : '<span style="color:#9ca3af">-</span>'}
+        </td>
+        <td style="padding:14px 10px;font-size:10.5px;color:#374151">
+          ${selects.length ? selects.map(s => {
+            const priceTxt = s.price ? ` <span style="color:#dc2626;font-weight:600">${fmtMan(s.price)}</span>` : '';
+            return `<div style="margin-bottom:4px">• ${s.display}${priceTxt}</div>`;
+          }).join('') : '<span style="color:#9ca3af">-</span>'}
+        </td>
+      </tr>`;
     }
+    h += `</tbody></table>`;
+    return h;
+  };
 
-    // 선택품목
-    const selects = collectSelects(t);
-
-    html += `<tr style="vertical-align:top;border-bottom:1px solid #e5e7eb">
-      <td style="text-align:center;padding:14px 8px;font-weight:600;background:#fafafa;border-right:1px solid #e5e7eb">${tname}</td>
-      <td style="text-align:center;padding:14px 8px;border-right:1px solid #e5e7eb;font-variant-numeric:tabular-nums">
-        <div style="font-weight:600;color:#111827;font-size:12px">${fmtMan(taxBefore)}</div>
-        ${taxAfter ? `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed #e5e7eb;font-size:10px;color:#6b7280">친환경차<br>세제혜택 후</div>
-        <div style="font-weight:600;color:#dc2626;font-size:12px;margin-top:2px">${fmtMan(taxAfter)}</div>` : ''}
-      </td>
-      <td style="padding:14px 12px;border-right:1px solid #e5e7eb">
-        ${groups.length ? groups.map(g => `
-          <div style="margin-bottom:6px"><span style="font-weight:600;color:#111827">• ${g.catName}</span> <span style="color:#374151">: ${g.items.join(', ')}</span></div>
-        `).join('') : '<span style="color:#9ca3af">-</span>'}
-      </td>
-      <td style="padding:14px 10px;font-size:10.5px;color:#374151">
-        ${selects.length ? selects.map(s => {
-          const priceTxt = s.price ? `<span style="color:#dc2626;font-weight:600">: ${fmtMan(s.price)}</span>` : '';
-          return `<div style="margin-bottom:4px">• ${s.display}${priceTxt}</div>`;
-        }).join('') : '<span style="color:#9ca3af">-</span>'}
-      </td>
-    </tr>`;
+  // 트림을 연료/배기량별로 그룹화 — 트림명 마지막 괄호 안 텍스트 기준
+  const groups = new Map();
+  for (const tname of Object.keys(cat.trims)) {
+    const m = tname.match(/\(([^)]+)\)\s*$/);
+    const key = m ? m[1].trim() : '기본';
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(tname);
   }
-  html += `</tbody></table>`;
+  // 우선순위: 가솔린 > 하이브리드 > LPG > 디젤 > N라인 > 영업용 > 장애인용 > 기타
+  const order = (k) => {
+    const lk = k.toLowerCase();
+    if (lk === '기본' || /^[\d.]+$/.test(k) || /가솔린/.test(k)) return 0;
+    if (/하이브리드/.test(k)) return 1;
+    if (/lpg|lpi/i.test(k)) return 2;
+    if (/디젤|tdi|dt/i.test(k)) return 3;
+    if (/n라인|nline/i.test(k)) return 4;
+    if (/영업용/.test(k)) return 5;
+    if (/장애인/.test(k)) return 6;
+    return 9;
+  };
+  const sortedGroups = [...groups.entries()].sort((a, b) => order(a[0]) - order(b[0]) || a[0].localeCompare(b[0], 'ko'));
 
-  // 우측 상단 일자 표기 (위키카 스타일)
-  const ts = cat.fetched_at ? `(${cat.fetched_at} 기준, 단위: 원)` : '(단위: 원)';
-  html = `<div style="text-align:right;font-size:10px;color:#6b7280;margin-bottom:8px">${ts}</div>` + html;
+  let html = `<div style="text-align:right;font-size:10px;color:#6b7280;margin-bottom:8px">(${cat.fetched_at || ''} 기준, 단위: 원)</div>`;
+
+  if (sortedGroups.length === 1) {
+    html += renderRows(sortedGroups[0][1]);
+  } else {
+    for (const [key, trimList] of sortedGroups) {
+      const label = key === '기본' ? cat.title : `${cat.title} - ${key}`;
+      html += `<div style="margin:14px 0 8px;font-size:13px;font-weight:600;padding:9px 14px;background:#eff6ff;border-left:3px solid #3b82f6;color:#1e40af">${label} <span style="font-size:11px;color:#3b82f6;font-weight:400">(${trimList.length}개 트림)</span></div>`;
+      html += renderRows(trimList);
+    }
+  }
 
   return html;
 }
