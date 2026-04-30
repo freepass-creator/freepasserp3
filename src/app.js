@@ -603,8 +603,6 @@ async function boot() {
     applyStoredTheme();
   } catch (_) {}
 
-  // v2 잔존 Service Worker 강제 정리 — stale 캐시(폰트/CSS) 가로채기 방지
-  cleanupStaleServiceWorkers();
   // 샘플 데이터 즉시 정리 — auth/hydration 동안에도 샘플이 보이지 않게
   clearSampleData();
 
@@ -649,22 +647,6 @@ async function boot() {
 
   // 모든 초기 셋업 끝난 후 visibility 해제 (한 프레임 양보 — paint 가 동기적으로 끝나도록)
   requestAnimationFrame(() => document.body.classList.remove('is-loading'));
-}
-
-/* Service Worker 일괄 정리 — 기존 SW 가 캐시한 stale 자산이 로그인 막던 이슈 해결.
- *  PWA 설치는 manifest 만으로 가능. SW 는 일단 비활성 (캐시 문제 우선 차단).
- *  필요하면 차후 sw.js 재등록 — 현재는 항상 unregister. */
-function cleanupStaleServiceWorkers() {
-  if (typeof navigator === 'undefined' || !navigator.serviceWorker) return;
-  navigator.serviceWorker.getRegistrations?.().then(regs => {
-    if (!regs.length) return;
-    Promise.all(regs.map(r => r.unregister())).then(() => {
-      if (typeof caches !== 'undefined') {
-        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
-          .catch(() => {});
-      }
-    });
-  }).catch(() => {});
 }
 
 /* 목록 패널(.ws4-list) 에만 빈 ws4-foot 자동 주입 — 다른 패널(상세/조건 등)은 제외 */
@@ -1775,47 +1757,11 @@ function bindLoginForm() {
     const msg = document.getElementById('loginMsg');
     if (msg) msg.textContent = '';
     if (submitBtn) submitBtn.disabled = true;
-
-    // stale 토큰/캐시로 인한 실패 자동 복구 — 1회 재시도 후에도 실패면 진짜 인증 오류
-    const isRecoverable = (err) => {
-      const code = err?.code || '';
-      const m = (err?.message || '').toLowerCase();
-      // network-request-failed, internal-error, web-storage-unsupported 등 캐시·SW·토큰 의심 신호
-      return code === 'auth/network-request-failed'
-        || code === 'auth/internal-error'
-        || code === 'auth/web-storage-unsupported'
-        || m.includes('400')
-        || m.includes('quota');
-    };
-
-    const tryLogin = async () => {
-      try { await fbLogin(email, pw); return true; }
-      catch (err) { return err; }
-    };
-
-    let result = await tryLogin();
-    if (result !== true && isRecoverable(result)) {
-      // stale 의심 — 자동 정리 후 1회 재시도 (사용자 모름)
-      try {
-        window.nukeFirebaseStorage?.();
-        if (navigator.serviceWorker?.getRegistrations) {
-          const regs = await navigator.serviceWorker.getRegistrations();
-          await Promise.all(regs.map(r => r.unregister().catch(()=>{})));
-        }
-        if (typeof caches !== 'undefined') {
-          const ks = await caches.keys();
-          await Promise.all(ks.map(k => caches.delete(k)));
-        }
-      } catch (_) {}
-      result = await tryLogin();
-    }
-
-    if (result === true) {
+    try {
+      await fbLogin(email, pw);
       location.hash = 'search';
       location.reload();
-    } else {
-      const err = result;
-      // 사용자에게 명확한 에러 표시 (코드+메시지+stack 일부)
+    } catch (err) {
       const code = err?.code || '';
       const message = err?.message || String(err);
       const KOREAN_AUTH_MSG = {

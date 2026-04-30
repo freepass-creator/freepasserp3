@@ -18,19 +18,6 @@ const _persistenceReady = Promise.race([
   new Promise(resolve => setTimeout(resolve, 1000)),
 ]);
 
-/* Firebase auth 관련 localStorage·sessionStorage 강제 정리 (stale 토큰 복구용).
- *  로그인 form 의 [초기화] 버튼 또는 initAuth 타임아웃 시 호출. */
-function nukeFirebaseStorage() {
-  try {
-    Object.keys(localStorage).forEach(k => {
-      if (k.startsWith('firebase:') || k.startsWith('@firebase/')) localStorage.removeItem(k);
-    });
-    Object.keys(sessionStorage).forEach(k => {
-      if (k.startsWith('firebase:') || k.startsWith('@firebase/')) sessionStorage.removeItem(k);
-    });
-  } catch (_) {}
-}
-window.nukeFirebaseStorage = nukeFirebaseStorage;
 
 /** Watch auth state and load user profile
  *  - Firebase는 토큰 갱신 시에도 onAuthStateChanged emit → UID 변경 시에만 profile 재로드
