@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>프리패스 차종 매트릭스</title>
-<script src="./data/encar-master-seed.js"></script>
-<script src="./data/car-master/_bundle.js"></script>
+<!-- 로컬 file:// 와 Vercel 양쪽 호환 — 둘 다 시도하고 먼저 성공하는 쪽으로 -->
+<script src="./public/data/encar-master-seed.js" onerror="this.dataset.failed=1"></script>
+<script src="./data/encar-master-seed.js" onerror="this.dataset.failed=1"></script>
+<script src="./public/data/car-master/_bundle.js" onerror="this.dataset.failed=1"></script>
+<script src="./data/car-master/_bundle.js" onerror="this.dataset.failed=1"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:system-ui,-apple-system,sans-serif;font-size:12px;background:#f8fafc;color:#111827;padding:20px;max-width:1200px;margin:0 auto}
@@ -68,13 +71,22 @@
   #emptyPanel{display:flex;align-items:center;justify-content:center}
   .raw-toggle{font-size:11px;color:#6b7280;cursor:pointer;text-decoration:underline;margin-top:14px}
   pre{background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;padding:10px;font-size:11px;overflow:auto;max-height:400px;margin-top:8px;white-space:pre-wrap}
+  /* 상단 selector + 트림 bar 틀 고정 (스크롤해도 위에 보임) */
+  .sticky-top{position:sticky;top:0;z-index:50;background:#f8fafc}
+  #selectorPanel{margin-bottom:0;border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:none;padding-bottom:8px}
+  #trimBarWrap{position:sticky;top:120px;z-index:40;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0;padding:10px 14px;display:none}
+  #trimBarWrap.visible{display:block}
+  /* catalogPanel 내부의 trimBar 는 숨기고 위에 고정된 trimBarWrap 사용 */
+  #catalogPanel .trim-bar{display:none}
+  /* 패널 외부 영역 흰 배경 안 보이게 */
+  body{background:#f8fafc}
 </style>
 </head>
 <body>
 
 <h1>프리패스 차종 매트릭스 <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:6px">트림 × 옵션 × 패키지</span></h1>
 
-<div class="panel">
+<div class="panel sticky-top" id="selectorPanel">
   <div class="selector-row">
     <select id="maker" disabled><option>제조사 로딩중…</option></select>
     <select id="model" disabled><option>모델</option></select>
@@ -89,6 +101,9 @@
   </div>
   <div class="meta" id="status">프리패스 차종 매트릭스 로딩…</div>
 </div>
+
+<!-- sticky 트림 bar (catalogPanel 외부, 상단 고정) -->
+<div id="trimBarWrap" class="trim-bar"></div>
 
 <div class="panel" id="catalogPanel" style="display:none">
   <div class="trim-bar" id="trimBar"></div>
@@ -345,6 +360,8 @@ function resetCatalog() {
   $('emptyMsg').textContent = '차종을 선택하세요.';
   $('status').textContent = '';
   $('status').classList.remove('ok');
+  $('trimBarWrap').classList.remove('visible');   // 트림 바 sticky 도 숨김
+  $('trimBarWrap').innerHTML = '';
 }
 
 function renderCatalog() {
@@ -353,8 +370,10 @@ function renderCatalog() {
   const trims = Object.keys(cat.trims);
   state.activeTrim = state.activeTrim && trims.includes(state.activeTrim) ? state.activeTrim : trims[0];
 
-  const bar = $('trimBar');
-  bar.innerHTML = '';
+  // 트림 바 — sticky wrap (페이지 상단 고정) 에 렌더, 내부 trimBar 는 빈 채로 둠
+  const wrap = $('trimBarWrap');
+  wrap.innerHTML = '';
+  wrap.classList.add('visible');
   trims.forEach(t => {
     const btn = document.createElement('button');
     btn.className = 'trim-btn' + (t === state.activeTrim ? ' active' : '');
@@ -369,7 +388,7 @@ function renderCatalog() {
       $('trim').value = t;
       renderCatalog();
     });
-    bar.appendChild(btn);
+    wrap.appendChild(btn);
   });
   $('trim').value = state.activeTrim;
 
