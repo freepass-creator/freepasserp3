@@ -91,6 +91,8 @@ export default defineConfig({
         catalog: resolve(__dirname, 'catalog.html'),
         proposal: resolve(__dirname, 'proposal.html'),
         sign: resolve(__dirname, 'sign.html'),
+        'vehicle-options-test': resolve(__dirname, 'vehicle-options-test.html'),
+        'vehicle-options-catalog-test': resolve(__dirname, 'vehicle-options-catalog-test.html'),
       },
       output: {
         // 초기 번들 경량화 — 큰 벤더/라이브러리 분리
