@@ -1818,20 +1818,21 @@ function bindLoginForm() {
       // 사용자에게 명확한 에러 표시 (코드+메시지+stack 일부)
       const code = err?.code || '';
       const message = err?.message || String(err);
-      let userMsg = '로그인 실패';
-      if (code === 'auth/invalid-credential' || code === 'auth/wrong-password') {
-        userMsg = '이메일 또는 비밀번호가 올바르지 않습니다';
-      } else if (code === 'auth/user-not-found') {
-        userMsg = '등록되지 않은 이메일입니다';
-      } else if (code === 'auth/too-many-requests') {
-        userMsg = '로그인 시도가 너무 많아 일시 차단됨 — 잠시 후 다시 시도';
-      } else if (code === 'auth/network-request-failed') {
-        userMsg = '네트워크 연결 확인 후 다시 시도해주세요';
-      } else if (code) {
-        userMsg = `로그인 실패 (${code})`;
-      } else {
-        userMsg = `로그인 실패 — ${message.slice(0, 100)}`;
-      }
+      const KOREAN_AUTH_MSG = {
+        'auth/invalid-credential':         '이메일 또는 비밀번호가 올바르지 않습니다',
+        'auth/wrong-password':             '비밀번호가 올바르지 않습니다',
+        'auth/user-not-found':             '등록되지 않은 이메일입니다',
+        'auth/invalid-email':              '이메일 형식이 올바르지 않습니다',
+        'auth/user-disabled':              '비활성화된 계정입니다 — 관리자에게 문의해주세요',
+        'auth/too-many-requests':          '로그인 시도가 너무 많아 일시적으로 차단됐습니다. 잠시 후 다시 시도해주세요',
+        'auth/network-request-failed':     '네트워크 연결을 확인 후 다시 시도해주세요',
+        'auth/internal-error':             '인증 시스템 일시 오류 — 잠시 후 다시 시도해주세요',
+        'auth/operation-not-allowed':      '해당 로그인 방식이 비활성화되어 있습니다',
+        'auth/email-already-in-use':       '이미 사용 중인 이메일입니다',
+        'auth/weak-password':              '비밀번호는 6자 이상이어야 합니다',
+      };
+      const userMsg = KOREAN_AUTH_MSG[code]
+        || (code ? `로그인 실패 — ${code}` : `로그인 실패 — ${message.slice(0, 100)}`);
       console.error('[login fail]', err);
       if (msg) msg.textContent = userMsg;
       if (submitBtn) submitBtn.disabled = false;
