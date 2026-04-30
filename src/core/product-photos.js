@@ -23,18 +23,17 @@ export function isLocalDev() {
 }
 
 /** 외부 이미지 URL 을 /api/img 프록시로 감싸서 우리 오리진으로 서빙 —
- *  Samsung Internet / Chrome Android 등에서 Drive/lh3 직접 로딩 실패 해결.
- *  이미 프록시됐거나 같은 오리진이면 그대로 반환.
- *  로컬 dev 에서는 프록시를 스킵 (데스크톱 브라우저는 직접 로딩 가능). */
+ *  Drive/lh3 등 cross-origin 이미지의 referrer/CORS/rate-limit 이슈 회피.
+ *  Vite dev 도 localServerless 플러그인이 api/img.js 를 처리하므로 dev/prod 모두 프록시 사용.
+ *  이미 프록시됐거나 같은 오리진이면 그대로 반환. */
 export function toProxiedImage(url) {
   if (!url || typeof url !== 'string') return url;
-  if (url.startsWith('/api/img')) return url;               // 이미 프록시됨
+  if (url.startsWith('/api/img')) return url;
   if (url.startsWith('data:') || url.startsWith('blob:')) return url;
   try {
     const u = new URL(url, (typeof location !== 'undefined' ? location.origin : 'https://x/'));
     if (typeof location !== 'undefined' && u.origin === location.origin) return url;
     if (!PROXY_HOSTS_RE.test(u.hostname)) return url;       // 화이트리스트 외 호스트는 그대로
-    if (isLocalDev()) return url;                           // dev: /api/img 없음 → 원본 사용
     return `/api/img?url=${encodeURIComponent(url)}`;
   } catch { return url; }
 }

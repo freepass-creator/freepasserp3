@@ -10,7 +10,6 @@
  * 서버(localhost:5200) 로 포워드.
  */
 
-import { isLocalDev } from './product-photos.js';
 
 const SESSION_CACHE_KEY = 'fp_drive_folder_cache_v4';  /* v4: dev 에서는 프록시 스킵 */
 const SESSION_CACHE_TTL = 60 * 60 * 1000;
@@ -70,15 +69,12 @@ export function fetchDriveFolderImages(sourceUrl, size = SIZE_FULL) {
     .then((r) => (r.ok ? r.json() : null))
     .then((j) => {
       const rawUrls = j && j.ok && Array.isArray(j.urls) ? j.urls : [];
-      // 외부 Drive URL 을 /api/img 프록시로 감싸 모바일 cross-origin 이슈 우회
-      // 로컬 dev 에서는 프록시 서버리스가 없으니 원본 URL 그대로 사용
-      const wrap = !isLocalDev();
+      // Drive·lh3 등 cross-origin 이미지를 /api/img 프록시로 감싸 referrer/CORS/rate-limit 이슈 회피.
+      // Vite dev 도 localServerless 플러그인이 api/img.js 처리하므로 dev/prod 모두 프록시 사용.
       const urls = rawUrls.map(u => {
         if (!u || u.startsWith('/api/img')) return u;
-        if (!wrap) return u;
         try {
           const host = new URL(u, location.origin).hostname;
-          // Drive·lh3 + 스크래퍼 대상 호스트 (autoplus·moderentcar·s3) 도 프록시 경유
           if (/(^|\.)(googleusercontent\.com|drive\.google\.com|autoplus\.co\.kr|moderentcar\.co\.kr|moren-images\.s3[^.]*\.amazonaws\.com)$/.test(host)) {
             return `/api/img?url=${encodeURIComponent(u)}`;
           }

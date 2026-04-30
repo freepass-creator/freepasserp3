@@ -1624,5 +1624,27 @@
       "라이프 스타일"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "genesis_g80_rg3_pre": {
+    "id": "genesis_g80_rg3_pre",
+    "title": "제네시스 G80 RG3",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/genesis_g80/51014",
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": false
+    },
+    "trims": [
+      "2.5T",
+      "2.5T AWD",
+      "3.5T AWD"
+    ],
+    "fetched_at": "2026-04-30",
+    "note": "페리 전 G80 RG3 (2020-2023). FL split 매핑."
   }
 }

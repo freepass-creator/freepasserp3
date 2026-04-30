@@ -969,18 +969,13 @@ async function loadIndex() {
   return {};
 }
 
-async function loadCatalog(encarKey) {
-  const idx = await loadIndex();
-  // _index 의 source.encar 에서 encarKey 찾아서 catalog_id 매핑
-  const entry = Object.values(idx).find(v => (v.source?.encar || []).includes(encarKey));
-  if (!entry) return null;
-  // 1) script 로드된 번들에서
-  if (window.CAR_MASTER && window.CAR_MASTER[entry.id]) return window.CAR_MASTER[entry.id];
-  // 2) fetch fallback
+async function loadCatalogById(catalogId) {
+  if (!catalogId) return null;
+  if (window.CAR_MASTER && window.CAR_MASTER[catalogId]) return window.CAR_MASTER[catalogId];
   const candidates = [
-    `/data/car-master/${entry.id}.json`,
-    `./public/data/car-master/${entry.id}.json`,
-    `public/data/car-master/${entry.id}.json`
+    `/data/car-master/${catalogId}.json`,
+    `./public/data/car-master/${catalogId}.json`,
+    `public/data/car-master/${catalogId}.json`
   ];
   for (const url of candidates) {
     try {
@@ -989,6 +984,14 @@ async function loadCatalog(encarKey) {
     } catch {}
   }
   return null;
+}
+
+async function loadCatalog(encarKey) {
+  const idx = await loadIndex();
+  // _index 의 source.encar 에서 encarKey 찾아서 catalog_id 매핑
+  const entry = Object.values(idx).find(v => (v.source?.encar || []).includes(encarKey));
+  if (!entry) return null;
+  return loadCatalogById(entry.id);
 }
 
 function uniqueSorted(arr) {
@@ -1047,12 +1050,12 @@ function onMakerChange() {
 }
 
 // 페이스리프트 split — 엔카가 통합 entry로 둔 차종을 페리 전/후로 분리 표시
-//   같은 _key 사용 → 카탈로그는 같은 것 (옵션 거의 동일) but 표시명만 다름
+//   catalogId 다를 시 다른 catalog 로드 (페리 전후 가격/옵션 차이 반영)
 //   배열 첫 번째 = 최신(페리 후), 두 번째 = 페리 전
 const FL_SPLITS = {
   'encar_007_002_006': [   // 제네시스 G80 RG3
-    { display: '디 올 뉴 G80 RG3', from: '2024-01' },
-    { display: 'G80 RG3',          from: '2020-01', to: '2023-12' },
+    { display: '디 올 뉴 G80 RG3', from: '2024-01', catalogId: 'genesis_g80_rg3' },
+    { display: 'G80 RG3',          from: '2020-01', to: '2023-12', catalogId: 'genesis_g80_rg3_pre' },
   ],
   'encar_007_006_008': [   // 제네시스 GV70
     { display: '디 올 뉴 GV70', from: '2024-01' },
@@ -1084,14 +1087,14 @@ function onModelChange() {
   subs.forEach(r => {
     const splits = FL_SPLITS[r._key];
     if (splits) {
-      // FL split 으로 두 entry 추가 (같은 _key)
-      for (const sp of splits) {
+      // FL split 으로 두 entry 추가 (split index encode in value)
+      splits.forEach((sp, idx) => {
         const opt = document.createElement('option');
-        opt.value = r._key;
+        opt.value = `${r._key}::${idx}`;  // encar_key::split_idx
         const yr = `${sp.from.slice(0,4)}~${sp.to ? sp.to.slice(0,4) : '현재'}`;
         opt.textContent = showYear ? `${sp.display} (${yr})` : sp.display;
         sel.appendChild(opt);
-      }
+      });
     } else {
       const opt = document.createElement('option');
       opt.value = r._key;
@@ -1106,12 +1109,18 @@ function onModelChange() {
 }
 
 async function onSubChange() {
-  const key = $('sub').value;
-  if (!key) { resetCatalog(); return; }
-  state.selected = state.master.find(r => r._key === key);
+  const rawValue = $('sub').value;
+  if (!rawValue) { resetCatalog(); return; }
+  // FL split: "encar_key::idx" 형식 — split.catalogId 우선
+  const [encarKey, splitIdxStr] = rawValue.split('::');
+  const splitIdx = splitIdxStr != null ? parseInt(splitIdxStr) : null;
+  const split = (splitIdx != null && FL_SPLITS[encarKey]) ? FL_SPLITS[encarKey][splitIdx] : null;
+  state.selected = state.master.find(r => r._key === encarKey);
+  state.selectedSplit = split;
   state.selectedPkgs.clear();
   $('status').textContent = '카탈로그 로딩…';
-  const cat = await loadCatalog(key);
+  // split.catalogId 가 있으면 그걸로 직접 로드, 없으면 encar 기반
+  const cat = split?.catalogId ? await loadCatalogById(split.catalogId) : await loadCatalog(encarKey);
   if (!cat) {
     state.catalog = null;
     $('catalogPanel').style.display = 'none';
@@ -1246,6 +1255,27 @@ function renderCatalog() {
       const body = pkgName && pkgName !== names[0] ? `<div class="pkg-items">${names.join(' · ')}</div>` : `<div class="pkg-name">${names.join(' + ')}${price ? ` <span class="pkg-price">${(price/10000).toFixed(0)}만</span>` : ''}</div>`;
       div.innerHTML = head + body;
       div.addEventListener('click', () => {
+        // 옵션 의존성 — group 같은 것 자동 해제, excludes 명시적 배제
+        if (!state.selectedPkgs.has(idx)) {
+          // 새로 선택할 때만 — 같은 group 중 다른 것 해제
+          if (group.group) {
+            t.select_groups.forEach((g, i) => {
+              if (i !== idx && (Array.isArray(g) ? null : g.group) === group.group) {
+                state.selectedPkgs.delete(i);
+              }
+            });
+          }
+          // excludes 에 있는 다른 패키지 해제
+          if (group.excludes && Array.isArray(group.excludes)) {
+            t.select_groups.forEach((g, i) => {
+              const gName = Array.isArray(g) ? '' : (g.name || '');
+              if (i !== idx && group.excludes.includes(gName)) {
+                state.selectedPkgs.delete(i);
+              }
+            });
+          }
+        }
+        // toggle 자체
         if (state.selectedPkgs.has(idx)) state.selectedPkgs.delete(idx);
         else state.selectedPkgs.add(idx);
         renderCatalog();

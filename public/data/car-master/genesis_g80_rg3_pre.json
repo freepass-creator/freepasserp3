@@ -1,12 +1,12 @@
 {
-  "catalog_id": "genesis_g80_rg3",
-  "title": "제네시스 디 올 뉴 G80 RG3",
+  "catalog_id": "genesis_g80_rg3_pre",
+  "title": "제네시스 G80 RG3",
   "maker": "제네시스",
   "source": "wikicar_ocr",
   "source_urls": [
-    "http://wikicar.co.kr/genesis_g80/53676"
+    "http://wikicar.co.kr/genesis_g80/51014"
   ],
-  "fetched_at": "2026-04-29",
+  "fetched_at": "2026-04-30",
   "categories": {
     "파워트레인 및 성능": [
       "WK_가솔린_2_5_터보_엔진",
@@ -853,7 +853,7 @@
     "2.5T": {
       "slug": "가솔_후륜_",
       "price": {
-        "base": 58900000
+        "base": 56100000
       },
       "basic": [
         "WK_8단_자동변속기",
@@ -1078,7 +1078,7 @@
     "2.5T AWD": {
       "slug": "가솔_AWD",
       "price": {
-        "base": 61700000
+        "base": 58900000
       },
       "basic": [
         "WK_8단_자동변속기",
@@ -1303,7 +1303,7 @@
     "3.5T AWD": {
       "slug": "가솔_AWD",
       "price": {
-        "base": 68300000
+        "base": 65600000
       },
       "basic": [
         "WK_8단_자동변속기",
@@ -1525,5 +1525,6 @@
         }
       ]
     }
-  }
+  },
+  "note": "페리 전 G80 RG3 (2020-2023). 일부 옵션 (스마트 크루즈 II, 14.6인치 디스플레이 등) 제외."
 }

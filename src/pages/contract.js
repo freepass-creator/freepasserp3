@@ -14,6 +14,7 @@
 import { store } from '../core/store.js';
 import { pushRecord, updateRecord } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
+import { openFullscreen } from '../core/product-detail-render.js';
 import { filterByRole } from '../core/roles.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from '../core/contract-steps.js';
 import { notifyProviderAndAdmin } from '../core/notify.js';
@@ -238,7 +239,6 @@ function renderContractDocs(card, c) {
           <span style="flex:1;font-size:12px;font-weight:500;">운전면허증 <span style="color:var(--alert-red-text);">*</span></span>
           ${license ? '<span style="font-size:10px;color:var(--alert-green-text);">제출됨</span>' : '<span style="font-size:10px;color:var(--text-muted);">미제출</span>'}
           ${license && canEdit ? `
-            <button class="btn" style="height:22px;padding:0 8px;font-size:11px;" id="ctLicenseOcr" title="OCR 분석"><i class="ph ph-scan"></i> OCR</button>
             <button class="btn" style="height:22px;padding:0 8px;font-size:11px;color:var(--alert-red-text);" id="ctLicenseDel"><i class="ph ph-x"></i></button>
           ` : ''}
         </div>
@@ -249,10 +249,11 @@ function renderContractDocs(card, c) {
               : `<img src="${esc(license)}" style="max-width:100%;max-height:280px;border-radius:4px;cursor:zoom-in;display:block;" data-doc-img="${esc(license)}">`}
           </div>
         ` : (canEdit ? `
-          <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);margin:8px;border-radius:4px;">
-            <i class="ph ph-upload-simple" style="font-size:24px;margin-bottom:6px;"></i>
-            <span>면허증 업로드 (OCR 대상)</span>
-            <input type="file" hidden accept="image/*,application/pdf" id="ctLicenseUpload">
+          <label class="pd-dropzone" for="ctLicenseUpload" style="margin:8px;">
+            <i class="ph ph-identification-card"></i>
+            <div class="pd-dropzone-text">면허증을 끌어놓거나 클릭해서 업로드</div>
+            <div class="pd-dropzone-hint">이미지(JPG/PNG) 또는 PDF | 자동 OCR</div>
+            <input type="file" id="ctLicenseUpload" hidden accept="image/*,application/pdf">
           </label>
         ` : '<div style="padding:16px;font-size:11px;color:var(--text-muted);text-align:center;">미제출</div>')}
       </div>
@@ -291,9 +292,10 @@ function renderContractDocs(card, c) {
               ` : ''}
             </div>
           ` : (canEdit ? `
-            <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;cursor:pointer;color:var(--text-muted);font-size:11px;border:1px dashed var(--border);border-radius:4px;gap:4px;">
-              <i class="ph ph-plus" style="font-size:20px;"></i>
-              <span>첨부 서류 추가 (여러 개 가능)</span>
+            <label class="pd-dropzone">
+              <i class="ph ph-paperclip"></i>
+              <div class="pd-dropzone-text">첨부 서류를 끌어놓거나 클릭해서 업로드</div>
+              <div class="pd-dropzone-hint">이미지(JPG/PNG) 또는 PDF | 여러 개 가능</div>
               <input type="file" hidden accept="image/*,application/pdf" multiple class="ctAttUploadAdd">
             </label>
           ` : '<div style="padding:16px;font-size:11px;color:var(--text-muted);text-align:center;">첨부된 서류 없음</div>')}
@@ -304,7 +306,7 @@ function renderContractDocs(card, c) {
 
   if (!canEdit) return;
 
-  // 면허증 업로드 — 이미지/PDF 분기 (v2 패턴)
+  // 면허증 업로드 + 자동 OCR — 차량등록증과 동일한 UX (업로드 = 자동 분석)
   body.querySelector('#ctLicenseUpload')?.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -318,6 +320,40 @@ function renderContractDocs(card, c) {
       c.doc_license = url;
       showToast('면허증 업로드 완료', 'success');
       renderContractDocs(card, c);
+
+      // 자동 OCR — 이미지·PDF 모두 ocrFile 로 텍스트 추출 후 driver-license 파서로 필드 매핑
+      try {
+        showToast('OCR 분석 중...', 'info');
+        const { ocrFile } = await import('../core/ocr.js');
+        const { parseDriverLicense } = await import('../core/ocr-parsers/driver-license.js');
+        const { text } = await ocrFile(file);
+        if (!text || text.length < 20) { showToast('OCR 텍스트 부족 — 수동 입력', 'info'); return; }
+        const parsed = parseDriverLicense(text);
+        // 빈 필드 제거 (병합 시 기존 값 보존)
+        for (const k of Object.keys(parsed)) if (!parsed[k]) delete parsed[k];
+        if (Object.keys(parsed).length) {
+          // 기존 계약자 정보가 있으면 보존, 빈 칸만 자동 채움
+          const merged = {};
+          for (const [k, v] of Object.entries(parsed)) {
+            if (!c[k]) merged[k] = v;     // 비어있을 때만 채움
+          }
+          if (Object.keys(merged).length) {
+            await updateRecord(`contracts/${c._key}`, { ...merged, doc_license_ocr_text: text, updated_at: Date.now() });
+            Object.assign(c, merged);
+            c.doc_license_ocr_text = text;
+            showToast(`OCR: ${Object.keys(merged).length}개 필드 자동 채움`, 'success');
+            renderContractDocs(card, c);
+          } else {
+            await updateRecord(`contracts/${c._key}`, { doc_license_ocr_text: text, updated_at: Date.now() });
+            showToast('OCR 완료 (모든 필드 이미 입력됨)', 'info');
+          }
+        } else {
+          showToast('OCR 결과 없음 — 수동 입력해주세요', 'info');
+        }
+      } catch (ocrErr) {
+        console.warn('[license OCR]', ocrErr);
+        showToast('OCR 실패 — 수동 입력', 'info');
+      }
     } catch (err) {
       console.error('[license upload]', err);
       showToast('업로드 실패: ' + (err.message || err), 'error');
@@ -331,12 +367,6 @@ function renderContractDocs(card, c) {
     c.doc_license = null;
     showToast('면허증 제거됨');
     renderContractDocs(card, c);
-  });
-
-  // 면허증 OCR
-  body.querySelector('#ctLicenseOcr')?.addEventListener('click', async () => {
-    showToast('OCR 기능은 추후 활성화 예정', 'info');
-    // TODO: ocr-parsers/license.js 같은 파서 만들고 image URL 다운로드 후 OCR
   });
 
   // 첨부서류 다중 업로드 — 이미지/PDF 분기 (v2 패턴). 빈 상태/추가 입력 모두 동일 핸들러
@@ -379,15 +409,13 @@ function renderContractDocs(card, c) {
     });
   });
 
-  // 이미지 클릭 → 풀스크린
+  // 이미지 클릭 → 풀스크린 (재고/상품찾기와 동일 openFullscreen 사용)
+  //  면허증 1장 + 첨부서류 N장 모두 한 갤러리로 묶어서 좌우 스와이프 가능
+  const allDocImgs = [...body.querySelectorAll('[data-doc-img]')].map(el => el.dataset.docImg);
   body.querySelectorAll('[data-doc-img]').forEach(img => {
     img.addEventListener('click', () => {
-      const url = img.dataset.docImg;
-      const overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
-      overlay.innerHTML = `<img src="${esc(url)}" style="max-width:95vw;max-height:95vh;">`;
-      overlay.addEventListener('click', () => overlay.remove());
-      document.body.appendChild(overlay);
+      const startIdx = allDocImgs.indexOf(img.dataset.docImg);
+      openFullscreen(allDocImgs, Math.max(0, startIdx));
     });
   });
 }

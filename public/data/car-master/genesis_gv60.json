@@ -919,7 +919,8 @@
           "codes": [
             "WK_드라이빙_어시스턴스_패키지_I"
           ],
-          "price": 1200000
+          "price": 1200000,
+          "group": "driving_assist"
         },
         {
           "name": "뱅앤올룹슨 사운드",
@@ -1109,7 +1110,8 @@
           "codes": [
             "WK_드라이빙_어시스턴스_패키지_I"
           ],
-          "price": 1200000
+          "price": 1200000,
+          "group": "driving_assist"
         },
         {
           "name": "뱅앤올룹슨 사운드",
@@ -1299,7 +1301,8 @@
           "codes": [
             "WK_드라이빙_어시스턴스_패키지_I"
           ],
-          "price": 1200000
+          "price": 1200000,
+          "group": "driving_assist"
         },
         {
           "name": "뱅앤올룹슨 사운드",

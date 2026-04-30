@@ -1355,11 +1355,16 @@ async function deleteRecord(collection, key) {
    v2 와 동일한 상하 스크롤 방식 (openFullscreen) 사용 — 좌우 prev/next 안 씀 */
 function bindPhotoClicks() {
   document.body.addEventListener('click', (e) => {
-    // 메인 사진 또는 썸네일 클릭
+    // (a) 명시적 [data-fullscreen-img] 마커 — 채팅 이미지 등 단일 이미지 풀스크린
+    const directImg = e.target.closest('[data-fullscreen-img]');
+    if (directImg) {
+      const url = directImg.dataset.fullscreenImg;
+      if (url) { openFullscreen([url], 0); return; }
+    }
+    // (b) 상품 상세 갤러리 메인/썸네일 — 같은 패널의 모든 사진 모아서 풀스크린
     const img = e.target.closest('img.detail-photo-main, .detail-photo-thumb img');
     if (!img) return;
-    if (img.closest('.srch-fullscreen, .lightbox-overlay')) return;   // 풀스크린 안의 이미지 무시
-    // 현재 열린 detail 의 모든 사진 수집
+    if (img.closest('.srch-fullscreen, .lightbox-overlay')) return;
     const card = img.closest('.ws4-card, .ws4-body');
     if (!card) return;
     const all = [...card.querySelectorAll('.detail-photo-thumb img, img.detail-photo-main')]

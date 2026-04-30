@@ -223,8 +223,8 @@
     "프리미엄": {
       "slug": "프리미엄",
       "price": {
-        "tax_5_before": 44580000,
-        "tax_5_after": 43760000
+        "base": 43760000,
+        "before_tax": 44500000
       },
       "basic": [
         "WK_하이브리드_전용_e_Motion_Drive_시스템_e_Dynamic_Drive__e_Com",
@@ -292,8 +292,8 @@
     "익스클루시브": {
       "slug": "익스클루시브",
       "price": {
-        "tax_5_before": 49530000,
-        "tax_5_after": 48620000
+        "base": 48620000,
+        "before_tax": 49530000
       },
       "basic": [
         "WK_프리미엄_기본품목_외",
@@ -343,8 +343,8 @@
     "캘리그래피": {
       "slug": "캘리그래피",
       "price": {
-        "tax_5_before": 53630000,
-        "tax_5_after": 52640000
+        "base": 52640000,
+        "before_tax": 53630000
       },
       "basic": [
         "WK_익스클루시브_기본품목_외",

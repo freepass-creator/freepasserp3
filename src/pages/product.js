@@ -379,6 +379,22 @@ function renderProductPhotoPanel(photoCard, p, canEdit) {
   const extImgs      = productExternalImages(p);
   const allImgs      = [...new Set([...uploadedImgs, ...extImgs])].map(toProxiedImage);
   const photoLink    = p.photo_link || '';
+  // Drive 폴더 / autoplus / moderentcar 등 서버 스크래핑 필요 URL 자동 해석
+  //  product-detail-render.js / catalog-app.js 와 동일 규격 — image_urls 비어있고 photo_link 가 지원 사이트면
+  //  fetchDriveFolderImages 로 URL 목록 받아서 product 에 임시 주입(메모리만, _drive_folder_virtual)
+  const driveSource = supportedDriveSource(p);
+  if (driveSource && !p._drive_folder_virtual && !uploadedImgs.length) {
+    import('../core/drive-photos.js').then(m => {
+      m.fetchDriveFolderImages(driveSource).then(urls => {
+        if (!urls?.length) return;
+        p.image_urls = urls;
+        p._drive_folder_virtual = true;
+        // 같은 product 가 여전히 active 일 때만 재렌더 (사용자가 다른 차로 넘어갔으면 무시)
+        const activeId = document.querySelector('.pt-page[data-page="product"] .ws4-list .room-item.active')?.dataset.id;
+        if (activeId === p._key) renderProductPhotoPanel(photoCard, p, canEdit);
+      }).catch(() => {});
+    });
+  }
   const regImg       = p.registration_image || '';
   const regIsPdf     = regImg && (regImg.toLowerCase().includes('.pdf') || p.registration_type === 'pdf');
   const dis          = canEdit ? '' : ' disabled';

@@ -69,7 +69,8 @@ export function renderChatMessages(messages, ctx = {}) {
     // 콘텐츠
     let content;
     if (msg.image_url) {
-      content = `<img src="${msg.image_url}" class="chat-img" onclick="window.open('${msg.image_url}','_blank')">`;
+      // 클릭 → 풀스크린 (app.js 의 delegated handler 가 [data-fullscreen-img] 처리)
+      content = `<img src="${msg.image_url}" class="chat-img" data-fullscreen-img="${msg.image_url}" style="cursor:zoom-in;">`;
     } else if (msg.file_url) {
       content = `<a href="${msg.file_url}" target="_blank" class="chat-file"><i class="ph ph-paperclip"></i> ${(msg.text || '파일').replace(/</g, '&lt;')}</a>`;
     } else {
