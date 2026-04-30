@@ -128,7 +128,7 @@
 
 <!-- 가격표 오버레이 모달 (자체 표 — 외부 iframe X) -->
 <div id="priceModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;padding:20px">
-  <div style="background:#fff;border-radius:8px;width:100%;max-width:900px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+  <div style="background:#fff;border-radius:8px;width:100%;max-width:1400px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)">
     <div style="padding:14px 18px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">
       <h3 id="priceModalTitle" style="margin:0;font-size:14px;font-weight:600">📄 가격표</h3>
       <button id="priceModalClose" style="background:transparent;border:none;font-size:22px;cursor:pointer;color:#6b7280;padding:0 4px;line-height:1">×</button>
@@ -719,61 +719,76 @@ function matchCatalogToFp(catalog, trimName) {
   return matched;
 }
 
-/* 자체 가격표 생성 — 카탈로그 데이터 기반 */
+/* 가격표 — 위키카 원본 가격표 스타일 (트림 × 가격 × 기본품목 × 선택품목) */
 function buildPriceTable(cat) {
-  const fmt = v => v ? Math.round(v / 10000).toLocaleString() + '만원' : '-';
+  const fmtMan = v => v ? Math.round(v / 10000).toLocaleString() + '만' : '-';
   const trims = Object.keys(cat.trims);
+  const categories = cat.categories || {};
 
-  let html = `<h4 style="margin:0 0 10px;font-size:13px;font-weight:600">트림별 가격 (${trims.length})</h4>`;
-  html += `<table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:20px">
-    <thead><tr style="background:#f9fafb">
-      <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">트림</th>
-      <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">기본가</th>
-      <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">개소세 5%</th>
-      <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">개소세 3.5%</th>
-    </tr></thead><tbody>`;
-  for (const t of trims) {
-    const p = cat.trims[t].price || {};
-    html += `<tr>
-      <td style="padding:8px 10px;border-bottom:1px solid #f3f4f6;font-weight:500">${t}</td>
-      <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums">${fmt(p.base)}</td>
-      <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums">${fmt(p.tax_5_after || p.tax_5_before || p.tax_5)}</td>
-      <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums;color:#dc2626;font-weight:500">${fmt(p.tax_3_5_after || p.tax_3_5_before || p.tax_3_5)}</td>
+  // 트림별 select_groups 통합 (이름/가격 unique)
+  const collectSelects = (t) => {
+    const items = [];
+    (t.select_groups || []).forEach(g => {
+      if (Array.isArray(g)) return;
+      const codes = g.codes || [];
+      const names = codes.map(c => cat.options[c]?.name).filter(Boolean);
+      const display = g.name || names.join(' + ');
+      items.push({ display, price: g.price || 0 });
+    });
+    return items.sort((a, b) => b.price - a.price);
+  };
+
+  let html = `<table style="width:100%;border-collapse:collapse;font-size:11px;line-height:1.55">`;
+  html += `<thead><tr style="background:#f9fafb">
+    <th style="text-align:center;padding:10px 8px;border-bottom:2px solid #d1d5db;width:90px;font-weight:600">트림</th>
+    <th style="text-align:center;padding:10px 8px;border-bottom:2px solid #d1d5db;width:110px;font-weight:600">판매가격</th>
+    <th style="text-align:left;padding:10px 12px;border-bottom:2px solid #d1d5db;font-weight:600">주요 기본 품목</th>
+    <th style="text-align:left;padding:10px 10px;border-bottom:2px solid #d1d5db;width:180px;font-weight:600">선택품목<br><span style="font-size:9px;color:#9ca3af;font-weight:400">(세제혜택 적용 전)</span></th>
+  </tr></thead><tbody>`;
+
+  for (const tname of trims) {
+    const t = cat.trims[tname];
+    const p = t.price || {};
+    const taxBefore = p.tax_5_before || p.tax_5 || p.base || 0;
+    const taxAfter  = p.tax_3_5_after || p.tax_3_5 || p.tax_3_5_before || 0;
+
+    // 카테고리별 트림 기본 옵션 그룹화
+    const basicSet = new Set(t.basic || []);
+    const groups = [];
+    for (const [catName, codes] of Object.entries(categories)) {
+      const items = codes.filter(c => basicSet.has(c)).map(c => cat.options[c]?.name || c).filter(Boolean);
+      if (items.length) groups.push({ catName, items });
+    }
+
+    // 선택품목
+    const selects = collectSelects(t);
+
+    html += `<tr style="vertical-align:top;border-bottom:1px solid #e5e7eb">
+      <td style="text-align:center;padding:14px 8px;font-weight:600;background:#fafafa;border-right:1px solid #e5e7eb">${tname}</td>
+      <td style="text-align:center;padding:14px 8px;border-right:1px solid #e5e7eb;font-variant-numeric:tabular-nums">
+        <div style="font-weight:600;color:#111827;font-size:12px">${fmtMan(taxBefore)}</div>
+        ${taxAfter ? `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed #e5e7eb;font-size:10px;color:#6b7280">친환경차<br>세제혜택 후</div>
+        <div style="font-weight:600;color:#dc2626;font-size:12px;margin-top:2px">${fmtMan(taxAfter)}</div>` : ''}
+      </td>
+      <td style="padding:14px 12px;border-right:1px solid #e5e7eb">
+        ${groups.length ? groups.map(g => `
+          <div style="margin-bottom:6px"><span style="font-weight:600;color:#111827">• ${g.catName}</span> <span style="color:#374151">: ${g.items.join(', ')}</span></div>
+        `).join('') : '<span style="color:#9ca3af">-</span>'}
+      </td>
+      <td style="padding:14px 10px;font-size:10.5px;color:#374151">
+        ${selects.length ? selects.map(s => {
+          const priceTxt = s.price ? `<span style="color:#dc2626;font-weight:600">: ${fmtMan(s.price)}</span>` : '';
+          return `<div style="margin-bottom:4px">• ${s.display}${priceTxt}</div>`;
+        }).join('') : '<span style="color:#9ca3af">-</span>'}
+      </td>
     </tr>`;
   }
   html += `</tbody></table>`;
 
-  // 패키지 — 전 트림에서 unique
-  const pkgs = new Map();
-  for (const t of trims) {
-    const groups = cat.trims[t].select_groups || [];
-    for (const g of groups) {
-      if (Array.isArray(g)) continue;
-      const key = g.name || (g.codes || []).join('|');
-      if (!key || pkgs.has(key)) continue;
-      const codes = g.codes || [];
-      const names = codes.map(c => cat.options[c]?.name || c);
-      const display = g.name || names.join(' + ');
-      pkgs.set(key, { display, price: g.price || 0, items: names });
-    }
-  }
-  if (pkgs.size > 0) {
-    html += `<h4 style="margin:0 0 10px;font-size:13px;font-weight:600">선택 패키지 (${pkgs.size})</h4>`;
-    html += `<table style="width:100%;border-collapse:collapse;font-size:12px">
-      <thead><tr style="background:#f9fafb">
-        <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600">패키지</th>
-        <th style="text-align:right;padding:8px 10px;border-bottom:1px solid #e5e7eb;font-weight:600;white-space:nowrap">가격</th>
-      </tr></thead><tbody>`;
-    [...pkgs.values()].sort((a, b) => b.price - a.price).forEach(p => {
-      const sub = (p.display !== p.items.join(' + ') && p.items.length)
-        ? `<div style="font-size:10px;color:#6b7280;margin-top:2px">${p.items.join(' · ')}</div>` : '';
-      html += `<tr>
-        <td style="padding:8px 10px;border-bottom:1px solid #f3f4f6"><div style="font-weight:500">${p.display}</div>${sub}</td>
-        <td style="text-align:right;padding:8px 10px;border-bottom:1px solid #f3f4f6;font-variant-numeric:tabular-nums;color:#dc2626;font-weight:500;white-space:nowrap">${fmt(p.price)}</td>
-      </tr>`;
-    });
-    html += `</tbody></table>`;
-  }
+  // 우측 상단 일자 표기 (위키카 스타일)
+  const ts = cat.fetched_at ? `(${cat.fetched_at} 기준, 단위: 원)` : '(단위: 원)';
+  html = `<div style="text-align:right;font-size:10px;color:#6b7280;margin-bottom:8px">${ts}</div>` + html;
+
   return html;
 }
 
