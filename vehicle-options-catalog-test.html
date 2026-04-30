@@ -56,11 +56,16 @@
   .price-calc .breakdown .muted{color:#9ca3af}
   .price-calc .total{font-size:15px;font-weight:600;color:#111827;font-variant-numeric:tabular-nums}
   .price-calc .total .label{font-size:11px;color:#6b7280;font-weight:400;margin-right:6px}
-  .empty{font-size:11px;color:#9ca3af;padding:24px 0;text-align:center;display:flex;align-items:center;justify-content:center;min-height:560px}
-  /* 콘텐츠 영역 min-height — 차종/트림 변경 시 레이아웃 점프 방지 */
-  #catalogPanel{min-height:640px}
-  #emptyPanel{min-height:640px;display:flex;align-items:center;justify-content:center}
-  #trimContent{min-height:520px}
+  .empty{font-size:11px;color:#9ca3af;padding:24px 0;text-align:center;display:flex;align-items:center;justify-content:center;height:100%}
+  /* 작업 영역 고정 — 차종/트림 변경해도 페이지 점프 X, 내부 스크롤 처리 */
+  #catalogPanel,#emptyPanel{
+    height:calc(100vh - 200px);
+    min-height:520px;
+    max-height:780px;
+    overflow-y:auto;
+    box-sizing:border-box;
+  }
+  #emptyPanel{display:flex;align-items:center;justify-content:center}
   .raw-toggle{font-size:11px;color:#6b7280;cursor:pointer;text-decoration:underline;margin-top:14px}
   pre{background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;padding:10px;font-size:11px;overflow:auto;max-height:400px;margin-top:8px;white-space:pre-wrap}
 </style>
