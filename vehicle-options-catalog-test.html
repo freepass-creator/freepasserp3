@@ -98,6 +98,30 @@ const state = {
 };
 
 // 그랜저 HG 출시(2011-01)가 컷오프. 그 이전 출시 모델 제외
+// 세부모델 표기 정규화 — 괄호 제거 + 기아 N세대 → 개발코드
+const KIA_GEN_CODE_MAP = {
+  'K5': { '3세대': 'DL3', '2세대': 'JF' },
+  'K9': { '2세대': 'RJ' },
+  '카니발': { '4세대': 'KA4' },
+  '스포티지': { '5세대': 'NQ5' },
+  '쏘렌토': { '4세대': 'MQ4' },
+  '셀토스': { '2세대': 'SP3' },
+  '쏘울 부스터': {},  // 부스터는 그대로
+  'K3': { '2세대': 'BD' }
+};
+function normalizeSub(row) {
+  let s = (row.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
+  if (row.maker === '기아') {
+    const codes = KIA_GEN_CODE_MAP[row.model];
+    if (codes) {
+      for (const [gen, code] of Object.entries(codes)) {
+        s = s.replace(new RegExp(gen + '\\b', 'g'), code);
+      }
+    }
+  }
+  return s;
+}
+
 function withinScope(row) {
   const ps = row.production_start || '';
   return ps >= '2011-01';
@@ -221,8 +245,7 @@ function onModelChange() {
     const opt = document.createElement('option');
     opt.value = r._key;
     const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
-    const cleanSub = (r.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
-    opt.textContent = `${cleanSub} (${yr})`;
+    opt.textContent = `${normalizeSub(r)} (${yr})`;
     sel.appendChild(opt);
   });
   sel.disabled = false;
