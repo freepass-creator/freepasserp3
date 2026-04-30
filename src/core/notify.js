@@ -30,3 +30,13 @@ export async function notifyProviderAndAdmin({ template, providerCode, message, 
     sendAlimtalk({ template, tel, message, subject }).catch(() => null)
   ));
 }
+
+/* 모든 관리자에게만 발송 (관리자 소통 등). */
+export async function notifyAdmins({ template, message, subject }) {
+  const tels = getAdminTels();
+  if (!tels.length) return;
+  const unique = [...new Set(tels)];
+  await Promise.all(unique.map(tel =>
+    sendAlimtalk({ template, tel, message, subject }).catch(() => null)
+  ));
+}

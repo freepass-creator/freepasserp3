@@ -35,7 +35,7 @@ import {
   createContractFromRoomLocal, makeTempContractCode, allocateRealContractCode,
 } from './pages/contract.js';
 import { pickAgent, pickPartner, pickOrCreateCustomer, normalizePhone } from './core/dialogs.js';
-import { getProviderTel, getAdminTels, notifyProviderAndAdmin } from './core/notify.js';
+import { getProviderTel, getAdminTels, notifyProviderAndAdmin, notifyAdmins } from './core/notify.js';
 import {
   calibrateSearchCols, renderSearchTable, renderSearchDetail,
   bindSearchInteractions, bindSearchSelection, applySearchFilter,
@@ -937,6 +937,9 @@ function openAdminChatRoomInPage(roomKey) {
     const text = input.value.trim();
     if (!text) return;
     input.value = '';
+    // 첫 메시지 여부 — 룸의 last_message 가 비어있으면 첫 대화 → 관리자에게 알림
+    const roomBefore = (store.rooms || []).find(r => r._key === roomKey);
+    const isFirstMessage = !roomBefore?.last_message;
     try {
       await pushRecord(`messages/${roomKey}`, {
         text, sender_uid: me.uid, sender_name: me.name || me.email || '',
@@ -946,6 +949,15 @@ function openAdminChatRoomInPage(roomKey) {
         last_message: text, last_message_at: Date.now(),
         last_sender_role: me.role || '', last_sender_code: me.user_code || '',
       });
+      // 비admin 의 첫 메시지 → 관리자에게 SMS/알림톡 (실패해도 비즈니스 플로우는 안 막힘)
+      if (isFirstMessage && me.role !== 'admin') {
+        const senderLabel = me.role === 'provider' ? '공급사' : '영업자';
+        notifyAdmins({
+          template: 'admin_chat_new',
+          subject: '관리자 소통 신규 문의',
+          message: `[Freepass] ${senderLabel} ${me.name || me.email}님이 관리자에게 문의를 시작했습니다.\n첫 메시지: ${text.slice(0, 80)}${text.length > 80 ? '...' : ''}`,
+        }).catch(() => null);
+      }
     } catch (err) {
       console.error('[admin-chat send]', err);
       showToast('전송 실패', 'error');
