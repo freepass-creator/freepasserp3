@@ -692,11 +692,29 @@ function matchFpByName(name) {
 function matchCatalogToFp(catalog, trimName) {
   const matched = new Set();
   const t = catalog.trims[trimName];
-  if (!t || !Array.isArray(t.basic)) return matched;
-  for (const optId of t.basic) {
-    const info = catalog.options[optId];
-    if (!info) continue;
-    matchFpByName(info.name).forEach(id => matched.add(id));
+  if (!t) return matched;
+  // 1. basic 옵션
+  if (Array.isArray(t.basic)) {
+    for (const optId of t.basic) {
+      const info = catalog.options[optId];
+      if (info) matchFpByName(info.name).forEach(id => matched.add(id));
+    }
+  }
+  // 2. 직원이 선택한 패키지의 코드 → 옵션 → FP 매칭
+  if (Array.isArray(t.select_groups)) {
+    for (const idx of state.selectedPkgs) {
+      const group = t.select_groups[idx];
+      if (!group) continue;
+      const codes = Array.isArray(group) ? group : (group.codes || []);
+      for (const optId of codes) {
+        const info = catalog.options[optId];
+        if (info) matchFpByName(info.name).forEach(id => matched.add(id));
+      }
+      // 패키지 자체에 name 이 있으면 그것도 매칭 시도 (예: "컴포트 II 패키지")
+      if (!Array.isArray(group) && group.name) {
+        matchFpByName(group.name).forEach(id => matched.add(id));
+      }
+    }
   }
   return matched;
 }
