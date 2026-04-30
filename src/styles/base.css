@@ -919,6 +919,7 @@ kbd, .kbd {
   --button-height: 26px;
   --chip-height:   20px;
   --panel-head-h:  34px;
+  --topbar-h:      42px;     /* 상단바만 살짝 키움 (입력칸/패널 헤더 그대로) */
   --sb-item-h:     30px;
   --cell-padding:  4px 8px;
 
