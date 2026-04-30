@@ -18,14 +18,41 @@ const _persistenceReady = Promise.race([
   new Promise(resolve => setTimeout(resolve, 1000)),
 ]);
 
+/* Firebase auth 관련 localStorage·sessionStorage 강제 정리 (stale 토큰 복구용).
+ *  로그인 form 의 [초기화] 버튼 또는 initAuth 타임아웃 시 호출. */
+function nukeFirebaseStorage() {
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith('firebase:') || k.startsWith('@firebase/')) localStorage.removeItem(k);
+    });
+    Object.keys(sessionStorage).forEach(k => {
+      if (k.startsWith('firebase:') || k.startsWith('@firebase/')) sessionStorage.removeItem(k);
+    });
+  } catch (_) {}
+}
+window.nukeFirebaseStorage = nukeFirebaseStorage;
+
 /** Watch auth state and load user profile
  *  - Firebase는 토큰 갱신 시에도 onAuthStateChanged emit → UID 변경 시에만 profile 재로드
  *  - Promise는 최초 1회만 resolve (재호출 무시)
+ *  - 5초 타임아웃: stale 토큰으로 onAuthStateChanged 가 영원히 대기하면 강제 종료 + 자동 복구
  */
 export function initAuth() {
   return new Promise((resolve) => {
     let resolved = false;
     let lastUid = null;
+
+    // 5초 안에 settle 안 되면 stale 토큰으로 가정 — Firebase storage 비우고 anonymous 로 진행
+    const timeoutId = setTimeout(() => {
+      if (resolved) return;
+      console.warn('[auth] initAuth timeout — stale 토큰 의심, Firebase storage 정리 후 로그인 화면 표시');
+      nukeFirebaseStorage();
+      store.currentUser = null;
+      store.authReady = true;
+      resolved = true;
+      resolve(null);
+    }, 5000);
+
     onAuthStateChanged(auth, async (user) => {
       const uid = user?.uid || null;
       if (uid === lastUid && uid !== null) {
@@ -49,7 +76,7 @@ export function initAuth() {
         store.currentUser = null;
       }
       store.authReady = true;
-      if (!resolved) { resolved = true; resolve(store.currentUser); }
+      if (!resolved) { resolved = true; clearTimeout(timeoutId); resolve(store.currentUser); }
     });
   });
 }

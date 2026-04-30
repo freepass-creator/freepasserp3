@@ -924,7 +924,9 @@ function openAdminChatRoomInPage(roomKey) {
       body.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);font-size:12px;">대화를 시작해보세요</div>';
       return;
     }
-    body.innerHTML = msgs.map(m => {
+    // 시간순 정렬 (오래된 게 위, 최신이 아래) — watchCollection 기본은 desc 라 reverse 필요
+    const sorted = [...msgs].sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
+    body.innerHTML = sorted.map(m => {
       const mine = m.sender_uid === me.uid;
       const dt = m.created_at ? new Date(m.created_at).toLocaleTimeString('ko', { hour: '2-digit', minute: '2-digit' }) : '';
       return `
@@ -934,7 +936,7 @@ function openAdminChatRoomInPage(roomKey) {
           <div class="adm-chat-time">${dt}</div>
         </div>`;
     }).join('');
-    body.scrollTop = body.scrollHeight;
+    body.scrollTop = body.scrollHeight;     // 최신 메시지로 스크롤
   });
 
   // 입력바 send 핸들러 — 매번 재바인딩 (단순)
