@@ -1046,6 +1046,32 @@ function onMakerChange() {
   resetCatalog();
 }
 
+// 페이스리프트 split — 엔카가 통합 entry로 둔 차종을 페리 전/후로 분리 표시
+//   같은 _key 사용 → 카탈로그는 같은 것 (옵션 거의 동일) but 표시명만 다름
+//   배열 첫 번째 = 최신(페리 후), 두 번째 = 페리 전
+const FL_SPLITS = {
+  'encar_007_002_006': [   // 제네시스 G80 RG3
+    { display: '디 올 뉴 G80 RG3', from: '2024-01' },
+    { display: 'G80 RG3',          from: '2020-01', to: '2023-12' },
+  ],
+  'encar_007_006_008': [   // 제네시스 GV70
+    { display: '디 올 뉴 GV70', from: '2024-01' },
+    { display: 'GV70',          from: '2020-01', to: '2023-12' },
+  ],
+  'encar_007_005_005': [   // 제네시스 GV80
+    { display: '디 올 뉴 GV80', from: '2024-01' },
+    { display: 'GV80',          from: '2020-01', to: '2023-12' },
+  ],
+  'encar_001_019_182': [   // 현대 아반떼 CN7
+    { display: '더 뉴 아반떼 CN7', from: '2023-01' },
+    { display: '아반떼 CN7',       from: '2020-01', to: '2022-12' },
+  ],
+  'encar_001_019_183': [   // 현대 아반떼 하이브리드 CN7
+    { display: '더 뉴 아반떼 하이브리드 CN7', from: '2023-01' },
+    { display: '아반떼 하이브리드 CN7',       from: '2020-01', to: '2022-12' },
+  ],
+};
+
 function onModelChange() {
   const maker = $('maker').value;
   const model = $('model').value;
@@ -1054,13 +1080,25 @@ function onModelChange() {
   if (!model) { sel.disabled = true; resetCatalog(); return; }
   const subs = state.master.filter(r => r.maker === maker && r.model === model);
   subs.sort((a,b) => (b.production_start||'').localeCompare(a.production_start||''));
+  const showYear = $('showYear')?.checked;
   subs.forEach(r => {
-    const opt = document.createElement('option');
-    opt.value = r._key;
-    const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
-    const showYear = $('showYear')?.checked;
-    opt.textContent = showYear ? `${normalizeSub(r)} (${yr})` : normalizeSub(r);
-    sel.appendChild(opt);
+    const splits = FL_SPLITS[r._key];
+    if (splits) {
+      // FL split 으로 두 entry 추가 (같은 _key)
+      for (const sp of splits) {
+        const opt = document.createElement('option');
+        opt.value = r._key;
+        const yr = `${sp.from.slice(0,4)}~${sp.to ? sp.to.slice(0,4) : '현재'}`;
+        opt.textContent = showYear ? `${sp.display} (${yr})` : sp.display;
+        sel.appendChild(opt);
+      }
+    } else {
+      const opt = document.createElement('option');
+      opt.value = r._key;
+      const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
+      opt.textContent = showYear ? `${normalizeSub(r)} (${yr})` : normalizeSub(r);
+      sel.appendChild(opt);
+    }
   });
   sel.disabled = false;
   $('trim').innerHTML = '<option>트림</option>'; $('trim').disabled = true;

@@ -562,11 +562,11 @@ function pageStatsHtml(p) {
   }
   if (p === 'users') {
     const list = (store.users || []).filter(x => !x._deleted);
-    const pending = list.filter(x => x.status === 'pending').length;
-    const active = list.filter(x => x.is_active !== false && x.status !== 'pending' && x.status !== 'rejected').length;
+    const pending = list.filter(x => x.status === 'pending' || x.is_active === false || x.status === 'rejected').length;
+    const approved = list.length - pending;
     return `<span class="stat-total">총 ${list.length}명</span>
-      <span class="stat-즉시">활성 ${active}</span>
-      ${pending ? `<span class="stat-협의">승인 대기 ${pending}</span>` : ''}`;
+      <span class="stat-즉시">승인 ${approved}</span>
+      <span class="stat-협의">대기 ${pending}</span>`;
   }
   return '';
 }
