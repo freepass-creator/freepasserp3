@@ -322,8 +322,9 @@ export function bindFormSave(page, collection, key, _current, options = {}) {
         if (t.el.value === t.getOriginal()) continue;
         patch[t.f] = t.el.value;
         if (t.f === 'status') {
-          if (t.el.value === '비활성') patch.is_active = false;
-          else if (t.el.value === '활성') patch.is_active = true;
+          // canonical: 'active' / 'pending' — is_active 동기화. legacy 한글 라벨도 호환.
+          if (t.el.value === 'pending' || t.el.value === '비활성' || t.el.value === '대기') patch.is_active = false;
+          else if (t.el.value === 'active' || t.el.value === '활성' || t.el.value === '승인') patch.is_active = true;
         }
         flashEls.push(t.el);
         dirty = true;

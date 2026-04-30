@@ -57,7 +57,8 @@ export function renderRoomList(rooms) {
   // 관리자 소통 룸(is_admin_chat) 은 별도 페이지(#admin-chat) 에서만 노출 → workspace 에서 제외
   let visible = (rooms || []).filter(r => !r._deleted && !r.is_admin_chat);
   if (role === 'agent') visible = visible.filter(r => !r.hidden_for_agent && r.agent_uid === uid);
-  else if (role === 'agent_admin') visible = visible.filter(r => !r.hidden_for_admin && r.agent_channel_code === myChannel);
+  // 영업관리자 — 본인이 직접 참여한 룸만 (소속 영업자 대화는 안 보임 — 정책)
+  else if (role === 'agent_admin') visible = visible.filter(r => !r.hidden_for_agent && r.agent_uid === uid);
   else if (role === 'provider') visible = visible.filter(r => !r.hidden_for_provider && (r.provider_uid === uid || r.provider_company_code === myCompany));
   else if (role === 'admin') visible = visible.filter(r => !r.hidden_for_admin);
 

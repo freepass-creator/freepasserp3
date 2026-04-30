@@ -901,7 +901,7 @@
     }
   },
   "trims": {
-    "익스클루시브 (6인승)": {
+    "익스클루시브 6인승": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1068,7 +1068,7 @@
         }
       ]
     },
-    "프레스티지 (6인승)": {
+    "프레스티지 6인승": {
       "slug": "prestige",
       "name_en": null,
       "price": {
@@ -1286,7 +1286,7 @@
         }
       ]
     },
-    "캘리그래피 (6인승)": {
+    "캘리그래피 6인승": {
       "slug": "calligraphy",
       "name_en": null,
       "price": {
@@ -1525,7 +1525,7 @@
         }
       ]
     },
-    "익스클루시브 (7인승)": {
+    "익스클루시브 7인승": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1687,7 +1687,7 @@
         }
       ]
     },
-    "프레스티지 (7인승)": {
+    "프레스티지 7인승": {
       "slug": "prestige",
       "name_en": null,
       "price": {
@@ -1898,7 +1898,7 @@
         }
       ]
     },
-    "캘리그래피 (7인승)": {
+    "캘리그래피 7인승": {
       "slug": "calligraphy",
       "name_en": null,
       "price": {

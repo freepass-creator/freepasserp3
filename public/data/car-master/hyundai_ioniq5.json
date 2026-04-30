@@ -1099,7 +1099,7 @@
         }
       ]
     },
-    "n-line-exclusive": {
+    "익스클루시브 N 라인": {
       "slug": "n-line-exclusive",
       "name_en": "N Line Exclusive",
       "price": {
@@ -1515,7 +1515,7 @@
         }
       ]
     },
-    "n-line-prestige": {
+    "프레스티지 N 라인": {
       "slug": "n-line-prestige",
       "name_en": "N Line Prestige",
       "price": {

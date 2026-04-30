@@ -99,11 +99,22 @@ export function renderContractList(contracts) {
       priceLine,
       status,
     ].filter(Boolean);
+    // 진행단계 — 대기 / 진행 / 완료 / 취소 (아이콘 톤 통일)
+    const stage = /완료/.test(status) ? 'done'
+                : /취소/.test(status) ? 'cancel'
+                : /(요청)/.test(status) ? 'pending'
+                : 'progress';
+    const stageMeta = {
+      pending:  { icon: 'clock',         badge: '대기', tone: 'orange' },
+      progress: { icon: 'arrow-circle-right', badge: '진행', tone: 'blue' },
+      done:     { icon: 'check-circle',  badge: '완료', tone: 'green' },
+      cancel:   { icon: 'x-circle',      badge: '취소', tone: 'gray' },
+    }[stage];
     return renderRoomItem({
       id: c.contract_code || c._key,
-      icon: status === '계약완료' ? 'check-circle' : status === '계약취소' ? 'x-circle' : 'file-text',
-      badge: sb.txt,
-      tone: sb.tone,
+      icon: stageMeta.icon,
+      badge: stageMeta.badge,
+      tone: stageMeta.tone,
       name: mainLine,
       time: fmtDate(c.contract_date || c.created_at),
       msg: subParts.join(' | ') || '-',

@@ -17,42 +17,69 @@ const ROLE_BADGE = {
   admin:         { txt: '관리', tone: 'red' },
   provider:      { txt: '공급', tone: 'blue' },
   agent_admin:   { txt: '영관', tone: 'orange' },
-  agent_manager: { txt: '영관', tone: 'orange' },   // 동일 역할의 다른 표기
+  agent_manager: { txt: '영관', tone: 'orange' },   // legacy alias
   agent:         { txt: '영업', tone: 'orange' },
 };
 const ROLE_LABEL = {
-  admin: '관리자', provider: '공급', agent: '영업',
+  admin: '관리자', provider: '공급사', agent: '영업자',
   agent_admin: '영업관리자', agent_manager: '영업관리자',
 };
+
+// 사용자 목록 필터 (전역 — 사이드바 chip + 소속코드 dropdown 이 갱신)
+//  status: 'all' / 'active' / 'pending'
+//  company_code: 'all' / 특정 코드
+export const userFilter = { status: 'all', company_code: 'all' };
+
+/** 상태 정규화 — 'active'/'approved'/undefined → 'active' / 'pending'/'rejected'/inactive → 'pending' */
+function normalizeStatus(u) {
+  if (u.status === 'pending') return 'pending';
+  if (u.status === 'rejected') return 'pending';      // 반려도 대기로 통일
+  if (u.is_active === false) return 'pending';        // 비활성도 대기로 통일
+  return 'active';
+}
 
 export function renderUserList(users) {
   const body = listBody('users');
   if (!body) return;
   if (!Array.isArray(users)) return;   // 미로드 — prototype 보존
-  if (!users.length) { body.innerHTML = emptyState('사용자가 없습니다'); renderUserDetail(null); return; }
-  const sorted = [...users].sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'ko'));
+  // 1) 필터 적용 — userFilter.status / company_code
+  let filtered = users.filter(u => !u._deleted);
+  if (userFilter.status !== 'all') {
+    filtered = filtered.filter(u => normalizeStatus(u) === userFilter.status);
+  }
+  if (userFilter.company_code !== 'all') {
+    filtered = filtered.filter(u => u.company_code === userFilter.company_code);
+  }
+  if (!filtered.length) { body.innerHTML = emptyState('해당 사용자가 없습니다'); renderUserDetail(null); return; }
+  // 2) 정렬 — 대기 우선, 그 다음 이름 가나다
+  const sorted = [...filtered].sort((a, b) => {
+    const sa = normalizeStatus(a), sb = normalizeStatus(b);
+    if (sa !== sb) return sa === 'pending' ? -1 : 1;     // pending 우선
+    return String(a.name || '').localeCompare(String(b.name || ''), 'ko');
+  });
   body.innerHTML = sorted.map((u, i) => {
-    const rb = ROLE_BADGE[u.role] || { txt: '-', tone: 'gray' };
     const roleLabel = ROLE_LABEL[u.role] || u.role || '-';
-    const status = u.status === 'pending' ? '승인 대기' : (u.status === 'rejected' ? '반려' : (u.is_active === false ? '비활성' : '승인됨'));
-    // 메인: 이름 직급  /  우측: 마지막 로그인
-    const namePos = [u.name || u.email?.split('@')[0] || u._key.slice(0, 8), u.position].filter(Boolean).join(' ');
-    // 보조: 역할 | 소속 | 연락처 | 상태
-    const subParts = [
+    const norm = normalizeStatus(u);
+    // 메인: 역할 | 이름 | 이메일(계정)
+    const mainParts = [
       roleLabel,
+      u.name || u.email?.split('@')[0] || u._key.slice(0, 8),
+      u.email,
+    ].filter(Boolean);
+    // 보조: 소속 | 직급 | 연락처
+    const subParts = [
       u.company_name || u.company_code,
-      u.phone || u.email,
-      status,
+      u.position || u.title,
+      u.phone,
     ].filter(Boolean);
     return renderRoomItem({
       id: u._key,
-      icon: 'user',
-      badge: rb.txt,
-      tone: rb.tone,
-      name: namePos,
+      icon: norm === 'pending' ? 'clock' : 'check-circle',
+      badge: norm === 'pending' ? '대기' : '승인',
+      tone: norm === 'pending' ? 'orange' : 'green',
+      name: mainParts.join(' | '),
       time: fmtDate(u.last_login_at || u.created_at),
       msg: subParts.join(' | ') || '-',
-      meta: '',
       active: i === 0,
     });
   }).join('');
@@ -73,9 +100,9 @@ export function renderUserDetail(u) {
   const role = store.currentUser?.role;
   const canEdit = role === 'admin';
   const dis = canEdit ? '' : ' disabled';
-  const ROLES = [['admin', '관리자'], ['provider', '공급'], ['agent_admin', '영업관리'], ['agent', '영업']];
-  const STATUSES = ['활성', '대기', '반려', '비활성'];
-  const currentStatus = u.is_active === false ? '비활성' : (u.status || '활성');
+  const ROLES = [['admin', '관리자'], ['provider', '공급사'], ['agent_admin', '영업관리자'], ['agent', '영업자']];
+  const STATUSES = [['active', '승인'], ['pending', '대기']];
+  const currentStatus = normalizeStatus(u);   // 'active' / 'pending'
   // 사용자 소속 회사 후보 — partners 기반. value=partner_code, display=partner_name
   const companies = (store.partners || []).filter(p => !p._deleted).map(p => ({
     code: p.partner_code || p.company_code || p._key,
@@ -99,11 +126,7 @@ export function renderUserDetail(u) {
           ${u.company_code && !companies.find(c => c.code === u.company_code) ? `<option value="${esc(u.company_code)}" selected>${esc(u.company_code)}</option>` : ''}
         </select></div>
         <div class="ff"><label>연락처</label><input type="text" class="input" data-f="phone" value="${esc(u.phone || '')}"${lock}></div>
-        <div class="ff"><label>상태</label>
-          <div data-f="status" style="display:flex; gap:3px; flex-wrap:wrap;">
-            ${STATUSES.map(s => `<span class="chip${s === currentStatus ? ' active' : ''}" data-v="${esc(s)}">${esc(s)}</span>`).join('')}
-          </div>
-        </div>
+        <div class="ff"><label>상태</label><select class="input" data-f="status"${lockSel}>${STATUSES.map(([k, v]) => `<option value="${k}" ${k === currentStatus ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
         <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${lock}>${esc(u.memo || '')}</textarea></div>
       </div>
     `;
@@ -117,16 +140,16 @@ export function renderUserDetail(u) {
       return myContracts.filter(c => { const t = c.created_at; if (!t) return false; const d = new Date(t); return d.getFullYear() === y && d.getMonth() === mo; }).length;
     })();
     const rows = [
-      ['이름', u.name],
-      ['직책', u.title],
+      ['이름', u.name, true],
+      ['직책', u.title, true],
       ['이메일', u.email, true],
-      ['역할', ROLE_LABEL[u.role] || u.role || '-'],
-      ['상태', currentStatus],
+      ['역할', ROLE_LABEL[u.role] || u.role || '-', true],
+      ['상태', currentStatus, true],
       ['소속', [u.company_name, u.company_code].filter(Boolean).join(' | '), true],
       ['연락처', u.phone, true],
       ['최근 로그인', fmtFullTime(u.last_login_at), true],
-      ['담당 계약', myContracts.length + '건'],
-      ['이번달', thisMonth + '건'],
+      ['담당 계약', myContracts.length + '건', true],
+      ['이번달', thisMonth + '건', true],
       ['등록일', fmtDate(u.created_at), true],
     ].filter(([, v]) => v != null && v !== '');
     detailCard.querySelector('.ws4-body').innerHTML = `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;

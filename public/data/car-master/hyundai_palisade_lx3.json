@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_palisade_lx3",
-  "title": "현대 디 올 뉴 팰리세이드 (LX3)",
+  "title": "현대 디 올 뉴 팰리세이드 LX3",
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
@@ -1045,7 +1045,7 @@
     }
   },
   "trims": {
-    "익스클루시브 (2.5 9인승)": {
+    "익스클루시브 2.5 9인승": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1212,7 +1212,7 @@
         }
       ]
     },
-    "프레스티지 (2.5 9인승)": {
+    "프레스티지 2.5 9인승": {
       "slug": "prestige",
       "name_en": null,
       "price": {
@@ -1430,7 +1430,7 @@
         }
       ]
     },
-    "캘리그래피 (2.5 9인승)": {
+    "캘리그래피 2.5 9인승": {
       "slug": "calligraphy",
       "name_en": null,
       "price": {
@@ -1660,7 +1660,7 @@
         }
       ]
     },
-    "익스클루시브 (2.5 7인승)": {
+    "익스클루시브 2.5 7인승": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1827,7 +1827,7 @@
         }
       ]
     },
-    "프레스티지 (2.5 7인승)": {
+    "프레스티지 2.5 7인승": {
       "slug": "prestige",
       "name_en": null,
       "price": {
@@ -2052,7 +2052,7 @@
         }
       ]
     },
-    "캘리그래피 (2.5 7인승)": {
+    "캘리그래피 2.5 7인승": {
       "slug": "calligraphy",
       "name_en": null,
       "price": {

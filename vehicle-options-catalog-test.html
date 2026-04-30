@@ -219,7 +219,9 @@ const state = {
   catalog: null,         // car-options-catalog JSON
   activeTrim: null,
   selectedPkgs: new Set(), // 선택한 패키지 인덱스
-  fpOptions: new Set()   // 프리패스 표준 옵션 ID 셋
+  fpOptions: new Set(),  // 프리패스 표준 옵션 ID 셋
+  codeByEncar: {},       // encar_key → catalog code
+  titleByEncar: {}       // encar_key → catalog title (메이커 prefix 제거된 형태)
 };
 
 /* ─── 프리패스 표준 옵션 마스터 (95개) ─── */
@@ -858,19 +860,42 @@ function prefillFpFromSeed() {
 }
 
 // 그랜저 HG 출시(2011-01)가 컷오프. 그 이전 출시 모델 제외
-// 세부모델 표기 정규화 — 괄호 제거 + 메이커별 N세대 → 개발코드 통일
+// 세부모델 표기 정규화 — 괄호 제거 + 메이커별 N세대 → 개발코드 통일 (제조사식 표기)
+//   "K5 3세대 (2019~2023)" → "K5 DL3"
+//   "더 뉴 K5 3세대 (2023~현재)" → "더 뉴 K5 DL3"
+//   "K5 1세대" → "K5" (코드 없으면 그냥 제거)
 const GEN_CODE_MAP = {
+  '현대': {
+    '그랜저': { '7세대': 'GN7', '6세대': 'IG' },
+    '쏘나타': { '8세대': 'DN8', '7세대': 'LF' },
+    '아반떼': { '7세대': 'CN7', '6세대': 'AD' },
+    '싼타페': { '5세대': 'MX5', '4세대': 'TM' },
+    '팰리세이드': { '2세대': 'LX3', '1세대': 'LX2' },
+    '코나': { '2세대': 'SX2', '1세대': 'OS' },
+    '투싼': { '4세대': 'NX4', '3세대': 'TL' },
+    '베뉴': { '1세대': 'QX' },
+    '캐스퍼': { '1세대': 'AX' },
+    '스타리아': { '1세대': 'US4' },
+    '아이오닉5': { '1세대': 'NE' },
+    '아이오닉6': { '1세대': 'CE' },
+    '아이오닉9': { '1세대': 'ME' },
+    '넥쏘': { '2세대': 'NH2', '1세대': 'NH1' },
+  },
   '기아': {
+    'K3': { '2세대': 'BD' },
     'K5': { '3세대': 'DL3', '2세대': 'JF' },
+    'K8': { '1세대': 'GL3' },
     'K9': { '2세대': 'RJ' },
-    '카니발': { '4세대': 'KA4' },
-    '스포티지': { '5세대': 'NQ5' },
-    '쏘렌토': { '4세대': 'MQ4' },
-    '셀토스': { '2세대': 'SP3' },
-    'K3': { '2세대': 'BD' }
+    '카니발': { '4세대': 'KA4', '3세대': 'YP' },
+    '쏘렌토': { '4세대': 'MQ4', '3세대': 'UM' },
+    '스포티지': { '5세대': 'NQ5', '4세대': 'QL' },
+    '셀토스': { '2세대': 'SP3', '1세대': 'SP2' },
+    '니로': { '2세대': 'SG2' },
+    '모닝': { '3세대': 'JA' },
+    '레이': { '1세대': 'TAM' },
   }
 };
-// 제네시스는 sub 에 코드명 거의 없음 → 모델별 기본 코드 부여
+// 제네시스: sub 에 코드명 거의 없음 → 모델별 기본 코드 부여
 const GENESIS_DEFAULT_CODE = {
   'G70': 'IK',
   'G80': 'RG3',     // RG3 = 현재 / DH = 이전
@@ -880,24 +905,31 @@ const GENESIS_DEFAULT_CODE = {
   'GV80': 'JX1'
 };
 function normalizeSub(row) {
-  let s = (row.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
-  // 1) 기아 N세대 → 코드
+  // 1순위: 카탈로그 매핑 — title 그대로 사용 (페이스리프트 prefix "디 올 뉴" / "더 뉴" 자동 반영)
+  const catTitle = state.titleByEncar?.[row._key];
+  if (catTitle) return catTitle;
+
+  // 2순위: 카탈로그 매핑 없음 — sub 정리 + GEN_CODE_MAP fallback
+  let s = (row.sub || '');
+  s = s.replace(/\s*\(\d{4}\s*[~–\-]\s*(\d{4}|현재)\s*\)\s*/g, ' ');  // 연도 범위 제거
+  s = s.replace(/\s*\(([^)]+)\)/g, ' $1');                              // 일반 괄호 평문화
+  s = s.replace(/\s+/g, ' ').trim();
   const codes = GEN_CODE_MAP[row.maker]?.[row.model];
   if (codes) {
     for (const [gen, code] of Object.entries(codes)) {
-      s = s.replace(new RegExp(gen + '\\b', 'g'), code);
+      s = s.replace(new RegExp(gen, 'g'), code);
     }
   }
-  // 2) 제네시스: 코드 없으면 기본 코드 부여 + 이전 세대 구분
+  s = s.replace(/\s*\d세대\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  // 제네시스 기본 코드 fallback
   if (row.maker === '제네시스') {
     const defaultCode = GENESIS_DEFAULT_CODE[row.model];
     if (defaultCode && !/[A-Z]+\d+|RJ|JF|DH|RS3/i.test(s)) {
-      // 이전 세대 식별 (production_start 로): G80 2017 = DH, G90 2017 = RS3
       const ps = row.production_start || '';
       let codeUsed = defaultCode;
       if (row.model === 'G80' && ps < '2020-01') codeUsed = 'DH';
       else if (row.model === 'G90' && ps < '2022-01') codeUsed = 'RS3';
-      s = s.replace(new RegExp('\\b' + row.model + '\\b'), row.model + ' ' + codeUsed).replace(/\s+/g, ' ');
+      s = s.replace(new RegExp(row.model, 'g'), row.model + ' ' + codeUsed).replace(/\s+/g, ' ');
     }
   }
   return s;
@@ -1254,7 +1286,30 @@ async function init() {
     return;
   }
   state.master = data;
-  $('status').textContent = `프리패스 차종 매트릭스 ${data.length}건 로드 완료.`;
+  // 카탈로그 _index 미리 로드 — encar_key → catalog 정보 매핑 빌드
+  //  codeByEncar: 코드 추출 (e.g., "RG3")
+  //  titleByEncar: 메이커 prefix 제거한 full title (e.g., "디 올 뉴 G80 RG3")
+  //  → titleByEncar 가 우선 (페이스리프트 prefix 등 모두 반영)
+  const idx = await loadIndex();
+  state.codeByEncar = {};
+  state.titleByEncar = {};
+  const _extractCode = (title) => {
+    const toks = (title || '').trim().split(/\s+/);
+    for (let i = toks.length - 1; i >= 0; i--) {
+      if (/^[A-Z][A-Z0-9]+$/.test(toks[i])) return toks[i];
+    }
+    return '';
+  };
+  for (const entry of Object.values(idx || {})) {
+    const fullTitle = entry.title || '';
+    const titleNoMaker = fullTitle.replace(new RegExp('^' + (entry.maker || '') + '\\s+'), '').trim();
+    const code = _extractCode(fullTitle);
+    for (const ek of (entry.source?.encar || [])) {
+      if (titleNoMaker) state.titleByEncar[ek] = titleNoMaker;
+      if (code) state.codeByEncar[ek] = code;
+    }
+  }
+  $('status').textContent = `프리패스 차종 매트릭스 ${data.length}건 로드 완료. (자동 코드 매핑: ${Object.keys(state.codeByEncar).length}건)`;
   fillMakers();
   $('maker').addEventListener('change', onMakerChange);
   $('model').addEventListener('change', onModelChange);

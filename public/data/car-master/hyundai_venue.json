@@ -422,7 +422,7 @@
     }
   },
   "trims": {
-    "스마트 (영업용 LPG 1.6)": {
+    "스마트 영업용 LPG 1.6": {
       "slug": "smart",
       "name_en": null,
       "price": {
@@ -485,7 +485,7 @@
         }
       ]
     },
-    "운전교습용 (LPG 1.6)": {
+    "운전교습용 LPG 1.6": {
       "slug": "smart",
       "name_en": null,
       "price": {

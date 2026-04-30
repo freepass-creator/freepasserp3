@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_sonata_dn8_edge",
-  "title": "현대 쏘나타 디 엣지 (DN8)",
+  "title": "현대 쏘나타 디 엣지 DN8",
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
@@ -935,7 +935,7 @@
     }
   },
   "trims": {
-    "프리미엄 (2.0)": {
+    "프리미엄 2.0": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -1069,7 +1069,7 @@
         }
       ]
     },
-    "에스 (2.0)": {
+    "에스 2.0": {
       "slug": "s",
       "name_en": null,
       "price": {
@@ -1182,7 +1182,7 @@
         }
       ]
     },
-    "익스클루시브 (2.0)": {
+    "익스클루시브 2.0": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1317,7 +1317,7 @@
         }
       ]
     },
-    "인스퍼레이션 (2.0)": {
+    "인스퍼레이션 2.0": {
       "slug": "inspiration",
       "name_en": null,
       "price": {
@@ -1455,7 +1455,7 @@
         }
       ]
     },
-    "프리미엄 (LPG 2.0)": {
+    "프리미엄 LPG 2.0": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -1582,7 +1582,7 @@
         }
       ]
     },
-    "익스클루시브 (LPG 2.0)": {
+    "익스클루시브 LPG 2.0": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1711,7 +1711,7 @@
         }
       ]
     },
-    "인스퍼레이션 (LPG 2.0)": {
+    "인스퍼레이션 LPG 2.0": {
       "slug": "inspiration",
       "name_en": null,
       "price": {
@@ -1842,7 +1842,7 @@
         }
       ]
     },
-    "프리미엄 (N라인)": {
+    "프리미엄 N라인": {
       "slug": "premium",
       "name_en": "N Line",
       "price": {
@@ -2004,7 +2004,7 @@
         }
       ]
     },
-    "익스클루시브 (장애인용)": {
+    "익스클루시브 장애인용": {
       "slug": "exclusive-right-hand",
       "name_en": null,
       "price": {
@@ -2096,7 +2096,7 @@
       "select": [],
       "select_groups": []
     },
-    "비즈니스1 (영업용)": {
+    "비즈니스1 영업용": {
       "slug": "smart",
       "name_en": "Business 1",
       "price": {
@@ -2204,7 +2204,7 @@
         }
       ]
     },
-    "비즈니스2 (영업용)": {
+    "비즈니스2 영업용": {
       "slug": "modern",
       "name_en": "Business 2",
       "price": {
@@ -2332,7 +2332,7 @@
         }
       ]
     },
-    "프리미엄 (1.6)": {
+    "프리미엄 1.6": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -2466,7 +2466,7 @@
         }
       ]
     },
-    "에스 (1.6)": {
+    "에스 1.6": {
       "slug": "s",
       "name_en": null,
       "price": {
@@ -2579,7 +2579,7 @@
         }
       ]
     },
-    "익스클루시브 (1.6)": {
+    "익스클루시브 1.6": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -2714,7 +2714,7 @@
         }
       ]
     },
-    "인스퍼레이션 (1.6)": {
+    "인스퍼레이션 1.6": {
       "slug": "inspiration",
       "name_en": null,
       "price": {

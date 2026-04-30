@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_sonata_dn8_hybrid",
-  "title": "현대 쏘나타 하이브리드 (DN8)",
+  "title": "현대 쏘나타 하이브리드 DN8",
   "maker": "현대",
   "source": "wikicar_ocr",
   "source_urls": [
@@ -863,7 +863,7 @@
         }
       ]
     },
-    "Inspiration": {
+    "인스퍼레이션": {
       "slug": "Inspiration",
       "price": {
         "tax_5_before": 38480000,

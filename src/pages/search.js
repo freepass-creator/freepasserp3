@@ -531,7 +531,10 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const card = targetCard || document.querySelectorAll('.pt-page[data-page="search"] .ws4-card')[1];
   if (!card) return;
   _activeSearchProduct = p;                                    // 하단 액션바 참조
-  window.refreshPageActions?.('search');                       // 액션바 갱신 (활성화 토글)
+  // 액션바 갱신 — 현재 search 페이지에 있을 때만 (다른 페이지 새로고침 시 boot 의 renderSearchTable 가 호출하면 액션바가 search 로 덮어쓰는 버그 방지)
+  if (document.querySelector('.pt-page.active')?.dataset.page === 'search') {
+    window.refreshPageActions?.('search');
+  }
   const role = store.currentUser?.role;
   const isAdmin = role === 'admin';
   const canSeeFee = isAdmin || role === 'agent' || role === 'agent_admin';

@@ -12,6 +12,7 @@ import { showToast } from '../core/toast.js';
 import { saveNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
 import { esc, emptyState, renderRoomItem } from './../core/ui-helpers.js';
 import { analyzeProduct, loadIndex, clearCache as clearMatrixCache } from '../core/vehicle-matrix.js';
+import { fpIdsToNames } from '../core/fp-options-master.js';
 
 let devUnsubs = [];
 let _activeDev = 'tools';
@@ -131,10 +132,14 @@ function renderDevTab(id) {
 //  변환 대상: sub_model / trim_name / options
 //  options 매칭 안 된 토큰은 "매칭 실패" 로 표시
 function renderMatrixTab(el) {
+  // 분석 결과를 클로저에 저장 — 적용 시 재계산 없이 바로 사용
+  let _lastResults = null;
+
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:8px;height:100%;min-height:0;">
       <div style="display:flex;gap:8px;align-items:center;">
         <button class="btn btn-sm btn-primary" id="mtxAnalyze"><i class="ph ph-play"></i> 매물 분석</button>
+        <button class="btn btn-sm btn-success" id="mtxApply" disabled><i class="ph ph-check"></i> 확정 일괄 적용</button>
         <button class="btn btn-sm" id="mtxCacheClear"><i class="ph ph-arrow-clockwise"></i> 카탈로그 캐시 초기화</button>
         <span style="margin-left:auto;font-size:11px;color:var(--text-sub);" id="mtxSummary">대기 중</span>
       </div>
@@ -147,6 +152,63 @@ function renderMatrixTab(el) {
   el.querySelector('#mtxCacheClear').addEventListener('click', () => {
     clearMatrixCache();
     showToast('카탈로그 캐시 초기화');
+  });
+
+  // 변경 후 sub_model 추정 — 카탈로그 title 에서 maker prefix 제거
+  function deriveNewSubModel(catalogTitle, maker) {
+    if (!catalogTitle) return '';
+    return catalogTitle.replace(new RegExp('^' + maker + '\\s+'), '').trim();
+  }
+
+  el.querySelector('#mtxApply').addEventListener('click', async () => {
+    if (!_lastResults || !_lastResults.length) return;
+    // 적용 대상: high/medium 신뢰도 + 트림 매칭 성공 + 실제 변경 발생
+    const targets = _lastResults
+      .filter(({ p, r }) => r.ok && (r.confidence === 'high' || r.confidence === 'medium') && r.trimName)
+      .map(({ p, r }) => {
+        const newSub = deriveNewSubModel(r.catalogTitle, p.maker);
+        const newTrim = r.trimName;
+        const subChanged = (p.sub_model || '') !== newSub;
+        const trimChanged = (p.trim_name || p.trim || '') !== newTrim;
+        return { p, r, newSub, newTrim, subChanged, trimChanged };
+      })
+      .filter(t => t.subChanged || t.trimChanged);
+
+    if (!targets.length) {
+      showToast('변경할 매물 없음');
+      return;
+    }
+    if (!confirm(`매물 ${targets.length}대의 sub_model / trim_name 을 일괄 변경합니다.\n원본은 sub_model_legacy / trim_name_legacy 로 백업됩니다.\n계속할까요?`)) return;
+
+    const btn = el.querySelector('#mtxApply');
+    const summary = el.querySelector('#mtxSummary');
+    btn.disabled = true;
+    let done = 0, fail = 0;
+    for (const t of targets) {
+      const updates = {};
+      if (t.subChanged) {
+        if (t.p.sub_model_legacy == null) updates.sub_model_legacy = t.p.sub_model || '';
+        updates.sub_model = t.newSub;
+      }
+      if (t.trimChanged) {
+        const curTrim = t.p.trim_name || t.p.trim || '';
+        if (t.p.trim_name_legacy == null) updates.trim_name_legacy = curTrim;
+        updates.trim_name = t.newTrim;
+      }
+      try {
+        const id = t.p._key || t.p.id || t.p.product_uid;
+        if (!id) throw new Error('no id');
+        await updateRecord('products', id, updates);
+        done++;
+      } catch (err) {
+        fail++;
+        devLog(`[matrix-apply] 실패: ${t.p.car_number || t.p._key} — ${err.message}`);
+      }
+      if (done % 20 === 0) summary.textContent = `적용 중... ${done}/${targets.length}`;
+    }
+    summary.textContent = `✓ 적용 완료: ${done}건${fail ? ` / 실패 ${fail}건` : ''}`;
+    showToast(`${done}대 적용`);
+    btn.disabled = false;
   });
 
   el.querySelector('#mtxAnalyze').addEventListener('click', async () => {
@@ -178,6 +240,8 @@ function renderMatrixTab(el) {
     }
 
     summary.textContent = `전체 ${products.length}대  ·  매칭 ${cnt.ok}  ·  확정 ${cnt.high}  ·  검토 필요 ${cnt.review}  ·  카탈로그 없음 ${cnt.noCat}`;
+    _lastResults = results;
+    el.querySelector('#mtxApply').disabled = false;
 
     const rank = r => !r.ok ? 1 : (r.confidence === 'low' ? 0 : (r.confidence === 'medium' ? 2 : 3));
     results.sort((a, b) => {
@@ -198,8 +262,9 @@ function renderMatrixTab(el) {
     }
     function fpDisplay(ids) {
       if (!ids || !ids.length) return empty;
-      const head = ids.slice(0, 8).join(', ');
-      return ids.length > 8 ? `${esc(head)} <span style="color:var(--text-muted);">+${ids.length - 8}</span>` : esc(head);
+      const names = fpIdsToNames(ids);  // ID → 한글 이름
+      const head = names.slice(0, 6).join(', ');
+      return names.length > 6 ? `${esc(head)} <span style="color:var(--text-muted);">+${names.length - 6}</span>` : esc(head);
     }
 
     preview.innerHTML = `
@@ -223,7 +288,7 @@ function renderMatrixTab(el) {
             <th style="padding:4px 6px;text-align:left;">모델</th>
             <th style="padding:4px 6px;text-align:left;">세부모델</th>
             <th style="padding:4px 6px;text-align:left;">세부트림</th>
-            <th style="padding:4px 6px;text-align:left;">선택옵션 (FP)</th>
+            <th style="padding:4px 6px;text-align:left;">선택옵션 (표준)</th>
           </tr>
         </thead>
         <tbody>
@@ -278,7 +343,7 @@ function renderMatrixTab(el) {
               ${afterCell(p.model, newModel)}
               ${r.ok ? afterCell(p.sub_model, newSub) : todoCell()}
               ${r.ok ? afterCell(p.trim_name || p.trim, newTrim) : todoCell()}
-              ${r.ok ? `<td style="padding:4px 6px;${afterBg}max-width:340px;overflow:hidden;text-overflow:ellipsis;" title="${esc((r.fpAll||[]).join(', '))}">${fpAfter}</td>` : todoCell('카탈로그 없음')}
+              ${r.ok ? `<td style="padding:4px 6px;${afterBg}max-width:340px;overflow:hidden;text-overflow:ellipsis;" title="${esc(fpIdsToNames(r.fpAll || []).join(', '))}">${fpAfter}</td>` : todoCell('카탈로그 없음')}
             </tr>`;
           }).join('')}
         </tbody>

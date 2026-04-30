@@ -65,7 +65,7 @@
         ".read": "auth != null",
         ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
         "$message_id": {
-          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('rooms').child($room_id).child('agent_uid').val() === auth.uid || root.child('rooms').child($room_id).child('provider_uid').val() === auth.uid || root.child('users').child(auth.uid).child('company_code').val() === root.child('rooms').child($room_id).child('provider_company_code').val() || ((root.child('users').child(auth.uid).child('role').val() === 'agent_admin' || root.child('users').child(auth.uid).child('role').val() === 'agent_manager') && root.child('users').child(auth.uid).child('company_code').val() === root.child('rooms').child($room_id).child('agent_channel_code').val()))",
+          ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('rooms').child($room_id).child('agent_uid').val() === auth.uid || root.child('rooms').child($room_id).child('provider_uid').val() === auth.uid || root.child('users').child(auth.uid).child('company_code').val() === root.child('rooms').child($room_id).child('provider_company_code').val())",
           ".validate": "newData.hasChildren(['text', 'sender_uid', 'sender_role', 'created_at'])",
           "sender_uid": { ".validate": "newData.val() === auth.uid" }
         }

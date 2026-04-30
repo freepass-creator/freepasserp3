@@ -46,6 +46,15 @@ export async function loadCatalog(catalogId) {
 
 // 카탈로그 _index → maker별 후보 캐싱 — 코드 + 토큰 모두 추출
 let _candidatesByMaker = null;
+// 괄호 없이 끝부분 영문/숫자 코드 추출 (e.g., "현대 그랜저 GN7" → "GN7", "쏘나타 디 엣지 DN8" → "DN8")
+function extractCode(title) {
+  const tokens = (title || '').trim().split(/\s+/);
+  for (let i = tokens.length - 1; i >= 0; i--) {
+    const t = tokens[i];
+    if (/^[A-Z][A-Z0-9]+$/.test(t)) return t;
+  }
+  return '';
+}
 function buildCandidates(idx) {
   const map = {};  // maker → [{ catalogId, title, code, codeNorm, tokens, tokensNorm }]
   for (const entry of Object.values(idx)) {
@@ -54,13 +63,10 @@ function buildCandidates(idx) {
     if (!map[m]) map[m] = [];
 
     const title = entry.title || '';
-    // maker prefix 제거
     const titleNoMaker = title.replace(new RegExp('^' + m + '\\s+'), '').trim();
-    // 코드 (괄호 안)
-    const codeMatch = title.match(/\(([^)]+)\)/);
-    const code = codeMatch ? codeMatch[1].trim() : '';
-    // 토큰 분리 (괄호/기호 제거 후 공백 split)
-    const tokens = titleNoMaker.replace(/[()]/g, ' ').split(/\s+/).filter(Boolean);
+    const code = extractCode(title);
+    // 토큰 분리 (공백 split)
+    const tokens = titleNoMaker.split(/\s+/).filter(Boolean);
 
     map[m].push({
       catalogId: entry.id,

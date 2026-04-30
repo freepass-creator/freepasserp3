@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_avante_cn7",
-  "title": "현대 아반떼 (CN7) 페이스리프트",
+  "title": "현대 더 뉴 아반떼 CN7",
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
@@ -711,7 +711,7 @@
     }
   },
   "trims": {
-    "스마트 (LPG 1.6)": {
+    "스마트 LPG 1.6": {
       "slug": "smart",
       "name_en": null,
       "price": {
@@ -797,7 +797,7 @@
         }
       ]
     },
-    "모던 (LPG 1.6)": {
+    "모던 LPG 1.6": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -917,7 +917,7 @@
         }
       ]
     },
-    "인스퍼레이션 (LPG 1.6)": {
+    "인스퍼레이션 LPG 1.6": {
       "slug": "inspiration",
       "name_en": null,
       "price": {
@@ -1029,7 +1029,7 @@
         }
       ]
     },
-    "모던 (장애인용 LPG 1.6)": {
+    "모던 장애인용 LPG 1.6": {
       "slug": "modern-right-hand",
       "name_en": null,
       "price": {
@@ -1099,7 +1099,7 @@
       "select": [],
       "select_groups": []
     },
-    "스마트 (영업용 LPG 1.6)": {
+    "스마트 영업용 LPG 1.6": {
       "slug": "smart",
       "name_en": null,
       "price": {
@@ -1184,7 +1184,7 @@
         }
       ]
     },
-    "모던 (영업용 LPG 1.6)": {
+    "모던 영업용 LPG 1.6": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -1296,7 +1296,7 @@
         }
       ]
     },
-    "스마트 (1.6)": {
+    "스마트 1.6": {
       "slug": "smart",
       "name_en": null,
       "price": {
@@ -1382,7 +1382,7 @@
         }
       ]
     },
-    "모던 (1.6)": {
+    "모던 1.6": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -1502,7 +1502,7 @@
         }
       ]
     },
-    "인스퍼레이션 (1.6)": {
+    "인스퍼레이션 1.6": {
       "slug": "inspiration",
       "name_en": null,
       "price": {
@@ -1623,7 +1623,7 @@
         }
       ]
     },
-    "N 라인 (1.6)": {
+    "N 라인 1.6": {
       "slug": "n-line",
       "name_en": null,
       "price": {

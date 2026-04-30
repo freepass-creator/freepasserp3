@@ -27,7 +27,7 @@ import {
 } from './core/ui-helpers.js';
 import { POLICY_OPTS, renderPolicyList, renderPolicyDetail } from './pages/policy.js';
 import { renderPartnerList, renderPartnerDetail } from './pages/partner.js';
-import { renderUserList, renderUserDetail } from './pages/user.js';
+import { renderUserList, renderUserDetail, userFilter } from './pages/user.js';
 import { renderSettlementList, renderSettlementDetail } from './pages/settlement.js';
 import {
   CONTRACT_STATUSES, renderContractList, renderContractDetail,
@@ -79,6 +79,49 @@ const _pendingDrafts = {
   partners: new Map(),    // _key → 'partner_name'
 };
 
+/* 페이지별 필터 상태 — 하단바 chip 으로 토글, watchCollection 이 적용 후 render */
+const _pageFilters = {
+  contract:  { status: 'all', company_code: 'all' },   // all / progress / done / cancel
+  settle:    { status: 'all', company_code: 'all' },   // all / pending / done
+  product:   { status: 'all', company_code: 'all' },   // all / 즉시 / 가능 / 협의 / 불가
+  policy:    { status: 'all', company_code: 'all' },   // all / active / inactive
+  partners:  { type: 'all' },                          // all / 공급사 / 영업채널 / 운영사
+  workspace: { unread: 'all', company_code: 'all' },   // all / unread
+};
+
+function getCompanyOptions() {
+  const codes = new Set();
+  (store.partners || []).filter(p => !p._deleted).forEach(p => {
+    const code = p.partner_code || p.company_code;
+    if (code) codes.add(code);
+  });
+  return [...codes].sort();
+}
+function partnerNameOf(code) {
+  const pa = (store.partners || []).find(p => (p.partner_code === code || p.company_code === code) && !p._deleted);
+  return pa?.partner_name || pa?.company_name || code;
+}
+function buildCompanyDropdownChip(curCompany, setter) {
+  const opts = getCompanyOptions();
+  return {
+    chip: true,
+    label: curCompany === 'all' ? '소속 전체 ▾' : `${partnerNameOf(curCompany)} (${curCompany}) ▾`,
+    onClick: (e) => {
+      import('./core/context-menu.js').then(({ openContextMenu }) => {
+        openContextMenu(e, [
+          { label: '소속 전체', active: curCompany === 'all', action: () => setter('all') },
+          { divider: true },
+          ...opts.map(code => ({
+            label: `${partnerNameOf(code)} (${code})`,
+            active: curCompany === code,
+            action: () => setter(code),
+          })),
+        ]);
+      });
+    },
+  };
+}
+
 function trackDraft(collection, key, requiredField) {
   _pendingDrafts[collection]?.set(key, requiredField);
 }
@@ -114,6 +157,65 @@ window.addEventListener('hashchange', async () => {
   discardIncompleteDrafts();
 });
 
+/* ── 페이지별 필터 적용 후 render 호출 — watchCollection 콜백·chip toggle 양쪽에서 사용 ── */
+function renderFilteredContracts() {
+  let list = (store.contracts || []).filter(c => !c._deleted);
+  const f = _pageFilters.contract;
+  // 단계 매핑 — 대기(요청) / 진행(대기·발송·진행) / 완료
+  if (f.status === 'pending')      list = list.filter(c => /(요청)/.test(c.contract_status || ''));
+  else if (f.status === 'progress') list = list.filter(c => /(대기|발송|진행)/.test(c.contract_status || '') && !/(요청|완료|취소)/.test(c.contract_status || ''));
+  else if (f.status === 'done')    list = list.filter(c => /(완료)/.test(c.contract_status || ''));
+  if (f.company_code !== 'all')    list = list.filter(c => c.partner_code === f.company_code || c.provider_company_code === f.company_code);
+  renderContractList(list);
+}
+function renderFilteredSettlements() {
+  let list = (store.settlements || []).filter(s => !s._deleted);
+  const f = _pageFilters.settle;
+  if (f.status === 'pending')   list = list.filter(s => /(미정산|대기)/.test(s.settlement_status || s.status || ''));
+  else if (f.status === 'done') list = list.filter(s => /(완료)/.test(s.settlement_status || s.status || ''));
+  if (f.company_code !== 'all') list = list.filter(s => s.partner_code === f.company_code || s.provider_company_code === f.company_code);
+  renderSettlementList(list);
+}
+function renderFilteredProducts() {
+  let list = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted');
+  const f = _pageFilters.product;
+  if (f.status === '즉시')      list = list.filter(p => /즉시/.test(p.vehicle_status || ''));
+  else if (f.status === '가능') list = list.filter(p => /가능/.test(p.vehicle_status || '') && !/즉시/.test(p.vehicle_status || ''));
+  else if (f.status === '협의') list = list.filter(p => /협의/.test(p.vehicle_status || ''));
+  else if (f.status === '불가') list = list.filter(p => /(불가|완료)/.test(p.vehicle_status || ''));
+  if (f.company_code !== 'all') list = list.filter(p => p.provider_company_code === f.company_code || p.partner_code === f.company_code);
+  renderProductList(list);
+}
+function renderFilteredPolicies() {
+  let list = (store.policies || []).filter(p => !p._deleted);
+  const f = _pageFilters.policy;
+  if (f.status === 'active')         list = list.filter(p => p.is_active !== false && p.status !== '중단');
+  else if (f.status === 'inactive')  list = list.filter(p => p.is_active === false || p.status === '중단');
+  if (f.company_code !== 'all')      list = list.filter(p => p.provider_company_code === f.company_code);
+  renderPolicyList(list);
+}
+function renderFilteredPartners() {
+  let list = (store.partners || []).filter(p => !p._deleted);
+  const f = _pageFilters.partners;
+  if (f.type !== 'all') list = list.filter(p => p.partner_type === f.type);
+  renderPartnerList(list);
+}
+function renderFilteredRooms() {
+  let list = (store.rooms || []).filter(r => !r._deleted);
+  const f = _pageFilters.workspace;
+  if (f.unread === 'unread' || f.unread === 'read') {
+    const role = store.currentUser?.role;
+    const key = role === 'agent' || role === 'agent_admin' ? 'unread_for_agent'
+              : role === 'provider' ? 'unread_for_provider' : 'unread_for_admin';
+    list = list.filter(r => {
+      const u = Number(r[key] || 0);
+      return f.unread === 'unread' ? u > 0 : u === 0;
+    });
+  }
+  if (f.company_code !== 'all') list = list.filter(r => r.provider_company_code === f.company_code || r.agent_channel_code === f.company_code);
+  renderRoomList(list);
+}
+
 window.refreshPageActions = function(pageName) {
   const p = pageName || document.querySelector('.pt-page.active')?.dataset.page;
   if (!p) { setPageActions({}); return; }
@@ -135,7 +237,9 @@ window.refreshPageActions = function(pageName) {
       if (isEditing) {
         const n = await window.flushActivePageSaves?.();
         window.toggleEditMode?.(false);
+        // 항상 토스트 — 변경 없으면 알려주고, 있으면 건수 표시
         if (n > 0) showToast(`저장됨 (${n}건)`, 'success');
+        else showToast('변경사항 없음', 'info');
       } else {
         window.toggleEditMode?.(true);
       }
@@ -145,7 +249,19 @@ window.refreshPageActions = function(pageName) {
   if (p === 'product') {
     const hasSelection = !!activeId;
     const product = hasSelection ? (store.products || []).find(x => x._key === activeId) : null;
+    const f = _pageFilters.product;
+    const setS = (v) => { f.status = v; renderFilteredProducts(); window.refreshPageActions?.('product'); };
+    const setC = (v) => { f.company_code = v; renderFilteredProducts(); window.refreshPageActions?.('product'); };
     setPageActions({
+      left: [
+        { chip: true, label: '전체', active: f.status === 'all',  onClick: () => setS('all') },
+        { chip: true, label: '즉시', active: f.status === '즉시', onClick: () => setS('즉시') },
+        { chip: true, label: '가능', active: f.status === '가능', onClick: () => setS('가능') },
+        { chip: true, label: '협의', active: f.status === '협의', onClick: () => setS('협의') },
+        { chip: true, label: '불가', active: f.status === '불가', onClick: () => setS('불가') },
+        { divider: true },
+        buildCompanyDropdownChip(f.company_code, setC),
+      ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewProduct() },
         editToggle,
@@ -161,7 +277,17 @@ window.refreshPageActions = function(pageName) {
     });
   } else if (p === 'policy') {
     const hasSelection = !!activeId;
+    const f = _pageFilters.policy;
+    const setS = (v) => { f.status = v; renderFilteredPolicies(); window.refreshPageActions?.('policy'); };
+    const setC = (v) => { f.company_code = v; renderFilteredPolicies(); window.refreshPageActions?.('policy'); };
     setPageActions({
+      left: [
+        { chip: true, label: '전체',   active: f.status === 'all',      onClick: () => setS('all') },
+        { chip: true, label: '활성',   active: f.status === 'active',   onClick: () => setS('active') },
+        { chip: true, label: '비활성', active: f.status === 'inactive', onClick: () => setS('inactive') },
+        { divider: true },
+        buildCompanyDropdownChip(f.company_code, setC),
+      ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPolicy() },
         editToggle,
@@ -172,7 +298,15 @@ window.refreshPageActions = function(pageName) {
     });
   } else if (p === 'partners') {
     const hasSelection = !!activeId;
+    const f = _pageFilters.partners;
+    const setT = (v) => { f.type = v; renderFilteredPartners(); window.refreshPageActions?.('partners'); };
     setPageActions({
+      left: [
+        { chip: true, label: '전체',     active: f.type === 'all',      onClick: () => setT('all') },
+        { chip: true, label: '공급사',   active: f.type === '공급사',   onClick: () => setT('공급사') },
+        { chip: true, label: '영업채널', active: f.type === '영업채널', onClick: () => setT('영업채널') },
+        { chip: true, label: '운영사',   active: f.type === '운영사',   onClick: () => setT('운영사') },
+      ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPartner() },
         editToggle,
@@ -185,7 +319,17 @@ window.refreshPageActions = function(pageName) {
     const ws4 = document.getElementById('workspaceWs4');
     const chatHidden = ws4?.classList.contains('is-chat-hidden');
     const hasSelection = !!activeId;
+    const f = _pageFilters.workspace;
+    const setU = (v) => { f.unread = v; renderFilteredRooms(); window.refreshPageActions?.('workspace'); };
+    const setC = (v) => { f.company_code = v; renderFilteredRooms(); window.refreshPageActions?.('workspace'); };
     setPageActions({
+      left: [
+        { chip: true, label: '전체',   active: f.unread === 'all',    onClick: () => setU('all') },
+        { chip: true, label: '읽음',   active: f.unread === 'read',   onClick: () => setU('read') },
+        { chip: true, label: '안읽음', active: f.unread === 'unread', onClick: () => setU('unread') },
+        { divider: true },
+        buildCompanyDropdownChip(f.company_code, setC),
+      ],
       right: [
         editToggle,
         { divider: true },
@@ -199,7 +343,18 @@ window.refreshPageActions = function(pageName) {
     });
   } else if (p === 'contract') {
     const hasSelection = !!activeId;
+    const f = _pageFilters.contract;
+    const setS = (v) => { f.status = v; renderFilteredContracts(); window.refreshPageActions?.('contract'); };
+    const setC = (v) => { f.company_code = v; renderFilteredContracts(); window.refreshPageActions?.('contract'); };
     setPageActions({
+      left: [
+        { chip: true, label: '전체', active: f.status === 'all',      onClick: () => setS('all') },
+        { chip: true, label: '대기', active: f.status === 'pending',  onClick: () => setS('pending') },
+        { chip: true, label: '진행', active: f.status === 'progress', onClick: () => setS('progress') },
+        { chip: true, label: '완료', active: f.status === 'done',     onClick: () => setS('done') },
+        { divider: true },
+        buildCompanyDropdownChip(f.company_code, setC),
+      ],
       right: [
         editToggle,
         { divider: true },
@@ -209,7 +364,17 @@ window.refreshPageActions = function(pageName) {
     });
   } else if (p === 'settle') {
     const hasSelection = !!activeId;
+    const f = _pageFilters.settle;
+    const setS = (v) => { f.status = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
+    const setC = (v) => { f.company_code = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
     setPageActions({
+      left: [
+        { chip: true, label: '전체',   active: f.status === 'all',     onClick: () => setS('all') },
+        { chip: true, label: '미정산', active: f.status === 'pending', onClick: () => setS('pending') },
+        { chip: true, label: '완료',   active: f.status === 'done',    onClick: () => setS('done') },
+        { divider: true },
+        buildCompanyDropdownChip(f.company_code, setC),
+      ],
       right: [
         editToggle,
         { divider: true },
@@ -219,7 +384,55 @@ window.refreshPageActions = function(pageName) {
     });
   } else if (p === 'users') {
     const hasSelection = !!activeId;
+    // 좌측 빠른필터 — 전체/승인/대기 (userFilter.status) + 소속코드 dropdown
+    const curStatus = userFilter.status;
+    const curCompany = userFilter.company_code;
+    // 소속코드 옵션 — partners 전체 + users 에서 보이는 company_code 합집합
+    const companyCodes = new Set();
+    (store.partners || []).filter(x => !x._deleted).forEach(p => {
+      const code = p.partner_code || p.company_code;
+      if (code) companyCodes.add(code);
+    });
+    (store.users || []).forEach(u => { if (u.company_code) companyCodes.add(u.company_code); });
+    const companyList = [...companyCodes].sort();
+    const partnerNameOf = (code) => {
+      const pa = (store.partners || []).find(p => (p.partner_code === code || p.company_code === code) && !p._deleted);
+      return pa?.partner_name || pa?.company_name || code;
+    };
+    const setStatusFilter = (v) => {
+      userFilter.status = v;
+      renderUserList(store.users);
+      window.refreshPageActions?.('users');
+    };
+    const setCompanyFilter = (v) => {
+      userFilter.company_code = v;
+      renderUserList(store.users);
+      window.refreshPageActions?.('users');
+    };
     setPageActions({
+      left: [
+        { chip: true, label: '전체', active: curStatus === 'all',  onClick: () => setStatusFilter('all') },
+        { chip: true, label: '승인', active: curStatus === 'active', onClick: () => setStatusFilter('active') },
+        { chip: true, label: '대기', active: curStatus === 'pending', onClick: () => setStatusFilter('pending') },
+        { divider: true },
+        // 소속코드 — 칩 드롭다운 (전체 + 각 코드)
+        { chip: true, label: curCompany === 'all' ? '소속 전체' : `${partnerNameOf(curCompany)} (${curCompany})`,
+          icon: 'ph-caret-down',
+          onClick: (e) => {
+            import('./core/context-menu.js').then(({ openContextMenu }) => {
+              openContextMenu(e, [
+                { label: '소속 전체', active: curCompany === 'all', action: () => setCompanyFilter('all') },
+                { divider: true },
+                ...companyList.map(code => ({
+                  label: `${partnerNameOf(code)} (${code})`,
+                  active: curCompany === code,
+                  action: () => setCompanyFilter(code),
+                })),
+              ]);
+            });
+          },
+        },
+      ],
       right: [
         editToggle,
         { divider: true },
@@ -710,9 +923,9 @@ function startHydration() {
     if (store.products?.length) {
       store.products = enrichProductsWithPolicy(store.products, store.policies);
       renderSearchTable(store.products);
-      renderProductList(store.products);
+      renderFilteredProducts();
     }
-    renderPolicyList(store.policies);
+    renderFilteredPolicies();
     updateSidebarCounts();
     window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
@@ -723,7 +936,7 @@ function startHydration() {
     store.products = enrichProductsWithPolicy(list || [], store.policies || []);
     calibrateSearchCols(store.products);
     renderSearchTable(store.products);
-    renderProductList(store.products);
+    renderFilteredProducts();
     updateSidebarCounts();
     window.updateSearchStats?.();   // 토픽바 상품찾기 카운트 갱신
     window.refreshPageActions?.();
@@ -733,7 +946,7 @@ function startHydration() {
   // 대화방 (업무소통) + 계약 + 정산 + 파트너 + 사용자
   watchCollection('rooms',       (list) => {
     store.rooms = list || [];
-    renderRoomList(store.rooms);
+    renderFilteredRooms();
     updateSidebarCounts();
     window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
@@ -753,23 +966,22 @@ function startHydration() {
       }
     }
   });
-  watchCollection('contracts',   (list) => { store.contracts   = list || []; renderContractList(store.contracts);     updateSidebarCounts(); window.refreshPageActions?.();
+  watchCollection('contracts',   (list) => { store.contracts   = list || []; renderFilteredContracts();      updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage); });
-  watchCollection('settlements', (list) => { store.settlements = list || []; renderSettlementList(store.settlements); updateSidebarCounts(); window.refreshPageActions?.();
+  watchCollection('settlements', (list) => { store.settlements = list || []; renderFilteredSettlements();    updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage); });
   // partners 갱신 시 dependent list 재렌더는 디바운스 (연속 변경 시 1번만)
   let _partnersRefreshT;
   const refreshPartnersDependents = () => {
-    if (Array.isArray(store.products))    renderSearchTable(store.products);
-    if (Array.isArray(store.products))    renderProductList(store.products);
-    if (Array.isArray(store.contracts))   renderContractList(store.contracts);
-    if (Array.isArray(store.settlements)) renderSettlementList(store.settlements);
+    if (Array.isArray(store.products))    renderFilteredProducts();
+    if (Array.isArray(store.contracts))   renderFilteredContracts();
+    if (Array.isArray(store.settlements)) renderFilteredSettlements();
   };
   watchCollection('partners', (list) => {
     store.partners = list || [];
-    renderPartnerList(store.partners);
+    renderFilteredPartners();
     updateSidebarCounts();
     clearTimeout(_partnersRefreshT);
     _partnersRefreshT = setTimeout(refreshPartnersDependents, 80);
@@ -1645,18 +1857,18 @@ function buildContextMenuItems(page, id, item) {
     const u = (store.users || []).find(x => x._key === id);
     if (!u) return [];
     const ROLES = [
-      { v: 'admin', l: '관리자' },
-      { v: 'provider', l: '공급' },
-      { v: 'agent', l: '영업' },
+      { v: 'admin',       l: '관리자' },
+      { v: 'provider',    l: '공급사' },
+      { v: 'agent',       l: '영업자' },
       { v: 'agent_admin', l: '영업관리자' },
     ];
     const STATUS = [
-      { v: 'active', l: '승인됨' },
-      { v: 'pending', l: '승인 대기' },
-      { v: 'rejected', l: '반려' },
+      { v: 'active',  l: '승인' },
+      { v: 'pending', l: '대기' },
     ];
+    const curStatus = u.status === 'pending' ? 'pending' : (u.is_active === false ? 'pending' : 'active');
     const roleLabel = ROLES.find(r => r.v === u.role)?.l || u.role || '-';
-    const statusLabel = STATUS.find(s => s.v === u.status)?.l || u.status || '-';
+    const statusLabel = STATUS.find(s => s.v === curStatus)?.l || '-';
     return [
       { icon: 'ph ph-user-circle', label: `역할: ${roleLabel}`,
         submenu: ROLES.map(r => ({
@@ -1669,9 +1881,13 @@ function buildContextMenuItems(page, id, item) {
       },
       { icon: 'ph ph-flag', label: `상태: ${statusLabel}`,
         submenu: STATUS.map(s => ({
-          label: s.l, active: u.status === s.v,
+          label: s.l, active: curStatus === s.v,
           action: async () => {
-            await updateRecord(`users/${u._key}`, { status: s.v, updated_at: Date.now() });
+            await updateRecord(`users/${u._key}`, {
+              status: s.v,
+              is_active: s.v === 'active',
+              updated_at: Date.now(),
+            });
             showToast(`상태 → ${s.l}`);
           },
         })),

@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_kona_sx2",
-  "title": "현대 코나 (SX2)",
+  "title": "현대 코나 SX2",
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
@@ -703,7 +703,7 @@
     }
   },
   "trims": {
-    "모던 (2.0)": {
+    "모던 2.0": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -791,7 +791,7 @@
         }
       ]
     },
-    "H-Pick (2.0)": {
+    "H-Pick 2.0": {
       "slug": "H-Pick",
       "name_en": null,
       "price": {
@@ -920,7 +920,7 @@
         }
       ]
     },
-    "모던 (1.6T)": {
+    "모던 1.6T": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -1007,7 +1007,7 @@
         }
       ]
     },
-    "H-Pick (1.6T)": {
+    "H-Pick 1.6T": {
       "slug": "H-Pick",
       "name_en": null,
       "price": {
@@ -1135,7 +1135,7 @@
         }
       ]
     },
-    "프리미엄 (1.6T)": {
+    "프리미엄 1.6T": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -1294,7 +1294,7 @@
         }
       ]
     },
-    "인스퍼레이션 (1.6T)": {
+    "인스퍼레이션 1.6T": {
       "slug": "inspiration",
       "name_en": null,
       "price": {
@@ -1454,7 +1454,7 @@
         }
       ]
     },
-    "블랙 익스테리어 (1.6T)": {
+    "블랙 익스테리어 1.6T": {
       "slug": "black-exterior",
       "name_en": null,
       "price": {
@@ -1614,7 +1614,7 @@
         }
       ]
     },
-    "N Line (1.6T)": {
+    "N 라인 1.6T": {
       "slug": "n-line",
       "name_en": null,
       "price": {

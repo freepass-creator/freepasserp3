@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_tucson_nx4",
-  "title": "현대 투싼 (NX4)",
+  "title": "현대 더 뉴 투싼 NX4",
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
@@ -1617,7 +1617,7 @@
         }
       ]
     },
-    "N Line": {
+    "N 라인": {
       "slug": "n-inspiration",
       "name_en": null,
       "price": {

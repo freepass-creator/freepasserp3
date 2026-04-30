@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_grandeur_gn7",
-  "title": "현대 그랜저 (GN7)",
+  "title": "현대 그랜저 GN7",
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
@@ -866,7 +866,7 @@
     }
   },
   "trims": {
-    "프리미엄 (LPG 3.5)": {
+    "프리미엄 LPG 3.5": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -1001,7 +1001,7 @@
         }
       ]
     },
-    "익스클루시브 (LPG 3.5)": {
+    "익스클루시브 LPG 3.5": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1158,7 +1158,7 @@
         }
       ]
     },
-    "익스클루시브 플러스 (장애인용 LPG 3.0)": {
+    "익스클루시브 플러스 장애인용 LPG 3.0": {
       "slug": "exclusive-right-hand",
       "name_en": null,
       "price": {
@@ -1246,7 +1246,7 @@
       "select": [],
       "select_groups": []
     },
-    "프리미엄 (2.5)": {
+    "프리미엄 2.5": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -1395,7 +1395,7 @@
         }
       ]
     },
-    "익스클루시브 (2.5)": {
+    "익스클루시브 2.5": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1572,7 +1572,7 @@
         }
       ]
     },
-    "아너스 (2.5)": {
+    "아너스 2.5": {
       "slug": "honors",
       "name_en": null,
       "price": {
@@ -1749,7 +1749,7 @@
         }
       ]
     },
-    "캘리그래피 (2.5)": {
+    "캘리그래피 2.5": {
       "slug": "calligraphy",
       "name_en": null,
       "price": {
@@ -1926,7 +1926,7 @@
         }
       ]
     },
-    "블랙 익스테리어 (2.5)": {
+    "블랙 익스테리어 2.5": {
       "slug": "calligraphy-black-exterior",
       "name_en": null,
       "price": {
@@ -2103,7 +2103,7 @@
         }
       ]
     },
-    "블랙 잉크 (2.5)": {
+    "블랙 잉크 2.5": {
       "slug": "calligraphy-black-ink",
       "name_en": null,
       "price": {
