@@ -1,0 +1,546 @@
+[
+  {
+    "catalogId": "hyundai_casper",
+    "sourceUrl": "http://wikicar.co.kr/casper/57764",
+    "title": "캐스퍼 전기차 가격표 - 2025년 02월 - 캐스퍼 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/46713/764/057/4d29fc8d6ad96ac9cc3861348b80ea31.jpg",
+      "http://wikicar.co.kr/files/attach/images/46713/764/057/5fd13fc3eb33df24c0887951e770127a.jpg",
+      "http://wikicar.co.kr/files/attach/images/46713/764/057/8e253e574cfc0ac6973549483f726557.jpg",
+      "http://wikicar.co.kr/files/attach/images/46713/764/057/b9efcda4f848d1ee988817623620b914.jpg"
+    ]
+  },
+  {
+    "catalogId": "kia_mohave",
+    "sourceUrl": "http://wikicar.co.kr/mohave/47539",
+    "title": "모하비 가격표 - 2022년 01월 - 모하비 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/10049/539/047/b13392ef93a197b3526b37b786a7d48e.jpg",
+      "http://wikicar.co.kr/files/attach/images/10049/539/047/04b60ee6c3ab26afb91025ebf2c3962a.jpg"
+    ]
+  },
+  {
+    "catalogId": "kia_stinger",
+    "sourceUrl": "http://wikicar.co.kr/stinger/51286",
+    "title": "스팅어 가격표 - 2022년 12월 (트리뷰트 에디션 출시) - 스팅어 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/22383/286/051/2f2b2cf5ae74b287f73823de0d75589b.jpg",
+      "http://wikicar.co.kr/files/attach/images/22383/286/051/ca02553f8d4cffc14abf0733321ebe45.jpg",
+      "http://wikicar.co.kr/files/attach/images/22383/286/051/eaddfc257f8a016b58cd6e560bf10d6a.jpg"
+    ]
+  },
+  {
+    "catalogId": "genesis_g70",
+    "sourceUrl": "http://wikicar.co.kr/genesis_g70/52667",
+    "title": "G70 슈팅브레이크 가격표 - 2023년 06월 - G70 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/23655/667/052/94dc3e4be8e549287ee958404ac22491.jpg",
+      "http://wikicar.co.kr/files/attach/images/23655/667/052/869f333ebf2f5c1417fb8a214cc15f40.jpg",
+      "http://wikicar.co.kr/files/attach/images/23655/667/052/abc98ca98be3230044813b83573f6b53.jpg",
+      "http://wikicar.co.kr/files/attach/images/23655/667/052/c92b97623f0420c9932ba6e9f5858ec8.jpg",
+      "http://wikicar.co.kr/files/attach/images/23655/667/052/20c87be26f58abe5b8d08fcda321bcd9.jpg",
+      "http://wikicar.co.kr/files/attach/images/23655/667/052/4a0858bb449a68282fd0128028e85d83.jpg"
+    ]
+  },
+  {
+    "catalogId": "genesis_g80_rg3",
+    "sourceUrl": "http://wikicar.co.kr/genesis_g80/53676",
+    "title": "G80 가격표 - 2023년 12월 - G80 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/23442/676/053/6599607b9a2609f53f6f1947dbb6b9d9.jpg",
+      "http://wikicar.co.kr/files/attach/images/23442/676/053/a59e38f99d65a3c0a85b785e76d69ca3.jpg",
+      "http://wikicar.co.kr/files/attach/images/23442/676/053/15271a1cffc7408f45605dd3975a1d50.jpg",
+      "http://wikicar.co.kr/files/attach/images/23442/676/053/db6ae128fda265d935e8aa261545b03a.jpg",
+      "http://wikicar.co.kr/files/attach/images/23442/676/053/295484f35359da3d416a7640c928823f.jpg"
+    ]
+  },
+  {
+    "catalogId": "genesis_g80_e",
+    "sourceUrl": "http://wikicar.co.kr/g80_e/56124",
+    "title": "G80 전기차 가격표 - 2024년 09월 - G80 전기 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg",
+      "p8.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/3abc747cb21015f66b1bbc03df8d0109.jpg",
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/74584d36207951670dbe05069ecbdff9.jpg",
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/5397cb4c358e4b07e01add6b120fe47e.jpg",
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/726bc207a1acfbfe2ef84ca74be8cd54.jpg",
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/9be6d43b8f7ce10ce7af2fd0f7363923.jpg",
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/5e9d039c62be75607cbfca798273d798.jpg",
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/e1258785a6c7c96bfa2dbebb35860a33.jpg",
+      "http://wikicar.co.kr/files/attach/images/47156/124/056/4abcccc1ca9dca43f5a2497e579704ce.jpg"
+    ]
+  },
+  {
+    "catalogId": "genesis_g90_rs4",
+    "sourceUrl": "http://wikicar.co.kr/genesis_g90/54187",
+    "title": "G90 가격표 - 2024년 03월(블랙 출시) - 제네시스 G90 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg",
+      "p8.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/1bf5a00be46600917ae6043079db0ea1.jpg",
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/1cacede3dcabf3ed113c31008aa58ec0.jpg",
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/aa08bc26c7254ed3c697d0153bc8b917.jpg",
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/1d0ddd62bc5a9b565794ee6554628221.jpg",
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/805ed8c9e6f09a36fd379832b2af6773.jpg",
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/914326850c26ac66188e3182d3643b0c.jpg",
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/1e7f5f01de310c84bdb892ee0b9e2bf9.jpg",
+      "http://wikicar.co.kr/files/attach/images/26033/187/054/4d542073fb8ff1d75263ba78c2dd1066.jpg"
+    ]
+  },
+  {
+    "catalogId": "genesis_gv60",
+    "sourceUrl": "http://wikicar.co.kr/gv60/51225",
+    "title": "GV60 가격표 - 2022년 12월 (2023년형) - GV60 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/46758/225/051/4a54740cfdf7b2c84616403a6d183e33.jpg",
+      "http://wikicar.co.kr/files/attach/images/46758/225/051/d1cf802f18f99891483ebda0f937b4ad.jpg",
+      "http://wikicar.co.kr/files/attach/images/46758/225/051/43d0b4327e5a5c21b7232090d455a4ec.jpg"
+    ]
+  },
+  {
+    "catalogId": "genesis_gv70",
+    "sourceUrl": "http://wikicar.co.kr/gv70/54115",
+    "title": "제네시스 가격표 - GV70 (2024.05) - GV70 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/44902/115/054/67e8d1cff02010a87488c6fb98715c6e.png",
+      "http://wikicar.co.kr/files/attach/images/44902/115/054/da299cded551a95942a0b3eaca0b2143.png",
+      "http://wikicar.co.kr/files/attach/images/44902/115/054/621f93cd4a3a430102f8d1fb1c9920ad.png",
+      "http://wikicar.co.kr/files/attach/images/44902/115/054/05543bfaa5313f16263e3c8a2572a282.png",
+      "http://wikicar.co.kr/files/attach/images/44902/115/054/56904e1ccc63a7958ca7510dcfe80eb4.png",
+      "http://wikicar.co.kr/files/attach/images/44902/115/054/a51ec400c19727b7b0f9c1b59028b2b6.png",
+      "http://wikicar.co.kr/files/attach/images/44902/115/054/df84b08a3ca1faff2c816dd9229f8e1e.png"
+    ]
+  },
+  {
+    "catalogId": "genesis_gv70_e",
+    "sourceUrl": "http://wikicar.co.kr/gv70_e/56025",
+    "title": "GV70 전기차 가격표 - 2024년 08월 - GV70 전기차 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/48470/025/056/7fe6f571dc780accc391e589acfde71c.jpg",
+      "http://wikicar.co.kr/files/attach/images/48470/025/056/3efac080b4d52b647cf486fed957bdb4.jpg",
+      "http://wikicar.co.kr/files/attach/images/48470/025/056/614a2e68d40f6c2fba09e715d4b5c2d2.jpg",
+      "http://wikicar.co.kr/files/attach/images/48470/025/056/b9e702121c007af6c91d3c7b308b94f5.jpg",
+      "http://wikicar.co.kr/files/attach/images/48470/025/056/efec4eac3c480f2b7037ece5a4da09d6.jpg",
+      "http://wikicar.co.kr/files/attach/images/48470/025/056/1af493fda9046bbfb34f4c71241b8951.jpg"
+    ]
+  },
+  {
+    "catalogId": "genesis_gv80",
+    "sourceUrl": "http://wikicar.co.kr/gv80/56238",
+    "title": "GV80 쿠페 / 블랙 가격표 - 2024년 10월 - GV80 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg",
+      "p8.jpg",
+      "p9.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/86a8c24e8b0c68cbea93cfdaa46561b8.jpg",
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/c28f29e59166b7b220653f2cd1e3e696.jpg",
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/fe9eabcfdf8ac33b763c5873ad49f39f.jpg",
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/2e86c53d8a9fbcf4b6f3211ea4c4c68d.jpg",
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/6b2786dcda17ef5b766098ce2d3a369b.jpg",
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/c8a360e464539f43c292ae5e0860279f.jpg",
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/74afcaef510d09ddb16e81f01c89f5d7.jpg",
+      "http://wikicar.co.kr/files/attach/images/41671/238/056/57a6c3beee227133422ee254a383db52.jpg",
+      "http://wikicar.co.kr/imgdata/banner/gv80_b.jpg"
+    ]
+  },
+  {
+    "catalogId": "chevrolet_trax_crossover",
+    "sourceUrl": "http://wikicar.co.kr/trax/51947",
+    "title": "트랙스 가격표 - 2023년 03월 (트랙스 크로스오버 출시) - 트랙스 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/6921/947/051/e343929dbb06a5c3cf67c6650c3c17af.jpg",
+      "http://wikicar.co.kr/files/attach/images/6921/947/051/e5b95e70305cb53a99dc5628aa959acb.jpg"
+    ]
+  },
+  {
+    "catalogId": "chevrolet_trailblazer",
+    "sourceUrl": "http://wikicar.co.kr/trailblazer/54128",
+    "title": "트레일블레이저 가격표 - 2024년 05월(2025년형) - 트레일블레이저 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/45877/128/054/2f5517ad8af0e405bd9fd27bb404d9c0.jpg",
+      "http://wikicar.co.kr/files/attach/images/45877/128/054/c0c77e7d37a819144732c80fd2ba94fa.jpg"
+    ]
+  },
+  {
+    "catalogId": "chevrolet_colorado",
+    "sourceUrl": "http://wikicar.co.kr/colorado/55103",
+    "title": "콜로라도 가격표 - 2024년 07월(올 뉴 콜로라도 출시) - 콜로라도 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/43488/103/055/6ec8d81a557c21b7a4d4e66415a797ef.jpg",
+      "http://wikicar.co.kr/files/attach/images/43488/103/055/34ae1305fcc5392f7e8300316ed19e68.jpg",
+      "http://wikicar.co.kr/imgdata/banner/colorado_b.jpg"
+    ]
+  },
+  {
+    "catalogId": "renault_grand_koleos",
+    "sourceUrl": "http://wikicar.co.kr/koleos/55967",
+    "title": "그랑 콜레오스 가격표 - 2024년 09월 - 그랑 콜레오스 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/55953/967/055/9a014ad18296917530049c3de6a633dc.jpg",
+      "http://wikicar.co.kr/files/attach/images/55953/967/055/ae4a8fb2774538370163adc60c3fac75.jpg",
+      "http://wikicar.co.kr/files/attach/images/55953/967/055/2666091884af4818eb67888f1c24e6ac.jpg",
+      "http://wikicar.co.kr/files/attach/images/55953/967/055/e31043e8546da3f8b3a87d60354caff9.jpg",
+      "http://wikicar.co.kr/files/attach/images/55953/967/055/14e3ab8f599abc5393f9af44da4ba063.jpg",
+      "http://wikicar.co.kr/files/attach/images/55953/967/055/c35170f6d83b91909aa54c0027fd9642.jpg"
+    ]
+  },
+  {
+    "catalogId": "renault_qm6",
+    "sourceUrl": "http://wikicar.co.kr/qm6/55339",
+    "title": "QM6 가격표 - 2024년 07월 - QM6 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/20691/339/055/cb8535a31513a0aa66d9096cc3af409f.jpg",
+      "http://wikicar.co.kr/files/attach/images/20691/339/055/788728e5d78a3c951eb288d72c9cd4d5.jpg",
+      "http://wikicar.co.kr/files/attach/images/20691/339/055/b28b3da0ad4ba1c8278cf4de930236b3.jpg"
+    ]
+  },
+  {
+    "catalogId": "kgm_torres",
+    "sourceUrl": "http://wikicar.co.kr/torres/57932",
+    "title": "토레스 하이브리드 가격표 - 2025년 03월(출시) - 토레스 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/48964/932/057/6d554ff331a2cb905d2da98cae734339.jpg",
+      "http://wikicar.co.kr/files/attach/images/48964/932/057/0745f90c3c21423275258e1b70f7f16a.jpg",
+      "http://wikicar.co.kr/files/attach/images/48964/932/057/eea6d43e580b39e519a709187dfbdf8f.jpg",
+      "http://wikicar.co.kr/files/attach/images/48964/932/057/1b5d034b4f19bd3aa7a5c72aa72e77bd.jpg"
+    ]
+  },
+  {
+    "catalogId": "kgm_actyon",
+    "sourceUrl": "http://wikicar.co.kr/actyon/57033",
+    "title": "액티언 가격표 - 2025년 01월 - 액티언 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/6507/033/057/37583605b5f491d1227ea80cf252f3f8.jpg",
+      "http://wikicar.co.kr/files/attach/images/6507/033/057/86654bcf946d93df20b15cf2a2f706c3.jpg",
+      "http://wikicar.co.kr/files/attach/images/6507/033/057/f306f0109fe371cfc24c998fc9b138df.jpg",
+      "http://wikicar.co.kr/files/attach/images/6507/033/057/5bc071ce36f3097ce30412020610a566.jpg"
+    ]
+  },
+  {
+    "catalogId": "kgm_musso",
+    "sourceUrl": "http://wikicar.co.kr/musso/57893",
+    "title": "무쏘 EV 가격표 - 2025년 03월 - 무쏘 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/57881/893/057/e15ce77f484a5b112eca7f6815b35e09.jpg",
+      "http://wikicar.co.kr/files/attach/images/57881/893/057/f3f188c2f277d648d30fb974044890cb.jpg",
+      "http://wikicar.co.kr/files/attach/images/57881/893/057/398d863578a48adf30631f96b369a954.jpg",
+      "http://wikicar.co.kr/files/attach/images/57881/893/057/22693fdc4c2b9edee38ac2c3847efc7f.jpg"
+    ]
+  },
+  {
+    "catalogId": "kgm_rexton_sports",
+    "sourceUrl": "http://wikicar.co.kr/rexton_sports/52256",
+    "title": "렉스턴스포츠 가격표 - 2023년 05월 - 렉스턴 스포츠 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg",
+      "p8.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/f51a9206718f276d930f263a75321962.jpg",
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/d8eb5440c328520dc254026d830de0ff.jpg",
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/228e2f9dc93d00374faab0026aefb5dd.jpg",
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/bedb50f4b29735768b48f10ec5428721.jpg",
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/7b33329682e78cfc280cffabab108080.jpg",
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/bf5ccbab91c27802ce458985808b00d7.jpg",
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/9ddbe710e4621e865a722c461baf6294.jpg",
+      "http://wikicar.co.kr/files/attach/images/22849/256/052/b89cc44c1f875a500f02a83dae79ac3f.jpg"
+    ]
+  },
+  {
+    "catalogId": "kgm_korando",
+    "sourceUrl": "http://wikicar.co.kr/korando_c200/57372",
+    "title": "코란도 EV 가격표 - 2025년 01월 - 코란도 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/26996/372/057/4216b868e10e0992a60197dcf3b69153.jpg",
+      "http://wikicar.co.kr/files/attach/images/26996/372/057/b4869854f6f11deeeb2d80326dc4d558.jpg",
+      "http://wikicar.co.kr/files/attach/images/26996/372/057/3a9c86853d0a5b594f1da170c130882f.jpg",
+      "http://wikicar.co.kr/files/attach/images/26996/372/057/7ead8322e2e0dee96f9a22d8d048e72f.jpg"
+    ]
+  },
+  {
+    "catalogId": "kgm_tivoli",
+    "sourceUrl": "http://wikicar.co.kr/tivoli_armour/57592",
+    "title": "티볼리 가격표 - 2025년 01월 - 티볼리 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg",
+      "p8.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/7c9dba9c9f8e69623df3c1aba32cc4ee.jpg",
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/7452d2f092aed298f3cff2b4c0c0b40e.jpg",
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/f388f6b97ee0bcf582d83ff4158585e1.jpg",
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/4b615b0217705a066a7ff9c1e105cce8.jpg",
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/12b220f745a426d4d993fc87257a4b4f.jpg",
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/919d6d4de59fcc41999c4cf7d943ae77.jpg",
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/5017a3050dcee841e769a99f3190c464.jpg",
+      "http://wikicar.co.kr/files/attach/images/23374/592/057/0a73328f062987ff538a3b13aa670b17.jpg"
+    ]
+  },
+  {
+    "catalogId": "hyundai_sonata_dn8_edge_hybrid",
+    "sourceUrl": "http://wikicar.co.kr/sonata_dn8/56709",
+    "title": "쏘나타 하이브리드 가격표 - 2024년 10월(2025) - 쏘나타 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/26910/709/056/866d0b3f4f83350d93242a08a0fad57e.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/709/056/2914bd55df8dd22f4b57c4a867292d5d.jpg"
+    ]
+  },
+  {
+    "catalogId": "hyundai_sonata_dn8",
+    "sourceUrl": "http://wikicar.co.kr/sonata_dn8/49419",
+    "title": "쏘나타 가격표 - 2022년 07월 (2023년형) - 쏘나타 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/26910/419/049/a101d9d59a5887862cec3b2465c98b5b.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/419/049/e0a08ce9e56eb48328530612f76e7a0e.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/419/049/57cc3eb813a95e5adf4bec0cb0087f64.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/419/049/d05b590ceabca3fb8fdd79279b086cac.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/419/049/0af20f6d415143e72c7b6bc1bd8716ee.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/419/049/40771601d01fbc477b56469883caf938.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/419/049/bcaf6791e91f373623e6eccccc9a3cee.jpg"
+    ]
+  },
+  {
+    "catalogId": "hyundai_sonata_dn8_hybrid",
+    "sourceUrl": "http://wikicar.co.kr/sonata_dn8/49429",
+    "title": "쏘나타 하이브리드 가격표 - 2022년 07월 (2023년형) - 쏘나타 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/26910/429/049/cc7c375e57bb400d8bc942f811c601d0.jpg",
+      "http://wikicar.co.kr/files/attach/images/26910/429/049/9dcc4474c52539b159b2b5e0706cb0d8.jpg"
+    ]
+  },
+  {
+    "catalogId": "chevrolet_tahoe",
+    "sourceUrl": "http://wikicar.co.kr/tahoe/47689",
+    "title": "타호 가격표 - 2022년 01월 - 타호 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/47677/689/047/2d583949a9331f950b0af5bbeb3626c6.jpg"
+    ]
+  },
+  {
+    "catalogId": "hyundai_grandeur_ig_163",
+    "sourceUrl": "http://wikicar.co.kr/grandeur_ig/51076",
+    "title": "그랜저 하이브리드 가격표 - 2022년 11월 (디 올뉴 그랜저) - 그랜저 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/292/076/051/229238e22029ed7385eafdc7a272896b.jpg",
+      "http://wikicar.co.kr/files/attach/images/292/076/051/54d49f6db626c80bfcd5f8348368ab1b.jpg",
+      "http://wikicar.co.kr/files/attach/images/292/076/051/3c7350aa1d301c70172a03f31e870111.jpg"
+    ]
+  },
+  {
+    "catalogId": "hyundai_santafe_tm_165",
+    "sourceUrl": "http://wikicar.co.kr/santafe_tm/52802",
+    "title": "싼타페 가격표 - 2023년 08월 (디 올뉴 싼타페) - 싼타페 - 강남중고차매매단지",
+    "fetched_at": "2026-04-30",
+    "images": [
+      "p1.jpg",
+      "p2.jpg",
+      "p3.jpg",
+      "p4.jpg",
+      "p5.jpg",
+      "p6.jpg",
+      "p7.jpg",
+      "p8.jpg"
+    ],
+    "image_urls": [
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/032ac8cbfe4ea8141a771a5b702f0612.jpg",
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/78e1c6f89fcee4f43ca0539b488c1171.jpg",
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/69720b5c0b9078f12360adb2cac63831.jpg",
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/7f94ca48eeb9253bc035e4a0086e015b.jpg",
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/679461fc4280daef7e53b3c5307c918f.jpg",
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/f7f99390769e909af74d23bce26a663e.jpg",
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/fe3a0adeb62313e5c7ee622afbf5b1de.jpg",
+      "http://wikicar.co.kr/files/attach/images/24411/802/052/8efa6abc61b432c2a1fc937a981bbc31.jpg"
+    ]
+  }
+]

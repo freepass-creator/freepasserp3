@@ -16,7 +16,7 @@ import {
   esc, shortStatus, mapStatusDot, fmtDate,
   listBody, emptyState, renderRoomItem,
   ffi, ffs, setHeadSave, bindFormSave,
-  providerNameByCode,
+  providerNameByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
 /* v2 정책 OPTS — 드롭다운 옵션 */
@@ -124,10 +124,14 @@ export function renderPolicyDetail(pol) {
 
   const O = POLICY_OPTS;
 
-  // 1. 정책 기본정보 + 대여조건
+  // 표준 섹션 헤더 — contract 상세 / 사용자 상세와 동일 (form-section-title)
+  const sec = (icon, label) => `<div class="form-section-title"><i class="ph ph-${icon}"></i> ${esc(label)}</div>`;
+
+  // 1. 정책 기본정보 — 기본(식별·심사) / 조건(주행·결제·계약) 2개 섹션
   if (basicCard) {
     setHeadSave(basicCard, '정책 기본정보', canEdit, 'basic');
     basicCard.querySelector('.ws4-body').innerHTML = `
+      ${sec('identification-card', '기본')}
       <div class="form-grid">
         ${ffi('정책명',     'policy_name',                    pol.policy_name || pol.term_name,   dis)}
         <div class="ff"><label>정책코드</label><input type="text" class="input" value="${esc(pol.policy_code || pol.term_code || '')}" readonly data-permanent-lock="1"></div>
@@ -140,7 +144,10 @@ export function renderPolicyDetail(pol) {
         ${ffi('정책설명',   'term_description',               pol.term_description,               dis)}
         ${ffs('심사기준',   'screening_criteria',             pol.screening_criteria,             O.screening_criteria, dis)}
         ${ffs('신용등급',   'credit_grade',                   pol.credit_grade,                   O.credit_grade, dis)}
-        ${ffs('약정 주행거리', 'annual_mileage',               pol.annual_mileage,                 O.annual_mileage, dis)}
+      </div>
+      ${sec('file-text', '조건')}
+      <div class="form-grid">
+        ${ffs('약정 주행거리', 'annual_mileage',               String(pol.annual_mileage || '').replace(/\s*주행\s*$/, ''), O.annual_mileage, dis)}
         ${ffs('1만km추가',  'mileage_upcharge_per_10000km',   pol.mileage_upcharge_per_10000km,   O.mileage_upcharge_per_10000km, dis)}
         ${ffs('보증금분납', 'deposit_installment',            pol.deposit_installment,            O.deposit_installment, dis)}
         ${ffs('보증카드',   'deposit_card_payment',           pol.deposit_card_payment,           O.deposit_card_payment, dis)}
@@ -153,10 +160,11 @@ export function renderPolicyDetail(pol) {
     `;
   }
 
-  // 2. 보험·운전자
+  // 2. 보험·운전자 — 보험(대인/대물/자손/자차/무보험/긴급출동·정비) + 운전자 2개 섹션
   if (insCard) {
     setHeadSave(insCard, '보험·운전자', canEdit, 'ins');
     insCard.querySelector('.ws4-body').innerHTML = `
+      ${sec('shield', '보험')}
       <div class="form-grid">
         ${ffi('대인배상',   'injury_compensation_limit',          pol.injury_compensation_limit, dis)}
         ${ffs('대인면책',   'injury_deductible',                  pol.injury_deductible,                                                 O.injury_deductible, dis)}
@@ -170,9 +178,12 @@ export function renderPolicyDetail(pol) {
         ${ffs('자차수리율', 'own_damage_repair_ratio',            pol.own_damage_repair_ratio || pol.own_damage_compensation_rate,       O.own_damage_repair_ratio, dis)}
         ${ffs('자차최소',   'own_damage_min_deductible',          pol.own_damage_min_deductible,                                         O.own_damage_min_deductible, dis)}
         ${ffs('자차최대',   'own_damage_max_deductible',          pol.own_damage_max_deductible,                                         O.own_damage_max_deductible, dis)}
-        ${ffs('보험료포함', 'insurance_included',                 pol.insurance_included,                                                O.insurance_included, dis)}
-        ${ffs('정비서비스', 'maintenance_service',                pol.maintenance_service,                                               O.maintenance_service, dis)}
         ${ffs('긴급출동',   'annual_roadside_assistance',         pol.annual_roadside_assistance || pol.roadside_assistance,             O.annual_roadside_assistance, dis)}
+        ${ffs('정비서비스', 'maintenance_service',                pol.maintenance_service,                                               O.maintenance_service, dis)}
+        ${ffs('보험료포함', 'insurance_included',                 pol.insurance_included,                                                O.insurance_included, dis)}
+      </div>
+      ${sec('user', '운전자')}
+      <div class="form-grid">
         ${ffs('기본연령',   'basic_driver_age',                   pol.basic_driver_age,                                                  O.basic_driver_age, dis)}
         ${ffs('면허취득',   'license_period',                     pol.license_period,                                                    O.license_period, dis)}
         ${ffs('연령상한',   'driver_age_upper_limit',             pol.driver_age_upper_limit,                                            O.driver_age_upper_limit, dis)}
@@ -199,8 +210,8 @@ export function renderPolicyDetail(pol) {
           <tbody>${linked.map(p => {
             const p36 = p.price?.['36'] || {};
             const p48 = p.price?.['48'] || {};
-            const r36 = p36.rent ? Math.round(p36.rent/10000) + '만/' + Math.round((p36.deposit||0)/10000) + '만' : '-';
-            const r48 = p48.rent ? Math.round(p48.rent/10000) + '만/' + Math.round((p48.deposit||0)/10000) + '만' : '-';
+            const r36 = p36.rent ? `${fmtMoneyMan(p36.rent)}/${fmtMoneyMan(p36.deposit) || '0만'}` : '-';
+            const r48 = p48.rent ? `${fmtMoneyMan(p48.rent)}/${fmtMoneyMan(p48.deposit) || '0만'}` : '-';
             return `<tr><td class="sticky-col">${esc(p.car_number || '-')}</td><td>${esc([p.sub_model || p.model, p.trim_name].filter(Boolean).join(' '))}</td><td class="num">${r36}</td><td class="num">${r48}</td><td class="center"><span class="status-dot ${mapStatusDot(p.vehicle_status || '')}"></span>${esc(shortStatus(p.vehicle_status || ''))}</td></tr>`;
           }).join('')}</tbody>
         </table>

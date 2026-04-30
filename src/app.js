@@ -70,6 +70,7 @@ window.renderDev = renderDev;
 
 /* ── 페이지별 하단 액션바 — index.html showPage() 에서 호출 ── */
 let _productClipboard = null;
+let _policyClipboard = null;
 
 /* 신규 생성된 빈 레코드 추적 — 페이지 이동 시 필수 정보 비어있으면 자동 삭제.
  *  collection: { id: requiredField } 형식. requiredField 가 비어있으면 폐기. */
@@ -277,6 +278,7 @@ window.refreshPageActions = function(pageName) {
     });
   } else if (p === 'policy') {
     const hasSelection = !!activeId;
+    const policy = hasSelection ? (store.policies || []).find(x => x._key === activeId) : null;
     const f = _pageFilters.policy;
     const setS = (v) => { f.status = v; renderFilteredPolicies(); window.refreshPageActions?.('policy'); };
     const setC = (v) => { f.company_code = v; renderFilteredPolicies(); window.refreshPageActions?.('policy'); };
@@ -292,6 +294,11 @@ window.refreshPageActions = function(pageName) {
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPolicy() },
         editToggle,
         { divider: true },
+        { label: '복사', icon: 'ph-copy', disabled: !hasSelection,
+          title: '현재 정책 조건/보험/운전자 정보 복사', onClick: () => copyPolicy(policy) },
+        { label: '붙여넣기', icon: 'ph-clipboard-text', disabled: !hasSelection || !_policyClipboard,
+          title: '복사된 정보를 현재 정책에 적용 (정책명/코드 제외)',
+          onClick: () => pastePolicy(policy) },
         { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
           onClick: () => deletePolicy(activeId) },
       ],
@@ -667,6 +674,36 @@ async function pasteToProduct(p) {
     showToast('붙여넣기 완료');
   } catch (e) {
     console.error('[paste]', e);
+    showToast('붙여넣기 실패', 'error');
+  }
+}
+
+function copyPolicy(pol) {
+  if (!pol) return;
+  // 식별 필드(코드/키)·메타·연결상품은 제외 — 조건/보험/운전자만 복사
+  const EXCLUDE = new Set([
+    '_key', '_deleted', 'policy_code', 'term_code', 'policy_name', 'term_name',
+    'created_at', 'created_by', 'updated_at',
+  ]);
+  const snap = {};
+  for (const [k, v] of Object.entries(pol)) {
+    if (EXCLUDE.has(k)) continue;
+    if (v == null || v === '') continue;
+    snap[k] = v;
+  }
+  _policyClipboard = snap;
+  showToast(`${pol.policy_name || '정책'} 정보 복사됨 — 다른 정책 선택 후 붙여넣기`);
+  window.refreshPageActions?.('policy');
+}
+
+async function pastePolicy(pol) {
+  if (!pol || !_policyClipboard) return;
+  if (!confirm('복사된 정책 정보를 현재 정책에 적용합니다. 정책명/코드는 유지됩니다. 계속할까요?')) return;
+  try {
+    await updateRecord(`policies/${pol._key}`, { ..._policyClipboard });
+    showToast('붙여넣기 완료');
+  } catch (e) {
+    console.error('[paste policy]', e);
     showToast('붙여넣기 실패', 'error');
   }
 }

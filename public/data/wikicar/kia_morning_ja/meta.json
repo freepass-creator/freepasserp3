@@ -1,0 +1,18 @@
+{
+  "catalogId": "kia_morning_ja",
+  "sourceUrl": "http://wikicar.co.kr/morning_ja/54746",
+  "listingUrl": "http://wikicar.co.kr/morning_ja",
+  "title": "모닝 가격표 - 2024년 06월",
+  "docSrl": 54746,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/19804/746/054/e2076cb85772f42be02dcbfdc2d25577.jpg",
+    "http://wikicar.co.kr/./files/attach/images/19804/746/054/6b0dae727907b52fd4b1a3f68522b90a.jpg",
+    "http://wikicar.co.kr/./files/attach/images/19804/746/054/d90ff297272e0558ffe2fd7e7452a24f.jpg"
+  ]
+}

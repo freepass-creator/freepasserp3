@@ -83,6 +83,14 @@ export function fmtMoney(v) {
   return n >= 10000 ? Math.round(n / 10000) + '만' : n.toLocaleString();
 }
 
+/* 항상 만원 단위 — 임대료/보증금 등 대형 금액 (천단위 절대 안 보고 만원으로 통일).
+ *  v 가 0/null 이면 빈 문자열. suffix 기본 '만' (e.g., '만원' 도 가능). */
+export function fmtMoneyMan(v, suffix = '만') {
+  const n = Number(v);
+  if (!n) return '';
+  return Math.round(n / 10000) + suffix;
+}
+
 /* 채팅 등 시간 표시 — 오늘이면 HH:MM, 이전이면 YY.MM.DD */
 export function fmtTime(ts) {
   if (!ts) return '';
@@ -176,13 +184,32 @@ export function stripLegalEntity(name) {
   return s.replace(/\s+/g, ' ').trim();
 }
 
-/* 공급사 코드 → 한글 회사명 변환 (store.partners 에서 lookup, 법인 접두/접미어 제거) */
+/* 공급사 코드 → 회사명 캐시 — partners 변경 시 자동 무효화 (Map 1회 빌드 후 N번 lookup O(1))
+ *  매 row 마다 store.partners.find() 선형스캔 → O(N×M) 비용 회피. */
+let _providerNameCache = null;
+let _providerCacheRef = null;     // 마지막 빌드 시점의 store.partners 참조 — 같으면 캐시 재사용
+function getProviderCache(store) {
+  const partners = store?.partners;
+  if (!partners) return null;
+  if (_providerCacheRef === partners && _providerNameCache) return _providerNameCache;
+  const map = new Map();
+  for (const x of partners) {
+    if (x._deleted) continue;
+    const code = x.partner_code || x.company_code;
+    if (!code) continue;
+    const name = stripLegalEntity(x.partner_name || x.company_name || code);
+    map.set(code, name);
+  }
+  _providerNameCache = map;
+  _providerCacheRef = partners;
+  return map;
+}
+
+/* 공급사 코드 → 한글 회사명 변환 (캐시 lookup O(1), 법인 접두/접미어 제거) */
 export function providerNameByCode(code, store) {
   if (!code) return '';
-  const p = (store?.partners || []).find(x =>
-    (x.partner_code === code || x.company_code === code) && !x._deleted
-  );
-  return stripLegalEntity(p?.partner_name || p?.company_name || code);
+  const cache = getProviderCache(store);
+  return (cache && cache.get(code)) || stripLegalEntity(code);
 }
 
 /* 공급사 코드 → "회사명 (코드)" 라벨. 폼 드롭다운/리스트 등 사용자가 보는 곳에서 사용.
@@ -233,6 +260,24 @@ export function ffs(label, field, val, opts, dis = '') {
       ${cur && !inOpts ? `<option selected>${esc(cur)}</option>` : ''}
     </select>
   </div>`;
+}
+
+/* ──────── 보기 전용 상세 패널 헬퍼 (info-grid) ──────── */
+/** 라벨/값 행 배열 → info-grid HTML
+ *  rows: [[label, value, full=true, isHtml=false], ...] (full 기본 true — 한 줄에 한 행)
+ *  isHtml=true 면 value 를 HTML 그대로 삽입 (esc 안 함) — 링크 등 */
+export function renderInfoGrid(rows) {
+  return `<div class="info-grid">${(rows || []).filter(r => r && r[1] != null && r[1] !== '').map(([l, v, full = true, isHtml = false]) =>
+    `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${isHtml ? v : esc(v)}</div>`
+  ).join('')}</div>`;
+}
+/** 섹션 제목 + info-grid 묶음 — contract 의 sectionTitle + renderRows 패턴
+ *  sections: [{ icon, label, rows }, ...] */
+export function renderInfoSections(sections) {
+  return (sections || []).filter(s => s && s.rows && s.rows.length).map(s =>
+    `<div class="form-section-title"><i class="ph ph-${esc(s.icon || 'info')}"></i> ${esc(s.label)}</div>` +
+    renderInfoGrid(s.rows)
+  ).join('');
 }
 
 /* ──────── 저장 패턴 ──────── */

@@ -10,7 +10,7 @@ import { store } from '../core/store.js';
 import {
   esc, fmtDate, fmtTime, fmtFullTime,
   listBody, emptyState, renderRoomItem,
-  setHeadSave, bindFormSave,
+  setHeadSave, bindFormSave, renderInfoGrid, ffi,
 } from '../core/ui-helpers.js';
 
 const ROLE_BADGE = {
@@ -116,16 +116,16 @@ export function renderUserDetail(u) {
     const lockSel = canEdit ? ' data-edit-lock="1"' : dis;
     editCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-grid">
-        <div class="ff"><label>이름</label><input type="text" class="input" data-f="name" value="${esc(u.name || '')}"${lock}></div>
-        <div class="ff"><label>직책</label><input type="text" class="input" data-f="title" value="${esc(u.title || '')}"${lock}></div>
-        <div class="ff"><label>이메일</label><input type="text" class="input" data-f="email" value="${esc(u.email || '')}"${lock}></div>
+        ${ffi('이름',   'name',  u.name,  dis)}
+        ${ffi('직책',   'title', u.title, dis)}
+        ${ffi('이메일', 'email', u.email, dis)}
         <div class="ff"><label>역할</label><select class="input" data-f="role"${lockSel}>${ROLES.map(([k, v]) => `<option value="${k}" ${k === u.role ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
         <div class="ff"><label>소속코드</label><select class="input" data-f="company_code"${lockSel}>
           <option value="">-</option>
           ${companies.map(c => `<option value="${esc(c.code)}" ${c.code === u.company_code ? 'selected' : ''}>${esc(c.name)} (${esc(c.code)})</option>`).join('')}
           ${u.company_code && !companies.find(c => c.code === u.company_code) ? `<option value="${esc(u.company_code)}" selected>${esc(u.company_code)}</option>` : ''}
         </select></div>
-        <div class="ff"><label>연락처</label><input type="text" class="input" data-f="phone" value="${esc(u.phone || '')}"${lock}></div>
+        ${ffi('연락처', 'phone', u.phone, dis)}
         <div class="ff"><label>상태</label><select class="input" data-f="status"${lockSel}>${STATUSES.map(([k, v]) => `<option value="${k}" ${k === currentStatus ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
         <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${lock}>${esc(u.memo || '')}</textarea></div>
       </div>
@@ -152,7 +152,7 @@ export function renderUserDetail(u) {
       ['이번달', thisMonth + '건', true],
       ['등록일', fmtDate(u.created_at), true],
     ].filter(([, v]) => v != null && v !== '');
-    detailCard.querySelector('.ws4-body').innerHTML = `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;
+    detailCard.querySelector('.ws4-body').innerHTML = renderInfoGrid(rows);
   }
 
   // 3. 활동 이력

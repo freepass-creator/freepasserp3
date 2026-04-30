@@ -1,0 +1,20 @@
+{
+  "catalogId": "kia_ev9",
+  "sourceUrl": "http://wikicar.co.kr/ev9/57992",
+  "listingUrl": "http://wikicar.co.kr/ev9",
+  "title": "EV9 GT 가격표 - 2025년 02월",
+  "docSrl": 57992,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/52186/992/057/b3d0371b0d7a9623eab7faeaf556392f.jpg",
+    "http://wikicar.co.kr/./files/attach/images/52186/992/057/7185b900fd30dd1fd6bae5d02c772f55.jpg",
+    "http://wikicar.co.kr/./files/attach/images/52186/992/057/e911ce89a56d3d9f9345fbfab0c8d9f9.jpg",
+    "http://wikicar.co.kr/./files/attach/images/52186/992/057/81bd7a2d1ae07c9902111c7120334957.jpg"
+  ]
+}

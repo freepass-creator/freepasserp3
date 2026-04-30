@@ -19,7 +19,7 @@ import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichPro
 import { showToast } from '../core/toast.js';
 import {
   esc, shortStatus, mapStatusDot, fmtMileage,
-  providerNameByCode,
+  providerNameByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
@@ -658,7 +658,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       <div class="detail-section-label">2. 기간별 대여료 및 보증금</div>
       <table class="table">
         <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
-        <tbody>${priceRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${r.rent ? Math.round(r.rent/10000) + '만' : '-'}</td><td class="num">${r.dep ? Math.round(r.dep/10000) + '만' : '-'}</td></tr>`).join('')}</tbody>
+        <tbody>${priceRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${fmtMoneyMan(r.rent) || '-'}</td><td class="num">${fmtMoneyMan(r.dep) || '-'}</td></tr>`).join('')}</tbody>
       </table>
       ${(() => {
         // 가격 산정 조건 — 나이 / 약정주행거리 / 보험포함 여부

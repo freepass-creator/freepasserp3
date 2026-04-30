@@ -74,8 +74,10 @@ function renderCarPicker(p, dis = '') {
 }
 
 function pickerSelect(label, field, cur, list, ctx, dis) {
+  // dis 가 없으면 보기모드 잠금 (data-edit-lock="1") — body:not(.is-edit-mode) 일 때 mousedown 차단
+  const lockAttr = dis ? '' : ' data-edit-lock="1"';
   return `<div class="ff"><label>${esc(label)}</label>
-    <select class="input" data-f="${esc(field)}" data-picker="${esc(field)}"${dis}>
+    <select class="input" data-f="${esc(field)}" data-picker="${esc(field)}"${dis}${lockAttr}>
       <option value="">선택</option>
       ${pickerOptionsHtml(list, cur, field, ctx)}
     </select>

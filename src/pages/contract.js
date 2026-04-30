@@ -21,7 +21,7 @@ import { pickAgent, pickOrCreateCustomer } from '../core/dialogs.js';
 import {
   esc, fmtDate, fmtTime, fmtListDate,
   listBody, emptyState, renderRoomItem, flashSaved,
-  providerNameByCode, formatMainLine,
+  providerNameByCode, formatMainLine, renderInfoSections, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
 export const CONTRACT_STATUSES = ['계약요청', '계약대기', '계약발송', '계약완료', '계약취소'];
@@ -84,8 +84,8 @@ export function renderContractList(contracts) {
     const rent = c.rent_amount_snapshot || c.monthly_rent;
     const dep = c.deposit_amount_snapshot || c.deposit;
     const term = c.rent_month_snapshot || c.contract_term;
-    const rentStr = rent ? `${Math.round(Number(rent)/10000)}만` : '';
-    const depStr  = dep  ? `${Math.round(Number(dep)/10000)}만`  : '';
+    const rentStr = fmtMoneyMan(rent);
+    const depStr  = fmtMoneyMan(dep);
     const termStr = term ? `${term}개월` : '';
     // 메인 — 계약자명 차량번호 세부모델 공급사명 (구분자 없이 문단처럼)
     const customerName = c.customer_name || '계약자미정';
@@ -188,8 +188,8 @@ export function renderContractDetail(c) {
     // 3) 대여 조건 정보
     const rentRows = [
       ['대여기간', termN ? termN + '개월' : ''],
-      ['월대여료', rentN ? Math.round(Number(rentN)/10000) + '만원' : ''],
-      ['보증금', depN ? Math.round(Number(depN)/10000) + '만원' : ''],
+      ['월대여료', fmtMoneyMan(rentN, '만원')],
+      ['보증금', fmtMoneyMan(depN, '만원')],
       ['계약일', fmtDate(c.contract_date)],
       ['심사기준', c.credit_grade_snapshot],
       ['정책명', c.policy_name_snapshot],
@@ -205,18 +205,13 @@ export function renderContractDetail(c) {
       ['계약코드', c.contract_code + (c.is_draft ? ' (임시)' : '')],
     ].filter(([, v]) => v);
 
-    // 단순 2열 (라벨 + 값) — 모든 행 동일 폭으로 정렬, 빈 칸 안 만들어짐
-    const renderRows = (rows) => `<div class="cd-grid">${rows.map(([l, v]) =>
-      `<div class="cd-row"><span class="cd-lab">${esc(l)}</span><span class="cd-val">${esc(v)}</span></div>`
-    ).join('')}</div>`;
-    const sectionTitle = (icon, label) => `<div class="cd-section-title"><i class="ph ph-${icon}"></i> ${esc(label)}</div>`;
-
-    detailCard.querySelector('.ws4-body').innerHTML = `
-      ${customerRows.length ? sectionTitle('user', '계약자 정보') + renderRows(customerRows) : ''}
-      ${carRows.length ? sectionTitle('car-simple', '차량 정보') + renderRows(carRows) : ''}
-      ${rentRows.length ? sectionTitle('currency-krw', '대여조건 정보') + renderRows(rentRows) : ''}
-      ${partyRows.length ? sectionTitle('users', '관계자 정보') + renderRows(partyRows) : ''}
-    `;
+    // 공용 헬퍼 — sections 스펙으로 form-section-title + info-grid 통합 렌더
+    detailCard.querySelector('.ws4-body').innerHTML = renderInfoSections([
+      { icon: 'user',         label: '계약자 정보',  rows: customerRows },
+      { icon: 'car-simple',   label: '차량 정보',    rows: carRows },
+      { icon: 'currency-krw', label: '대여조건 정보', rows: rentRows },
+      { icon: 'users',        label: '관계자 정보',  rows: partyRows },
+    ]);
   }
 
   // 3. 첨부 서류 (면허증·신분증·통장사본·재직·사업자등록증 등)

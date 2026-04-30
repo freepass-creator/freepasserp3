@@ -1,0 +1,20 @@
+{
+  "catalogId": "kia_seltos",
+  "sourceUrl": "http://wikicar.co.kr/seltos/55145",
+  "listingUrl": "http://wikicar.co.kr/seltos",
+  "title": "셀토스 가격표 - 2024년 07월(2025년형)",
+  "docSrl": 55145,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/29606/145/055/4de60863e9de8716c0f44b6e2f1c2793.jpg",
+    "http://wikicar.co.kr/./files/attach/images/29606/145/055/c430a5876d2c5f1960191d7ff503b21f.jpg",
+    "http://wikicar.co.kr/./files/attach/images/29606/145/055/0543a3e48754067ecbc1e2e260512fba.jpg",
+    "http://wikicar.co.kr/./files/attach/images/29606/145/055/56244c4ef4f4ccc7c723fad51575fc2d.jpg"
+  ]
+}

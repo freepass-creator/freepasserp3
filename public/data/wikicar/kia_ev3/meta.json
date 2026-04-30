@@ -1,0 +1,20 @@
+{
+  "catalogId": "kia_ev3",
+  "sourceUrl": "http://wikicar.co.kr/EV3/54513",
+  "listingUrl": "http://wikicar.co.kr/EV3",
+  "title": "EV3 가격표 - 2024년 07월",
+  "docSrl": 54513,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/54496/513/054/130a33c2c1e2ed7c912801466328b7db.jpg",
+    "http://wikicar.co.kr/./files/attach/images/54496/513/054/78de7f81e4b3857a7edd5d5c3886d757.jpg",
+    "http://wikicar.co.kr/./files/attach/images/54496/513/054/755f05d95d9692fe7c27e42d9bd3962b.jpg",
+    "http://wikicar.co.kr/./files/attach/images/54496/513/054/2f74328cbb463fe4111782c488c9f8d6.jpg"
+  ]
+}

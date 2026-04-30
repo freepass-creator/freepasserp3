@@ -10,7 +10,7 @@ import { store } from '../core/store.js';
 import { watchRecord, updateRecord, softDelete, setRecord, fetchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { saveNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
-import { esc, emptyState, renderRoomItem } from './../core/ui-helpers.js';
+import { esc, emptyState, renderRoomItem, fmtMoneyMan } from './../core/ui-helpers.js';
 import { analyzeProduct, loadIndex, clearCache as clearMatrixCache } from '../core/vehicle-matrix.js';
 import { fpIdsToNames } from '../core/fp-options-master.js';
 
@@ -58,7 +58,7 @@ export function renderDev() {
     <div class="ws4">
       <!-- 좌 (1): 도구 목록 — 다른 페이지 목록과 동일 .room-item 규격 (간격 없이 딱 붙음) -->
       <div class="ws4-card ws4-list" style="flex: 1 1 0;">
-        <div class="ws4-head"><i class="ph ph-code"></i> <span>개발도구</span></div>
+        <div class="ws4-head"><span>개발도구</span></div>
         <div class="ws4-body no-pad">
           ${DEV_TABS.map(t => renderRoomItem({
             id: t.id,
@@ -76,23 +76,19 @@ export function renderDev() {
 
       <!-- 가운데 (본문) -->
       <div class="ws4-card" style="flex: ${isWideTab ? '2' : '2'} 1 0;">
-        <div class="ws4-head">
-          <i class="ph ph-${active?.icon}"></i>
-          <span>${esc(active?.label || '')}</span>
-          <span style="margin-left: 8px; color: var(--text-muted); font-size: 11px;">${esc(active?.sub || '')}</span>
-        </div>
+        <div class="ws4-head"><span>${esc(active?.label || '')}</span></div>
         <div class="ws4-body" id="devContent" style="padding: var(--sp-3); overflow: hidden; display: flex; flex-direction: column;"></div>
       </div>
 
       <!-- 우 (1): 차종 마스터일 때는 detail, 그 외는 로그 -->
       ${isWideTab ? `
         <div class="ws4-card" style="flex: 1 1 0;">
-          <div class="ws4-head"><i class="ph ph-info"></i> <span>차종 상세</span></div>
+          <div class="ws4-head"><span>차종 상세</span></div>
           <div class="ws4-body" id="devDetail" style="padding: var(--sp-3); overflow-y: auto;"></div>
         </div>
       ` : `
         <div class="ws4-card" style="flex: 1 1 0;">
-          <div class="ws4-head"><i class="ph ph-terminal"></i> <span>로그</span></div>
+          <div class="ws4-head"><span>로그</span></div>
           <div class="ws4-body" id="devLog" style="padding: var(--sp-3); font-family: var(--font-mono, monospace); font-size: 11px; color: var(--text-sub); white-space: pre-wrap; overflow-y: auto;"></div>
         </div>
       `}
@@ -921,7 +917,7 @@ function renderSyncTab(el) {
       //  우측은 search 페이지의 PRODUCT_COLS 순서 그대로 — 빈 셀(차종 매트릭스 매핑 필요)은 회색 ❓ 표시
       preview.style.display = 'block';
       const fmt = n => n ? Number(n).toLocaleString('ko-KR') : '';
-      const fmtMan = n => n ? Math.round(Number(n) / 10000) + '만' : '';
+      const fmtMan = fmtMoneyMan;   // 공용 헬퍼 alias (지역 호환)
       const td = (html, opts = {}) => `<td style="padding:4px 6px;${opts.r ? 'text-align:right;font-variant-numeric:tabular-nums;' : ''}${opts.bg ? `background:${opts.bg};` : ''}${opts.bold ? 'font-weight:500;' : ''}${opts.mono ? 'font-family:monospace;font-size:10px;' : ''}${opts.nowrap ? 'white-space:nowrap;' : ''}">${html}</td>`;
       const empty = '<span style="color:var(--text-muted);">❓</span>';
       const e = v => v == null || v === '' ? empty : esc(String(v));

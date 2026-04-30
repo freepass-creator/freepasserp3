@@ -11,7 +11,7 @@ import { filterByRole } from '../core/roles.js';
 import {
   esc, fmtDate, fmtTime, fmtFullTime,
   listBody, emptyState, renderRoomItem, flashSaved,
-  providerNameByCode, formatMainLine,
+  providerNameByCode, formatMainLine, renderInfoGrid,
 } from '../core/ui-helpers.js';
 
 const SETTLE_STATUSES = ['미정산', '정산완료', '환수'];
@@ -140,7 +140,7 @@ export function renderSettlementDetail(s) {
       ['정산상태', status, true],
       ['정산일', (s.settled_date || s.settled_at) ? fmtDate((s.settled_date || s.settled_at)) : '-', true],
     ].filter(([, v]) => v != null && v !== '');
-    detailCard.querySelector('.ws4-body').innerHTML = `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;
+    detailCard.querySelector('.ws4-body').innerHTML = renderInfoGrid(rows);
   }
 
   // 3. 정산 이력

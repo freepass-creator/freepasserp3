@@ -10,7 +10,7 @@ import { showToast } from '../core/toast.js';
 import {
   esc, fmtDate, fmtFullTime,
   listBody, emptyState, renderRoomItem,
-  setHeadSave, bindFormSave,
+  setHeadSave, bindFormSave, renderInfoGrid, ffi,
 } from '../core/ui-helpers.js';
 
 export function renderPartnerList(partners) {
@@ -87,22 +87,21 @@ export function renderPartnerDetail(pa) {
       ['운영사', /(운영|operator)/i],
     ];
     setHeadSave(editCard, '파트너 정보', canEdit, 'partner');
-    // 2-click 수정 모드 — 편집 가능(canEdit)일 때 readonly + data-edit-lock 부여
-    const lock = canEdit ? ' readonly data-edit-lock="1"' : dis;
     const lockSel = canEdit ? ' data-edit-lock="1"' : dis;   // select 는 readonly 불가
+    // 표준 helper — ffi(label, field, value, dis). dis 빈 문자열이면 readonly+data-edit-lock 자동 부여.
     editCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-grid">
-        <div class="ff"><label>파트너코드</label><input type="text" class="input" data-f="partner_code" value="${esc(pa.partner_code || pa.company_code || '')}"${lock}></div>
-        <div class="ff"><label>파트너명</label><input type="text" class="input" data-f="partner_name" value="${esc(pa.partner_name || pa.company_name || '')}"${lock}></div>
+        ${ffi('파트너코드',  'partner_code',    pa.partner_code || pa.company_code || '', dis)}
+        ${ffi('파트너명',    'partner_name',    pa.partner_name || pa.company_name || '', dis)}
         <div class="ff"><label>유형</label><select class="input" data-f="partner_type"${lockSel}>${partnerTypeOpts.map(([label, re]) => `<option value="${esc(label)}" ${re.test(pa.partner_type || '공급사') ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></div>
-        <div class="ff"><label>대표자</label><input type="text" class="input" data-f="ceo_name" value="${esc(pa.ceo_name || '')}"${lock}></div>
-        <div class="ff"><label>사업자번호</label><input type="text" class="input" data-f="business_number" value="${esc(pa.business_number || '')}"${lock}></div>
-        <div class="ff"><label>담당자</label><input type="text" class="input" data-f="contact_name" value="${esc(pa.contact_name || '')}"${lock}></div>
-        <div class="ff"><label>직급</label><input type="text" class="input" data-f="contact_title" value="${esc(pa.contact_title || '')}"${lock}></div>
-        <div class="ff"><label>연락처</label><input type="text" class="input" data-f="phone" value="${esc(pa.phone || '')}"${lock}></div>
-        <div class="ff"><label>이메일</label><input type="text" class="input" data-f="email" value="${esc(pa.email || '')}"${lock}></div>
-        <div class="ff"><label>주소</label><input type="text" class="input" data-f="address" value="${esc(pa.address || '')}"${lock}></div>
-        <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${lock}>${esc(pa.memo || '')}</textarea></div>
+        ${ffi('대표자',      'ceo_name',        pa.ceo_name,        dis)}
+        ${ffi('사업자번호',  'business_number', pa.business_number, dis)}
+        ${ffi('담당자',      'contact_name',    pa.contact_name,    dis)}
+        ${ffi('직급',        'contact_title',   pa.contact_title,   dis)}
+        ${ffi('연락처',      'phone',           pa.phone,           dis)}
+        ${ffi('이메일',      'email',           pa.email,           dis)}
+        ${ffi('주소',        'address',         pa.address,         dis)}
+        <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${canEdit ? ' readonly data-edit-lock="1"' : dis}>${esc(pa.memo || '')}</textarea></div>
       </div>
     `;
   }
@@ -132,7 +131,7 @@ export function renderPartnerDetail(pa) {
       ['등록일', fmtDate(pa.created_at), true],
       ['최근 활동', fmtFullTime(pa.last_active_at), true],
     ].filter(([, v]) => v != null && v !== '');
-    detailCard.querySelector('.ws4-body').innerHTML = `<div class="info-grid">${rows.map(([l, v, full, html]) => `<div class="lab">${esc(l)}</div><div${full ? ' class="full"' : ''}>${html ? v : esc(v)}</div>`).join('')}</div>`;
+    detailCard.querySelector('.ws4-body').innerHTML = renderInfoGrid(rows);
   }
 
   // 3. 활동 이력

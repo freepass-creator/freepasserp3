@@ -1,0 +1,20 @@
+{
+  "catalogId": "hyundai_staria",
+  "sourceUrl": "http://wikicar.co.kr/staria/55539",
+  "listingUrl": "http://wikicar.co.kr/staria",
+  "title": "스타리아 모빌리티 가격표 - 2024년 03월",
+  "docSrl": 55539,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/45498/539/055/6b99cce606ceaa8c2887fb09a9179088.jpg",
+    "http://wikicar.co.kr/./files/attach/images/45498/539/055/d2b40ca4252a295395f17633584d45bf.jpg",
+    "http://wikicar.co.kr/./files/attach/images/45498/539/055/27344aeca8e1f0354e85ae823e6f97d9.jpg",
+    "http://wikicar.co.kr/./files/attach/images/45498/539/055/762459554942bd6011773126be93a98b.jpg"
+  ]
+}

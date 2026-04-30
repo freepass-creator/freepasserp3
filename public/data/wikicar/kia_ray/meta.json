@@ -1,0 +1,20 @@
+{
+  "catalogId": "kia_ray",
+  "sourceUrl": "http://wikicar.co.kr/ray/56177",
+  "listingUrl": "http://wikicar.co.kr/ray",
+  "title": "레이 EV 가격표 - 2024년 10월(2025)",
+  "docSrl": 56177,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/8051/177/056/f61e0b3df3818d8e14cd116cf3f02e38.jpg",
+    "http://wikicar.co.kr/./files/attach/images/8051/177/056/71c2dc6b97de122287b7202c53b22c4b.jpg",
+    "http://wikicar.co.kr/./files/attach/images/8051/177/056/37c21a25d835688cedc6fc69610872b4.jpg",
+    "http://wikicar.co.kr/./files/attach/images/8051/177/056/156fa06462db3b3c0d91e5482f66f035.jpg"
+  ]
+}

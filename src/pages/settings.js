@@ -86,7 +86,7 @@ export function renderSettings() {
     <div class="ws4">
       <!-- 좌: 탭 목록 (1/4) — dev/workspace/contract 등 다른 페이지와 동일 .room-item 규격 -->
       <div class="ws4-card ws4-list" style="flex: 1 1 0;">
-        <div class="ws4-head"><i class="ph ph-gear"></i> <span>설정</span></div>
+        <div class="ws4-head"><span>설정</span></div>
         <div class="ws4-body no-pad">
           ${TABS.map(t => renderRoomItem({
             id: t.id,
@@ -104,13 +104,13 @@ export function renderSettings() {
 
       <!-- 가운데: 선택 섹션 본문 (2/4) -->
       <div class="ws4-card" style="flex: 2 1 0;">
-        <div class="ws4-head"><i class="ph ph-${activeTab?.icon}"></i> <span id="settingsBodyTitle">${activeTab?.label}</span></div>
+        <div class="ws4-head"><span id="settingsBodyTitle">${activeTab?.label}</span></div>
         <div class="ws4-body" id="settingsBody" style="padding: var(--sp-4); overflow-y: auto;"></div>
       </div>
 
       <!-- 우: 설명 / 도움말 (1/4) -->
       <div class="ws4-card" style="flex: 1 1 0;">
-        <div class="ws4-head"><i class="ph ph-info"></i> <span>도움말</span></div>
+        <div class="ws4-head"><span>도움말</span></div>
         <div class="ws4-body settings-help" style="padding: var(--sp-4); overflow-y: auto;">
           <h4 class="settings-help-title">${help.title}</h4>
           ${help.body}

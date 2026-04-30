@@ -1,0 +1,20 @@
+{
+  "catalogId": "hyundai_st1",
+  "sourceUrl": "http://wikicar.co.kr/st1/54316",
+  "listingUrl": "http://wikicar.co.kr/st1",
+  "title": "ST1 가격표 - 2024년 04월(출시)",
+  "docSrl": 54316,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/54293/316/054/8dd052e9e19dc704672e1cb923dea085.jpg",
+    "http://wikicar.co.kr/./files/attach/images/54293/316/054/4ad9ad5f716e5bf7ab1fc0a8496913f8.jpg",
+    "http://wikicar.co.kr/./files/attach/images/54293/316/054/7dab8dca8147c8764e5fde812b9796e5.jpg",
+    "http://wikicar.co.kr/./files/attach/images/54293/316/054/2205e204da14b3908dfe8ad4a3bb8ae1.jpg"
+  ]
+}

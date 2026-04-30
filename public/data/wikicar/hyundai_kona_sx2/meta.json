@@ -1,0 +1,20 @@
+{
+  "catalogId": "hyundai_kona_sx2",
+  "sourceUrl": "http://wikicar.co.kr/kona_os/55893",
+  "listingUrl": "http://wikicar.co.kr/kona_os",
+  "title": "코나 일렉트릭 가격표 - 2024년 09월",
+  "docSrl": 55893,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/22451/893/055/4d7f982f37411cf045f384488f860c2b.jpg",
+    "http://wikicar.co.kr/./files/attach/images/22451/893/055/04a8fb00fbc3030bf58ad643ee8b3c41.jpg",
+    "http://wikicar.co.kr/./files/attach/images/22451/893/055/0c4e2d7fa21340e6dea77515947ee39e.jpg",
+    "http://wikicar.co.kr/./files/attach/images/22451/893/055/930b4b1a11c3cda71efa06a0903c42ed.jpg"
+  ]
+}

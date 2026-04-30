@@ -1,0 +1,20 @@
+{
+  "catalogId": "hyundai_ioniq5",
+  "sourceUrl": "http://wikicar.co.kr/ioniq5/55745",
+  "listingUrl": "http://wikicar.co.kr/ioniq5",
+  "title": "아이오닉5 N 가격표 - 2024년 09월",
+  "docSrl": 55745,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/46447/745/055/fd37b452465b7cd4222dcb247cab8436.jpg",
+    "http://wikicar.co.kr/./files/attach/images/46447/745/055/1e491e5f4c149ac743373b2eb85363a0.jpg",
+    "http://wikicar.co.kr/./files/attach/images/46447/745/055/d7d06068b8c70e0d1920b4fc5d5562ad.jpg",
+    "http://wikicar.co.kr/./files/attach/images/46447/745/055/14d46a2f49b70660eb5bf649e576aa01.jpg"
+  ]
+}

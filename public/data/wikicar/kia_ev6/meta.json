@@ -1,0 +1,20 @@
+{
+  "catalogId": "kia_ev6",
+  "sourceUrl": "http://wikicar.co.kr/ev6/54425",
+  "listingUrl": "http://wikicar.co.kr/ev6",
+  "title": "EV6 가격표 - 2024년 05월",
+  "docSrl": 54425,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg",
+    "p3.jpg",
+    "p4.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/46401/425/054/9c5feebcc2b462b6d66c49ccf1127103.jpg",
+    "http://wikicar.co.kr/./files/attach/images/46401/425/054/93279ce0ebc014aa1a675691c341adf4.jpg",
+    "http://wikicar.co.kr/./files/attach/images/46401/425/054/e48b2ee39e201b860b8672f234183619.jpg",
+    "http://wikicar.co.kr/./files/attach/images/46401/425/054/f4c7403952c625de98d4cb382c213d42.jpg"
+  ]
+}

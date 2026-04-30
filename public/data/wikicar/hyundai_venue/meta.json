@@ -1,0 +1,16 @@
+{
+  "catalogId": "hyundai_venue",
+  "sourceUrl": "http://wikicar.co.kr/venue/50945",
+  "listingUrl": "http://wikicar.co.kr/venue",
+  "title": "베뉴 가격표 - 2022년 10월 (2023년형)",
+  "docSrl": 50945,
+  "fetched_at": "2026-04-30",
+  "images": [
+    "p1.jpg",
+    "p2.jpg"
+  ],
+  "image_urls": [
+    "http://wikicar.co.kr/./files/attach/images/28733/945/050/475bc97052f9a478e9d2ebfb3a75c4ae.jpg",
+    "http://wikicar.co.kr/./files/attach/images/28733/945/050/08e5615c754f8b712559e68f1a798fda.jpg"
+  ]
+}
