@@ -454,6 +454,17 @@ export function isQuickFilterActive(key) {
   return _searchFilter.quick.has(key);
 }
 
+/** 모든 필터 일괄 해제 — 전체 chip 클릭 시 호출 */
+export function clearAllSearchFilters() {
+  _searchFilter.quick.clear();
+  _searchFilter.rentRange.min = null;
+  _searchFilter.rentRange.max = null;
+  _searchFilter.depositRange.min = null;
+  _searchFilter.depositRange.max = null;
+  applySearchFilter();
+  window.refreshPageActions?.('search');
+}
+
 /** 기간 컬럼 표시/숨김 토글 — 하단 액션바에서 호출 */
 const PERIOD_KEY_GLOBAL = 'srch.period.hidden';
 export function searchTogglePeriod(period) {
@@ -1294,13 +1305,14 @@ function openRangePopover(chip, key) {
   pop.style.visibility = 'hidden';   // 측정 끝나기 전엔 숨김 (깜빡임 방지)
   document.body.appendChild(pop);
 
-  const foot = chip.closest('.ws4-foot');
+  // 하단 액션바(.pt-actions) 또는 옛 .ws4-foot 어느 쪽이든 anchor 가 되는 부모 찾기
+  const foot = chip.closest('.pt-actions') || chip.closest('.ws4-foot') || chip.parentElement;
   const fr = foot.getBoundingClientRect();
   const cr = chip.getBoundingClientRect();
   const popH = pop.offsetHeight;
   const popW = pop.offsetWidth;
 
-  // 세로 — 하단바 top 에서 4px 위쪽으로 popover bottom 정렬 (top 으로 직접 계산)
+  // 세로 — 액션바 top 에서 4px 위쪽으로 popover bottom 정렬
   pop.style.top = (fr.top - popH - 4) + 'px';
   pop.style.bottom = 'auto';
   pop.style.right = 'auto';

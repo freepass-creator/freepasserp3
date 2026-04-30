@@ -41,7 +41,7 @@ import {
   bindSearchInteractions, bindSearchSelection, applySearchFilter,
   setSearchCallbacks, _searchFilter,
   getActiveSearchProduct, searchActionChat, searchActionContract, searchActionShare,
-  searchToggleQuickFilter, isQuickFilterActive,
+  searchToggleQuickFilter, isQuickFilterActive, clearAllSearchFilters,
   searchTogglePeriod, isPeriodVisible,
   searchExportExcel, searchDownloadPhotoZip,
 } from './pages/search.js';
@@ -221,7 +221,7 @@ window.refreshPageActions = function(pageName) {
       fn(cur);
     };
 
-    // 좌: 퀵 필터
+    // 좌: 퀵 필터 — 맨 앞에 [전체] 토글 (모든 필터 해제 + 활성표시)
     const QUICK = [
       { v: 'new', l: '신차' },
       { v: 'used', l: '중고' },
@@ -229,10 +229,16 @@ window.refreshPageActions = function(pageName) {
       { v: 'rent', l: '대여료 구간' },
       { v: 'deposit', l: '보증금 구간' },
     ];
-    const left = QUICK.map(q => ({
-      chip: true, label: q.l, active: isQuickFilterActive(q.v),
-      onClick: (e) => searchToggleQuickFilter(q.v, e.currentTarget),
-    }));
+    const anyActive = QUICK.some(q => isQuickFilterActive(q.v));
+    const left = [
+      { chip: true, label: '전체', active: !anyActive,
+        title: '모든 필터 해제',
+        onClick: () => clearAllSearchFilters() },
+      ...QUICK.map(q => ({
+        chip: true, label: q.l, active: isQuickFilterActive(q.v),
+        onClick: (e) => searchToggleQuickFilter(q.v, e.currentTarget),
+      })),
+    ];
 
     // 중: 선택 차량 액션 (소통/계약/공유) + 출력(엑셀/사진)
     const center = [

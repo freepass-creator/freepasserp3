@@ -356,11 +356,10 @@ const MAKER_RANK = {
 function makerRank(m) { return MAKER_RANK[m] !== undefined ? MAKER_RANK[m] : 50; }
 function isDomestic(row) { return row && row.origin === '국산'; }
 
-// 10년 필터 — 2017년 이전 단종은 제외 (마지노 2017)
+// 10년 필터 — production_start 2017년 이후만 (마지노 2017)
 function within15Years(row) {
-  const cutoff = '2017-01'; // 2026년 기준 10년 (마지노 2017)
-  if (!row.production_end) return true;        // 단종 안된 차
-  return row.production_end >= cutoff;
+  const cutoff = '2017-01';
+  return (row.production_start || '0000-00') >= cutoff;
 }
 
 const state = {
