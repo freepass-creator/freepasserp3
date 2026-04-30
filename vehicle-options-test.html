@@ -110,14 +110,14 @@
 <h1>차량 옵션 매핑 테스트</h1>
 
 <div class="panel">
-  <h2>차량 선택 (차종마스터 기준)</h2>
+  <h2>차량 선택 (프리패스 차종 매트릭스 기준)</h2>
   <div class="selector-row">
     <select id="maker" disabled><option value="">제조사 로딩중…</option></select>
     <select id="model" disabled><option value="">모델</option></select>
     <select id="sub" disabled><option value="">세부모델</option></select>
     <select id="trim" disabled><option value="">트림</option></select>
   </div>
-  <div class="summary" id="trimInfo">차종마스터 데이터 로딩중…</div>
+  <div class="summary" id="trimInfo">프리패스 차종 매트릭스 데이터 로딩중…</div>
   <div class="vehicle-meta" id="vehicleMeta" style="display:none"></div>
   <div class="mode-toggle">
     <button class="mode-btn active" data-mode="edit">직원 입력</button>
@@ -471,12 +471,12 @@ async function init() {
   // 마스터 로드
   const data = await loadMaster();
   if (!data) {
-    $('trimInfo').textContent = '⚠️  차종마스터 로드 실패 — Vite dev 서버에서 열어주세요 (npm run dev → http://localhost:5173/vehicle-options-test.html)';
+    $('trimInfo').textContent = '⚠️  프리패스 차종 매트릭스 로드 실패 — Vite dev 서버에서 열어주세요 (npm run dev → http://localhost:5173/vehicle-options-test.html)';
     $('trimInfo').classList.add('warn');
     return;
   }
   state.master = data;
-  $('trimInfo').textContent = `차종마스터 ${data.length}건 로드 완료. 차량을 선택하세요.`;
+  $('trimInfo').textContent = `프리패스 차종 매트릭스 ${data.length}건 로드 완료. 차량을 선택하세요.`;
 
   // 제조사 채우기
   fillMakers();
@@ -770,8 +770,8 @@ function updateInfo() {
   } else {
     const seedCount = window.TRIM_OPTIONS_SEED ? Object.keys(window.TRIM_OPTIONS_SEED).length : 0;
     info.textContent = state.master.length
-      ? `차종마스터 ${state.master.length}건 / AI 시드 ${seedCount}개 sub 로드됨. 차량을 선택하세요.`
-      : '차종마스터 로딩중…';
+      ? `프리패스 차종 매트릭스 ${state.master.length}건 / AI 시드 ${seedCount}개 sub 로드됨. 차량을 선택하세요.`
+      : '프리패스 차종 매트릭스 로딩중…';
     meta.style.display = 'none';
     meta.innerHTML = '';
   }

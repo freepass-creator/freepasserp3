@@ -78,7 +78,7 @@
       세부모델에 생산기간 표시
     </label>
   </div>
-  <div class="meta" id="status">차종마스터 로딩…</div>
+  <div class="meta" id="status">프리패스 차종 매트릭스 로딩…</div>
 </div>
 
 <div class="panel" id="catalogPanel" style="display:none">
@@ -97,7 +97,7 @@
 const $ = id => document.getElementById(id);
 const state = {
   master: [],
-  selected: null,        // 차종마스터 row
+  selected: null,        // 프리패스 차종 매트릭스 row
   catalog: null,         // car-options-catalog JSON
   activeTrim: null,
   selectedPkgs: new Set() // 선택한 패키지 인덱스
@@ -468,12 +468,12 @@ function renderCatalog() {
 async function init() {
   const data = await loadMaster();
   if (!data) {
-    $('status').textContent = '⚠️ 차종마스터 로드 실패';
+    $('status').textContent = '⚠️ 프리패스 차종 매트릭스 로드 실패';
     $('status').classList.add('warn');
     return;
   }
   state.master = data;
-  $('status').textContent = `차종마스터 ${data.length}건 로드 완료.`;
+  $('status').textContent = `프리패스 차종 매트릭스 ${data.length}건 로드 완료.`;
   fillMakers();
   $('maker').addEventListener('change', onMakerChange);
   $('model').addEventListener('change', onModelChange);
