@@ -282,7 +282,7 @@ function loadUser(key) {
       </div>
     </div>
   `;
-  bindFormAutoSave(formEl, (field, value) => updateRecord(`users/${key}`, { [field]: value }));
+  bindFormAutoSave(formEl, (field, value) => updateRecord(`users/${key}`, { [field]: value }), { eager: true });
 
   // 상세
   document.getElementById('admDetail').innerHTML = `
@@ -384,7 +384,7 @@ function loadPartner(key) {
       </div>
     </div>
   `;
-  bindFormAutoSave(formEl, (field, value) => updateRecord(`partners/${key}`, { [field]: value }));
+  bindFormAutoSave(formEl, (field, value) => updateRecord(`partners/${key}`, { [field]: value }), { eager: true });
 
   document.getElementById('admDetail').innerHTML = `
     <div style="padding:var(--sp-3);display:flex;flex-direction:column;gap:var(--sp-4);overflow-y:auto;height:100%;">

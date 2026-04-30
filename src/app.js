@@ -106,7 +106,13 @@ async function discardIncompleteDrafts() {
   }
 }
 
-window.addEventListener('hashchange', () => { discardIncompleteDrafts(); });
+/* 페이지 이탈 시 — 활성 페이지의 변경 사항을 먼저 flush 후 draft 정리.
+ *  ([저장] 버튼만 저장하는 spec 의 예외 — 사용자가 [수정] → 입력 → 저장 안 누르고 다른 메뉴로 가는
+ *  실수로 신규 draft 가 통째로 삭제되는 회귀 방지) */
+window.addEventListener('hashchange', async () => {
+  try { await window.flushActivePageSaves?.(); } catch (_) {}
+  discardIncompleteDrafts();
+});
 
 window.refreshPageActions = function(pageName) {
   const p = pageName || document.querySelector('.pt-page.active')?.dataset.page;
@@ -116,14 +122,24 @@ window.refreshPageActions = function(pageName) {
   const activeId = activeItem?.dataset.id;
   const ctx = pageStatusText(p);
 
-  // 수정/저장 토글 — 폼 있는 페이지 공통. 편집모드 ON 일 때 readonly 해제 + primary 강조
+  // 수정/저장 토글 — 폼 있는 페이지 공통.
+  //  [수정] 클릭 → 편집모드 ON (입력칸 readonly 해제, 저장은 안 함)
+  //  [저장] 클릭 → 변경된 필드 일괄 저장 + 편집모드 OFF
   const isEditing = document.body.classList.contains('is-edit-mode');
   const editToggle = {
     label: isEditing ? '저장' : '수정',
     icon:  isEditing ? 'ph-check' : 'ph-pencil-simple',
     primary: isEditing,
-    title: isEditing ? '편집 모드 끄기 (자동저장은 입력 직후 적용됨)' : '편집 모드 켜기',
-    onClick: () => window.toggleEditMode?.(),
+    title: isEditing ? '변경 사항 저장 + 편집 모드 끄기' : '편집 모드 켜기',
+    onClick: async () => {
+      if (isEditing) {
+        const n = await window.flushActivePageSaves?.();
+        window.toggleEditMode?.(false);
+        if (n > 0) showToast(`저장됨 (${n}건)`, 'success');
+      } else {
+        window.toggleEditMode?.(true);
+      }
+    },
   };
 
   if (p === 'product') {
@@ -171,6 +187,8 @@ window.refreshPageActions = function(pageName) {
     const hasSelection = !!activeId;
     setPageActions({
       right: [
+        editToggle,
+        { divider: true },
         { label: chatHidden ? '채팅 보이기' : '채팅 숨기기',
           icon:  chatHidden ? 'ph-eye' : 'ph-eye-slash',
           onClick: () => { ws4?.classList.toggle('is-chat-hidden'); window.refreshPageActions?.('workspace'); } },
@@ -375,7 +393,8 @@ async function createNewProduct() {
     partnerCode = providerCode;
     if (!providerCode) { showToast('소속 공급사 정보가 없습니다 — 관리자 문의', 'error'); return; }
   }
-  const uid = `P_${Date.now()}`;
+  const { allocateManualProductUid } = await import('./firebase/collections.js');
+  const uid = await allocateManualProductUid();
   const newRec = {
     _key: uid,
     product_uid: uid,
@@ -453,7 +472,8 @@ async function deleteProduct(p) {
 async function createNewPolicy() {
   const role = store.currentUser?.role;
   if (role !== 'admin' && role !== 'provider') { alert('권한이 없습니다'); return; }
-  const policyCode = 'POL-' + Date.now().toString(36).toUpperCase();
+  const { allocatePolicyCode } = await import('./firebase/collections.js');
+  const policyCode = await allocatePolicyCode();
   const newRec = {
     _key: policyCode,
     policy_code: policyCode,
@@ -499,7 +519,8 @@ async function deletePolicy(id) {
 async function createNewPartner() {
   const role = store.currentUser?.role;
   if (role !== 'admin') { alert('admin 만 가능합니다'); return; }
-  const partnerCode = 'PT-' + Date.now().toString(36).toUpperCase();
+  const { allocatePartnerCode } = await import('./firebase/collections.js');
+  const partnerCode = await allocatePartnerCode();
   const newRec = {
     _key: partnerCode,
     partner_code: partnerCode,
@@ -856,27 +877,35 @@ function renderAdminChat() {
     : allRooms.filter(r => r._key === `ADMIN_${me.uid}`);
 
   if (!rooms.length) {
-    listEl.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);font-size:11px;">${isAdmin ? '받은 문의 없음' : '대화 시작하기'}</div>`;
+    listEl.innerHTML = emptyState(isAdmin ? '받은 문의 없음' : '대화 시작하기');
   } else {
-    listEl.innerHTML = rooms.map(r => `
-      <div class="room-item ${_adminChatPageRoomKey === r._key ? 'active' : ''}" data-rid="${r._key}" style="cursor:pointer;">
-        <div class="room-item-avatar"><i class="ph ph-user-circle"></i></div>
-        <div>
-          <div class="room-item-top">
-            <span class="room-item-name">${esc(r.agent_name || r.agent_code || me.name || '나')}</span>
-            <span class="room-item-time">${r.last_message_at ? fmtDate(r.last_message_at) : ''}</span>
-          </div>
-          <div class="room-item-sub">
-            <span class="room-item-msg">${esc((r.last_message || '대화 없음').slice(0, 40))}</span>
-          </div>
-        </div>
-      </div>
-    `).join('');
-    listEl.querySelectorAll('[data-rid]').forEach(el => {
+    // 업무 소통 목록과 동일 규격 — renderRoomItem 통일
+    listEl.innerHTML = rooms.map(r => {
+      const senderRole = r.last_sender_role || (isAdmin ? '' : 'admin');
+      const tone = senderRole === 'agent' || senderRole === 'agent_admin' ? 'agent'
+                  : senderRole === 'provider' ? 'provider'
+                  : senderRole === 'admin' ? 'admin' : '';
+      // 안읽음 — 본인 read_by 기준
+      const lastAt = Number(r.last_message_at || 0);
+      const myRead = Number(r.read_by?.[me.uid] || 0);
+      const unread = lastAt && r.last_sender_uid !== me.uid && lastAt > myRead;
+      return renderRoomItem({
+        id: r._key,
+        icon: 'user-circle',
+        tone,
+        name: isAdmin ? (r.agent_name || r.agent_code || '문의자') : '관리자',
+        time: r.last_message_at ? fmtDate(r.last_message_at) : '',
+        msg: (r.last_message || '대화 없음').slice(0, 40),
+        meta: unread ? '안읽음' : '',
+        metaClass: unread ? 'is-warn' : '',
+        active: _adminChatPageRoomKey === r._key,
+      });
+    }).join('');
+    listEl.querySelectorAll('[data-id]').forEach(el => {
       el.addEventListener('click', () => {
         listEl.querySelectorAll('.room-item').forEach(x => x.classList.remove('active'));
         el.classList.add('active');
-        openAdminChatRoomInPage(el.dataset.rid);
+        openAdminChatRoomInPage(el.dataset.id);
       });
     });
   }
@@ -897,6 +926,11 @@ function openAdminChatRoomInPage(roomKey) {
   const titleEl = page.querySelector('#adminChatRoomTitle');
   const room = (store.rooms || []).find(r => r._key === roomKey);
   if (titleEl) titleEl.textContent = room?.agent_name || room?.subject || '관리자 소통';
+
+  // 읽음 처리 — 본인 read_by 갱신 (per-admin 안읽음 뱃지 차감)
+  if (me.uid) {
+    updateRecord(`rooms/${roomKey}`, { [`read_by/${me.uid}`]: Date.now() }).catch(() => null);
+  }
 
   if (_adminChatPageUnsub) { try { _adminChatPageUnsub(); } catch (_) {} }
   body.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:12px;">메시지 불러오는 중...</div>';
@@ -934,9 +968,13 @@ function openAdminChatRoomInPage(roomKey) {
         sender_code: me.user_code || '',
         sender_role: me.role || '', created_at: Date.now(),
       });
+      const sentAt = Date.now();
       await updateRecord(`rooms/${roomKey}`, {
-        last_message: text, last_message_at: Date.now(),
+        last_message: text, last_message_at: sentAt,
         last_sender_role: me.role || '', last_sender_code: me.user_code || '',
+        last_sender_uid: me.uid,
+        // 보낸 사람은 자동으로 읽음 처리 (사이드바 뱃지 자체 발신으로 안 늘어남)
+        [`read_by/${me.uid}`]: sentAt,
       });
       // 비admin 의 첫 메시지 → 관리자에게 SMS/알림톡 (실패해도 비즈니스 플로우는 안 막힘)
       if (isFirstMessage && me.role !== 'admin') {
@@ -1733,6 +1771,25 @@ function updateSidebarCounts() {
   // 사용자 관리 — 가입 대기 (admin 만 의미. role 별 가시성은 CSS 가 처리)
   const pendingUsers = (store.users || []).filter(u => u.status === 'pending').length;
   setCnt('users', pendingUsers);
+
+  // 관리자 소통 — 본인 read_by 기준 안읽음 룸 수 (admin: 모든 admin-chat 룸 / 비admin: 본인 룸만).
+  //  새 메시지가 도착하면 last_message_at 이 갱신되고, 사용자가 룸을 열면 read_by/${uid} 갱신 → 차이로 판정.
+  const me = store.currentUser;
+  const myUid = me?.uid;
+  let adminChatUnread = 0;
+  if (myUid) {
+    const adminRooms = (store.rooms || []).filter(r => r.is_admin_chat && !r._deleted);
+    const myRooms = role === 'admin' ? adminRooms : adminRooms.filter(r => r._key === `ADMIN_${myUid}`);
+    adminChatUnread = myRooms.filter(r => {
+      const lastAt = Number(r.last_message_at || 0);
+      if (!lastAt) return false;
+      // 마지막 메시지를 내가 보낸 거면 안읽음 아님
+      if (r.last_sender_uid === myUid) return false;
+      const myRead = Number(r.read_by?.[myUid] || 0);
+      return lastAt > myRead;
+    }).length;
+  }
+  setCnt('admin-chat', adminChatUnread);
 
   // 카운트 개념 없는 페이지 — 명시적으로 비움
   setCnt('search', 0);

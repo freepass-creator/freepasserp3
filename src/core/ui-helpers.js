@@ -254,71 +254,102 @@ export function flashSaved(elements) {
   });
 }
 
-/* 페이지 단위 폼 자동저장 — 각 [data-f] 입력의 blur 시 해당 필드만 즉시 Firebase 업데이트.
- *  과거 [저장] 버튼 클릭 일괄저장 → 입력칸별 자동저장으로 전환 (하단바에서 버튼 통합 후) */
+/* 페이지 단위 폼 일괄저장 — 변경된 [data-f] 필드만 모아 한 번에 updateRecord 호출.
+ *  blur/change 시 자동저장 X. [저장] 버튼이 page.__flushSave() 를 호출해야 실제 저장. */
 export function bindFormSave(page, collection, key, _current, options = {}) {
   const { onSaved } = options;
   if (!page || !key) return;
 
-  const saveField = async (f, val, flashEl) => {
-    if (!f) return;
-    const patch = { [f]: val, updated_at: Date.now() };
-    if (f === 'status') {
-      if (val === '비활성') patch.is_active = false;
-      else if (val === '활성') patch.is_active = true;
-    }
-    try {
-      await updateRecord(`${collection}/${key}`, patch);
-      if (flashEl) flashSaved(flashEl);
-      onSaved?.(patch);
-    } catch (e) {
-      console.error(`[${collection}] auto save fail`, e);
-    }
-  };
+  const tracked = [];
 
-  // input/select/textarea — focus 시 original 캡처, blur 시 변경 감지 → 저장
+  // input/select/textarea — original 캡처 + Esc 되돌리기만
   page.querySelectorAll('input[data-f], select[data-f], textarea[data-f], [data-f] input, [data-f] select, [data-f] textarea').forEach(el => {
     const f = el.dataset.f || el.closest('[data-f]')?.dataset.f;
     if (!f) return;
     let original = el.value;
-    el.addEventListener('focus', () => { original = el.value; });
-    el.addEventListener('blur', () => {
-      if (el.value === original) return;
-      saveField(f, el.value, el);
-      original = el.value;
-    });
     el.addEventListener('keydown', e => {
       if (e.key === 'Enter' && el.tagName !== 'TEXTAREA') el.blur();
       else if (e.key === 'Escape') { el.value = original; el.blur(); }
     });
-    // select 는 change 시 즉시 저장 (blur 이벤트 안 정확함)
-    if (el.tagName === 'SELECT') {
-      el.addEventListener('change', () => {
-        if (el.value === original) return;
-        saveField(f, el.value, el);
-        original = el.value;
-      });
-    }
+    tracked.push({
+      type: 'value', el, f,
+      getOriginal: () => original,
+      setOriginal: v => { original = v; },
+    });
   });
 
-  // chip — 클릭 즉시 저장 (단일 = 토글, 멀티 = 다중 선택)
+  // chip — 클릭은 시각만 토글 (저장 X), flush 시 변경 여부 판정
   page.querySelectorAll('[data-f]').forEach(wrapper => {
     if (wrapper.tagName !== 'DIV') return;
     const f = wrapper.dataset.f;
     if (!f) return;
     const isMulti = !!wrapper.dataset.multi;
-    wrapper.querySelectorAll('.chip[data-v]').forEach(chip => {
+    const chips = wrapper.querySelectorAll('.chip[data-v]');
+    if (!chips.length) return;
+
+    chips.forEach(chip => {
       chip.addEventListener('click', () => {
-        if (isMulti) {
-          chip.classList.toggle('active');
-          const vals = [...wrapper.querySelectorAll('.chip.active')].map(c => c.dataset.v);
-          saveField(f, vals, [...wrapper.querySelectorAll('input, select, textarea')]);
-        } else {
+        if (isMulti) chip.classList.toggle('active');
+        else {
           wrapper.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
-          saveField(f, chip.dataset.v, [...wrapper.querySelectorAll('input, select, textarea')]);
         }
       });
     });
+
+    const collectVals = () => {
+      if (isMulti) return [...wrapper.querySelectorAll('.chip.active')].map(c => c.dataset.v);
+      const a = wrapper.querySelector('.chip.active');
+      return a ? a.dataset.v : '';
+    };
+
+    let original = JSON.stringify(collectVals());
+    tracked.push({
+      type: 'chip', el: wrapper, f, collectVals,
+      getOriginal: () => original,
+      setOriginal: v => { original = v; },
+    });
   });
+
+  page.dataset.flushHost = '1';
+  page.__flushSave = async () => {
+    const patch = { updated_at: Date.now() };
+    const flashEls = [];
+    let dirty = false;
+
+    for (const t of tracked) {
+      if (t.type === 'value') {
+        if (t.el.value === t.getOriginal()) continue;
+        patch[t.f] = t.el.value;
+        if (t.f === 'status') {
+          if (t.el.value === '비활성') patch.is_active = false;
+          else if (t.el.value === '활성') patch.is_active = true;
+        }
+        flashEls.push(t.el);
+        dirty = true;
+      } else if (t.type === 'chip') {
+        const cur = t.collectVals();
+        const ser = JSON.stringify(cur);
+        if (ser === t.getOriginal()) continue;
+        patch[t.f] = cur;
+        flashEls.push(...t.el.querySelectorAll('input, select, textarea'));
+        dirty = true;
+      }
+    }
+
+    if (!dirty) return 0;
+    try {
+      await updateRecord(`${collection}/${key}`, patch);
+      if (flashEls.length) flashSaved(flashEls);
+      onSaved?.(patch);
+      for (const t of tracked) {
+        if (t.type === 'value') t.setOriginal(t.el.value);
+        else if (t.type === 'chip') t.setOriginal(JSON.stringify(t.collectVals()));
+      }
+      return 1;
+    } catch (e) {
+      console.error(`[${collection}] save fail`, e);
+      return 0;
+    }
+  };
 }

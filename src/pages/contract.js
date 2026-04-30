@@ -575,18 +575,34 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
     });
   });
 
-  // 메모 자동 저장 (blur) — 역할 권한 없는 textarea(permanent-lock)는 스킵
+  // 메모 일괄 저장 — 역할 권한 없는 textarea(permanent-lock)는 스킵.
+  //  blur 시 자동저장 X, [저장] 버튼이 stepCard.__flushSave() 호출 시 일괄 저장.
+  const memoTracked = [];
   stepCard.querySelectorAll('textarea[data-memo]').forEach(ta => {
-    if (ta.dataset.permanentLock === '1') return;   // 다른 역할 메모 — 저장 시도조차 X
-    ta.addEventListener('blur', async () => {
-      const field = ta.dataset.memo;
-      try {
-        await updateRecord(`contracts/${c.contract_code}`, { [field]: ta.value });
-        c[field] = ta.value;
-        flashSaved(ta);
-      } catch (e) { /* silent */ }
-    });
+    if (ta.dataset.permanentLock === '1') return;
+    let original = ta.value;
+    memoTracked.push({ ta, field: ta.dataset.memo, getOriginal: () => original, setOriginal: v => { original = v; } });
   });
+  if (memoTracked.length) {
+    stepCard.dataset.flushHost = '1';
+    stepCard.__flushSave = async () => {
+      const patch = {};
+      const flashEls = [];
+      for (const m of memoTracked) {
+        if (m.ta.value === m.getOriginal()) continue;
+        patch[m.field] = m.ta.value;
+        flashEls.push(m.ta);
+      }
+      if (!Object.keys(patch).length) return 0;
+      try {
+        patch.updated_at = Date.now();
+        await updateRecord(`contracts/${c.contract_code}`, patch);
+        for (const m of memoTracked) { c[m.field] = m.ta.value; m.setOriginal(m.ta.value); }
+        flashSaved(flashEls);
+        return 1;
+      } catch (e) { console.error('[contract memo] save fail', e); return 0; }
+    };
+  }
 
   // 진행 취소 (가계약 단계 — 정식 계약 전)
   stepCard.querySelector('#ctCancelBtn')?.addEventListener('click', async () => {

@@ -58,12 +58,12 @@ export function renderChatMessages(messages, ctx = {}) {
     const senderEnd = !next || next.sender_uid !== msg.sender_uid;
     const minuteEnd = senderEnd || nextMinuteKey !== minuteKey;
 
-    // 라벨 / 톤
+    // 라벨 / 톤 — agent_manager 는 agent_admin 의 동의어, 둘 다 'agent' 톤
     const senderLabel = msg.sender_code
-      || (msg.sender_role === 'agent' ? '영업'
+      || (msg.sender_role === 'agent' || msg.sender_role === 'agent_admin' || msg.sender_role === 'agent_manager' ? '영업'
         : msg.sender_role === 'provider' ? '공급'
         : msg.sender_role === 'admin' ? '관리' : '');
-    const roleTone = msg.sender_role === 'agent' ? 'agent'
+    const roleTone = (msg.sender_role === 'agent' || msg.sender_role === 'agent_admin' || msg.sender_role === 'agent_manager') ? 'agent'
                    : msg.sender_role === 'provider' ? 'provider' : 'admin';
 
     // 콘텐츠

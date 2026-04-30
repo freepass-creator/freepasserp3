@@ -21,49 +21,39 @@ export async function nextSequence(sequenceKey) {
   return 999000 + Math.floor(Math.random() * 999); // 정상 seq 대역(<1000 일반적) 과 분리
 }
 
-/* ── 상품 등록 ── */
-export async function saveProduct(data) {
-  const uid = `PD${new Date().toISOString().slice(2,10).replace(/-/g,'')}${String(await nextSequence('product_uid')).padStart(3,'0')}`;
-  const productCode = `${data.car_number || ''}_${data.provider_company_code || ''}`;
-  await setRecord(`products/${uid}`, {
-    product_uid: uid,
-    product_code: productCode,
-    ...data,
-    status: 'available',
-    vehicle_status: '출고가능',
-    created_at: Date.now(),
-  });
-  return uid;
+/* ── 채번 헬퍼 ── */
+/** 오늘 날짜 YYMMDD — 한국 기준 */
+function todayYYMMDD() {
+  const d = new Date();
+  return String(d.getFullYear()).slice(-2)
+       + String(d.getMonth() + 1).padStart(2, '0')
+       + String(d.getDate()).padStart(2, '0');
 }
 
-/* ── 계약 생성 ── */
-export async function saveContract(data) {
-  const dateStr = new Date().toISOString().slice(2,10).replace(/-/g,'').slice(0,4);
-  const seq = await nextSequence(`contract_${dateStr}`);
-  const code = `CT${dateStr}${String(seq).padStart(2,'0')}`;
-  await setRecord(`contracts/${code}`, {
-    contract_code: code,
-    contract_status: '계약대기',
-    contract_date: new Date().toISOString().slice(0,10),
-    ...data,
-    created_at: Date.now(),
-  });
+/** PT-0001 — 파트너 글로벌 시퀀스 (PT- prefix 유지, 4자리 패딩) */
+export async function allocatePartnerCode() {
+  const seq = await nextSequence('partner_seq');
+  return `PT-${String(seq).padStart(4, '0')}`;
+}
 
-  // 계약 생성 시점의 차량 상태: 출고협의 (진행 중) — auto-status는 prev 없으면 건너뛰므로 여기서 직접 세팅
-  const productKey = data.product_uid || data.seed_product_key;
-  if (productKey) {
-    try { await updateRecord(`products/${productKey}`, { vehicle_status: '출고협의' }); }
-    catch (e) { console.warn('[createContract] 상품 상태 동기화 실패:', e); }
-  }
+/** POL-0001 — 정책 글로벌 시퀀스 */
+export async function allocatePolicyCode() {
+  const seq = await nextSequence('policy_seq');
+  return `POL-${String(seq).padStart(4, '0')}`;
+}
 
-  return code;
+/** PD-YYMMDD-001 — 수기 등록 상품 (sync 의 EXT_ 와 구분) */
+export async function allocateManualProductUid() {
+  const date = todayYYMMDD();
+  const seq = await nextSequence(`product_${date}`);
+  return `PD-${date}-${String(seq).padStart(3, '0')}`;
 }
 
 /* ── 정산 생성 (계약 완료 시) ── */
 export async function createSettlement(contract) {
-  const dateStr = new Date().toISOString().slice(2,10).replace(/-/g,'').slice(0,4);
+  const dateStr = todayYYMMDD();
   const seq = await nextSequence(`settlement_${dateStr}`);
-  const code = `ST${dateStr}${String(seq).padStart(2,'0')}`;
+  const code = `ST-${dateStr}-${String(seq).padStart(3, '0')}`;
 
   const { settlementStatusPayload, SETTLEMENT_STATUS_DEFAULT } = await import('../core/settlement-status.js');
   const { getFeeRate } = await import('../core/settlement-rules.js');

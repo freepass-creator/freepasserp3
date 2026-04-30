@@ -455,6 +455,8 @@ const FP_KEYWORD_RULES = [
   { kw:'후측방충돌방지보조', ids:['RCTA'] },
   { kw:'후측방경보시스템', ids:['RCTA'] },
   { kw:'후측방경보', ids:['RCTA'] },
+  { kw:'후측방충돌경고', ids:['RCTA'] },
+  { kw:'후방교차충돌방지보조', ids:['RCTA'] },
   { kw:'rcta', ids:['RCTA'] },
 
   // 무선충전
@@ -489,6 +491,8 @@ const FP_KEYWORD_RULES = [
   { kw:'전방충돌방지보조', ids:['AEB','FCWS'] },
   { kw:'자동긴급제동시스템', ids:['AEB'] },
   { kw:'자동긴급제동', ids:['AEB'] },
+  { kw:'다중충돌방지자동제동', ids:['AEB'] },
+  { kw:'충돌방지자동제동', ids:['AEB'] },
   { kw:'차체자세제어장치', ids:['VDC'] },
   { kw:'차체자세제어', ids:['VDC'] },
   { kw:'esc', ids:['VDC'] }, { kw:'vdc', ids:['VDC'] }, { kw:'vsm', ids:['VDC'] },
@@ -506,6 +510,7 @@ const FP_KEYWORD_RULES = [
   { kw:'차로유지보조', ids:['LKAS'] },
   { kw:'주차조향보조시스템', ids:['SPAS'] },
   { kw:'타이어공기압감지', ids:['TPMS'] }, { kw:'tpms', ids:['TPMS'] },
+  { kw:'타이어공기압경보', ids:['TPMS'] },
   { kw:'전자식파킹브레이크', ids:['EPB'] }, { kw:'epb', ids:['EPB'] },
   { kw:'오토홀드', ids:['EPB'] },
   { kw:'풋파킹브레이크', ids:['FOOT_PARKING'] },
@@ -518,10 +523,20 @@ const FP_KEYWORD_RULES = [
   { kw:'동승석에어백', ids:['AIRBAG_PS'] },
   { kw:'사이드에어백', ids:['AIRBAG_SIDE'] },
   { kw:'후방카메라', ids:['CAM_REAR'] },
+  { kw:'후방모니터', ids:['CAM_REAR'] },
   { kw:'전방카메라', ids:['CAM_FRONT'] },
   { kw:'후방감지센서', ids:['SENSOR_REAR'] },
   { kw:'전방감지센서', ids:['SENSOR_FRONT'] },
+  { kw:'전방후방주차거리경고', ids:['SENSOR_FRONT','SENSOR_REAR'] },
+  { kw:'후방주차거리경고', ids:['SENSOR_REAR'] },
+  { kw:'전방주차거리경고', ids:['SENSOR_FRONT'] },
+  { kw:'후방주차충돌방지보조', ids:['SENSOR_REAR'] },
   { kw:'주차충돌방지보조후방', ids:['SENSOR_REAR'] },
+  { kw:'원격스마트주차보조', ids:['SPAS'] },
+  { kw:'9에어백', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE','AIRBAG_KNEE'] },
+  { kw:'8에어백', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE','AIRBAG_KNEE'] },
+  { kw:'7에어백', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE','AIRBAG_KNEE'] },
+  { kw:'6에어백', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE'] },
   { kw:'abs', ids:['ABS'] },
 
   // 외관
@@ -546,6 +561,8 @@ const FP_KEYWORD_RULES = [
 
   // 내장
   { kw:'스티어링휠리모컨', ids:['STR_REMOTE'] },
+  { kw:'스티어링휠오디오리모컨', ids:['STR_REMOTE'] },
+  { kw:'오디오리모컨', ids:['STR_REMOTE'] },
   { kw:'오토라이트', ids:['AUTO_LIGHT'] },
   { kw:'파워스티어링', ids:['POWER_STR'] },
   { kw:'전동식파워스티어링', ids:['POWER_STR'] },
@@ -557,6 +574,8 @@ const FP_KEYWORD_RULES = [
   { kw:'동승석파워시트', ids:['POWER_SEAT_PS'] },
   { kw:'전동시트운전석', ids:['POWER_SEAT_DR'] },
   { kw:'전동시트동승석', ids:['POWER_SEAT_PS'] },
+  { kw:'운전석전동시트', ids:['POWER_SEAT_DR'] },
+  { kw:'동승석전동시트', ids:['POWER_SEAT_PS'] },
   { kw:'8way전동시트', ids:['POWER_SEAT_DR'] },
   { kw:'10way전동시트', ids:['POWER_SEAT_DR'] },
   { kw:'ecm룸미러', ids:['ECM_MIRROR'] },
@@ -580,8 +599,10 @@ const FP_KEYWORD_RULES = [
   { kw:'파워윈도우', ids:['POWER_WINDOW'] },
   { kw:'전동식커튼', ids:['CURTAIN_E'] },
   { kw:'커튼전동식', ids:['CURTAIN_E'] },
+  { kw:'전동식도어커튼', ids:['CURTAIN_E'] },
   { kw:'수동식커튼', ids:['CURTAIN_M'] },
   { kw:'커튼수동식', ids:['CURTAIN_M'] },
+  { kw:'수동식도어커튼', ids:['CURTAIN_M'] },
   { kw:'경제운전안내', ids:['ECO_GUIDE'] },
   { kw:'블랙박스', ids:['BLACKBOX'] },
 
@@ -592,7 +613,10 @@ const FP_KEYWORD_RULES = [
   { kw:'블루투스', ids:['BLUETOOTH'] },
   { kw:'aux단자', ids:['AUX'] },
   { kw:'usb단자', ids:['USB'] },
+  { kw:'usb포트', ids:['USB'] },
   { kw:'웰컴시스템', ids:['WELCOME'] },
+  { kw:'다이내믹웰컴라이트', ids:['WELCOME'] },
+  { kw:'웰컴라이트', ids:['WELCOME'] },
   { kw:'전자제어서스펜션', ids:['ECS'] },
   { kw:'에어서스펜션', ids:['ECS'] }
 ];

@@ -147,13 +147,24 @@ export function fieldPhoto(label, field, data) {
 }
 
 /**
- * 자동저장 바인딩 — el 안의 모든 .contract-field-input에 blur/change 시 저장 + 피드백
+ * 일괄저장 바인딩 — 기본은 [저장] 버튼이 호출하는 el.__flushSave() 가 변경분 일괄 저장.
+ *  opts.eager=true 면 blur/change 시 즉시 저장 (admin 도구 등 [저장] 버튼이 없는 컨텍스트용).
  * @param {HTMLElement} el - 컨테이너
  * @param {function} saveFn - (field, value) => Promise
+ * @param {object} [opts] - { eager: boolean }
  */
-export function bindAutoSave(el, saveFn) {
-  // text/textarea inputs
-  el.querySelectorAll('.contract-field-input:not(select)').forEach(inp => {
+export function bindAutoSave(el, saveFn, opts = {}) {
+  const eager = !!opts.eager;
+  // eager 모드 — input blur / select change / textarea blur 시 자동 flush
+  if (eager) {
+    const triggerFlush = () => { el.__flushSave?.(); };
+    el.addEventListener('blur', triggerFlush, true);   // capture phase — input/textarea
+    el.addEventListener('change', triggerFlush, true); // select
+  }
+  const tracked = [];
+
+  // text/number inputs
+  el.querySelectorAll('.contract-field-input:not(select):not(textarea)').forEach(inp => {
     const f = inp.dataset.field;
     const stateEl = el.querySelector(`.form-state[data-state="${f}"]`);
     const isNum = inp.dataset.num === '1';
@@ -161,70 +172,51 @@ export function bindAutoSave(el, saveFn) {
 
     inp.addEventListener('focus', () => {
       if (isNum) inp.value = inp.value.replace(/[^\d]/g, '');
-      original = inp.value;
-      setFieldState(stateEl, 'editing');
+      setFieldState(stateEl, inp.value !== original ? 'editing' : 'editing');
     });
     if (isNum) {
       inp.addEventListener('input', () => {
         const cleaned = inp.value.replace(/[^\d]/g, '');
         if (cleaned !== inp.value) inp.value = cleaned;
+        setFieldState(stateEl, inp.value !== original ? 'editing' : null);
+      });
+    } else {
+      inp.addEventListener('input', () => {
+        setFieldState(stateEl, inp.value !== original ? 'editing' : null);
       });
     }
-    inp.addEventListener('blur', async () => {
-      const v = inp.value.trim();
-      if (v === original) {
-        if (isNum && v !== '') inp.value = Number(v).toLocaleString('ko-KR');
-        setFieldState(stateEl, null);
-        return;
-      }
-      const val = isNum ? (v ? Number(v) : null) : v;
-      const prevVal = original;
-      try {
-        await saveFn(f, val);
-        original = v;
-        if (isNum && v !== '') inp.value = Number(v).toLocaleString('ko-KR');
-        const undo = () => {
-          const restoreVal = isNum ? (prevVal ? Number(prevVal) : null) : prevVal;
-          inp.value = prevVal;
-          saveFn(f, restoreVal);
-          original = prevVal;
-          if (isNum && prevVal !== '') inp.value = Number(prevVal).toLocaleString('ko-KR');
-          setFieldState(stateEl, null);
-        };
-        setFieldState(stateEl, 'saved', undo);
-        clearTimeout(stateEl?._t);
-        if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 5000);
-      } catch (err) { setFieldState(stateEl, 'error'); }
+    inp.addEventListener('blur', () => {
+      // 숫자는 천단위 표시 복구 (저장과 무관)
+      if (isNum && inp.value !== '') inp.value = Number(inp.value.replace(/[^\d]/g, '')).toLocaleString('ko-KR');
+      if (inp.value === original) setFieldState(stateEl, null);
     });
     inp.addEventListener('keydown', e => {
       if (e.key === 'Enter') inp.blur();
-      else if (e.key === 'Escape') { inp.value = original; inp.blur(); }
+      else if (e.key === 'Escape') { inp.value = original; setFieldState(stateEl, null); inp.blur(); }
+    });
+
+    tracked.push({
+      type: 'input', el: inp, f, isNum, stateEl,
+      getOriginal: () => original,
+      setOriginal: v => { original = v; },
     });
   });
 
-  // textarea (디바운스 저장)
+  // textarea
   el.querySelectorAll('textarea.contract-field-input').forEach(ta => {
     const f = ta.dataset.field;
     const stateEl = el.querySelector(`.form-state[data-state="${f}"]`);
-    let t, original = ta.value;
-    ta.addEventListener('focus', () => { original = ta.value; setFieldState(stateEl, 'editing'); });
+    let original = ta.value;
     ta.addEventListener('input', () => {
-      clearTimeout(t);
-      setFieldState(stateEl, 'editing');
-      t = setTimeout(async () => {
-        const prevVal = original;
-        try {
-          await saveFn(f, ta.value);
-          original = ta.value;
-          const undo = () => { ta.value = prevVal; saveFn(f, prevVal); original = prevVal; setFieldState(stateEl, null); };
-          setFieldState(stateEl, 'saved', undo);
-          clearTimeout(stateEl?._t);
-          if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 5000);
-        } catch (err) { setFieldState(stateEl, 'error'); }
-      }, 600);
+      setFieldState(stateEl, ta.value !== original ? 'editing' : null);
     });
     ta.addEventListener('blur', () => {
       if (ta.value === original) setFieldState(stateEl, null);
+    });
+    tracked.push({
+      type: 'textarea', el: ta, f, stateEl,
+      getOriginal: () => original,
+      setOriginal: v => { original = v; },
     });
   });
 
@@ -232,23 +224,57 @@ export function bindAutoSave(el, saveFn) {
   el.querySelectorAll('.contract-field-select').forEach(sel => {
     const f = sel.dataset.field;
     const stateEl = el.querySelector(`.form-state[data-state="${f}"]`);
-    let originalSel = sel.value;
-    sel.addEventListener('focus', () => { originalSel = sel.value; setFieldState(stateEl, 'editing'); });
-    sel.addEventListener('blur', () => {
-      if (stateEl?.classList.contains('is-editing')) setFieldState(stateEl, null);
+    let original = sel.value;
+    sel.addEventListener('change', () => {
+      setFieldState(stateEl, sel.value !== original ? 'editing' : null);
     });
-    sel.addEventListener('change', async () => {
-      const prevVal = originalSel;
-      try {
-        await saveFn(f, sel.value);
-        originalSel = sel.value;
-        const undo = () => { sel.value = prevVal; saveFn(f, prevVal); originalSel = prevVal; setFieldState(stateEl, null); };
-        setFieldState(stateEl, 'saved', undo);
-        clearTimeout(stateEl?._t);
-        if (stateEl) stateEl._t = setTimeout(() => setFieldState(stateEl, null), 5000);
-      } catch (err) { setFieldState(stateEl, 'error'); }
+    tracked.push({
+      type: 'select', el: sel, f, stateEl,
+      getOriginal: () => original,
+      setOriginal: v => { original = v; },
     });
   });
+
+  // [저장] 버튼이 호출 — 변경된 필드만 saveFn 으로 일괄 호출
+  el.dataset.flushHost = '1';
+  el.__flushSave = async () => {
+    let saved = 0;
+    for (const t of tracked) {
+      const cur = t.el.value;
+      const orig = t.getOriginal();
+      if (t.type === 'input') {
+        const v = cur.trim();
+        if (v === orig) continue;
+        const val = t.isNum ? (v ? Number(v.replace(/[^\d]/g, '')) : null) : v;
+        try {
+          await saveFn(t.f, val);
+          t.setOriginal(t.el.value);
+          setFieldState(t.stateEl, 'saved');
+          if (t.stateEl) { clearTimeout(t.stateEl._t); t.stateEl._t = setTimeout(() => setFieldState(t.stateEl, null), 3000); }
+          saved++;
+        } catch (err) { setFieldState(t.stateEl, 'error'); console.error('[bindAutoSave] save fail', t.f, err); }
+      } else if (t.type === 'textarea') {
+        if (cur === orig) continue;
+        try {
+          await saveFn(t.f, cur);
+          t.setOriginal(cur);
+          setFieldState(t.stateEl, 'saved');
+          if (t.stateEl) { clearTimeout(t.stateEl._t); t.stateEl._t = setTimeout(() => setFieldState(t.stateEl, null), 3000); }
+          saved++;
+        } catch (err) { setFieldState(t.stateEl, 'error'); console.error('[bindAutoSave] save fail', t.f, err); }
+      } else if (t.type === 'select') {
+        if (cur === orig) continue;
+        try {
+          await saveFn(t.f, cur);
+          t.setOriginal(cur);
+          setFieldState(t.stateEl, 'saved');
+          if (t.stateEl) { clearTimeout(t.stateEl._t); t.stateEl._t = setTimeout(() => setFieldState(t.stateEl, null), 3000); }
+          saved++;
+        } catch (err) { setFieldState(t.stateEl, 'error'); console.error('[bindAutoSave] save fail', t.f, err); }
+      }
+    }
+    return saved;
+  };
 }
 
 /**
@@ -312,17 +338,25 @@ function applyEditMode(on) {
 window.toggleEditMode = function(on) {
   const cur = document.body.classList.contains('is-edit-mode');
   const next = (typeof on === 'boolean') ? on : !cur;
-  // 편집 → 보기 전환 시 현재 포커스된 입력칸 강제 blur (자동저장 트리거)
-  if (cur && !next) {
-    const ae = document.activeElement;
-    if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.tagName === 'SELECT')) {
-      ae.blur();
-    }
-  }
   applyEditMode(next);
   window.refreshPageActions?.();
 };
 window.isEditMode = () => document.body.classList.contains('is-edit-mode');
+
+/* 활성 페이지의 변경 사항 일괄 저장 — [저장] 버튼이 호출.
+ *  bindAutoSave / bindFormSave 가 컨테이너에 등록한 __flushSave 들을 모두 실행. */
+window.flushActivePageSaves = async function() {
+  const page = document.querySelector('.pt-page.active');
+  if (!page) return 0;
+  const hosts = [page, ...page.querySelectorAll('[data-flush-host]')];
+  let total = 0;
+  for (const h of hosts) {
+    if (typeof h.__flushSave === 'function') {
+      try { total += (await h.__flushSave()) || 0; } catch (e) { console.error('[flushActivePageSaves]', e); }
+    }
+  }
+  return total;
+};
 
 // select 가 잠긴 상태에서 드롭다운이 열리지 않도록 mousedown 차단 (수정모드 OFF 일 때만)
 document.addEventListener('mousedown', (e) => {

@@ -10,7 +10,7 @@ import { store } from '../core/store.js';
 import { updateRecord } from '../firebase/db.js';
 import { logout as fbLogout, resetPassword } from '../firebase/auth.js';
 import { showToast } from '../core/toast.js';
-import { esc } from '../core/ui-helpers.js';
+import { esc, renderRoomItem } from '../core/ui-helpers.js';
 
 const TABS = [
   { id: 'guide',    icon: 'book-open',     label: '사용설명',      sub: '단축키 | 우클릭 | 페이지 가이드' },
@@ -84,19 +84,21 @@ export function renderSettings() {
   const help = TAB_HELP[_activeTab] || { title: '', body: '' };
   page.innerHTML = `
     <div class="ws4">
-      <!-- 좌: 탭 목록 (1/4) -->
+      <!-- 좌: 탭 목록 (1/4) — dev/workspace/contract 등 다른 페이지와 동일 .room-item 규격 -->
       <div class="ws4-card ws4-list" style="flex: 1 1 0;">
         <div class="ws4-head"><i class="ph ph-gear"></i> <span>설정</span></div>
-        <div class="ws4-body" style="padding: var(--sp-2);">
-          ${TABS.map(t => `
-            <button class="settings-tab ${t.id === _activeTab ? 'is-active' : ''}" data-tab="${t.id}">
-              <i class="ph ph-${t.icon}"></i>
-              <span class="settings-tab-text">
-                <span class="settings-tab-label">${t.label}</span>
-                <span class="settings-tab-sub">${t.sub}</span>
-              </span>
-            </button>
-          `).join('')}
+        <div class="ws4-body no-pad">
+          ${TABS.map(t => renderRoomItem({
+            id: t.id,
+            icon: t.icon,
+            badge: '',
+            tone: 'gray',
+            name: t.label,
+            time: '',
+            msg: t.sub,
+            meta: '',
+            active: t.id === _activeTab,
+          })).join('')}
         </div>
       </div>
 
@@ -117,10 +119,10 @@ export function renderSettings() {
     </div>
   `;
 
-  // 탭 클릭 → _activeTab 변경 후 재렌더
-  page.querySelectorAll('.settings-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      _activeTab = btn.dataset.tab;
+  // 탭 클릭 → _activeTab 변경 후 재렌더 (room-item 규격 통일)
+  page.querySelectorAll('.ws4-list .room-item').forEach(item => {
+    item.addEventListener('click', () => {
+      _activeTab = item.dataset.id;
       renderSettings();
     });
   });
