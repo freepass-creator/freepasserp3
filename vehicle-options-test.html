@@ -362,6 +362,29 @@ function within15Years(row) {
   return (row.production_start || '0000-00') >= cutoff;
 }
 
+// 세부모델 표기 정규화 — 괄호 제거 + 기아 N세대 → 개발코드
+const KIA_GEN_CODE_MAP = {
+  'K5': { '3세대': 'DL3', '2세대': 'JF' },
+  'K9': { '2세대': 'RJ' },
+  '카니발': { '4세대': 'KA4' },
+  '스포티지': { '5세대': 'NQ5' },
+  '쏘렌토': { '4세대': 'MQ4' },
+  '셀토스': { '2세대': 'SP3' },
+  'K3': { '2세대': 'BD' }
+};
+function normalizeSub(row) {
+  let s = (row.sub || '').replace(/\s*\(([^)]+)\)/g, ' $1').replace(/\s+/g, ' ').trim();
+  if (row.maker === '기아') {
+    const codes = KIA_GEN_CODE_MAP[row.model];
+    if (codes) {
+      for (const [gen, code] of Object.entries(codes)) {
+        s = s.replace(new RegExp(gen + '\\b', 'g'), code);
+      }
+    }
+  }
+  return s;
+}
+
 const state = {
   master: [],          // encar-master-seed 전체
   selected: null,      // 선택된 마스터 row
