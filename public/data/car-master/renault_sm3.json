@@ -9,9 +9,42 @@
   "options": {},
   "categories": {},
   "trims": {
-    "PE": { "slug": "pe", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LE": { "slug": "le", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "SE Plus": { "slug": "se_plus", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "PE": {
+      "slug": "pe",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RE": {
+      "slug": "re",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LE": {
+      "slug": "le",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "SE Plus": {
+      "slug": "se_plus",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "sm3",
+    "sm3ze",
+    "sm3네오",
+    "sm3뉴제너레이션",
+    "뉴sm3"
+  ],
+  "year_start": "2006-01",
+  "year_end": "2019-12"
 }

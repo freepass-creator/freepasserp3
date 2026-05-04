@@ -9,10 +9,45 @@
   "options": {},
   "categories": {},
   "trims": {
-    "Standard": { "slug": "standard", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "Deluxe": { "slug": "deluxe", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "Luxury": { "slug": "luxury", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "SLX": { "slug": "slx", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "Picanto": { "slug": "picanto", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "Standard": {
+      "slug": "standard",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Deluxe": {
+      "slug": "deluxe",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Luxury": {
+      "slug": "luxury",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "SLX": {
+      "slug": "slx",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Picanto": {
+      "slug": "picanto",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "모닝"
+  ],
+  "year_start": "2005-01",
+  "year_end": "2007-12"
 }

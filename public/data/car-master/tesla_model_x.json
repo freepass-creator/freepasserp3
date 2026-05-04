@@ -23,5 +23,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "모델x"
+  ],
+  "year_start": "2018-01",
+  "year_end": "현재"
 }

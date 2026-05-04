@@ -3,15 +3,47 @@
   "title": "르노 SM6",
   "maker": "르노",
   "source": "stub",
-  "source_urls": ["https://www.renault.co.kr/models/sm6.html"],
+  "source_urls": [
+    "https://www.renault.co.kr/models/sm6.html"
+  ],
   "fetched_at": "2026-05-04",
   "note": "SM6 (2016~2024) — 트림명만, 옵션/가격 추후 OCR. 르노삼성 시절 출시 후 르노코리아로 변경.",
   "options": {},
   "categories": {},
   "trims": {
-    "PE": { "slug": "pe", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LE": { "slug": "le", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프리미에르": { "slug": "premiere", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "PE": {
+      "slug": "pe",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LE": {
+      "slug": "le",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RE": {
+      "slug": "re",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미에르": {
+      "slug": "premiere",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "sm6",
+    "더뉴sm6"
+  ],
+  "year_start": "2016-01",
+  "year_end": "현재"
 }

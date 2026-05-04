@@ -44,5 +44,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "ev6"
+  ],
+  "year_start": "2021-01",
+  "year_end": "2023-12"
 }

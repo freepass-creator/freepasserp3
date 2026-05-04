@@ -9,7 +9,8 @@ import { matchFpByName, normName } from './fp-keyword-rules.js';
 
 let _index = null;        // _index.json 캐시
 let _catalogs = {};       // catalog_id → 카탈로그 JSON 캐시
-let _encarMap = null;     // "maker|normName(sub)" → catalog_id 직접 lookup (build-encar-catalog-map.cjs 생성)
+let _encarMap = null;     // "maker|normName(sub)" → catalog_id (catalog aliases 기반)
+let _yearRanges = null;   // catalog_id → { start: 'YYYY-MM', end: 'YYYY-MM' | '현재' }
 
 const CB = () => '?t=' + Date.now();
 
@@ -33,17 +34,40 @@ export async function loadIndex() {
   return _index;
 }
 
-/* encar→catalog 직접 매핑 (script/build-encar-catalog-map.cjs 생성).
- *  매물 sub_model 이 encar 표준명과 일치하면 high confidence 로 즉시 반환.
+/* sub_model → catalog 직접 매핑 (각 catalog json 의 aliases 필드에서 파생).
+ *  scripts/build-aliases-map.cjs 가 빌드 시 생성.
+ *  매물 sub_model 이 catalog alias 와 일치하면 high confidence 로 즉시 반환.
  *  키 형식: "maker|normName(sub)" */
 async function loadEncarMap() {
   if (_encarMap) return _encarMap;
   _encarMap = await fetchJson([
-    '/data/car-master/_encar-catalog-map.json',
-    './public/data/car-master/_encar-catalog-map.json',
-    'public/data/car-master/_encar-catalog-map.json',
+    '/data/car-master/_aliases-map.json',
+    './public/data/car-master/_aliases-map.json',
+    'public/data/car-master/_aliases-map.json',
   ]) || {};
   return _encarMap;
+}
+
+/* catalog_id → year_range — 연식 기반 catalog 후보 좁히기용. */
+async function loadYearRanges() {
+  if (_yearRanges) return _yearRanges;
+  _yearRanges = await fetchJson([
+    '/data/car-master/_year-ranges.json',
+    './public/data/car-master/_year-ranges.json',
+    'public/data/car-master/_year-ranges.json',
+  ]) || {};
+  return _yearRanges;
+}
+
+/* 매물 연식 (YYYY 또는 YYYY-MM) 이 catalog year_range 안에 있는지. 없으면 null. */
+function isYearInRange(productYear, range) {
+  if (!productYear || !range) return null;
+  const py = Number(String(productYear).slice(0, 4));
+  if (!py) return null;
+  const startY = Number(String(range.start || '').slice(0, 4));
+  const endY = range.end === '현재' ? 9999 : Number(String(range.end || '').slice(0, 4));
+  if (!startY) return null;
+  return py >= startY && py <= endY;
 }
 
 export async function loadCatalog(catalogId) {
@@ -116,6 +140,10 @@ export async function findCatalog(maker, subModel, model, product = {}) {
   const subN = normName(subModel || '');
   const mdN = normName(model || '');
   if (!subN && !mdN) return null;
+
+  // year 기반 candidate 가산점 — 매물 연식이 catalog year_range 안에 있으면 강한 시그널
+  const yearRanges = await loadYearRanges();
+  const productYearVal = Number(product?.year || 0);
 
   // 1차 — encar 직접 매핑 (build-encar-catalog-map.cjs 가 생성한 _encar-catalog-map.json 활용)
   //   매물 sub_model 이 우리 표준 sub 와 정확 일치 → high confidence 즉시 반환.

@@ -30,5 +30,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "무쏘스포츠칸q250"
+  ],
+  "year_start": "2025-01",
+  "year_end": "현재"
 }

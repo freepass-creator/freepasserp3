@@ -1,0 +1,457 @@
+  /* ── 풀스크린 뷰 (pushMobileView) ── */
+  .m-view {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg);
+    will-change: transform;
+  }
+
+  .m-view-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @keyframes m-slide-out-right {
+    from { transform: translateX(0); }
+    to   { transform: translateX(100%); }
+  }
+
+  /* ── 모바일 채팅 뷰 ── */
+  .m-chat-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ── 상품 세부 (찾기 → 카드 탭 → m-view) ──
+     search.css 미로드 → cat- / srch- 베이스 스타일을 .m-view-body 안에 self-contained ── */
+  .m-view-body .m-product-detail {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: calc(var(--sp-4) + env(safe-area-inset-bottom));
+    font-family: var(--font-mobile);
+  }
+  .m-view-body .srch-detail-inner { max-width: none; width: 100%; }
+
+  /* 갤러리 */
+  .m-view-body .srch-gallery,
+  .m-view-body .srch-gallery-empty {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--c-bg-sub);
+    overflow: hidden;
+  }
+  .m-view-body .srch-gallery-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .m-view-body .srch-gallery-empty {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--c-text-muted);
+  }
+  .m-view-body .srch-gallery-empty i { font-size: 48px; }
+  .m-view-body .srch-gallery-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 36px; height: 36px;
+    border: 0; border-radius: 999px;
+    background: var(--c-overlay-chip, rgba(0,0,0,0.55));
+    color: #fff; font-size: 20px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+  }
+  .m-view-body .srch-gallery-prev { left: 8px; }
+  .m-view-body .srch-gallery-next { right: 8px; }
+  .m-view-body .srch-gallery-counter {
+    position: absolute; bottom: 8px; right: 8px;
+    padding: 2px 8px;
+    background: var(--c-overlay-chip, rgba(0,0,0,0.55));
+    color: #fff; font-size: var(--fs-xs);
+    border-radius: var(--m-radius-sharp);
+  }
+  .m-view-body .srch-gallery-badges {
+    position: absolute; top: 8px; left: 8px;
+    display: flex; gap: 4px; flex-wrap: wrap;
+  }
+
+  /* hero (차량 타이틀 + 모델 + 옵션 + spec) */
+  .m-view-body .cat-hero {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 16px var(--m-edge);
+  }
+  .m-view-body .cat-hero-top { display: flex; gap: 8px; align-items: flex-start; }
+  .m-view-body .cat-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+  .m-view-body .cat-badge {
+    font-size: var(--fs-xs); padding: 2px 6px;
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-accent-soft, var(--c-bg-sub));
+    color: var(--c-accent);
+    font-weight: var(--fw-medium);
+  }
+  .m-view-body .cat-title {
+    font-size: var(--fs-lg); font-weight: var(--fw-heavy);
+    margin: 0; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  }
+  .m-view-body .cat-carno { font-size: var(--fs-sm); font-weight: var(--fw-normal); color: var(--c-text-muted); }
+  .m-view-body .cat-subtitle,
+  .m-view-body .cat-options { font-size: var(--fs-sm); color: var(--c-text-sub); margin: 0; }
+  .m-view-body .cat-options { color: var(--c-text-muted); }
+  .m-view-body .cat-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .m-view-body .cat-meta-text { font-size: var(--fs-sm); color: var(--c-text-sub); }
+  .m-view-body .cat-color-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: var(--fs-xs); font-weight: var(--fw-medium);
+    padding: 2px 8px; border-radius: var(--m-radius-sharp);
+    border: 1px solid rgba(0,0,0,.1); line-height: 1.4;
+  }
+  .m-view-body .cat-spec {
+    display: flex; flex-wrap: wrap; gap: 6px 12px;
+    padding-top: 8px; border-top: 1px dashed var(--c-border-soft);
+    font-size: var(--fs-sm); color: var(--c-text-sub);
+  }
+  .m-view-body .cat-spec-item { display: inline-flex; align-items: center; gap: 4px; }
+  .m-view-body .cat-spec-item i { font-size: var(--fs-md); color: var(--c-text-muted); }
+  .m-view-body .cat-color-dot {
+    display: inline-block; width: 10px; height: 10px;
+    border-radius: 50%; border: 1px solid var(--c-border);
+  }
+
+  /* 키포인트 칩 */
+  .m-view-body .cat-keypoints {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 0 var(--m-edge); margin: 12px 0;
+  }
+  .m-view-body .cat-keypoint {
+    font-size: var(--fs-xs); padding: 6px 10px;
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-bg-sub);
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .m-view-body .cat-keypoint i { font-size: var(--fs-md); line-height: 1; }
+  .m-view-body .cat-keypoint--ok    { background: var(--c-ok-bg, var(--c-bg-sub));    color: var(--c-ok); }
+  .m-view-body .cat-keypoint--info  { background: var(--c-info-bg, var(--c-bg-sub));  color: var(--c-info); }
+  .m-view-body .cat-keypoint--warn  { background: var(--c-warn-bg, var(--c-bg-sub));  color: var(--c-warn); }
+
+  /* 가격 요약 */
+  .m-view-body .cat-price-summary {
+    margin: 8px var(--m-edge);
+    padding: 10px 12px;
+    background: var(--c-bg-sub);
+    border-radius: var(--m-radius-sharp);
+    font-size: var(--fs-sm);
+    color: var(--c-text-sub);
+    line-height: 1.5;
+  }
+
+  /* 섹션 */
+  .m-view-body .cat-section {
+    padding: 16px var(--m-edge);
+    border-top: 1px solid var(--c-border-soft);
+  }
+  .m-view-body .cat-hero + .cat-section,
+  .m-view-body .cat-section:first-of-type { border-top: 0; }
+  .m-view-body .cat-section-title {
+    display: flex; align-items: center; gap: 6px;
+    font-size: var(--fs-md); font-weight: var(--fw-semibold);
+    color: var(--c-text);
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+  .m-view-body .cat-section-title i {
+    font-size: var(--fs-lg); color: var(--c-accent);
+  }
+  .m-view-body .cat-section-hint {
+    font-size: var(--fs-xs); font-weight: var(--fw-normal);
+    color: var(--c-text-muted); margin-left: auto;
+  }
+
+  /* row */
+  .m-view-body .cat-rows { display: flex; flex-direction: column; }
+  .m-view-body .cat-row {
+    display: flex; justify-content: space-between; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--c-border-soft);
+    font-size: var(--fs-sm); line-height: 1.4;
+  }
+  .m-view-body .cat-row:last-child { border-bottom: 0; }
+  .m-view-body .cat-row-label {
+    min-width: 88px; flex-shrink: 0;
+    color: var(--c-text-muted);
+    font-weight: var(--fw-normal);
+  }
+  .m-view-body .cat-row-value {
+    color: var(--c-text); font-weight: var(--fw-medium);
+    text-align: right; word-break: break-word;
+  }
+
+  /* memo */
+  .m-view-body .cat-memo { font-size: var(--fs-sm); line-height: 1.55; padding: 0; color: var(--c-text-sub); }
+
+  /* ── 계약 시작 시트 (채팅·상품 공통, 데스크톱 pickOrCreateCustomer 모바일 포팅) ── */
+  .m-contract-start { display: flex; flex-direction: column; gap: 14px; padding: 8px 0 16px; }
+  .m-cstart-vehicle {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px;
+    background: var(--c-bg-sub);
+    border-radius: var(--m-radius-sharp);
+  }
+  .m-cstart-vehicle > i { font-size: 28px; color: var(--c-text-sub); flex-shrink: 0; }
+  .m-cstart-vehicle-no { font-size: var(--fs-md); font-weight: var(--fw-semibold); }
+  .m-cstart-vehicle-model { font-size: var(--fs-sm); color: var(--c-text-sub); }
+  .m-cstart-row { display: flex; flex-direction: column; gap: 6px; }
+  .m-cstart-row.m-cstart-biz-fields { gap: 8px; }
+  .m-cstart-label { font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--c-text-sub); }
+  .m-cstart-periods { display: flex; flex-wrap: wrap; gap: 6px; }
+  .m-cstart-price { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .m-cstart-price-cell { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .m-cstart-input {
+    height: 44px; padding: 0 12px;
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-surface);
+    font-family: inherit; font-size: var(--fs-md); color: var(--c-text);
+    outline: none;
+    transition: border-color var(--dur) var(--ease);
+    min-width: 0; width: 100%;
+  }
+  .m-cstart-input:focus { border-color: var(--c-accent); }
+  .m-cstart-input[readonly] { background: var(--c-bg-sub); color: var(--c-text-sub); }
+  .m-cstart-biz {
+    display: flex; align-items: center; gap: 8px;
+    font-size: var(--fs-sm); color: var(--c-text-sub);
+    padding: 4px 0;
+    cursor: pointer;
+  }
+  .m-cstart-biz input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--c-accent); }
+  .m-cstart-warn {
+    padding: 10px 12px;
+    background: var(--c-warn-bg, #fff7ed);
+    color: var(--c-warn, #d97706);
+    border-radius: var(--m-radius-sharp);
+    font-size: var(--fs-sm);
+  }
+  .m-cstart-submit { width: 100%; margin-top: 8px; }
+
+  /* ── 세부 페이지 하단 액션바 — 모던 톤 (Toss·당근 표준) ──
+     솔리드 surface, 보더 X, 그림자 소량으로 본문과 분리 */
+  .m-detail-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 8px;
+    padding: 12px var(--m-edge) calc(12px + env(safe-area-inset-bottom));
+    margin-top: auto;
+    background: var(--c-surface);
+    box-shadow: 0 -1px 0 var(--c-border-soft);
+  }
+
+  /* 액션 버튼 — 무보더, 솔리드 fill, opacity press (모던 한국 모바일 표준) */
+  .m-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: var(--m-h-tap);
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-bg-sub);
+    color: var(--c-text);
+    font-family: inherit;
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 60ms ease;
+  }
+  .m-action-btn > i { font-size: 18px; line-height: 1; }
+  /* 누름 — Toss 톤 (opacity 만, scale·bg 변경 X) */
+  .m-action-btn:active { opacity: 0.55; }
+
+  /* 주요 CTA — accent 솔리드 fill */
+  .m-action-btn.is-primary {
+    background: var(--c-accent);
+    color: var(--c-text-inv, #fff);
+  }
+
+  /* (m-chat-attach·m-chat-send 스타일은 상단 .m-chat-input-area 컨텍스트에서 정의됨 — 중복 제거) */
+
+  /* ── FAB ── */
+  .m-fab {
+    position: fixed;
+    right: 16px;
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    z-index: var(--z-sticky);
+    min-width: 56px;
+    height: 56px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    background: var(--c-accent);
+    color: var(--c-text-inv, #fff);
+    border: none;
+    border-radius: var(--m-radius-sharp);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .m-fab i { font-size: 22px; }
+  .m-fab:active { transform: scale(0.94); box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+
+  /* ── 계약 진행단계 (ct-step) — desktop contract.css 미로드 → 모바일 self-contained ── */
+  .m-view-body .ct-steps {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .m-view-body .ct-step-row {
+    display: grid;
+    grid-template-columns: 1fr 24px 1fr;
+    gap: 6px;
+    align-items: center;
+  }
+  /* 영업자/공급사 헤더 라벨 — 가로 줄바꿈 방지 + 가운데 정렬 */
+  .m-view-body .ct-step-row > div[style*="text-align"] {
+    white-space: nowrap;
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+  .m-view-body .ct-step-cell {
+    display: flex; align-items: center; gap: 4px;
+    padding: 6px 10px;
+    border-radius: var(--m-radius-sharp);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    border: 1px solid var(--c-border);
+    background: var(--c-surface);
+    height: 32px;
+    overflow: hidden;
+  }
+  .m-view-body .ct-step-cell > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .m-view-body .ct-step-cell[data-clickable] { cursor: pointer; }
+  .m-view-body .ct-step-cell[data-clickable]:active {
+    background: var(--c-bg-hover);
+    border-color: var(--c-border-strong);
+  }
+  .m-view-body .ct-step-cell.is-done {
+    background: var(--c-ok-bg, #e6f7ed);
+    border-color: var(--c-ok, #15803d);
+    color: var(--c-ok, #15803d);
+  }
+  .m-view-body .ct-step-cell.is-pending {
+    background: var(--c-surface);
+    border-color: var(--c-border);
+    color: var(--c-text);
+  }
+  .m-view-body .ct-step-cell.is-locked {
+    background: var(--c-bg-sub);
+    border-color: var(--c-border);
+    color: var(--c-text-muted);
+  }
+  .m-view-body .ct-step-cell.is-rejected {
+    background: var(--c-err-bg, #fef2f2);
+    border-color: var(--c-err, #dc2626);
+    color: var(--c-err, #dc2626);
+  }
+  .m-view-body .ct-step-cell i { font-size: 16px; flex-shrink: 0; }
+  .m-view-body .ct-step-arrow {
+    color: var(--c-text-muted);
+    font-size: 14px;
+    text-align: center;
+  }
+  .m-view-body .ct-step-arrow i { font-size: 14px; }
+  .m-view-body .ct-step-select {
+    flex: 1; min-width: 0;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    color: inherit; font-family: inherit;
+    cursor: pointer; outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='%23868e96' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    padding: 0 18px 0 4px;
+  }
+
+  /* ── 탭 (계약 뷰 등) ── */
+  /* 계약 상세 레이아웃 — 상단 topbar(view) + 중간 스크롤 panels + 하단 tabs */
+  .m-view-body:has(> .m-ct-layout) { overflow: hidden; }
+  .m-ct-layout {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-ct-layout > .m-tab-panels {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .m-ct-layout > .m-tab-panels > .m-tab-panel.is-active { display: block; }
+  .m-ct-layout > .m-tab-panels > .m-tab-panel { display: none; }
+
+  /* 세그먼트 컨트롤 스타일 탭 — 눌린 버튼 느낌 */
+  .m-tabs {
+    display: flex;
+    gap: var(--sp-1);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-border);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  /* 하단 고정 탭바 스타일 (계약 상세) — 하단 탭바 위치처럼 */
+  .m-tabs.m-tabs-bottom {
+    position: static;
+    top: auto;
+    border-bottom: 0;
+    border-top: 1px solid var(--c-border);
+    padding: var(--sp-2) var(--sp-3) calc(var(--sp-2) + env(safe-area-inset-bottom));
+    flex-shrink: 0;
+  }
+  .m-tab-btn {
+    flex: 1;
+    height: 36px;
+    padding: 0 var(--sp-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-1);
+    background: var(--c-bg-sub);
+    border: 1px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-sub);
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    transition: background var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .m-tab-btn i { font-size: var(--fs-lg); }
+  .m-tab-btn:active { transform: scale(0.98); }
+  .m-tab-btn.is-active {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+    color: var(--c-text-inv);
+    font-weight: var(--fw-semibold);
+  }
+  .m-tab-panels { flex: 1; min-height: 0; }
+  .m-tab-panel { display: none; }
+  .m-tab-panel.is-active { display: block; }
+

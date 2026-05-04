@@ -3,7 +3,9 @@
   "title": "현대 더 뉴 코나",
   "maker": "현대",
   "source": "wikicar",
-  "source_urls": ["http://wikicar.co.kr/kona_os/48376"],
+  "source_urls": [
+    "http://wikicar.co.kr/kona_os/48376"
+  ],
   "fetched_at": "2026-05-04",
   "note": "더 뉴 코나 (OS 페리, 2020-2022). 가격: wikicar 2021.07 OCR. 1.6T 가솔린 + N Line + N + 하이브리드. 1.6T 디젤·일렉트릭 별도.",
   "options": {},
@@ -11,28 +13,41 @@
   "trims": {
     "스마트": {
       "slug": "smart",
-      "price": { "base_16t": 19990000, "base_hev": 25590000 },
+      "price": {
+        "base_16t": 19990000,
+        "base_hev": 25590000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "모던": {
       "slug": "modern",
-      "price": { "base_16t": 22160000, "base_hev": 27360000, "base_n_line_16t": 25060000 },
+      "price": {
+        "base_16t": 22160000,
+        "base_hev": 27360000,
+        "base_n_line_16t": 25060000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "인스퍼레이션": {
       "slug": "inspiration",
-      "price": { "base_16t": 26970000, "base_hev": 31750000, "base_n_line_16t": 28670000 },
+      "price": {
+        "base_16t": 26970000,
+        "base_hev": 31750000,
+        "base_n_line_16t": 28670000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "N 라인": {
       "slug": "n_line",
-      "price": { "base_16t": 25060000 },
+      "price": {
+        "base_16t": 25060000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -40,11 +55,19 @@
     },
     "N": {
       "slug": "kona_n",
-      "price": { "base_20t": 34820000 },
+      "price": {
+        "base_20t": 34820000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
       "note": "KONA N 고성능 (2.0T)"
     }
-  }
+  },
+  "aliases": [
+    "더뉴코나",
+    "더뉴코나하이브리드"
+  ],
+  "year_start": "2020-01",
+  "year_end": "2022-12"
 }

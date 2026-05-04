@@ -89,7 +89,7 @@ export function renderPolicyList(policies) {
   }).join('');
 
   const head = document.querySelector('[data-page="policy"] .ws4-head span');
-  if (head) head.textContent = `정책 목록 | ${policies.length}건`;
+  if (head) head.textContent = `정책 목록 · ${policies.length}건`;
   renderPolicyDetail(sorted[0]);
 }
 

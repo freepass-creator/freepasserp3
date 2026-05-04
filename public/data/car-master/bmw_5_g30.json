@@ -9,15 +9,83 @@
   "options": {},
   "categories": {},
   "trims": {
-    "520i": { "slug": "520i", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "520i M Sport": { "slug": "520i_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "530i": { "slug": "530i", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "530i M Sport": { "slug": "530i_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "530e": { "slug": "530e", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "540i xDrive": { "slug": "540i_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "520d": { "slug": "520d", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "520d M Sport": { "slug": "520d_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "530d xDrive": { "slug": "530d_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "M5": { "slug": "m5", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "520i": {
+      "slug": "520i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "520i M Sport": {
+      "slug": "520i_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "530i": {
+      "slug": "530i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "530i M Sport": {
+      "slug": "530i_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "530e": {
+      "slug": "530e",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "540i xDrive": {
+      "slug": "540i_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "520d": {
+      "slug": "520d",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "520d M Sport": {
+      "slug": "520d_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "530d xDrive": {
+      "slug": "530d_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "M5": {
+      "slug": "m5",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "5시리즈",
+    "5시리즈e60",
+    "5시리즈f10",
+    "5시리즈g30"
+  ],
+  "year_start": "1984-01",
+  "year_end": "2022-12"
 }

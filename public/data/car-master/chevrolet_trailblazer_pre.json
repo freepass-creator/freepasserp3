@@ -44,5 +44,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "트레일블레이저"
+  ],
+  "year_start": "2019-01",
+  "year_end": "2022-12"
 }

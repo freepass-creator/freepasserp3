@@ -28,14 +28,14 @@ export function mount() {
   main.innerHTML = `
     <div class="m-shell-page">
       <div class="m-search-head">
-        <div class="m-search-bar">
+        <label class="m-search-bar" for="mwsSearch">
           <i class="ph ph-magnifying-glass"></i>
           <input type="search" id="mwsSearch" placeholder="차량번호, 모델명 검색..."
                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                  enterkeyhint="search">
           <span class="m-search-count" id="mwsCount"></span>
-          <button class="m-topbar-action" id="mwsSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
-        </div>
+          <button type="button" class="m-topbar-action" id="mwsSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
+        </label>
         <div class="m-filter-chips">
           <button class="chip is-active" data-rf="all">전체</button>
           <button class="chip" data-rf="unread">안읽음</button>
@@ -141,7 +141,7 @@ function renderRooms() {
     const providerName = providerNameByCode(r.provider_company_code || r.provider_code, store);
     const title = [r.vehicle_number, r.sub_model || r.model, providerName].filter(Boolean).join(' ') || '-';
     // 보조: 영업채널 | 영업자 | 대화코드
-    const meta = [r.agent_channel_code, r.agent_code, chatCodeOf(r)].filter(Boolean).join(' | ');
+    const meta = [r.agent_channel_code, r.agent_code, chatCodeOf(r)].filter(Boolean).join(' · ');
     // 3줄: 마지막 발신자 코드 + 시간 | 마지막메세지
     const senderTone = r.last_sender_role === 'agent' || r.last_sender_role === 'agent_admin' ? 'agent'
                      : r.last_sender_role === 'provider' ? 'provider'
@@ -166,7 +166,7 @@ function renderRooms() {
           </div>
           <div class="m-room-item-sub">
             ${senderBadge}
-            <span>${[fmtHM, r.last_message, hasUnread ? `(안읽음 ${unread > 99 ? '99+' : unread})` : ''].filter(Boolean).join(' | ') || '-'}</span>
+            <span>${[fmtHM, r.last_message, hasUnread ? `(안읽음 ${unread > 99 ? '99+' : unread})` : ''].filter(Boolean).join(' · ') || '-'}</span>
           </div>
         </div>
       </div>
@@ -321,25 +321,17 @@ function openContractSheet(room) {
 
   if (!c) {
     const myRole = store.currentUser?.role;
-    const canCreate = myRole === 'agent' || myRole === 'agent_admin';
-    openBottomSheet(`
-      <div style="padding:var(--sp-4);display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);">
-        <i class="ph ph-file-text" style="font-size:36px;color:var(--c-text-muted);"></i>
-        <p style="color:var(--c-text-muted);font-size:var(--fs-sm);">연결된 계약 없음</p>
-        ${canCreate ? '<button class="btn btn-primary" id="mwsCreateContract" style="width:100%;"><i class="ph ph-plus"></i> 계약 생성하기</button>' : ''}
-      </div>
-    `, {
-      title: '계약 진행상황',
-      onMount: (sheet) => {
-        sheet.querySelector('#mwsCreateContract')?.addEventListener('click', async () => {
-          try {
-            const { createContractFromRoom } = await import('../firebase/collections.js');
-            await createContractFromRoom(room, store.currentUser);
-            showToast('계약 생성됨');
-          } catch (e) { showToast('생성 실패', 'error'); }
-        });
-      },
-    });
+    const canCreate = myRole === 'agent' || myRole === 'agent_admin' || myRole === 'admin';
+    if (!canCreate) {
+      openBottomSheet(`
+        <div style="padding:var(--sp-4);display:flex;flex-direction:column;align-items:center;gap:var(--sp-3);">
+          <i class="ph ph-file-text" style="font-size:36px;color:var(--c-text-muted);"></i>
+          <p style="color:var(--c-text-muted);font-size:var(--fs-sm);">연결된 계약 없음</p>
+        </div>
+      `, { title: '계약 진행상황' });
+      return;
+    }
+    openContractStartSheet({ room });
     return;
   }
 
@@ -374,6 +366,295 @@ function openContractSheet(room) {
       ${stepsHtml}
     </div>
   `, { title: '계약 진행상황' });
+}
+
+/** 계약 시작 시트 — 채팅·상품 공통 (데스크톱 pickOrCreateCustomer 와 기능 동일, UI 만 모바일)
+ *  권한: admin, agent 만 (agent_admin / provider 는 view-only) */
+export function openContractStartSheet({ room, product, onCreated } = {}) {
+  const me = store.currentUser;
+  if (!me || !(me.role === 'agent' || me.role === 'admin')) {
+    showToast('계약 생성 권한 없음 (관리자/영업자만 가능)', 'error');
+    return;
+  }
+  const isAdmin = me.role === 'admin';
+  // admin 일 때만 영업자 picker 노출 → 선택한 agent 의 uid/code 로 계약 생성
+  const agentList = isAdmin
+    ? (store.users || []).filter(u => u.role === 'agent' && !u._deleted && u.is_active !== false)
+    : [];
+
+  // 차량 정보 — room 또는 product 에서 추출
+  const ctx = room || {};
+  const p = product || (room && (store.products || []).find(
+    pp => pp._key === room.product_uid || pp.car_number === (room.vehicle_number || room.car_number)
+  )) || {};
+
+  // 본인 계약 product_uid (중복 체크용 — submit 시 customer_name 까지 매칭하면 같은 계약)
+  const productUid = p._key || ctx.product_uid;
+  const carNo = p.car_number || ctx.vehicle_number || '';
+  const modelText = `${p.maker || ctx.maker || ''} ${p.sub_model || ctx.sub_model || p.model || ctx.model || ''}`.trim();
+
+  // 기간/가격 — 등록된 가격 있는 기간만 노출 (desktop 동일)
+  const priceMap = p.price || {};
+  const PERIODS = ['1', '12', '24', '36', '48', '60'];
+  const availablePeriods = PERIODS.filter(m => Number(priceMap[m]?.rent) > 0);
+  const defaultM = availablePeriods.includes('36') ? '36' : (availablePeriods[0] || '36');
+
+  const fmtKr = (n) => Number(n || 0).toLocaleString();
+
+  const html = `
+    <div class="m-contract-start">
+      <div class="m-cstart-vehicle">
+        <i class="ph ph-car-simple"></i>
+        <div>
+          <div class="m-cstart-vehicle-no">${carNo || '-'}</div>
+          <div class="m-cstart-vehicle-model">${modelText || '-'}</div>
+        </div>
+      </div>
+
+      ${availablePeriods.length ? `
+      <div class="m-cstart-row">
+        <label class="m-cstart-label">대여기간</label>
+        <div class="m-cstart-periods">
+          ${availablePeriods.map(m => `
+            <button type="button" class="chip ${m === defaultM ? 'is-active' : ''}" data-m="${m}">${m}개월</button>
+          `).join('')}
+        </div>
+      </div>
+      <div class="m-cstart-row m-cstart-price">
+        <div class="m-cstart-price-cell">
+          <label class="m-cstart-label">월 대여료</label>
+          <input class="m-cstart-input" id="csRent" readonly>
+        </div>
+        <div class="m-cstart-price-cell">
+          <label class="m-cstart-label">보증금</label>
+          <input class="m-cstart-input" id="csDeposit" readonly>
+        </div>
+      </div>
+      ` : '<div class="m-cstart-warn">⚠ 등록된 가격 정보가 없습니다</div>'}
+
+      ${isAdmin ? `
+      <div class="m-cstart-row">
+        <label class="m-cstart-label" for="csAgent">담당 영업자</label>
+        <select class="m-cstart-input" id="csAgent">
+          <option value="">선택...</option>
+          ${agentList.map(a => `<option value="${a.uid || a._key}">${a.name || a.user_code} (${a.user_code || ''})</option>`).join('')}
+        </select>
+      </div>
+      ` : ''}
+
+      <div class="m-cstart-row">
+        <label class="m-cstart-label" for="csName">계약자명</label>
+        <input class="m-cstart-input" id="csName" type="text" placeholder="홍길동" autocomplete="off">
+      </div>
+
+      <div class="m-cstart-row">
+        <label class="m-cstart-label" for="csBirth">생년월일</label>
+        <input class="m-cstart-input" id="csBirth" type="text" placeholder="YYMMDD (6자리)"
+               inputmode="numeric" maxlength="6" autocomplete="off">
+      </div>
+
+      <div class="m-cstart-row">
+        <label class="m-cstart-label" for="csPhone">연락처</label>
+        <input class="m-cstart-input" id="csPhone" type="tel" placeholder="010-0000-0000"
+               inputmode="tel" maxlength="13" autocomplete="off">
+      </div>
+
+      <label class="m-cstart-biz">
+        <input type="checkbox" id="csBiz"> 사업자 계약
+      </label>
+      <div class="m-cstart-row m-cstart-biz-fields" id="csBizFields" style="display:none;">
+        <input class="m-cstart-input" id="csBizNo" placeholder="사업자등록번호 (123-45-67890)" inputmode="numeric">
+        <input class="m-cstart-input" id="csBizName" placeholder="법인/상호명">
+      </div>
+
+      <button type="button" class="m-action-btn is-primary m-cstart-submit" id="csSubmit">
+        <i class="ph ph-file-plus"></i><span>계약 시작하기</span>
+      </button>
+    </div>
+  `;
+
+  openBottomSheet(html, {
+    title: '계약 생성',
+    onMount: (sheet) => {
+      // 가격 표시 갱신
+      const rentEl = sheet.querySelector('#csRent');
+      const depEl = sheet.querySelector('#csDeposit');
+      const updatePrice = (m) => {
+        const v = priceMap[m] || {};
+        if (rentEl) rentEl.value = v.rent ? `${fmtKr(v.rent)}원` : '';
+        if (depEl) depEl.value = v.deposit ? `${fmtKr(v.deposit)}원` : '';
+      };
+      updatePrice(defaultM);
+
+      // 기간 chip toggle
+      sheet.querySelectorAll('.m-cstart-periods .chip').forEach(c => {
+        c.addEventListener('click', () => {
+          sheet.querySelectorAll('.m-cstart-periods .chip').forEach(x => x.classList.remove('is-active'));
+          c.classList.add('is-active');
+          updatePrice(c.dataset.m);
+        });
+      });
+
+      // 사업자 토글
+      const bizCk = sheet.querySelector('#csBiz');
+      const bizFields = sheet.querySelector('#csBizFields');
+      bizCk?.addEventListener('change', () => {
+        bizFields.style.display = bizCk.checked ? 'flex' : 'none';
+      });
+
+      // 연락처 자동 하이픈
+      const phoneEl = sheet.querySelector('#csPhone');
+      phoneEl?.addEventListener('input', () => {
+        const d = phoneEl.value.replace(/\D/g, '').slice(0, 11);
+        phoneEl.value = d.length <= 3 ? d
+          : d.length <= 7 ? `${d.slice(0,3)}-${d.slice(3)}`
+          : `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}`;
+      });
+
+      sheet.querySelector('#csSubmit')?.addEventListener('click', async () => {
+        const name = sheet.querySelector('#csName')?.value.trim();
+        const birth = (sheet.querySelector('#csBirth')?.value || '').replace(/\D/g, '');
+        const phone = (sheet.querySelector('#csPhone')?.value || '').replace(/\D/g, '');
+        const m = sheet.querySelector('.m-cstart-periods .chip.is-active')?.dataset.m || defaultM;
+        const isBiz = !!sheet.querySelector('#csBiz')?.checked;
+        const bizNo = (sheet.querySelector('#csBizNo')?.value || '').replace(/\D/g, '');
+        const bizName = sheet.querySelector('#csBizName')?.value.trim();
+
+        // 영업자 결정 — admin 이면 picker 에서, 아니면 본인
+        let agent = me;
+        if (isAdmin) {
+          const agentUidPick = sheet.querySelector('#csAgent')?.value;
+          if (!agentUidPick) { showToast('영업자 선택', 'error'); return; }
+          agent = agentList.find(a => (a.uid || a._key) === agentUidPick);
+          if (!agent) { showToast('영업자 정보 오류', 'error'); return; }
+        }
+
+        if (!name) { showToast('계약자명 입력', 'error'); return; }
+        if (!phone || phone.length < 10) { showToast('연락처 입력', 'error'); return; }
+        if (birth && birth.length !== 6) { showToast('생년월일 6자리', 'error'); return; }
+        if (isBiz && (!bizNo || !bizName)) { showToast('사업자 정보 입력', 'error'); return; }
+
+        // 중복 체크 — 본인 + 동일 차량 + 동일 계약자명 = 같은 계약
+        // (다른 영업자 / 다른 계약자 / 취소된 계약 은 무관)
+        if (productUid) {
+          const dup = (store.contracts || []).find(c =>
+            !c._deleted &&
+            c.agent_uid === me.uid &&
+            c.product_uid === productUid &&
+            (c.customer_name || '').trim() === name &&
+            c.contract_status !== '계약취소'
+          );
+          if (dup) {
+            showToast(`이미 진행중 — 계약 페이지로 이동 (${dup.contract_code})`, 'info');
+            const { navigate } = await import('../core/router.js');
+            navigate('/contract');
+            onCreated?.(dup.contract_code);
+            return;
+          }
+        }
+
+        const submitBtn = sheet.querySelector('#csSubmit');
+        if (submitBtn) submitBtn.disabled = true;
+        try {
+          const { pushRecord, updateRecord } = await import('../firebase/db.js');
+          const { makeTempContractCode } = await import('./contract.js');
+
+          // 1. 계약자 — phone 매칭 시 기존 reuse, 없으면 신규 push
+          let customer = (store.customers || []).find(c => c.phone === phone || (c.phone || '').replace(/\D/g, '') === phone);
+          if (!customer) {
+            const cKey = await pushRecord('customers', {
+              name,
+              phone,
+              birth,
+              is_business: isBiz,
+              business_no: isBiz ? bizNo : '',
+              business_name: isBiz ? bizName : '',
+              created_by: me.uid,
+            });
+            customer = { _key: cKey, name, phone, birth, is_business: isBiz };
+          }
+
+          // 2. 영업자 — 위 submit 핸들러 진입부에서 결정 (agent 변수 사용)
+
+          // 3. 계약 생성 — desktop createContractFromRoomLocal 과 동일 필드
+          const code = await makeTempContractCode();
+          const priceVal = priceMap[m] || {};
+          // Firebase RTDB 는 undefined 거부 → 모든 필드를 fallback '' 또는 0 으로
+          const payload = {
+            contract_code: code,
+            is_draft: true,
+            product_uid: p._key || ctx.product_uid || '',
+            product_code: p.product_code || '',
+            // 차량 snapshot
+            car_number_snapshot: p.car_number || ctx.vehicle_number || '',
+            maker_snapshot: p.maker || ctx.maker || '',
+            model_snapshot: p.model || ctx.model || '',
+            sub_model_snapshot: p.sub_model || ctx.sub_model || '',
+            vehicle_name_snapshot: `${p.maker || ''} ${p.sub_model || p.model || ''}`.trim(),
+            year_snapshot: p.year || '',
+            fuel_type_snapshot: p.fuel_type || '',
+            ext_color_snapshot: p.ext_color || '',
+            // 기간/가격 snapshot
+            rent_month_snapshot: Number(m) || 0,
+            rent_amount_snapshot: Number(priceVal.rent) || 0,
+            deposit_amount_snapshot: Number(priceVal.deposit) || 0,
+            // 계약자 snapshot
+            customer_uid: customer._key || '',
+            customer_name: name,
+            customer_birth: birth || '',
+            customer_phone: phone,
+            customer_is_business: isBiz,
+            customer_business_no: isBiz ? (bizNo || '') : '',
+            customer_business_name: isBiz ? (bizName || '') : '',
+            // 관계자 — 본인 (agent_uid/code 가 본인이어야 본인 목록에 노출)
+            agent_uid: agent.uid || agent._key || '',
+            agent_code: agent.user_code || '',
+            agent_name: agent.name || '',
+            agent_channel_code: agent.agent_channel_code || agent.channel_code || '',
+            provider_company_code: ctx.provider_company_code || p.provider_company_code || '',
+            provider_uid: ctx.provider_uid || p.provider_uid || '',
+            // 정책 snapshot
+            policy_code: p.policy_code || '',
+            policy_name_snapshot: p._policy?.policy_name || '',
+            credit_grade_snapshot: p._policy?.credit_grade || '',
+            // 메타
+            contract_status: '계약요청',
+            contract_date: new Date().toISOString().slice(0, 10),
+            created_at: Date.now(),
+            created_by: me.uid || '',
+          };
+          await pushRecord('contracts', payload);
+
+          // 4. room 연결 + product 상태 전환 (desktop 동일)
+          if (room && room._key) {
+            await updateRecord(`rooms/${room._key}`, { linked_contract: code }).catch(() => null);
+          }
+          if (p._key) {
+            const vsUpdate = (p.vehicle_status === '출고불가') ? {} : { vehicle_status: '출고협의' };
+            await updateRecord(`products/${p._key}`, {
+              ...vsUpdate,
+              assigned_agent_uid: agent.uid || agent._key,
+              assigned_agent_code: agent.user_code,
+              assigned_agent_name: agent.name,
+              assigned_at: Date.now(),
+            }).catch(() => null);
+          }
+
+          showToast(`계약 생성됨 (${code})`, 'success');
+          // 계약 페이지로 이동 — 생성된 계약 즉시 확인
+          const { navigate } = await import('../core/router.js');
+          navigate('/contract');
+          onCreated?.(code);
+        } catch (e) {
+          console.error('[contract start]', e);
+          const msg = e?.code === 'PERMISSION_DENIED' ? '권한 없음 (RTDB rules)'
+                    : e?.message || String(e).slice(0, 80);
+          showToast(`계약 생성 실패: ${msg}`, 'error');
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    },
+  });
 }
 
 function cleanup() {

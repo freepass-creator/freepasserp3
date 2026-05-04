@@ -9,7 +9,26 @@
   "options": {},
   "categories": {},
   "trims": {
-    "SS": { "slug": "ss", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "ZL1": { "slug": "zl1", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "SS": {
+      "slug": "ss",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "ZL1": {
+      "slug": "zl1",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "더뉴카마로",
+    "올뉴카마로",
+    "카마로"
+  ],
+  "year_start": "2012-01",
+  "year_end": "2021-12"
 }

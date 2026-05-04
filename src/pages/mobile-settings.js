@@ -93,8 +93,8 @@ function _render() {
   const avatarHtml = ciUrl
     ? `<img class="is-ci" src="${ciUrl}" alt="회사 CI">`
     : (u.avatar_url ? `<img src="${u.avatar_url}" alt="">` : initial);
-  const affiliation = [u.company_name, u.position].filter(Boolean).join(' | ');
-  const metaLine = [roleLabel(role), u.user_code].filter(Boolean).join(' | ') || '-';
+  const affiliation = [u.company_name, u.position].filter(Boolean).join(' · ');
+  const metaLine = [roleLabel(role), u.user_code].filter(Boolean).join(' · ') || '-';
 
   main.innerHTML = `
     <div class="m-shell-page m-settings">
@@ -590,7 +590,7 @@ function bindAll(main, u) {
             <span class="m-doc-thumb"><i class="ph ph-megaphone"></i></span>
             <span class="m-doc-info">
               <span class="m-doc-link" style="color:var(--c-text);">${(n.title || '').replace(/</g,'&lt;')}</span>
-              <span class="m-doc-meta">${n.created_at ? new Date(n.created_at).toLocaleDateString('ko', { year:'2-digit', month:'2-digit', day:'2-digit' }) : ''}${n.body ? ` | ${String(n.body).slice(0, 80).replace(/</g,'&lt;')}` : ''}</span>
+              <span class="m-doc-meta">${n.created_at ? new Date(n.created_at).toLocaleDateString('ko', { year:'2-digit', month:'2-digit', day:'2-digit' }) : ''}${n.body ? ` · ${String(n.body).slice(0, 80).replace(/</g,'&lt;')}` : ''}</span>
             </span>
           </div>`).join('')}</div>`
       : `<div style="padding:var(--sp-4);text-align:center;color:var(--c-text-muted);font-size:var(--fs-sm);">공지사항이 없습니다</div>`;
@@ -603,10 +603,10 @@ function bindAll(main, u) {
       <div class="m-info-page" style="padding:var(--sp-3) 0;">
         <section class="m-info-section">
           <div class="m-info-section-head"><span class="m-info-section-title">주요 기능</span></div>
-          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-magnifying-glass"></i> 찾기</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">차량 검색 | 필터 | 문의</span></div>
+          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-magnifying-glass"></i> 찾기</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">차량 검색 · 필터 · 문의</span></div>
           <div class="m-info-row"><span class="m-info-label"><i class="ph ph-chat-circle"></i> 소통</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">공급사 ↔ 영업자 채팅</span></div>
-          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-file-text"></i> 계약</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">계약 진행 | 고객 | 상세</span></div>
-          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-gear"></i> 설정</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">프로필 | 알림 | 자료</span></div>
+          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-file-text"></i> 계약</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">계약 진행 · 고객 · 상세</span></div>
+          <div class="m-info-row"><span class="m-info-label"><i class="ph ph-gear"></i> 설정</span><span class="m-info-value" style="font-weight:var(--fw-normal);color:var(--c-text-sub);font-size:var(--fs-xs);">프로필 · 알림 · 자료</span></div>
         </section>
         <section class="m-info-section">
           <div class="m-info-section-head"><span class="m-info-section-title">계약 진행 단계</span></div>

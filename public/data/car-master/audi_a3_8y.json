@@ -9,13 +9,68 @@
   "options": {},
   "categories": {},
   "trims": {
-    "30 TFSI": { "slug": "30_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "35 TFSI": { "slug": "35_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "40 TFSI": { "slug": "40_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "40 TFSI 콰트로": { "slug": "40_tfsi_quattro", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "30 TDI": { "slug": "30_tdi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "35 TDI": { "slug": "35_tdi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "S3": { "slug": "s3", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RS3": { "slug": "rs3", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "30 TFSI": {
+      "slug": "30_tfsi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "35 TFSI": {
+      "slug": "35_tfsi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "40 TFSI": {
+      "slug": "40_tfsi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "40 TFSI 콰트로": {
+      "slug": "40_tfsi_quattro",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "30 TDI": {
+      "slug": "30_tdi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "35 TDI": {
+      "slug": "35_tdi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "S3": {
+      "slug": "s3",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RS3": {
+      "slug": "rs3",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "a3",
+    "a38y",
+    "뉴a3"
+  ],
+  "year_start": "2009-01",
+  "year_end": "현재"
 }

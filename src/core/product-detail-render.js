@@ -393,7 +393,6 @@ function _renderProductDetail(container, product, options = {}) {
             ${p.ext_color ? `<span class="cat-color-badge" style="background:${colorToHex(p.ext_color)};color:${colorTextContrast(p.ext_color)};">외 ${p.ext_color}</span>` : ''}
             ${p.int_color ? `<span class="cat-color-badge" style="background:${colorToHex(p.int_color)};color:${colorTextContrast(p.int_color)};">내 ${p.int_color}</span>` : ''}
           </span>
-          <span class="cat-spec-item"><i class="ph ph-jeep"></i> ${p.drive_type || '-'}</span>
         </div>
       </div>
 

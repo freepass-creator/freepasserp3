@@ -3,15 +3,48 @@
   "title": "쉐보레 더 뉴 말리부",
   "maker": "쉐보레",
   "source": "stub",
-  "source_urls": ["https://www.chevrolet.co.kr/sedan/malibu"],
+  "source_urls": [
+    "https://www.chevrolet.co.kr/sedan/malibu"
+  ],
   "fetched_at": "2026-05-04",
   "note": "9세대 말리부 (2016~2023, 더 뉴 말리부 페리 2018~). 트림명만 stub.",
   "options": {},
   "categories": {},
   "trims": {
-    "LS": { "slug": "ls", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프리미어": { "slug": "premier", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RS": { "slug": "rs", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "LS": {
+      "slug": "ls",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LT": {
+      "slug": "lt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미어": {
+      "slug": "premier",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RS": {
+      "slug": "rs",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "더뉴말리부",
+    "말리부",
+    "올뉴말리부"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2022-12"
 }

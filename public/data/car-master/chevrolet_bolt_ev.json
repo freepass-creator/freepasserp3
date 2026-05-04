@@ -9,7 +9,25 @@
   "options": {},
   "categories": {},
   "trims": {
-    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프리미어": { "slug": "premier", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "LT": {
+      "slug": "lt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미어": {
+      "slug": "premier",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "뉴볼트ev",
+    "볼트ev"
+  ],
+  "year_start": "2017-01",
+  "year_end": "2022-12"
 }

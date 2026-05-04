@@ -51,5 +51,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "더뉴렉스턴스포츠칸"
+  ],
+  "year_start": "2021-01",
+  "year_end": "현재"
 }

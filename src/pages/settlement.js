@@ -124,8 +124,8 @@ export function renderSettlementDetail(s) {
   if (detailCard) {
     const monthlyRent = s.monthly_rent ? `${Math.round(Number(s.monthly_rent)/10000)}만/월` : '';
     const dep = s.deposit ? `${Math.round(Number(s.deposit)/10000)}만` : '';
-    const carLine = [s.car_number, s.maker, s.sub_model || s.model, s.trim_name].filter(Boolean).join(' | ');
-    const agentLine = [s.agent_company || s.agent_partner_name, s.agent_name].filter(Boolean).join(' | ');
+    const carLine = [s.car_number, s.maker, s.sub_model || s.model, s.trim_name].filter(Boolean).join(' · ');
+    const agentLine = [s.agent_company || s.agent_partner_name, s.agent_name].filter(Boolean).join(' · ');
     const rows = [
       ['계약번호', s.contract_id || s._key, true],
       ['계약자', s.customer_name],

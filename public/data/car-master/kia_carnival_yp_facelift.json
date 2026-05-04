@@ -3,7 +3,9 @@
   "title": "기아 더 뉴 카니발",
   "maker": "기아",
   "source": "wikicar",
-  "source_urls": ["http://wikicar.co.kr/allnew_carnival/20387"],
+  "source_urls": [
+    "http://wikicar.co.kr/allnew_carnival/20387"
+  ],
   "fetched_at": "2026-05-04",
   "note": "더 뉴 카니발 (YP 페리, 2018-2020). 가격: wikicar 2018.03 OCR. R2.2D 9/11인승 + 람다 3.3G + 7인승 리무진(VIP/프레지던트).",
   "options": {},
@@ -11,7 +13,9 @@
   "trims": {
     "디럭스": {
       "slug": "디럭스",
-      "price": { "base_22d_11": 28800000 },
+      "price": {
+        "base_22d_11": 28800000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -19,35 +23,48 @@
     },
     "럭셔리": {
       "slug": "럭셔리",
-      "price": { "base_22d_9": 31500000 },
+      "price": {
+        "base_22d_9": 31500000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프레스티지": {
       "slug": "프레스티지",
-      "price": { "base_22d_9": 34700000, "base_22d_11": 33900000 },
+      "price": {
+        "base_22d_9": 34700000,
+        "base_22d_11": 33900000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "노블레스": {
       "slug": "노블레스",
-      "price": { "base_22d_9": 38200000, "base_33g_9": 36000000 },
+      "price": {
+        "base_22d_9": 38200000,
+        "base_33g_9": 36000000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "노블레스 스페셜": {
       "slug": "노블레스_스페셜",
-      "price": { "base_22d_9": 39200000, "base_33g_9": 36900000 },
+      "price": {
+        "base_22d_9": 39200000,
+        "base_33g_9": 36900000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "VIP": {
       "slug": "vip",
-      "price": { "base_22d_7l": 37400000 },
+      "price": {
+        "base_22d_7l": 37400000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -55,11 +72,19 @@
     },
     "프레지던트": {
       "slug": "프레지던트",
-      "price": { "base_22d_7l": 41100000, "base_33g_7l": 38600000 },
+      "price": {
+        "base_22d_7l": 41100000,
+        "base_33g_7l": 38600000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
       "note": "7인승 리무진"
     }
-  }
+  },
+  "aliases": [
+    "더뉴카니발"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2021-12"
 }

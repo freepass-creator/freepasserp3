@@ -44,5 +44,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "c클래스w206"
+  ],
+  "year_start": "2022-01",
+  "year_end": "현재"
 }

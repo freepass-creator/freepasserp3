@@ -9,10 +9,48 @@
   "options": {},
   "categories": {},
   "trims": {
-    "스포츠": { "slug": "sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "라티튜드": { "slug": "latitude", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "리미티드": { "slug": "limited", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "트레일호크": { "slug": "trailhawk", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "오버랜드": { "slug": "overland", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "스포츠": {
+      "slug": "sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "라티튜드": {
+      "slug": "latitude",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "리미티드": {
+      "slug": "limited",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "트레일호크": {
+      "slug": "trailhawk",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "오버랜드": {
+      "slug": "overland",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "그랜드체로키",
+    "그랜드체로키wl",
+    "체로키",
+    "체로키kl"
+  ],
+  "year_start": "1993-01",
+  "year_end": "2023-12"
 }

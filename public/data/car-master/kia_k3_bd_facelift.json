@@ -3,7 +3,9 @@
   "title": "기아 더 뉴 K3",
   "maker": "기아",
   "source": "wikicar",
-  "source_urls": ["http://wikicar.co.kr/allnew_k3/49677"],
+  "source_urls": [
+    "http://wikicar.co.kr/allnew_k3/49677"
+  ],
   "fetched_at": "2026-05-04",
   "note": "더 뉴 K3 (BD 페리, 2021-2024). 가격: wikicar 2021.04 OCR. 1.6 가솔린.",
   "options": {},
@@ -11,29 +13,54 @@
   "trims": {
     "트렌디": {
       "slug": "트렌디",
-      "price": { "base_16g": 17000000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g": 17000000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "프레스티지": {
       "slug": "프레스티지",
-      "price": { "base_16g": 19950000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g": 19950000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "노블레스": {
       "slug": "노블레스",
-      "price": { "base_16g": 22800000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g": 22800000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "시그니처": {
       "slug": "시그니처",
-      "price": { "base_16g": 24650000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g": 24650000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "GT": {
       "slug": "gt",
       "price": {},
-      "basic": [], "select": [], "select_groups": [],
+      "basic": [],
+      "select": [],
+      "select_groups": [],
       "note": "1.6 터보 GT — 가격 별도"
     }
-  }
+  },
+  "aliases": [
+    "더뉴k32세대",
+    "더뉴k3유로",
+    "더뉴k3쿱"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2024-12"
 }

@@ -2,22 +2,22 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-    // 상품 이미지: 공개 읽기 (카탈로그/제안서 공개 링크 지원)
-    match /product-images/{userId}/{fileName} {
+    // 상품 이미지/등록증: 공개 읽기 (카탈로그/제안서 공개 링크 지원).
+    // 경로는 product._key (예: product-images/PD-260504-020/...) — 다중 사용자 협업.
+    match /product-images/{productId}/{fileName} {
       allow read: if true;
       allow create, update: if request.auth != null
-                            && request.auth.uid == userId
-                            && request.resource.size < 10 * 1024 * 1024;
-      allow delete: if request.auth != null && request.auth.uid == userId;
+                            && request.resource.size < 20 * 1024 * 1024;
+      allow delete: if request.auth != null;
     }
 
-    // 계약 서류 (신분증, 면허증 등): 업로드한 본인만 읽기/쓰기
-    match /contract-files/{userId}/{fileName} {
-      allow read: if request.auth != null && request.auth.uid == userId;
+    // 계약 서류 (신분증, 면허증, 등록증, 첨부): 인증된 사용자 협업.
+    // 경로는 contract._key (예: contract-files/CT-241105-01/...).
+    match /contract-files/{contractId}/{fileName} {
+      allow read: if request.auth != null;
       allow create, update: if request.auth != null
-                            && request.auth.uid == userId
-                            && request.resource.size < 10 * 1024 * 1024;
-      allow delete: if request.auth != null && request.auth.uid == userId;
+                            && request.resource.size < 20 * 1024 * 1024;
+      allow delete: if request.auth != null;
     }
 
     // 공지 이미지: 로그인 사용자 읽기

@@ -7,9 +7,36 @@
 /* CSS — index.html 의 <link> + 인라인 <style> 만 사용 (Vite override 방지)
    phosphor 폰트는 public/phosphor/ 에 복사한 파일을 <link> 로 직접 로드 (vite 의존 X) */
 
+// 모바일 유틸 (isMobile / haptic) — 부팅 직후 동기 감지 위해 정적 import
+import { isMobile as isMobileUA, bindGlobalHaptic } from './core/mobile-shell.js';
+
+// 환경별 CSS 분리 — 데스크톱은 base.css (index.html link) + index.html inline 만,
+// 모바일일 때만 tokens.css + mobile.css 로드. 데스크톱 글씨/레이아웃에 새는 영향 0 보장.
+if (isMobileUA()) {
+  // top-level await 안 쓰고 동기 import — 이미 isMobileUA 가 캐시됨, FOUC 회피
+  await Promise.all([
+    import('./styles/tokens.css'),
+    import('./styles/mobile.css'),
+  ]);
+}
+
 import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';
 import { watchCollection, pushRecord, updateRecord, softDelete, fetchRecord, setRecord } from './firebase/db.js';
 import { store } from './core/store.js';
+// 삭제 + 권한 체크 — app.js 에서 분리 (canDelete + 6개 delete 함수)
+import {
+  canDelete, deleteProduct, deletePolicy, deletePartner, deleteRoom, deleteContract, deleteSettlement,
+} from './core/delete-actions.js';
+// 신규 draft 자동 정리 — app.js 에서 분리
+import {
+  trackDraft, discardIncompleteDrafts, isDraftSaveBlocked, missingRequiredFields,
+  untrackDraft, isDraftPending, hasDraftStarted,
+} from './core/draft-tracking.js';
+// 커스텀 확인 다이얼로그 (Windows native confirm 대체) — 가운데 정렬, 분위기 통일
+import { customConfirm } from './core/confirm.js';
+// 관리자 ↔ 비admin 1:1 소통 페이지 (사이드바 [관리자 소통] 버튼 + 페이지 렌더)
+import { bindAdminChatButton, renderAdminChat } from './admin/admin-chat.js';
+window.renderAdminChat = renderAdminChat;
 import { productImages, productExternalImages, supportedDriveSource } from './core/product-photos.js';
 import { openFullscreen } from './core/product-detail-render.js';
 import { extractProductDetailRows } from './core/product-detail-rows.js';
@@ -72,13 +99,6 @@ window.renderDev = renderDev;
 let _productClipboard = null;
 let _policyClipboard = null;
 
-/* 신규 생성된 빈 레코드 추적 — 페이지 이동 시 필수 정보 비어있으면 자동 삭제.
- *  collection: { id: requiredField } 형식. requiredField 가 비어있으면 폐기. */
-const _pendingDrafts = {
-  products: new Map(),    // _key → 'car_number'
-  policies: new Map(),    // _key → 'policy_name'
-  partners: new Map(),    // _key → 'partner_name'
-};
 
 /* 페이지별 필터 상태 — 하단바 chip 으로 토글, watchCollection 이 적용 후 render */
 const _pageFilters = {
@@ -123,39 +143,77 @@ function buildCompanyDropdownChip(curCompany, setter) {
   };
 }
 
-function trackDraft(collection, key, requiredField) {
-  _pendingDrafts[collection]?.set(key, requiredField);
-}
-
-function isDraftValid(collection, key) {
-  const field = _pendingDrafts[collection]?.get(key);
-  if (!field) return true;     // not tracked → valid
-  const list = store[collection === 'products' ? 'products'
-              : collection === 'policies' ? 'policies' : 'partners'] || [];
-  const rec = list.find(x => x._key === key);
-  if (!rec) return true;        // already gone
-  return !!String(rec[field] || '').trim();
-}
-
-/* 미완성 신규 레코드 일괄 정리 — hashchange 시 호출 */
-async function discardIncompleteDrafts() {
-  for (const [collection, map] of Object.entries(_pendingDrafts)) {
-    for (const [key, _] of [...map]) {
-      if (!isDraftValid(collection, key)) {
-        try { await updateRecord(`${collection}/${key}`, { _deleted: true, updated_at: Date.now() }); } catch (_) {}
-        showToast('미입력 신규 항목 자동 정리됨', 'info');
-      }
-      map.delete(key);
-    }
-  }
-}
-
 /* 페이지 이탈 시 — 활성 페이지의 변경 사항을 먼저 flush 후 draft 정리.
  *  ([저장] 버튼만 저장하는 spec 의 예외 — 사용자가 [수정] → 입력 → 저장 안 누르고 다른 메뉴로 가는
  *  실수로 신규 draft 가 통째로 삭제되는 회귀 방지) */
 window.addEventListener('hashchange', async () => {
   try { await window.flushActivePageSaves?.(); } catch (_) {}
   discardIncompleteDrafts();
+});
+
+/* 신규 draft 입력 감지 — 첫 키 입력 시 액션바 [취소] → [저장] 자동 전환.
+ *  데스크톱 활성 페이지의 input 변경 → debounce 150ms 후 refreshPageActions 호출 */
+let _draftInputT = null;
+document.addEventListener('input', (e) => {
+  if (!e.target.matches?.('.pt-page.active [data-f]')) return;
+  clearTimeout(_draftInputT);
+  _draftInputT = setTimeout(() => window.refreshPageActions?.(), 150);
+});
+
+/* ── 전역 ESC 키 핸들러 ── 우선순위 순으로 처리 (한 번에 한 동작):
+ *  1. 활성 모달 / 시트 / 컨텍스트 메뉴 / 갤러리 등은 자체 ESC 핸들러 보유 → 여기 도달 X
+ *  2. 활성 페이지 detail 패널 (.ws4-detail) 이 펼쳐져 있으면 collapse
+ *  3. 검색 페이지의 상세 패널 (.ws4) 이 열려있으면 collapse (기존 검색 페이지 한정)
+ *  4. 편집 모드 ON 이면 OFF (입력칸 탈출)
+ *  5. 활성 리스트 항목 선택 해제
+ *
+ *  Enter 는 입력칸 / 검색바 / 명령어팔레트 등 컨텍스트별 핸들러가 이미 처리 (전역 추가 X) */
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (e.defaultPrevented) return;
+  // 입력칸 안에서 ESC 는 blur 만 (Tab 처럼) — 페이지 액션은 안 건드림
+  const tag = e.target?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+    if (typeof e.target.blur === 'function') e.target.blur();
+    return;
+  }
+  // 1. 모달/시트/메뉴/갤러리 활성 시 자체 처리됨 — 별도 동작 안 함
+  if (document.querySelector('.confirm-overlay, .pick-overlay, .m-sheet, .m-view, .ctx-menu, .srch-fs-overlay')) return;
+
+  const activePage = document.querySelector('.pt-page.active');
+  if (!activePage) return;
+
+  // 2. 검색 페이지 상세 (.ws4 collapse 토글) — 이미 열려있으면 닫기
+  const searchWs4 = activePage.querySelector('.ws4');
+  if (activePage.dataset.page === 'search' && searchWs4 && !searchWs4.classList.contains('is-collapsed')) {
+    searchWs4.classList.add('is-collapsed');
+    e.preventDefault();
+    return;
+  }
+
+  // 3. 일반 detail 패널 — collapse
+  const detail = activePage.querySelector('.ws4-detail:not(.is-collapsed)');
+  if (detail) {
+    detail.classList.add('is-collapsed');
+    e.preventDefault();
+    return;
+  }
+
+  // 4. 편집 모드 ON → OFF (입력 중이 아니면)
+  if (document.body.classList.contains('is-edit-mode')) {
+    window.toggleEditMode?.(false);
+    e.preventDefault();
+    return;
+  }
+
+  // 5. 활성 리스트 선택 해제
+  const activeItem = activePage.querySelector('.ws4-list .room-item.active');
+  if (activeItem) {
+    activeItem.classList.remove('active');
+    window.refreshPageActions?.();
+    e.preventDefault();
+    return;
+  }
 });
 
 /* ── 페이지별 필터 적용 후 render 호출 — watchCollection 콜백·chip toggle 양쪽에서 사용 ── */
@@ -225,27 +283,56 @@ window.refreshPageActions = function(pageName) {
   const activeId = activeItem?.dataset.id;
   const ctx = pageStatusText(p);
 
-  // 수정/저장 토글 — 폼 있는 페이지 공통.
-  //  [수정] 클릭 → 편집모드 ON (입력칸 readonly 해제, 저장은 안 함)
-  //  [저장] 클릭 → 변경된 필드 일괄 저장 + 편집모드 OFF
+  // 수정/저장/취소 3-mode 토글 — 폼 있는 페이지 공통.
+  //  [수정]  보기 → 편집모드 ON (기존 record 편집)
+  //  [취소]  편집 + 신규 draft + 아무 입력 없음 → 신규 record 폐기 + 보기 복귀
+  //  [저장]  편집 + 입력 있음 → flushActivePageSaves + 편집모드 OFF
   const isEditing = document.body.classList.contains('is-edit-mode');
-  const editToggle = {
-    label: isEditing ? '저장' : '수정',
-    icon:  isEditing ? 'ph-check' : 'ph-pencil-simple',
-    primary: isEditing,
-    title: isEditing ? '변경 사항 저장 + 편집 모드 끄기' : '편집 모드 켜기',
-    onClick: async () => {
-      if (isEditing) {
-        const n = await window.flushActivePageSaves?.();
-        window.toggleEditMode?.(false);
-        // 항상 토스트 — 변경 없으면 알려주고, 있으면 건수 표시
-        if (n > 0) showToast(`저장됨 (${n}건)`, 'success');
-        else showToast('변경사항 없음', 'info');
-      } else {
-        window.toggleEditMode?.(true);
+  const collMap = { product: 'products', policy: 'policies', partners: 'partners' };
+  const coll = collMap[p];
+  const isNewDraft = isEditing && coll && activeId && isDraftPending(coll, activeId);
+  const draftStarted = isNewDraft && hasDraftStarted(coll, activeId);
+
+  const editToggle = (isNewDraft && !draftStarted)
+    ? {
+        // 신규 등록 + 아무것도 입력 안 함 → [취소] (입력 시작하면 [저장] 으로 자동 변경)
+        label: '취소',
+        icon: 'ph-x',
+        title: '신규 등록 취소 — 입력 안 한 항목 폐기',
+        onClick: async () => {
+          if (!await customConfirm({ message: '입력하신 내용을 폐기하고 신규 등록을 취소할까요?', danger: true, okLabel: '폐기', cancelLabel: '계속 입력' })) return;
+          await updateRecord(`${coll}/${activeId}`, { _deleted: true, updated_at: Date.now() }, { silent: true });
+          untrackDraft(coll, activeId);
+          window.toggleEditMode?.(false);
+          showToast('신규 등록 취소됨');
+        },
       }
-    },
-  };
+    : {
+        label: isEditing ? '저장' : '수정',
+        icon:  isEditing ? 'ph-check' : 'ph-pencil-simple',
+        primary: isEditing,
+        title: isEditing ? '변경 사항 저장 + 편집 모드 끄기' : '편집 모드 켜기',
+        onClick: async () => {
+          if (isEditing) {
+            // 신규 draft 가 활성이면 필수 필드 검증 — 미입력 시 저장 차단
+            if (coll && activeId && isDraftSaveBlocked(coll, activeId)) {
+              const missing = missingRequiredFields(coll, activeId);
+              const labels = { car_number: '차량번호', provider_company_code: '공급사', policy_name: '정책명', partner_name: '파트너명' };
+              const missLabels = missing.map(f => labels[f] || f).join(', ');
+              showToast(`필수 정보 미입력: ${missLabels}`, 'error');
+              return;
+            }
+            const n = await window.flushActivePageSaves?.();
+            // 신규 draft 가 모두 채워져 저장됐으면 추적 해제
+            if (coll && activeId) untrackDraft(coll, activeId);
+            window.toggleEditMode?.(false);
+            if (n > 0) showToast(`저장됨 (${n}건)`, 'success');
+            else showToast('변경사항 없음', 'info');
+          } else {
+            window.toggleEditMode?.(true);
+          }
+        },
+      };
 
   if (p === 'product') {
     const hasSelection = !!activeId;
@@ -641,7 +728,23 @@ async function createNewProduct() {
   window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage);
-  trackDraft('products', uid, 'car_number');
+  // 필수 필드 — admin 은 차량번호 + 공급사 (admin 은 빈 공급사로 시작)
+  // 그 외 (provider) 는 차량번호만 (provider 는 본인 회사 자동 채워짐)
+  trackDraft('products', uid, role === 'admin' ? ['car_number', 'provider_company_code'] : 'car_number');
+  // 신규 등록 → 즉시 편집 모드 ON (드롭다운 잠금 해제 필요).
+  // 사용자가 [수정] 별도 클릭 안 해도 바로 입력 가능.
+  window.toggleEditMode?.(true);
+  // 관리자는 공급사 미선택 상태 → 안내 토스트 + 공급코드 드롭다운 포커스
+  if (role === 'admin') {
+    showToast('공급사를 먼저 선택하세요', 'info');
+    setTimeout(() => {
+      const sel = document.querySelector('.pt-page[data-page="product"] select[data-f="provider_company_code"]');
+      if (sel) {
+        sel.focus();
+        sel.click();   // 드롭다운 자동 펼침 (브라우저별 동작 차이 있을 수 있음)
+      }
+    }, 100);
+  }
   setRecord(`products/${uid}`, newRec).catch(e => {
     console.error('[product create]', e);
     showToast('등록 실패 — ' + (e.message || e), 'error');
@@ -668,7 +771,7 @@ function copyProduct(p) {
 
 async function pasteToProduct(p) {
   if (!p || !_productClipboard) return;
-  if (!confirm('복사된 차량 정보를 현재 차량에 적용합니다. 차량번호/차대번호는 유지됩니다. 계속할까요?')) return;
+  if (!await customConfirm({ title: '붙여넣기', message: '복사된 차량 정보를 현재 차량에 적용합니다.\n차량번호/차대번호는 유지됩니다.\n계속할까요?', okLabel: '적용' })) return;
   try {
     await updateRecord(`products/${p._key}`, { ..._productClipboard });
     showToast('붙여넣기 완료');
@@ -698,7 +801,7 @@ function copyPolicy(pol) {
 
 async function pastePolicy(pol) {
   if (!pol || !_policyClipboard) return;
-  if (!confirm('복사된 정책 정보를 현재 정책에 적용합니다. 정책명/코드는 유지됩니다. 계속할까요?')) return;
+  if (!await customConfirm({ title: '붙여넣기', message: '복사된 정책 정보를 현재 정책에 적용합니다.\n정책명/코드는 유지됩니다.\n계속할까요?', okLabel: '적용' })) return;
   try {
     await updateRecord(`policies/${pol._key}`, { ..._policyClipboard });
     showToast('붙여넣기 완료');
@@ -708,144 +811,67 @@ async function pastePolicy(pol) {
   }
 }
 
-async function deleteProduct(p) {
-  if (!p) return;
-  if (!confirm(`${p.car_number || '이 차량'}을 삭제하시겠습니까?`)) return;
-  try {
-    await updateRecord(`products/${p._key}`, { _deleted: true, updated_at: Date.now() });
-    showToast('삭제됨');
-  } catch (e) {
-    showToast('삭제 실패', 'error');
-  }
-}
 
-async function createNewPolicy() {
-  const role = store.currentUser?.role;
-  if (role !== 'admin' && role !== 'provider') { alert('권한이 없습니다'); return; }
-  const { allocatePolicyCode } = await import('./firebase/collections.js');
-  const policyCode = await allocatePolicyCode();
-  const newRec = {
-    _key: policyCode,
-    policy_code: policyCode,
-    policy_name: '',
-    is_active: true,
-    status: '활성',
-    provider_company_code: store.currentUser?.company_code || '',
-    created_at: Date.now(),
-    created_by: store.currentUser?.uid || '',
+/* ── 모바일 4탭 SPA — 찾기/소통/계약/설정 ──
+ *  isMobile() (UA 폰 감지) 시 데스크톱 SPA 숨기고 #mobileApp 활성화.
+ *  하단 탭 클릭 → 해당 mobile-*.js mount() 호출, 이전 탭 unmount().
+ *  ?mobile=1 URL 파라미터로 데스크톱에서도 강제 활성화 가능 (개발용).
+ */
+async function initMobileShell() {
+  if (!isMobileUA()) return;
+  // body.is-mobile / #mobileApp 표시는 boot 단계에서 이미 동기로 처리됨
+  bindGlobalHaptic();
+
+  // 4개 탭 정의 — route → dynamic import 한 모듈
+  const TABS = {
+    '/search':    () => import('./pages/mobile-search.js'),
+    '/workspace': () => import('./pages/mobile-workspace.js'),
+    '/contract':  () => import('./pages/mobile-contract.js'),
+    '/settings':  () => import('./pages/mobile-settings.js'),
   };
-  store.policies = [newRec, ...(store.policies || [])];
-  const m = await import('./pages/policy.js');
-  m.renderPolicyList(store.policies);
-  const item = document.querySelector(`.pt-page[data-page="policy"] .ws4-list .room-item[data-id="${policyCode}"]`);
-  if (item) {
-    document.querySelectorAll('.pt-page[data-page="policy"] .room-item').forEach(r => r.classList.remove('active'));
-    item.classList.add('active');
+
+  let currentMod = null;
+  let currentRoute = null;
+
+  async function navigateTo(route) {
+    if (route === currentRoute) return;
+    if (!TABS[route]) route = '/search';
+    // 이전 탭 언마운트
+    try { currentMod?.unmount?.(); } catch (e) { console.warn('[mobile unmount]', e); }
+    currentMod = null;
+    // 새 탭 마운트
+    const mod = await TABS[route]();
+    try { mod.mount?.(); } catch (e) { console.error('[mobile mount]', e); }
+    currentMod = mod;
+    currentRoute = route;
+    // 탭 활성화 표시 + 주소창 sync
+    document.querySelectorAll('.m-tabbar .m-tab').forEach(a => {
+      a.classList.toggle('is-active', a.dataset.route === route);
+    });
+    if (location.pathname !== route) history.pushState(null, '', route);
   }
-  m.renderPolicyDetail(newRec);
-  window.refreshPageActions?.();
-    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
-    if (activePage) window.updatePageStats?.(activePage);
-  trackDraft('policies', policyCode, 'policy_name');
-  setRecord(`policies/${policyCode}`, newRec).catch(e => {
-    console.error('[policy create]', e);
-    showToast('생성 실패 — ' + (e.message || e), 'error');
+
+  // router.js 의 navigate 헬퍼와 wire — mobile-*.js 가 다른 탭 호출할 때 사용
+  const { defineRoutes, setNavigateCallback } = await import('./core/router.js');
+  defineRoutes(Object.fromEntries(Object.keys(TABS).map(r => [r, () => navigateTo(r)])));
+  setNavigateCallback(() => null);
+
+  // 탭바 클릭 핸들러
+  document.querySelectorAll('.m-tabbar .m-tab').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      navigateTo(a.dataset.route);
+    });
   });
-}
-
-async function deletePolicy(id) {
-  if (!id) return;
-  const pol = (store.policies || []).find(x => x._key === id);
-  if (!pol) return;
-  if (!confirm(`${pol.policy_name || '정책'} 을 삭제하시겠습니까?`)) return;
-  try {
-    await updateRecord(`policies/${id}`, { _deleted: true, updated_at: Date.now() });
-    showToast('삭제됨');
-  } catch (e) {
-    showToast('삭제 실패', 'error');
-  }
-}
-
-async function createNewPartner() {
-  const role = store.currentUser?.role;
-  if (role !== 'admin') { alert('admin 만 가능합니다'); return; }
-  const { allocatePartnerCode } = await import('./firebase/collections.js');
-  const partnerCode = await allocatePartnerCode();
-  const newRec = {
-    _key: partnerCode,
-    partner_code: partnerCode,
-    partner_name: '',
-    partner_type: '공급사',
-    is_active: true,
-    created_at: Date.now(),
-    created_by: store.currentUser?.uid || '',
-  };
-  // Optimistic — store 에 즉시 추가 + 우측 폼을 빈 입력칸으로 렌더 (Firebase 응답 기다리지 않음)
-  store.partners = [newRec, ...(store.partners || [])];
-  const m = await import('./pages/partner.js');
-  m.renderPartnerList(store.partners);
-  // 새 항목 강제 활성화
-  const item = document.querySelector(`.pt-page[data-page="partners"] .ws4-list .room-item[data-id="${partnerCode}"]`);
-  if (item) {
-    document.querySelectorAll('.pt-page[data-page="partners"] .room-item').forEach(r => r.classList.remove('active'));
-    item.classList.add('active');
-  }
-  m.renderPartnerDetail(newRec);
-  window.refreshPageActions?.();
-    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
-    if (activePage) window.updatePageStats?.(activePage);
-  trackDraft('partners', partnerCode, 'partner_name');
-  // Firebase 저장은 백그라운드 (이후 사용자 입력은 자동저장)
-  setRecord(`partners/${partnerCode}`, newRec).catch(e => {
-    console.error('[partner create]', e);
-    showToast('생성 실패 — ' + (e.message || e), 'error');
+  // 뒤로가기 처리
+  window.addEventListener('popstate', () => {
+    const route = TABS[location.pathname] ? location.pathname : '/search';
+    navigateTo(route);
   });
-}
 
-async function deletePartner(id) {
-  if (!id) return;
-  const pt = (store.partners || []).find(x => x._key === id);
-  if (!pt) return;
-  if (!confirm(`${pt.partner_name || '파트너'} 를 삭제하시겠습니까?`)) return;
-  try {
-    await updateRecord(`partners/${id}`, { _deleted: true, updated_at: Date.now() });
-    showToast('삭제됨');
-  } catch (e) {
-    showToast('삭제 실패', 'error');
-  }
-}
-
-async function deleteRoom(id) {
-  if (!id) return;
-  const r = (store.rooms || []).find(x => x._key === id);
-  if (!r) return;
-  if (!confirm(`${r.car_number || '이 대화'} 를 삭제하시겠습니까?`)) return;
-  try {
-    await updateRecord(`rooms/${id}`, { _deleted: true, updated_at: Date.now() });
-    showToast('삭제됨');
-  } catch (e) { showToast('삭제 실패', 'error'); }
-}
-
-async function deleteContract(id) {
-  if (!id) return;
-  const c = (store.contracts || []).find(x => x._key === id || x.contract_code === id);
-  if (!c) return;
-  if (!confirm(`${c.contract_code || '이 계약'} 을 삭제하시겠습니까?`)) return;
-  try {
-    await updateRecord(`contracts/${c._key}`, { _deleted: true, updated_at: Date.now() });
-    showToast('삭제됨');
-  } catch (e) { showToast('삭제 실패', 'error'); }
-}
-
-async function deleteSettlement(id) {
-  if (!id) return;
-  const s = (store.settlements || []).find(x => x._key === id);
-  if (!s) return;
-  if (!confirm('이 정산을 삭제하시겠습니까?')) return;
-  try {
-    await updateRecord(`settlements/${id}`, { _deleted: true, updated_at: Date.now() });
-    showToast('삭제됨');
-  } catch (e) { showToast('삭제 실패', 'error'); }
+  // 초기 라우트 — URL 경로 우선, 없으면 /search
+  const initial = TABS[location.pathname] ? location.pathname : '/search';
+  navigateTo(initial);
 }
 
 async function deleteUser(id) {
@@ -853,7 +879,7 @@ async function deleteUser(id) {
   const u = (store.users || []).find(x => x._key === id);
   if (!u) return;
   if (store.currentUser?.role !== 'admin') { showToast('admin 만 가능합니다', 'error'); return; }
-  if (!confirm(`${u.name || u.email || '이 사용자'} 를 삭제하시겠습니까?`)) return;
+  if (!await customConfirm({ message: `${u.name || u.email || '이 사용자'} 를 삭제하시겠습니까?`, danger: true, okLabel: '삭제' })) return;
   try {
     await updateRecord(`users/${id}`, { _deleted: true, updated_at: Date.now() });
     showToast('삭제됨');
@@ -867,6 +893,13 @@ window.refreshPageActions?.();
 
 /* ── Boot ── */
 async function boot() {
+  // 모바일 감지 → body.is-mobile + #mobileApp 표시 (auth 이전, FOUC 회피)
+  if (isMobileUA()) {
+    document.body.classList.add('is-mobile');
+    const shell = document.getElementById('mobileApp');
+    if (shell) shell.removeAttribute('hidden');
+  }
+
   // 저장된 폰트/다크모드 즉시 적용 (FOUC 방지)
   try {
     const { applyStoredFont, applyStoredTheme } = await import('./pages/settings.js');
@@ -894,6 +927,8 @@ async function boot() {
     document.body.classList.remove('is-login');
     hydrateUser(user);
     startHydration();
+    // 모바일(폰) UA → 4탭 SPA 활성화
+    initMobileShell();
   } else {
     // 인증은 됐지만 진입 자격 없음 → 강제 로그아웃 + 로그인 폼
     if (user) {
@@ -916,8 +951,33 @@ async function boot() {
   // search 페이지 → "대화 생성" 버튼 콜백 주입 (workspace 의 createRoomFromProduct)
   setSearchCallbacks({ onCreateRoom: createRoomFromProduct });
 
+  // 모든 디테일 패널 (.ws4-detail .ws4-head) 우측에 닫기 버튼 자동 주입 (모르는 사용자도 발견 가능)
+  ensureDetailCloseButtons();
+
   // 모든 초기 셋업 끝난 후 visibility 해제 (한 프레임 양보 — paint 가 동기적으로 끝나도록)
   requestAnimationFrame(() => document.body.classList.remove('is-loading'));
+}
+
+/* 디테일 패널 닫기 버튼 자동 주입 — index.html prototype 의 .ws4-detail .ws4-head 마다
+ *  X 버튼 추가. 클릭 시 부모 .ws4-detail 에 .is-collapsed 토글 (CSS 로 폭 0 숨김). */
+function ensureDetailCloseButtons() {
+  document.querySelectorAll('.ws4-detail').forEach(panel => {
+    const head = panel.querySelector(':scope > .ws4-head');
+    if (!head) return;
+    if (head.querySelector('.ws4-detail-close')) return;   // 이미 있음
+    // index.html 에 spacer 가 있는 검색 페이지 #detailClose 같은 명시적 버튼은 건너뜀
+    if (head.querySelector('#detailClose')) return;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ws4-detail-close';
+    btn.title = '패널 닫기';
+    btn.setAttribute('aria-label', '패널 닫기');
+    btn.innerHTML = '<i class="ph ph-x"></i>';
+    btn.addEventListener('click', () => {
+      panel.classList.toggle('is-collapsed');
+    });
+    head.appendChild(btn);
+  });
 }
 
 /* 목록 패널(.ws4-list) 에만 빈 ws4-foot 자동 주입 — 다른 패널(상세/조건 등)은 제외 */
@@ -1059,190 +1119,6 @@ function startHydration() {
   bindAdminChatButton();
 }
 
-/* 관리자 문의 — 사이드바 하단 버튼. 별도 오버레이 (workspace 와 분리, 채팅만).
- *  비admin: 본인 1:1 관리자 룸 (`ADMIN_${uid}`)
- *  admin:  관리자 문의 룸 목록 → 선택 → 채팅 */
-function bindAdminChatButton() {
-  const btn = document.getElementById('sbAdminChat');
-  if (!btn) return;
-  const updateLabel = () => {
-    const me = store.currentUser || {};
-    const label = btn.querySelector('.sb-label');
-    if (me.role === 'admin') {
-      btn.title = '받은 관리자 소통 보기';
-      if (label) label.textContent = '관리자 소통';
-    } else {
-      btn.title = '관리자와 소통 (별도 창)';
-      if (label) label.textContent = '관리자 소통';
-    }
-  };
-  updateLabel();
-  setTimeout(updateLabel, 1000);
-
-  btn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const me = store.currentUser || {};
-    if (!me.uid) return;
-    // 비admin — 본인 룸 미리 보장 (없으면 생성). 그 후 페이지 이동.
-    if (me.role !== 'admin') {
-      const roomKey = `ADMIN_${me.uid}`;
-      const existing = (store.rooms || []).find(r => r._key === roomKey);
-      if (!existing) {
-        try {
-          await setRecord(`rooms/${roomKey}`, {
-            room_id: roomKey,
-            chat_code: roomKey,
-            is_admin_chat: true,
-            agent_uid: me.uid,
-            agent_name: me.name || '',
-            agent_code: me.user_code || '',
-            agent_channel_code: me.role === 'provider' ? 'PROVIDER' : (me.agent_channel_code || me.company_code || ''),
-            provider_company_code: me.role === 'provider' ? (me.company_code || '') : '',
-            subject: `${me.name || me.email} 관리자 소통`,
-            unread: 0,
-            created_at: Date.now(),
-            created_by: me.uid,
-          });
-        } catch (err) { console.error('[admin-chat ensure]', err); }
-      }
-    }
-    location.hash = 'admin-chat';
-  });
-}
-
-/* 관리자 소통 페이지 렌더 — showPage('admin-chat') 시 호출 (window.renderAdminChat 로 노출) */
-let _adminChatPageUnsub = null;
-let _adminChatPageRoomKey = null;
-function renderAdminChat() {
-  const page = document.querySelector('.pt-page[data-page="admin-chat"]');
-  if (!page) return;
-  const me = store.currentUser || {};
-  const isAdmin = me.role === 'admin';
-
-  const listEl = page.querySelector('#adminChatList');
-  const allRooms = (store.rooms || []).filter(r => r.is_admin_chat && !r._deleted);
-  const rooms = isAdmin
-    ? allRooms.sort((a, b) => (b.last_message_at || b.created_at || 0) - (a.last_message_at || a.created_at || 0))
-    : allRooms.filter(r => r._key === `ADMIN_${me.uid}`);
-
-  if (!rooms.length) {
-    listEl.innerHTML = emptyState(isAdmin ? '받은 문의 없음' : '대화 시작하기');
-  } else {
-    // 업무 소통 목록과 동일 규격 — renderRoomItem 통일
-    listEl.innerHTML = rooms.map(r => {
-      const senderRole = r.last_sender_role || (isAdmin ? '' : 'admin');
-      const tone = senderRole === 'agent' || senderRole === 'agent_admin' ? 'agent'
-                  : senderRole === 'provider' ? 'provider'
-                  : senderRole === 'admin' ? 'admin' : '';
-      // 안읽음 — 본인 read_by 기준
-      const lastAt = Number(r.last_message_at || 0);
-      const myRead = Number(r.read_by?.[me.uid] || 0);
-      const unread = lastAt && r.last_sender_uid !== me.uid && lastAt > myRead;
-      return renderRoomItem({
-        id: r._key,
-        icon: 'user-circle',
-        tone,
-        name: isAdmin ? (r.agent_name || r.agent_code || '문의자') : '관리자',
-        time: r.last_message_at ? fmtDate(r.last_message_at) : '',
-        msg: (r.last_message || '대화 없음').slice(0, 40),
-        meta: unread ? '안읽음' : '',
-        metaClass: unread ? 'is-warn' : '',
-        active: _adminChatPageRoomKey === r._key,
-      });
-    }).join('');
-    listEl.querySelectorAll('[data-id]').forEach(el => {
-      el.addEventListener('click', () => {
-        listEl.querySelectorAll('.room-item').forEach(x => x.classList.remove('active'));
-        el.classList.add('active');
-        openAdminChatRoomInPage(el.dataset.id);
-      });
-    });
-  }
-
-  // 비admin — 본인 룸 자동 선택
-  if (!isAdmin && rooms.length) {
-    openAdminChatRoomInPage(rooms[0]._key);
-  }
-}
-window.renderAdminChat = renderAdminChat;
-
-function openAdminChatRoomInPage(roomKey) {
-  const page = document.querySelector('.pt-page[data-page="admin-chat"]');
-  if (!page) return;
-  const me = store.currentUser || {};
-  _adminChatPageRoomKey = roomKey;
-  const body = page.querySelector('#adminChatBody');
-  const titleEl = page.querySelector('#adminChatRoomTitle');
-  const room = (store.rooms || []).find(r => r._key === roomKey);
-  if (titleEl) titleEl.textContent = room?.agent_name || room?.subject || '관리자 소통';
-
-  // 읽음 처리 — 본인 read_by 갱신 (per-admin 안읽음 뱃지 차감)
-  if (me.uid) {
-    updateRecord(`rooms/${roomKey}`, { [`read_by/${me.uid}`]: Date.now() }).catch(() => null);
-  }
-
-  if (_adminChatPageUnsub) { try { _adminChatPageUnsub(); } catch (_) {} }
-  body.innerHTML = '<div style="padding:16px;text-align:center;color:var(--text-muted);font-size:12px;">메시지 불러오는 중...</div>';
-  _adminChatPageUnsub = watchCollection(`messages/${roomKey}`, (msgs) => {
-    if (_adminChatPageRoomKey !== roomKey) return;
-    if (!msgs.length) {
-      body.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted);font-size:12px;">대화를 시작해보세요</div>';
-      return;
-    }
-    // 시간순 + 발신자 user_code 보강 (옛 메시지 sender_code 누락 케이스 대응)
-    const sorted = [...msgs]
-      .sort((a, b) => (a.created_at || 0) - (b.created_at || 0))
-      .map(m => {
-        if (m.sender_code) return m;
-        const u = (store.users || []).find(x => (x.uid || x._key) === m.sender_uid);
-        return { ...m, sender_code: u?.user_code || m.sender_code || '' };
-      });
-    body.innerHTML = v2RenderChatMessages(sorted, { uid: me.uid, peerReadAt: null });
-    body.scrollTop = body.scrollHeight;
-  });
-
-  // 입력바 send 핸들러 — 매번 재바인딩 (단순)
-  const input = page.querySelector('#adminChatInput');
-  const sendBtn = page.querySelector('#adminChatSend');
-  const send = async () => {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    // 첫 메시지 여부 — 룸의 last_message 가 비어있으면 첫 대화 → 관리자에게 알림
-    const roomBefore = (store.rooms || []).find(r => r._key === roomKey);
-    const isFirstMessage = !roomBefore?.last_message;
-    try {
-      await pushRecord(`messages/${roomKey}`, {
-        text, sender_uid: me.uid, sender_name: me.name || me.email || '',
-        sender_code: me.user_code || '',
-        sender_role: me.role || '', created_at: Date.now(),
-      });
-      const sentAt = Date.now();
-      await updateRecord(`rooms/${roomKey}`, {
-        last_message: text, last_message_at: sentAt,
-        last_sender_role: me.role || '', last_sender_code: me.user_code || '',
-        last_sender_uid: me.uid,
-        // 보낸 사람은 자동으로 읽음 처리 (사이드바 뱃지 자체 발신으로 안 늘어남)
-        [`read_by/${me.uid}`]: sentAt,
-      });
-      // 비admin 의 첫 메시지 → 관리자에게 SMS/알림톡 (실패해도 비즈니스 플로우는 안 막힘)
-      if (isFirstMessage && me.role !== 'admin') {
-        const senderLabel = me.role === 'provider' ? '공급사' : '영업자';
-        notifyAdmins({
-          template: 'admin_chat_new',
-          subject: '관리자 소통 신규 문의',
-          message: `[Freepass] ${senderLabel} ${me.name || me.email}님이 관리자에게 문의를 시작했습니다.\n첫 메시지: ${text.slice(0, 80)}${text.length > 80 ? '...' : ''}`,
-        }).catch(() => null);
-      }
-    } catch (err) {
-      console.error('[admin-chat send]', err);
-      showToast('전송 실패', 'error');
-      input.value = text;
-    }
-  };
-  sendBtn.onclick = send;
-  input.onkeydown = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
-}
 
 /* 패널 안의 라벨 길이 변화 감지 → 자동 폰트 축소 (모든 페이지 일괄) */
 function setupAutoFitObserver() {
@@ -1297,9 +1173,9 @@ function bindDirtyTracking() {
   });
 
   // 페이지 전환 시 dirty 카드 있으면 경고
-  window.addEventListener('hashchange', (e) => {
+  window.addEventListener('hashchange', async (e) => {
     if (!hasDirty()) return;
-    if (confirm('저장하지 않은 변경이 있습니다. 페이지를 이동할까요?')) {
+    if (await customConfirm({ title: '저장 안 됨', message: '저장하지 않은 변경이 있습니다.\n페이지를 이동할까요?', danger: true, okLabel: '이동' })) {
       clearDirty();
     } else {
       // hashchange 는 cancel 불가 → 원래 hash 로 복귀
@@ -1309,13 +1185,16 @@ function bindDirtyTracking() {
     }
   });
 
-  // 브라우저 닫기 / 새로고침 시 경고 (브라우저 표준 다이얼로그)
+  // 브라우저 닫기 / 새로고침 시 경고 + 미완성 draft 정리
   window.addEventListener('beforeunload', (e) => {
+    discardIncompleteDrafts();   // 신규 draft 중 필수 미입력은 _deleted 마킹 (best effort)
     if (hasDirty()) {
       e.preventDefault();
       e.returnValue = '';
     }
   });
+  // 브라우저 뒤로가기 / 페이지 외부 이동 시에도 정리 (popstate)
+  window.addEventListener('popstate', () => { discardIncompleteDrafts(); });
 }
 
 function hasDirty() {
@@ -1339,7 +1218,7 @@ function clearDirty(card) {
 /* 항목 삭제 — admin only, soft delete (deleted_at 만 표시) */
 async function deleteRecord(collection, key) {
   if (store.currentUser?.role !== 'admin') return alert('관리자만 삭제할 수 있습니다');
-  if (!confirm('정말 삭제하시겠습니까?')) return;
+  if (!await customConfirm({ message: '정말 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
   try {
     await softDelete(`${collection}/${key}`);
   } catch (e) {
@@ -1785,7 +1664,7 @@ function buildContextMenuItems(page, id, item) {
         await updateRecord(`rooms/${id}`, { [hideField]: true, updated_at: Date.now() });
       }},
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 대화방을 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 대화방을 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`rooms/${id}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
@@ -1799,7 +1678,7 @@ function buildContextMenuItems(page, id, item) {
       })},
       { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 계약을 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 계약을 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`contracts/${c._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
@@ -1809,7 +1688,7 @@ function buildContextMenuItems(page, id, item) {
     if (!s) return [];
     return [
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 정산을 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 정산을 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`settlements/${s._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
@@ -1838,7 +1717,7 @@ function buildContextMenuItems(page, id, item) {
       }},
       { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 차량을 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 차량을 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`products/${p._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
@@ -1863,7 +1742,7 @@ function buildContextMenuItems(page, id, item) {
       },
       { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 정책을 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 정책을 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`policies/${pol._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
@@ -1890,7 +1769,7 @@ function buildContextMenuItems(page, id, item) {
         } },
       { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 파트너를 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 파트너를 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`partners/${pa._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
@@ -1936,7 +1815,7 @@ function buildContextMenuItems(page, id, item) {
       },
       { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 사용자를 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 사용자를 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`users/${u._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];
@@ -1960,7 +1839,7 @@ function buildContextMenuItems(page, id, item) {
         action: () => navigator.clipboard?.writeText(c.contract_code || '').then(() => showToast('계약코드 복사됨')) },
       { divider: true },
       { icon: 'ph ph-trash', label: '삭제', danger: true, action: async () => {
-        if (!confirm('이 계약을 삭제하시겠습니까?')) return;
+        if (!await customConfirm({ message: '이 계약을 삭제하시겠습니까?', danger: true, okLabel: '삭제' })) return;
         await updateRecord(`contracts/${c._key}`, { _deleted: true, updated_at: Date.now() });
       }},
     ];

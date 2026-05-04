@@ -58,5 +58,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "5시리즈g60",
+    "i5g60"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
 }

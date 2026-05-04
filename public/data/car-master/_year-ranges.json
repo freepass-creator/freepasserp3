@@ -1,0 +1,706 @@
+{
+  "audi_a3_8y": {
+    "start": "2009-01",
+    "end": "현재"
+  },
+  "audi_a4_b9": {
+    "start": "2007-01",
+    "end": "2023-12"
+  },
+  "audi_a6_c8": {
+    "start": "2008-01",
+    "end": "현재"
+  },
+  "audi_q5_fy": {
+    "start": "2010-01",
+    "end": "현재"
+  },
+  "bmw_3_f30": {
+    "start": "1994-01",
+    "end": "2018-12"
+  },
+  "bmw_3_g20": {
+    "start": "2019-01",
+    "end": "현재"
+  },
+  "bmw_4_g22": {
+    "start": "2013-01",
+    "end": "현재"
+  },
+  "bmw_5_g30": {
+    "start": "1984-01",
+    "end": "2022-12"
+  },
+  "bmw_5_g60": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "bmw_7_g70": {
+    "start": "1993-01",
+    "end": "현재"
+  },
+  "bmw_x1_u11": {
+    "start": "2010-01",
+    "end": "현재"
+  },
+  "bmw_x3_g01": {
+    "start": "2010-01",
+    "end": "현재"
+  },
+  "bmw_x4_g02": {
+    "start": "2014-01",
+    "end": "현재"
+  },
+  "bmw_x5_g05": {
+    "start": "2002-01",
+    "end": "현재"
+  },
+  "chevrolet_bolt_ev": {
+    "start": "2017-01",
+    "end": "2022-12"
+  },
+  "chevrolet_camaro": {
+    "start": "2012-01",
+    "end": "2021-12"
+  },
+  "chevrolet_colorado": {
+    "start": "2020-01",
+    "end": "2024-12"
+  },
+  "chevrolet_colorado_pre": {
+    "start": "2019-01",
+    "end": "2020-12"
+  },
+  "chevrolet_cruze": {
+    "start": "2011-01",
+    "end": "2018-12"
+  },
+  "chevrolet_equinox": {
+    "start": "2018-01",
+    "end": "2022-12"
+  },
+  "chevrolet_impala": {
+    "start": "2015-01",
+    "end": "2019-12"
+  },
+  "chevrolet_malibu": {
+    "start": "2011-01",
+    "end": "2022-12"
+  },
+  "chevrolet_spark": {
+    "start": "2011-01",
+    "end": "2022-12"
+  },
+  "chevrolet_tahoe": {
+    "start": "2022-01",
+    "end": "2023-12"
+  },
+  "chevrolet_trailblazer": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "chevrolet_trailblazer_pre": {
+    "start": "2019-01",
+    "end": "2022-12"
+  },
+  "chevrolet_trax_crossover": {
+    "start": "2013-01",
+    "end": "현재"
+  },
+  "genesis_g70": {
+    "start": "2020-01",
+    "end": "현재"
+  },
+  "genesis_g70_st": {
+    "start": "2017-01",
+    "end": "2024-12"
+  },
+  "genesis_g80_e": {
+    "start": "2016-01",
+    "end": "현재"
+  },
+  "genesis_g80_rg3": {
+    "start": "2020-01",
+    "end": "현재"
+  },
+  "genesis_g90_rs4": {
+    "start": "2017-01",
+    "end": "현재"
+  },
+  "genesis_gv60": {
+    "start": "2021-01",
+    "end": "현재"
+  },
+  "genesis_gv70": {
+    "start": "2020-01",
+    "end": "현재"
+  },
+  "genesis_gv70_e": {
+    "start": "2022-01",
+    "end": "2024-12"
+  },
+  "genesis_gv80": {
+    "start": "2020-01",
+    "end": "현재"
+  },
+  "genesis_gv80_coupe": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "hyundai_avante_ad": {
+    "start": "1996-01",
+    "end": "2016-12"
+  },
+  "hyundai_avante_ad_facelift": {
+    "start": "1999-01",
+    "end": "2019-12"
+  },
+  "hyundai_avante_cn7": {
+    "start": "2022-01",
+    "end": "현재"
+  },
+  "hyundai_avante_cn7_pre": {
+    "start": "2020-01",
+    "end": "2021-12"
+  },
+  "hyundai_avante_n": {
+    "start": "2020-01",
+    "end": "2021-12"
+  },
+  "hyundai_casper": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "hyundai_casper_pre": {
+    "start": "2021-01",
+    "end": "현재"
+  },
+  "hyundai_grandeur_gn7": {
+    "start": "1987-01",
+    "end": "현재"
+  },
+  "hyundai_grandeur_hg": {
+    "start": "2011-01",
+    "end": "2017-12"
+  },
+  "hyundai_grandeur_ig": {
+    "start": "2017-01",
+    "end": "2021-12"
+  },
+  "hyundai_grandeur_ig_163": {
+    "start": "2019-01",
+    "end": "2022-12"
+  },
+  "hyundai_grandeur_ig_hybrid_pre": {
+    "start": "2017-01",
+    "end": "2018-12"
+  },
+  "hyundai_grandeur_ig_pre": {
+    "start": "2016-01",
+    "end": "2016-12"
+  },
+  "hyundai_ioniq5": {
+    "start": "2019-01",
+    "end": "현재"
+  },
+  "hyundai_ioniq5_n": {
+    "start": "2016-01",
+    "end": "2018-12"
+  },
+  "hyundai_ioniq5_pre": {
+    "start": "2021-01",
+    "end": "2023-12"
+  },
+  "hyundai_ioniq6": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "hyundai_ioniq6_pre": {
+    "start": "2022-01",
+    "end": "2024-12"
+  },
+  "hyundai_ioniq9": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "hyundai_kona_os": {
+    "start": "2017-01",
+    "end": "2021-12"
+  },
+  "hyundai_kona_os_facelift": {
+    "start": "2020-01",
+    "end": "2022-12"
+  },
+  "hyundai_kona_sx2": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "hyundai_nexo_nh2": {
+    "start": "2018-01",
+    "end": "현재"
+  },
+  "hyundai_palisade_lx2": {
+    "start": "2018-01",
+    "end": "2021-12"
+  },
+  "hyundai_palisade_lx2_facelift": {
+    "start": "2022-01",
+    "end": "2024-12"
+  },
+  "hyundai_palisade_lx3": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "hyundai_santa_fe_mx5": {
+    "start": "2002-01",
+    "end": "현재"
+  },
+  "hyundai_santafe_tm_165": {
+    "start": "2020-01",
+    "end": "2022-12"
+  },
+  "hyundai_sonata_dn8": {
+    "start": "1994-01",
+    "end": "2023-12"
+  },
+  "hyundai_sonata_dn8_edge": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "hyundai_sonata_dn8_edge_hybrid": {
+    "start": "2011-01",
+    "end": "현재"
+  },
+  "hyundai_sonata_dn8_hybrid": {
+    "start": "2019-01",
+    "end": "2023-12"
+  },
+  "hyundai_sonata_lf": {
+    "start": "2014-01",
+    "end": "2018-12"
+  },
+  "hyundai_sonata_newrise": {
+    "start": "2003-01",
+    "end": "2023-12"
+  },
+  "hyundai_st1": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "hyundai_staria": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "hyundai_staria_pre": {
+    "start": "2021-01",
+    "end": "2023-12"
+  },
+  "hyundai_tucson_nx4": {
+    "start": "2005-01",
+    "end": "현재"
+  },
+  "hyundai_tucson_tl": {
+    "start": "2015-01",
+    "end": "2019-12"
+  },
+  "hyundai_venue": {
+    "start": "2019-01",
+    "end": "현재"
+  },
+  "jeep_cherokee": {
+    "start": "1993-01",
+    "end": "2023-12"
+  },
+  "kgm_actyon": {
+    "start": "2006-01",
+    "end": "현재"
+  },
+  "kgm_korando": {
+    "start": "1992-01",
+    "end": "현재"
+  },
+  "kgm_musso": {
+    "start": "1997-01",
+    "end": "2005-12"
+  },
+  "kgm_musso_ev_o100": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "kgm_musso_q300": {
+    "start": "2026-01",
+    "end": "현재"
+  },
+  "kgm_musso_sports": {
+    "start": "2003-01",
+    "end": "현재"
+  },
+  "kgm_musso_sports_khan": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "kgm_rexton_sports": {
+    "start": "2004-01",
+    "end": "현재"
+  },
+  "kgm_rexton_sports_facelift": {
+    "start": "2019-01",
+    "end": "현재"
+  },
+  "kgm_rexton_sports_khan": {
+    "start": "2019-01",
+    "end": "2021-12"
+  },
+  "kgm_rexton_sports_khan_facelift": {
+    "start": "2021-01",
+    "end": "현재"
+  },
+  "kgm_rexton_sports_pre": {
+    "start": "2018-01",
+    "end": "2018-12"
+  },
+  "kgm_tivoli": {
+    "start": "2015-01",
+    "end": "2017-12"
+  },
+  "kgm_tivoli_air": {
+    "start": "2016-01",
+    "end": "2023-12"
+  },
+  "kgm_tivoli_air_facelift": {
+    "start": "2023-01",
+    "end": "2024-12"
+  },
+  "kgm_tivoli_armour": {
+    "start": "2016-01",
+    "end": "2019-12"
+  },
+  "kgm_tivoli_facelift": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "kgm_tivoli_very_new": {
+    "start": "2019-01",
+    "end": "2023-12"
+  },
+  "kgm_torres": {
+    "start": "2022-01",
+    "end": "2022-12"
+  },
+  "kgm_torres_evx": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "kgm_torres_facelift": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "kia_bongo3": {
+    "start": "2004-01",
+    "end": "2021-12"
+  },
+  "kia_carnival_ka4": {
+    "start": "2004-01",
+    "end": "현재"
+  },
+  "kia_carnival_yp": {
+    "start": "2014-01",
+    "end": "2017-12"
+  },
+  "kia_carnival_yp_facelift": {
+    "start": "2018-01",
+    "end": "2021-12"
+  },
+  "kia_ev3": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "kia_ev4": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "kia_ev5": {
+    "start": "2026-01",
+    "end": "현재"
+  },
+  "kia_ev6": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "kia_ev6_pre": {
+    "start": "2021-01",
+    "end": "2023-12"
+  },
+  "kia_ev9": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "kia_k3_bd": {
+    "start": "2012-01",
+    "end": "2021-12"
+  },
+  "kia_k3_bd_facelift": {
+    "start": "2016-01",
+    "end": "2024-12"
+  },
+  "kia_k3_yd_facelift": {
+    "start": "2015-01",
+    "end": "2018-12"
+  },
+  "kia_k5_dl3": {
+    "start": "2013-01",
+    "end": "현재"
+  },
+  "kia_k5_jf": {
+    "start": "2010-01",
+    "end": "2022-12"
+  },
+  "kia_k5_jf_facelift": {
+    "start": "2018-01",
+    "end": "2021-12"
+  },
+  "kia_k7_premier": {
+    "start": "2009-01",
+    "end": "2021-12"
+  },
+  "kia_k7_yg": {
+    "start": "2012-01",
+    "end": "2019-12"
+  },
+  "kia_k8_gl3": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "kia_k8_gl3_pre": {
+    "start": "2021-01",
+    "end": "2023-12"
+  },
+  "kia_k9_rj": {
+    "start": "2012-01",
+    "end": "현재"
+  },
+  "kia_mohave": {
+    "start": "2008-01",
+    "end": "2024-12"
+  },
+  "kia_morning_ja": {
+    "start": "2005-01",
+    "end": "현재"
+  },
+  "kia_morning_ja_facelift1": {
+    "start": "2020-01",
+    "end": "2023-12"
+  },
+  "kia_morning_ja_pre": {
+    "start": "2011-01",
+    "end": "2020-12"
+  },
+  "kia_morning_sa": {
+    "start": "2005-01",
+    "end": "2007-12"
+  },
+  "kia_morning_sa_facelift": {
+    "start": "2015-01",
+    "end": "2016-12"
+  },
+  "kia_niro_de": {
+    "start": "2016-01",
+    "end": "2023-12"
+  },
+  "kia_niro_sg2": {
+    "start": "2022-01",
+    "end": "현재"
+  },
+  "kia_pv5": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "kia_ray": {
+    "start": "2011-01",
+    "end": "현재"
+  },
+  "kia_ray_ev": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "kia_ray_tam_facelift1": {
+    "start": "2017-01",
+    "end": "2022-12"
+  },
+  "kia_seltos": {
+    "start": "2022-01",
+    "end": "현재"
+  },
+  "kia_seltos_sp2": {
+    "start": "2019-01",
+    "end": "2021-12"
+  },
+  "kia_seltos_sp3": {
+    "start": "2026-01",
+    "end": "현재"
+  },
+  "kia_sorento_mq4": {
+    "start": "2006-01",
+    "end": "현재"
+  },
+  "kia_sorento_um": {
+    "start": "2014-01",
+    "end": "2016-12"
+  },
+  "kia_sorento_um_facelift": {
+    "start": "2002-01",
+    "end": "2021-12"
+  },
+  "kia_sportage_nq5": {
+    "start": "2013-01",
+    "end": "현재"
+  },
+  "kia_sportage_ql": {
+    "start": "2005-01",
+    "end": "2024-03"
+  },
+  "kia_sportage_ql_facelift": {
+    "start": "2018-01",
+    "end": "2021-12"
+  },
+  "kia_stinger": {
+    "start": "2017-01",
+    "end": "2023-12"
+  },
+  "kia_tasman": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "landrover_defender": {
+    "start": "2000-01",
+    "end": "현재"
+  },
+  "landrover_range_sport": {
+    "start": "1998-01",
+    "end": "현재"
+  },
+  "mercedes_a_w177": {
+    "start": "2013-01",
+    "end": "현재"
+  },
+  "mercedes_c_w205": {
+    "start": "1995-01",
+    "end": "2021-12"
+  },
+  "mercedes_c_w206": {
+    "start": "2022-01",
+    "end": "현재"
+  },
+  "mercedes_e_w213": {
+    "start": "1993-01",
+    "end": "2023-12"
+  },
+  "mercedes_e_w214": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "mercedes_s_w223": {
+    "start": "1994-01",
+    "end": "현재"
+  },
+  "mini_cooper": {
+    "start": "2004-01",
+    "end": "현재"
+  },
+  "porsche_cayenne": {
+    "start": "2003-01",
+    "end": "현재"
+  },
+  "porsche_macan": {
+    "start": "2014-01",
+    "end": "현재"
+  },
+  "renault_arkana": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "renault_grand_koleos": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "renault_qm3": {
+    "start": "2013-01",
+    "end": "2019-12"
+  },
+  "renault_qm5": {
+    "start": "2008-01",
+    "end": "2016-12"
+  },
+  "renault_qm6": {
+    "start": "2016-01",
+    "end": "현재"
+  },
+  "renault_sm3": {
+    "start": "2006-01",
+    "end": "2019-12"
+  },
+  "renault_sm5": {
+    "start": "1998-01",
+    "end": "2019-12"
+  },
+  "renault_sm6": {
+    "start": "2016-01",
+    "end": "현재"
+  },
+  "renault_sm7": {
+    "start": "2005-01",
+    "end": "2019-12"
+  },
+  "renault_xm3": {
+    "start": "2020-01",
+    "end": "2024-12"
+  },
+  "tesla_model_3": {
+    "start": "2019-01",
+    "end": "현재"
+  },
+  "tesla_model_s": {
+    "start": "2017-01",
+    "end": "2024-12"
+  },
+  "tesla_model_x": {
+    "start": "2018-01",
+    "end": "현재"
+  },
+  "tesla_model_y": {
+    "start": "2021-01",
+    "end": "현재"
+  },
+  "volvo_s60": {
+    "start": "2005-01",
+    "end": "2024-12"
+  },
+  "volvo_xc40": {
+    "start": "2022-01",
+    "end": "2024-12"
+  },
+  "volvo_xc40_pre": {
+    "start": "2018-01",
+    "end": "현재"
+  },
+  "volvo_xc60": {
+    "start": "2017-01",
+    "end": "현재"
+  },
+  "volvo_xc60_gen1": {
+    "start": "2012-01",
+    "end": "2017-12"
+  },
+  "vw_golf_8": {
+    "start": "1996-01",
+    "end": "현재"
+  },
+  "vw_jetta": {
+    "start": "2011-01",
+    "end": "2024-12"
+  },
+  "vw_tiguan": {
+    "start": "2008-01",
+    "end": "2024-12"
+  }
+}

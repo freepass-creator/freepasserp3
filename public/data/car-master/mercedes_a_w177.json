@@ -9,11 +9,55 @@
   "options": {},
   "categories": {},
   "trims": {
-    "A200": { "slug": "a200", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "A220": { "slug": "a220", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "A220 4MATIC": { "slug": "a220_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "A250": { "slug": "a250", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "AMG A35 4MATIC": { "slug": "amg_a35_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "AMG A45 S 4MATIC+": { "slug": "amg_a45_s_4matic_plus", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "A200": {
+      "slug": "a200",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "A220": {
+      "slug": "a220",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "A220 4MATIC": {
+      "slug": "a220_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "A250": {
+      "slug": "a250",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "AMG A35 4MATIC": {
+      "slug": "amg_a35_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "AMG A45 S 4MATIC+": {
+      "slug": "amg_a45_s_4matic_plus",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "a클래스w168",
+    "a클래스w169",
+    "a클래스w176",
+    "a클래스w177"
+  ],
+  "year_start": "2013-01",
+  "year_end": "현재"
 }

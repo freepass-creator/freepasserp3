@@ -148,8 +148,145 @@
 - 새 기능 추가 전 canonical 클래스(`.section-title / .title-* / .input-flat / .badge / .list-row`) 있는지 확인
 - 입력칸 추가는 전역 3모드 자동 적용되는 기존 클래스 재활용
 - 페이지별 CSS는 크기·정렬만, 색·테두리 재정의 금지
-- 모바일 전용 파일·렌더러 만들지 말 것 — 반응형 CSS로 해결
 - 역할 guard는 라우터 레벨(app.js) + UI 표시는 `store.currentUser?.role` 직접 체크
 - 하드코드 색상 금지 (`var(--c-*)` 사용)
 - 신규 모델 입력은 products가 아니라 `car_models`에 stub 등록 (product-manage.js의 `registerCarModelStub` 패턴)
 - font-weight는 토큰만 (`var(--fw-*)`)
+
+---
+
+# 📌 최근 세션 작업 내역 (반복 / 이어서 해줘 가이드)
+
+> **"이어서 해줘"** 라고 하면 이 섹션을 먼저 읽고 컨벤션 / 진행 상태 / 미완료 항목 파악할 것.
+> 마지막 갱신: 2026-05-04
+
+## 모바일 페이지 (NEW — 위 "모바일 전용 파일 만들지 말 것" 규칙은 이 섹션 한정 예외)
+
+위 가이드와 다르게, **데스크톱 ERP 와 분리된 모바일 4탭 SPA** 가 이미 구축되어 있음.
+
+### 환경별 분기
+- 모바일 UA 또는 `?mobile=1` → `body.is-mobile` 추가, `#mobileApp` 표시, `tokens.css + mobile.css` 동적 로드
+- 데스크톱 → 위 두 CSS 로드 안 됨 (글씨 크기 / 레이아웃 영향 0 보장)
+- 분기점: [src/app.js:11-21](src/app.js#L11-L21) `if (isMobileUA()) { await Promise.all([import('./styles/tokens.css'), import('./styles/mobile.css')]); }`
+
+### 모바일 4탭 (mobile-search / mobile-workspace / mobile-contract / mobile-settings)
+- 데스크톱과 같은 Firebase 컬렉션 (`products`, `rooms`, `contracts`, `settlements` 등) 공유 — 한쪽에서 만든 데이터 다른 쪽에서 즉시 보임
+- 모바일 계약 생성: `openContractStartSheet({ room?, product? })` (mobile-workspace.js export, 채팅·상품 양쪽에서 호출). 데스크톱 `pickOrCreateCustomer + createContractFromRoomLocal` 와 **필드/사이드이펙트 100% 동등**, UI 만 모바일 시트
+- 모바일 계약 목록: filterByRole **제거됨** (`getVisible() = store.contracts`) — 영업자/공급사/관리자 모두 모든 계약 노출 → 메모 협업 위해. 영업자별 그룹 섹션 헤더 (본인 그룹 최상단 accent 강조)
+- 계약 메모는 3슬롯 (`memo_agent` / `memo_provider` / `memo_admin`) — 본인 슬롯만 textarea 편집, 모두 다 읽기
+
+### 디자인 토큰 (`src/styles/tokens.css` + `_base.css`)
+- 라운드 **이분화**: `--m-radius-sharp: 4px` (카드/섹션/입력) / `--m-radius-pill: 999px` (칩/태그/원형 버튼). 중간값 (8/10/12px) **금지**
+- 좌우 edge: `--m-edge: 16px` (검색헤더 / 카드 / 디테일 모두 정렬)
+- 폰트: Pretendard Variable (CDN, 정적 fallback). 모바일 강제 `body.is-mobile * { font-family: var(--font-mobile) !important }`
+- 아이콘: 데스크톱 PhosphorLight, 모바일 `body.is-mobile .ph { font-family: 'Phosphor' !important }` (regular weight)
+
+### 모바일 CSS 분리 구조 (`src/styles/mobile/_*.css`)
+- `_base.css` (237 LOC) — 토큰, 폰트, role 클래스
+- `_panels.css` (511 LOC) — 상단바, 시트, 채팅, **검색바/필터**
+- `_settings.css` (468 LOC) — 토글, collapsing 헤더, 업로드
+- `_lists.css` (439 LOC) — 카드 공용, 빈 상태, 영업자별 그룹
+- `_views.css` (457 LOC) — 풀스크린 view, 상품 세부 (cat-/srch- self-contained), 계약시작 시트, 하단 액션바, FAB, ct-step
+- entry: `mobile.css` 23 LOC (@import 만)
+
+## 데스크톱 — 최근 변경
+
+### `app.js` 분리 (2316 → 1965 LOC)
+- `src/core/delete-actions.js` — `canDelete` + 6 delete 함수 (역할별 권한 체크)
+- `src/core/draft-tracking.js` — 신규 record 자동 정리 (필수 필드 미입력 → 페이지 이탈 시 _deleted 마킹)
+- `src/admin/admin-chat.js` — 관리자↔비admin 1:1 소통
+
+### 권한 체크 (delete-actions.js `canDelete`)
+| 역할 | product/policy | settlement | room | contract | partner |
+|---|---|---|---|---|---|
+| admin | ✓ all | ✓ all | ✓ all | ✓ all | ✓ all |
+| provider | 본인 회사 | 본인 회사 | 본인 회사 | 본인 회사 | ✗ |
+| agent | ✗ | ✗ | 본인 uid | 본인 uid | ✗ |
+| agent_admin | ✗ | ✗ | 본인 채널 | 본인 채널 | ✗ |
+
+### Confirm 다이얼로그 통일
+- Windows native `confirm()` 사용 X (그라이언트 분리 위해)
+- 자체 모듈: `src/core/confirm.js` — `customConfirm({ message, danger?, okLabel? }) → Promise<boolean>`
+- 패턴: `if (!await customConfirm({ message: '...', danger: true, okLabel: '삭제' })) return;`
+- delete-actions / app.js 19 곳 적용 완료. 다른 페이지 ~30 곳 (`pages/admin/*`, `pages/contract.js` 등) 미완 — 점진 교체
+
+### Save Status 인디케이터
+- `src/firebase/db.js` writers (`setRecord/updateRecord/pushRecord`) 의 3번째 인자 `{ silent: true }` → `trackSave` 건너뜀 → 우측 하단 인디케이터 안 표시
+- 명시적 토스트 (예: 삭제됨) 와 **중복 알림 회피** 시 사용
+- 기본 (옵션 없음) 은 인디케이터 표시 (자동 저장 등 전형 케이스)
+- 모바일은 `body.is-mobile #saveStatus { display: none }` 으로 항상 숨김
+
+### Firebase 감사 로그 (audit-log.js)
+- `src/firebase/audit-log.js` — `logAudit({ action, path, fields, data })` + `actorStamp(action)`
+- `db.js` writers 가 모든 write 자동 hook → Firebase RTDB `/audit_logs/{auto_id}` push
+- 옵션 `{ skipAudit: true }` 로 opt-out 가능 (성능 critical 케이스)
+- 감사 대상 컬렉션 (화이트리스트 9종): `products / contracts / policies / partners / users / settlements / rooms / customers / vehicle_master`
+- 노이즈 필터 자동: `read_at_*` / `read_by/*` / `last_message*` / `unread` / `updated_at-only` 변경은 감사 안 함
+- 로그 스키마: `{ action, collection, record_key, actor_uid, actor_role, actor_name, fields[], values{}, ts }`
+- **Firebase Rules 추가 필요** — `/audit_logs` 는 admin read / 본인 uid write 로 위변조 방지
+
+### Draft Tracking — 필수 필드 검증
+- `trackDraft(coll, key, fieldOrFields)` — **단일 또는 복수** 필수 필드 (배열) 지원
+- admin 재고 신규등록: `['car_number', 'provider_company_code']` 둘 다 필수
+- provider: `'car_number'` 만 (회사 자동 채워짐)
+- [저장] 클릭 시 `isDraftSaveBlocked()` 검증 → 미입력 시 `missingRequiredFields()` 토스트 + 저장 차단 + 편집모드 유지
+- 페이지 이탈 (`hashchange / popstate / beforeunload`) 시 `discardIncompleteDrafts()` 호출 → 미입력 record `_deleted: true` 마킹
+
+### Select Chevron 보존
+- `select` 요소의 `:focus / [readonly] / :disabled` 상태에서 background **shorthand** 사용 시 `background-image` 가 함께 리셋되어 chevron SVG 사라짐
+- **수정**: `background-color:` 만 명시 ([index.html:391-401](index.html#L391-L401))
+- 새 select 룰 추가 시 동일 주의
+
+### 데스크톱 디테일 패널 닫기 버튼
+- `ensureDetailCloseButtons()` ([app.js:885+](src/app.js)) 가 모든 `.ws4-detail .ws4-head` 우측에 X 버튼 자동 주입
+- 클릭 시 `.is-collapsed` 토글 → 폭 0 으로 숨김
+- 검색 페이지 자체 `#detailClose` 는 보존 (자체 collapse 로직)
+
+### 토스트 위치
+- 우측 하단 `bottom: 80px` (이전 24px 에서 액션바 위로 올림) — 액션바와 겹침 회피
+
+## 컨벤션 (이거 어기지 말 것)
+
+1. **라운드값 sharp(4px) 또는 pill(999px) 둘 중 하나만**. 중간값 (5/8/10/12/14/16) 금지
+2. **CSS background shorthand 금지** (select chevron 등 SVG bg-image 보존). `background-color:` 명시
+3. **모바일 → 데스크톱 cross-contamination 없게 유지** — `body.is-mobile` scope 강제, `if (isMobileUA())` 조건부 CSS 로드
+4. **삭제 액션은 silent 옵션 + customConfirm danger** 패턴 (토스트 1번만)
+5. **신규 record 는 trackDraft 로 추적** — 필수 필드 정의 후 자동 정리에 맡김
+6. **canDelete 통과 후만** Firebase update — 클라이언트 최소 가드 + Firebase rules 가 진짜 보안
+
+## 미완료 / 다음 라운드 후보
+
+### A. confirm() 추가 교체 (~30곳)
+- `pages/admin/users-partners.js` 등에 native confirm 남아있음
+- 패턴: `if (!confirm('...')) return` → `if (!await customConfirm({...})) return` (함수 async 화)
+
+### B. agent_admin 권한 정책 결정 필요
+- 정산 — bulkCreateSettlements 는 agent_admin 가능 / settlement.js renderSettlementDetail canEdit 은 admin/provider 만 → 일관성 필요
+- 사이드바 메뉴 — agent_admin 이 봐야 할 메뉴 매트릭스 (현재 product/policy 만 hide)
+- 모바일 4탭 — 현재 모든 역할 동일. agent_admin 의 소통 탭 (대화 안 봐야) / provider 의 정산 가시성 등 결정
+
+### C. 차종 매트릭스 ↔ 재고 dropdown 통합
+- 재고 dropdown: `store.carModels` (Firebase `vehicle_master`)
+- 매트릭스: `/data/car-master/_index.json` (정적, 63개)
+- 두 소스 통합 필요. A안: 카탈로그 → vehicle_master 일회성 sync (dev-tool)
+
+### D. 데스크톱 페이지에 신규등록 추가 안 한 곳
+- 사용자 페이지 — admin 직접 추가 UI 없음 (self-signup 만)
+- 계약 페이지 — **의도적 부재** (workspace 차량 → 계약 생성만), 추가 X
+
+### E. 기능 점검 (audit 결과 일부 미적용)
+- agent 차량 등록 권한 — 현재 admin/provider 만, agent 차단. 필요 시 정책 재결정
+- _pendingDrafts.policies 의 isDraftValid 가 policy_name 만 체크 — admin 의 provider_company_code 빈 값 가능성 (점검)
+
+## "이어서 해줘" — 어떻게 시작할지
+
+1. 위 **컨벤션** 섹션 읽고 어기지 말 것
+2. 위 **미완료** 섹션에서 사용자 의도 확인 후 우선순위 잡기
+3. 큰 작업은 plan mode 또는 사용자 확인 받고 진행
+4. 코드 변경 후 항상 `cd /c/dev/freepasserp3 && npm run build` 통과 확인
+5. CSS / 모바일 관련 변경 시 반드시 데스크톱 영향 0 검증 (글씨 크기 변동 등)
+6. 새 confirm 다이얼로그는 customConfirm 사용 (native confirm 추가 금지)
+7. 새 select 룰은 background-color: 만, shorthand 금지
+8. 새 모바일 컴포넌트는 sharp 4px 또는 pill 999px (중간값 금지)
+9. 새 record 생성 흐름은 trackDraft 등록
+10. 작업 마무리 후 이 CLAUDE.md 의 **미완료** 섹션 갱신 (체크 표시 / 신규 항목 추가)

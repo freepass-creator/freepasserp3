@@ -37,5 +37,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "gv80쿠페"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
 }

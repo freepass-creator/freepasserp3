@@ -9,8 +9,31 @@
   "options": {},
   "categories": {},
   "trims": {
-    "LS": { "slug": "ls", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LTZ": { "slug": "ltz", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "LS": {
+      "slug": "ls",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LT": {
+      "slug": "lt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LTZ": {
+      "slug": "ltz",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "임팔라"
+  ],
+  "year_start": "2015-01",
+  "year_end": "2019-12"
 }

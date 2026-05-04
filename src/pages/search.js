@@ -62,6 +62,7 @@ export const _searchFilter = {
   quick: new Set(),                  // 하단 퀵필터 (new/used/age26)
   rentRange: { min: null, max: null },
   depositRange: { min: null, max: null },
+  fpOptions: new Set(),              // 표준옵션 필수 (예: VENT_SEAT_DR, HUD)
 };
 let _activeFtTh = null;
 
@@ -473,9 +474,20 @@ export function clearAllSearchFilters() {
   _searchFilter.rentRange.max = null;
   _searchFilter.depositRange.min = null;
   _searchFilter.depositRange.max = null;
+  if (_searchFilter.fpOptions) _searchFilter.fpOptions.clear();
   applySearchFilter();
   window.refreshPageActions?.('search');
 }
+
+/** 표준옵션 필터 토글 — 외부에서 호출 (예: 액션바 또는 모달) */
+export function toggleSearchFpOption(fpId) {
+  if (!_searchFilter.fpOptions) _searchFilter.fpOptions = new Set();
+  if (_searchFilter.fpOptions.has(fpId)) _searchFilter.fpOptions.delete(fpId);
+  else _searchFilter.fpOptions.add(fpId);
+  applySearchFilter();
+  window.refreshPageActions?.('search');
+}
+if (typeof window !== 'undefined') window.toggleSearchFpOption = toggleSearchFpOption;
 
 /** 기간 컬럼 표시/숨김 토글 — 하단 액션바에서 호출 */
 const PERIOD_KEY_GLOBAL = 'srch.period.hidden';
@@ -668,7 +680,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         const parts = [age, mileage, insurance].filter(Boolean);
         return parts.length
           ? `<div style="margin-top:6px; font-size:11px; color:var(--text-muted); text-align:right;">
-               * ${esc(parts.join(' | '))} 기준 금액입니다.
+               * ${esc(parts.join(' · '))} 기준 금액입니다.
              </div>`
           : '';
       })()}
@@ -1549,6 +1561,14 @@ function filterProductsExcept(exceptField) {
       if (f.quick.has('age26')) {
         const age = Number(p._policy?.basic_driver_age);
         if (!(age && age <= 26)) return false;
+      }
+    }
+    // 표준옵션 필터 — 매물의 fp_options 가 선택된 모든 옵션을 포함해야 함 (AND)
+    if (f.fpOptions && f.fpOptions.size) {
+      const has = Array.isArray(p.fp_options) ? new Set(p.fp_options) : null;
+      if (!has) return false;
+      for (const id of f.fpOptions) {
+        if (!has.has(id)) return false;
       }
     }
     // 대여료 / 보증금 구간 — 24개월 기준 (영업자가 가장 많이 보는 기간 — 변경 가능)

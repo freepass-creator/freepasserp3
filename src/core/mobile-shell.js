@@ -4,7 +4,11 @@
  * - openBottomSheet(html, options): 재사용 가능 바텀시트
  * - openFab(opts): 플로팅 액션 버튼 헬퍼
  * - pushMobileView(html, options): 풀스크린 슬라이드 스택 뷰
+ *
+ * 이 모듈을 dynamic import 하면 Vite 가 함께 chunk 한 mobile.css 도 자동으로 head 에 주입.
+ * 데스크톱은 이 모듈을 import 하지 않으므로 mobile.css 가 절대 로드되지 않음.
  */
+// mobile.css 는 app.js 에서 정적 import (v2 패턴 — FOUC 회피)
 
 export const MOBILE_BREAKPOINT = 768;
 
@@ -140,7 +144,9 @@ export function openBottomSheet(html, opts = {}) {
   history.pushState({ mSheet: historyKey }, '', location.href);
   let closed = false;
   let poppedByBrowser = false;
-  const onPopState = () => {
+  const onPopState = (e) => {
+    // 우리 entry 가 아직 활성 → 다른 컴포넌트의 popstate, 무시
+    if (e.state && e.state.mSheet === historyKey) return;
     poppedByBrowser = true;
     cleanup();
   };
@@ -273,7 +279,10 @@ export function pushMobileView(html, opts = {}) {
   let closed = false;
   let poppedByBrowser = false;
   const onPopState = (e) => {
-    // 우리 dummy entry 가 빠지는 순간 → view 닫기 (history.back() 호출 금지)
+    // 우리 history entry 가 여전히 활성 (e.state 가 우리 mView 매칭) →
+    // 다른 컴포넌트(bottom sheet 등)의 popstate 일 뿐 — 무시.
+    // 우리 entry 가 빠진 경우만 cleanup.
+    if (e.state && e.state.mView === historyKey) return;
     poppedByBrowser = true;
     cleanup();
   };

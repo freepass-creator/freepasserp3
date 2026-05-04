@@ -3,7 +3,9 @@
   "title": "기아 올 뉴 카니발",
   "maker": "기아",
   "source": "wikicar",
-  "source_urls": ["http://wikicar.co.kr/allnew_carnival/20301"],
+  "source_urls": [
+    "http://wikicar.co.kr/allnew_carnival/20301"
+  ],
   "fetched_at": "2026-05-04",
   "note": "올 뉴 카니발 (YP, 2014-2018 페리 전). 가격: wikicar 2018년형(2017.04) OCR. R2.2D 9/11인승 + 람다 3.3G 9인승 + 매직스페이스/리무진 별도.",
   "options": {},
@@ -11,7 +13,9 @@
   "trims": {
     "디럭스": {
       "slug": "디럭스",
-      "price": { "base_22d_11": 27550000 },
+      "price": {
+        "base_22d_11": 27550000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -19,35 +23,49 @@
     },
     "럭셔리": {
       "slug": "럭셔리",
-      "price": { "base_22d_9": 30450000, "base_22d_11": 30050000 },
+      "price": {
+        "base_22d_9": 30450000,
+        "base_22d_11": 30050000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프레스티지": {
       "slug": "프레스티지",
-      "price": { "base_22d_9": 33800000, "base_22d_11": 32800000 },
+      "price": {
+        "base_22d_9": 33800000,
+        "base_22d_11": 32800000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "노블레스": {
       "slug": "노블레스",
-      "price": { "base_22d_9": 37250000, "base_22d_11": 36300000, "base_33g_9": 35800000 },
+      "price": {
+        "base_22d_9": 37250000,
+        "base_22d_11": 36300000,
+        "base_33g_9": 35800000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "노블레스 스페셜": {
       "slug": "노블레스_스페셜",
-      "price": { "base_22d_9": 38850000 },
+      "price": {
+        "base_22d_9": 38850000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "매직스페이스": {
       "slug": "매직스페이스",
-      "price": { "base_22d_7l": 35400000 },
+      "price": {
+        "base_22d_7l": 35400000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -55,7 +73,9 @@
     },
     "VIP": {
       "slug": "vip",
-      "price": { "base_22d_7l": 35950000 },
+      "price": {
+        "base_22d_7l": 35950000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -63,11 +83,19 @@
     },
     "프레지던트": {
       "slug": "프레지던트",
-      "price": { "base_22d_7l": 39700000, "base_33g_7l": 37900000 },
+      "price": {
+        "base_22d_7l": 39700000,
+        "base_33g_7l": 37900000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
       "note": "7인승 리무진"
     }
-  }
+  },
+  "aliases": [
+    "올뉴카니발"
+  ],
+  "year_start": "2014-01",
+  "year_end": "2017-12"
 }

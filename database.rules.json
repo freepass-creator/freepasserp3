@@ -183,6 +183,14 @@
         ".write": "auth != null && ((!data.exists() && newData.val() === 1) || newData.val() === data.val() + 1)"
       }
     },
+    "audit_logs": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
+      ".indexOn": ["ts", "actor_uid", "collection"],
+      "$auto": {
+        ".write": "auth != null && newData.child('actor_uid').val() === auth.uid",
+        ".validate": "newData.hasChildren(['action', 'collection', 'actor_uid', 'ts'])"
+      }
+    },
     "$other": {
       ".read": false,
       ".write": false

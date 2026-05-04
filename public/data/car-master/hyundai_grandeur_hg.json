@@ -44,5 +44,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "그랜저hg",
+    "그랜저hg하이브리드"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2017-12"
 }

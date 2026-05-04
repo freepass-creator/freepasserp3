@@ -22,6 +22,8 @@ import { ocrFile } from '../core/ocr.js';
 import { parseVehicleRegistration } from '../core/ocr-parsers/vehicle-registration.js';
 import { inferCarModel } from '../core/car-model-infer.js';
 import { getMakers, getModelsByMaker, getSubModels, findCarModel } from '../core/car-models.js';
+import { analyzeProduct as analyzeMatrix, loadIndex as loadMatrixIndex, findCatalog as findMatrixCatalog, loadCatalog as loadMatrixCatalog } from '../core/vehicle-matrix.js';
+import { fpIdsToNames } from '../core/fp-options-master.js';
 import { pickPartner } from '../core/dialogs.js';
 import {
   esc, shortStatus, fmtTime, fmtDate, fmtMileage,
@@ -124,6 +126,137 @@ function bindCarPicker(card, p) {
   });
 }
 
+/* 트림 입력 필드에 카탈로그 트림 자동완성(datalist) 부착 */
+async function refreshTrimDatalist(card, p) {
+  const trimInput = card.querySelector('[data-f="trim_name"]');
+  if (!trimInput) return;
+  const live = {
+    maker: card.querySelector('[data-f="maker"]')?.value || p.maker,
+    sub_model: card.querySelector('[data-f="sub_model"]')?.value || p.sub_model,
+    model: card.querySelector('[data-f="model"]')?.value || p.model,
+  };
+  if (!live.maker) return;
+  try {
+    const cat = await findMatrixCatalog(live.maker, live.sub_model, live.model);
+    if (!cat) return;
+    const c = await loadMatrixCatalog(cat.catalogId);
+    if (!c?.trims) return;
+    const trims = Object.keys(c.trims);
+    if (!trims.length) return;
+    // datalist 생성/갱신
+    let dl = card.querySelector('#mtxTrimList');
+    if (!dl) {
+      dl = document.createElement('datalist');
+      dl.id = 'mtxTrimList';
+      card.appendChild(dl);
+    }
+    dl.innerHTML = trims.map(t => `<option value="${esc(t)}">`).join('');
+    trimInput.setAttribute('list', 'mtxTrimList');
+  } catch {}
+}
+
+/* 차종 매트릭스 매칭 결과를 banner 로 표시 — 카탈로그/트림/표준옵션 + 정정 액션 */
+async function refreshMatrixBanner(card, p) {
+  const banner = card.querySelector('#mtxBanner');
+  if (!banner) return;
+  // 최신 form 값 반영 (사용자 편집 중에도 정확)
+  const live = {
+    ...p,
+    maker: card.querySelector('[data-f="maker"]')?.value || p.maker,
+    model: card.querySelector('[data-f="model"]')?.value || p.model,
+    sub_model: card.querySelector('[data-f="sub_model"]')?.value || p.sub_model,
+    trim_name: card.querySelector('[data-f="trim_name"]')?.value || p.trim_name,
+    options: card.querySelector('[data-f="options"]')?.value || p.options,
+  };
+  if (!live.maker) { banner.style.display = 'none'; return; }
+  try {
+    await loadMatrixIndex();
+    const r = await analyzeMatrix(live);
+    if (!r.ok) {
+      banner.style.display = 'block';
+      banner.style.borderLeftColor = '#dc2626';
+      banner.style.background = '#fef2f2';
+      banner.innerHTML = `<b style="color:#dc2626;">⚠ 차종 매트릭스 매칭 안 됨</b> — 우리 카탈로그(67개)에 ${esc(live.maker)} ${esc(live.sub_model || '')} 없음. (${esc(r.reason || '')})`;
+      return;
+    }
+    const trimNote = r.trimName ? `<b>${esc(r.trimName)}</b>` : '<span style="color:#d97706;">트림 미매칭</span>';
+    const fpCnt = r.fpAll?.length || 0;
+    const fpSample = fpCnt ? fpIdsToNames(r.fpAll.slice(0, 6)).join(', ') + (fpCnt > 6 ? ` +${fpCnt - 6}` : '') : '';
+    let confColor = '#16a34a', confLabel = '확정';
+    if (r.confidence === 'medium') { confColor = '#0284c7'; confLabel = '추정'; }
+    else if (r.confidence === 'low') { confColor = '#d97706'; confLabel = '확인 필요'; }
+    // 카탈로그 표준 sub_model 명 (메이커 prefix 제거)
+    const standardSub = (r.catalogTitle || '').replace(new RegExp('^' + (live.maker || '') + '\\s+'), '').trim();
+    const subDiffers = standardSub && (live.sub_model || '').trim() !== standardSub;
+    const trimDiffers = r.trimName && (live.trim_name || '').trim() !== r.trimName;
+    banner.style.display = 'block';
+    banner.style.borderLeftColor = confColor;
+    banner.style.background = r.confidence === 'low' ? '#fffbeb' : 'var(--alert-blue-bg)';
+    // fp_options 저장 여부 — 이미 저장된 IDs 와 비교
+    const savedFp = Array.isArray(p.fp_options) ? p.fp_options : [];
+    const fpDiffers = fpCnt > 0 && (savedFp.length !== fpCnt || !savedFp.every(id => r.fpAll.includes(id)));
+
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span><b style="color:${confColor};">✓ 매트릭스 ${confLabel}</b> · ${esc(r.catalogTitle)} · ${trimNote} · 표준옵션 <b>${fpCnt}개</b></span>
+        ${(subDiffers || trimDiffers) ? `<button class="btn btn-sm" id="mtxApplyOne" style="font-size:10px;padding:2px 8px;">차종/트림 정정</button>` : ''}
+        ${fpDiffers ? `<button class="btn btn-sm btn-success" id="mtxApplyFp" style="font-size:10px;padding:2px 8px;">표준옵션 ${fpCnt}개 저장</button>` : (savedFp.length === fpCnt && fpCnt > 0 ? `<span style="font-size:10px;color:#16a34a;">✓ 저장됨</span>` : '')}
+      </div>
+      ${fpSample ? `<div style="color:var(--text-sub);font-size:10px;margin-top:2px;" title="${esc(fpIdsToNames(r.fpAll || []).join(', '))}">${esc(fpSample)}</div>` : ''}
+      ${subDiffers ? `<div style="color:#0c4a6e;font-size:10px;margin-top:2px;">→ sub_model: <s>${esc(live.sub_model || '')}</s> → <b>${esc(standardSub)}</b></div>` : ''}
+      ${trimDiffers ? `<div style="color:#0c4a6e;font-size:10px;">→ trim_name: <s>${esc(live.trim_name || '')}</s> → <b>${esc(r.trimName)}</b></div>` : ''}
+    `;
+    // 표준옵션 저장 버튼 — updateRecord(path, data) 시그니처
+    const applyFpBtn = banner.querySelector('#mtxApplyFp');
+    if (applyFpBtn) {
+      applyFpBtn.addEventListener('click', async () => {
+        try {
+          await updateRecord(`products/${p._key}`, { fp_options: r.fpAll });
+          p.fp_options = r.fpAll;
+          showToast(`표준옵션 ${fpCnt}개 저장`);
+          refreshMatrixBanner(card, p);
+        } catch (e) {
+          console.error('[matrix fp save]', e);
+          showToast('저장 실패: ' + (e.message || e));
+        }
+      });
+    }
+    // 정정 적용 버튼 — updateRecord(path, data) 시그니처
+    const applyBtn = banner.querySelector('#mtxApplyOne');
+    if (applyBtn) {
+      applyBtn.addEventListener('click', async () => {
+        const updates = {};
+        if (subDiffers) {
+          if (p.sub_model_legacy == null) updates.sub_model_legacy = p.sub_model || '';
+          updates.sub_model = standardSub;
+        }
+        if (trimDiffers) {
+          if (p.trim_name_legacy == null) updates.trim_name_legacy = p.trim_name || p.trim || '';
+          updates.trim_name = r.trimName;
+        }
+        try {
+          await updateRecord(`products/${p._key}`, updates);
+          Object.assign(p, updates);
+          // form 입력값도 업데이트
+          if (subDiffers) {
+            const el = card.querySelector('[data-f="sub_model"]'); if (el) el.value = standardSub;
+          }
+          if (trimDiffers) {
+            const el = card.querySelector('[data-f="trim_name"]'); if (el) el.value = r.trimName;
+          }
+          showToast('매트릭스 정정 적용');
+          refreshMatrixBanner(card, p);
+        } catch (e) {
+          console.error('[matrix apply]', e);
+          showToast('적용 실패: ' + (e.message || e));
+        }
+      });
+    }
+  } catch (err) {
+    banner.style.display = 'none';
+  }
+}
+
 /* 세부모델 선택되면 vehicle_master 매칭 row 의 vehicle_class·fuel_type 자동 채움 */
 function autoFillFromCarModel(card, maker, model, sub_model) {
   if (!maker || !model || !sub_model) return;
@@ -182,7 +315,7 @@ export function renderProductList(products) {
       tone: PROD_TONE,
       name: mainLine,
       time: fmtDate(p.updated_at || p.created_at),
-      msg: subParts.join(' | ') || '-',
+      msg: subParts.join(' · ') || '-',
       meta: priceCount ? `${priceCount}종` : '',
       active: i === 0,
     });
@@ -259,6 +392,7 @@ export function renderProductDetail(p) {
         ${renderCarPicker(p, dis)}
         ${ffi('트림',      'trim_name',     p.trim_name || p.trim, dis)}
         ${ffi('옵션',      'options',       optsValue, dis)}
+        <div class="ff" id="mtxBanner" style="display:none;border-left:3px solid var(--alert-blue-text);padding:8px 12px;background:var(--alert-blue-bg);font-size:11px;line-height:1.5;border-radius:4px;margin:4px 0;"></div>
         ${ffi('외장색',    'ext_color',     p.ext_color, dis)}
         ${ffi('내장색',    'int_color',     p.int_color, dis)}
         ${ffs('구동방식',  'drive_type',    p.drive_type, O.drive_type, dis)}
@@ -266,11 +400,14 @@ export function renderProductDetail(p) {
         ${ffi('차량가격',  'vehicle_price', p.vehicle_price, dis)}
       `)}
       ${sect('등록증스펙', 'file-text', `
+        ${ffi('차명(등록증)', 'cert_car_name', p.cert_car_name, dis)}
         ${ffs('연식',      'year',          p.year ? String(p.year) : '', O.year, dis)}
         ${ffi('배기량',    'engine_cc',     p.engine_cc, dis)}
         ${ffi('승차정원',  'seats',         p.seats, dis)}
         ${ffs('연료',      'fuel_type',     p.fuel_type, O.fuel_type, dis)}
         ${ffi('최초등록일', 'first_registration_date', p.first_registration_date, dis)}
+        ${ffi('형식번호',  'type_number',   p.type_number, dis)}
+        ${ffi('원동기형식', 'engine_type',   p.engine_type, dis)}
         ${ffs('용도',      'usage',         p.usage, O.usage, dis)}
         ${ffi('변속기',    'transmission',  p.transmission, dis)}
         ${ffi('차령만료일', 'vehicle_age_expiry_date', p.vehicle_age_expiry_date, dis)}
@@ -282,6 +419,22 @@ export function renderProductDetail(p) {
       bindFormSave(page, 'products', p._key, p);
       bindCarPicker(assetCard, p);
     }
+    // 차종 매트릭스 매칭 미리보기 — 비동기로 banner 채우기 + 필드 변경 시 자동 갱신
+    refreshMatrixBanner(assetCard, p);
+    refreshTrimDatalist(assetCard, p);  // 트림 자동완성 옵션 채우기
+    let _mtxDebounce;
+    const triggerRefresh = () => {
+      clearTimeout(_mtxDebounce);
+      _mtxDebounce = setTimeout(() => {
+        refreshMatrixBanner(assetCard, p);
+        refreshTrimDatalist(assetCard, p);
+      }, 250);
+    };
+    ['maker','model','sub_model','trim_name','options'].forEach(f => {
+      const el = assetCard.querySelector(`[data-f="${f}"]`);
+      if (el) el.addEventListener('change', triggerRefresh);
+      if (el && el.tagName === 'INPUT') el.addEventListener('input', triggerRefresh);
+    });
   }
 
   // 2. 가격 매트릭스 — v2 패턴 (저장: 원단위 raw integer / 표시: 콤마 toLocaleString)

@@ -44,5 +44,12 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "뉴카이엔",
+    "카이엔",
+    "카이엔po536"
+  ],
+  "year_start": "2003-01",
+  "year_end": "현재"
 }

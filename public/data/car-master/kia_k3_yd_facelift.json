@@ -3,7 +3,9 @@
   "title": "기아 더 뉴 K3 (YD)",
   "maker": "기아",
   "source": "wikicar",
-  "source_urls": ["http://wikicar.co.kr/the_new_k3/18804"],
+  "source_urls": [
+    "http://wikicar.co.kr/the_new_k3/18804"
+  ],
   "fetched_at": "2026-05-04",
   "note": "더 뉴 K3 (YD 페리, 2015-2018, 1세대 페리). 가격: wikicar 2018년형(2017.05) OCR. 1.6 가솔린 4도어 + 1.6 디젤 + EURO 5도어.",
   "options": {},
@@ -11,29 +13,58 @@
   "trims": {
     "디럭스": {
       "slug": "디럭스",
-      "price": { "base_16g_mt": 13950000, "base_16g_at": 15450000, "base_16d": 18000000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g_mt": 13950000,
+        "base_16g_at": 15450000,
+        "base_16d": 18000000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "트렌디": {
       "slug": "트렌디",
-      "price": { "base_16g": 17630000, "base_16d": 20180000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g": 17630000,
+        "base_16d": 20180000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "트렌디 스타일": {
       "slug": "트렌디_스타일",
-      "price": { "base_16g": 18580000, "base_16d": 21130000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g": 18580000,
+        "base_16d": 21130000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "프레스티지 스페셜": {
       "slug": "프레스티지_스페셜",
-      "price": { "base_16g": 21050000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_16g": 21050000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "노블레스": {
       "slug": "노블레스",
-      "price": { "base_16g_5door": 22000000 },
-      "basic": [], "select": [], "select_groups": [],
+      "price": {
+        "base_16g_5door": 22000000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": [],
       "note": "EURO 5도어 hatch"
     }
-  }
+  },
+  "aliases": [
+    "더뉴k3"
+  ],
+  "year_start": "2015-01",
+  "year_end": "2018-12"
 }

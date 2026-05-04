@@ -9,13 +9,68 @@
   "options": {},
   "categories": {},
   "trims": {
-    "35 TFSI": { "slug": "35_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "40 TFSI": { "slug": "40_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "40 TFSI 콰트로": { "slug": "40_tfsi_quattro", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "45 TFSI 콰트로": { "slug": "45_tfsi_quattro", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "35 TDI": { "slug": "35_tdi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "40 TDI": { "slug": "40_tdi", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "S4": { "slug": "s4", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RS4": { "slug": "rs4", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "35 TFSI": {
+      "slug": "35_tfsi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "40 TFSI": {
+      "slug": "40_tfsi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "40 TFSI 콰트로": {
+      "slug": "40_tfsi_quattro",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "45 TFSI 콰트로": {
+      "slug": "45_tfsi_quattro",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "35 TDI": {
+      "slug": "35_tdi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "40 TDI": {
+      "slug": "40_tdi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "S4": {
+      "slug": "s4",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RS4": {
+      "slug": "rs4",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "a4",
+    "a4b9",
+    "뉴a4"
+  ],
+  "year_start": "2007-01",
+  "year_end": "2023-12"
 }

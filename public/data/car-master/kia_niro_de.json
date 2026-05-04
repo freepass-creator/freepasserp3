@@ -3,7 +3,9 @@
   "title": "기아 더 뉴 니로 DE",
   "maker": "기아",
   "source": "wikicar",
-  "source_urls": ["http://wikicar.co.kr/niro_hev/28307"],
+  "source_urls": [
+    "http://wikicar.co.kr/niro_hev/28307"
+  ],
   "fetched_at": "2026-05-04",
   "note": "더 뉴 니로 (DE 1세대 페리, 2018-2022). 가격: wikicar 2019.03 OCR. HEV 카파 1.6 GDI / PHEV 카파 1.6 GDI.",
   "options": {},
@@ -11,29 +13,64 @@
   "trims": {
     "럭셔리": {
       "slug": "럭셔리",
-      "price": { "base_hev": 25300000, "base_hev_3p5": 24200000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_hev": 25300000,
+        "base_hev_3p5": 24200000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "프레스티지": {
       "slug": "프레스티지",
-      "price": { "base_hev": 27080000, "base_hev_3p5": 25900000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_hev": 27080000,
+        "base_hev_3p5": 25900000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "노블레스": {
       "slug": "노블레스",
-      "price": { "base_hev": 29270000, "base_hev_3p5": 28000000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_hev": 29270000,
+        "base_hev_3p5": 28000000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "노블레스 스페셜": {
       "slug": "노블레스_스페셜",
-      "price": { "base_hev": 31300000, "base_hev_3p5": 29930000, "base_phev": 38170000, "base_phev_3p5": 36740000 },
-      "basic": [], "select": [], "select_groups": []
+      "price": {
+        "base_hev": 31300000,
+        "base_hev_3p5": 29930000,
+        "base_phev": 38170000,
+        "base_phev_3p5": 36740000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     },
     "PHEV": {
       "slug": "phev",
-      "price": { "base_phev": 35950000, "base_phev_3p5": 34520000 },
-      "basic": [], "select": [], "select_groups": [],
+      "price": {
+        "base_phev": 35950000,
+        "base_phev_3p5": 34520000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": [],
       "note": "플러그인 하이브리드 단독 트림"
     }
-  }
+  },
+  "aliases": [
+    "니로",
+    "니로ev",
+    "니로플러스",
+    "더뉴니로"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2023-12"
 }

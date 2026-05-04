@@ -44,5 +44,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "더뉴k52세대",
+    "더뉴k5하이브리드2세대"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2021-12"
 }

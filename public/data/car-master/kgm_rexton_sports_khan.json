@@ -37,5 +37,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "렉스턴스포츠칸"
+  ],
+  "year_start": "2019-01",
+  "year_end": "2021-12"
 }

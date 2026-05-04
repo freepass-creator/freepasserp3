@@ -37,5 +37,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "lf쏘나타",
+    "lf쏘나타하이브리드"
+  ],
+  "year_start": "2014-01",
+  "year_end": "2018-12"
 }

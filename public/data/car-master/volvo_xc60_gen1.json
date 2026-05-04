@@ -30,5 +30,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "xc60"
+  ],
+  "year_start": "2012-01",
+  "year_end": "2017-12"
 }

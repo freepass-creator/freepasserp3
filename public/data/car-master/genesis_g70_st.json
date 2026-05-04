@@ -30,5 +30,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "g70",
+    "더뉴g70슈팅브레이크"
+  ],
+  "year_start": "2017-01",
+  "year_end": "2024-12"
 }

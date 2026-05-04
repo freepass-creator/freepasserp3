@@ -9,8 +9,33 @@
   "options": {},
   "categories": {},
   "trims": {
-    "프리미엄": { "slug": "premium", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "R-Line": { "slug": "r_line", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "프리미엄": {
+      "slug": "premium",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "R-Line": {
+      "slug": "r_line",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "뉴제타",
+    "제타",
+    "제타7세대"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2024-12"
 }

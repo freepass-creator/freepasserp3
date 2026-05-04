@@ -264,7 +264,7 @@ function renderAccountSection(user) {
       </div>
       <div class="settings-profile-meta">
         <div class="settings-profile-name">${esc(user.name || '이름 없음')}</div>
-        <div class="settings-profile-sub">${esc([user.company_name, user.position].filter(Boolean).join(' | ') || '-')}</div>
+        <div class="settings-profile-sub">${esc([user.company_name, user.position].filter(Boolean).join(' · ') || '-')}</div>
       </div>
     </header>
 

@@ -4,6 +4,7 @@
 export const ROLES = Object.freeze({
   AGENT: 'agent',
   AGENT_ADMIN: 'agent_admin',
+  AGENT_MANAGER: 'agent_manager',  // 영업관리자 (소속 영업자 계약/정산만 보기, 대화는 X)
   PROVIDER: 'provider',
   ADMIN: 'admin',
 });
@@ -44,6 +45,7 @@ export function filterByRole(list, me, fieldMap = {}) {
     case ROLES.AGENT:
       return list.filter(r => r[agentUid] === me.uid || r[agentCode] === myUserCode);
     case ROLES.AGENT_ADMIN:
+    case ROLES.AGENT_MANAGER:
       return list.filter(r => r[agentChannelCode] === myChannel);
     case ROLES.PROVIDER:
       return list.filter(r =>

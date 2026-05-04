@@ -9,8 +9,35 @@
   "options": {},
   "categories": {},
   "trims": {
-    "LS": { "slug": "ls", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LTZ": { "slug": "ltz", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "LS": {
+      "slug": "ls",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LT": {
+      "slug": "lt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LTZ": {
+      "slug": "ltz",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "어메이징뉴크루즈",
+    "어메이징뉴크루즈5",
+    "올뉴크루즈",
+    "크루즈",
+    "크루즈5"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2018-12"
 }

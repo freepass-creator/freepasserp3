@@ -9,9 +9,39 @@
   "options": {},
   "categories": {},
   "trims": {
-    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RE 시그니처": { "slug": "re_signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "TCe 90 RE": { "slug": "tce90_re", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "TCe 90 RE 인텐스": { "slug": "tce90_re_intense", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "RE": {
+      "slug": "re",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RE 시그니처": {
+      "slug": "re_signature",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "TCe 90 RE": {
+      "slug": "tce90_re",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "TCe 90 RE 인텐스": {
+      "slug": "tce90_re_intense",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "qm3",
+    "뉴qm3"
+  ],
+  "year_start": "2013-01",
+  "year_end": "2019-12"
 }

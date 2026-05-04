@@ -9,11 +9,55 @@
   "options": {},
   "categories": {},
   "trims": {
-    "sDrive18i": { "slug": "sdrive18i", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "sDrive18d": { "slug": "sdrive18d", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "xDrive20i": { "slug": "xdrive20i", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "xDrive25e": { "slug": "xdrive25e", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "iX1 xDrive30": { "slug": "ix1_xdrive30", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "iX1 eDrive20": { "slug": "ix1_edrive20", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "sDrive18i": {
+      "slug": "sdrive18i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "sDrive18d": {
+      "slug": "sdrive18d",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "xDrive20i": {
+      "slug": "xdrive20i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "xDrive25e": {
+      "slug": "xdrive25e",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "iX1 xDrive30": {
+      "slug": "ix1_xdrive30",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "iX1 eDrive20": {
+      "slug": "ix1_edrive20",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "ix1u11",
+    "x1e84",
+    "x1f48",
+    "x1u11"
+  ],
+  "year_start": "2010-01",
+  "year_end": "현재"
 }

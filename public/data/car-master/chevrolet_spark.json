@@ -9,9 +9,41 @@
   "options": {},
   "categories": {},
   "trims": {
-    "LS": { "slug": "ls", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프리미어": { "slug": "premier", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RS": { "slug": "rs", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "LS": {
+      "slug": "ls",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LT": {
+      "slug": "lt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미어": {
+      "slug": "premier",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RS": {
+      "slug": "rs",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "더넥스트스파크",
+    "더뉴스파크",
+    "스파크",
+    "스파크ev"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2022-12"
 }

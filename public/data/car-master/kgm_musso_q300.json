@@ -30,5 +30,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "무쏘q300"
+  ],
+  "year_start": "2026-01",
+  "year_end": "현재"
 }

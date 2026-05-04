@@ -49,5 +49,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "더뉴그랜저ig"
+  ],
+  "year_start": "2017-01",
+  "year_end": "2021-12"
 }

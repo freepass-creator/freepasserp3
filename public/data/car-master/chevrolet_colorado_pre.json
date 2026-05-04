@@ -30,5 +30,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "콜로라도"
+  ],
+  "year_start": "2019-01",
+  "year_end": "2020-12"
 }

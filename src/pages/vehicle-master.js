@@ -104,7 +104,7 @@ function renderList() {
       v.seats ? `${v.seats}인승` : '',
       v.battery_kwh ? `${v.battery_kwh}kWh` : '',
       v.fuel_type, v.category,
-    ].filter(Boolean).join(' | ');
+    ].filter(Boolean).join(' · ');
     return `
       <div class="vm-row" data-key="${v._key}" style="display:grid;grid-template-columns:80px 110px 1fr auto auto;gap:var(--sp-3);padding:var(--sp-2) var(--sp-4);border-bottom:1px solid var(--c-border-soft);align-items:center;cursor:pointer;">
         <span style="font-size:var(--fs-xs);color:var(--c-text-sub);">${v.maker || '-'}</span>

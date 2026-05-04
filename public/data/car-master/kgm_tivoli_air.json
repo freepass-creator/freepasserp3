@@ -30,5 +30,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "티볼리에어"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2023-12"
 }

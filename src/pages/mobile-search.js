@@ -32,15 +32,15 @@ export function mount() {
   main.innerHTML = `
     <div class="m-shell-page">
       <div class="m-search-head">
-        <div class="m-search-bar">
+        <label class="m-search-bar" for="mSearchInput">
           <i class="ph ph-magnifying-glass"></i>
           <input type="search" id="mSearchInput" placeholder="차량번호, 모델명 검색..."
                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                  enterkeyhint="search">
           <span class="m-search-count" id="mSearchCount"></span>
-          <button class="m-topbar-action" id="mSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
-          <button class="m-topbar-action" id="mSearchFilterBtn" aria-label="필터"><i class="ph ph-sliders-horizontal"></i><span class="m-filter-dot" id="mSearchFilterDot" hidden></span></button>
-        </div>
+          <button type="button" class="m-topbar-action" id="mSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
+          <button type="button" class="m-topbar-action" id="mSearchFilterBtn" aria-label="필터"><i class="ph ph-sliders-horizontal"></i><span class="m-filter-dot" id="mSearchFilterDot" hidden></span></button>
+        </label>
         <div class="m-search-active" id="mSearchActive"><button class="m-search-clear-all" disabled>전체해제</button></div>
       </div>
       <div class="m-page m-search-list" id="mSearchList"></div>
@@ -201,14 +201,13 @@ function openFilterSheet() {
     if (!chipsHtml) return '';
     const activeCount = set?.size || 0;
     const collapsed = mSecCollapsed[key] ? 'is-collapsed' : '';
-    // 펼침 = 아래 ∨ (내용 보이는 중) / 접힘 = 오른쪽 > (펼치려면 클릭)
     const toggleIcon = mSecCollapsed[key] ? 'ph-caret-right' : 'ph-caret-down';
     return `
       <div class="m-filter-section ${activeCount ? 'has-active' : ''} ${collapsed}" data-sec="${key}">
         <div class="m-filter-section-title" data-sec-toggle="${key}">
           <i class="${f.icon}"></i>
           <span>${f.label}</span>
-          ${activeCount ? `<span class="sb-badge is-visible">${activeCount}</span>` : ''}
+          ${activeCount > 0 ? `<span class="m-filter-section-count">${activeCount}</span>` : ''}
           <i class="ph ${toggleIcon}"></i>
         </div>
         <div class="m-filter-chips" data-g="${key}">${chipsHtml}</div>
@@ -282,16 +281,20 @@ function openFilterSheet() {
             if (set.has(c)) set.delete(c);
             else set.add(c);
             btn.classList.toggle('is-active');
-            // 섹션 뱃지 갱신
+            // 섹션 카운트 뱃지 — 선택된 개수만 표시 (0 이면 뱃지 자체 제거)
             const section = btn.closest('.m-filter-section');
-            const badge = section?.querySelector('.sb-badge');
             const cnt = set.size;
-            if (cnt) {
-              if (badge) { badge.textContent = cnt; badge.classList.add('is-visible'); }
-              else section?.querySelector('.m-filter-section-title')?.insertAdjacentHTML('beforeend', `<span class="sb-badge is-visible">${cnt}</span>`);
+            const titleEl = section?.querySelector('.m-filter-section-title');
+            const countEl = section?.querySelector('.m-filter-section-count');
+            if (cnt > 0) {
+              if (countEl) countEl.textContent = cnt;
+              else {
+                const labelSpan = titleEl?.querySelector('span');
+                labelSpan?.insertAdjacentHTML('afterend', `<span class="m-filter-section-count">${cnt}</span>`);
+              }
               section?.classList.add('has-active');
             } else {
-              badge?.remove();
+              countEl?.remove();
               section?.classList.remove('has-active');
             }
             // 검색창 뒤 카운트 + 시트 제목 전체 필터 개수 실시간 반영
@@ -305,7 +308,7 @@ function openFilterSheet() {
         activeFilters = {};
         root.querySelectorAll('.chip.is-active').forEach(c => c.classList.remove('is-active'));
         root.querySelectorAll('.m-filter-section.has-active').forEach(s => s.classList.remove('has-active'));
-        root.querySelectorAll('.m-filter-section .sb-badge').forEach(b => b.remove());
+        root.querySelectorAll('.m-filter-section-count').forEach(b => b.remove());
         updateSearchCount();
         updateSheetTitleBadge(sheet.root);
       });
@@ -438,7 +441,7 @@ function renderCard(p) {
     p.mileage ? `${Number(p.mileage).toLocaleString()}km` : '',
     p.fuel_type,
     color,
-  ].filter(Boolean).join(' | ');
+  ].filter(Boolean).join(' · ');
 
   // 썸네일 심사기준 오버레이
   const creditGrade = p._policy?.credit_grade || p._policy?.screening_criteria || p.credit_grade || '';
@@ -472,29 +475,33 @@ function openProductSheet(p) {
   const me = store.currentUser || {};
   const isAgent = me.role === 'agent' || me.role === 'agent_admin';
   const isAdmin = me.role === 'admin';
-  // 카탈로그 모드(손님)는 상단 액션 버튼 없음 — 하단 전화 CTA 로 대체
-  const headerRight = store.catalogMode
+
+  // 액션 버튼 — 역할별 (모두 하단 액션바로 통일, 상단바는 비움)
+  const actionsHtml = store.catalogMode
     ? ''
     : isAgent
     ? `
-      <button class="m-topbar-action" data-act="inquire" title="소통"><i class="ph ph-chat-circle"></i></button>
-      <button class="m-topbar-action" data-act="contract" title="계약"><i class="ph ph-file-text"></i></button>
-      <button class="m-topbar-action" data-act="share" title="공유"><i class="ph ph-paper-plane-tilt"></i></button>
+      <button class="m-action-btn" data-act="inquire"><i class="ph ph-chat-circle"></i><span>소통</span></button>
+      <button class="m-action-btn is-primary" data-act="contract"><i class="ph ph-file-text"></i><span>계약</span></button>
+      <button class="m-action-btn" data-act="share"><i class="ph ph-paper-plane-tilt"></i><span>공유</span></button>
     `
     : isAdmin
     ? `
-      <button class="m-topbar-action" data-act="contract" title="계약생성"><i class="ph ph-file-plus"></i></button>
-      <button class="m-topbar-action" data-act="share" title="공유"><i class="ph ph-paper-plane-tilt"></i></button>
+      <button class="m-action-btn is-primary" data-act="contract"><i class="ph ph-file-plus"></i><span>계약생성</span></button>
+      <button class="m-action-btn" data-act="share"><i class="ph ph-paper-plane-tilt"></i><span>공유</span></button>
     `
     : `
-      <button class="m-topbar-action" data-act="share" title="공유"><i class="ph ph-paper-plane-tilt"></i></button>
+      <button class="m-action-btn" data-act="share"><i class="ph ph-paper-plane-tilt"></i><span>공유</span></button>
     `;
 
-  const body = `<div class="m-product-detail" id="mProductDetail"></div>`;
+  const body = `
+    <div class="m-product-detail" id="mProductDetail"></div>
+    ${actionsHtml ? `<div class="m-detail-actions">${actionsHtml}</div>` : ''}
+  `;
 
   pushMobileView(body, {
     title,
-    headerRight,
+    headerRight: '',
     onMount: (view) => {
       const container = view.querySelector('#mProductDetail');
       renderProductDetail(container, p, { showActions: false });
@@ -506,10 +513,9 @@ function openProductSheet(p) {
 }
 
 async function startContractFromProduct(p) {
-  store.pendingContractProduct = p._key;
-  const { navigate } = await import('../core/router.js');
-  navigate('/contract');
-  showToast(`${p.car_number || p.model || '차량'} 계약 시작`);
+  // 채팅에서와 동일한 시트 (기간 + 계약자 기본정보 입력)
+  const { openContractStartSheet } = await import('./mobile-workspace.js');
+  openContractStartSheet({ product: p });
 }
 
 async function inquireProduct(p) {

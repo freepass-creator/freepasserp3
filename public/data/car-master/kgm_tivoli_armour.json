@@ -37,5 +37,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "티볼리아머"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2019-12"
 }

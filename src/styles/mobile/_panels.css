@@ -1,0 +1,511 @@
+  /* ── Bottom Sheet ── */
+  .m-sheet-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-overlay);
+    background: var(--c-overlay-soft);
+    animation: m-fade-in var(--dur) var(--ease);
+  }
+
+  @keyframes m-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .m-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: calc(var(--z-overlay) + 1);
+    background: var(--c-surface);
+    border-radius: var(--m-radius-sharp) var(--m-radius-sharp) 0 0;
+    max-height: 90dvh;
+    display: flex;
+    flex-direction: column;
+    animation: m-sheet-up var(--dur-slow) var(--ease);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  @keyframes m-sheet-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .m-sheet-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-border-strong);
+    margin: var(--sp-2) auto;
+    flex-shrink: 0;
+  }
+
+  .m-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--sp-2) var(--sp-4);
+    flex-shrink: 0;
+  }
+
+  .m-sheet-title {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+  }
+
+  .m-sheet-close {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--c-bg-sub);
+    font-size: var(--fs-md);
+    color: var(--c-text-sub);
+  }
+
+  .m-sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 var(--sp-4) var(--sp-4);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Onboarding (앱 설치 + 알림 유도 바텀시트) ── */
+  .onb-lead {
+    font-size: var(--fs-sm);
+    color: var(--c-text-sub);
+    padding: var(--sp-2) 0 var(--sp-3);
+  }
+  .onb-list { display: flex; flex-direction: column; gap: var(--sp-3); }
+  .onb-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3);
+    background: var(--c-bg-sub);
+    border-radius: var(--m-radius-sharp);
+  }
+  .onb-item.is-muted { opacity: 0.6; }
+  .onb-item-ico {
+    flex-shrink: 0;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--c-surface);
+    color: var(--c-accent);
+    border-radius: 50%;
+    font-size: var(--fs-lg);
+  }
+  .onb-item-body { flex: 1; min-width: 0; }
+  .onb-item-title { font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--c-text); }
+  .onb-item-desc {
+    margin-top: 2px;
+    font-size: var(--fs-xs);
+    color: var(--c-text-sub);
+    line-height: 1.4;
+  }
+
+  /* ── Chat 아바타 (room-item 내부에서 재활용) ── */
+  .m-chat-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-bg-sub);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--icon-md);
+    color: var(--c-text-muted);
+    flex-shrink: 0;
+  }
+
+  /* ── Chat Room (Mobile) ── */
+  .m-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-3) var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    /* gap 제거 — row 간 간격은 .chat-row + .chat-row margin-top 으로 단일화 (1/2/3px) */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .m-chat-input-area {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    padding: var(--sp-2) var(--sp-3);
+    padding-bottom: calc(var(--sp-2) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--c-border);
+    background: var(--c-surface);
+  }
+
+  /* 높이는 내부 padding + 폰트로 자동 — 폰마다 다른 뷰포트 대응 */
+  .m-chat-input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--fs-base);          /* 16px 근처 — iOS 자동줌 방지 */
+    line-height: 1.4;
+    border: 1px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    outline: none;
+    background: var(--c-bg-sub);
+  }
+
+  .m-chat-input:focus {
+    border-color: var(--c-accent);
+    background: var(--c-surface);
+  }
+
+  /* 첨부·전송 버튼 — 정사각형, 입력칸과 align */
+  .m-chat-input-area .m-chat-attach,
+  .m-chat-input-area .m-chat-send {
+    flex-shrink: 0;
+    width: var(--ctrl-h);
+    height: var(--ctrl-h);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: var(--c-text-sub);
+    font-size: var(--fs-lg);
+    border-radius: var(--m-radius-sharp);
+  }
+  .m-chat-input-area .m-chat-send { color: var(--c-accent); }
+  .m-chat-input-area .m-chat-attach:active,
+  .m-chat-input-area .m-chat-send:active { background: var(--c-bg-hover); }
+
+  /* ── Search Bar (Mobile) — 검색창 자체가 입력칸
+     모던 한국 모바일 앱 트렌드: 흰색 bg + 1.5px 보더 (Toss·당근·무신사 톤)
+     박스 어디든 탭하면 input 에 커서 (label for=...) */
+  .m-search-bar {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    min-height: 44px;
+    padding: 0 var(--sp-1) 0 10px;
+    background: var(--c-surface);
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    gap: 0;
+    cursor: text;
+    transition: border-color var(--dur) var(--ease);
+  }
+  .m-search-bar:focus-within { border-color: var(--c-accent); }
+  /* 팬텀 스페이서 — 페이지마다 자식 요소 다양해도 32px 베이스라인 유지 (v2) */
+  .m-search-bar::after {
+    content: "";
+    width: 0;
+    height: 32px;
+    flex-shrink: 0;
+  }
+  /* input — base.css 의 input[type=search] unlayered 룰 강제 reset
+     (height 26 / padding 0 8 / border 1px / radius 2 / bg #fff)
+     height auto 로 부모 flex align-items:center 가 자연스럽게 가운데 정렬 */
+  .m-search-bar input,
+  .m-search-bar input[type="search"] {
+    flex: 1 !important;
+    min-width: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    font-family: inherit !important;
+    font-size: var(--fs-sm) !important;
+    line-height: 1 !important;
+    color: var(--c-text) !important;
+  }
+  .m-search-bar input::placeholder { color: var(--c-text-muted); }
+  .m-search-bar input::-webkit-search-cancel-button,
+  .m-search-bar input::-webkit-search-decoration { -webkit-appearance: none; display: none; }
+  /* iOS: input focus 시 자체 캐럿 outline / native style 방지 */
+  .m-search-bar input:focus,
+  .m-search-bar input:focus-visible {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+  /* 검색 아이콘 (좌측) — input 과 4px 간격 */
+  .m-search-bar > i:first-child {
+    color: var(--c-text-muted);
+    font-size: var(--fs-lg);
+    flex-shrink: 0;
+    margin-right: 4px;
+  }
+  /* 내부 X / 필터 버튼 — 32×32 정사각형 sharp */
+  .m-search-bar .m-topbar-action {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--m-radius-sharp);
+    background: transparent;
+  }
+  .m-search-bar .m-topbar-action:active { opacity: 0.55; }
+  /* 필터 버튼 — 활성 시 accent fill (v3 추가) */
+  .m-search-bar .m-topbar-action:has(.m-filter-dot:not([hidden])) {
+    background: var(--c-accent);
+    color: var(--c-text-inv, #fff);
+  }
+
+  /* 검색창 아래 칩 strip — 통일 spec
+     좌우로 넘치면 줄바꿈 (overflow-x scroll 대신 flex-wrap) — 모바일 표준 */
+  .m-filter-chips,
+  .m-search-active {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--m-gap-strip);
+    min-height: var(--m-h-chip);
+    padding: 0;
+    margin: 6px 0 0;
+  }
+  .m-filter-chips::-webkit-scrollbar,
+  .m-search-active::-webkit-scrollbar { display: none; }
+  .m-search-active-empty {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+  }
+  /* .chip 활성 상태 — accent 솔리드 fill (필터 시트 안에서 강한 선택 피드백) */
+  body.is-mobile .chip.is-active,
+  body.is-mobile .chip.active {
+    background: var(--c-accent);
+    color: var(--c-text-inv, #fff);
+    border-color: var(--c-accent);
+  }
+
+  /* 활성 필터 칩 — .chip 과 완전 동일 뱃지 (소통 페이지 빠른필터 톤)
+     base.css .chip: height 20px / radius 4 / fs 12 / padding 0 8 / border 1px / bg-card / text-sub */
+  .m-active-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    height: 20px;
+    padding: 0 2px 0 8px;
+    background: var(--c-surface);
+    color: var(--c-text-sub);
+    border: 1px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    font-size: 12px;
+    font-weight: var(--fw-normal);
+    line-height: 1;
+  }
+  .m-active-chip .chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--c-text-muted);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .m-active-chip .chip-remove:active { opacity: 0.55; }
+
+  /* 전체해제 — .chip 과 동일 spec (보더 + sharp 4px) */
+  .m-search-clear-all {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-shrink: 0;
+    height: 20px;
+    padding: 0 8px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-surface);
+    color: var(--c-text-muted);
+    font-size: 12px;
+    font-weight: var(--fw-normal);
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .m-search-clear-all.is-active { color: var(--c-accent); border-color: var(--c-accent); }
+  .m-search-clear-all:active { opacity: 0.55; }
+  .m-search-clear-all[disabled] { cursor: default; opacity: 0.45; }
+
+  /* 필터 시트 섹션 타이틀 옆 카운트 — 작은 sharp 뱃지 (전체 라운드 통일) */
+  .m-filter-section-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 16px;
+    padding: 0 6px;
+    margin-left: 6px;
+    background: var(--c-bg-sub);
+    color: var(--c-text-muted);
+    border-radius: var(--m-radius-sharp);
+    font-size: 11px;
+    font-weight: var(--fw-medium);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .m-filter-section.has-active .m-filter-section-count {
+    background: var(--c-accent);
+    color: var(--c-text-inv, #fff);
+  }
+
+  /* 모바일 인터랙티브 버튼/칩 텍스트 가운데 정렬 — 단, 목록형 m-info-row 등은 제외
+     (m-info-row 는 좌측 라벨 + 우측 값 구조라서 가운데 정렬 시 깨짐) */
+  body.is-mobile .chip,
+  body.is-mobile .m-action-btn,
+  body.is-mobile .m-search-clear-all,
+  body.is-mobile .m-active-chip {
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* 필터 버튼 — 활성 시 accent fill 적용 (m-search-bar 컨텍스트 :has 룰 참조) */
+  .m-search-bar .m-topbar-action { position: relative; }
+  /* m-filter-dot 은 :has 셀렉터 트리거용 + 시각 보조 (작은 점) */
+  .m-filter-dot {
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 6px; height: 6px;
+    background: var(--c-text-inv, #fff);
+    border-radius: 50%;
+  }
+
+  /* 필터 바텀시트 — 섹션 컨테이너. m-sheet-body 가 자체 스크롤 담당 */
+  .m-filter-sheet {
+    display: flex; flex-direction: column; gap: var(--sp-4);
+    padding-bottom: var(--sp-3);
+  }
+  .m-filter-section {
+    border-bottom: 1px solid var(--c-border-soft);
+    padding-bottom: var(--sp-3);
+  }
+  .m-filter-section:last-of-type { border-bottom: 0; }
+  .m-filter-section-title {
+    display: flex; align-items: center; gap: var(--sp-2);
+    font-size: var(--fs-sm); font-weight: var(--fw-medium);
+    color: var(--c-text);
+    padding: var(--sp-2) 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  /* 접기 토글 화살표 — 섹션 타이틀 우측 */
+  .m-filter-section-title .ph-caret-down,
+  .m-filter-section-title .ph-caret-right {
+    margin-left: auto;
+    font-size: var(--icon-sm);
+    color: var(--c-text-muted);
+    flex-shrink: 0;
+  }
+  .m-filter-section.is-collapsed .m-filter-chips {
+    display: none;
+  }
+  .m-filter-section-title > i:first-child {
+    font-size: var(--icon-lg);   /* 20px — 섹션 헤더용 뚜렷하게 */
+    color: var(--c-text-sub);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  /* 섹션 제목/리스트 행 내 뱃지 — 우측정렬 해제 (sb-badge 의 margin-left:auto 무시) */
+  .m-filter-section-title .sb-badge,
+  .m-info-section-title .sb-badge,
+  .m-sheet-title .sb-badge,
+  .m-room-item-sub .sb-badge,
+  .m-room-item-msg .sb-badge {
+    margin-left: 0;
+    font-size: var(--fs-2xs);
+    background: var(--c-accent); color: var(--c-text-inv);
+    border-radius: var(--m-radius-sharp); padding: 0 6px; min-width: 16px;
+    text-align: center; line-height: 16px;
+  }
+  .m-filter-sheet .m-filter-chips {
+    padding: 0; flex-wrap: wrap; overflow: visible;
+    height: auto;                /* 24px 고정 height 해제 — 여러 줄로 wrap 가능 */
+    align-items: flex-start;
+  }
+  .m-filter-more {
+    border: 0; background: transparent;
+    color: var(--c-accent); font-size: var(--fs-xs);
+    padding: 0 var(--sp-2); height: 28px;
+    cursor: pointer;
+  }
+  .m-filter-more:hover { text-decoration: underline; }
+
+  /* ════════════════════════════════════════════════
+     모바일 정보 섹션/리스트 규격 (설정·계약·정산 공통)
+     - 섹션은 bordered 카드, 상단에 gray 헤더(타이틀)
+     - 본문은 40px 행들이 얇은 divider 로 구분
+     ════════════════════════════════════════════════ */
+  .m-info-page {
+    padding: var(--sp-3);
+    padding-bottom: var(--sp-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+  }
+  .m-info-section {
+    flex-shrink: 0;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    overflow: hidden;
+  }
+  .m-info-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-2);
+    min-height: 32px;
+    padding: 6px var(--sp-3);  /* min-height 32px 내부 센터링 위한 미세 padding */
+    background: var(--c-bg-sub);
+    border-bottom: 1px solid var(--c-border-soft);
+  }
+  .m-info-section-title {
+    font-size: var(--fs-2xs);
+    font-weight: var(--fw-medium);
+    color: var(--c-text-muted);
+  }
+  .m-info-body { /* 이전 별도 카드 래퍼 → 섹션 내부 컨테이너 */
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .m-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    min-height: 40px;
+    padding: var(--sp-2) var(--sp-3);
+    border-bottom: 1px solid var(--c-border-soft);
+  }
+  .m-info-row:last-child { border-bottom: 0; }
+  .m-info-label {
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    flex-shrink: 0;
+  }
+  .m-info-value {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--c-text);
+    text-align: right;
+    word-break: break-word;
+    font-variant-numeric: tabular-nums;
+  }
+  .m-info-value.is-empty { color: var(--c-text-muted); font-weight: var(--fw-normal); }

@@ -30,5 +30,12 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "s60",
+    "s603세대",
+    "s60크로스컨트리"
+  ],
+  "year_start": "2005-01",
+  "year_end": "2024-12"
 }

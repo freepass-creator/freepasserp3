@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <title>freepass ERP</title>
-<meta name="viewport" content="width=1280">
+<meta name="viewport" content="width=1280" id="metaViewport">
+<script>
+  // 모바일 단말 또는 ?mobile=1 일 경우 viewport 를 device-width 로 즉시 교체 (FOUC 방지)
+  (function () {
+    var ua = navigator.userAgent || '';
+    var force = /[?&]mobile=1\b/.test(location.search);
+    // 실제 폰 UA + URL 강제만 mobile 처리. 데스크톱 좁은 창은 1280 viewport 유지 (글씨 크기 안정).
+    var isMobile = force || /iPhone|iPod|Android.*Mobile|webOS|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(ua);
+    if (isMobile) {
+      var m = document.getElementById('metaViewport');
+      if (m) m.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content');
+    }
+  })();
+</script>
 
 <!-- PWA — 데스크톱/모바일에서 "앱 설치" 가능. 설치 시 브라우저 UI 없이 독립 창으로 실행 -->
 <link rel="manifest" href="/manifest.json">
@@ -14,7 +27,8 @@
 <link rel="apple-touch-icon" href="/favicon.svg">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
-<!-- Pretendard — jpkerp v4 와 동일한 ERP 톤 (한글 CJK 사실상 fullwidth + 숫자는 tabular-nums) -->
+<!-- Pretendard — 데스크톱/모바일 공통 (한국 웹앱 표준: Toss·당근·직방·무신사 등)
+     이전 정적 버전 그대로 (Variable 추가 시 데스크톱 글씨 metrics 변화 가능성 회피) -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="/src/styles/base.css">
@@ -372,19 +386,19 @@
     background: var(--bg-card);
     transition: box-shadow 0.15s, border-color 0.15s;
   }
-  /* 1) 보기 모드 — disabled / readonly */
+  /* 1) 보기 모드 — disabled / readonly. background-color 만 지정 (shorthand 쓰면 select chevron SVG 사라짐) */
   .input:disabled, input:disabled, select:disabled, textarea:disabled,
   .input[readonly], input[readonly], textarea[readonly] {
-    background: var(--bg-stripe) !important;
+    background-color: var(--bg-stripe) !important;
     color: var(--text-sub);
     cursor: default;
     border-color: var(--border-soft) !important;
   }
-  /* 3) 편집 중 — 라인 색 거의 변화 없음 + 옅은 파랑 배경 틴트 (은은) */
+  /* 3) 편집 중 — 라인 색 거의 변화 없음 + 옅은 파랑 배경 틴트. background-color 만 지정 (chevron SVG 보존) */
   .input:focus, input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: rgba(37, 99, 235, 0.3) !important;
-    background: rgba(37, 99, 235, 0.025) !important;
+    background-color: rgba(37, 99, 235, 0.025) !important;
   }
   /* 2) 선택됨 (1번째 클릭) — 시각 강조, 아직 수정 불가 */
   .contract-field-input.is-selected,
@@ -795,10 +809,100 @@
   [data-page="search"] table.table-fixed thead th {
     color: var(--text-main);
   }
-  /* 토스트 — fixed 우측 하단 (document flow 영향 X). controls.css 미로드 보정 */
+  /* ── 커스텀 확인 다이얼로그 (Windows native confirm 대체) ── */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.14s ease;
+  }
+  .confirm-overlay.is-shown { opacity: 1; }
+  .confirm-overlay.is-leaving { opacity: 0; }
+  .confirm-card {
+    min-width: 320px;
+    max-width: 92vw;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.18), 0 2px 8px rgba(15, 23, 42, 0.08);
+    transform: translateY(8px) scale(0.98);
+    opacity: 0;
+    transition: transform 0.14s ease, opacity 0.14s ease;
+  }
+  .confirm-overlay.is-shown .confirm-card {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  .confirm-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .confirm-message {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text-sub);
+    margin-bottom: 18px;
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
+  .confirm-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+  .confirm-btn {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-size: 12px;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
+    letter-spacing: -0.01em;
+  }
+  .confirm-btn:hover { background: var(--bg-hover); }
+  .confirm-btn.is-primary {
+    background: var(--text-main);
+    color: var(--text-inverse);
+    border-color: var(--text-main);
+  }
+  .confirm-btn.is-primary:hover { background: #1e293b; }
+  .confirm-btn.is-danger {
+    background: var(--alert-red-text);
+    color: var(--text-inverse);
+    border-color: var(--alert-red-text);
+  }
+  .confirm-btn.is-danger:hover { background: #b91c1c; }
+
+  /* 모바일 — 카드 폭 자동, 폰트 약간 키움 */
+  body.is-mobile .confirm-card {
+    min-width: 280px;
+    max-width: 88vw;
+    padding: 18px;
+    border-radius: 4px;
+  }
+  body.is-mobile .confirm-title { font-size: 16px; }
+  body.is-mobile .confirm-message { font-size: 14px; }
+  body.is-mobile .confirm-btn { height: 40px; font-size: 14px; padding: 0 18px; }
+
+  /* 토스트 — fixed 우측 하단 (액션바 위로 충분히 높게). controls.css 미로드 보정 */
   .toast-container {
     position: fixed;
-    bottom: 24px;
+    bottom: 80px;             /* 하단 액션바(버튼 행) 위로 충분 */
     right: 24px;
     top: auto;
     left: auto;
@@ -1189,6 +1293,12 @@
     background-color: #fffceb !important;
     border-color: var(--text-main);
   }
+  /* 보기 모드에서 모든 업로드 UI 숨김 — 차량등록증/사진/면허증/첨부서류 등 (.pd-dropzone 일괄)
+     클릭/드래그 자체가 안 보이게 해서 "보기인데 업로드 가능" 인 혼란 회피.
+     편집 모드 진입하면 자동 노출. */
+  body:not(.is-edit-mode) .pt-page.active .pd-dropzone {
+    display: none !important;
+  }
   /* 편집 모드 진입 시 액션바 상단 강조 (저장 버튼 색상은 .is-primary 가 처리) */
   body.is-edit-mode .pt-actions { box-shadow: inset 0 2px 0 var(--text-main); }
 
@@ -1291,6 +1401,28 @@
     gap: var(--sp-2);
     flex-shrink: 0;
     font-size: var(--font-size-lg);   /* 13px - 패널 헤더만 */
+  }
+  /* 디테일 패널 닫기 버튼 — 모든 ws4-detail .ws4-head 우측 끝 (자동 주입) */
+  .ws4-detail .ws4-head .ws4-detail-close {
+    margin-left: auto;
+    width: 22px; height: 22px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; background: transparent;
+    color: var(--text-weak);
+    cursor: pointer; border-radius: var(--radius);
+    font-size: 14px;
+  }
+  .ws4-detail .ws4-head .ws4-detail-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-main);
+  }
+  /* 디테일 패널 collapsed — 폭 0 으로 숨김 (검색 페이지의 .srch-detail.is-collapsed 와 별개) */
+  .ws4-detail.is-collapsed:not(.srch-detail) {
+    flex: 0 0 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
   }
   /* 표 헤더 — 패널 헤더와 동일 높이 (시각 통일).
      본문 zebra 와 색 구분 + box-shadow 로 위/아래 라인 (sticky 스크롤 시에도 표시) */
@@ -2533,6 +2665,66 @@
   /* 가입/재설정 카드는 로그인 카드와 동시에 안 뜨게 — 모드 토글 */
   body.is-login .login-card[hidden] { display: none !important; }
 
+  /* ── 모바일 SPA 쉘 — body.is-mobile 일 때만 표시 ── */
+  /* 기본은 항상 숨김 — [hidden] 속성보다 우선순위 강하게. 데스크톱은 절대 진입 X */
+  #mobileApp { display: none !important; }
+  body.is-mobile #mobileApp { display: flex !important; }
+  /* body.is-mobile 진입 시 데스크톱 SPA 모두 숨김 */
+  body.is-mobile .pt-sb,
+  body.is-mobile .pt-tb,
+  body.is-mobile .pt-main,
+  body.is-mobile .pt-actions { display: none !important; }
+
+  .m-app {
+    flex-direction: column;
+    height: 100vh; height: 100dvh;
+    background: var(--bg-page);
+    position: fixed; inset: 0;
+    overflow: hidden;
+  }
+  .m-main {
+    flex: 1; min-height: 0;
+    overflow-y: auto; overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .m-tabbar {
+    flex-shrink: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--c-border-soft, var(--border));
+    background: color-mix(in srgb, var(--c-surface, var(--bg-card)) 92%, transparent);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 10;
+  }
+  .m-tab {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px;
+    padding: 8px 4px 6px;
+    color: var(--c-text-muted, var(--text-muted));
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: color 0.15s ease, opacity 0.06s ease;
+  }
+  /* :link/:visited/:hover/:active 모두 밑줄 제거 (a 태그 default 무력화) */
+  .m-tab,
+  .m-tab:link,
+  .m-tab:visited,
+  .m-tab:hover,
+  .m-tab:active,
+  .m-tab:focus { text-decoration: none !important; }
+  .m-tab > i { font-size: 22px; }
+  /* 활성 탭 — accent 색 + bold 만 (인디케이터 바 / 아이콘 위로 이동 / 스케일 모두 제거) */
+  .m-tab.is-active {
+    color: var(--c-accent, #1B2A4A);
+    font-weight: 600;
+  }
+  /* 누름 피드백 — opacity (Toss 톤) */
+  .m-tab:active { opacity: 0.55; }
+
   /* 모바일 — v2 와 픽셀 단위 정확히 일치 */
   @media (max-width: 768px) {
     .login-page {
@@ -3644,6 +3836,19 @@
 
 <!-- 페이지별 액션바 — 각 페이지가 mount 시 src/core/page-actions.js의 setPageActions() 로 채움 -->
 <footer class="pt-actions" id="pageActions"></footer>
+
+<!-- 모바일 SPA — body.is-mobile 일 때만 표시. 데스크톱(.pt-sb/.pt-tb/.pt-main/.pt-actions)은 CSS 로 숨김.
+     #mainContent 는 mobile-*.js mount() 가 innerHTML 주입하는 컨테이너.
+     하단 4탭 — 상품/소통/계약/설정. 라우팅은 src/core/router.js 의 navigate() 사용. -->
+<div class="m-app" id="mobileApp" hidden>
+  <main class="m-main" id="mainContent"></main>
+  <nav class="m-tabbar" role="tablist" aria-label="주 메뉴">
+    <a class="m-tab" data-route="/search"   href="/search"><i class="ph ph-storefront"></i><span>상품</span></a>
+    <a class="m-tab" data-route="/workspace" href="/workspace"><i class="ph ph-chat-circle-dots"></i><span>소통</span></a>
+    <a class="m-tab" data-route="/contract" href="/contract"><i class="ph ph-file-text"></i><span>계약</span></a>
+    <a class="m-tab" data-route="/settings" href="/settings"><i class="ph ph-gear"></i><span>설정</span></a>
+  </nav>
+</div>
 
 <!-- 로그인 overlay (auth 안 됨일 때만 보임 — body.is-login) — v2 규격 -->
 <div class="login-overlay">

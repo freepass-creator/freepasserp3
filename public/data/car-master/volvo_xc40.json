@@ -37,5 +37,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "c40리차지",
+    "xc40리차지"
+  ],
+  "year_start": "2022-01",
+  "year_end": "2024-12"
 }

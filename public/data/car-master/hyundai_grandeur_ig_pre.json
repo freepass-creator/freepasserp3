@@ -45,5 +45,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "그랜저ig"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2016-12"
 }

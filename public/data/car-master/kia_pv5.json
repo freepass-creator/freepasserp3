@@ -3,16 +3,53 @@
   "title": "기아 PV5",
   "maker": "기아",
   "source": "stub",
-  "source_urls": ["https://www.kia.com/kr/pbv/pv5"],
+  "source_urls": [
+    "https://www.kia.com/kr/pbv/pv5"
+  ],
   "fetched_at": "2026-05-04",
   "note": "PV5 — PBV 1세대 (2025~). 패신저/카고 변형. 트림명만 stub.",
   "options": {},
   "categories": {},
   "trims": {
-    "패신저 5인승": { "slug": "passenger_5", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "패신저 7인승": { "slug": "passenger_7", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "카고 스탠다드": { "slug": "cargo_standard", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "카고 롱": { "slug": "cargo_long", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "샤시캡": { "slug": "chassis_cab", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "패신저 5인승": {
+      "slug": "passenger_5",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "패신저 7인승": {
+      "slug": "passenger_7",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "카고 스탠다드": {
+      "slug": "cargo_standard",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "카고 롱": {
+      "slug": "cargo_long",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "샤시캡": {
+      "slug": "chassis_cab",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "pv5"
+  ],
+  "year_start": "2025-01",
+  "year_end": "현재"
 }

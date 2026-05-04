@@ -44,5 +44,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "캐스퍼",
+    "캐스퍼일렉트릭"
+  ],
+  "year_start": "2021-01",
+  "year_end": "현재"
 }

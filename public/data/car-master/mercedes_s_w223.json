@@ -44,5 +44,13 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "s클래스",
+    "s클래스w221",
+    "s클래스w222",
+    "s클래스w223"
+  ],
+  "year_start": "1994-01",
+  "year_end": "현재"
 }

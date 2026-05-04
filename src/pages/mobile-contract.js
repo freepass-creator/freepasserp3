@@ -19,7 +19,7 @@ function formatDriverAge(pol) {
   const low = pol.driver_age_lowering;
   const lowNum = Number(low) || 0;
   if (base && lowNum && lowNum < base) return `만 ${base}세 이상 (만 ${lowNum}세 하향 가능)`;
-  if (base) return `만 ${base}세 이상${low && typeof low === 'string' && low !== '없음' ? ` | 하향 ${low}` : ''}`;
+  if (base) return `만 ${base}세 이상${low && typeof low === 'string' && low !== '없음' ? ` · 하향 ${low}` : ''}`;
   return typeof low === 'string' ? low : '';
 }
 
@@ -101,18 +101,18 @@ export function mount() {
   main.innerHTML = `
     <div class="m-shell-page">
       <div class="m-search-head">
-        <div class="m-search-bar">
+        <label class="m-search-bar" for="mctSearch">
           <i class="ph ph-magnifying-glass"></i>
           <input type="search" id="mctSearch" placeholder="계약코드, 고객명, 차량번호"
                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                  enterkeyhint="search">
           <span class="m-search-count" id="mctCount"></span>
-          <button class="m-topbar-action" id="mctSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
-        </div>
+          <button type="button" class="m-topbar-action" id="mctSearchClear" style="display:none;" aria-label="지우기"><i class="ph ph-x-circle"></i></button>
+        </label>
         <div class="m-filter-chips">
-          <button class="chip is-active" data-f="all">전체</button>
-          <button class="chip" data-f="active">진행중</button>
-          <button class="chip" data-f="done">완료</button>
+          <button type="button" class="chip is-active" data-f="all">전체</button>
+          <button type="button" class="chip" data-f="active">진행중</button>
+          <button type="button" class="chip" data-f="done">완료</button>
         </div>
       </div>
       <div class="m-page" id="mctList"></div>
@@ -143,14 +143,46 @@ export function mount() {
     if (card) openContract(card.dataset.code);
   });
 
+  // 진단 — 콘솔에서 store 상태 즉시 점검 가능
+  if (typeof window !== 'undefined') {
+    window.__mctDebug = () => ({
+      total: store.contracts?.length || 0,
+      role: store.currentUser?.role,
+      uid: store.currentUser?.uid,
+      user_code: store.currentUser?.user_code,
+      channel: store.currentUser?.agent_channel_code || store.currentUser?.channel_code,
+      visible: getVisible().length,
+      sample: (store.contracts || [])[0],
+    });
+  }
+
+  // 즉시 렌더 — startHydration 이 이미 store.contracts 채워놨으면 0초 노출
+  renderList();
+
   unsub = watchCollection('contracts', (data) => {
-    store.contracts = data;
+    store.contracts = data || [];
+    const me = store.currentUser || {};
+    console.log('[mobile-contract] loaded:', data?.length || 0,
+      'role:', me.role, 'uid:', me.uid, 'user_code:', me.user_code,
+      'channel:', me.agent_channel_code || me.channel_code,
+      'visible:', getVisible().length);
+    // 첫 계약 샘플의 매칭 필드 출력 (왜 매칭 안 되는지 즉각 진단)
+    if ((data?.length || 0) > 0 && getVisible().length === 0) {
+      const c = data[0];
+      console.warn('[mobile-contract] visible=0, sample mismatch check:', {
+        contract_agent_uid: c.agent_uid, my_uid: me.uid, match_uid: c.agent_uid === me.uid,
+        contract_agent_code: c.agent_code, my_user_code: me.user_code, match_code: c.agent_code === me.user_code,
+        contract_channel: c.agent_channel_code, my_channel: me.agent_channel_code || me.channel_code,
+      });
+    }
     renderList();
   });
 }
 
 function getVisible() {
-  return filterByRole([...(store.contracts || [])], store.currentUser || {});
+  // 모바일은 모든 계약 노출 — 영업자/공급사/관리자 모두 다른 사람 계약도 보고
+  // 각 역할이 작성한 메모를 서로 볼 수 있도록 (협업 목적)
+  return [...(store.contracts || [])];
 }
 
 function renderList() {
@@ -189,7 +221,32 @@ function renderList() {
     return;
   }
 
-  el.innerHTML = list.map(c => {
+  // 영업자 별로 그룹화 — 각 역할명 섹션 헤더 (영업자명) 아래에 본인 계약 묶기
+  // 본인 계약은 최상단, 그 외 영업자는 created_at 최신 순
+  const me = store.currentUser || {};
+  const myAgentKey = me.uid || me.user_code || '';
+  const groups = new Map();  // key = agent_uid 또는 agent_code, value = { name, items[] }
+  for (const c of list) {
+    const k = c.agent_uid || c.agent_code || '_unknown';
+    if (!groups.has(k)) {
+      groups.set(k, {
+        name: c.agent_name || c.agent_code || '미배정',
+        code: c.agent_code || '',
+        isMine: (c.agent_uid && c.agent_uid === me.uid) || (c.agent_code && c.agent_code === me.user_code),
+        items: [],
+      });
+    }
+    groups.get(k).items.push(c);
+  }
+  // 정렬 — 본인 그룹 먼저, 나머지는 그룹 내 최신 created_at 순
+  const sortedGroups = [...groups.values()].sort((a, b) => {
+    if (a.isMine !== b.isMine) return a.isMine ? -1 : 1;
+    const aLatest = Math.max(...a.items.map(c => c.created_at || 0));
+    const bLatest = Math.max(...b.items.map(c => c.created_at || 0));
+    return bLatest - aLatest;
+  });
+
+  const renderCard = (c) => {
     const prog = getProgress(c);
     const pct = Math.round((prog.done / prog.total) * 100);
     const done = c.contract_status === '계약완료';
@@ -202,14 +259,14 @@ function renderList() {
     const providerName = providerNameByCode(c.provider_company_code, store);
     const titleLine = [c.customer_name, c.car_number_snapshot, c.sub_model_snapshot || c.model_snapshot, providerName].filter(Boolean).join(' ') || c.contract_code;
     // 보조: 영업채널 | 영업자 | 계약코드
-    const meta = [c.agent_channel_code, c.agent_code, c.contract_code].filter(Boolean).join(' | ');
+    const meta = [c.agent_channel_code, c.agent_code, c.contract_code].filter(Boolean).join(' · ');
     // 3줄: [진행률 뱃지] 계약자명 | 생년월일 | 연락처
     const dob = formatDob(c);
     const customerLine = [
       c.customer_name ? `<b class="m-customer">${c.customer_name}</b>` : '',
       dob,
       c.customer_phone,
-    ].filter(Boolean).join(' | ');
+    ].filter(Boolean).join(' · ');
     const progressColor = prog.done === prog.total ? 'var(--c-ok)' : prog.done > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
     return `
       <article class="m-card-contract" data-code="${c.contract_code}">
@@ -232,7 +289,18 @@ function renderList() {
         </div>
       </article>
     `;
-  }).join('');
+  };
+
+  // 영업자별 섹션 렌더 — 헤더 (이름 + 계약 수) + 카드 리스트
+  el.innerHTML = sortedGroups.map(g => `
+    <div class="m-ct-group ${g.isMine ? 'is-mine' : ''}">
+      <div class="m-ct-group-head">
+        <span class="m-ct-group-name">${g.name}${g.isMine ? ' (나)' : ''}</span>
+        <span class="m-ct-group-count">${g.items.length}건</span>
+      </div>
+      ${g.items.map(renderCard).join('')}
+    </div>
+  `).join('');
 }
 
 function openContract(code) {
@@ -325,7 +393,7 @@ function bindContractView(view, c) {
     try {
       await updateRecord(`contracts/${c.contract_code}`, updates);
       Object.assign(c, updates);
-      showToast(`${m}M${rent ? ` | ${rent.toLocaleString()}원` : ''}`);
+      showToast(`${m}M${rent ? ` · ${rent.toLocaleString()}원` : ''}`);
       const panel = view.querySelector('[data-panel="progress"]');
       panel.innerHTML = renderProgressPanel(c);
     } catch (err) {
@@ -357,6 +425,24 @@ function bindContractView(view, c) {
       if (stateEl) { stateEl.className = 'm-state is-saved'; stateEl.textContent = '저장'; setTimeout(() => { stateEl.className = 'm-state'; stateEl.textContent = ''; }, 1200); }
     } catch (err) {
       if (stateEl) { stateEl.className = 'm-state is-error'; stateEl.textContent = '실패'; }
+      showToast('저장 실패', 'error');
+    } finally {
+      inp.dataset.saving = '';
+    }
+  });
+
+  // 메모 (textarea) — blur 시 저장 (text 그대로, 권한 체크는 렌더 단계에서 이미 분기)
+  view.querySelector('[data-panel="progress"]').addEventListener('focusout', async (e) => {
+    const inp = e.target.closest('[data-ct-text]');
+    if (!inp || inp.dataset.saving === '1') return;
+    const field = inp.dataset.ctText;
+    const val = String(inp.value || '').trim();
+    if (val === String(c[field] || '').trim()) return;
+    inp.dataset.saving = '1';
+    try {
+      await updateRecord(`contracts/${c.contract_code}`, { [field]: val });
+      c[field] = val;
+    } catch (err) {
       showToast('저장 실패', 'error');
     } finally {
       inp.dataset.saving = '';
@@ -562,6 +648,29 @@ function renderProgressPanel(c) {
 
   const progressColor = prog.done === prog.total ? 'var(--c-ok)' : prog.done > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
 
+  // 역할별 메모 — 3슬롯 (영업자 / 공급사 / 관리자) 각자 본인 슬롯만 편집, 모두 다 읽기
+  const memoSlots = [
+    { key: 'memo_agent',    label: '영업자 메모', canEdit: role === 'agent' || role === 'agent_admin' },
+    { key: 'memo_provider', label: '공급사 메모', canEdit: role === 'provider' },
+    { key: 'memo_admin',    label: '관리자 메모', canEdit: role === 'admin' },
+  ];
+  const memoBlock = memoSlots.map(s => {
+    const val = (c[s.key] || '').replace(/</g, '&lt;');
+    const body = s.canEdit
+      ? `<textarea class="m-info-input m-ct-memo" data-ct-text="${s.key}"
+           placeholder="${s.label} (자동 저장)" rows="3">${c[s.key] || ''}</textarea>`
+      : `<div class="m-ct-memo-readonly">${val || '-'}</div>`;
+    return `
+      <section class="m-info-section">
+        <div class="m-info-section-head">
+          <span class="m-info-section-title">${s.label}</span>
+          ${s.canEdit ? '<span class="m-info-section-hint">본인만 수정</span>' : ''}
+        </div>
+        <div class="m-info-body">${body}</div>
+      </section>
+    `;
+  }).join('');
+
   return `
     <div class="m-info-page">
       ${infoBlock}
@@ -577,6 +686,7 @@ function renderProgressPanel(c) {
           ${rows}
         </div>
       </section>
+      ${memoBlock}
     </div>
   `;
 }
@@ -658,7 +768,7 @@ function renderCustomerPanel(c) {
             <span class="m-doc-thumb">${isImg ? `<img src="${d.url}" alt="">` : `<i class="ph ph-file-text"></i>`}</span>
             <span class="m-doc-info">
               <a href="${d.url}" target="_blank" rel="noopener" class="m-doc-link">${(d.name || '파일').replace(/</g,'&lt;')}</a>
-              <span class="m-doc-meta">${d.size ? `${Math.round(d.size/1024)}KB` : ''}${d.uploaded_at ? ` | ${new Date(d.uploaded_at).toLocaleDateString('ko', { month:'2-digit', day:'2-digit' })}` : ''}</span>
+              <span class="m-doc-meta">${d.size ? `${Math.round(d.size/1024)}KB` : ''}${d.uploaded_at ? ` · ${new Date(d.uploaded_at).toLocaleDateString('ko', { month:'2-digit', day:'2-digit' })}` : ''}</span>
             </span>
             <button class="m-doc-del" data-doc-del="${key}" type="button" aria-label="삭제"><i class="ph ph-trash"></i></button>
           </div>`;
@@ -668,7 +778,7 @@ function renderCustomerPanel(c) {
     : `<button class="m-upload-dropzone" id="ctDocAddBtn" type="button">
         <i class="ph ph-paperclip"></i>
         <span class="m-upload-primary">첨부 서류 추가</span>
-        <span class="m-upload-hint">신분증 | 인감 | 기타 (10MB 이하)</span>
+        <span class="m-upload-hint">신분증 · 인감 · 기타 (10MB 이하)</span>
       </button>`;
 
   // 면허증 (단일, customer_license_url)
@@ -688,7 +798,7 @@ function renderCustomerPanel(c) {
     : `<button class="m-upload-dropzone" id="ctLicenseBtn" type="button">
         <i class="ph ph-identification-card"></i>
         <span class="m-upload-primary">운전면허증 등록</span>
-        <span class="m-upload-hint">앞면 사진 | JPG/PNG/PDF (10MB 이하)</span>
+        <span class="m-upload-hint">앞면 사진 · JPG/PNG/PDF (10MB 이하)</span>
       </button>`;
 
   return `

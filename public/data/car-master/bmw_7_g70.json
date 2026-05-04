@@ -9,12 +9,64 @@
   "options": {},
   "categories": {},
   "trims": {
-    "735i": { "slug": "735i", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "740i": { "slug": "740i", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "740i xDrive": { "slug": "740i_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "750e xDrive": { "slug": "750e_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "760i xDrive": { "slug": "760i_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "i7 xDrive60": { "slug": "i7_xdrive60", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "i7 M70 xDrive": { "slug": "i7_m70_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "735i": {
+      "slug": "735i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "740i": {
+      "slug": "740i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "740i xDrive": {
+      "slug": "740i_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "750e xDrive": {
+      "slug": "750e_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "760i xDrive": {
+      "slug": "760i_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "i7 xDrive60": {
+      "slug": "i7_xdrive60",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "i7 M70 xDrive": {
+      "slug": "i7_m70_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "7시리즈",
+    "7시리즈e65",
+    "7시리즈f01",
+    "7시리즈g11",
+    "7시리즈g70",
+    "i7g70"
+  ],
+  "year_start": "1993-01",
+  "year_end": "현재"
 }

@@ -44,5 +44,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "3시리즈g20"
+  ],
+  "year_start": "2019-01",
+  "year_end": "현재"
 }

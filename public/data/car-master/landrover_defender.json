@@ -44,5 +44,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "디펜더",
+    "디펜더l663"
+  ],
+  "year_start": "2000-01",
+  "year_end": "현재"
 }

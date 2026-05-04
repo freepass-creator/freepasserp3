@@ -9,15 +9,85 @@
   "options": {},
   "categories": {},
   "trims": {
-    "E200": { "slug": "e200", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "E220d": { "slug": "e220d", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "E250": { "slug": "e250", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "E300": { "slug": "e300", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "E300 4MATIC": { "slug": "e300_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "E350": { "slug": "e350", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "E400": { "slug": "e400", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "E450 4MATIC": { "slug": "e450_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "AMG E53": { "slug": "amg_e53", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "AMG E63 S": { "slug": "amg_e63_s", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "E200": {
+      "slug": "e200",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E220d": {
+      "slug": "e220d",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E250": {
+      "slug": "e250",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E300": {
+      "slug": "e300",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E300 4MATIC": {
+      "slug": "e300_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E350": {
+      "slug": "e350",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E400": {
+      "slug": "e400",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E450 4MATIC": {
+      "slug": "e450_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "AMG E53": {
+      "slug": "amg_e53",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "AMG E63 S": {
+      "slug": "amg_e63_s",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "e클래스w123",
+    "e클래스w124",
+    "e클래스w210",
+    "e클래스w211",
+    "e클래스w212",
+    "e클래스w213"
+  ],
+  "year_start": "1993-01",
+  "year_end": "2023-12"
 }

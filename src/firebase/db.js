@@ -84,8 +84,14 @@ export async function fetchRecord(path) {
 /**
  * Write operations
  */
-export async function setRecord(path, data) {
-  return trackSave(set(ref(db, path), { ...data, updated_at: Date.now() }));
+export async function setRecord(path, data, opts = {}) {
+  const promise = set(ref(db, path), { ...data, updated_at: Date.now() });
+  const result = await (opts.silent ? promise : trackSave(promise));
+  if (!opts.skipAudit) {
+    const { logAudit } = await import('./audit-log.js');
+    logAudit({ action: 'create', path, fields: Object.keys(data), data });
+  }
+  return result;
 }
 
 /**
@@ -106,13 +112,28 @@ export async function incrementAtomic(path, delta = 1) {
   }
 }
 
-export async function updateRecord(path, data) {
-  return trackSave(update(ref(db, path), { ...data, updated_at: Date.now() }));
+export async function updateRecord(path, data, opts = {}) {
+  const promise = update(ref(db, path), { ...data, updated_at: Date.now() });
+  const result = await (opts.silent ? promise : trackSave(promise));
+  if (!opts.skipAudit) {
+    const { logAudit } = await import('./audit-log.js');
+    // delete/restore 는 _deleted 필드로 판별
+    const action = data._deleted === true ? 'delete'
+                 : data._deleted === false ? 'restore'
+                 : 'update';
+    logAudit({ action, path, fields: Object.keys(data), data });
+  }
+  return result;
 }
 
-export async function pushRecord(path, data) {
+export async function pushRecord(path, data, opts = {}) {
   const newRef = push(ref(db, path));
-  await trackSave(set(newRef, { ...data, created_at: Date.now() }));
+  const promise = set(newRef, { ...data, created_at: Date.now() });
+  await (opts.silent ? promise : trackSave(promise));
+  if (!opts.skipAudit) {
+    const { logAudit } = await import('./audit-log.js');
+    logAudit({ action: 'create', path: `${path}/${newRef.key}`, fields: Object.keys(data), data });
+  }
   return newRef.key;
 }
 

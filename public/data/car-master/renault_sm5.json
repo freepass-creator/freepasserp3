@@ -9,9 +9,43 @@
   "options": {},
   "categories": {},
   "trims": {
-    "PE": { "slug": "pe", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LE": { "slug": "le", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "RE LPe": { "slug": "re_lpe", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "PE": {
+      "slug": "pe",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LE": {
+      "slug": "le",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RE": {
+      "slug": "re",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RE LPe": {
+      "slug": "re_lpe",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "sm5",
+    "sm5노바",
+    "sm5뉴임프레션",
+    "뉴sm5",
+    "뉴sm5신형",
+    "뉴sm5플래티넘"
+  ],
+  "year_start": "1998-01",
+  "year_end": "2019-12"
 }

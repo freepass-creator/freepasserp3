@@ -37,5 +37,10 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "더뉴레이"
+  ],
+  "year_start": "2017-01",
+  "year_end": "2022-12"
 }

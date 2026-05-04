@@ -37,5 +37,11 @@
       "select": [],
       "select_groups": []
     }
-  }
+  },
+  "aliases": [
+    "마칸",
+    "마칸ev"
+  ],
+  "year_start": "2014-01",
+  "year_end": "현재"
 }

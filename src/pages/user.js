@@ -60,24 +60,26 @@ export function renderUserList(users) {
   body.innerHTML = sorted.map((u, i) => {
     const roleLabel = ROLE_LABEL[u.role] || u.role || '-';
     const norm = normalizeStatus(u);
-    // 메인: 역할 | 이름 | 이메일(계정)
-    const mainParts = [
-      roleLabel,
+    const statusLabel = u.status === 'pending' ? '승인 대기' : u.status === 'rejected' ? '반려' : (u.is_active === false ? '비활성' : '승인됨');
+    // 메인: 이름 직급 회사명 (공백 구분, 문단처럼)  /  우측: 마지막 로그인
+    const mainLine = [
       u.name || u.email?.split('@')[0] || u._key.slice(0, 8),
-      u.email,
-    ].filter(Boolean);
-    // 보조: 소속 | 직급 | 연락처
-    const subParts = [
-      u.company_name || u.company_code,
       u.position || u.title,
+      u.company_name || u.company_code,
+    ].filter(Boolean).join(' ');
+    // 보조: 역할 | 연락처 | 이메일 | 상태
+    const subParts = [
+      roleLabel,
       u.phone,
+      u.email,
+      statusLabel,
     ].filter(Boolean);
     return renderRoomItem({
       id: u._key,
       icon: norm === 'pending' ? 'clock' : 'check-circle',
       badge: norm === 'pending' ? '대기' : '승인',
       tone: norm === 'pending' ? 'orange' : 'green',
-      name: mainParts.join(' | '),
+      name: mainLine,
       time: fmtDate(u.last_login_at || u.created_at),
       msg: subParts.join(' | ') || '-',
       active: i === 0,
@@ -145,7 +147,7 @@ export function renderUserDetail(u) {
       ['이메일', u.email, true],
       ['역할', ROLE_LABEL[u.role] || u.role || '-', true],
       ['상태', currentStatus, true],
-      ['소속', [u.company_name, u.company_code].filter(Boolean).join(' | '), true],
+      ['소속', [u.company_name, u.company_code].filter(Boolean).join(' · '), true],
       ['연락처', u.phone, true],
       ['최근 로그인', fmtFullTime(u.last_login_at), true],
       ['담당 계약', myContracts.length + '건', true],

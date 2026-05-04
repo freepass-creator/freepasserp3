@@ -9,8 +9,32 @@
   "options": {},
   "categories": {},
   "trims": {
-    "LS": { "slug": "ls", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프리미어": { "slug": "premier", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "LS": {
+      "slug": "ls",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LT": {
+      "slug": "lt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미어": {
+      "slug": "premier",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "더넥스트이쿼녹스",
+    "이쿼녹스"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2022-12"
 }

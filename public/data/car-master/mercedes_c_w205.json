@@ -9,12 +9,61 @@
   "options": {},
   "categories": {},
   "trims": {
-    "C180": { "slug": "c180", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "C200": { "slug": "c200", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "C220d": { "slug": "c220d", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "C250": { "slug": "c250", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "C300": { "slug": "c300", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "AMG C43": { "slug": "amg_c43", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "AMG C63 S": { "slug": "amg_c63_s", "price": {}, "basic": [], "select": [], "select_groups": [] }
-  }
+    "C180": {
+      "slug": "c180",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C200": {
+      "slug": "c200",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C220d": {
+      "slug": "c220d",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C250": {
+      "slug": "c250",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C300": {
+      "slug": "c300",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "AMG C43": {
+      "slug": "amg_c43",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "AMG C63 S": {
+      "slug": "amg_c63_s",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "c클래스",
+    "c클래스w204",
+    "c클래스w205"
+  ],
+  "year_start": "1995-01",
+  "year_end": "2021-12"
 }
