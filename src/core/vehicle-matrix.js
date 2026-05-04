@@ -184,9 +184,19 @@ export async function findCatalog(maker, subModel, model, product = {}) {
     if (c.codeNorm && subN.includes(c.codeNorm)) score += c.codeNorm.length * 5;
     // 토큰 매칭 — sub_model 에 토큰이 substring 으로 들어있으면 가산
     for (const tn of c.tokensNorm) {
-      if (!tn || tn === c.codeNorm) continue;  // 코드는 이미 가산됨
+      if (!tn || tn === c.codeNorm) continue;
       if (subN.includes(tn)) score += tn.length;
       else if (mdN && mdN.includes(tn)) score += Math.floor(tn.length / 2);
+    }
+    // 모델명 매칭 — sub_model 비어있어도 model 만으로 catalog 후보군 좁힘
+    if (mdN && c.tokensNorm.some(tn => tn && (mdN.includes(tn) || tn.includes(mdN)))) {
+      score += 5;   // 같은 model 의 catalog 면 base 점수
+    }
+    // year 매칭 — 매물 연식이 catalog year_range 안에 있으면 강한 가산점
+    if (productYearVal) {
+      const inRange = isYearInRange(productYearVal, yearRanges[c.catalogId]);
+      if (inRange === true) score += 20;       // 연식 일치 — sub_model 약해도 catalog 확정 도움
+      else if (inRange === false) score -= 30; // 연식 범위 밖 — penalty
     }
     return { ...c, score };
   });
