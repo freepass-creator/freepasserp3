@@ -1,0 +1,43 @@
+{
+  "catalog_id": "kia_sportage_ql",
+  "title": "기아 더 SUV 스포티지",
+  "maker": "기아",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/suv_sportage/19946"],
+  "fetched_at": "2026-05-04",
+  "note": "더 SUV 스포티지 (QL 4세대 페리 전, 2015-2018). 가격: wikicar 2018년형(2017.04) OCR. R2.0D / U2 1.7D / 누우 2.0G.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "트렌디": {
+      "slug": "트렌디",
+      "price": { "base_20d_mt": 22350000, "base_17d": 23200000, "base_20g": 21100000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_20d": 25650000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": { "base_17d": 25300000, "base_20g": 23400000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "노블레스 플러스": {
+      "slug": "노블레스_플러스",
+      "price": { "base_20d": 27400000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "노블레스 스페셜": {
+      "slug": "노블레스_스페셜",
+      "price": { "base_20d": 29350000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "스타일 에디션": {
+      "slug": "스타일_에디션",
+      "price": { "base_20d": 26450000 },
+      "basic": [], "select": [], "select_groups": []
+    }
+  }
+}

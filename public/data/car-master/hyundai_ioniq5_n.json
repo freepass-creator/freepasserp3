@@ -582,8 +582,8 @@
       "slug": "e-value-plus",
       "name_en": null,
       "price": {
-        "tax_5": 78892170,
-        "tax_3_5": 77690000
+        "base": 77000000,
+        "before_tax": 81104100
       },
       "basic": [
         "NEN6019",
@@ -669,37 +669,43 @@
           "codes": [
             "NEN6P03"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "컴포트 플러스"
         },
         {
           "codes": [
             "NEN6P06"
           ],
-          "price": 900000
+          "price": 900000,
+          "name": "파킹 어시스트 Lite"
         },
         {
           "codes": [
             "NEN6113"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "NEN6114"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         },
         {
           "codes": [
             "NEN6P01"
           ],
-          "price": 550000
+          "price": 550000,
+          "name": "[N 퍼포먼스 파츠]알칸타라 인테리어 패키지"
         },
         {
           "codes": [
             "NEN6P02"
           ],
-          "price": 300000
+          "price": 300000,
+          "name": "[N 퍼포먼스 파츠]워크인 인테리어 패키지"
         }
       ]
     },
@@ -707,8 +713,8 @@
       "slug": "exclusive",
       "name_en": null,
       "price": {
-        "tax_5": 81525420,
-        "tax_3_5": 80290000
+        "base": 77000000,
+        "before_tax": 81104100
       },
       "basic": [
         "NEN6019",
@@ -809,55 +815,64 @@
           "codes": [
             "NEN6P03"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "컴포트 플러스"
         },
         {
           "codes": [
             "NEN6P04"
           ],
-          "price": 1680000
+          "price": 1680000,
+          "name": "파킹 어시스트"
         },
         {
           "codes": [
             "NEN6P05"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2, 증강현실 내비게이션"
         },
         {
           "codes": [
             "NEN6103"
           ],
-          "price": 500000
+          "price": 500000,
+          "name": "디지털 센터 미러"
         },
         {
           "codes": [
             "NEN6067"
           ],
-          "price": 740000
+          "price": 740000,
+          "name": "비전루프"
         },
         {
           "codes": [
             "NEN6113"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "NEN6114"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         },
         {
           "codes": [
             "NEN6P01"
           ],
-          "price": 550000
+          "price": 550000,
+          "name": "[N 퍼포먼스 파츠]알칸타라 인테리어 패키지"
         },
         {
           "codes": [
             "NEN6P02"
           ],
-          "price": 300000
+          "price": 300000,
+          "name": "[N 퍼포먼스 파츠]워크인 인테리어 패키지"
         }
       ]
     }

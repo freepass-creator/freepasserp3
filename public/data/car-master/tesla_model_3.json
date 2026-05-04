@@ -1,0 +1,34 @@
+{
+  "catalog_id": "tesla_model_3",
+  "title": "테슬라 모델 3",
+  "maker": "테슬라",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Standard Range": {
+      "slug": "standard_range",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Long Range": {
+      "slug": "long_range",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Performance": {
+      "slug": "performance",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

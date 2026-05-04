@@ -1,0 +1,41 @@
+{
+  "catalog_id": "volvo_xc40",
+  "title": "볼보 XC40",
+  "maker": "볼보",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "B4": {
+      "slug": "b4",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "B5": {
+      "slug": "b5",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Recharge Pure Electric Single": {
+      "slug": "recharge_pure_electric_single",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Recharge Pure Electric Twin": {
+      "slug": "recharge_pure_electric_twin",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

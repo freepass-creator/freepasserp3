@@ -1,0 +1,48 @@
+{
+  "catalog_id": "kia_ev6_pre",
+  "title": "기아 EV6",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전 stub — 트림명만. 가격/옵션 추후.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "라이트": {
+      "slug": "라이트",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "에어": {
+      "slug": "에어",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "어스": {
+      "slug": "어스",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "GT-Line": {
+      "slug": "gt_line",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "GT": {
+      "slug": "gt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

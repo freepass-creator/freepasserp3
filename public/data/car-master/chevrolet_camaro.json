@@ -1,0 +1,15 @@
+{
+  "catalog_id": "chevrolet_camaro",
+  "title": "쉐보레 더 뉴 카마로",
+  "maker": "쉐보레",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "카마로 6세대 페리 (2018~2022 한국 수입). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "SS": { "slug": "ss", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "ZL1": { "slug": "zl1", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

@@ -611,7 +611,7 @@
       "slug": "smart",
       "name_en": null,
       "price": {
-        "base": 68750000
+        "base": 59800000
       },
       "basic": [
         "TS02001",
@@ -683,19 +683,22 @@
           "codes": [
             "TS02079"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠"
         },
         {
           "codes": [
             "TS02P01"
           ],
-          "price": 850000
+          "price": 850000,
+          "name": "컨비니언스Ⅰ"
         },
         {
           "codes": [
             "TS02P02"
           ],
-          "price": 1550000
+          "price": 1550000,
+          "name": "테크"
         }
       ]
     },
@@ -703,7 +706,7 @@
       "slug": "premium",
       "name_en": null,
       "price": {
-        "base": 72530000
+        "base": 63600000
       },
       "basic": [
         "TS02001",
@@ -791,13 +794,15 @@
           "codes": [
             "TS02079"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠"
         },
         {
           "codes": [
             "TS02P04"
           ],
-          "price": 200000
+          "price": 200000,
+          "name": "컨비니언스Ⅱ"
         }
       ]
     },
@@ -871,19 +876,22 @@
           "codes": [
             "TS02079"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠"
         },
         {
           "codes": [
             "TS02076"
           ],
-          "price": 200000
+          "price": 200000,
+          "name": "하이패스"
         },
         {
           "codes": [
             "TS02P02"
           ],
-          "price": 1550000
+          "price": 1550000,
+          "name": "테크"
         }
       ]
     }

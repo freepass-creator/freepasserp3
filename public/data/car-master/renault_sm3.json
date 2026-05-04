@@ -1,0 +1,17 @@
+{
+  "catalog_id": "renault_sm3",
+  "title": "르노 SM3",
+  "maker": "르노",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "SM3 (3세대 L38, 2009~2019). 페리 후 SM3 네오. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "PE": { "slug": "pe", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "LE": { "slug": "le", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "SE Plus": { "slug": "se_plus", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

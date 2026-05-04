@@ -1,0 +1,55 @@
+{
+  "catalog_id": "kgm_rexton_sports_khan_facelift",
+  "title": "KGM 더 뉴 렉스턴 스포츠 칸",
+  "maker": "KGM",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "body type/세대 분리 stub — 트림명만.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "헤리티지": {
+      "slug": "헤리티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미어": {
+      "slug": "프리미어",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "슈프림": {
+      "slug": "슈프림",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "슈프림 블랙": {
+      "slug": "슈프림_블랙",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "슈프림 어드벤처": {
+      "slug": "슈프림_어드벤처",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "리미티드 X": {
+      "slug": "리미티드_x",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

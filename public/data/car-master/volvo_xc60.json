@@ -1,0 +1,41 @@
+{
+  "catalog_id": "volvo_xc60",
+  "title": "볼보 XC60",
+  "maker": "볼보",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "B5 Mild Hybrid": {
+      "slug": "b5_mild_hybrid",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "B6 Mild Hybrid": {
+      "slug": "b6_mild_hybrid",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "T8 Recharge": {
+      "slug": "t8_recharge",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Polestar Engineered": {
+      "slug": "polestar_engineered",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

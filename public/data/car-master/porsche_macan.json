@@ -1,0 +1,41 @@
+{
+  "catalog_id": "porsche_macan",
+  "title": "포르쉐 마칸 EV",
+  "maker": "포르쉐",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Macan EV": {
+      "slug": "macan_ev",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Macan 4 EV": {
+      "slug": "macan_4_ev",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Macan 4S EV": {
+      "slug": "macan_4s_ev",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Macan Turbo EV": {
+      "slug": "macan_turbo_ev",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

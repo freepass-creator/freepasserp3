@@ -1,0 +1,41 @@
+{
+  "catalog_id": "kgm_rexton_sports_khan",
+  "title": "KGM 렉스턴 스포츠 칸",
+  "maker": "KGM",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "body type/세대 분리 stub — 트림명만.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프로페셔널": {
+      "slug": "프로페셔널",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프로페셔널 트림": {
+      "slug": "프로페셔널_트림",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "슈프림": {
+      "slug": "슈프림",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "헤리티지": {
+      "slug": "헤리티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

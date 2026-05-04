@@ -1,0 +1,33 @@
+{
+  "catalog_id": "hyundai_palisade_lx2_facelift",
+  "title": "현대 더 뉴 팰리세이드 LX2",
+  "maker": "현대",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/Palisade/48980"],
+  "fetched_at": "2026-05-04",
+  "note": "더 뉴 팰리세이드 LX2 (2022-2024). 가격: wikicar 2022.05 OCR. 3.8 가솔린.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "익스클루시브": {
+      "slug": "익스클루시브",
+      "price": { "base_38g": 39390000, "base_38g_3p5": 38670000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_38g": 45140000, "base_38g_3p5": 44310000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "캘리그래피",
+      "price": { "base_38g": 51630000, "base_38g_3p5": 50690000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "VIP": {
+      "slug": "vip",
+      "price": { "base_38g": 57430000, "base_38g_3p5": 56380000 },
+      "basic": [], "select": [], "select_groups": []
+    }
+  }
+}

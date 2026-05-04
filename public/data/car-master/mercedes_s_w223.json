@@ -1,0 +1,48 @@
+{
+  "catalog_id": "mercedes_s_w223",
+  "title": "벤츠 S-클래스 W223",
+  "maker": "벤츠",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "S400d 4MATIC": {
+      "slug": "s400d_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "S500 4MATIC": {
+      "slug": "s500_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "S580 4MATIC": {
+      "slug": "s580_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "S63 AMG E Performance": {
+      "slug": "s63_amg_e_performance",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Maybach S580": {
+      "slug": "maybach_s580",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

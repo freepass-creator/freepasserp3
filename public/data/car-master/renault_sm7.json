@@ -1,0 +1,17 @@
+{
+  "catalog_id": "renault_sm7",
+  "title": "르노 SM7",
+  "maker": "르노",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "SM7 (2011~2019). New Art / 노바 페리. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "PE": { "slug": "pe", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "LE": { "slug": "le", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RE 35": { "slug": "re_35", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

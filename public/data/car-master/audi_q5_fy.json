@@ -1,0 +1,34 @@
+{
+  "catalog_id": "audi_q5_fy",
+  "title": "아우디 Q5 FY",
+  "maker": "아우디",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "40 TDI quattro": {
+      "slug": "40_tdi_quattro",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "45 TFSI quattro": {
+      "slug": "45_tfsi_quattro",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "SQ5": {
+      "slug": "sq5",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

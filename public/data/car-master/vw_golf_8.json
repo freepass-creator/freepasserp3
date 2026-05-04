@@ -1,0 +1,41 @@
+{
+  "catalog_id": "vw_golf_8",
+  "title": "폭스바겐 골프 8세대",
+  "maker": "폭스바겐",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "1.5 eTSI Active": {
+      "slug": "1.5_etsi_active",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "2.0 TDI Style": {
+      "slug": "2.0_tdi_style",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "GTI": {
+      "slug": "gti",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "R": {
+      "slug": "r",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

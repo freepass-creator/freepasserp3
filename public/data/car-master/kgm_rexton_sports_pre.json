@@ -1,0 +1,34 @@
+{
+  "catalog_id": "kgm_rexton_sports_pre",
+  "title": "KGM 렉스턴 스포츠 (페리 전)",
+  "maker": "KGM",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전/세대 분리 stub",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프로페셔널": {
+      "slug": "프로페셔널",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "슈프림": {
+      "slug": "슈프림",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "헤리티지": {
+      "slug": "헤리티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

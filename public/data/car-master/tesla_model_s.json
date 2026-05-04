@@ -1,0 +1,27 @@
+{
+  "catalog_id": "tesla_model_s",
+  "title": "테슬라 모델 S",
+  "maker": "테슬라",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Long Range": {
+      "slug": "long_range",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Plaid": {
+      "slug": "plaid",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

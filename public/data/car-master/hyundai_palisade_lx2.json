@@ -1,0 +1,33 @@
+{
+  "catalog_id": "hyundai_palisade_lx2",
+  "title": "현대 팰리세이드 LX2",
+  "maker": "현대",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/Palisade/43147"],
+  "fetched_at": "2026-05-04",
+  "note": "팰리세이드 LX2 (2018-2022). 가격: wikicar 2020년형(2020.05) OCR. 3.8 가솔린 기본.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "익스클루시브": {
+      "slug": "익스클루시브",
+      "price": { "base_38g": 36400000, "base_38g_3p5": 34970000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_38g": 41900000, "base_38g_3p5": 40470000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "캘리그래피",
+      "price": { "base_38g": 47100000, "base_38g_3p5": 45670000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "VIP": {
+      "slug": "vip",
+      "price": { "base_38g": 52800000, "base_38g_3p5": 51370000 },
+      "basic": [], "select": [], "select_groups": []
+    }
+  }
+}

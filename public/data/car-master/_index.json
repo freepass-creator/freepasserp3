@@ -1,94 +1,854 @@
 {
-  "hyundai_palisade_lx3": {
-    "id": "hyundai_palisade_lx3",
-    "title": "현대 디 올 뉴 팰리세이드 LX3",
-    "maker": "현대",
+  "audi_a4_b9": {
+    "id": "audi_a4_b9",
+    "title": "아우디 A4 B9",
+    "maker": "아우디",
     "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/the-all-new-palisade/price",
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "35 TFSI",
+      "40 TFSI",
+      "40 TFSI 콰트로",
+      "45 TFSI 콰트로",
+      "35 TDI",
+      "40 TDI",
+      "S4",
+      "RS4"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "audi_a6_c8": {
+    "id": "audi_a6_c8",
+    "title": "아우디 A6 C8",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_001_058_194"
+        "encar_011_004_045"
       ]
     },
     "verified": {
-      "manufacturer": true,
+      "manufacturer": false,
       "wikicar": false,
       "encar": true
     },
     "trims": [
-      "익스클루시브 2.5 9인승",
-      "프레스티지 2.5 9인승",
-      "캘리그래피 2.5 9인승",
-      "익스클루시브 2.5 7인승",
-      "프레스티지 2.5 7인승",
-      "캘리그래피 2.5 7인승"
+      "40 TFSI",
+      "45 TFSI quattro",
+      "55 TFSI quattro",
+      "S6 TDI",
+      "RS6 Avant"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "audi_q5_fy": {
+    "id": "audi_q5_fy",
+    "title": "아우디 Q5 FY",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_011_020_077"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "40 TDI quattro",
+      "45 TFSI quattro",
+      "SQ5"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "bmw_3_f30": {
+    "id": "bmw_3_f30",
+    "title": "BMW 3시리즈 F30",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "320i",
+      "320i M Sport",
+      "330i",
+      "330i M Sport",
+      "320d",
+      "320d M Sport",
+      "320d xDrive",
+      "330d M Sport",
+      "M3"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "bmw_3_g20": {
+    "id": "bmw_3_g20",
+    "title": "BMW 3시리즈 G20",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_012_002_068"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "320i M Sport",
+      "320i xDrive",
+      "330i M Sport",
+      "320d xDrive",
+      "M340i xDrive"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "bmw_5_g30": {
+    "id": "bmw_5_g30",
+    "title": "BMW 5시리즈 G30",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "520i",
+      "520i M Sport",
+      "530i",
+      "530i M Sport",
+      "530e",
+      "540i xDrive",
+      "520d",
+      "520d M Sport",
+      "530d xDrive",
+      "M5"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "bmw_5_g60": {
+    "id": "bmw_5_g60",
+    "title": "BMW 5시리즈 G60",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_012_003_095"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "520i M Sport",
+      "530i M Sport",
+      "530i xDrive M Sport",
+      "540i xDrive M Sport",
+      "520d M Sport",
+      "i5 eDrive40",
+      "i5 M60 xDrive"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "bmw_x3_g01": {
+    "id": "bmw_x3_g01",
+    "title": "BMW X3 G01",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_012_007_098"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "xDrive20i M Sport",
+      "xDrive30i M Sport",
+      "xDrive30e M Sport",
+      "M40i"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "bmw_x5_g05": {
+    "id": "bmw_x5_g05",
+    "title": "BMW X5 G05",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_012_008_066"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "xDrive40i",
+      "xDrive40d",
+      "xDrive50e M Sport",
+      "M60i",
+      "M Competition"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "chevrolet_bolt_ev": {
+    "id": "chevrolet_bolt_ev",
+    "title": "쉐보레 뉴 볼트 EV",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "LT",
+      "프리미어"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "chevrolet_camaro": {
+    "id": "chevrolet_camaro",
+    "title": "쉐보레 더 뉴 카마로",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "SS",
+      "ZL1"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "chevrolet_colorado": {
+    "id": "chevrolet_colorado",
+    "title": "쉐보레 올 뉴 콜로라도",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/colorado/55103",
+      "encar": [
+        "encar_003_053_110"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "Z71"
     ],
     "fetched_at": "2026-04-29"
   },
-  "hyundai_grandeur_gn7": {
-    "id": "hyundai_grandeur_gn7",
-    "title": "현대 그랜저 GN7",
-    "maker": "현대",
+  "chevrolet_colorado_pre": {
+    "id": "chevrolet_colorado_pre",
+    "title": "쉐보레 콜로라도",
+    "maker": "쉐보레",
     "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/grandeur/price",
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_001_004_178",
-        "encar_001_004_179"
+        "encar_003_053_100"
       ]
     },
     "verified": {
-      "manufacturer": true,
+      "manufacturer": false,
       "wikicar": false,
       "encar": true
     },
     "trims": [
-      "프리미엄 LPG 3.5",
-      "익스클루시브 LPG 3.5",
-      "익스클루시브 플러스 장애인용 LPG 3.0",
-      "프리미엄 2.5",
-      "익스클루시브 2.5",
-      "아너스 2.5",
-      "캘리그래피 2.5",
-      "블랙 익스테리어 2.5",
-      "블랙 잉크 2.5"
+      "익스트림",
+      "Z71",
+      "LT"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "chevrolet_cruze": {
+    "id": "chevrolet_cruze",
+    "title": "쉐보레 더 뉴 크루즈",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "LS",
+      "LT",
+      "LTZ"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "chevrolet_equinox": {
+    "id": "chevrolet_equinox",
+    "title": "쉐보레 더 넥스트 이쿼녹스",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "LS",
+      "LT",
+      "프리미어"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "chevrolet_impala": {
+    "id": "chevrolet_impala",
+    "title": "쉐보레 임팔라",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "LS",
+      "LT",
+      "LTZ"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "chevrolet_malibu": {
+    "id": "chevrolet_malibu",
+    "title": "쉐보레 더 뉴 말리부",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": "https://www.chevrolet.co.kr/sedan/malibu",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "LS",
+      "LT",
+      "프리미어",
+      "RS"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "chevrolet_spark": {
+    "id": "chevrolet_spark",
+    "title": "쉐보레 더 뉴 스파크",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "LS",
+      "LT",
+      "프리미어",
+      "RS"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "chevrolet_tahoe": {
+    "id": "chevrolet_tahoe",
+    "title": "쉐보레 타호",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/tahoe/47689",
+      "encar": [
+        "encar_003_057_106"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "High Country",
+      "Dark Knight"
     ],
     "fetched_at": "2026-04-29"
   },
-  "hyundai_sonata_dn8_edge": {
-    "id": "hyundai_sonata_dn8_edge",
-    "title": "현대 쏘나타 디 엣지 DN8",
-    "maker": "현대",
+  "chevrolet_trailblazer": {
+    "id": "chevrolet_trailblazer",
+    "title": "쉐보레 더 뉴 트레일블레이저",
+    "maker": "쉐보레",
     "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/sonata-the-edge/price",
-      "wikicar": null,
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/trailblazer/54128",
       "encar": [
-        "encar_001_018_185"
+        "encar_003_055_109"
       ]
     },
     "verified": {
-      "manufacturer": true,
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "Premier",
+      "ACTIV",
+      "RS"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "chevrolet_trailblazer_pre": {
+    "id": "chevrolet_trailblazer_pre",
+    "title": "쉐보레 트레일블레이저",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_003_055_102"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
       "wikicar": false,
       "encar": true
     },
     "trims": [
-      "프리미엄 2.0",
-      "에스 2.0",
-      "익스클루시브 2.0",
-      "인스퍼레이션 2.0",
-      "프리미엄 LPG 2.0",
-      "익스클루시브 LPG 2.0",
-      "인스퍼레이션 LPG 2.0",
-      "프리미엄 N라인",
-      "익스클루시브 장애인용",
-      "비즈니스1 영업용",
-      "비즈니스2 영업용",
-      "프리미엄 1.6",
-      "에스 1.6",
-      "익스클루시브 1.6",
-      "인스퍼레이션 1.6"
+      "LS",
+      "LT",
+      "Premier",
+      "RS",
+      "ACTIV"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "chevrolet_trax_crossover": {
+    "id": "chevrolet_trax_crossover",
+    "title": "쉐보레 트랙스 크로스오버",
+    "maker": "쉐보레",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/trax/51947",
+      "encar": [
+        "encar_003_048_108"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "LS",
+      "LT",
+      "ACTIV",
+      "RS"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "genesis_g70": {
+    "id": "genesis_g70",
+    "title": "제네시스 더 뉴 G70",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/genesis_g70/52667",
+      "encar": [
+        "encar_007_003_007"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄",
+      "스포츠"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_g70_st": {
+    "id": "genesis_g70_st",
+    "title": "제네시스 G70 슈팅브레이크",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_007_003_013"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스탠다드",
+      "스포츠",
+      "스포츠 프레스티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "genesis_g80_e": {
+    "id": "genesis_g80_e",
+    "title": "제네시스 일렉트리파이드 G80",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/g80_e/56124",
+      "encar": [
+        "encar_007_002_009"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "G90",
+      "AWD 272kW 구동 모터"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_g80_rg3": {
+    "id": "genesis_g80_rg3",
+    "title": "제네시스 디 올 뉴 G80 RG3",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/genesis_g80/53676",
+      "encar": [
+        "encar_007_002_006"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_g80_rg3_pre": {
+    "id": "genesis_g80_rg3_pre",
+    "title": "제네시스 G80 RG3",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/genesis_g80/51014",
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": false
+    },
+    "trims": [
+      "2.5T",
+      "2.5T AWD",
+      "3.5T AWD"
+    ],
+    "fetched_at": "2026-04-30",
+    "note": "페리 전 G80 RG3 (2020-2023). FL split 매핑."
+  },
+  "genesis_g90_rs4": {
+    "id": "genesis_g90_rs4",
+    "title": "제네시스 G90 RS4",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/genesis_g90/54187",
+      "encar": [
+        "encar_007_004_011"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "스탠다드 가솔린 3.5 터보"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_gv60": {
+    "id": "genesis_gv60",
+    "title": "제네시스 GV60",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/gv60/51225",
+      "encar": [
+        "encar_007_007_010"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_gv70": {
+    "id": "genesis_gv70",
+    "title": "제네시스 디 올 뉴 GV70",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/gv70/54115",
+      "encar": [
+        "encar_007_006_008"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "2WD 스탠다드",
+      "AWD 스탠다드",
+      "AWD 스포츠"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_gv70_e": {
+    "id": "genesis_gv70_e",
+    "title": "제네시스 일렉트리파이드 GV70",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/gv70_e/56025",
+      "encar": [
+        "encar_007_006_012"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "320kW 구동 모터 AWD"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_gv70_pre": {
+    "id": "genesis_gv70_pre",
+    "title": "제네시스 GV70",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/gv70/52758",
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": false
+    },
+    "trims": [],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)"
+  },
+  "genesis_gv80": {
+    "id": "genesis_gv80",
+    "title": "제네시스 디 올 뉴 GV80",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/gv80/56238",
+      "encar": [
+        "encar_007_005_005"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "가솔린 2.5 터보 AWD 5인승",
+      "가솔린 3.5 터보 AWD 5인승"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "genesis_gv80_coupe": {
+    "id": "genesis_gv80_coupe",
+    "title": "제네시스 GV80 쿠페",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_007_005_014"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "2.5 터보",
+      "3.5 터보",
+      "3.5 터보 스포츠 패키지",
+      "3.5 터보 스포츠 플러스 패키지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "genesis_gv80_pre": {
+    "id": "genesis_gv80_pre",
+    "title": "제네시스 GV80",
+    "maker": "제네시스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/gv80/51165",
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": false
+    },
+    "trims": [],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)"
+  },
+  "hyundai_avante_ad": {
+    "id": "hyundai_avante_ad",
+    "title": "현대 아반떼 AD",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_019_136"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스마트",
+      "모던",
+      "프리미엄",
+      "익스트림",
+      "스포츠"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "hyundai_avante_ad_facelift": {
+    "id": "hyundai_avante_ad_facelift",
+    "title": "현대 더 뉴 아반떼 AD",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_019_154"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스마트",
+      "모던",
+      "프리미엄",
+      "인스퍼레이션",
+      "스포츠"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
   },
   "hyundai_avante_cn7": {
     "id": "hyundai_avante_cn7",
@@ -121,6 +881,24 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "hyundai_avante_cn7_pre": {
+    "id": "hyundai_avante_cn7_pre",
+    "title": "현대 아반떼 CN7",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/avante_cn7/48210",
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": false
+    },
+    "trims": [],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)"
+  },
   "hyundai_avante_n": {
     "id": "hyundai_avante_n",
     "title": "현대 아반떼 N",
@@ -142,141 +920,65 @@
     ],
     "fetched_at": "2026-04-29"
   },
-  "hyundai_kona_sx2": {
-    "id": "hyundai_kona_sx2",
-    "title": "현대 코나 SX2",
+  "hyundai_casper": {
+    "id": "hyundai_casper",
+    "title": "현대 더 뉴 캐스퍼",
     "maker": "현대",
     "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/kona/price",
-      "wikicar": null,
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/casper/57764",
       "encar": [
-        "encar_001_055_180",
-        "encar_001_055_181",
-        "encar_001_055_184"
+        "encar_001_062_193"
       ]
     },
     "verified": {
-      "manufacturer": true,
-      "wikicar": false,
+      "manufacturer": false,
+      "wikicar": true,
       "encar": true
     },
     "trims": [
-      "모던 2.0",
-      "H-Pick 2.0",
-      "모던 1.6T",
-      "H-Pick 1.6T",
-      "프리미엄 1.6T",
-      "인스퍼레이션 1.6T",
-      "블랙 익스테리어 1.6T",
-      "N 라인 1.6T"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_tucson_nx4": {
-    "id": "hyundai_tucson_nx4",
-    "title": "현대 더 뉴 투싼 NX4",
-    "maker": "현대",
-    "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/tucson/price",
-      "wikicar": null,
-      "encar": [
-        "encar_001_032_188",
-        "encar_001_032_189"
-      ]
-    },
-    "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
-      "모던",
       "프리미엄",
-      "에이치-픽",
       "인스퍼레이션",
-      "블랙 익스테리어",
-      "N 라인"
+      "크로스"
     ],
     "fetched_at": "2026-04-29"
   },
-  "hyundai_santa_fe_mx5": {
-    "id": "hyundai_santa_fe_mx5",
-    "title": "현대 싼타페 MX5",
+  "hyundai_casper_pre": {
+    "id": "hyundai_casper_pre",
+    "title": "현대 캐스퍼",
     "maker": "현대",
     "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/santafe/price",
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_001_017_187"
+        "encar_001_062_174"
       ]
     },
     "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
-      "익스클루시브",
-      "프레스티지",
-      "에이치-픽",
-      "블랙 익스테리어",
-      "캘리그래피",
-      "블랙 잉크"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_staria": {
-    "id": "hyundai_staria",
-    "title": "현대 더 뉴 스타리아",
-    "maker": "현대",
-    "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/the-new-staria/price",
-      "wikicar": null,
-      "encar": [
-        "encar_001_060_171",
-        "encar_001_060_198"
-      ]
-    },
-    "verified": {
-      "manufacturer": true,
+      "manufacturer": false,
       "wikicar": false,
       "encar": true
     },
     "trims": [
       "스마트",
       "모던",
-      "wheelchairlift7"
+      "인스퍼레이션",
+      "액티브 2",
+      "크로스"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 stub"
   },
-  "hyundai_staria_lounge": {
-    "id": "hyundai_staria_lounge",
-    "title": "현대 스타리아 라운지",
+  "hyundai_grandeur_gn7": {
+    "id": "hyundai_grandeur_gn7",
+    "title": "현대 그랜저 GN7",
     "maker": "현대",
     "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/the-new-staria-lounge/price",
-      "wikicar": null,
-      "encar": []
-    },
-    "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": false
-    },
-    "trims": [
-      "인스퍼레이션"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_venue": {
-    "id": "hyundai_venue",
-    "title": "현대 베뉴",
-    "maker": "현대",
-    "source": {
-      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/venue/price",
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/grandeur/price",
       "wikicar": null,
       "encar": [
-        "encar_001_059_159"
+        "encar_001_004_178",
+        "encar_001_004_179"
       ]
     },
     "verified": {
@@ -285,13 +987,139 @@
       "encar": true
     },
     "trims": [
-      "스마트 영업용 LPG 1.6",
-      "운전교습용 LPG 1.6",
-      "스마트",
-      "프리미엄",
-      "플럭스"
+      "프리미엄 LPG 3.5",
+      "익스클루시브 LPG 3.5",
+      "익스클루시브 플러스 장애인용 LPG 3.0",
+      "프리미엄 2.5",
+      "익스클루시브 2.5",
+      "아너스 2.5",
+      "캘리그래피 2.5",
+      "블랙 익스테리어 2.5",
+      "블랙 잉크 2.5"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "hyundai_grandeur_hg": {
+    "id": "hyundai_grandeur_hg",
+    "title": "현대 그랜저 HG",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_004_106",
+        "encar_001_004_125"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "Modern",
+      "Premium",
+      "Luxury",
+      "Le Blanc",
+      "Calligraphy"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "hyundai_grandeur_ig": {
+    "id": "hyundai_grandeur_ig",
+    "title": "현대 더 뉴 그랜저 IG",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_004_162"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "캘리그래피",
+      "르블랑"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "hyundai_grandeur_ig_163": {
+    "id": "hyundai_grandeur_ig_163",
+    "title": "현대 더 뉴 그랜저 IG 하이브리드",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/grandeur_ig/51076",
+      "encar": [
+        "encar_001_004_163"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_grandeur_ig_hybrid_pre": {
+    "id": "hyundai_grandeur_ig_hybrid_pre",
+    "title": "현대 그랜저 IG 하이브리드",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_004_143"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "hyundai_grandeur_ig_pre": {
+    "id": "hyundai_grandeur_ig_pre",
+    "title": "현대 그랜저 IG",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_004_141"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
   },
   "hyundai_ioniq5": {
     "id": "hyundai_ioniq5",
@@ -301,7 +1129,6 @@
       "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/ioniq5/price",
       "wikicar": null,
       "encar": [
-        "encar_001_061_172",
         "encar_001_061_190"
       ]
     },
@@ -341,6 +1168,31 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "hyundai_ioniq5_pre": {
+    "id": "hyundai_ioniq5_pre",
+    "title": "현대 아이오닉5",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_061_172"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스탠다드 익스클루시브",
+      "스탠다드 프레스티지",
+      "롱레인지 익스클루시브",
+      "롱레인지 프레스티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 stub"
+  },
   "hyundai_ioniq6": {
     "id": "hyundai_ioniq6",
     "title": "현대 더 뉴 아이오닉6",
@@ -349,7 +1201,6 @@
       "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/the-new-ioniq6/price",
       "wikicar": null,
       "encar": [
-        "encar_001_063_176",
         "encar_001_063_197"
       ]
     },
@@ -367,6 +1218,30 @@
       "이-라이트"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "hyundai_ioniq6_pre": {
+    "id": "hyundai_ioniq6_pre",
+    "title": "현대 아이오닉6",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_063_176"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스탠다드 익스클루시브",
+      "롱레인지 익스클루시브",
+      "롱레인지 프레스티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 stub"
   },
   "hyundai_ioniq9": {
     "id": "hyundai_ioniq9",
@@ -394,6 +1269,91 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "hyundai_kona_os": {
+    "id": "hyundai_kona_os",
+    "title": "현대 코나 OS",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_055_146",
+        "encar_001_055_161",
+        "encar_001_055_152"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스마트",
+      "모던",
+      "프리미엄",
+      "하이브리드",
+      "일렉트릭"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "hyundai_kona_os_facelift": {
+    "id": "hyundai_kona_os_facelift",
+    "title": "현대 더 뉴 코나",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/kona_os/48376",
+      "encar": [
+        "encar_001_055_167",
+        "encar_001_055_168"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "스마트",
+      "모던",
+      "인스퍼레이션",
+      "N 라인",
+      "N"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 코나 (OS 페리)"
+  },
+  "hyundai_kona_sx2": {
+    "id": "hyundai_kona_sx2",
+    "title": "현대 코나 SX2",
+    "maker": "현대",
+    "source": {
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/kona/price",
+      "wikicar": null,
+      "encar": [
+        "encar_001_055_180",
+        "encar_001_055_181",
+        "encar_001_055_184"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "모던 2.0",
+      "H-Pick 2.0",
+      "모던 1.6T",
+      "H-Pick 1.6T",
+      "프리미엄 1.6T",
+      "인스퍼레이션 1.6T",
+      "블랙 익스테리어 1.6T",
+      "N 라인 1.6T"
+    ],
+    "fetched_at": "2026-04-29"
+  },
   "hyundai_nexo_nh2": {
     "id": "hyundai_nexo_nh2",
     "title": "현대 디 올 뉴 넥쏘 NH2",
@@ -416,6 +1376,310 @@
       "프레스티지"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "hyundai_palisade_lx2": {
+    "id": "hyundai_palisade_lx2",
+    "title": "현대 팰리세이드 LX2",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/Palisade/43147",
+      "encar": [
+        "encar_001_058_155"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피",
+      "VIP"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "팰리세이드 LX2 (페리 전)"
+  },
+  "hyundai_palisade_lx2_facelift": {
+    "id": "hyundai_palisade_lx2_facelift",
+    "title": "현대 더 뉴 팰리세이드 LX2",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/Palisade/48980",
+      "encar": [
+        "encar_001_058_175"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피",
+      "VIP"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 팰리세이드 LX2 (페리)"
+  },
+  "hyundai_palisade_lx3": {
+    "id": "hyundai_palisade_lx3",
+    "title": "현대 디 올 뉴 팰리세이드 LX3",
+    "maker": "현대",
+    "source": {
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/the-all-new-palisade/price",
+      "wikicar": null,
+      "encar": [
+        "encar_001_058_194"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "익스클루시브 2.5 9인승",
+      "프레스티지 2.5 9인승",
+      "캘리그래피 2.5 9인승",
+      "익스클루시브 2.5 7인승",
+      "프레스티지 2.5 7인승",
+      "캘리그래피 2.5 7인승"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_santa_fe_mx5": {
+    "id": "hyundai_santa_fe_mx5",
+    "title": "현대 싼타페 MX5",
+    "maker": "현대",
+    "source": {
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/santafe/price",
+      "wikicar": null,
+      "encar": [
+        "encar_001_017_187"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "익스클루시브",
+      "프레스티지",
+      "에이치-픽",
+      "블랙 익스테리어",
+      "캘리그래피",
+      "블랙 잉크"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_santafe_tm_165": {
+    "id": "hyundai_santafe_tm_165",
+    "title": "현대 더 뉴 싼타페",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/santafe_tm/52802",
+      "encar": [
+        "encar_001_017_165"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피",
+      "익스클루시브 싼타페 하이브리드",
+      "프레스티지 싼타페 하이브리드",
+      "캘리그래피 싼타페 하이브리드",
+      "익스클루시브 싼타페 하이브리드",
+      "프레스티지 싼타페 하이브리드",
+      "캘리그래피 싼타페 하이브리드",
+      "프로텍션 매트 패키지 I",
+      "프로텍션 매트 패키지 II",
+      "러기지 패키지",
+      "라이프 스타일"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_sonata_dn8": {
+    "id": "hyundai_sonata_dn8",
+    "title": "현대 쏘나타 DN8",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/sonata_dn8/49419",
+      "encar": [
+        "encar_001_018_157"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "모던",
+      "프리미엄 플러스",
+      "인스퍼레이션",
+      "모던 LPi 2.0",
+      "프리미엄 플러스 LPi 2.0",
+      "인스퍼레이션 LPi 2.0",
+      "모던 장애인용",
+      "프리미엄 장애인용",
+      "원발장애",
+      "왼손원발장애",
+      "왼손오른발장애",
+      "오른발장애",
+      "양발장애",
+      "오른손장애",
+      "스타일 렌터카",
+      "스마트 렌터카"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_sonata_dn8_edge": {
+    "id": "hyundai_sonata_dn8_edge",
+    "title": "현대 쏘나타 디 엣지 DN8",
+    "maker": "현대",
+    "source": {
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/sonata-the-edge/price",
+      "wikicar": null,
+      "encar": [
+        "encar_001_018_185"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄 2.0",
+      "에스 2.0",
+      "익스클루시브 2.0",
+      "인스퍼레이션 2.0",
+      "프리미엄 LPG 2.0",
+      "익스클루시브 LPG 2.0",
+      "인스퍼레이션 LPG 2.0",
+      "프리미엄 N라인",
+      "익스클루시브 장애인용",
+      "비즈니스1 영업용",
+      "비즈니스2 영업용",
+      "프리미엄 1.6",
+      "에스 1.6",
+      "익스클루시브 1.6",
+      "인스퍼레이션 1.6"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_sonata_dn8_edge_hybrid": {
+    "id": "hyundai_sonata_dn8_edge_hybrid",
+    "title": "현대 쏘나타 디 엣지 하이브리드 DN8",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/sonata_dn8/56709",
+      "encar": [
+        "encar_001_018_186"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "인스퍼레이션"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_sonata_dn8_hybrid": {
+    "id": "hyundai_sonata_dn8_hybrid",
+    "title": "현대 쏘나타 하이브리드 DN8",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/sonata_dn8/49429",
+      "encar": [
+        "encar_001_018_160"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "모던",
+      "프리미엄 플러스",
+      "인스퍼레이션"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_sonata_lf": {
+    "id": "hyundai_sonata_lf",
+    "title": "현대 LF 쏘나타",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_018_126",
+        "encar_001_018_128"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스마트",
+      "스타일",
+      "프리미엄",
+      "프리미엄 스페셜"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "hyundai_sonata_newrise": {
+    "id": "hyundai_sonata_newrise",
+    "title": "현대 쏘나타 뉴 라이즈",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_018_142",
+        "encar_001_018_144"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스마트",
+      "모던",
+      "프리미엄",
+      "인스퍼레이션"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
   },
   "hyundai_st1": {
     "id": "hyundai_st1",
@@ -440,16 +1704,15 @@
     ],
     "fetched_at": "2026-04-29"
   },
-  "kia_k5_dl3": {
-    "id": "kia_k5_dl3",
-    "title": "기아 더 뉴 K5 DL3",
-    "maker": "기아",
+  "hyundai_staria": {
+    "id": "hyundai_staria",
+    "title": "현대 더 뉴 스타리아",
+    "maker": "현대",
     "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/k5/price",
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/the-new-staria/price",
       "wikicar": null,
       "encar": [
-        "encar_002_001_173",
-        "encar_002_001_174"
+        "encar_001_060_198"
       ]
     },
     "verified": {
@@ -458,37 +1721,67 @@
       "encar": true
     },
     "trims": [
-      "프레스티지",
-      "베스트 셀렉션",
-      "노블레스",
-      "시그니처",
-      "스마트 셀렉션",
-      "프레스티지 2",
-      "베스트 셀렉션 2",
-      "노블레스 2",
-      "시그니처 2",
-      "프레스티지 3",
-      "베스트 셀렉션 3",
-      "노블레스 3",
-      "시그니처 3",
-      "프레스티지 4",
-      "노블레스 4",
-      "시그니처 4"
+      "스마트",
+      "모던",
+      "wheelchairlift7"
     ],
     "fetched_at": "2026-04-29"
   },
-  "kia_k8_gl3": {
-    "id": "kia_k8_gl3",
-    "title": "기아 더 뉴 K8 GL3",
-    "maker": "기아",
+  "hyundai_staria_lounge": {
+    "id": "hyundai_staria_lounge",
+    "title": "현대 스타리아 라운지",
+    "maker": "현대",
     "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/k8/price",
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/the-new-staria-lounge/price",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "인스퍼레이션"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_staria_pre": {
+    "id": "hyundai_staria_pre",
+    "title": "현대 스타리아",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_002_065_156",
-        "encar_002_065_158",
-        "encar_002_065_178",
-        "encar_002_065_179"
+        "encar_001_060_171"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "투어러 9인승",
+      "투어러 11인승",
+      "카고",
+      "라운지 9인승",
+      "라운지 7인승"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 stub"
+  },
+  "hyundai_tucson_nx4": {
+    "id": "hyundai_tucson_nx4",
+    "title": "현대 더 뉴 투싼 NX4",
+    "maker": "현대",
+    "source": {
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/tucson/price",
+      "wikicar": null,
+      "encar": [
+        "encar_001_032_188",
+        "encar_001_032_189"
       ]
     },
     "verified": {
@@ -497,193 +1790,615 @@
       "encar": true
     },
     "trims": [
-      "노블레스 라이트",
-      "베스트 셀렉션",
-      "노블레스",
-      "시그니처",
-      "시그니처 블랙",
+      "모던",
+      "프리미엄",
+      "에이치-픽",
+      "인스퍼레이션",
+      "블랙 익스테리어",
+      "N 라인"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "hyundai_tucson_tl": {
+    "id": "hyundai_tucson_tl",
+    "title": "현대 올 뉴 투싼",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_001_032_133"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스마트",
+      "모던",
+      "프리미엄",
+      "인스퍼레이션"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "hyundai_venue": {
+    "id": "hyundai_venue",
+    "title": "현대 베뉴",
+    "maker": "현대",
+    "source": {
+      "manufacturer": "https://www.hyundai.com/kr/ko/e/vehicles/venue/price",
+      "wikicar": null,
+      "encar": [
+        "encar_001_059_159"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스마트 영업용 LPG 1.6",
+      "운전교습용 LPG 1.6",
+      "스마트",
+      "프리미엄",
+      "플럭스"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kgm_actyon": {
+    "id": "kgm_actyon",
+    "title": "KGM 액티언",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/actyon/57033",
+      "encar": [
+        "encar_004_006_127"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "S7",
+      "S9",
+      ""
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kgm_korando": {
+    "id": "kgm_korando",
+    "title": "KGM 코란도",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/korando_c200/57372",
+      "encar": [
+        "encar_004_011_115",
+        "encar_004_011_120"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "E3",
+      "E5",
+      "EV"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kgm_musso": {
+    "id": "kgm_musso",
+    "title": "KGM 무쏘",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/musso/57893",
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "MX",
+      "블랙 엣지",
+      "블랙엣지"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kgm_musso_ev_o100": {
+    "id": "kgm_musso_ev_o100",
+    "title": "KGM 무쏘 EV",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_005_131"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "스탠다드",
       "프레스티지"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
   },
-  "kia_k9_rj": {
-    "id": "kia_k9_rj",
-    "title": "기아 더 뉴 K9 RJ",
-    "maker": "기아",
+  "kgm_musso_q300": {
+    "id": "kgm_musso_q300",
+    "title": "KGM 무쏘 Q300",
+    "maker": "KGM",
     "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/k9/price",
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_002_059_159"
+        "encar_004_005_132"
       ]
     },
     "verified": {
-      "manufacturer": true,
+      "manufacturer": false,
       "wikicar": false,
       "encar": true
     },
     "trims": [
-      "플래티넘",
-      "베스트 셀렉션Ⅰ",
-      "마스터즈",
-      "베스트 셀렉션 Ⅱ"
+      "L5",
+      "V5",
+      "X5"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
   },
-  "kia_morning_ja": {
-    "id": "kia_morning_ja",
-    "title": "기아 더 뉴 모닝 JA",
-    "maker": "기아",
+  "kgm_musso_sports": {
+    "id": "kgm_musso_sports",
+    "title": "KGM 무쏘 스포츠",
+    "maker": "KGM",
     "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/morning/price",
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_002_013_170"
+        "encar_004_005_129"
       ]
     },
     "verified": {
-      "manufacturer": true,
+      "manufacturer": false,
       "wikicar": false,
       "encar": true
     },
     "trims": [
-      "트렌디",
-      "프레스티지",
-      "시그니처",
-      "GT-Line"
+      "L5",
+      "V5",
+      "X5"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
   },
-  "kia_ray": {
-    "id": "kia_ray",
-    "title": "기아 더 뉴 레이",
-    "maker": "기아",
+  "kgm_musso_sports_khan": {
+    "id": "kgm_musso_sports_khan",
+    "title": "KGM 무쏘 스포츠 칸",
+    "maker": "KGM",
     "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/ray/price",
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_002_058_167"
+        "encar_004_005_130"
       ]
     },
     "verified": {
-      "manufacturer": true,
+      "manufacturer": false,
       "wikicar": false,
       "encar": true
     },
     "trims": [
-      "트렌디",
-      "프레스티지",
-      "시그니처",
-      "X-Line",
-      "프레스티지 스페셜"
+      "L5",
+      "V5",
+      "X5"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
   },
-  "kia_ray_ev": {
-    "id": "kia_ray_ev",
-    "title": "기아 더 뉴 레이 EV",
-    "maker": "기아",
+  "kgm_rexton_sports": {
+    "id": "kgm_rexton_sports",
+    "title": "KGM 렉스턴 스포츠",
+    "maker": "KGM",
     "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/ray-ev/price",
-      "wikicar": null,
-      "encar": [
-        "encar_002_058_172"
-      ]
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/rexton_sports/52256",
+      "encar": []
     },
     "verified": {
-      "manufacturer": true,
-      "wikicar": false,
+      "manufacturer": false,
+      "wikicar": true,
       "encar": true
     },
     "trims": [
-      "라이트",
-      "에어"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kia_seltos": {
-    "id": "kia_seltos",
-    "title": "기아 더 뉴 셀토스",
-    "maker": "기아",
-    "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/seltos/price",
-      "wikicar": null,
-      "encar": [
-        "encar_002_064_166",
-        "encar_002_064_186"
-      ]
-    },
-    "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
-      "트렌디",
-      "프레스티지",
-      "시그니처",
-      "X-Line"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kia_niro_sg2": {
-    "id": "kia_niro_sg2",
-    "title": "기아 디 올 뉴 니로 SG2",
-    "maker": "기아",
-    "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/niro/price",
-      "wikicar": null,
-      "encar": [
-        "encar_002_061_163",
-        "encar_002_061_164"
-      ]
-    },
-    "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
-      "트렌디",
-      "프레스티지",
-      "시그니처"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kia_sportage_nq5": {
-    "id": "kia_sportage_nq5",
-    "title": "기아 더 뉴 스포티지 NQ5",
-    "maker": "기아",
-    "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/sportage/price",
-      "wikicar": null,
-      "encar": [
-        "encar_002_025_180",
-        "encar_002_025_181"
-      ]
-    },
-    "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
+      "와일드",
       "프레스티지",
       "노블레스",
-      "시그니처",
-      "시그니처 X-Line"
+      "전동식 사이드 스텝",
+      "고정식 사이드 스텝",
+      "트레일러 히치 13핀 BRINK",
+      "휴대폰 무선충전기 15W",
+      "빌트인 공기청정기",
+      "도어 스팟램프 & LED 도어스커프",
+      "3D 매트 1열/2열",
+      "3D 데크매트",
+      "2열 시트 언더트레이",
+      "오프로드 사이드 스텝",
+      "리어스텝 좌",
+      "슬라이딩 베드",
+      "멀티 유틸리티 박스",
+      "요소수 커버",
+      "스포츠 페달",
+      "디지털 스마트 키",
+      "테일게이트 가니쉬",
+      "에어컨 습기 건조기",
+      "아이나비 블랙박스 16GB",
+      "하드쉘 루프탑 텐트",
+      "슬라이딩 커버",
+      "폴딩커버",
+      "롤탑커버",
+      "모던 롤바",
+      "유틸리티 롤바",
+      "벙커 롤바",
+      "디럭스 쿠페탑 G9",
+      "하이탑 G10",
+      "엣지탑 G7",
+      "하프탑 G5",
+      "디럭스 하드탑 G4",
+      "폴켓커버"
     ],
     "fetched_at": "2026-04-29"
   },
-  "kia_sorento_mq4": {
-    "id": "kia_sorento_mq4",
-    "title": "기아 더 뉴 쏘렌토 MQ4",
-    "maker": "기아",
+  "kgm_rexton_sports_facelift": {
+    "id": "kgm_rexton_sports_facelift",
+    "title": "KGM 더 뉴 렉스턴 스포츠",
+    "maker": "KGM",
     "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/sorento/price",
+      "manufacturer": null,
       "wikicar": null,
       "encar": [
-        "encar_002_027_171"
+        "encar_004_003_118"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프로페셔널",
+      "프리미어",
+      "슈프림",
+      "헤리티지",
+      "익스트림"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "kgm_rexton_sports_khan": {
+    "id": "kgm_rexton_sports_khan",
+    "title": "KGM 렉스턴 스포츠 칸",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_003_114"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프로페셔널",
+      "프로페셔널 트림",
+      "슈프림",
+      "헤리티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_rexton_sports_khan_facelift": {
+    "id": "kgm_rexton_sports_khan_facelift",
+    "title": "KGM 더 뉴 렉스턴 스포츠 칸",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_003_119"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "헤리티지",
+      "프리미어",
+      "슈프림",
+      "슈프림 블랙",
+      "슈프림 어드벤처",
+      "리미티드 X"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_rexton_sports_pre": {
+    "id": "kgm_rexton_sports_pre",
+    "title": "KGM 렉스턴 스포츠 (페리 전)",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_003_113"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프로페셔널",
+      "슈프림",
+      "헤리티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "kgm_tivoli": {
+    "id": "kgm_tivoli",
+    "title": "KGM 티볼리",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/tivoli_armour/57592",
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "V1",
+      "세이프티 선루프",
+      "투톤 익스테리어 패키지",
+      "익스테리어 스타일 패키지 I",
+      "익스테리어 스타일 패키지 II",
+      "딥 컨트롤 패키지",
+      "인포콘 커넥티비티 패키지 II",
+      "천연 가죽시트 패키지",
+      "블레이즈 클러스터 패키지",
+      "하이패스시스템 ETCS, ECM 룸미러",
+      "파퓰러 컬렉션 패키지",
+      "V5",
+      "V7"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kgm_tivoli_air": {
+    "id": "kgm_tivoli_air",
+    "title": "KGM 티볼리 에어",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_012_108"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "EX",
+      "LX",
+      "LX 디스커버리"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_tivoli_air_facelift": {
+    "id": "kgm_tivoli_air_facelift",
+    "title": "KGM 더 뉴 티볼리 에어",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_012_124"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "MX",
+      "V5",
+      "V7"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_tivoli_armour": {
+    "id": "kgm_tivoli_armour",
+    "title": "KGM 티볼리 아머",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_012_112"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "EX",
+      "LX",
+      "TX",
+      "기어 에디션"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_tivoli_facelift": {
+    "id": "kgm_tivoli_facelift",
+    "title": "KGM 더 뉴 티볼리",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_012_123"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "MX",
+      "V5",
+      "V7"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_tivoli_very_new": {
+    "id": "kgm_tivoli_very_new",
+    "title": "KGM 베리 뉴 티볼리",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_012_116"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "MX",
+      "EX",
+      "LX"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_torres": {
+    "id": "kgm_torres",
+    "title": "KGM 토레스",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/torres/57932",
+      "encar": [
+        "encar_004_013_121"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "T5",
+      "T7",
+      ""
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kgm_torres_evx": {
+    "id": "kgm_torres_evx",
+    "title": "KGM 토레스 EVX",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_013_125"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "T7",
+      "V7",
+      "X7"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kgm_torres_facelift": {
+    "id": "kgm_torres_facelift",
+    "title": "KGM 더 뉴 토레스",
+    "maker": "KGM",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_004_013_126"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "T7",
+      "V7",
+      "V7 PRO"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "body type/세대 분리 stub"
+  },
+  "kia_bongo3": {
+    "id": "kia_bongo3",
+    "title": "기아 봉고3",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/bongo3/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_018_071"
       ]
     },
     "verified": {
@@ -692,10 +2407,11 @@
       "encar": true
     },
     "trims": [
-      "프레스티지",
-      "노블레스",
-      "시그니처",
-      "X-Line"
+      "L 라이트",
+      "L",
+      "스마트 셀렉션",
+      "GL",
+      "GLS"
     ],
     "fetched_at": "2026-04-29"
   },
@@ -726,6 +2442,63 @@
       "X-Line 7인승"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "kia_carnival_yp": {
+    "id": "kia_carnival_yp",
+    "title": "기아 올 뉴 카니발",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/allnew_carnival/20301",
+      "encar": [
+        "encar_002_036_113"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "디럭스",
+      "럭셔리",
+      "프레스티지",
+      "노블레스",
+      "노블레스 스페셜",
+      "매직스페이스",
+      "VIP",
+      "프레지던트"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "올 뉴 카니발 (YP)"
+  },
+  "kia_carnival_yp_facelift": {
+    "id": "kia_carnival_yp_facelift",
+    "title": "기아 더 뉴 카니발",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/allnew_carnival/20387",
+      "encar": [
+        "encar_002_036_137"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "디럭스",
+      "럭셔리",
+      "프레스티지",
+      "노블레스",
+      "노블레스 스페셜",
+      "VIP",
+      "프레지던트"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 카니발 (YP 페리)"
   },
   "kia_ev3": {
     "id": "kia_ev3",
@@ -813,7 +2586,6 @@
       "manufacturer": "https://www.kia.com/kr/vehicles/ev6/price",
       "wikicar": null,
       "encar": [
-        "encar_002_066_162",
         "encar_002_066_176"
       ]
     },
@@ -832,6 +2604,32 @@
       "GT-Line 롱레인지"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "kia_ev6_pre": {
+    "id": "kia_ev6_pre",
+    "title": "기아 EV6",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_066_162"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "라이트",
+      "에어",
+      "어스",
+      "GT-Line",
+      "GT"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전 stub"
   },
   "kia_ev9": {
     "id": "kia_ev9",
@@ -860,65 +2658,15 @@
     ],
     "fetched_at": "2026-04-29"
   },
-  "kia_bongo3": {
-    "id": "kia_bongo3",
-    "title": "기아 봉고3",
+  "kia_k3_bd": {
+    "id": "kia_k3_bd",
+    "title": "기아 올 뉴 K3",
     "maker": "기아",
-    "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/bongo3/price",
-      "wikicar": null,
-      "encar": [
-        "encar_002_018_071"
-      ]
-    },
-    "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
-      "L 라이트",
-      "L",
-      "스마트 셀렉션",
-      "GL",
-      "GLS"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kia_tasman": {
-    "id": "kia_tasman",
-    "title": "기아 타스만",
-    "maker": "기아",
-    "source": {
-      "manufacturer": "https://www.kia.com/kr/vehicles/tasman/price",
-      "wikicar": null,
-      "encar": [
-        "encar_002_071_182"
-      ]
-    },
-    "verified": {
-      "manufacturer": true,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
-      "다이내믹",
-      "어드벤처",
-      "익스트림",
-      "X-Pro"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_casper": {
-    "id": "hyundai_casper",
-    "title": "현대 더 뉴 캐스퍼",
-    "maker": "현대",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/casper/57764",
+      "wikicar": "http://wikicar.co.kr/allnew_k3/27983",
       "encar": [
-        "encar_001_062_174",
-        "encar_001_062_193"
+        "encar_002_060_136"
       ]
     },
     "verified": {
@@ -927,9 +2675,289 @@
       "encar": true
     },
     "trims": [
-      "프리미엄",
-      "인스퍼레이션",
-      "크로스"
+      "트렌디",
+      "럭셔리",
+      "프레스티지",
+      "노블레스",
+      "GT 라인"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "올 뉴 K3 (BD)"
+  },
+  "kia_k3_bd_facelift": {
+    "id": "kia_k3_bd_facelift",
+    "title": "기아 더 뉴 K3",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/allnew_k3/49677",
+      "encar": [
+        "encar_002_060_157"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "노블레스",
+      "시그니처",
+      "GT"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 K3 (BD 페리)"
+  },
+  "kia_k3_yd_facelift": {
+    "id": "kia_k3_yd_facelift",
+    "title": "기아 더 뉴 K3 (YD)",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/the_new_k3/18804",
+      "encar": [
+        "encar_002_060_120"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "디럭스",
+      "트렌디",
+      "트렌디 스타일",
+      "프레스티지 스페셜",
+      "노블레스"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 K3 (YD 페리, 1세대 페리)"
+  },
+  "kia_k5_dl3": {
+    "id": "kia_k5_dl3",
+    "title": "기아 더 뉴 K5 DL3",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/k5/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_001_173",
+        "encar_002_001_174"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프레스티지",
+      "베스트 셀렉션",
+      "노블레스",
+      "시그니처",
+      "스마트 셀렉션",
+      "프레스티지 2",
+      "베스트 셀렉션 2",
+      "노블레스 2",
+      "시그니처 2",
+      "프레스티지 3",
+      "베스트 셀렉션 3",
+      "노블레스 3",
+      "시그니처 3",
+      "프레스티지 4",
+      "노블레스 4",
+      "시그니처 4"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_k5_jf": {
+    "id": "kia_k5_jf",
+    "title": "기아 K5 JF",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_001_118",
+        "encar_002_001_121"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "럭셔리",
+      "프레스티지",
+      "노블레스",
+      "GT 라인"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "kia_k5_jf_facelift": {
+    "id": "kia_k5_jf_facelift",
+    "title": "기아 더 뉴 K5 JF",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_001_135",
+        "encar_002_001_139"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "럭셔리",
+      "프레스티지",
+      "노블레스",
+      "SX"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "kia_k7_premier": {
+    "id": "kia_k7_premier",
+    "title": "기아 K7 프리미어",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/k7/44475",
+      "encar": [
+        "encar_002_002_145",
+        "encar_002_002_146"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "프레스티지",
+      "노블레스",
+      "X 에디션",
+      "노블레스 시그니처",
+      "시그니처",
+      "스탠다드",
+      "트렌디"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "K7 프리미어 (YG 페리)"
+  },
+  "kia_k7_yg": {
+    "id": "kia_k7_yg",
+    "title": "기아 올 뉴 K7",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/k7/28081",
+      "encar": [
+        "encar_002_002_122",
+        "encar_002_002_129"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "프레스티지",
+      "노블레스",
+      "노블레스 스페셜"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "올 뉴 K7 (YG)"
+  },
+  "kia_k8_gl3": {
+    "id": "kia_k8_gl3",
+    "title": "기아 더 뉴 K8 GL3",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/k8/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_065_178",
+        "encar_002_065_179"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "노블레스 라이트",
+      "베스트 셀렉션",
+      "노블레스",
+      "시그니처",
+      "시그니처 블랙",
+      "프레스티지"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_k8_gl3_pre": {
+    "id": "kia_k8_gl3_pre",
+    "title": "기아 K8 GL3",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/K8/45415",
+      "encar": [
+        "encar_002_065_156",
+        "encar_002_065_158"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "노블레스 라이트",
+      "노블레스",
+      "시그니처",
+      "플래티넘",
+      "프레스티지",
+      "스탠다드",
+      "트렌디"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "K8 GL3 페리 전 (2021.04 출시)"
+  },
+  "kia_k9_rj": {
+    "id": "kia_k9_rj",
+    "title": "기아 더 뉴 K9 RJ",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/k9/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_059_159"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "플래티넘",
+      "베스트 셀렉션Ⅰ",
+      "마스터즈",
+      "베스트 셀렉션 Ⅱ"
     ],
     "fetched_at": "2026-04-29"
   },
@@ -955,6 +2983,478 @@
       "그래비티 3.0 디젤"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "kia_morning_ja": {
+    "id": "kia_morning_ja",
+    "title": "기아 더 뉴 기아 모닝",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/morning/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_013_170"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "시그니처",
+      "GT-Line"
+    ],
+    "fetched_at": "2026-04-29",
+    "note": "더 뉴 기아 모닝 (JA 페리2, 2023+)"
+  },
+  "kia_morning_ja_facelift1": {
+    "id": "kia_morning_ja_facelift1",
+    "title": "기아 더 뉴 모닝 JA",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/morning_ja/43169",
+      "encar": [
+        "encar_002_013_152"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "마이너스",
+      "스탠다드",
+      "프레스티지",
+      "시그니처"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 모닝 JA (페리1, 2020-2023)"
+  },
+  "kia_morning_ja_pre": {
+    "id": "kia_morning_ja_pre",
+    "title": "기아 올 뉴 모닝 JA",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/morning_ja/19824",
+      "encar": [
+        "encar_002_013_130"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "베이직 플러스",
+      "디럭스",
+      "럭셔리",
+      "프레스티지",
+      "레이디"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "올 뉴 모닝 JA (페리 전, 2017-2020)"
+  },
+  "kia_morning_sa_facelift": {
+    "id": "kia_morning_sa_facelift",
+    "title": "기아 더 뉴 모닝 SA",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_013_116"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "디럭스",
+      "럭셔리",
+      "프레스티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 모닝 SA (2015-2017 페리) — stub"
+  },
+  "kia_morning_sa_pre": {
+    "id": "kia_morning_sa_pre",
+    "title": "기아 올 뉴 모닝 SA",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_013_095"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "디럭스",
+      "럭셔리",
+      "프레스티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "올 뉴 모닝 SA (2011-2017) — stub"
+  },
+  "kia_niro_de": {
+    "id": "kia_niro_de",
+    "title": "기아 더 뉴 니로 DE",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/niro_hev/28307",
+      "encar": [
+        "encar_002_061_144",
+        "encar_002_061_140"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "럭셔리",
+      "프레스티지",
+      "노블레스",
+      "노블레스 스페셜",
+      "PHEV"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 뉴 니로 (DE 1세대 페리)"
+  },
+  "kia_niro_sg2": {
+    "id": "kia_niro_sg2",
+    "title": "기아 디 올 뉴 니로 SG2",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/niro/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_061_163",
+        "encar_002_061_164"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "시그니처"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_ray": {
+    "id": "kia_ray",
+    "title": "기아 더 뉴 레이",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/ray/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_058_167"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "시그니처",
+      "X-Line",
+      "프레스티지 스페셜"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_ray_ev": {
+    "id": "kia_ray_ev",
+    "title": "기아 더 뉴 레이 EV",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/ray-ev/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_058_172"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "라이트",
+      "에어"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_ray_tam_facelift1": {
+    "id": "kia_ray_tam_facelift1",
+    "title": "기아 더 뉴 레이 (TAM 페리1)",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_058_134"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "디럭스",
+      "럭셔리",
+      "프레스티지",
+      "에코"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "kia_seltos": {
+    "id": "kia_seltos",
+    "title": "기아 더 뉴 셀토스",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/seltos/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_064_166"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "시그니처",
+      "X-Line"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_seltos_sp2": {
+    "id": "kia_seltos_sp2",
+    "title": "기아 셀토스 SP2",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/seltos/29643",
+      "encar": [
+        "encar_002_064_147"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "노블레스"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "셀토스 SP2 (페리 전)"
+  },
+  "kia_seltos_sp3": {
+    "id": "kia_seltos_sp3",
+    "title": "기아 셀토스 (SP3, 2세대)",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_064_186"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "시그니처"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "kia_sorento_mq4": {
+    "id": "kia_sorento_mq4",
+    "title": "기아 더 뉴 쏘렌토 MQ4",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/sorento/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_027_171"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프레스티지",
+      "노블레스",
+      "시그니처",
+      "X-Line"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_sorento_um": {
+    "id": "kia_sorento_um",
+    "title": "기아 올 뉴 쏘렌토",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_002_027_114"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "럭셔리",
+      "프레스티지",
+      "노블레스"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "구형 한국차 stub"
+  },
+  "kia_sorento_um_facelift": {
+    "id": "kia_sorento_um_facelift",
+    "title": "기아 쏘렌토 더 마스터",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/sorento_mq4/23812",
+      "encar": [
+        "encar_002_027_133"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "럭셔리",
+      "프레스티지",
+      "노블레스",
+      "노블레스 스페셜",
+      "마스터 R2.0",
+      "마스터 R2.2"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "쏘렌토 더 마스터 (UM 페리)"
+  },
+  "kia_sportage_nq5": {
+    "id": "kia_sportage_nq5",
+    "title": "기아 더 뉴 스포티지 NQ5",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/sportage/price",
+      "wikicar": null,
+      "encar": [
+        "encar_002_025_180",
+        "encar_002_025_181"
+      ]
+    },
+    "verified": {
+      "manufacturer": true,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프레스티지",
+      "노블레스",
+      "시그니처",
+      "시그니처 X-Line"
+    ],
+    "fetched_at": "2026-04-29"
+  },
+  "kia_sportage_ql": {
+    "id": "kia_sportage_ql",
+    "title": "기아 더 SUV 스포티지",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/suv_sportage/19946",
+      "encar": [
+        "encar_002_025_119"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "노블레스",
+      "노블레스 플러스",
+      "노블레스 스페셜",
+      "스타일 에디션"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "더 SUV 스포티지 (QL 4세대 페리 전)"
+  },
+  "kia_sportage_ql_facelift": {
+    "id": "kia_sportage_ql_facelift",
+    "title": "기아 스포티지 더 볼드",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": "http://wikicar.co.kr/suv_sportage/43293",
+      "encar": [
+        "encar_002_025_141"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": true,
+      "encar": true
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "노블레스",
+      "시그니처"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "스포티지 더 볼드 (QL 페리)"
   },
   "kia_stinger": {
     "id": "kia_stinger",
@@ -982,244 +3482,311 @@
     ],
     "fetched_at": "2026-04-29"
   },
-  "genesis_g70": {
-    "id": "genesis_g70",
-    "title": "제네시스 더 뉴 G70",
-    "maker": "제네시스",
+  "kia_tasman": {
+    "id": "kia_tasman",
+    "title": "기아 타스만",
+    "maker": "기아",
     "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/genesis_g70/52667",
+      "manufacturer": "https://www.kia.com/kr/vehicles/tasman/price",
+      "wikicar": null,
       "encar": [
-        "encar_007_003_007",
-        "encar_007_003_013"
+        "encar_002_071_182"
       ]
     },
     "verified": {
-      "manufacturer": false,
-      "wikicar": true,
+      "manufacturer": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "프리미엄",
-      "스포츠"
+      "다이내믹",
+      "어드벤처",
+      "익스트림",
+      "X-Pro"
     ],
     "fetched_at": "2026-04-29"
   },
-  "genesis_g80_rg3": {
-    "id": "genesis_g80_rg3",
-    "title": "제네시스 디 올 뉴 G80 RG3",
-    "maker": "제네시스",
+  "landrover_defender": {
+    "id": "landrover_defender",
+    "title": "랜드로버 디펜더 L663",
+    "maker": "랜드로버",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/genesis_g80/53676",
+      "wikicar": null,
       "encar": [
-        "encar_007_002_006"
+        "encar_020_005_018"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [],
-    "fetched_at": "2026-04-29"
-  },
-  "genesis_g80_e": {
-    "id": "genesis_g80_e",
-    "title": "제네시스 일렉트리파이드 G80",
-    "maker": "제네시스",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/g80_e/56124",
-      "encar": [
-        "encar_007_002_009"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "G90",
-      "AWD 272kW 구동 모터"
+      "90 P300",
+      "110 P400",
+      "110 D300",
+      "130 P400",
+      "Defender V8"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
-  "genesis_g90_rs4": {
-    "id": "genesis_g90_rs4",
-    "title": "제네시스 G90 RS4",
-    "maker": "제네시스",
+  "landrover_range_sport": {
+    "id": "landrover_range_sport",
+    "title": "랜드로버 레인지로버 스포츠 L461",
+    "maker": "랜드로버",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/genesis_g90/54187",
+      "wikicar": null,
       "encar": [
-        "encar_007_004_011"
+        "encar_020_006_020"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "스탠다드 가솔린 3.5 터보"
+      "SE D250",
+      "Dynamic SE P400",
+      "Autobiography P530",
+      "SV P635"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
-  "genesis_gv60": {
-    "id": "genesis_gv60",
-    "title": "제네시스 GV60",
-    "maker": "제네시스",
+  "mercedes_c_w205": {
+    "id": "mercedes_c_w205",
+    "title": "벤츠 C클래스 W205",
+    "maker": "벤츠",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/gv60/51225",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "C180",
+      "C200",
+      "C220d",
+      "C250",
+      "C300",
+      "AMG C43",
+      "AMG C63 S"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "mercedes_c_w206": {
+    "id": "mercedes_c_w206",
+    "title": "벤츠 C-클래스 W206",
+    "maker": "벤츠",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
       "encar": [
-        "encar_007_007_010"
+        "encar_013_001_095"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [],
-    "fetched_at": "2026-04-29"
-  },
-  "genesis_gv70": {
-    "id": "genesis_gv70",
-    "title": "제네시스 디 올 뉴 GV70",
-    "maker": "제네시스",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/gv70/54115",
-      "encar": [
-        "encar_007_006_008"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "2WD 스탠다드",
-      "AWD 스탠다드",
-      "AWD 스포츠"
+      "C200",
+      "C300",
+      "C300 4MATIC",
+      "C43 AMG",
+      "C63 AMG"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
-  "genesis_gv70_e": {
-    "id": "genesis_gv70_e",
-    "title": "제네시스 일렉트리파이드 GV70",
-    "maker": "제네시스",
+  "mercedes_e_w213": {
+    "id": "mercedes_e_w213",
+    "title": "벤츠 E클래스 W213",
+    "maker": "벤츠",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/gv70_e/56025",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "E200",
+      "E220d",
+      "E250",
+      "E300",
+      "E300 4MATIC",
+      "E350",
+      "E400",
+      "E450 4MATIC",
+      "AMG E53",
+      "AMG E63 S"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "mercedes_e_w214": {
+    "id": "mercedes_e_w214",
+    "title": "벤츠 E-클래스 W214",
+    "maker": "벤츠",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
       "encar": [
-        "encar_007_006_012"
+        "encar_013_004_102"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "320kW 구동 모터 AWD"
+      "E200",
+      "E300 4MATIC",
+      "E350 4MATIC",
+      "E450 4MATIC",
+      "E63 AMG"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
-  "genesis_gv80": {
-    "id": "genesis_gv80",
-    "title": "제네시스 디 올 뉴 GV80",
-    "maker": "제네시스",
+  "mercedes_glc": {
+    "id": "mercedes_glc",
+    "title": "벤츠 GLC",
+    "maker": "벤츠",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/gv80/56238",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "GLC220d 4MATIC",
+      "GLC250 4MATIC",
+      "GLC300 4MATIC",
+      "GLC350e 4MATIC",
+      "GLC450 4MATIC",
+      "AMG GLC43 4MATIC"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "mercedes_s_w223": {
+    "id": "mercedes_s_w223",
+    "title": "벤츠 S-클래스 W223",
+    "maker": "벤츠",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
       "encar": [
-        "encar_007_005_005",
-        "encar_007_005_014"
+        "encar_013_005_092"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "가솔린 2.5 터보 AWD 5인승",
-      "가솔린 3.5 터보 AWD 5인승"
+      "S400d 4MATIC",
+      "S500 4MATIC",
+      "S580 4MATIC",
+      "S63 AMG E Performance",
+      "Maybach S580"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
-  "chevrolet_trax_crossover": {
-    "id": "chevrolet_trax_crossover",
-    "title": "쉐보레 트랙스 크로스오버",
-    "maker": "쉐보레",
+  "mini_cooper": {
+    "id": "mini_cooper",
+    "title": "미니 쿠퍼",
+    "maker": "미니",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/trax/51947",
+      "wikicar": null,
       "encar": [
-        "encar_003_048_108"
+        "encar_054_001_137"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "LS",
-      "LT",
-      "ACTIV",
-      "RS"
+      "Cooper C",
+      "Cooper S",
+      "Cooper SE Electric",
+      "JCW"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
-  "chevrolet_trailblazer": {
-    "id": "chevrolet_trailblazer",
-    "title": "쉐보레 트레일블레이저",
-    "maker": "쉐보레",
+  "porsche_cayenne": {
+    "id": "porsche_cayenne",
+    "title": "포르쉐 카이엔 PO536",
+    "maker": "포르쉐",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/trailblazer/54128",
+      "wikicar": null,
       "encar": [
-        "encar_003_055_109"
+        "encar_015_002_018"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "Premier",
-      "ACTIV",
-      "RS"
+      "Cayenne",
+      "Cayenne S",
+      "Cayenne E-Hybrid",
+      "Cayenne Turbo GT",
+      "Cayenne Turbo E-Hybrid"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
-  "chevrolet_colorado": {
-    "id": "chevrolet_colorado",
-    "title": "쉐보레 콜로라도",
-    "maker": "쉐보레",
+  "porsche_macan": {
+    "id": "porsche_macan",
+    "title": "포르쉐 마칸 EV",
+    "maker": "포르쉐",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/colorado/55103",
+      "wikicar": null,
       "encar": [
-        "encar_003_053_110"
+        "encar_015_013_022"
       ]
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": true
     },
     "trims": [
-      "Z71"
+      "Macan EV",
+      "Macan 4 EV",
+      "Macan 4S EV",
+      "Macan Turbo EV"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   },
   "renault_grand_koleos": {
     "id": "renault_grand_koleos",
@@ -1248,6 +3815,49 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "renault_qm3": {
+    "id": "renault_qm3",
+    "title": "르노 QM3",
+    "maker": "르노",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "RE",
+      "RE 시그니처",
+      "TCe 90 RE",
+      "TCe 90 RE 인텐스"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "renault_qm5": {
+    "id": "renault_qm5",
+    "title": "르노 QM5",
+    "maker": "르노",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "SE",
+      "SE Plus",
+      "RE"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "renault_qm6": {
     "id": "renault_qm6",
     "title": "르노 더 뉴 QM6",
@@ -1272,379 +3882,379 @@
     ],
     "fetched_at": "2026-04-29"
   },
-  "kgm_torres": {
-    "id": "kgm_torres",
-    "title": "KGM 토레스",
-    "maker": "KGM",
+  "renault_sm3": {
+    "id": "renault_sm3",
+    "title": "르노 SM3",
+    "maker": "르노",
     "source": {
       "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/torres/57932",
-      "encar": [
-        "encar_004_013_125",
-        "encar_004_013_121",
-        "encar_004_013_126"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "T5",
-      "T7",
-      ""
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kgm_actyon": {
-    "id": "kgm_actyon",
-    "title": "KGM 액티언",
-    "maker": "KGM",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/actyon/57033",
-      "encar": [
-        "encar_004_006_127"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "S7",
-      "S9",
-      ""
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kgm_musso": {
-    "id": "kgm_musso",
-    "title": "KGM 무쏘",
-    "maker": "KGM",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/musso/57893",
-      "encar": [
-        "encar_004_005_131",
-        "encar_004_005_132",
-        "encar_004_005_130",
-        "encar_004_005_129"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "MX",
-      "블랙 엣지",
-      "블랙엣지"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kgm_rexton_sports": {
-    "id": "kgm_rexton_sports",
-    "title": "KGM 렉스턴 스포츠",
-    "maker": "KGM",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/rexton_sports/52256",
-      "encar": [
-        "encar_004_003_118",
-        "encar_004_003_114",
-        "encar_004_003_119",
-        "encar_004_003_113"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "와일드",
-      "프레스티지",
-      "노블레스",
-      "전동식 사이드 스텝",
-      "고정식 사이드 스텝",
-      "트레일러 히치 13핀 BRINK",
-      "휴대폰 무선충전기 15W",
-      "빌트인 공기청정기",
-      "도어 스팟램프 & LED 도어스커프",
-      "3D 매트 1열/2열",
-      "3D 데크매트",
-      "2열 시트 언더트레이",
-      "오프로드 사이드 스텝",
-      "리어스텝 좌",
-      "슬라이딩 베드",
-      "멀티 유틸리티 박스",
-      "요소수 커버",
-      "스포츠 페달",
-      "디지털 스마트 키",
-      "테일게이트 가니쉬",
-      "에어컨 습기 건조기",
-      "아이나비 블랙박스 16GB",
-      "하드쉘 루프탑 텐트",
-      "슬라이딩 커버",
-      "폴딩커버",
-      "롤탑커버",
-      "모던 롤바",
-      "유틸리티 롤바",
-      "벙커 롤바",
-      "디럭스 쿠페탑 G9",
-      "하이탑 G10",
-      "엣지탑 G7",
-      "하프탑 G5",
-      "디럭스 하드탑 G4",
-      "폴켓커버"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kgm_korando": {
-    "id": "kgm_korando",
-    "title": "KGM 코란도",
-    "maker": "KGM",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/korando_c200/57372",
-      "encar": [
-        "encar_004_011_115",
-        "encar_004_011_120"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "E3",
-      "E5",
-      "EV"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "kgm_tivoli": {
-    "id": "kgm_tivoli",
-    "title": "KGM 티볼리",
-    "maker": "KGM",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/tivoli_armour/57592",
-      "encar": [
-        "encar_004_012_123",
-        "encar_004_012_108",
-        "encar_004_012_112",
-        "encar_004_012_124",
-        "encar_004_012_116"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "V1",
-      "세이프티 선루프",
-      "투톤 익스테리어 패키지",
-      "익스테리어 스타일 패키지 I",
-      "익스테리어 스타일 패키지 II",
-      "딥 컨트롤 패키지",
-      "인포콘 커넥티비티 패키지 II",
-      "천연 가죽시트 패키지",
-      "블레이즈 클러스터 패키지",
-      "하이패스시스템 ETCS, ECM 룸미러",
-      "파퓰러 컬렉션 패키지",
-      "V5",
-      "V7"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_sonata_dn8_edge_hybrid": {
-    "id": "hyundai_sonata_dn8_edge_hybrid",
-    "title": "현대 쏘나타 디 엣지 하이브리드 DN8",
-    "maker": "현대",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/sonata_dn8/56709",
-      "encar": [
-        "encar_001_018_186"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "프리미엄",
-      "익스클루시브",
-      "인스퍼레이션"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_sonata_dn8": {
-    "id": "hyundai_sonata_dn8",
-    "title": "현대 쏘나타 DN8",
-    "maker": "현대",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/sonata_dn8/49419",
-      "encar": [
-        "encar_001_018_157"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "모던",
-      "프리미엄 플러스",
-      "인스퍼레이션",
-      "모던 LPi 2.0",
-      "프리미엄 플러스 LPi 2.0",
-      "인스퍼레이션 LPi 2.0",
-      "모던 장애인용",
-      "프리미엄 장애인용",
-      "원발장애",
-      "왼손원발장애",
-      "왼손오른발장애",
-      "오른발장애",
-      "양발장애",
-      "오른손장애",
-      "스타일 렌터카",
-      "스마트 렌터카"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_sonata_dn8_hybrid": {
-    "id": "hyundai_sonata_dn8_hybrid",
-    "title": "현대 쏘나타 하이브리드 DN8",
-    "maker": "현대",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/sonata_dn8/49429",
-      "encar": [
-        "encar_001_018_160"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "모던",
-      "프리미엄 플러스",
-      "인스퍼레이션"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "chevrolet_tahoe": {
-    "id": "chevrolet_tahoe",
-    "title": "쉐보레 타호",
-    "maker": "쉐보레",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/tahoe/47689",
-      "encar": [
-        "encar_003_057_106"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "High Country",
-      "Dark Knight"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_grandeur_ig_163": {
-    "id": "hyundai_grandeur_ig_163",
-    "title": "현대 더 뉴 그랜저 IG 하이브리드",
-    "maker": "현대",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/grandeur_ig/51076",
-      "encar": [
-        "encar_001_004_163"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "프리미엄",
-      "익스클루시브",
-      "캘리그래피"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "hyundai_santafe_tm_165": {
-    "id": "hyundai_santafe_tm_165",
-    "title": "현대 더 뉴 싼타페",
-    "maker": "현대",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/santafe_tm/52802",
-      "encar": [
-        "encar_001_017_165"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": true,
-      "encar": true
-    },
-    "trims": [
-      "익스클루시브",
-      "프레스티지",
-      "캘리그래피",
-      "익스클루시브 싼타페 하이브리드",
-      "프레스티지 싼타페 하이브리드",
-      "캘리그래피 싼타페 하이브리드",
-      "익스클루시브 싼타페 하이브리드",
-      "프레스티지 싼타페 하이브리드",
-      "캘리그래피 싼타페 하이브리드",
-      "프로텍션 매트 패키지 I",
-      "프로텍션 매트 패키지 II",
-      "러기지 패키지",
-      "라이프 스타일"
-    ],
-    "fetched_at": "2026-04-29"
-  },
-  "genesis_g80_rg3_pre": {
-    "id": "genesis_g80_rg3_pre",
-    "title": "제네시스 G80 RG3",
-    "maker": "제네시스",
-    "source": {
-      "manufacturer": null,
-      "wikicar": "http://wikicar.co.kr/genesis_g80/51014",
+      "wikicar": null,
       "encar": []
     },
     "verified": {
       "manufacturer": false,
-      "wikicar": true,
+      "wikicar": false,
       "encar": false
     },
     "trims": [
-      "2.5T",
-      "2.5T AWD",
-      "3.5T AWD"
+      "PE",
+      "RE",
+      "LE",
+      "SE Plus"
     ],
-    "fetched_at": "2026-04-30",
-    "note": "페리 전 G80 RG3 (2020-2023). FL split 매핑."
+    "fetched_at": "2026-05-04"
+  },
+  "renault_sm5": {
+    "id": "renault_sm5",
+    "title": "르노 SM5",
+    "maker": "르노",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "PE",
+      "LE",
+      "RE",
+      "RE LPe"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "renault_sm6": {
+    "id": "renault_sm6",
+    "title": "르노 SM6",
+    "maker": "르노",
+    "source": {
+      "manufacturer": "https://www.renault.co.kr/models/sm6.html",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "PE",
+      "LE",
+      "RE",
+      "프리미에르"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "renault_sm7": {
+    "id": "renault_sm7",
+    "title": "르노 SM7",
+    "maker": "르노",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "PE",
+      "LE",
+      "RE",
+      "RE 35"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "renault_xm3": {
+    "id": "renault_xm3",
+    "title": "르노 XM3",
+    "maker": "르노",
+    "source": {
+      "manufacturer": "https://www.renault.co.kr/models/xm3.html",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "TCe 260 RE",
+      "TCe 260 RE 시그니처",
+      "1.6 GTe SE",
+      "1.6 GTe LE",
+      "1.6 GTe RE"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "tesla_model_3": {
+    "id": "tesla_model_3",
+    "title": "테슬라 모델 3",
+    "maker": "테슬라",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_087_003_003"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "Standard Range",
+      "Long Range",
+      "Performance"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "tesla_model_s": {
+    "id": "tesla_model_s",
+    "title": "테슬라 모델 S",
+    "maker": "테슬라",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_087_001_001"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "Long Range",
+      "Plaid"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "tesla_model_x": {
+    "id": "tesla_model_x",
+    "title": "테슬라 모델 X",
+    "maker": "테슬라",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_087_002_002"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "Long Range",
+      "Plaid"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "tesla_model_y": {
+    "id": "tesla_model_y",
+    "title": "테슬라 모델 Y",
+    "maker": "테슬라",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_087_004_004"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "Standard Range",
+      "Long Range",
+      "Performance"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "volvo_s60": {
+    "id": "volvo_s60",
+    "title": "볼보 S60",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_017_009_029"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "B5 Mild Hybrid",
+      "T8 Recharge",
+      "Polestar Engineered"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "volvo_xc40": {
+    "id": "volvo_xc40",
+    "title": "볼보 XC40",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_017_023_031"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "B4",
+      "B5",
+      "Recharge Pure Electric Single",
+      "Recharge Pure Electric Twin"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "volvo_xc40_pre": {
+    "id": "volvo_xc40_pre",
+    "title": "볼보 XC40 (1세대)",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_017_023_027"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "Momentum",
+      "Inscription",
+      "R-Design"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "volvo_xc60": {
+    "id": "volvo_xc60",
+    "title": "볼보 XC60",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_017_016_026"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "B5 Mild Hybrid",
+      "B6 Mild Hybrid",
+      "T8 Recharge",
+      "Polestar Engineered"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "volvo_xc60_gen1": {
+    "id": "volvo_xc60_gen1",
+    "title": "볼보 XC60 (1세대)",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_017_016_017"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "Momentum",
+      "Summum",
+      "R-Design"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "페리 전/세대 분리 stub"
+  },
+  "vw_golf_8": {
+    "id": "vw_golf_8",
+    "title": "폭스바겐 골프 8세대",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_014_007_042"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "1.5 eTSI Active",
+      "2.0 TDI Style",
+      "GTI",
+      "R"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
+  },
+  "vw_tiguan": {
+    "id": "vw_tiguan",
+    "title": "폭스바겐 티구안 올스페이스",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": [
+        "encar_014_002_035"
+      ]
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": true
+    },
+    "trims": [
+      "프리미엄",
+      "프레스티지"
+    ],
+    "fetched_at": "2026-05-04",
+    "note": "수입차 stub"
   }
 }

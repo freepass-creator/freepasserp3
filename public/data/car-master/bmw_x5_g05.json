@@ -1,0 +1,48 @@
+{
+  "catalog_id": "bmw_x5_g05",
+  "title": "BMW X5 G05",
+  "maker": "BMW",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "xDrive40i": {
+      "slug": "xdrive40i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "xDrive40d": {
+      "slug": "xdrive40d",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "xDrive50e M Sport": {
+      "slug": "xdrive50e_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "M60i": {
+      "slug": "m60i",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "M Competition": {
+      "slug": "m_competition",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

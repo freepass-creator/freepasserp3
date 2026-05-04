@@ -1248,55 +1248,64 @@
           "codes": [
             "KRGL301048"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRGL301047"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "문스케이프 매트 그레이"
         },
         {
           "codes": [
             "KRGL301159"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "파노라마 선루프"
         },
         {
           "codes": [
             "KRGL301P20"
           ],
-          "price": 1980000
+          "price": 1980000,
+          "name": "스타일"
         },
         {
           "codes": [
             "KRGL301P05"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "드라이브 와이즈"
         },
         {
           "codes": [
             "KRGL301180"
           ],
-          "price": 370000
+          "price": 370000,
+          "name": "블랙 루프스킨"
         },
         {
           "codes": [
             "KRGL301181"
           ],
-          "price": 170000
+          "price": 170000,
+          "name": "LED 도어스팟 램프"
         },
         {
           "codes": [
             "KRGL301182"
           ],
-          "price": 320000
+          "price": 320000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "KRGL301183"
           ],
-          "price": 340000
+          "price": 340000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -1444,67 +1453,78 @@
           "codes": [
             "KRGL301048"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRGL301047"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "문스케이프 매트 그레이"
         },
         {
           "codes": [
             "KRGL301159"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "파노라마 선루프"
         },
         {
           "codes": [
             "KRGL301164"
           ],
-          "price": 840000
+          "price": 840000,
+          "name": "헤드업 디스플레이"
         },
         {
           "codes": [
             "KRGL301P22"
           ],
-          "price": 1780000
+          "price": 1780000,
+          "name": "스타일"
         },
         {
           "codes": [
             "KRGL301P24"
           ],
-          "price": 640000
+          "price": 640000,
+          "name": "드라이브 와이즈"
         },
         {
           "codes": [
             "KRGL301P07"
           ],
-          "price": 540000
+          "price": 540000,
+          "name": "스마트 커넥트"
         },
         {
           "codes": [
             "KRGL301180"
           ],
-          "price": 370000
+          "price": 370000,
+          "name": "블랙 루프스킨"
         },
         {
           "codes": [
             "KRGL301181"
           ],
-          "price": 170000
+          "price": 170000,
+          "name": "LED 도어스팟 램프"
         },
         {
           "codes": [
             "KRGL301182"
           ],
-          "price": 320000
+          "price": 320000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "KRGL301183"
           ],
-          "price": 340000
+          "price": 340000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -1634,43 +1654,50 @@
           "codes": [
             "KRGL301048"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRGL301159"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "파노라마 선루프"
         },
         {
           "codes": [
             "KRGL301P02"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "메리디안 프리미엄 사운드"
         },
         {
           "codes": [
             "KRGL301P25"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "드라이브 와이즈"
         },
         {
           "codes": [
             "KRGL301P09"
           ],
-          "price": 1780000
+          "price": 1780000,
+          "name": "컨비니언스"
         },
         {
           "codes": [
             "KRGL301P23"
           ],
-          "price": 1680000
+          "price": 1680000,
+          "name": "스타일"
         },
         {
           "codes": [
             "KRGL301P11"
           ],
-          "price": 1780000
+          "price": 1780000,
+          "name": "헤드업 디스플레이 + 스마트 커넥트"
         }
       ]
     },
@@ -1844,73 +1871,85 @@
           "codes": [
             "KRGL301048"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRGL301047"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "문스케이프 매트 그레이"
         },
         {
           "codes": [
             "KRGL301159"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "파노라마 선루프"
         },
         {
           "codes": [
             "KRGL301P03"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "프리뷰 전자제어 서스펜션 I"
         },
         {
           "codes": [
             "KRGL301P04"
           ],
-          "price": 1290000
+          "price": 1290000,
+          "name": "프리뷰 전자제어 서스펜션 II"
         },
         {
           "codes": [
             "KRGL301P02"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "메리디안 프리미엄 사운드"
         },
         {
           "codes": [
             "KRGL301002"
           ],
-          "price": 2180000
+          "price": 2180000,
+          "name": "AWD"
         },
         {
           "codes": [
             "KRGL301P06"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "프리미엄"
         },
         {
           "codes": [
             "KRGL301180"
           ],
-          "price": 370000
+          "price": 370000,
+          "name": "블랙 루프스킨"
         },
         {
           "codes": [
             "KRGL301181"
           ],
-          "price": 170000
+          "price": 170000,
+          "name": "LED 도어스팟 램프"
         },
         {
           "codes": [
             "KRGL301182"
           ],
-          "price": 320000
+          "price": 320000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "KRGL301183"
           ],
-          "price": 340000
+          "price": 340000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -2084,49 +2123,57 @@
           "codes": [
             "KRGL301159"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "파노라마 선루프"
         },
         {
           "codes": [
             "KRGL301P02"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "메리디안 프리미엄 사운드"
         },
         {
           "codes": [
             "KRGL301002"
           ],
-          "price": 2180000
+          "price": 2180000,
+          "name": "AWD"
         },
         {
           "codes": [
             "KRGL301P06"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "프리미엄"
         },
         {
           "codes": [
             "KRGL301180"
           ],
-          "price": 370000
+          "price": 370000,
+          "name": "블랙 루프스킨"
         },
         {
           "codes": [
             "KRGL301181"
           ],
-          "price": 170000
+          "price": 170000,
+          "name": "LED 도어스팟 램프"
         },
         {
           "codes": [
             "KRGL301182"
           ],
-          "price": 320000
+          "price": 320000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "KRGL301183"
           ],
-          "price": 340000
+          "price": 340000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -2231,31 +2278,36 @@
           "codes": [
             "KRGL301048"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRGL301159"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "파노라마 선루프"
         },
         {
           "codes": [
             "KRGL301P12"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "전자식 룸미러 + 하이패스 자동결제 시스템 + 245/45 R18 타이어&amp;전면가공 휠"
         },
         {
           "codes": [
             "KRGL301P08"
           ],
-          "price": 1040000
+          "price": 1040000,
+          "name": "컴포트"
         },
         {
           "codes": [
             "KRGL301P25"
           ],
-          "price": 1090000
+          "price": 1090000,
+          "name": "드라이브 와이즈"
         }
       ]
     }

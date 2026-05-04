@@ -1,0 +1,48 @@
+{
+  "catalog_id": "bmw_3_g20",
+  "title": "BMW 3시리즈 G20",
+  "maker": "BMW",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "320i M Sport": {
+      "slug": "320i_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "320i xDrive": {
+      "slug": "320i_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "330i M Sport": {
+      "slug": "330i_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "320d xDrive": {
+      "slug": "320d_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "M340i xDrive": {
+      "slug": "m340i_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

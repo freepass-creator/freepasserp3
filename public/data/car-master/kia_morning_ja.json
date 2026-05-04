@@ -831,7 +831,7 @@
     "트렌디": {
       "slug": "트렌디",
       "price": {
-        "base": 13750000
+        "base": 13250000
       },
       "basic": [
         "KRJA232003",
@@ -899,26 +899,29 @@
           "codes": [
             "KRJA232P14"
           ],
-          "price": 500000
+          "price": 500000,
+          "name": "버튼시동 PACK"
         },
         {
           "codes": [
             "KRJA232P15"
           ],
-          "price": 300000
+          "price": 300000,
+          "name": "컨비니언스"
         },
         {
           "codes": [
             "KRJA232P18"
           ],
-          "price": 700000
+          "price": 700000,
+          "name": "8인치 내비게이션"
         }
       ]
     },
     "프레스티지": {
       "slug": "프레스티지",
       "price": {
-        "base": 14400000
+        "base": 15000000
       },
       "basic": [
         "KRJA232046",
@@ -995,26 +998,29 @@
           "codes": [
             "KRJA232P14"
           ],
-          "price": 500000
+          "price": 500000,
+          "name": "버튼시동 PACK"
         },
         {
           "codes": [
             "KRJA232P16"
           ],
-          "price": 150000
+          "price": 150000,
+          "name": "컨비니언스"
         },
         {
           "codes": [
             "KRJA232P18"
           ],
-          "price": 700000
+          "price": 700000,
+          "name": "8인치 내비게이션"
         }
       ]
     },
     "시그니처": {
       "slug": "시그니처",
       "price": {
-        "base": 17750000
+        "base": 17250000
       },
       "basic": [
         "KRJA232009",
@@ -1133,32 +1139,36 @@
           "codes": [
             "KRJA232P04"
           ],
-          "price": 850000
+          "price": 850000,
+          "name": "스타일"
         },
         {
           "codes": [
             "KRJA232P13"
           ],
-          "price": 700000
+          "price": 700000,
+          "name": "8인치 내비게이션"
         },
         {
           "codes": [
             "KRJA232088"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "선루프"
         },
         {
           "codes": [
             "KRJA232P19"
           ],
-          "price": 190000
+          "price": 190000,
+          "name": "스마트 패키지"
         }
       ]
     },
     "GT-Line": {
       "slug": "GT-Line",
       "price": {
-        "base": 18700000
+        "base": 18200000
       },
       "basic": [
         "KRJA232126",
@@ -1284,19 +1294,22 @@
           "codes": [
             "KRJA232P22"
           ],
-          "price": 700000
+          "price": 700000,
+          "name": "8인치 내비게이션"
         },
         {
           "codes": [
             "KRJA232088"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "선루프"
         },
         {
           "codes": [
             "KRJA232P19"
           ],
-          "price": 190000
+          "price": 190000,
+          "name": "스마트 패키지"
         }
       ]
     }

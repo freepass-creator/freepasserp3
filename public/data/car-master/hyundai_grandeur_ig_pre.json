@@ -1,0 +1,49 @@
+{
+  "catalog_id": "hyundai_grandeur_ig_pre",
+  "title": "현대 그랜저 IG",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "구형 한국차 stub — 트림명만. 옵션/가격 추후 OCR.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프리미엄": {
+      "slug": "프리미엄",
+      "price": {
+        "base": 32350000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "익스클루시브": {
+      "slug": "익스클루시브",
+      "price": {
+        "base": 36080000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "캘리그래피",
+      "price": {
+        "base": 42700000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "모던": {
+      "slug": "프리미엄",
+      "price": {
+        "base": 31120000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

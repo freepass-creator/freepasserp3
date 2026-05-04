@@ -1,0 +1,43 @@
+{
+  "catalog_id": "hyundai_grandeur_ig_hybrid_pre",
+  "title": "현대 그랜저 IG 하이브리드",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "구형 한국차 stub — 트림명만. 옵션/가격 추후 OCR.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프리미엄": {
+      "slug": "프리미엄",
+      "price": {
+        "base": 35760000,
+        "before_tax": 37190000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "익스클루시브": {
+      "slug": "익스클루시브",
+      "price": {
+        "base": 37870000,
+        "before_tax": 39300000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "익스클루시브 스페셜": {
+      "slug": "익스클루시브",
+      "price": {
+        "base": 39930000,
+        "before_tax": 41360000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

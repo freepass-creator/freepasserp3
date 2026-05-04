@@ -1,0 +1,48 @@
+{
+  "catalog_id": "hyundai_casper_pre",
+  "title": "현대 캐스퍼",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전 stub — 트림명만. 가격/옵션 추후.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "스마트": {
+      "slug": "스마트",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "모던": {
+      "slug": "모던",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "인스퍼레이션": {
+      "slug": "인스퍼레이션",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "액티브 2": {
+      "slug": "액티브_2",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "크로스": {
+      "slug": "크로스",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

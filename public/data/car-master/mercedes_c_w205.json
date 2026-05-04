@@ -1,0 +1,20 @@
+{
+  "catalog_id": "mercedes_c_w205",
+  "title": "벤츠 C클래스 W205",
+  "maker": "벤츠",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "C클래스 4세대 W205 (2014~2021). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "C180": { "slug": "c180", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "C200": { "slug": "c200", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "C220d": { "slug": "c220d", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "C250": { "slug": "c250", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "C300": { "slug": "c300", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "AMG C43": { "slug": "amg_c43", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "AMG C63 S": { "slug": "amg_c63_s", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

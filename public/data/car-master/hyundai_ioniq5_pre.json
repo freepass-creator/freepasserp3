@@ -1,0 +1,41 @@
+{
+  "catalog_id": "hyundai_ioniq5_pre",
+  "title": "현대 아이오닉5",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전 stub — 트림명만. 가격/옵션 추후.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "스탠다드 익스클루시브": {
+      "slug": "스탠다드_익스클루시브",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "스탠다드 프레스티지": {
+      "slug": "스탠다드_프레스티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "롱레인지 익스클루시브": {
+      "slug": "롱레인지_익스클루시브",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "롱레인지 프레스티지": {
+      "slug": "롱레인지_프레스티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "catalog_id": "kgm_torres_evx",
+  "title": "KGM 토레스 EVX",
+  "maker": "KGM",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "body type/세대 분리 stub — 트림명만.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "T7": {
+      "slug": "t7",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "V7": {
+      "slug": "v7",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "X7": {
+      "slug": "x7",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

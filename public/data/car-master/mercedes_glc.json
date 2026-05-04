@@ -1,0 +1,19 @@
+{
+  "catalog_id": "mercedes_glc",
+  "title": "벤츠 GLC",
+  "maker": "벤츠",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "GLC 1세대 X253 (2015~2022). 한국 도로 매우 흔함. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "GLC220d 4MATIC": { "slug": "glc220d_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "GLC250 4MATIC": { "slug": "glc250_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "GLC300 4MATIC": { "slug": "glc300_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "GLC350e 4MATIC": { "slug": "glc350e_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "GLC450 4MATIC": { "slug": "glc450_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "AMG GLC43 4MATIC": { "slug": "amg_glc43_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

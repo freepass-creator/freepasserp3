@@ -1,0 +1,48 @@
+{
+  "catalog_id": "hyundai_staria_pre",
+  "title": "현대 스타리아",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전 stub — 트림명만. 가격/옵션 추후.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "투어러 9인승": {
+      "slug": "투어러_9인승",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "투어러 11인승": {
+      "slug": "투어러_11인승",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "카고": {
+      "slug": "카고",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "라운지 9인승": {
+      "slug": "라운지_9인승",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "라운지 7인승": {
+      "slug": "라운지_7인승",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

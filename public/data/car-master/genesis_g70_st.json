@@ -1,0 +1,34 @@
+{
+  "catalog_id": "genesis_g70_st",
+  "title": "제네시스 G70 슈팅브레이크",
+  "maker": "제네시스",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "body type/세대 분리 stub — 트림명만.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "스탠다드": {
+      "slug": "스탠다드",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "스포츠": {
+      "slug": "스포츠",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "스포츠 프레스티지": {
+      "slug": "스포츠_프레스티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

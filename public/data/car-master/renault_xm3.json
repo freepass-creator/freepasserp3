@@ -1,0 +1,18 @@
+{
+  "catalog_id": "renault_xm3",
+  "title": "르노 XM3",
+  "maker": "르노",
+  "source": "stub",
+  "source_urls": ["https://www.renault.co.kr/models/xm3.html"],
+  "fetched_at": "2026-05-04",
+  "note": "XM3 (2020~2023, 페리 후 아르카나로 통합). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "TCe 260 RE": { "slug": "tce260_re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "TCe 260 RE 시그니처": { "slug": "tce260_re_signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "1.6 GTe SE": { "slug": "16gte_se", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "1.6 GTe LE": { "slug": "16gte_le", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "1.6 GTe RE": { "slug": "16gte_re", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

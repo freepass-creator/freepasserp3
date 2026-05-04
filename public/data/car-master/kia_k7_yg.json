@@ -1,0 +1,34 @@
+{
+  "catalog_id": "kia_k7_yg",
+  "title": "기아 올 뉴 K7",
+  "maker": "기아",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/k7/28081"],
+  "fetched_at": "2026-05-04",
+  "note": "올 뉴 K7 (YG, 2016-2019). 가격: wikicar 2019년형(2018.12) OCR. 2.4/3.0/3.3 GDI / R2.2 디젤.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_24g": 30530000, "base_22d": 34780000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": { "base_24g": 33030000, "base_30g": 33290000, "base_33g": 37090000, "base_22d": 37240000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 스페셜": {
+      "slug": "노블레스_스페셜",
+      "price": { "base_33g": 39690000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

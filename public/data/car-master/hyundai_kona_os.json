@@ -1,0 +1,48 @@
+{
+  "catalog_id": "hyundai_kona_os",
+  "title": "현대 코나 OS",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "구형 한국차 stub — 트림명만. 옵션/가격 추후 OCR.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "스마트": {
+      "slug": "스마트",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "모던": {
+      "slug": "모던",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미엄": {
+      "slug": "프리미엄",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "하이브리드": {
+      "slug": "하이브리드",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "일렉트릭": {
+      "slug": "일렉트릭",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

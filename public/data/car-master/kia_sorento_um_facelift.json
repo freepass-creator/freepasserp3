@@ -1,0 +1,45 @@
+{
+  "catalog_id": "kia_sorento_um_facelift",
+  "title": "기아 쏘렌토 더 마스터",
+  "maker": "기아",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/sorento_mq4/23812"],
+  "fetched_at": "2026-05-04",
+  "note": "쏘렌토 더 마스터 (UM 페리, 2017-2020). 가격: wikicar 2019년형(2018.04) OCR. R2.0D / R2.2D / 마스터 트림 별도.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "럭셔리": {
+      "slug": "럭셔리",
+      "price": { "base_20d": 28400000, "base_22d": 28950000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_20d": 30400000, "base_22d": 30950000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": { "base_20d": 32300000, "base_22d": 32850000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "노블레스 스페셜": {
+      "slug": "노블레스_스페셜",
+      "price": { "base_20d": 33800000, "base_22d": 34350000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "마스터 R2.0": {
+      "slug": "마스터_r20",
+      "price": { "base_20d": 35800000 },
+      "basic": [], "select": [], "select_groups": [],
+      "note": "노블레스 스페셜 기본품목 외 마스터 패키지"
+    },
+    "마스터 R2.2": {
+      "slug": "마스터_r22",
+      "price": { "base_22d": 36350000 },
+      "basic": [], "select": [], "select_groups": [],
+      "note": "노블레스 스페셜 기본품목 외 마스터 패키지"
+    }
+  }
+}

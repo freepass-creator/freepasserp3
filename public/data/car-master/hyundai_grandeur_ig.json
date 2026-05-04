@@ -1,0 +1,53 @@
+{
+  "catalog_id": "hyundai_grandeur_ig",
+  "title": "현대 더 뉴 그랜저 IG",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "구형 한국차 stub — 트림명만. 옵션/가격 추후 OCR.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프리미엄": {
+      "slug": "프리미엄",
+      "price": {
+        "base": 33920000,
+        "before_tax": 34550000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "익스클루시브": {
+      "slug": "익스클루시브",
+      "price": {
+        "base": 38530000,
+        "before_tax": 39250000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "캘리그래피",
+      "price": {
+        "base": 42310000,
+        "before_tax": 43100000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "르블랑": {
+      "slug": "르블랑",
+      "price": {
+        "base": 36220000,
+        "before_tax": 36900000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

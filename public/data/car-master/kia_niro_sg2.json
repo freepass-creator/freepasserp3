@@ -783,10 +783,8 @@
     "트렌디": {
       "slug": "트렌디",
       "price": {
-        "tax_5_before": 30310000,
-        "tax_5_after": 29310000,
-        "tax_3_5_before": 29850000,
-        "tax_3_5_after": 28850000
+        "base": 28510000,
+        "before_tax": 28750000
       },
       "basic": [
         "KRSG300001",
@@ -877,53 +875,58 @@
           "codes": [
             "KRSG300063"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRSG300P01"
           ],
-          "price": 650000
+          "price": 650000,
+          "name": "컨비니언스"
         },
         {
           "codes": [
             "KRSG300P03"
           ],
-          "price": 490000
+          "price": 490000,
+          "name": "18인치 휠"
         },
         {
           "codes": [
             "KRSG300P05"
           ],
-          "price": 420000
+          "price": 420000,
+          "name": "드라이브 와이즈 Ⅰ"
         },
         {
           "codes": [
             "KRSG300P06"
           ],
-          "price": 1150000
+          "price": 1150000,
+          "name": "12.3인치 클러스터 팩"
         },
         {
           "codes": [
             "KRSG300P10"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2 플러스"
         },
         {
           "codes": [
             "KRSG300P16"
           ],
-          "price": 100000
+          "price": 100000,
+          "name": "마이 컴포트 패키지"
         }
       ]
     },
     "프레스티지": {
       "slug": "프레스티지",
       "price": {
-        "tax_5_before": 33460000,
-        "tax_5_after": 32460000,
-        "tax_3_5_before": 32950000,
-        "tax_3_5_after": 31950000
+        "base": 32955000,
+        "before_tax": 33665000
       },
       "basic": [
         "KRSG300016",
@@ -1040,89 +1043,100 @@
           "codes": [
             "KRSG300063"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRSG300P02"
           ],
-          "price": 970000
+          "price": 970000,
+          "name": "스타일"
         },
         {
           "codes": [
             "KRSG300P03"
           ],
-          "price": 490000
+          "price": 490000,
+          "name": "18인치 휠"
         },
         {
           "codes": [
             "KRSG300P04"
           ],
-          "price": 1240000
+          "price": 1240000,
+          "name": "프리미엄"
         },
         {
           "codes": [
             "KRSG300P05"
           ],
-          "price": 420000
+          "price": 420000,
+          "name": "드라이브 와이즈 Ⅰ"
         },
         {
           "codes": [
             "KRSG300P07"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "12.3인치 클러스터 팩"
         },
         {
           "codes": [
             "KRSG300P08"
           ],
-          "price": 990000
+          "price": 990000,
+          "name": "드라이브 와이즈 Ⅱ"
         },
         {
           "codes": [
             "KRSG300P09"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "HUD"
         },
         {
           "codes": [
             "KRSG300P10"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2 플러스"
         },
         {
           "codes": [
             "KRSG300P11"
           ],
-          "price": 750000
+          "price": 750000,
+          "name": "컴포트"
         },
         {
           "codes": [
             "KRSG300P13"
           ],
-          "price": 850000
+          "price": 850000,
+          "name": "스마트 커넥트"
         },
         {
           "codes": [
             "KRSG300P15"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "선루프 + LED 실내등"
         },
         {
           "codes": [
             "KRSG300P16"
           ],
-          "price": 100000
+          "price": 100000,
+          "name": "마이 컴포트 패키지"
         }
       ]
     },
     "시그니처": {
       "slug": "시그니처",
       "price": {
-        "tax_5_before": 36190000,
-        "tax_5_after": 35190000,
-        "tax_3_5_before": 35640000,
-        "tax_3_5_after": 34640000
+        "base": 35070000,
+        "before_tax": 35805000
       },
       "basic": [
         "KRSG300038",
@@ -1254,79 +1268,92 @@
           "codes": [
             "KRSG300063"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRSG300P02"
           ],
-          "price": 970000
+          "price": 970000,
+          "name": "스타일"
         },
         {
           "codes": [
             "KRSG300P03"
           ],
-          "price": 490000
+          "price": 490000,
+          "name": "18인치 휠"
         },
         {
           "codes": [
             "KRSG300P04"
           ],
-          "price": 1240000
+          "price": 1240000,
+          "name": "프리미엄"
         },
         {
           "codes": [
             "KRSG300P05"
           ],
-          "price": 420000
+          "price": 420000,
+          "name": "드라이브 와이즈 Ⅰ"
         },
         {
           "codes": [
             "KRSG300P08"
           ],
-          "price": 990000
+          "price": 990000,
+          "name": "드라이브 와이즈 Ⅱ"
         },
         {
           "codes": [
             "KRSG300P09"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "HUD"
         },
         {
           "codes": [
             "KRSG300P10"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2 플러스"
         },
         {
           "codes": [
             "KRSG300P12"
           ],
-          "price": 550000
+          "price": 550000,
+          "name": "컴포트"
         },
         {
           "codes": [
             "KRSG300P13"
           ],
-          "price": 850000
+          "price": 850000,
+          "name": "스마트 커넥트"
         },
         {
           "codes": [
             "KRSG300P14"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "하만카돈 프리미엄 사운드"
         },
         {
           "codes": [
             "KRSG300P15"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "선루프 + LED 실내등"
         },
         {
           "codes": [
             "KRSG300P16"
           ],
-          "price": 100000
+          "price": 100000,
+          "name": "마이 컴포트 패키지"
         }
       ]
     }

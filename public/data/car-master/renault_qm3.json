@@ -1,0 +1,17 @@
+{
+  "catalog_id": "renault_qm3",
+  "title": "르노 QM3",
+  "maker": "르노",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "QM3 (2014~2020) — 르노 캡처(Captur)의 르노삼성 버전. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RE 시그니처": { "slug": "re_signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "TCe 90 RE": { "slug": "tce90_re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "TCe 90 RE 인텐스": { "slug": "tce90_re_intense", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

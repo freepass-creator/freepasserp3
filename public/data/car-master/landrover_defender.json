@@ -1,0 +1,48 @@
+{
+  "catalog_id": "landrover_defender",
+  "title": "랜드로버 디펜더 L663",
+  "maker": "랜드로버",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "90 P300": {
+      "slug": "90_p300",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "110 P400": {
+      "slug": "110_p400",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "110 D300": {
+      "slug": "110_d300",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "130 P400": {
+      "slug": "130_p400",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Defender V8": {
+      "slug": "defender_v8",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

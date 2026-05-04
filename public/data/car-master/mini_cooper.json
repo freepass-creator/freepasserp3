@@ -1,0 +1,41 @@
+{
+  "catalog_id": "mini_cooper",
+  "title": "미니 쿠퍼",
+  "maker": "미니",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Cooper C": {
+      "slug": "cooper_c",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Cooper S": {
+      "slug": "cooper_s",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Cooper SE Electric": {
+      "slug": "cooper_se_electric",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "JCW": {
+      "slug": "jcw",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "catalog_id": "kia_k3_bd",
+  "title": "기아 올 뉴 K3",
+  "maker": "기아",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/allnew_k3/27983"],
+  "fetched_at": "2026-05-04",
+  "note": "올 뉴 K3 (BD, 2018-2021). 가격: wikicar 2019년형(2018.10) OCR. 1.6 가솔린 (스마트스트림 G1.6).",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "트렌디": {
+      "slug": "트렌디",
+      "price": { "base_16g": 15710000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "럭셔리": {
+      "slug": "럭셔리",
+      "price": { "base_16g": 17960000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_16g": 20120000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": { "base_16g": 21990000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "GT 라인": {
+      "slug": "gt_라인",
+      "price": {},
+      "basic": [], "select": [], "select_groups": [],
+      "note": "1.6 터보 (T-GDI) 스포츠 트림 — 가격 별도"
+    }
+  }
+}

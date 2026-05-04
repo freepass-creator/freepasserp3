@@ -1,0 +1,22 @@
+{
+  "catalog_id": "bmw_3_f30",
+  "title": "BMW 3시리즈 F30",
+  "maker": "BMW",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "3시리즈 6세대 F30 (2012~2018, 한국). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "320i": { "slug": "320i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "320i M Sport": { "slug": "320i_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "330i": { "slug": "330i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "330i M Sport": { "slug": "330i_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "320d": { "slug": "320d", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "320d M Sport": { "slug": "320d_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "320d xDrive": { "slug": "320d_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "330d M Sport": { "slug": "330d_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "M3": { "slug": "m3", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

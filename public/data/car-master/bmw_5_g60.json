@@ -1,0 +1,62 @@
+{
+  "catalog_id": "bmw_5_g60",
+  "title": "BMW 5시리즈 G60",
+  "maker": "BMW",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "520i M Sport": {
+      "slug": "520i_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "530i M Sport": {
+      "slug": "530i_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "530i xDrive M Sport": {
+      "slug": "530i_xdrive_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "540i xDrive M Sport": {
+      "slug": "540i_xdrive_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "520d M Sport": {
+      "slug": "520d_m_sport",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "i5 eDrive40": {
+      "slug": "i5_edrive40",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "i5 M60 xDrive": {
+      "slug": "i5_m60_xdrive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

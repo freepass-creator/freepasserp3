@@ -1,6 +1,6 @@
 {
   "catalog_id": "chevrolet_trailblazer",
-  "title": "쉐보레 트레일블레이저",
+  "title": "쉐보레 더 뉴 트레일블레이저",
   "maker": "쉐보레",
   "source": "wikicar_ocr",
   "source_urls": [
@@ -617,7 +617,7 @@
     "Premier": {
       "slug": "Premier",
       "price": {
-        "tax_5_before": 27990000
+        "base": 27990000
       },
       "basic": [
         "WK_E_Turbo_135_가솔린_엔진",
@@ -721,7 +721,7 @@
     "ACTIV": {
       "slug": "ACTIV",
       "price": {
-        "tax_5_before": 30990000
+        "base": 30990000
       },
       "basic": [
         "WK_18__ACTIV_전용_머신드_알로이_휠",
@@ -836,7 +836,7 @@
     "RS": {
       "slug": "RS",
       "price": {
-        "tax_5_before": 30990000
+        "base": 30990000
       },
       "basic": [
         "WK_18__RS_전용_머신드_알로이_휠",

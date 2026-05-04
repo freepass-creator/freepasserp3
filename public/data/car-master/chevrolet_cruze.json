@@ -1,0 +1,16 @@
+{
+  "catalog_id": "chevrolet_cruze",
+  "title": "쉐보레 더 뉴 크루즈",
+  "maker": "쉐보레",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "크루즈 2세대 (2017~2019 한국 단명). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "LS": { "slug": "ls", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "LTZ": { "slug": "ltz", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

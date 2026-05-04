@@ -1,0 +1,48 @@
+{
+  "catalog_id": "hyundai_grandeur_hg",
+  "title": "현대 그랜저 HG",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "구형 한국차 stub — 트림명만. 옵션/가격 추후 OCR.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Modern": {
+      "slug": "modern",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Premium": {
+      "slug": "premium",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Luxury": {
+      "slug": "luxury",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Le Blanc": {
+      "slug": "le_blanc",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Calligraphy": {
+      "slug": "calligraphy",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

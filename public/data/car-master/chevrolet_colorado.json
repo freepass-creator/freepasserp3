@@ -1,6 +1,6 @@
 {
   "catalog_id": "chevrolet_colorado",
-  "title": "쉐보레 콜로라도",
+  "title": "쉐보레 올 뉴 콜로라도",
   "maker": "쉐보레",
   "source": "wikicar_ocr",
   "source_urls": [
@@ -665,7 +665,7 @@
     "Z71": {
       "slug": "Z71",
       "price": {
-        "tax_5_before": 72790000
+        "base": 50990000
       },
       "basic": [
         "WK_2_7T_직분사_가솔린_엔진",

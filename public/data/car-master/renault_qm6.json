@@ -829,7 +829,7 @@
     "LE 2.0 LPe": {
       "slug": "LE_(2.0_LPe)",
       "price": {
-        "tax_5_before": 28400000
+        "base": 28400000
       },
       "basic": [
         "WK_2_0_LPe_LPG_엔진",
@@ -966,7 +966,7 @@
     "RE 2.0 LPe": {
       "slug": "RE_(2.0_LPe)",
       "price": {
-        "tax_5_before": 30950000
+        "base": 30950000
       },
       "basic": [
         "WK_FULL_LED_리어콤비네이션_램프",
@@ -1108,7 +1108,7 @@
     "RE": {
       "slug": "RE",
       "price": {
-        "tax_5_before": 30950000
+        "base": 30950000
       },
       "basic": [
         "WK_2_0_GDe_가솔린__엔진",
@@ -1174,7 +1174,7 @@
     "VAN 밴": {
       "slug": "VAN_(밴)",
       "price": {
-        "tax_5_before": 25650000
+        "base": 24500000
       },
       "basic": [
         "WK_2_0_LPe_LPG_엔진",

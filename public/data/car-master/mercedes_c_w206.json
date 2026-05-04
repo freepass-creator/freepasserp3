@@ -1,0 +1,48 @@
+{
+  "catalog_id": "mercedes_c_w206",
+  "title": "벤츠 C-클래스 W206",
+  "maker": "벤츠",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "C200": {
+      "slug": "c200",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C300": {
+      "slug": "c300",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C300 4MATIC": {
+      "slug": "c300_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C43 AMG": {
+      "slug": "c43_amg",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "C63 AMG": {
+      "slug": "c63_amg",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

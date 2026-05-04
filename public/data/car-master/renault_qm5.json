@@ -1,0 +1,16 @@
+{
+  "catalog_id": "renault_qm5",
+  "title": "르노 QM5",
+  "maker": "르노",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "QM5 (2007~2015). 페리 후 뉴QM5 / 네오. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "SE": { "slug": "se", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "SE Plus": { "slug": "se_plus", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

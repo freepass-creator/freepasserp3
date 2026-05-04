@@ -1,0 +1,48 @@
+{
+  "catalog_id": "porsche_cayenne",
+  "title": "포르쉐 카이엔 PO536",
+  "maker": "포르쉐",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Cayenne": {
+      "slug": "cayenne",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Cayenne S": {
+      "slug": "cayenne_s",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Cayenne E-Hybrid": {
+      "slug": "cayenne_e_hybrid",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Cayenne Turbo GT": {
+      "slug": "cayenne_turbo_gt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Cayenne Turbo E-Hybrid": {
+      "slug": "cayenne_turbo_e_hybrid",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

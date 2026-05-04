@@ -1,0 +1,16 @@
+{
+  "catalog_id": "chevrolet_equinox",
+  "title": "쉐보레 더 넥스트 이쿼녹스",
+  "maker": "쉐보레",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "이쿼녹스 3세대 (2018~2020 한국 출시 기간). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "LS": { "slug": "ls", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "LT": { "slug": "lt", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "프리미어": { "slug": "premier", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "catalog_id": "genesis_gv80_coupe",
+  "title": "제네시스 GV80 쿠페",
+  "maker": "제네시스",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "body type/세대 분리 stub — 트림명만.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "2.5 터보": {
+      "slug": "2.5_터보",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "3.5 터보": {
+      "slug": "3.5_터보",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "3.5 터보 스포츠 패키지": {
+      "slug": "3.5_터보_스포츠_패키지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "3.5 터보 스포츠 플러스 패키지": {
+      "slug": "3.5_터보_스포츠_플러스_패키지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

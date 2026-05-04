@@ -884,7 +884,8 @@
       "slug": "e-Value+",
       "name_en": null,
       "price": {
-        "base": 51150000
+        "base": 46950000,
+        "before_tax": 49450000
       },
       "basic": [
         "CE03001",
@@ -976,31 +977,36 @@
           "codes": [
             "CE03127"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "빌트인 캠 2 Plus"
         },
         {
           "codes": [
             "CE03P01"
           ],
-          "price": 1200000
+          "price": 1200000,
+          "name": "컴포트 초이스"
         },
         {
           "codes": [
             "CE03P02"
           ],
-          "price": 1480000
+          "price": 1480000,
+          "name": "현대 스마트센스Ⅰ"
         },
         {
           "codes": [
             "CE03136"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "CE03137"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         }
       ]
     },
@@ -1008,7 +1014,8 @@
       "slug": "exclusive-long-range",
       "name_en": null,
       "price": {
-        "base": 58090000
+        "base": 49450000,
+        "before_tax": 52090000
       },
       "basic": [
         "CE03001",
@@ -1118,67 +1125,78 @@
           "codes": [
             "CE03127"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "빌트인 캠 2 Plus"
         },
         {
           "codes": [
             "CE03014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC(전륜 모터)"
         },
         {
           "codes": [
             "CE03071"
           ],
-          "price": 640000
+          "price": 640000,
+          "name": "와이드 선루프"
         },
         {
           "codes": [
             "CE03065"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "20인치 휠 & 피렐리 타이어"
         },
         {
           "codes": [
             "CE03P04"
           ],
-          "price": 690000
+          "price": 690000,
+          "name": "컨비니언스"
         },
         {
           "codes": [
             "CE03P03"
           ],
-          "price": 1510000
+          "price": 1510000,
+          "name": "현대 스마트센스Ⅱ"
         },
         {
           "codes": [
             "CE03P08"
           ],
-          "price": 800000
+          "price": 800000,
+          "name": "파킹 어시스트"
         },
         {
           "codes": [
             "CE03P05"
           ],
-          "price": 680000
+          "price": 680000,
+          "name": "컴포트 플러스"
         },
         {
           "codes": [
             "CE03P06"
           ],
-          "price": 710000
+          "price": 710000,
+          "name": "플래티넘"
         },
         {
           "codes": [
             "CE03136"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "CE03137"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         }
       ]
     },
@@ -1186,7 +1204,7 @@
       "slug": "exclusive-nline",
       "name_en": null,
       "price": {
-        "base": 60510000
+        "base": 51500000
       },
       "basic": [
         "CE03001",
@@ -1302,61 +1320,71 @@
           "codes": [
             "CE03127"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "빌트인 캠 2 Plus"
         },
         {
           "codes": [
             "CE03014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC(전륜 모터)"
         },
         {
           "codes": [
             "CE03071"
           ],
-          "price": 640000
+          "price": 640000,
+          "name": "와이드 선루프"
         },
         {
           "codes": [
             "CE03065"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "20인치 휠 & 피렐리 타이어"
         },
         {
           "codes": [
             "CE03P04"
           ],
-          "price": 690000
+          "price": 690000,
+          "name": "컨비니언스"
         },
         {
           "codes": [
             "CE03P03"
           ],
-          "price": 1510000
+          "price": 1510000,
+          "name": "현대 스마트센스Ⅱ"
         },
         {
           "codes": [
             "CE03P08"
           ],
-          "price": 800000
+          "price": 800000,
+          "name": "파킹 어시스트"
         },
         {
           "codes": [
             "CE03P05"
           ],
-          "price": 680000
+          "price": 680000,
+          "name": "컴포트 플러스"
         },
         {
           "codes": [
             "CE03136"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "CE03137"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         }
       ]
     },
@@ -1364,7 +1392,8 @@
       "slug": "prestige-long-range",
       "name_en": null,
       "price": {
-        "base": 62910000
+        "base": 51150000,
+        "before_tax": 53880000
       },
       "basic": [
         "CE03001",
@@ -1507,49 +1536,57 @@
           "codes": [
             "CE03127"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "빌트인 캠 2 Plus"
         },
         {
           "codes": [
             "CE03014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC(전륜 모터)"
         },
         {
           "codes": [
             "CE03071"
           ],
-          "price": 640000
+          "price": 640000,
+          "name": "와이드 선루프"
         },
         {
           "codes": [
             "CE03065"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "20인치 휠 & 피렐리 타이어"
         },
         {
           "codes": [
             "CE03P07"
           ],
-          "price": 1380000
+          "price": 1380000,
+          "name": "디지털 사이드 미러"
         },
         {
           "codes": [
             "CE03P09"
           ],
-          "price": 950000
+          "price": 950000,
+          "name": "하이테크 플러스"
         },
         {
           "codes": [
             "CE03136"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "CE03137"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         }
       ]
     },
@@ -1557,7 +1594,7 @@
       "slug": "prestige-nline",
       "name_en": null,
       "price": {
-        "base": 64590000
+        "base": 53000000
       },
       "basic": [
         "CE03001",
@@ -1702,61 +1739,71 @@
           "codes": [
             "CE03127"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "빌트인 캠 2 Plus"
         },
         {
           "codes": [
             "CE03014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC(전륜 모터)"
         },
         {
           "codes": [
             "CE03071"
           ],
-          "price": 640000
+          "price": 640000,
+          "name": "와이드 선루프"
         },
         {
           "codes": [
             "CE03065"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "20인치 휠 & 피렐리 타이어"
         },
         {
           "codes": [
             "CE03P07"
           ],
-          "price": 1380000
+          "price": 1380000,
+          "name": "디지털 사이드 미러"
         },
         {
           "codes": [
             "CE03P09"
           ],
-          "price": 950000
+          "price": 950000,
+          "name": "하이테크 플러스"
         },
         {
           "codes": [
             "CE03P10"
           ],
-          "price": 300000
+          "price": 300000,
+          "name": "스웨이드 내장재"
         },
         {
           "codes": [
             "CE03085"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "알칸타라/천연가죽 시트"
         },
         {
           "codes": [
             "CE03136"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "CE03137"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         }
       ]
     },
@@ -1764,7 +1811,8 @@
       "slug": "e-lite-long-range",
       "name_en": null,
       "price": {
-        "base": 53340000
+        "base": 46950000,
+        "before_tax": 49450000
       },
       "basic": [
         "CE03001",
@@ -1856,25 +1904,29 @@
           "codes": [
             "CE03014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC(전륜 모터)"
         },
         {
           "codes": [
             "CE03065"
           ],
-          "price": 590000
+          "price": 590000,
+          "name": "20인치 휠 & 피렐리 타이어"
         },
         {
           "codes": [
             "CE03136"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름 Ⅰ"
         },
         {
           "codes": [
             "CE03137"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름 Ⅱ"
         }
       ]
     }

@@ -1,0 +1,41 @@
+{
+  "catalog_id": "hyundai_tucson_tl",
+  "title": "현대 올 뉴 투싼",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "구형 한국차 stub — 트림명만. 옵션/가격 추후 OCR.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "스마트": {
+      "slug": "스마트",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "모던": {
+      "slug": "모던",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프리미엄": {
+      "slug": "프리미엄",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "인스퍼레이션": {
+      "slug": "인스퍼레이션",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

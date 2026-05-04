@@ -920,7 +920,8 @@
       "slug": "exclusive",
       "name_en": null,
       "price": {
-        "base": 57400000
+        "base": 50870000,
+        "before_tax": 53560000
       },
       "basic": [
         "NE05001",
@@ -1029,73 +1030,85 @@
           "codes": [
             "NE05014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC"
         },
         {
           "codes": [
             "NE05157"
           ],
-          "price": 500000
+          "price": 500000,
+          "name": "디지털 센터 미러"
         },
         {
           "codes": [
             "NE05P01"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2,증강현실 내비게이션"
         },
         {
           "codes": [
             "NE05054"
           ],
-          "price": 490000
+          "price": 490000,
+          "name": "20인치 알로이 휠 & 미쉐린 타이어"
         },
         {
           "codes": [
             "NE05P02"
           ],
-          "price": 750000
+          "price": 750000,
+          "name": "컴포트"
         },
         {
           "codes": [
             "NE05P06"
           ],
-          "price": 1100000
+          "price": 1100000,
+          "name": "현대 스마트센스"
         },
         {
           "codes": [
             "NE05P05"
           ],
-          "price": 1200000
+          "price": 1200000,
+          "name": "스타일"
         },
         {
           "codes": [
             "NE05P08"
           ],
-          "price": 1500000
+          "price": 1500000,
+          "name": "파킹 어시스트"
         },
         {
           "codes": [
             "NE05P13"
           ],
-          "price": 800000
+          "price": 800000,
+          "name": "파킹 어시스트 Lite"
         },
         {
           "codes": [
             "NE05P11"
           ],
-          "price": 120000
+          "price": 120000,
+          "name": "러기지 패키지"
         },
         {
           "codes": [
             "NE05172"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "NE05173"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -1103,7 +1116,7 @@
       "slug": "n-line-exclusive",
       "name_en": "N Line Exclusive",
       "price": {
-        "base": 59510000
+        "base": 52800000
       },
       "basic": [
         "NE05001",
@@ -1228,67 +1241,78 @@
           "codes": [
             "NE05014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC"
         },
         {
           "codes": [
             "NE05157"
           ],
-          "price": 500000
+          "price": 500000,
+          "name": "디지털 센터 미러"
         },
         {
           "codes": [
             "NE05P01"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2,증강현실 내비게이션"
         },
         {
           "codes": [
             "NE05P02"
           ],
-          "price": 750000
+          "price": 750000,
+          "name": "컴포트"
         },
         {
           "codes": [
             "NE05P06"
           ],
-          "price": 1100000
+          "price": 1100000,
+          "name": "현대 스마트센스"
         },
         {
           "codes": [
             "NE05P08"
           ],
-          "price": 1500000
+          "price": 1500000,
+          "name": "파킹 어시스트"
         },
         {
           "codes": [
             "NE05P13"
           ],
-          "price": 800000
+          "price": 800000,
+          "name": "파킹 어시스트 Lite"
         },
         {
           "codes": [
             "NE05P10"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "알칸타라/천연가죽 시트"
         },
         {
           "codes": [
             "NE05P11"
           ],
-          "price": 120000
+          "price": 120000,
+          "name": "러기지 패키지"
         },
         {
           "codes": [
             "NE05172"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "NE05173"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -1296,7 +1320,8 @@
       "slug": "prestige",
       "name_en": null,
       "price": {
-        "base": 62300000
+        "base": 56270000,
+        "before_tax": 59230000
       },
       "basic": [
         "NE05001",
@@ -1445,73 +1470,85 @@
           "codes": [
             "NE05014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC"
         },
         {
           "codes": [
             "NE05157"
           ],
-          "price": 500000
+          "price": 500000,
+          "name": "디지털 센터 미러"
         },
         {
           "codes": [
             "NE05P01"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2,증강현실 내비게이션"
         },
         {
           "codes": [
             "NE05054"
           ],
-          "price": 490000
+          "price": 490000,
+          "name": "20인치 알로이 휠 & 미쉐린 타이어"
         },
         {
           "codes": [
             "NE05P08"
           ],
-          "price": 1500000
+          "price": 1500000,
+          "name": "파킹 어시스트"
         },
         {
           "codes": [
             "NE05P13"
           ],
-          "price": 800000
+          "price": 800000,
+          "name": "파킹 어시스트 Lite"
         },
         {
           "codes": [
             "NE05P07"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "컴포트 플러스"
         },
         {
           "codes": [
             "NE05080"
           ],
-          "price": 740000
+          "price": 740000,
+          "name": "비전루프"
         },
         {
           "codes": [
             "NE05P09"
           ],
-          "price": 1380000
+          "price": 1380000,
+          "name": "디지털 사이드 미러"
         },
         {
           "codes": [
             "NE05P11"
           ],
-          "price": 120000
+          "price": 120000,
+          "name": "러기지 패키지"
         },
         {
           "codes": [
             "NE05172"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "NE05173"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -1519,7 +1556,7 @@
       "slug": "n-line-prestige",
       "name_en": "N Line Prestige",
       "price": {
-        "base": 63460000
+        "base": 58000000
       },
       "basic": [
         "NE05001",
@@ -1668,73 +1705,85 @@
           "codes": [
             "NE05014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC"
         },
         {
           "codes": [
             "NE05157"
           ],
-          "price": 500000
+          "price": 500000,
+          "name": "디지털 센터 미러"
         },
         {
           "codes": [
             "NE05P01"
           ],
-          "price": 450000
+          "price": 450000,
+          "name": "빌트인 캠 2,증강현실 내비게이션"
         },
         {
           "codes": [
             "NE05P08"
           ],
-          "price": 1500000
+          "price": 1500000,
+          "name": "파킹 어시스트"
         },
         {
           "codes": [
             "NE05P13"
           ],
-          "price": 800000
+          "price": 800000,
+          "name": "파킹 어시스트 Lite"
         },
         {
           "codes": [
             "NE05P07"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "컴포트 플러스"
         },
         {
           "codes": [
             "NE05080"
           ],
-          "price": 740000
+          "price": 740000,
+          "name": "비전루프"
         },
         {
           "codes": [
             "NE05P09"
           ],
-          "price": 1380000
+          "price": 1380000,
+          "name": "디지털 사이드 미러"
         },
         {
           "codes": [
             "NE05P10"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "알칸타라/천연가죽 시트"
         },
         {
           "codes": [
             "NE05P11"
           ],
-          "price": 120000
+          "price": 120000,
+          "name": "러기지 패키지"
         },
         {
           "codes": [
             "NE05172"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "NE05173"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -1742,7 +1791,8 @@
       "slug": "e-lite",
       "name_en": null,
       "price": {
-        "base": 53340000
+        "base": 47390000,
+        "before_tax": 49890000
       },
       "basic": [
         "NE05001",
@@ -1826,25 +1876,29 @@
           "codes": [
             "NE05014"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "HTRAC"
         },
         {
           "codes": [
             "NE05P11"
           ],
-          "price": 120000
+          "price": 120000,
+          "name": "러기지 패키지"
         },
         {
           "codes": [
             "NE05172"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "NE05173"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     },
@@ -1942,43 +1996,50 @@
           "codes": [
             "NE05P06"
           ],
-          "price": 1100000
+          "price": 1100000,
+          "name": "현대 스마트센스"
         },
         {
           "codes": [
             "NE05P03"
           ],
-          "price": 1000000
+          "price": 1000000,
+          "name": "컴포트 초이스"
         },
         {
           "codes": [
             "NE05P12"
           ],
-          "price": 1300000
+          "price": 1300000,
+          "name": "스타일(기본형 E-Value+)"
         },
         {
           "codes": [
             "NE05P13"
           ],
-          "price": 800000
+          "price": 800000,
+          "name": "파킹 어시스트 Lite"
         },
         {
           "codes": [
             "NE05P11"
           ],
-          "price": 120000
+          "price": 120000,
+          "name": "러기지 패키지"
         },
         {
           "codes": [
             "NE05172"
           ],
-          "price": 380000
+          "price": 380000,
+          "name": "차량 보호 필름Ⅰ"
         },
         {
           "codes": [
             "NE05173"
           ],
-          "price": 400000
+          "price": 400000,
+          "name": "차량 보호 필름Ⅱ"
         }
       ]
     }

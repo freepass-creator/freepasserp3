@@ -1,0 +1,64 @@
+{
+  "catalog_id": "kia_k7_premier",
+  "title": "기아 K7 프리미어",
+  "maker": "기아",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/k7/44475"],
+  "fetched_at": "2026-05-04",
+  "note": "K7 프리미어 (YG 페리, 2019-2021). 가격: wikicar 2021년형(2020.10) OCR. 2.5 가솔린 5트림 / 3.0 LPG / 하이브리드 / 3.0 LPG 렌터카 별도.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_25g": 33050000, "base_30lpg": 31950000, "base_hev": 36350000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스": {
+      "slug": "노블레스",
+      "price": { "base_25g": 34500000, "base_30lpg": 36700000, "base_hev": 38300000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "X 에디션": {
+      "slug": "x_에디션",
+      "price": { "base_25g": 35900000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 시그니처": {
+      "slug": "노블레스_시그니처",
+      "price": { "base_25g": 36800000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": { "base_25g": 38900000, "base_hev": 40300000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "스탠다드": {
+      "slug": "스탠다드",
+      "price": { "base_30lpg_renter": 27100000 },
+      "basic": [],
+      "select": [],
+      "select_groups": [],
+      "note": "3.0 LPG 렌터카 전용"
+    },
+    "트렌디": {
+      "slug": "트렌디",
+      "price": { "base_30lpg_renter": 28550000 },
+      "basic": [],
+      "select": [],
+      "select_groups": [],
+      "note": "3.0 LPG 렌터카 전용"
+    }
+  }
+}

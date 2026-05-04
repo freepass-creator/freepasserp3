@@ -1,0 +1,33 @@
+{
+  "catalog_id": "kia_morning_ja_facelift1",
+  "title": "기아 더 뉴 모닝 JA",
+  "maker": "기아",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/morning_ja/43169"],
+  "fetched_at": "2026-05-04",
+  "note": "더 뉴 모닝 JA (페리 1차, 2020-2023). 가격: wikicar 2020.05 OCR. 카파 1.0 가솔린.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "마이너스": {
+      "slug": "마이너스",
+      "price": { "base_10g": 11750000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "스탠다드": {
+      "slug": "스탠다드",
+      "price": { "base_10g": 11950000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_10g": 13500000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": { "base_10g": 14800000 },
+      "basic": [], "select": [], "select_groups": []
+    }
+  }
+}

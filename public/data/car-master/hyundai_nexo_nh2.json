@@ -628,7 +628,8 @@
       "slug": "exclusive",
       "name_en": null,
       "price": {
-        "base": 80509000
+        "base": 69500000,
+        "before_tax": 74017500
       },
       "basic": [
         "NH01002",
@@ -701,7 +702,8 @@
           "codes": [
             "NH01101"
           ],
-          "price": 200000
+          "price": 200000,
+          "name": "하이패스(e hi-pass 포함)"
         }
       ]
     },
@@ -709,7 +711,7 @@
       "slug": "exclusive-special",
       "name_en": null,
       "price": {
-        "base": 83500000
+        "base": 71500000
       },
       "basic": [
         "NH01002",
@@ -797,31 +799,36 @@
           "codes": [
             "NH01P01"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "빌트인 캠 2 Plus, 증강현실 내비게이션"
         },
         {
           "codes": [
             "NH01P02"
           ],
-          "price": 850000
+          "price": 850000,
+          "name": "실내외 V2L"
         },
         {
           "codes": [
             "NH01P03"
           ],
-          "price": 950000
+          "price": 950000,
+          "name": "파킹어시스트"
         },
         {
           "codes": [
             "NH01P04"
           ],
-          "price": 1150000
+          "price": 1150000,
+          "name": "Audio by BANG & OLUFSEN 사운드"
         },
         {
           "codes": [
             "NH01059"
           ],
-          "price": 250000
+          "price": 250000,
+          "name": "19인치 알로이 휠 & 타이어"
         }
       ]
     },
@@ -829,7 +836,7 @@
       "slug": "prestige",
       "name_en": null,
       "price": {
-        "base": 87893000
+        "base": 73500000
       },
       "basic": [
         "NH01002",
@@ -937,37 +944,43 @@
           "codes": [
             "NH01P01"
           ],
-          "price": 600000
+          "price": 600000,
+          "name": "빌트인 캠 2 Plus, 증강현실 내비게이션"
         },
         {
           "codes": [
             "NH01P02"
           ],
-          "price": 850000
+          "price": 850000,
+          "name": "실내외 V2L"
         },
         {
           "codes": [
             "NH01057"
           ],
-          "price": 900000
+          "price": 900000,
+          "name": "비전루프"
         },
         {
           "codes": [
             "NH01058"
           ],
-          "price": 1380000
+          "price": 1380000,
+          "name": "디지털 사이드 미러"
         },
         {
           "codes": [
             "NH01P05"
           ],
-          "price": 750000
+          "price": 750000,
+          "name": "카메라 패키지"
         },
         {
           "codes": [
             "NH01059"
           ],
-          "price": 250000
+          "price": 250000,
+          "name": "19인치 알로이 휠 & 타이어"
         }
       ]
     }

@@ -1,0 +1,48 @@
+{
+  "catalog_id": "chevrolet_trailblazer_pre",
+  "title": "쉐보레 트레일블레이저",
+  "maker": "쉐보레",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전/세대 분리 stub",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "LS": {
+      "slug": "ls",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "LT": {
+      "slug": "lt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Premier": {
+      "slug": "premier",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RS": {
+      "slug": "rs",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "ACTIV": {
+      "slug": "activ",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

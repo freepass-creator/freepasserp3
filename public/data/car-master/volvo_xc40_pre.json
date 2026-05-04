@@ -1,0 +1,34 @@
+{
+  "catalog_id": "volvo_xc40_pre",
+  "title": "볼보 XC40 (1세대)",
+  "maker": "볼보",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전/세대 분리 stub",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Momentum": {
+      "slug": "momentum",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Inscription": {
+      "slug": "inscription",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "R-Design": {
+      "slug": "r_design",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

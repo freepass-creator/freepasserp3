@@ -835,8 +835,7 @@
     "플래티넘": {
       "slug": "플래티넘",
       "price": {
-        "base": 66960000,
-        "tax_3_5_after": 65940000
+        "base": 59330000
       },
       "basic": [
         "KRJR296009",
@@ -949,57 +948,64 @@
           "codes": [
             "KRJR296051"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRJR296050"
           ],
-          "price": 790000
+          "price": 790000,
+          "name": "선루프"
         },
         {
           "codes": [
             "KRJR296124"
           ],
-          "price": 740000
+          "price": 740000,
+          "name": "빌트인 캠"
         },
         {
           "codes": [
             "KRJR296P01"
           ],
-          "price": 1780000
+          "price": 1780000,
+          "name": "모니터링팩"
         },
         {
           "codes": [
             "KRJR296P02"
           ],
-          "price": 1190000
+          "price": 1190000,
+          "name": "컴포트팩"
         },
         {
           "codes": [
             "KRJR296114"
           ],
-          "price": 1190000
+          "price": 1190000,
+          "name": "헤드업 디스플레이"
         },
         {
           "codes": [
             "KRJR296008"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "AWD"
         },
         {
           "codes": [
             "KRJR296137"
           ],
-          "price": 540000
+          "price": 540000,
+          "name": "차량 보호 필름"
         }
       ]
     },
     "베스트 셀렉션Ⅰ": {
       "slug": "베스트_셀렉션Ⅰ",
       "price": {
-        "base": 74840000,
-        "tax_3_5_after": 73700000
+        "base": 66650000
       },
       "basic": [
         "KRJR296P01",
@@ -1117,57 +1123,64 @@
           "codes": [
             "KRJR296051"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRJR296050"
           ],
-          "price": 790000
+          "price": 790000,
+          "name": "선루프"
         },
         {
           "codes": [
             "KRJR296124"
           ],
-          "price": 740000
+          "price": 740000,
+          "name": "빌트인 캠"
         },
         {
           "codes": [
             "KRJR296P04"
           ],
-          "price": 3260000
+          "price": 3260000,
+          "name": "프리미엄 팩"
         },
         {
           "codes": [
             "KRJR296131"
           ],
-          "price": 1380000
+          "price": 1380000,
+          "name": "Lexicon 프리미엄 사운드"
         },
         {
           "codes": [
             "KRJR296P05"
           ],
-          "price": 2570000
+          "price": 2570000,
+          "name": "VIP 컬렉션"
         },
         {
           "codes": [
             "KRJR296136"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "뒷좌석 듀얼 모니터"
         },
         {
           "codes": [
             "KRJR296137"
           ],
-          "price": 540000
+          "price": 540000,
+          "name": "차량 보호 필름"
         }
       ]
     },
     "마스터즈": {
       "slug": "마스터즈",
       "price": {
-        "base": 80040000,
-        "tax_3_5_after": 78820000
+        "base": 73950000
       },
       "basic": [
         "KRJR296009",
@@ -1306,57 +1319,64 @@
           "codes": [
             "KRJR296051"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRJR296050"
           ],
-          "price": 790000
+          "price": 790000,
+          "name": "선루프"
         },
         {
           "codes": [
             "KRJR296124"
           ],
-          "price": 740000
+          "price": 740000,
+          "name": "빌트인 캠"
         },
         {
           "codes": [
             "KRJR296P04"
           ],
-          "price": 3260000
+          "price": 3260000,
+          "name": "프리미엄 팩"
         },
         {
           "codes": [
             "KRJR296131"
           ],
-          "price": 1380000
+          "price": 1380000,
+          "name": "Lexicon 프리미엄 사운드"
         },
         {
           "codes": [
             "KRJR296P05"
           ],
-          "price": 2570000
+          "price": 2570000,
+          "name": "VIP 컬렉션"
         },
         {
           "codes": [
             "KRJR296136"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "뒷좌석 듀얼 모니터"
         },
         {
           "codes": [
             "KRJR296137"
           ],
-          "price": 540000
+          "price": 540000,
+          "name": "차량 보호 필름"
         }
       ]
     },
     "베스트 셀렉션 Ⅱ": {
       "slug": "베스트_셀렉션_Ⅱ",
       "price": {
-        "base": 87140000,
-        "tax_3_5_after": 85820000
+        "base": 82100000
       },
       "basic": [
         "KRJR296P04",
@@ -1496,31 +1516,36 @@
           "codes": [
             "KRJR296051"
           ],
-          "price": 80000
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
             "KRJR296050"
           ],
-          "price": 790000
+          "price": 790000,
+          "name": "선루프"
         },
         {
           "codes": [
             "KRJR296124"
           ],
-          "price": 740000
+          "price": 740000,
+          "name": "빌트인 캠"
         },
         {
           "codes": [
             "KRJR296136"
           ],
-          "price": 2470000
+          "price": 2470000,
+          "name": "뒷좌석 듀얼 모니터"
         },
         {
           "codes": [
             "KRJR296137"
           ],
-          "price": 540000
+          "price": 540000,
+          "name": "차량 보호 필름"
         }
       ]
     }

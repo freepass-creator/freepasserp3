@@ -1,0 +1,39 @@
+{
+  "catalog_id": "kia_morning_ja_pre",
+  "title": "기아 올 뉴 모닝 JA",
+  "maker": "기아",
+  "source": "wikicar",
+  "source_urls": ["http://wikicar.co.kr/morning_ja/19824"],
+  "fetched_at": "2026-05-04",
+  "note": "올 뉴 모닝 JA (페리 전, 2017-2020). 가격: wikicar 2017.01 출시 OCR. 카파 1.0 Eco Prime 가솔린.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "베이직 플러스": {
+      "slug": "베이직_플러스",
+      "price": { "base_10g": 9500000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "디럭스": {
+      "slug": "디럭스",
+      "price": { "base_10g": 9900000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "럭셔리": {
+      "slug": "럭셔리",
+      "price": { "base_10g": 11800000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": { "base_10g": 12650000 },
+      "basic": [], "select": [], "select_groups": []
+    },
+    "레이디": {
+      "slug": "레이디",
+      "price": { "base_10g": 12200000 },
+      "basic": [], "select": [], "select_groups": [],
+      "note": "스페셜 에디션"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "catalog_id": "audi_a6_c8",
+  "title": "아우디 A6 C8",
+  "maker": "아우디",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "40 TFSI": {
+      "slug": "40_tfsi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "45 TFSI quattro": {
+      "slug": "45_tfsi_quattro",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "55 TFSI quattro": {
+      "slug": "55_tfsi_quattro",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "S6 TDI": {
+      "slug": "s6_tdi",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "RS6 Avant": {
+      "slug": "rs6_avant",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

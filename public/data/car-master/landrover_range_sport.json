@@ -1,0 +1,41 @@
+{
+  "catalog_id": "landrover_range_sport",
+  "title": "랜드로버 레인지로버 스포츠 L461",
+  "maker": "랜드로버",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "SE D250": {
+      "slug": "se_d250",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Dynamic SE P400": {
+      "slug": "dynamic_se_p400",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Autobiography P530": {
+      "slug": "autobiography_p530",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "SV P635": {
+      "slug": "sv_p635",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

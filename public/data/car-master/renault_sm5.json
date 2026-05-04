@@ -1,0 +1,17 @@
+{
+  "catalog_id": "renault_sm5",
+  "title": "르노 SM5",
+  "maker": "르노",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "SM5 3세대 L43 (2010~2019). 노바/임프레션/플래티넘 트림 페리. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "PE": { "slug": "pe", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "LE": { "slug": "le", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RE": { "slug": "re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RE LPe": { "slug": "re_lpe", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

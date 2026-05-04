@@ -1,0 +1,48 @@
+{
+  "catalog_id": "mercedes_e_w214",
+  "title": "벤츠 E-클래스 W214",
+  "maker": "벤츠",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "수입차 stub 카탈로그 — 트림명만 (옵션 데이터 추후 OCR). encar 매칭용.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "E200": {
+      "slug": "e200",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E300 4MATIC": {
+      "slug": "e300_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E350 4MATIC": {
+      "slug": "e350_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E450 4MATIC": {
+      "slug": "e450_4matic",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "E63 AMG": {
+      "slug": "e63_amg",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "catalog_id": "kia_seltos_sp3",
+  "title": "기아 셀토스 (SP3, 2세대)",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "페리 전/세대 분리 stub",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "트렌디": {
+      "slug": "트렌디",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "프레스티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "시그니처": {
+      "slug": "시그니처",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  }
+}
