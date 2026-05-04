@@ -1,0 +1,18 @@
+{
+  "catalog_id": "kia_morning_sa",
+  "title": "기아 모닝 SA",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "모닝 1세대 SA (2004~2011). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Standard": { "slug": "standard", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "Deluxe": { "slug": "deluxe", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "Luxury": { "slug": "luxury", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "SLX": { "slug": "slx", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "Picanto": { "slug": "picanto", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

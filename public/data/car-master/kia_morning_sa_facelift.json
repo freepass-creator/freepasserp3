@@ -1,0 +1,17 @@
+{
+  "catalog_id": "kia_morning_sa_facelift",
+  "title": "기아 더 뉴 모닝 SA",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "모닝 1세대 SA 페리 (2008~2011). 더 뉴 모닝 명칭. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "Standard": { "slug": "standard", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "Deluxe": { "slug": "deluxe", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "Luxury": { "slug": "luxury", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "SLX": { "slug": "slx", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

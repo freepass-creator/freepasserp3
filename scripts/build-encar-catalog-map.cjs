@@ -80,18 +80,22 @@ for (const [catalogId, entry] of Object.entries(index)) {
 
 for (const e of encar) {
   if (!e?.maker || !e?.sub || !e?.model) continue;
-  if (e.archived) continue;
+  // archived 여도 매핑 — 매물에 legacy sub_model 이 있을 수 있음 (예: 1세대 모닝 "모닝" 단독)
   const key = `${e.maker}|${normName(e.sub)}`;
-  if (map[key]) continue;   // 이미 매핑됨
+  if (map[key]) continue;
 
   // 같은 maker 카탈로그 중 model 이 sub 에 포함된 것 찾기
   const subN = normName(e.sub);
   const mdN = normName(e.model);
   const cands = titleCandidatesByMaker.get(e.maker) || [];
+  // 페리/세대 prefix 정규식
+  const FL_RE = /^(디 ?올 ?뉴|디 ?뉴|더 ?뉴|올 ?뉴|신형)\s+/;
+  const subHasFL = FL_RE.test(e.sub);
   // 점수 — 카탈로그 title 토큰이 sub 또는 model 에 매칭되는지
   let best = null, bestScore = 0;
   for (const c of cands) {
     const titleNoMaker = c.title.replace(new RegExp('^' + e.maker + '\\s+'), '').trim();
+    const titleHasFL = FL_RE.test(titleNoMaker);
     const titleN = normName(titleNoMaker);
     let score = 0;
     // model 매칭 — sub 에 model 단어가 있어야 같은 모델 카탈로그
@@ -103,6 +107,9 @@ for (const e of encar) {
       if (!tn || tn === mdN) continue;
       if (subN.includes(tn)) score += tn.length;
     }
+    // FL prefix 동기화 — sub 에 prefix 있으면 prefix 있는 catalog 우선,
+    //  prefix 없으면 prefix 없는 catalog 우선 (예: 단순 "모닝" → SA chassis)
+    if (subHasFL === titleHasFL) score += 1;
     if (score > bestScore) { bestScore = score; best = c; }
   }
   // 최소 점수 (model + 1 토큰) 충족 시 매핑

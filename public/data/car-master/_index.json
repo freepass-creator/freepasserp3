@@ -3207,6 +3207,29 @@
     "fetched_at": "2026-05-04",
     "note": "올 뉴 모닝 JA (페리 전, 2017-2020)"
   },
+  "kia_morning_sa": {
+    "id": "kia_morning_sa",
+    "title": "기아 모닝 SA",
+    "maker": "기아",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "Standard",
+      "Deluxe",
+      "Luxury",
+      "SLX",
+      "Picanto"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "kia_morning_sa_facelift": {
     "id": "kia_morning_sa_facelift",
     "title": "기아 더 뉴 모닝 SA",
@@ -3230,30 +3253,6 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "더 뉴 모닝 SA (2015-2017 페리) — stub"
-  },
-  "kia_morning_sa_pre": {
-    "id": "kia_morning_sa_pre",
-    "title": "기아 올 뉴 모닝 SA",
-    "maker": "기아",
-    "source": {
-      "manufacturer": null,
-      "wikicar": null,
-      "encar": [
-        "encar_002_013_095"
-      ]
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": false,
-      "encar": true
-    },
-    "trims": [
-      "디럭스",
-      "럭셔리",
-      "프레스티지"
-    ],
-    "fetched_at": "2026-05-04",
-    "note": "올 뉴 모닝 SA (2011-2017) — stub"
   },
   "kia_niro_de": {
     "id": "kia_niro_de",
