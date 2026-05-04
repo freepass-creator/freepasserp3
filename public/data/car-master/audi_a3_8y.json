@@ -1,0 +1,21 @@
+{
+  "catalog_id": "audi_a3_8y",
+  "title": "아우디 A3 8Y",
+  "maker": "아우디",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "A3 4세대 8Y (2020~). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "30 TFSI": { "slug": "30_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "35 TFSI": { "slug": "35_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "40 TFSI": { "slug": "40_tfsi", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "40 TFSI 콰트로": { "slug": "40_tfsi_quattro", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "30 TDI": { "slug": "30_tdi", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "35 TDI": { "slug": "35_tdi", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "S3": { "slug": "s3", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "RS3": { "slug": "rs3", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

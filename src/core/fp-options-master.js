@@ -60,7 +60,7 @@ export const FP_OPT_MASTER = {
   media: { label:'미디어', items: [
     ['CD_PLAYER','CD플레이어','opt'],['MP3','MP3'],['REAR_TV','뒷자석 TV','opt'],
     ['BLUETOOTH','블루투스'],['AUX','AUX 단자','opt'],['USB','USB 단자'],
-    ['MIRRORING','유선 미러링','unc'],['MIRRORING_WIRELESS','무선 카플레이/안드로이드오토','unc'],
+    ['MIRRORING','유선 미러링','unc'],['MIRRORING_WIRELESS','무선 미러링','unc'],
     ['WELCOME','웰컴 시스템','opt'],['VOICE_RECOG','음성인식 시스템','unc'],
   ]},
 };
@@ -87,4 +87,41 @@ export const FP_KIND_BY_ID = (() => {
 export function fpIdsToNames(ids) {
   if (!Array.isArray(ids)) return [];
   return ids.map(id => FP_NAME_BY_ID[id] || id);
+}
+
+/* ──────── 인기 옵션 칩 (검색 필터 / 매물 등록 우선 노출) ────────
+ *  4대 중고차 플랫폼 빈도 분석 + 한국 렌트 영업 특성 반영.
+ *  ids 가 다중일 경우 OR 매칭 (매물 fp_options 에 하나라도 있으면 hit). */
+
+/** 필수 10 — 큰 칩, 메인 줄 (등급 분류 + 안전 ADAS 핵심) */
+export const FP_POPULAR_PRIMARY = [
+  { label: '내비게이션',        ids: ['NAVIGATION'] },
+  { label: '썬루프',            ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
+  { label: '열선시트',          ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
+  { label: '통풍시트',          ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
+  { label: '후방카메라',        ids: ['CAM_REAR'] },
+  { label: '어라운드뷰',        ids: ['AVMS'] },
+  { label: '후측방경보',        ids: ['RCTA'] },
+  { label: '스마트크루즈',      ids: ['HDA'] },
+  { label: '헤드업 디스플레이', ids: ['HUD'] },
+  { label: '무선 미러링',       ids: ['MIRRORING_WIRELESS'] },
+];
+
+/** 보조 5 — 작은 칩, 아래 줄 (편의 + 추가 안전) */
+export const FP_POPULAR_SECONDARY = [
+  { label: '차선이탈경보',      ids: ['LDWS'] },
+  { label: '자동긴급제동',      ids: ['AEB'] },
+  { label: 'LED 헤드램프',      ids: ['HEAD_LED'] },
+  { label: '하이패스',          ids: ['HIPASS', 'ECM_HIPASS_RV', 'ECM_HIPASS_MTS'] },
+  { label: '스마트키',          ids: ['SMART_KEY'] },
+];
+
+/** 통합 (편의 — 두 줄을 하나로 보고 싶을 때) */
+export const FP_POPULAR_ALL = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY];
+
+/** product.fp_options 가 popular 칩의 ids 중 하나라도 포함하면 true */
+export function productMatchesPopular(fpOptions, popular) {
+  if (!Array.isArray(fpOptions) || !popular) return false;
+  const set = new Set(fpOptions);
+  return popular.ids.some(id => set.has(id));
 }

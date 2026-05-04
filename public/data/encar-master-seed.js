@@ -279,7 +279,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2017-01",
-    "production_end": "2023-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -351,7 +351,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2011-01",
-    "production_end": "2017-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1536,7 +1536,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2017-01",
-    "production_end": "2020-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -13056,7 +13056,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2014-01",
-    "production_end": "2023-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"
@@ -13074,7 +13074,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2007-01",
-    "production_end": "2015-12",
+    "production_end": "2013-12",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"
@@ -13284,7 +13284,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2005-01",
-    "production_end": "2012-12",
+    "production_end": "2010-12",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"
@@ -13320,7 +13320,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2016-01",
-    "production_end": "현재",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"
@@ -13338,7 +13338,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2009-01",
-    "production_end": "2017-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"
@@ -13749,7 +13749,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2016-01",
-    "production_end": "2019-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"
@@ -13910,8 +13910,8 @@ window.ENCAR_MASTER=[
     "created_at": 1776932255148,
     "updated_at": 1776932255148,
     "category": "대형차",
-    "production_start": "2013-01",
-    "production_end": "2022-12",
+    "production_start": "2013-09",
+    "production_end": "2020-12",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"
@@ -13929,7 +13929,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2005-01",
-    "production_end": "2013-12",
+    "production_end": "2013-08",
     "archived": false,
     "maker_eng": "Mercedes-Benz",
     "maker_code": "013"

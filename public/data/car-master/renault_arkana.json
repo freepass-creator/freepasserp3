@@ -1,0 +1,19 @@
+{
+  "catalog_id": "renault_arkana",
+  "title": "르노 아르카나",
+  "maker": "르노",
+  "source": "stub",
+  "source_urls": ["https://www.renault.co.kr/models/arkana.html"],
+  "fetched_at": "2026-05-04",
+  "note": "아르카나 (2024~) — 한국 XM3 페리 후 글로벌 명칭으로 리브랜딩. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "TCe 260 LE": { "slug": "tce260_le", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "TCe 260 RE": { "slug": "tce260_re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "TCe 260 RE 시그니처": { "slug": "tce260_re_signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "TCe 260 에스프리 알핀": { "slug": "tce260_esprit_alpine", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "E-Tech 145 RE": { "slug": "etech145_re", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "E-Tech 145 RE 시그니처": { "slug": "etech145_re_signature", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

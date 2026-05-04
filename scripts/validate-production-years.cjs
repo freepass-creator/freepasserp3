@@ -56,12 +56,18 @@ function fuelOf(sub) {
   return 'gas';
 }
 
-/* sub 에서 페이스리프트 prefix 제거 — 같은 세대인지 비교용.
- *  "더 뉴 그랜저 IG" / "그랜저 IG" → 둘 다 "그랜저 IG" 로 정규화 → 같은 세대. */
+/* sub 정규화 — 페리 prefix + chassis code (W222, G30, F30 등) 제거.
+ *  같은 sub_model 의 다른 세대/페리 비교용 (생산년도는 세대 간 중복 안 됨).
+ *  변형 (sedan/wagon/coupe 등) 표기는 유지. */
 function stripFLPrefix(sub) {
   return String(sub || '')
     .replace(/^(디 ?올 ?뉴|디 ?뉴|더 ?뉴|올 ?뉴|신형)\s+/, '')
-    .replace(/\s*\([^)]*\)\s*$/, '')          // 끝의 (페리), (신형) 등 제거
+    .replace(/\s*\([^)]*\)\s*$/, '')                                      // 끝의 (페리), (신형)
+    // chassis code — W/G/F/E + 숫자2-3자리 (벤츠/BMW/아우디), 또는 한국차 코드 (NQ5/GN7/MX5 등)
+    .replace(/\s+(W\d{3}|G\d{2,3}|F\d{2,3}|E\d{2,3}|U\d{2,3})$/i, '')
+    .replace(/\s+(NQ\d|GN\d|MX\d|DL\d|SX\d|GL\d|CN\d|RG\d|RS\d|LX\d|MQ\d|RJ\d?|SP\d|KA\d|SG\d|TM\d|TL|LF|HG|IG|AD|BD|YG|YD|YP|UM|JF|JS|QM|QL|GL|EE)$/i, '')
+    .replace(/\s+(B\d|C\d|FY|F5|4K|F3|4S)$/i, '')                          // 아우디 chassis
+    .replace(/\s+(L\d{3})$/i, '')                                          // 랜드로버 (L663 등)
     .replace(/\s+/g, ' ')
     .trim();
 }

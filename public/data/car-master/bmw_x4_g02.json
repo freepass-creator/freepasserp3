@@ -1,0 +1,18 @@
+{
+  "catalog_id": "bmw_x4_g02",
+  "title": "BMW X4 G02",
+  "maker": "BMW",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "X4 2세대 G02 (2018~). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "xDrive20i": { "slug": "xdrive20i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "xDrive20d": { "slug": "xdrive20d", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "xDrive30i": { "slug": "xdrive30i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "M40i": { "slug": "m40i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "X4 M": { "slug": "x4_m", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

@@ -45,6 +45,11 @@ function stripFLPrefix(sub) {
   return String(sub || '')
     .replace(/^(디 ?올 ?뉴|디 ?뉴|더 ?뉴|올 ?뉴|신형)\s+/, '')
     .replace(/\s*\([^)]*\)\s*$/, '')
+    // chassis code — 같은 sub_model 의 다른 세대 비교용 (생산년도 중복 불가)
+    .replace(/\s+(W\d{3}|G\d{2,3}|F\d{2,3}|E\d{2,3}|U\d{2,3})$/i, '')
+    .replace(/\s+(NQ\d|GN\d|MX\d|DL\d|SX\d|GL\d|CN\d|RG\d|RS\d|LX\d|MQ\d|RJ\d?|SP\d|KA\d|SG\d|TM\d|TL|LF|HG|IG|AD|BD|YG|YD|YP|UM|JF|JS|QM|QL|GL|EE)$/i, '')
+    .replace(/\s+(B\d|C\d|FY|F5|4K|F3|4S)$/i, '')
+    .replace(/\s+(L\d{3})$/i, '')
     .replace(/\s+/g, ' ')
     .trim();
 }

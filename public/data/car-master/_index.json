@@ -1,4 +1,30 @@
 {
+  "audi_a3_8y": {
+    "id": "audi_a3_8y",
+    "title": "아우디 A3 8Y",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "30 TFSI",
+      "35 TFSI",
+      "40 TFSI",
+      "40 TFSI 콰트로",
+      "30 TDI",
+      "35 TDI",
+      "S3",
+      "RS3"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "audi_a4_b9": {
     "id": "audi_a4_b9",
     "title": "아우디 A4 B9",
@@ -128,6 +154,32 @@
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
   },
+  "bmw_4_g22": {
+    "id": "bmw_4_g22",
+    "title": "BMW 4시리즈 G22",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "420i",
+      "420i M Sport",
+      "430i",
+      "430i M Sport",
+      "M440i xDrive",
+      "i4 eDrive40",
+      "i4 M50",
+      "M4"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "bmw_5_g30": {
     "id": "bmw_5_g30",
     "title": "BMW 5시리즈 G30",
@@ -184,6 +236,55 @@
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
   },
+  "bmw_7_g70": {
+    "id": "bmw_7_g70",
+    "title": "BMW 7시리즈 G70",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "735i",
+      "740i",
+      "740i xDrive",
+      "750e xDrive",
+      "760i xDrive",
+      "i7 xDrive60",
+      "i7 M70 xDrive"
+    ],
+    "fetched_at": "2026-05-04"
+  },
+  "bmw_x1_u11": {
+    "id": "bmw_x1_u11",
+    "title": "BMW X1 U11",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "sDrive18i",
+      "sDrive18d",
+      "xDrive20i",
+      "xDrive25e",
+      "iX1 xDrive30",
+      "iX1 eDrive20"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "bmw_x3_g01": {
     "id": "bmw_x3_g01",
     "title": "BMW X3 G01",
@@ -208,6 +309,29 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
+  },
+  "bmw_x4_g02": {
+    "id": "bmw_x4_g02",
+    "title": "BMW X4 G02",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "xDrive20i",
+      "xDrive20d",
+      "xDrive30i",
+      "M40i",
+      "X4 M"
+    ],
+    "fetched_at": "2026-05-04"
   },
   "bmw_x5_g05": {
     "id": "bmw_x5_g05",
@@ -1849,6 +1973,29 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "jeep_cherokee": {
+    "id": "jeep_cherokee",
+    "title": "지프 체로키",
+    "maker": "지프",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "스포츠",
+      "라티튜드",
+      "리미티드",
+      "트레일호크",
+      "오버랜드"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "kgm_actyon": {
     "id": "kgm_actyon",
     "title": "KGM 액티언",
@@ -3159,6 +3306,29 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "kia_pv5": {
+    "id": "kia_pv5",
+    "title": "기아 PV5",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/pbv/pv5",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "패신저 5인승",
+      "패신저 7인승",
+      "카고 스탠다드",
+      "카고 롱",
+      "샤시캡"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "kia_ray": {
     "id": "kia_ray",
     "title": "기아 더 뉴 레이",
@@ -3557,6 +3727,30 @@
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
   },
+  "mercedes_a_w177": {
+    "id": "mercedes_a_w177",
+    "title": "벤츠 A클래스 W177",
+    "maker": "벤츠",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "A200",
+      "A220",
+      "A220 4MATIC",
+      "A250",
+      "AMG A35 4MATIC",
+      "AMG A45 S 4MATIC+"
+    ],
+    "fetched_at": "2026-05-04"
+  },
   "mercedes_c_w205": {
     "id": "mercedes_c_w205",
     "title": "벤츠 C클래스 W205",
@@ -3787,6 +3981,30 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
+  },
+  "renault_arkana": {
+    "id": "renault_arkana",
+    "title": "르노 아르카나",
+    "maker": "르노",
+    "source": {
+      "manufacturer": "https://www.renault.co.kr/models/arkana.html",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "TCe 260 LE",
+      "TCe 260 RE",
+      "TCe 260 RE 시그니처",
+      "TCe 260 에스프리 알핀",
+      "E-Tech 145 RE",
+      "E-Tech 145 RE 시그니처"
+    ],
+    "fetched_at": "2026-05-04"
   },
   "renault_grand_koleos": {
     "id": "renault_grand_koleos",
@@ -4233,6 +4451,27 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
+  },
+  "vw_jetta": {
+    "id": "vw_jetta",
+    "title": "폭스바겐 제타",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "프레스티지",
+      "R-Line"
+    ],
+    "fetched_at": "2026-05-04"
   },
   "vw_tiguan": {
     "id": "vw_tiguan",

@@ -1,0 +1,18 @@
+{
+  "catalog_id": "jeep_cherokee",
+  "title": "지프 체로키",
+  "maker": "지프",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "체로키 5세대 KL (2014~2023). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "스포츠": { "slug": "sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "라티튜드": { "slug": "latitude", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "리미티드": { "slug": "limited", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "트레일호크": { "slug": "trailhawk", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "오버랜드": { "slug": "overland", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

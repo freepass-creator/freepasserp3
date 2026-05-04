@@ -1,0 +1,21 @@
+{
+  "catalog_id": "bmw_4_g22",
+  "title": "BMW 4시리즈 G22",
+  "maker": "BMW",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "4시리즈 2세대 G22 (2020~). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "420i": { "slug": "420i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "420i M Sport": { "slug": "420i_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "430i": { "slug": "430i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "430i M Sport": { "slug": "430i_m_sport", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "M440i xDrive": { "slug": "m440i_xdrive", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "i4 eDrive40": { "slug": "i4_edrive40", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "i4 M50": { "slug": "i4_m50", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "M4": { "slug": "m4", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "catalog_id": "mercedes_a_w177",
+  "title": "벤츠 A클래스 W177",
+  "maker": "벤츠",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "A클래스 4세대 W177 (2018~). 한국 도로 흔함. 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "A200": { "slug": "a200", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "A220": { "slug": "a220", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "A220 4MATIC": { "slug": "a220_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "A250": { "slug": "a250", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "AMG A35 4MATIC": { "slug": "amg_a35_4matic", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "AMG A45 S 4MATIC+": { "slug": "amg_a45_s_4matic_plus", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

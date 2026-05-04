@@ -1,0 +1,19 @@
+{
+  "catalog_id": "bmw_x1_u11",
+  "title": "BMW X1 U11",
+  "maker": "BMW",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "X1 3세대 U11 (2022~). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "sDrive18i": { "slug": "sdrive18i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "sDrive18d": { "slug": "sdrive18d", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "xDrive20i": { "slug": "xdrive20i", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "xDrive25e": { "slug": "xdrive25e", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "iX1 xDrive30": { "slug": "ix1_xdrive30", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "iX1 eDrive20": { "slug": "ix1_edrive20", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}

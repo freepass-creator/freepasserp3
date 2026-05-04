@@ -1,0 +1,16 @@
+{
+  "catalog_id": "vw_jetta",
+  "title": "폭스바겐 제타",
+  "maker": "폭스바겐",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-04",
+  "note": "제타 7세대 (2018~한국 단종 2020). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프리미엄": { "slug": "premium", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "R-Line": { "slug": "r_line", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  }
+}
