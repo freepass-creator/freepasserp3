@@ -7,9 +7,9 @@
 
 import { matchFpByName, normName } from './fp-keyword-rules.js';
 
-// 엔카마스터는 사용 안 함 — 우리 카탈로그(_index.json) 가 단일 진실 원천
 let _index = null;        // _index.json 캐시
 let _catalogs = {};       // catalog_id → 카탈로그 JSON 캐시
+let _encarMap = null;     // "maker|normName(sub)" → catalog_id 직접 lookup (build-encar-catalog-map.cjs 생성)
 
 const CB = () => '?t=' + Date.now();
 
@@ -31,6 +31,19 @@ export async function loadIndex() {
     'public/data/car-master/_index.json',
   ]) || {};
   return _index;
+}
+
+/* encar→catalog 직접 매핑 (script/build-encar-catalog-map.cjs 생성).
+ *  매물 sub_model 이 encar 표준명과 일치하면 high confidence 로 즉시 반환.
+ *  키 형식: "maker|normName(sub)" */
+async function loadEncarMap() {
+  if (_encarMap) return _encarMap;
+  _encarMap = await fetchJson([
+    '/data/car-master/_encar-catalog-map.json',
+    './public/data/car-master/_encar-catalog-map.json',
+    'public/data/car-master/_encar-catalog-map.json',
+  ]) || {};
+  return _encarMap;
 }
 
 export async function loadCatalog(catalogId) {
@@ -102,6 +115,20 @@ export async function findCatalog(maker, subModel, model) {
   const subN = normName(subModel || '');
   const mdN = normName(model || '');
   if (!subN && !mdN) return null;
+
+  // 1차 — encar 직접 매핑 (build-encar-catalog-map.cjs 가 생성한 _encar-catalog-map.json 활용)
+  //   매물 sub_model 이 우리 표준 sub 와 정확 일치 → high confidence 즉시 반환.
+  //   runtime 에서 encar-master-seed 직접 안 읽음 (build 시 1회 생성된 매핑만 사용).
+  const encarMap = await loadEncarMap();
+  if (subN && encarMap[`${m}|${subN}`]) {
+    return {
+      catalogId: encarMap[`${m}|${subN}`],
+      confidence: 'high',
+      score: 100,
+      runnerUp: null,
+      via: 'encar-direct',
+    };
+  }
 
   // 후보별 점수 계산
   const scored = candidates.map(c => {
@@ -191,11 +218,61 @@ function fuelNorm(f) {
   return x;
 }
 
+/** trim 객체에서 base 가격(원) 추출 — number 직접 OR { base, before_tax, ... } 객체 둘 다 지원 */
+export function trimBasePrice(trim) {
+  if (!trim) return null;
+  const p = trim.price;
+  if (typeof p === 'number' && p > 0) return p;
+  if (p && typeof p === 'object') {
+    if (Number(p.base) > 0) return Number(p.base);
+    // 일부 catalog 는 base 없이 before_tax 만 — 110% 추정
+    if (Number(p.before_tax) > 0) return Math.round(Number(p.before_tax) * 0.91);
+  }
+  return null;
+}
+
+/**
+ * 가격 기반 트림 역매칭 — 차량 가격(원) 으로 가장 가까운 트림 찾기.
+ *  encar 매물처럼 트림명 없거나 흐릿할 때 가격으로 disambig.
+ *
+ * @param {object} catalog
+ * @param {number} targetPrice — 차량 가격 (원)
+ * @param {object} opts — { tolerance: 0.08 (8% 기본), maxResults: 3 }
+ * @returns {{ candidates: [{name, trim, price, diff, diffPct}], best } | null}
+ */
+export function findTrimByPrice(catalog, targetPrice, opts = {}) {
+  if (!catalog?.trims || !targetPrice || targetPrice <= 0) return null;
+  const tolerance = opts.tolerance ?? 0.08;          // ±8% 기본 (트림 간 격차 ~10% 평균 고려)
+  const maxResults = opts.maxResults ?? 3;
+  const trimNames = Object.keys(catalog.trims);
+  if (!trimNames.length) return null;
+
+  // 가격 있는 트림만 후보
+  const withPrice = [];
+  for (const tn of trimNames) {
+    const trim = catalog.trims[tn];
+    const price = trimBasePrice(trim);
+    if (!price) continue;
+    const diff = Math.abs(price - targetPrice);
+    const diffPct = diff / targetPrice;
+    withPrice.push({ name: tn, trim, price, diff, diffPct });
+  }
+  if (!withPrice.length) return null;
+
+  withPrice.sort((a, b) => a.diff - b.diff);
+  // 허용 범위 안 후보들
+  const candidates = withPrice.filter(c => c.diffPct <= tolerance).slice(0, maxResults);
+  // 범위 밖이면 그래도 가장 가까운 1개 (low conf 표시용)
+  const best = candidates[0] || withPrice[0];
+  return { candidates, best };
+}
+
 /**
  * 트림 매칭 — score 기반 best + alternatives + confidence
  *  - 항상 best 후보 1개를 리턴 (단, 점수 0 이하는 null)
  *  - confidence: 'high' (정확/단일후보) / 'medium' (스코어 격차 큼) / 'low' (격차 작음 → 사용자 확인 권장)
  *  - alts: 상위 후보 3개 (사용자 disambig UI 용)
+ *  - product.price 가 있으면 가격 매칭도 score 가중치로 활용 (정확도 향상)
  *
  * @returns {{ name, trim, confidence, score, alts: [{name, score}] } | null}
  */
@@ -248,6 +325,14 @@ export function findTrimInCatalog(catalog, trimName, product = {}) {
                         /영업|렌터|운전교습/.test(product.vehicle_status || '');
   const isHandicap = /장애/.test(product.usage_type || '') || /장애/.test(product.special_use || '');
   const isNline = /n\s*라인|n\s*line/i.test(trimName) || /n\s*라인|n\s*line/i.test(product.trim_name || '');
+  // 가격 hint — 매물 가격(원) 이 있으면 가격 매칭 가중치
+  const targetPrice = Number(product.vehicle_price || product.price || 0);
+  // 모든 트림 가격 미리 계산 (반복 lookup 회피)
+  const trimPrices = new Map();
+  for (const tn of trimNames) {
+    const p = trimBasePrice(catalog.trims[tn]);
+    if (p) trimPrices.set(tn, p);
+  }
 
   // 후보 score 계산
   const scored = [];
@@ -275,6 +360,16 @@ export function findTrimInCatalog(catalog, trimName, product = {}) {
     if (/영업용|렌터카|영업|렌터/.test(tnNorm)) score += isCommercial ? 80 : -50;
     if (/장애인|왼손|오른손|원발|양발|오른발/.test(tnNorm)) score += isHandicap ? 80 : -80;
     if (/n라인|nline/.test(tnNorm)) score += isNline ? 50 : -20;
+
+    // 가격 가중 — 매물 가격이 있고 트림 가격이 있으면, 격차 비례 가산/감점
+    if (targetPrice && trimPrices.has(tn)) {
+      const tp = trimPrices.get(tn);
+      const diffPct = Math.abs(tp - targetPrice) / targetPrice;
+      if (diffPct < 0.03)      score += 60;   // ±3% — 거의 일치
+      else if (diffPct < 0.08) score += 30;   // ±8% — 가까움
+      else if (diffPct < 0.15) score += 10;   // ±15% — 후보권
+      else if (diffPct > 0.30) score -= 30;   // ±30% 초과 — 페널티
+    }
 
     scored.push({ name: tn, score });
   }
@@ -410,6 +505,38 @@ export async function analyzeProduct(product) {
 
   const fpAll = new Set([...fpFromBasic, ...fpFromOptionsText]);
 
+  // 가격 매칭 정보 — 매물 가격이 있으면 카탈로그 트림 가격과 비교
+  let priceMatch = null;
+  const targetPrice = Number(product.vehicle_price || product.price || 0);
+  if (targetPrice > 0) {
+    const matchedTrimPrice = trimBasePrice(trimMatch?.trim);
+    if (matchedTrimPrice) {
+      const diff = matchedTrimPrice - targetPrice;
+      const diffPct = Math.abs(diff) / targetPrice;
+      priceMatch = {
+        targetPrice,
+        catalogPrice: matchedTrimPrice,
+        diff,
+        diffPct,
+        // 매칭 등급 — 가격 격차로 트림 정확도 검증
+        level: diffPct < 0.03 ? 'exact' : diffPct < 0.08 ? 'close' : diffPct < 0.15 ? 'fair' : 'far',
+      };
+    }
+    // 가격 기반 역매칭 — 트림명 매칭이 약하거나 가격 매칭이 안 맞으면 후보 제시
+    if (!priceMatch || priceMatch.level === 'far' || trimConf === 'low') {
+      const reverse = findTrimByPrice(catalog, targetPrice);
+      if (reverse?.candidates?.length) {
+        priceMatch = priceMatch || {};
+        priceMatch.candidates = reverse.candidates.map(c => ({
+          name: c.name,
+          price: c.price,
+          diffPct: c.diffPct,
+        }));
+        priceMatch.bestByPrice = reverse.best?.name;
+      }
+    }
+  }
+
   return {
     ok: true,
     catalogId: cat.catalogId,
@@ -418,6 +545,7 @@ export async function analyzeProduct(product) {
     trimName: trimMatch?.name || null,
     trimConfidence: trimConf,
     trimAlts: trimMatch?.alts || [],
+    priceMatch,
     confidence: overall,
     requiresUserInput: overall === 'low',
     basicCount,

@@ -9,9 +9,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build:car-master": "node scripts/build-car-master-bundle.cjs",
-    "predev": "node scripts/build-car-master-bundle.cjs",
-    "prebuild": "node scripts/build-car-master-bundle.cjs"
+    "build:car-master": "node scripts/autoname-select-groups.cjs && node scripts/build-car-master-bundle.cjs && node scripts/build-encar-catalog-map.cjs",
+    "predev": "node scripts/autoname-select-groups.cjs && node scripts/build-car-master-bundle.cjs && node scripts/build-encar-catalog-map.cjs",
+    "prebuild": "node scripts/autoname-select-groups.cjs && node scripts/build-car-master-bundle.cjs && node scripts/build-encar-catalog-map.cjs"
   },
   "devDependencies": {
     "vite": "^8.0.4",
