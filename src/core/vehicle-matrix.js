@@ -103,7 +103,8 @@ function buildCandidates(idx) {
  *
  * @returns {{ catalogId, confidence: 'high'|'medium'|'low', score, runnerUp } | null}
  */
-export async function findCatalog(maker, subModel, model) {
+/** product 4번째 인자: { fuel_type, year, ... } 받아 후보 필터에 활용. 없으면 무시. */
+export async function findCatalog(maker, subModel, model, product = {}) {
   const idx = await loadIndex();
   if (!maker) return null;
   if (!_candidatesByMaker) _candidatesByMaker = buildCandidates(idx);
@@ -130,8 +131,26 @@ export async function findCatalog(maker, subModel, model) {
     };
   }
 
-  // 후보별 점수 계산
-  const scored = candidates.map(c => {
+  // 연료/연식 기반 후보 필터 — product.fuel_type / year 사용.
+  //  - 전기차 매물은 EV 전용 catalog 만 매칭 (G80 가솔린이 일렉트리파이드 G80 으로 잘못 잡히는 문제 해결)
+  //  - 비-전기 매물은 EV catalog 제외
+  //  TODO: 등록증 OCR 통합 후 year 기반 generation 필터 (catalog year range 데이터 필요)
+  const productFuel = product?.fuel_type || '';
+  const productYear = Number(product?.year || 0);
+  const subIsEV = /(일렉트리파이드|electrified|일렉트릭|electric|\bev\b)/i.test(subModel || '');
+  const fuelIsEV = /전기|ev|electric/i.test(productFuel) || subIsEV;
+  const isEVCatalogTitle = (title) => /(일렉트리파이드|electrified|일렉트릭|electric|\bev\b|아이오닉|ioniq|볼트\s*ev|모델\s*[3SXY]|타이칸)/i.test(title || '');
+  const filteredCandidates = candidates.filter(c => {
+    const titleEV = isEVCatalogTitle(c.title);
+    if (fuelIsEV && !titleEV) return false;
+    if (!fuelIsEV && titleEV) return false;
+    return true;
+  });
+  // 필터 후 후보 0개면 원본 후보 유지 (안전 장치)
+  const useCandidates = filteredCandidates.length ? filteredCandidates : candidates;
+
+  // 후보별 점수 계산 — 연료 필터 적용된 useCandidates 사용
+  const scored = useCandidates.map(c => {
     let score = 0;
     // 코드 매칭 (가장 강한 신호)
     if (c.codeNorm && subN.includes(c.codeNorm)) score += c.codeNorm.length * 5;
@@ -455,7 +474,7 @@ export async function analyzeProduct(product) {
     return { ok: false, reason: '제조사 없음', confidence: 'none' };
   }
 
-  const cat = await findCatalog(product.maker, product.sub_model, product.model);
+  const cat = await findCatalog(product.maker, product.sub_model, product.model, product);
   if (!cat) {
     return {
       ok: false,
