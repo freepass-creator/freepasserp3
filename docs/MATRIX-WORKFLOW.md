@@ -334,3 +334,136 @@ git push
 1. 매물 자주 들어오는 모델 카탈로그 우선 (트림 정확도 > 옵션 정확도)
 2. 수입차는 옵션 매칭률보다 트림 정확도 먼저
 3. 옵션 의존성/배타는 안 막혀도 동작에 큰 지장 없음 — UI 폴리시
+
+---
+
+# 11. CONTINUE MODE — "이어서 해줘" 처리 규칙
+
+> 사용자가 "이어서 해줘" / "다음 ㄱㄱ" 류로 말하면 이 섹션을 우선 확인.
+> 어느 PC, 어느 세션에서든 동일한 흐름으로 작업 진행.
+
+## 11-1. 진입 시 우선 점검
+1. `git pull origin master` (반드시 최신화 — 다른 PC 작업 반영)
+2. 이 문서의 **§12 현재 상태 스냅샷** 확인 — 카탈로그 수 / 매칭률 / 미완료
+3. **§13 다음 작업 큐** 의 TOP 항목부터 진행
+4. 완료 시 §13 에서 해당 항목 체크 + §14 변경이력에 1줄 추가 + 푸시
+
+## 11-2. 항상 재실행 OK 한 검증 명령
+```bash
+node scripts/analyze-catalog-coverage.cjs        # 카탈로그 완성도
+node scripts/validate-production-years.cjs       # 생산년도 overlap/갭
+node scripts/fix-production-year-overlaps.cjs    # dry-run (overlap 감지)
+```
+모두 idempotent — 여러 번 실행해도 안전.
+
+## 11-3. 사용자 컨펌 없이 진행 가능한 작업
+- catalog stub 추가 (트림명만, 옵션/가격 후처리)
+- production_year overlap 자동 수정
+- _index.json 재생성 (`scripts/rebuild-catalog-index.cjs`)
+- 번들 재생성
+
+## 11-4. 사용자 컨펌 필요한 작업
+- 인기 옵션 변경 (TOP 15 구성)
+- 카탈로그 title 변경 (다른 곳 참조 영향)
+- 데이터 일괄 변환 (예: chassis code 기준 sub_model 정규화)
+
+---
+
+# 12. 현재 상태 스냅샷
+
+> 마지막 갱신: **2026-05-04**
+> 갱신 시 이 섹션 통째로 새 데이터로 교체.
+
+## 12-1. 카탈로그
+- **총 179개** (한국 130 / 수입 49)
+- stub: ~80개 (트림명만, 옵션/가격 미완)
+- 위키카 OCR 완료: 86개
+- 번들 크기: 1696 KB (gzip 압축 후 약 350 KB)
+
+## 12-2. 매칭률
+- 가격 보유 트림: 66% (479/730)
+- 옵션 보유 트림: 47% (343/730)
+- 메이커별: 현대 79% / 기아 85% / 제네시스 81% / KGM 50% / 수입차 0%
+
+## 12-3. 데이터 검증 상태
+- 생산년도 overlap: **0건** ✓ (페리/세대 전환 자동 fix 적용)
+- 생산년도 갭 6개월+: 23건 (대부분 단종 후 부활 — 정상)
+- chassis code strip 후 cross-generation overlap 도 감지
+
+## 12-4. UI / 매칭 엔진
+- 매트릭스 banner (product 페이지) — 차종/트림 정정 + 표준옵션 저장 ✓
+- dev tool 매트릭스 탭 — 매물 일괄 분석 + Apply ✓
+- 가격 기반 트림 역매칭 (`findTrimByPrice`) ✓
+- 옵션 의존성 UI 시각적 disabled (test 페이지) ✓
+- FP 인기옵션 15개 정의 (`FP_POPULAR_PRIMARY` 10 + `FP_POPULAR_SECONDARY` 5) ✓
+
+---
+
+# 13. 다음 작업 큐
+
+> 우선순위 정렬. 완료 시 ✅ 체크, §14 에 1줄 추가.
+
+## P0 (high impact)
+- [ ] 검색 페이지에 인기 옵션 chip UI 노출 (FP_POPULAR_PRIMARY/SECONDARY 사용)
+- [ ] 매물 등록 폼에 인기 옵션 우선 노출
+- [ ] 추가 매칭 실패 차종 발견 시 stub 즉시 추가
+
+## P1 (data quality)
+- [ ] 한국 stub 카탈로그 trim 가격 OCR 보강 (위키카 있는 것 우선)
+- [ ] KGM stub 15개 (가격률 50%) 우선 보강
+- [ ] 수입차 옵션 데이터 (제조사 사이트 OCR) — BMW/벤츠/아우디 우선
+
+## P2 (UX polish)
+- [ ] 옵션 의존성 UI — product 페이지에도 적용 (현재 test 페이지만)
+- [ ] select_groups 가격 보강 (위키카 p2~p5)
+- [ ] 생산 갭 23건 검토 — 단종 후 부활 vs 데이터 오류 구분
+
+## P3 (nice to have)
+- [ ] 카탈로그 select_groups 자동 그룹화 — 같은 옵션 묶음 자동 발견
+
+---
+
+# 14. 변경 이력
+
+> 새 작업 완료 시 맨 위에 1줄 추가. 날짜순 (최신이 위).
+> 형식: `YYYY-MM-DD — [영역] 한 줄 요약 (commit hash 짧게)`
+
+- 2026-05-04 — [matrix] 매칭 실패 stub 10개 추가 (BMW 7G70/4G22/X4/X1, 벤츠 A-W177, 아우디 A3-8Y, VW 제타, 지프 체로키, 기아 PV5, 르노 아르카나) (33fb0bb)
+- 2026-05-04 — [matrix] 세대 전환 overlap 11건 자동 수정 (W클래스 시리즈 등 chassis code strip 적용) (33fb0bb)
+- 2026-05-04 — [matrix] FP 인기옵션 15개 정의 (PRIMARY 10 / SECONDARY 5, 다중 ID 매칭, 무선 미러링 명칭 통일) (33fb0bb)
+- 2026-05-04 — [matrix] 르노/쉐보레/수입차 stub 20개 추가 (총 카탈로그 149→169) (1c870d3)
+- 2026-05-04 — [matrix] 페리 전환 production_end overlap 79건 일괄 수정 + validate/fix 스크립트 (920e10d)
+- 2026-05-04 — [matrix] 카탈로그 완성도 분석 보고서 + 스크립트 (7d9a915)
+- 2026-05-04 — [matrix] 매트릭스 banner / dev tool updateRecord 시그니처 버그 수정 (적용실패 해결)
+- 2026-05-04 — [matrix] 가격 기반 트림 역매칭 추가 (`findTrimByPrice`, analyzeProduct 에 priceMatch 통합)
+- 2026-05-04 — [matrix] 옵션 의존성 UI 시각적 disabled 표시 (test 페이지)
+- 2026-05-04 — [docs] MATRIX-WORKFLOW.md 작업 매뉴얼 작성 (7d9a915)
+
+---
+
+# 15. 디자인 결정
+
+> "왜 이렇게 했는가" — 다른 PC 에서 작업할 때 같은 결정 유지하도록.
+
+## FP 인기옵션 TOP 15 선정
+- 4대 중고차 플랫폼 (encar/kbcc/heydealer 등) 옵션 표시 빈도 분석
+- 4회 출현: 내비/열선시트/통풍시트
+- 3회 출현: 썬루프/HDA/RCTA
+- 2회 출현: 후방카메라/HUD/어라운드뷰/LDWS/헤드램프/스마트키
+- 1회 핵심: 하이패스(한국특화)/AEB(안전핵심)
+- 트렌드 추가: 무선 미러링 (안드로이드오토/카플레이) — 4 플랫폼엔 없지만 신차 표준
+- 제외: 가죽시트(영업이 직접 확인), 주차감지센서(후방카메라와 중복), LED 헤드램프는 secondary 로
+
+## 다중 ID OR 매칭
+- 칩 1개 = 여러 FP ID OR 매칭 (예: 썬루프 = SUNROOF / SUNROOF_PANO / SUNROOF_SAFETY)
+- 등록 시 정밀도 (파노라마/세이프티 구분) + 검색 시 직관성 (썬루프 한 단어)
+
+## 생산년도 overlap 처리 정책
+- "우리는 판매년도가 아닌 생산년도를 본다 → 같은 모델 다른 세대는 절대 중복 안 됨"
+- chassis code (W222/G30/F30/NQ5 등) strip 후 sub 일치 시 같은 모델로 간주
+- overlap 감지 시 prev.production_end = next.production_start - 1 로 자동 수정
+
+## stub 카탈로그 우선 추가 모델
+- 매물 매칭 실패가 자주 일어나는 모델
+- 한국 도로 흔한 구세대 + 신차 (PBV 등) 우선
+- 옵션/가격 OCR 은 후처리 — 일단 catalog ID 매칭만 되어도 sub_model 표준화 가능
