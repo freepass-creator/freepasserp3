@@ -30,7 +30,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2015-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -48,7 +48,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2011-01",
-    "production_end": "2015-12",
+    "production_end": "2014-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -315,7 +315,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2016-01",
-    "production_end": "2019-12",
+    "production_end": "2016-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -333,7 +333,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2017-01",
-    "production_end": "2019-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -648,7 +648,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2013-01",
-    "production_end": "2015-12",
+    "production_end": "2014-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -807,7 +807,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2011-01",
-    "production_end": "2015-12",
+    "production_end": "2014-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -894,7 +894,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "승합차",
     "production_start": "2007-01",
-    "production_end": "2018-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -966,7 +966,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "승합차",
     "production_start": "2021-01",
-    "production_end": "현재",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1017,7 +1017,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2020-01",
-    "production_end": "2024-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1500,7 +1500,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2020-01",
-    "production_end": "2023-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1518,7 +1518,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2020-01",
-    "production_end": "2024-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1554,7 +1554,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2015-01",
-    "production_end": "2018-12",
+    "production_end": "2016-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1788,7 +1788,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2016-01",
-    "production_end": "2019-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1806,7 +1806,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2016-01",
-    "production_end": "2019-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1842,7 +1842,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2021-01",
-    "production_end": "현재",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -1878,7 +1878,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2022-01",
-    "production_end": "현재",
+    "production_end": "2024-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2127,7 +2127,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "스포츠카",
     "production_start": "2008-01",
-    "production_end": "2011-12",
+    "production_end": "2010-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2163,7 +2163,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "경차",
     "production_start": "2021-01",
-    "production_end": "2024-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2253,7 +2253,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2020-01",
-    "production_end": "2023-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2271,7 +2271,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2020-01",
-    "production_end": "2023-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2289,7 +2289,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2017-01",
-    "production_end": "2020-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2307,7 +2307,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2019-01",
-    "production_end": "2020-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2496,7 +2496,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2020-01",
-    "production_end": "2023-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2514,7 +2514,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2020-01",
-    "production_end": "2023-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2532,7 +2532,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2015-01",
-    "production_end": "2020-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2658,7 +2658,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2022-01",
-    "production_end": "현재",
+    "production_end": "2024-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2676,7 +2676,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2018-01",
-    "production_end": "2024-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Hyundai",
     "maker_code": "001"
@@ -2799,7 +2799,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2017-01",
-    "production_end": "2020-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Genesis",
     "maker_code": "007"
@@ -2853,7 +2853,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2016-01",
-    "production_end": "2020-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Genesis",
     "maker_code": "007"
@@ -3177,7 +3177,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2019-01",
-    "production_end": "2023-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3195,7 +3195,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2020-01",
-    "production_end": "2023-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3249,7 +3249,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2015-01",
-    "production_end": "2018-12",
+    "production_end": "2017-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3267,7 +3267,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2015-01",
-    "production_end": "2018-12",
+    "production_end": "2017-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3303,7 +3303,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2010-01",
-    "production_end": "2014-12",
+    "production_end": "2012-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3411,7 +3411,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2012-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3429,7 +3429,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2014-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3519,7 +3519,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2021-01",
-    "production_end": "2024-12",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3537,7 +3537,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2021-01",
-    "production_end": "2024-12",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3609,7 +3609,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2012-01",
-    "production_end": "2014-12",
+    "production_end": "2013-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3699,7 +3699,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2021-01",
-    "production_end": "2024-12",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3840,7 +3840,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2016-01",
-    "production_end": "2019-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3858,7 +3858,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2018-01",
-    "production_end": "2022-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -3945,7 +3945,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "경차",
     "production_start": "2011-01",
-    "production_end": "2018-12",
+    "production_end": "2016-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4152,7 +4152,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "경차",
     "production_start": "2015-01",
-    "production_end": "2018-12",
+    "production_end": "2016-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4170,7 +4170,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "경차",
     "production_start": "2011-01",
-    "production_end": "2015-12",
+    "production_end": "2014-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4260,7 +4260,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2008-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4422,7 +4422,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2019-01",
-    "production_end": "2022-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4526,7 +4526,7 @@ window.ENCAR_MASTER=[
     "created_at": 1776932255148,
     "updated_at": 1776932255148,
     "category": "SUV",
-    "production_start": "2024-01",
+    "production_start": "2024-04",
     "production_end": "현재",
     "archived": false,
     "maker_eng": "Kia",
@@ -4544,7 +4544,7 @@ window.ENCAR_MASTER=[
     "created_at": 1776932255148,
     "updated_at": 1776932255148,
     "category": "SUV",
-    "production_start": "2023-01",
+    "production_start": "2024-04",
     "production_end": "현재",
     "archived": false,
     "maker_eng": "Kia",
@@ -4562,8 +4562,8 @@ window.ENCAR_MASTER=[
     "created_at": 1776932255148,
     "updated_at": 1776932255148,
     "category": "SUV",
-    "production_start": "2021-01",
-    "production_end": "2024-12",
+    "production_start": "2021-07",
+    "production_end": "2024-03",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4580,8 +4580,8 @@ window.ENCAR_MASTER=[
     "created_at": 1776932255148,
     "updated_at": 1776932255148,
     "category": "SUV",
-    "production_start": "2021-01",
-    "production_end": "2024-12",
+    "production_start": "2021-07",
+    "production_end": "2024-03",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4616,8 +4616,8 @@ window.ENCAR_MASTER=[
     "created_at": 1776932255148,
     "updated_at": 1776932255148,
     "category": "SUV",
-    "production_start": "2015-01",
-    "production_end": "2019-12",
+    "production_start": "2015-09",
+    "production_end": "2018-08",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4653,7 +4653,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2010-01",
-    "production_end": "2013-12",
+    "production_end": "2012-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4755,7 +4755,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2020-01",
-    "production_end": "현재",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4791,7 +4791,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2014-01",
-    "production_end": "2017-12",
+    "production_end": "2016-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4935,7 +4935,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2013-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -4953,7 +4953,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2008-01",
-    "production_end": "2013-12",
+    "production_end": "2012-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -5145,7 +5145,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "RV",
     "production_start": "2020-01",
-    "production_end": "현재",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -5181,7 +5181,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "RV",
     "production_start": "2014-01",
-    "production_end": "2019-12",
+    "production_end": "2017-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -5304,7 +5304,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "RV",
     "production_start": "2013-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -5682,7 +5682,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "소형차",
     "production_start": "2006-01",
-    "production_end": "2011-12",
+    "production_end": "2010-12",
     "archived": false,
     "maker_eng": "Kia",
     "maker_code": "002"
@@ -6129,7 +6129,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2016-01",
-    "production_end": "2018-12",
+    "production_end": "2017-12",
     "archived": false,
     "maker_eng": "ChevroletGMDaewoo",
     "maker_code": "003"
@@ -6147,7 +6147,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2011-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "ChevroletGMDaewoo",
     "maker_code": "003"
@@ -6717,7 +6717,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "스포츠카",
     "production_start": "2016-01",
-    "production_end": "2018-12",
+    "production_end": "2017-12",
     "archived": false,
     "maker_eng": "ChevroletGMDaewoo",
     "maker_code": "003"
@@ -7035,7 +7035,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2013-01",
-    "production_end": "2017-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "ChevroletGMDaewoo",
     "maker_code": "003"
@@ -7071,7 +7071,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2019-01",
-    "production_end": "2023-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "ChevroletGMDaewoo",
     "maker_code": "003"
@@ -7281,7 +7281,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2016-01",
-    "production_end": "2019-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "Renault-KoreaSamsung",
     "maker_code": "005"
@@ -7512,7 +7512,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2016-01",
-    "production_end": "2020-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Renault-KoreaSamsung",
     "maker_code": "005"
@@ -7833,7 +7833,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "화물차",
     "production_start": "2018-01",
-    "production_end": "2021-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "KG_Mobility_Ssangyong",
     "maker_code": "004"
@@ -8670,7 +8670,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2022-01",
-    "production_end": "2024-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "KG_Mobility_Ssangyong",
     "maker_code": "004"
@@ -8883,7 +8883,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "소형차",
     "production_start": "2009-01",
-    "production_end": "2013-12",
+    "production_end": "2012-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9045,7 +9045,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "준중형차",
     "production_start": "2005-01",
-    "production_end": "2013-12",
+    "production_end": "2011-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9135,7 +9135,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "중형차",
     "production_start": "2017-01",
-    "production_end": "2024-12",
+    "production_end": "2022-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9261,7 +9261,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2015-01",
-    "production_end": "2022-12",
+    "production_end": "2021-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9279,7 +9279,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2009-01",
-    "production_end": "2015-12",
+    "production_end": "2014-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9813,7 +9813,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2010-01",
-    "production_end": "2016-12",
+    "production_end": "2015-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9885,7 +9885,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2017-01",
-    "production_end": "2024-12",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9903,7 +9903,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2011-01",
-    "production_end": "2017-12",
+    "production_end": "2016-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -9957,7 +9957,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2014-01",
-    "production_end": "2018-12",
+    "production_end": "2014-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -10011,7 +10011,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2007-01",
-    "production_end": "2013-12",
+    "production_end": "2012-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -10065,7 +10065,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2014-01",
-    "production_end": "2019-12",
+    "production_end": "2018-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -10083,7 +10083,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "SUV",
     "production_start": "2008-01",
-    "production_end": "2014-12",
+    "production_end": "2013-12",
     "archived": false,
     "maker_eng": "BMW",
     "maker_code": "012"
@@ -17319,7 +17319,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "스포츠카",
     "production_start": "1991-01",
-    "production_end": "2024-12",
+    "production_end": "2019-12",
     "archived": false,
     "maker_eng": "Porsche",
     "maker_code": "015"
@@ -17559,7 +17559,7 @@ window.ENCAR_MASTER=[
     "updated_at": 1776932255148,
     "category": "대형차",
     "production_start": "2017-01",
-    "production_end": "현재",
+    "production_end": "2023-12",
     "archived": false,
     "maker_eng": "Porsche",
     "maker_code": "015"
