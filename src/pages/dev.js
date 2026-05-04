@@ -133,12 +133,25 @@ function renderMatrixTab(el) {
 
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:8px;height:100%;min-height:0;">
-      <div style="display:flex;gap:8px;align-items:center;">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <button class="btn btn-sm btn-primary" id="mtxAnalyze"><i class="ph ph-play"></i> 매물 분석</button>
-        <button class="btn btn-sm btn-success" id="mtxApply" disabled><i class="ph ph-check"></i> 확정 일괄 적용</button>
+        <button class="btn btn-sm btn-success" id="mtxApply" disabled><i class="ph ph-check"></i> 확정만 적용 (high/medium)</button>
+        <button class="btn btn-sm" id="mtxApplyAll" disabled style="color:#d97706;"><i class="ph ph-check-fat"></i> 확인필요 포함 모두 적용</button>
         <button class="btn btn-sm" id="mtxCacheClear"><i class="ph ph-arrow-clockwise"></i> 카탈로그 캐시 초기화</button>
-        <span style="margin-left:auto;font-size:11px;color:var(--text-sub);" id="mtxSummary">대기 중</span>
+        <div style="flex:1;"></div>
+        <select class="input" id="mtxFilterStatus" style="font-size:11px;padding:2px 6px;">
+          <option value="">상태 전체</option>
+          <option value="high">✓ 확정만</option>
+          <option value="medium">◎ 추정만</option>
+          <option value="low">⚠ 확인 필요만</option>
+          <option value="none">✕ 카탈로그 없음만</option>
+        </select>
+        <select class="input" id="mtxFilterMaker" style="font-size:11px;padding:2px 6px;">
+          <option value="">제조사 전체</option>
+        </select>
+        <span style="font-size:11px;color:var(--text-sub);" id="mtxSummary">대기 중</span>
       </div>
+      <div id="mtxStats" style="font-size:10px;color:var(--text-sub);"></div>
       <div id="mtxPreview" style="flex:1 1 0;min-height:0;overflow:auto;border:1px solid var(--border);border-radius:4px;background:#fff;">
         <div style="padding:24px;text-align:center;color:var(--text-muted);">「매물 분석」 버튼을 눌러주세요</div>
       </div>
@@ -156,29 +169,40 @@ function renderMatrixTab(el) {
     return catalogTitle.replace(new RegExp('^' + maker + '\\s+'), '').trim();
   }
 
-  el.querySelector('#mtxApply').addEventListener('click', async () => {
+  /* 일괄 적용 핵심 로직 — confidence 필터만 다르고 나머지 동일.
+   *  includeLow=true 면 ok 한 모든 매칭 적용 (low 포함). */
+  async function applyMatrix(includeLow) {
     if (!_lastResults || !_lastResults.length) return;
-    // 적용 대상: high/medium 신뢰도 + 트림 매칭 성공 + 실제 변경 발생
+    const confOk = (r) => r.confidence === 'high' || r.confidence === 'medium' || (includeLow && r.confidence === 'low');
     const targets = _lastResults
-      .filter(({ p, r }) => r.ok && (r.confidence === 'high' || r.confidence === 'medium') && r.trimName)
+      .filter(({ p, r }) => r.ok && confOk(r) && r.trimName)
       .map(({ p, r }) => {
         const newSub = deriveNewSubModel(r.catalogTitle, p.maker);
         const newTrim = r.trimName;
         const subChanged = (p.sub_model || '') !== newSub;
         const trimChanged = (p.trim_name || p.trim || '') !== newTrim;
-        return { p, r, newSub, newTrim, subChanged, trimChanged };
+        const savedFp = Array.isArray(p.fp_options) ? p.fp_options : [];
+        const fpAll = r.fpAll || [];
+        const fpChanged = fpAll.length > 0 && (savedFp.length !== fpAll.length || !savedFp.every(id => fpAll.includes(id)));
+        return { p, r, newSub, newTrim, subChanged, trimChanged, fpChanged, fpAll };
       })
-      .filter(t => t.subChanged || t.trimChanged);
+      .filter(t => t.subChanged || t.trimChanged || t.fpChanged);
 
     if (!targets.length) {
       showToast('변경할 매물 없음');
       return;
     }
-    if (!confirm(`매물 ${targets.length}대의 sub_model / trim_name 을 일괄 변경합니다.\n원본은 sub_model_legacy / trim_name_legacy 로 백업됩니다.\n계속할까요?`)) return;
+    const lowCount = targets.filter(t => t.r.confidence === 'low').length;
+    const msg = lowCount
+      ? `매물 ${targets.length}대 변경 (확인필요 ${lowCount}대 포함).\n원본은 sub_model_legacy / trim_name_legacy 로 백업됩니다.\n계속할까요?`
+      : `매물 ${targets.length}대의 sub_model / trim_name / fp_options 를 일괄 변경합니다.\n원본은 sub_model_legacy / trim_name_legacy 로 백업됩니다.\n계속할까요?`;
+    if (!confirm(msg)) return;
 
-    const btn = el.querySelector('#mtxApply');
+    const btnHigh = el.querySelector('#mtxApply');
+    const btnAll  = el.querySelector('#mtxApplyAll');
     const summary = el.querySelector('#mtxSummary');
-    btn.disabled = true;
+    btnHigh.disabled = true;
+    btnAll.disabled = true;
     let done = 0, fail = 0;
     for (const t of targets) {
       const updates = {};
@@ -191,10 +215,13 @@ function renderMatrixTab(el) {
         if (t.p.trim_name_legacy == null) updates.trim_name_legacy = curTrim;
         updates.trim_name = t.newTrim;
       }
+      if (t.fpChanged) {
+        updates.fp_options = t.fpAll;
+      }
       try {
         const id = t.p._key || t.p.id || t.p.product_uid;
         if (!id) throw new Error('no id');
-        await updateRecord('products', id, updates);
+        await updateRecord(`products/${id}`, updates);
         done++;
       } catch (err) {
         fail++;
@@ -204,8 +231,12 @@ function renderMatrixTab(el) {
     }
     summary.textContent = `✓ 적용 완료: ${done}건${fail ? ` / 실패 ${fail}건` : ''}`;
     showToast(`${done}대 적용`);
-    btn.disabled = false;
-  });
+    btnHigh.disabled = false;
+    btnAll.disabled = false;
+  }
+
+  el.querySelector('#mtxApply').addEventListener('click', () => applyMatrix(false));
+  el.querySelector('#mtxApplyAll').addEventListener('click', () => applyMatrix(true));
 
   el.querySelector('#mtxAnalyze').addEventListener('click', async () => {
     const btn = el.querySelector('#mtxAnalyze');
@@ -238,6 +269,29 @@ function renderMatrixTab(el) {
     summary.textContent = `전체 ${products.length}대  ·  매칭 ${cnt.ok}  ·  확정 ${cnt.high}  ·  검토 필요 ${cnt.review}  ·  카탈로그 없음 ${cnt.noCat}`;
     _lastResults = results;
     el.querySelector('#mtxApply').disabled = false;
+    el.querySelector('#mtxApplyAll').disabled = false;
+
+    // 메이커별 통계 요약
+    const byMaker = {};
+    for (const { p, r } of results) {
+      const m = p.maker || '(미상)';
+      if (!byMaker[m]) byMaker[m] = { total: 0, high: 0, medium: 0, low: 0, none: 0 };
+      byMaker[m].total++;
+      if (!r.ok) byMaker[m].none++;
+      else if (r.confidence === 'high') byMaker[m].high++;
+      else if (r.confidence === 'medium') byMaker[m].medium++;
+      else byMaker[m].low++;
+    }
+    const statsEl = el.querySelector('#mtxStats');
+    statsEl.innerHTML = '<b>메이커별:</b> ' + Object.entries(byMaker)
+      .sort((a,b) => b[1].total - a[1].total)
+      .map(([m, s]) => `${esc(m)} <span style="color:#16a34a;">${s.high}</span>/<span style="color:#0284c7;">${s.medium}</span>/<span style="color:#d97706;">${s.low}</span>/<span style="color:#dc2626;">${s.none}</span>(=${s.total})`)
+      .join('  ·  ');
+
+    // 메이커 필터 옵션 채우기
+    const makerSel = el.querySelector('#mtxFilterMaker');
+    makerSel.innerHTML = '<option value="">제조사 전체</option>' +
+      Object.keys(byMaker).sort().map(m => `<option value="${esc(m)}">${esc(m)} (${byMaker[m].total})</option>`).join('');
 
     const rank = r => !r.ok ? 1 : (r.confidence === 'low' ? 0 : (r.confidence === 'medium' ? 2 : 3));
     results.sort((a, b) => {
@@ -287,64 +341,63 @@ function renderMatrixTab(el) {
             <th style="padding:4px 6px;text-align:left;">선택옵션 (표준)</th>
           </tr>
         </thead>
-        <tbody>
-          ${results.map(({ p, r }, idx) => {
-            let status, statusColor;
-            if (!r.ok) { status = '✕ 카탈로그 없음'; statusColor = '#dc2626'; }
-            else if (r.confidence === 'high') { status = '✓ 확정'; statusColor = '#16a34a'; }
-            else if (r.confidence === 'medium') { status = '◎ 추정'; statusColor = '#0284c7'; }
-            else { status = '⚠ 확인 필요'; statusColor = '#d97706'; }
-
-            const rawOpts = Array.isArray(p.options) ? p.options.join(', ') : (p.options || '');
-            const newSub = r.ok ? newSubModel(r.catalogTitle, p.maker) : '';
-
-            // 변경되는 셀은 강조, 그대로면 회색 (visual diff)
-            const changed = (before, after) => after && before !== after;
-            const sameStyle = 'color:var(--text-muted);';   // 그대로 = 흐림
-            const changeStyle = 'font-weight:600;color:#0c4a6e;'; // 바뀜 = 진한 파랑
-
-            const beforeBg = 'background:var(--bg-stripe);';
-            const afterBg = 'background:var(--alert-blue-bg);';
-            const todoCell = (label='매칭 실패') => `<td style="padding:4px 6px;background:#fef3c7;color:#92400e;font-style:italic;font-size:10px;">${label}</td>`;
-
-            // 변경 후 값들 (카탈로그 매칭 OK일 때)
-            const newMaker = p.maker;  // 보통 동일
-            const newModel = p.model;  // 보통 동일
-            const newTrim = r.ok && r.trimName ? r.trimName : (p.trim_name || p.trim || '');
-
-            // 셀 헬퍼: 변경 셀 — 변경됐으면 강조
-            const afterCell = (before, after, isFp = false) => {
-              if (after == null || after === '') return todoCell();
-              const sty = changed(before, after) ? changeStyle : sameStyle;
-              return `<td style="padding:4px 6px;${afterBg}${sty}max-width:240px;overflow:hidden;text-overflow:ellipsis;" title="${esc(String(after))}">${esc(String(after))}</td>`;
-            };
-
-            // 선택옵션 변경 후 = FP IDs
-            const fpAfter = r.ok ? fpDisplay(r.fpAll) : null;
-
-            return `<tr style="border-bottom:1px solid var(--border);">
-              <td style="padding:4px 6px;color:var(--text-muted);">${idx + 1}</td>
-              <td style="padding:4px 6px;border-right:3px solid var(--border-strong);font-family:monospace;font-size:10px;">${e(p.car_number)}</td>
-
-              <!-- 현재 5개 -->
-              <td style="padding:4px 6px;${beforeBg}">${e(p.maker)}</td>
-              <td style="padding:4px 6px;${beforeBg}">${e(p.model)}</td>
-              <td style="padding:4px 6px;${beforeBg}max-width:180px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.sub_model || '')}">${e(p.sub_model)}</td>
-              <td style="padding:4px 6px;${beforeBg}max-width:140px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.trim_name || p.trim || '')}">${e(p.trim_name || p.trim)}</td>
-              <td style="padding:4px 6px;${beforeBg}max-width:240px;overflow:hidden;text-overflow:ellipsis;border-right:3px solid var(--border-strong);" title="${esc(rawOpts)}">${esc(rawOpts.slice(0, 60))}${rawOpts.length > 60 ? '…' : ''}</td>
-
-              <!-- 적용 후 6개 (상태 + 5필드) -->
-              <td style="padding:4px 6px;${afterBg}color:${statusColor};font-weight:500;">${status}</td>
-              ${afterCell(p.maker, newMaker)}
-              ${afterCell(p.model, newModel)}
-              ${r.ok ? afterCell(p.sub_model, newSub) : todoCell()}
-              ${r.ok ? afterCell(p.trim_name || p.trim, newTrim) : todoCell()}
-              ${r.ok ? `<td style="padding:4px 6px;${afterBg}max-width:340px;overflow:hidden;text-overflow:ellipsis;" title="${esc(fpIdsToNames(r.fpAll || []).join(', '))}">${fpAfter}</td>` : todoCell('카탈로그 없음')}
-            </tr>`;
-          }).join('')}
-        </tbody>
+        <tbody></tbody>
       </table>
     `;
+
+    function buildRow({ p, r }, idx) {
+      let status, statusColor;
+      if (!r.ok) { status = '✕ 카탈로그 없음'; statusColor = '#dc2626'; }
+      else if (r.confidence === 'high') { status = '✓ 확정'; statusColor = '#16a34a'; }
+      else if (r.confidence === 'medium') { status = '◎ 추정'; statusColor = '#0284c7'; }
+      else { status = '⚠ 확인 필요'; statusColor = '#d97706'; }
+      const rawOpts = Array.isArray(p.options) ? p.options.join(', ') : (p.options || '');
+      const newSub = r.ok ? newSubModel(r.catalogTitle, p.maker) : '';
+      const changed = (before, after) => after && before !== after;
+      const sameStyle = 'color:var(--text-muted);';
+      const changeStyle = 'font-weight:600;color:#0c4a6e;';
+      const beforeBg = 'background:var(--bg-stripe);';
+      const afterBg = 'background:var(--alert-blue-bg);';
+      const todoCell = (label='매칭 실패') => `<td style="padding:4px 6px;background:#fef3c7;color:#92400e;font-style:italic;font-size:10px;">${label}</td>`;
+      const newTrim = r.ok && r.trimName ? r.trimName : (p.trim_name || p.trim || '');
+      const afterCell = (before, after) => {
+        if (after == null || after === '') return todoCell();
+        const sty = changed(before, after) ? changeStyle : sameStyle;
+        return `<td style="padding:4px 6px;${afterBg}${sty}max-width:240px;overflow:hidden;text-overflow:ellipsis;" title="${esc(String(after))}">${esc(String(after))}</td>`;
+      };
+      const fpAfter = r.ok ? fpDisplay(r.fpAll) : null;
+      return `<tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:4px 6px;color:var(--text-muted);">${idx + 1}</td>
+        <td style="padding:4px 6px;border-right:3px solid var(--border-strong);font-family:monospace;font-size:10px;">${e(p.car_number)}</td>
+        <td style="padding:4px 6px;${beforeBg}">${e(p.maker)}</td>
+        <td style="padding:4px 6px;${beforeBg}">${e(p.model)}</td>
+        <td style="padding:4px 6px;${beforeBg}max-width:180px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.sub_model || '')}">${e(p.sub_model)}</td>
+        <td style="padding:4px 6px;${beforeBg}max-width:140px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.trim_name || p.trim || '')}">${e(p.trim_name || p.trim)}</td>
+        <td style="padding:4px 6px;${beforeBg}max-width:240px;overflow:hidden;text-overflow:ellipsis;border-right:3px solid var(--border-strong);" title="${esc(rawOpts)}">${esc(rawOpts.slice(0, 60))}${rawOpts.length > 60 ? '…' : ''}</td>
+        <td style="padding:4px 6px;${afterBg}color:${statusColor};font-weight:500;">${status}</td>
+        ${afterCell(p.maker, p.maker)}
+        ${afterCell(p.model, p.model)}
+        ${r.ok ? afterCell(p.sub_model, newSub) : todoCell()}
+        ${r.ok ? afterCell(p.trim_name || p.trim, newTrim) : todoCell()}
+        ${r.ok ? `<td style="padding:4px 6px;${afterBg}max-width:340px;overflow:hidden;text-overflow:ellipsis;" title="${esc(fpIdsToNames(r.fpAll || []).join(', '))}">${fpAfter}</td>` : todoCell('카탈로그 없음')}
+      </tr>`;
+    }
+    function renderRows() {
+      const fs = el.querySelector('#mtxFilterStatus').value;
+      const fm = el.querySelector('#mtxFilterMaker').value;
+      const filtered = results.filter(({ p, r }) => {
+        if (fm && p.maker !== fm) return false;
+        if (fs) {
+          const conf = !r.ok ? 'none' : r.confidence;
+          if (conf !== fs) return false;
+        }
+        return true;
+      });
+      preview.querySelector('tbody').innerHTML = filtered.map((row, i) => buildRow(row, i)).join('');
+    }
+    el.querySelector('#mtxFilterStatus').addEventListener('change', renderRows);
+    el.querySelector('#mtxFilterMaker').addEventListener('change', renderRows);
+    renderRows();
 
     btn.disabled = false;
   });
@@ -376,6 +429,8 @@ function renderToolsTab(el) {
           <button class="btn btn-sm" id="devMigratePartnerType"><i class="ph ph-swap"></i> partner_type 영어 → 한글</button>
           <button class="btn btn-sm" id="devMigrateUserCode"><i class="ph ph-identification-badge"></i> user_code 일괄부여</button>
           <button class="btn btn-sm" id="devMigrateCreditGrade"><i class="ph ph-swap"></i> credit_grade: 저신용 → 신용무관</button>
+          <button class="btn btn-sm" id="devMigrateVehMasterSub"><i class="ph ph-swap"></i> vehicle_master sub_model: 카탈로그 표준명으로 일괄 정정</button>
+          <button class="btn btn-sm" id="devDedupeVehMasterSub"><i class="ph ph-arrows-merge"></i> vehicle_master 중복 sub_model 해소 (동력원 keyword 복원)</button>
         </div>
       </div>
     </div>
@@ -405,6 +460,8 @@ function renderToolsTab(el) {
   el.querySelector('#devMigratePartnerType').addEventListener('click', () => migratePartnerType());
   el.querySelector('#devMigrateUserCode').addEventListener('click', () => migrateUserCode());
   el.querySelector('#devMigrateCreditGrade').addEventListener('click', () => migrateCreditGrade());
+  el.querySelector('#devMigrateVehMasterSub').addEventListener('click', () => migrateVehicleMasterSubModel());
+  el.querySelector('#devDedupeVehMasterSub').addEventListener('click', () => dedupeVehicleMasterSubModel());
 }
 
 async function migrateTermPolicy() {
@@ -547,6 +604,141 @@ async function migrateCreditGrade() {
     }
     devLog(`✓ ${total}건 변환`);
     showToast(`${total}건 완료`);
+  } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
+}
+
+/* 동력원 keyword 추출 — 같은 catalog 안에서 가솔린/하이브리드/EV 가 섞이면
+ * standardSub 만 쓰면 dropdown 중복이 생기므로 동력원 표기를 보존한다.
+ *  "코나 하이브리드 (SX2)" → "하이브리드"
+ *  "코나 일렉트릭"           → "일렉트릭"
+ *  "K8 EV"                   → "EV"   (없는 케이스지만)
+ *  가솔린/디젤/LPG 일반 동력원은 "" (별도 표기 X — default)
+ */
+function extractPowertrainKeyword(rawSub) {
+  const s = String(rawSub || '');
+  if (/하이브리드|HEV|hybrid/i.test(s)) return '하이브리드';
+  if (/플러그인|PHEV/i.test(s)) return '플러그인 하이브리드';
+  if (/일렉트릭|electric/i.test(s)) return '일렉트릭';
+  if (/\bEV\b/.test(s)) return 'EV';
+  if (/전기차|전기/.test(s)) return '전기';
+  return '';
+}
+/* standardSub 에 동력원이 이미 들어있으면 중복 추가 방지 */
+function appendPowertrain(standardSub, kw) {
+  if (!kw) return standardSub;
+  if (standardSub.includes(kw)) return standardSub;
+  // "EV" 같은 짧은 키워드는 이미 정확히 매칭되어 있으면 X
+  return `${standardSub} ${kw}`;
+}
+
+/* vehicle_master 의 sub_model 을 우리 카탈로그 표준명으로 일괄 정정.
+ *  예: "K5 3세대 (2019~2023)" → "더 뉴 K5 DL3"
+ *      "코나 하이브리드"      → "코나 SX2 하이브리드" (동력원 keyword 보존)
+ *  - 매칭된 records 만 변경 (멱등)
+ *  - 원본은 sub_model_legacy 로 백업 */
+async function migrateVehicleMasterSubModel() {
+  try {
+    const { findCatalog, loadIndex } = await import('../core/vehicle-matrix.js');
+    await loadIndex();
+    const { ref, get, update } = await import('firebase/database');
+    const { db } = await import('../firebase/config.js');
+    const snap = await get(ref(db, 'vehicle_master'));
+    const all = snap.val() || {};
+    const targets = [];
+    for (const [k, v] of Object.entries(all)) {
+      if (!v || v.status === 'deleted') continue;
+      const maker = v.maker, sub = v.sub_model || v.sub, model = v.model;
+      if (!maker || !sub) continue;
+      const cat = await findCatalog(maker, sub, model);
+      if (!cat) continue;
+      const idx = await loadIndex();
+      const entry = idx[cat.catalogId];
+      if (!entry) continue;
+      const baseSub = (entry.title || '').replace(new RegExp('^' + maker + '\\s+'), '').trim();
+      // 동력원 keyword 는 oldSub (또는 sub_model_legacy) 에서 추출해 standardSub 에 붙임
+      const legacy = v.sub_model_legacy || sub;
+      const kw = extractPowertrainKeyword(legacy) || extractPowertrainKeyword(sub);
+      const standardSub = appendPowertrain(baseSub, kw);
+      if (!standardSub || standardSub === sub) continue;
+      targets.push({ key: k, oldSub: sub, newSub: standardSub, maker, model, conf: cat.confidence });
+    }
+    if (!targets.length) {
+      devLog('vehicle_master 정정 대상 없음 (멱등)');
+      showToast('변경 없음');
+      return;
+    }
+    const preview = targets.slice(0, 10).map(t => `  ${t.maker} ${t.oldSub} → ${t.newSub} (${t.conf})`).join('\n');
+    if (!confirm(`vehicle_master sub_model 정정 ${targets.length}건 (high/medium 신뢰도). 원본은 sub_model_legacy 백업.\n\n샘플:\n${preview}\n\n계속?`)) return;
+    let done = 0, fail = 0;
+    for (const t of targets) {
+      if (t.conf === 'low') continue;  // low 는 자동 skip
+      try {
+        const cur = all[t.key];
+        const updates = { sub_model: t.newSub, sub: t.newSub };
+        if (cur.sub_model_legacy == null) updates.sub_model_legacy = t.oldSub;
+        await update(ref(db, `vehicle_master/${t.key}`), updates);
+        done++;
+      } catch (e) { fail++; }
+      if (done % 20 === 0) devLog(`  ${done}/${targets.length}...`);
+    }
+    devLog(`✓ vehicle_master sub_model 정정: ${done}건 / 실패 ${fail}건`);
+    showToast(`${done}건 완료`);
+  } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
+}
+
+/* vehicle_master dropdown 중복 sub_model 해소.
+ *  현상: migration 이 동력원 표기를 떼어버려 같은 sub_model 이름의 row 가 여러 개.
+ *        예: "더 뉴 스포티지 NQ5" 가 가솔린 row 와 하이브리드 row 양쪽에 동일 적용
+ *  해법: 같은 (maker, model, sub_model) 인 row 들 중 sub_model_legacy 에 동력원 keyword
+ *       가 있는 row 는 sub_model 에 keyword 를 다시 붙여 disambiguate.
+ */
+async function dedupeVehicleMasterSubModel() {
+  try {
+    const { ref, get, update } = await import('firebase/database');
+    const { db } = await import('../firebase/config.js');
+    const snap = await get(ref(db, 'vehicle_master'));
+    const all = snap.val() || {};
+    // (maker|model|sub_model) → row 들 그룹화
+    const groups = new Map();
+    for (const [k, v] of Object.entries(all)) {
+      if (!v || v.status === 'deleted' || v.archived) continue;
+      const sub = v.sub_model || v.sub;
+      if (!v.maker || !sub) continue;
+      const key = `${v.maker}|${v.model || ''}|${sub}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push({ k, v });
+    }
+    const targets = [];
+    for (const [gKey, rows] of groups) {
+      if (rows.length < 2) continue;
+      // 그룹 내 row 들에서 동력원 keyword 추출
+      for (const { k, v } of rows) {
+        const legacy = v.sub_model_legacy || '';
+        const kw = extractPowertrainKeyword(legacy);
+        if (!kw) continue;  // 동력원이 legacy 에 없으면 그대로 (= 가솔린 default)
+        const cur = v.sub_model || v.sub;
+        const fixed = appendPowertrain(cur, kw);
+        if (fixed === cur) continue;
+        targets.push({ key: k, oldSub: cur, newSub: fixed, maker: v.maker, model: v.model });
+      }
+    }
+    if (!targets.length) {
+      devLog('vehicle_master dropdown 중복 sub_model 없음');
+      showToast('변경 없음');
+      return;
+    }
+    const preview = targets.slice(0, 10).map(t => `  ${t.maker} ${t.oldSub} → ${t.newSub}`).join('\n');
+    if (!confirm(`vehicle_master dropdown 중복 해소 ${targets.length}건. 동력원 keyword 를 sub_model 에 다시 붙입니다.\n\n샘플:\n${preview}\n\n계속?`)) return;
+    let done = 0, fail = 0;
+    for (const t of targets) {
+      try {
+        await update(ref(db, `vehicle_master/${t.key}`), { sub_model: t.newSub, sub: t.newSub });
+        done++;
+      } catch (e) { fail++; }
+      if (done % 20 === 0) devLog(`  ${done}/${targets.length}...`);
+    }
+    devLog(`✓ vehicle_master 중복 해소: ${done}건 / 실패 ${fail}건`);
+    showToast(`${done}건 완료`);
   } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
 }
 
