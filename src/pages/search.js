@@ -21,6 +21,8 @@ import {
   esc, shortStatus, mapStatusDot, fmtMileage,
   providerNameByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
+import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
+import { findCatalog } from '../core/vehicle-matrix.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
 let _onCreateRoom = null;
@@ -659,6 +661,26 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <div class="lab">세부모델</div><div class="full">${esc(basicByLabel['세부모델'] || '-')}</div>
         <div class="lab">세부트림</div><div class="full">${esc(specByLabel['트림'] || '-')}</div>
         <div class="lab">선택옵션</div><div class="full ${opts.length ? 'chips-wrap' : ''}">${opts.length ? opts.map(o => `<span class="chip">${esc(o)}</span>`).join('') : '-'}</div>
+        ${(() => {
+          // 표준옵션 — FP 인기 15개 (PRIMARY 10 + SECONDARY 5) 중 매칭된 것만
+          const fpSet = new Set(Array.isArray(p.fp_options) ? p.fp_options : []);
+          const matched = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY]
+            .filter(po => po.ids.some(id => fpSet.has(id)));
+          if (matched.length === 0) return '';
+          const top = matched.slice(0, 5);
+          const more = matched.slice(5);
+          return `
+            <div class="lab">표준옵션</div>
+            <div class="full chips-wrap fp-popular" data-product-id="${esc(p.product_uid || '')}">
+              ${top.map(po => `<span class="chip chip-fp">${esc(po.label)}</span>`).join('')}
+              ${more.length ? `<span class="chip chip-more" data-fp-more="0">+${more.length} 더보기</span>` : ''}
+              <span class="chip chip-fp-detail" data-fp-detail>옵션 자세히 →</span>
+              <div class="fp-popular-extra" data-fp-extra style="display:none;flex-basis:100%;display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
+                ${more.map(po => `<span class="chip chip-fp">${esc(po.label)}</span>`).join('')}
+              </div>
+            </div>
+          `;
+        })()}
         ${pair('연식', specByLabel['연식'], '주행거리', specByLabel['주행'])}
         ${pair('연료', specByLabel['연료'], '구동방식', specByLabel['구동'])}
         ${pair('외부색상', specByLabel['외장색'], '내부색상', specByLabel['내장색'])}
@@ -793,6 +815,37 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   `;
   // 새 차량 선택 시 항상 사진부터 보이게 — 스크롤 맨 위로
   body.scrollTop = 0;
+
+  // 표준옵션 인터랙션 — 더보기 토글 + 매트릭스 자세히
+  body.querySelectorAll('[data-fp-more]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const wrap = btn.closest('.fp-popular');
+      const extra = wrap?.querySelector('[data-fp-extra]');
+      if (extra) {
+        const isOpen = extra.style.display !== 'none';
+        extra.style.display = isOpen ? 'none' : 'flex';
+        btn.style.display = isOpen ? '' : 'none';
+      }
+    });
+  });
+  body.querySelectorAll('[data-fp-detail]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      // 차량 → catalog 매핑 후 매트릭스 페이지 새 창
+      try {
+        const cat = await findCatalog(p.maker, p.sub_model, p.model, p);
+        const params = new URLSearchParams();
+        if (cat?.catalogId) params.set('catalog', cat.catalogId);
+        else {
+          if (p.maker)     params.set('maker', p.maker);
+          if (p.model)     params.set('model', p.model);
+          if (p.sub_model) params.set('sub',   p.sub_model);
+        }
+        window.open(`/vehicle-options-catalog-test.html?${params.toString()}`, '_blank', 'noopener');
+      } catch (e) {
+        showToast('매트릭스 매핑 실패', 'error');
+      }
+    });
+  });
 
   const thumbsEl = body.querySelector('.detail-photo-thumbs');
 

@@ -153,6 +153,35 @@
   }
   .chip-color.is-active .chip-swatch { border-color: var(--c-text-inv); }
 
+  /* FP 표준옵션 — 5개씩 자연스럽게 줄바꿈 + 더보기/자세히 */
+  .fp-popular {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+  }
+  .chip-fp {
+    background: var(--c-accent-bg, var(--c-bg-sub));
+    color: var(--c-accent-text, var(--c-accent));
+    border: 1px solid var(--c-accent, var(--c-border));
+    font-size: 11px;
+  }
+  .chip-more {
+    background: var(--c-bg-sub);
+    color: var(--c-text-sub);
+    cursor: pointer;
+    border: 1px dashed var(--c-border);
+  }
+  .chip-more:hover { background: var(--c-bg-hover); color: var(--c-text); }
+  .chip-fp-detail {
+    background: var(--c-surface);
+    color: var(--c-text-sub);
+    cursor: pointer;
+    border: 1px solid var(--c-border);
+    margin-left: auto;
+  }
+  .chip-fp-detail:hover { background: var(--c-accent-bg, var(--c-bg-hover)); color: var(--c-accent-text, var(--c-accent)); border-color: var(--c-accent, var(--c-border-strong)); }
+
   .srch-active {
     display: flex;
     flex-wrap: wrap;

@@ -504,44 +504,56 @@
     "end": "현재"
   },
   "genesis_g70": {
-    "start": "2020-01",
+    "start": "2023-08",
     "end": "현재"
   },
   "genesis_g70_st": {
-    "start": "2017-01",
-    "end": "2024-12"
+    "start": "2022-04",
+    "end": "현재"
   },
   "genesis_g80_e": {
-    "start": "2016-01",
+    "start": "2021-07",
     "end": "현재"
   },
   "genesis_g80_rg3": {
-    "start": "2020-01",
+    "start": "2024-09",
     "end": "현재"
   },
+  "genesis_g80_rg3_pre": {
+    "start": "2020-03",
+    "end": "2024-09"
+  },
   "genesis_g90_rs4": {
-    "start": "2017-01",
+    "start": "2022-03",
     "end": "현재"
   },
   "genesis_gv60": {
-    "start": "2021-01",
+    "start": "2021-09",
     "end": "현재"
   },
   "genesis_gv70": {
-    "start": "2020-01",
+    "start": "2025-02",
     "end": "현재"
   },
   "genesis_gv70_e": {
-    "start": "2022-01",
-    "end": "2024-12"
+    "start": "2021-12",
+    "end": "현재"
+  },
+  "genesis_gv70_pre": {
+    "start": "2020-12",
+    "end": "2025-02"
   },
   "genesis_gv80": {
-    "start": "2020-01",
+    "start": "2024-04",
     "end": "현재"
   },
   "genesis_gv80_coupe": {
-    "start": "2023-01",
+    "start": "2023-03",
     "end": "현재"
+  },
+  "genesis_gv80_pre": {
+    "start": "2020-01",
+    "end": "2024-04"
   },
   "honda_cr_v_5세대": {
     "start": "2017-01",
@@ -636,32 +648,32 @@
     "end": "현재"
   },
   "hyundai_avante_ad": {
-    "start": "1996-01",
-    "end": "2016-12"
+    "start": "2015-09",
+    "end": "2018-09"
   },
   "hyundai_avante_ad_facelift": {
-    "start": "1999-01",
-    "end": "2019-12"
+    "start": "2018-09",
+    "end": "2020-04"
   },
   "hyundai_avante_cn7": {
-    "start": "2022-01",
+    "start": "2023-03",
     "end": "현재"
   },
   "hyundai_avante_cn7_pre": {
-    "start": "2020-01",
-    "end": "2021-12"
+    "start": "2020-04",
+    "end": "2023-03"
   },
   "hyundai_avante_n": {
-    "start": "2020-01",
-    "end": "2021-12"
+    "start": "2021-07",
+    "end": "현재"
   },
   "hyundai_casper": {
-    "start": "2023-01",
+    "start": "2024-04",
     "end": "현재"
   },
   "hyundai_casper_pre": {
-    "start": "2021-01",
-    "end": "현재"
+    "start": "2021-09",
+    "end": "2024-04"
   },
   "hyundai_grand_starex_facelift": {
     "start": "2016-01",
@@ -676,67 +688,67 @@
     "end": "2017-12"
   },
   "hyundai_grandeur_ig": {
-    "start": "2017-01",
-    "end": "2021-12"
+    "start": "2019-11",
+    "end": "2022-11"
   },
   "hyundai_grandeur_ig_163": {
-    "start": "2019-01",
-    "end": "2022-12"
+    "start": "2019-11",
+    "end": "2022-11"
   },
   "hyundai_grandeur_ig_hybrid_pre": {
-    "start": "2017-01",
-    "end": "2018-12"
+    "start": "2017-03",
+    "end": "2019-11"
   },
   "hyundai_grandeur_ig_pre": {
-    "start": "2016-01",
-    "end": "2016-12"
+    "start": "2016-11",
+    "end": "2019-11"
   },
   "hyundai_ioniq5": {
-    "start": "2019-01",
+    "start": "2024-03",
     "end": "현재"
   },
   "hyundai_ioniq5_n": {
-    "start": "2016-01",
-    "end": "2018-12"
+    "start": "2023-07",
+    "end": "현재"
   },
   "hyundai_ioniq5_pre": {
-    "start": "2021-01",
-    "end": "2023-12"
+    "start": "2021-04",
+    "end": "2024-03"
   },
   "hyundai_ioniq6": {
-    "start": "2025-01",
+    "start": "2024-06",
     "end": "현재"
   },
   "hyundai_ioniq6_pre": {
-    "start": "2022-01",
-    "end": "2024-12"
+    "start": "2022-07",
+    "end": "2024-06"
   },
   "hyundai_ioniq9": {
-    "start": "2025-01",
+    "start": "2024-12",
     "end": "현재"
   },
   "hyundai_kona_os": {
-    "start": "2017-01",
-    "end": "2021-12"
+    "start": "2017-06",
+    "end": "2020-08"
   },
   "hyundai_kona_os_facelift": {
-    "start": "2020-01",
-    "end": "2022-12"
+    "start": "2020-08",
+    "end": "2023-04"
   },
   "hyundai_kona_sx2": {
     "start": "2023-04",
     "end": "현재"
   },
   "hyundai_nexo_nh2": {
-    "start": "2018-01",
+    "start": "2025-04",
     "end": "현재"
   },
   "hyundai_palisade_lx2": {
-    "start": "2018-01",
-    "end": "2021-12"
+    "start": "2018-12",
+    "end": "2022-08"
   },
   "hyundai_palisade_lx2_facelift": {
-    "start": "2022-01",
+    "start": "2022-08",
     "end": "2024-12"
   },
   "hyundai_palisade_lx3": {
@@ -748,8 +760,8 @@
     "end": "현재"
   },
   "hyundai_santafe_tm_165": {
-    "start": "2020-01",
-    "end": "2022-12"
+    "start": "2018-02",
+    "end": "2023-08"
   },
   "hyundai_sonata_dn8": {
     "start": "2019-03",
@@ -760,12 +772,12 @@
     "end": "현재"
   },
   "hyundai_sonata_dn8_edge_hybrid": {
-    "start": "2011-01",
+    "start": "2023-04",
     "end": "현재"
   },
   "hyundai_sonata_dn8_hybrid": {
-    "start": "2019-01",
-    "end": "2023-12"
+    "start": "2019-07",
+    "end": "2023-04"
   },
   "hyundai_sonata_lf": {
     "start": "2014-01",
@@ -780,20 +792,24 @@
     "end": "현재"
   },
   "hyundai_staria": {
-    "start": "2024-01",
+    "start": "2024-11",
+    "end": "현재"
+  },
+  "hyundai_staria_lounge": {
+    "start": "2021-07",
     "end": "현재"
   },
   "hyundai_staria_pre": {
-    "start": "2021-01",
-    "end": "2023-12"
+    "start": "2021-07",
+    "end": "2024-11"
   },
   "hyundai_tucson_nx4": {
     "start": "2020-09",
     "end": "현재"
   },
   "hyundai_tucson_tl": {
-    "start": "2015-01",
-    "end": "2019-12"
+    "start": "2015-08",
+    "end": "2020-09"
   },
   "hyundai_venue": {
     "start": "2019-01",
@@ -824,11 +840,11 @@
     "end": "2022-12"
   },
   "kgm_actyon": {
-    "start": "2006-01",
+    "start": "2024-09",
     "end": "현재"
   },
   "kgm_korando": {
-    "start": "1992-01",
+    "start": "2019-02",
     "end": "현재"
   },
   "kgm_musso": {
@@ -888,7 +904,7 @@
     "end": "2019-12"
   },
   "kgm_tivoli_facelift": {
-    "start": "2023-01",
+    "start": "2023-04",
     "end": "현재"
   },
   "kgm_tivoli_very_new": {
@@ -896,20 +912,20 @@
     "end": "2023-12"
   },
   "kgm_torres": {
-    "start": "2022-01",
-    "end": "2022-12"
+    "start": "2022-07",
+    "end": "2025-08"
   },
   "kgm_torres_evx": {
-    "start": "2023-01",
+    "start": "2023-11",
     "end": "현재"
   },
   "kgm_torres_facelift": {
-    "start": "2023-01",
+    "start": "2025-08",
     "end": "현재"
   },
   "kia_bongo3": {
-    "start": "2004-01",
-    "end": "2021-12"
+    "start": "2004-12",
+    "end": "현재"
   },
   "kia_carnival_ka4": {
     "start": "2020-08",
@@ -920,8 +936,8 @@
     "end": "현재"
   },
   "kia_carnival_yp": {
-    "start": "2014-01",
-    "end": "2017-12"
+    "start": "2014-06",
+    "end": "2018-08"
   },
   "kia_carnival_yp_facelift": {
     "start": "2018-08",
@@ -944,8 +960,8 @@
     "end": "현재"
   },
   "kia_ev6_pre": {
-    "start": "2021-01",
-    "end": "2023-12"
+    "start": "2021-08",
+    "end": "2024-08"
   },
   "kia_ev9": {
     "start": "2023-05",
@@ -968,12 +984,12 @@
     "end": "현재"
   },
   "kia_k5_jf": {
-    "start": "2010-01",
-    "end": "2022-12"
+    "start": "2015-07",
+    "end": "2018-12"
   },
   "kia_k5_jf_facelift": {
-    "start": "2018-01",
-    "end": "2021-12"
+    "start": "2018-12",
+    "end": "2019-12"
   },
   "kia_k7_premier": {
     "start": "2009-01",
@@ -984,12 +1000,12 @@
     "end": "2019-12"
   },
   "kia_k8_gl3": {
-    "start": "2024-01",
+    "start": "2024-09",
     "end": "현재"
   },
   "kia_k8_gl3_pre": {
     "start": "2021-04",
-    "end": "2024-08"
+    "end": "2024-09"
   },
   "kia_k9_rj": {
     "start": "2012-01",
@@ -1000,16 +1016,16 @@
     "end": "2024-12"
   },
   "kia_morning_ja": {
-    "start": "2005-01",
+    "start": "2020-08",
     "end": "현재"
   },
   "kia_morning_ja_facelift1": {
-    "start": "2020-01",
-    "end": "2023-12"
+    "start": "2020-08",
+    "end": "2022-12"
   },
   "kia_morning_ja_pre": {
     "start": "2017-01",
-    "end": "2020-12"
+    "end": "2020-08"
   },
   "kia_morning_sa": {
     "start": "2005-01",
@@ -1020,11 +1036,11 @@
     "end": "2016-12"
   },
   "kia_niro_de": {
-    "start": "2016-01",
-    "end": "2023-12"
+    "start": "2016-03",
+    "end": "2022-07"
   },
   "kia_niro_sg2": {
-    "start": "2022-01",
+    "start": "2022-07",
     "end": "현재"
   },
   "kia_pv5": {
@@ -1032,48 +1048,48 @@
     "end": "현재"
   },
   "kia_ray": {
-    "start": "2011-01",
+    "start": "2024-04",
     "end": "현재"
   },
   "kia_ray_ev": {
-    "start": "2023-01",
+    "start": "2024-09",
     "end": "현재"
   },
   "kia_ray_tam_facelift1": {
-    "start": "2017-01",
-    "end": "2022-12"
+    "start": "2022-09",
+    "end": "2024-04"
   },
   "kia_seltos": {
-    "start": "2022-01",
+    "start": "2022-09",
     "end": "현재"
   },
   "kia_seltos_sp2": {
-    "start": "2019-01",
-    "end": "2021-12"
+    "start": "2019-07",
+    "end": "2022-09"
   },
   "kia_seltos_sp3": {
-    "start": "2026-01",
+    "start": "2024-12",
     "end": "현재"
   },
   "kia_sorento_mq4": {
-    "start": "2006-01",
+    "start": "2020-03",
     "end": "현재"
   },
   "kia_sorento_um": {
-    "start": "2014-01",
-    "end": "2016-12"
+    "start": "2014-09",
+    "end": "2017-07"
   },
   "kia_sorento_um_facelift": {
-    "start": "2002-01",
-    "end": "2021-12"
+    "start": "2017-07",
+    "end": "2020-03"
   },
   "kia_sportage_nq5": {
-    "start": "2013-01",
+    "start": "2021-08",
     "end": "현재"
   },
   "kia_sportage_ql": {
-    "start": "2005-01",
-    "end": "2024-03"
+    "start": "2015-09",
+    "end": "2018-08"
   },
   "kia_sportage_ql_facelift": {
     "start": "2018-08",

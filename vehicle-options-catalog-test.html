@@ -1474,6 +1474,48 @@ async function init() {
   $('model').addEventListener('change', onModelChange);
   $('sub').addEventListener('change', onSubChange);
   $('trim').addEventListener('change', onTrimChange);
+
+  // URL 파라미터 → 자동 선택 (?catalog=ID 또는 ?maker=&model=&sub=)
+  try {
+    const params = new URLSearchParams(location.search);
+    const catalogId = params.get('catalog');
+    const qMaker = params.get('maker');
+    const qModel = params.get('model');
+    const qSub = params.get('sub');
+
+    let target = null;
+    if (catalogId) {
+      // catalog id 로 master 에서 매칭되는 행 찾기
+      target = state.master.find(r => state.codeByEncar[r._key] === catalogId)
+            || state.master.find(r => state.titleByEncar[r._key] && state.codeByEncar[r._key] === catalogId);
+    }
+    if (!target && (qMaker || qModel || qSub)) {
+      target = state.master.find(r =>
+        (!qMaker || r.maker === qMaker) &&
+        (!qModel || r.model === qModel) &&
+        (!qSub   || (r.sub || '').includes(qSub))
+      );
+    }
+    if (target) {
+      $('maker').value = target.maker;
+      onMakerChange();
+      setTimeout(() => {
+        $('model').value = target.model;
+        onModelChange();
+        setTimeout(() => {
+          // sub dropdown 의 첫 매칭 옵션 선택
+          const subSel = $('sub');
+          for (const opt of subSel.options) {
+            if (opt.value && opt.value.startsWith(target._key)) {
+              subSel.value = opt.value;
+              onSubChange();
+              break;
+            }
+          }
+        }, 50);
+      }, 50);
+    }
+  } catch (e) { console.warn('[matrix-deeplink]', e); }
   $('showYear').addEventListener('change', () => {
     if ($('model').value) onModelChange();   // sub dropdown 다시 그림
   });
