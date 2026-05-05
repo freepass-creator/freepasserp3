@@ -1425,6 +1425,10 @@
   },
   "tesla_model_y": {
     "start": "2021-01",
+    "end": "2024-12"
+  },
+  "tesla_model_y_facelift": {
+    "start": "2025-01",
     "end": "현재"
   },
   "tesla_사이버트럭": {

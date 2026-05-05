@@ -70,6 +70,48 @@ function isYearInRange(productYear, range) {
   return py >= startY && py <= endY;
 }
 
+/**
+ * 매물에서 가장 정확한 날짜를 YYYY-MM 형식으로 추출.
+ * 우선순위: first_registration_date > year. (등록일이 페이스리프트 분기에 결정적)
+ *
+ * 지원 포맷:
+ *  - "240403" (6자리 YYMMDD) → "2024-04"
+ *  - "2025-03-09" / "2025.03.09" (10자리) → "2025-03"
+ *  - "20250309" (8자리) → "2025-03"
+ *  - year 만 있으면: 4자리 연도 → "YYYY-01" (월 정보 없음 시 1월 가정)
+ */
+function extractProductDate(product) {
+  const reg = String(product?.first_registration_date || '').trim();
+  // 8자리 YYYYMMDD
+  let m = reg.match(/^(\d{4})(\d{2})\d{2}$/);
+  if (m) return `${m[1]}-${m[2]}`;
+  // 6자리 YYMMDD (앞 2자리에 20 prefix)
+  m = reg.match(/^(\d{2})(\d{2})\d{2}$/);
+  if (m) return `20${m[1]}-${m[2]}`;
+  // 10자리 YYYY-MM-DD or YYYY.MM.DD or YYYY/MM/DD
+  m = reg.match(/^(\d{4})[\-\.\/](\d{2})[\-\.\/]\d{2}$/);
+  if (m) return `${m[1]}-${m[2]}`;
+  // year fallback
+  const year = Number(product?.year || 0);
+  if (year >= 1990 && year <= 2100) return `${year}-01`;
+  return null;
+}
+
+/**
+ * YYYY-MM 형식 매물 날짜가 catalog year_range (start, end) 안에 있는지.
+ * year_range 도 YYYY-MM 또는 YYYY 형식 지원. end가 "현재" 이면 미래까지 포함.
+ */
+function isDateInRange(productDate, range) {
+  if (!productDate || !range) return null;
+  // YYYY-MM 비교를 위한 숫자 (YYYYMM)
+  const pNum = Number(productDate.replace('-', ''));
+  if (!pNum) return null;
+  const startNum = Number(String(range.start || '').replace(/[\-\.\/]/g, '').slice(0, 6).padEnd(6, '0'));
+  const endNum = range.end === '현재' ? 999912 : Number(String(range.end || '').replace(/[\-\.\/]/g, '').slice(0, 6).padEnd(6, '9'));
+  if (!startNum) return null;
+  return pNum >= startNum && pNum <= endNum;
+}
+
 export async function loadCatalog(catalogId) {
   if (_catalogs[catalogId]) return _catalogs[catalogId];
   const json = await fetchJson([
@@ -141,22 +183,32 @@ export async function findCatalog(maker, subModel, model, product = {}) {
   const mdN = normName(model || '');
   if (!subN && !mdN) return null;
 
-  // year 기반 candidate 가산점 — 매물 연식이 catalog year_range 안에 있으면 강한 시그널
+  // year/등록일 기반 candidate 검증 — 매물 연식이 catalog year_range 안에 있으면 강한 시그널.
+  //   first_registration_date 우선 (페이스리프트 분기 결정적), 없으면 year fallback.
   const yearRanges = await loadYearRanges();
+  const productDate = extractProductDate(product);  // "YYYY-MM" or null
   const productYearVal = Number(product?.year || 0);
 
-  // 1차 — encar 직접 매핑 (build-encar-catalog-map.cjs 가 생성한 _encar-catalog-map.json 활용)
-  //   매물 sub_model 이 우리 표준 sub 와 정확 일치 → high confidence 즉시 반환.
-  //   runtime 에서 encar-master-seed 직접 안 읽음 (build 시 1회 생성된 매핑만 사용).
+  // 1차 — alias-map 직접 매핑 + year_range 검증.
+  //   build-aliases-map.cjs 가 생성한 _aliases-map.json 의 catalog-level aliases 활용.
+  //   매물 sub_model 이 catalog alias 와 정확 일치 + year 범위 안 → high confidence 즉시 반환.
+  //   year 범위 밖이면 alias 매칭 무시하고 score 매칭으로 분기 (Juniper 매물이 1세대로 잘못 떨어지는 거 차단).
   const encarMap = await loadEncarMap();
   if (subN && encarMap[`${m}|${subN}`]) {
-    return {
-      catalogId: encarMap[`${m}|${subN}`],
-      confidence: 'high',
-      score: 100,
-      runnerUp: null,
-      via: 'encar-direct',
-    };
+    const aliasCandidateId = encarMap[`${m}|${subN}`];
+    const range = yearRanges[aliasCandidateId];
+    const inR = productDate ? isDateInRange(productDate, range) : isYearInRange(productYearVal, range);
+    if (inR !== false) {
+      // year 검증 통과 (true) 또는 정보 부족 (null) — alias 매칭 채택
+      return {
+        catalogId: aliasCandidateId,
+        confidence: 'high',
+        score: 200,
+        runnerUp: null,
+        via: 'alias-direct',
+      };
+    }
+    // inR === false: year 범위 밖 — fall through to score matching
   }
 
   // 연료/연식 기반 후보 필터 — product.fuel_type / year 사용.
@@ -196,11 +248,12 @@ export async function findCatalog(maker, subModel, model, product = {}) {
     if (mdN && c.tokensNorm.some(tn => tn && (mdN.includes(tn) || tn.includes(mdN)))) {
       score += 10;   // 같은 model 의 catalog 면 base 점수
     }
-    // year 매칭 — 매물 연식이 catalog year_range 안에 있으면 강한 가산점
-    if (productYearVal) {
-      const inRange = isYearInRange(productYearVal, yearRanges[c.catalogId]);
-      if (inRange === true) score += 20;       // 연식 일치 — sub_model 약해도 catalog 확정 도움
-      else if (inRange === false) score -= 30; // 연식 범위 밖 — penalty
+    // year 매칭 — first_registration_date 우선 (페이스리프트 분기 결정적), year fallback.
+    if (productDate || productYearVal) {
+      const range = yearRanges[c.catalogId];
+      const inRange = productDate ? isDateInRange(productDate, range) : isYearInRange(productYearVal, range);
+      if (inRange === true) score += 30;       // 연식 일치 — sub_model 약해도 catalog 확정 도움
+      else if (inRange === false) score -= 50; // 연식 범위 밖 — 페리/세대 분기 결정적
     }
     // fuel_type 매칭 — catalog title/trims 에 동력원 키워드 있으면 가산/감산
     if (productFuelN) {
@@ -454,23 +507,36 @@ export function findTrimInCatalog(catalog, trimName, product = {}) {
   }
 
   // 후보 score 계산
+  //  - substring 매칭이 실패해도 fuel/disp/가격 가중치로 점수 받을 수 있게 모든 트림 평가.
+  //  - 이전 버전: substring 0이면 continue → fuel 매칭 못 받음 (하이브리드 매물이 가솔린으로 떨어지는 원인)
   const scored = [];
   for (const tn of trimNames) {
     const tnNorm = aliasNorm(tn);
     let score = 0;
 
-    if (tnNorm === target) score = 1000;
-    else if (tnNorm.startsWith(target)) score = 100;
-    else if (tnNorm.includes(target)) score = 50;
-    else if (target.includes(tnNorm) && tnNorm.length >= 2) score = 30;
-    else continue;
+    // substring 매칭 (있으면 가산, 없으면 0 base 로 계속)
+    if (tnNorm === target) score += 1000;
+    else if (tnNorm.startsWith(target)) score += 100;
+    else if (tnNorm.includes(target)) score += 50;
+    else if (target.includes(tnNorm) && tnNorm.length >= 2) score += 30;
 
-    // 연료 가중
-    if (fuel === 'lpg' && /lpg|lpi/.test(tnNorm)) score += 50;
-    else if (fuel === 'lpg' && !/lpg|lpi/.test(tnNorm)) score -= 30;
-    else if (fuel && fuel !== 'lpg' && /lpg|lpi/.test(tnNorm)) score -= 30;
-    if (fuel === '하이브리드' && /하이브리드|hev|hybrid/.test(tnNorm)) score += 50;
-    if (fuel === '디젤' && /디젤|diesel/.test(tnNorm)) score += 50;
+    // 연료 가중 (강화) — fuel 일치/불일치 결정 시그널
+    if (fuel === 'lpg') {
+      if (/lpg|lpi/.test(tnNorm)) score += 80;
+      else score -= 100;   // 다른 fuel 트림은 강한 페널티
+    } else if (fuel === '하이브리드') {
+      if (/하이브리드|hev|hybrid/.test(tnNorm)) score += 80;
+      else if (/lpg|lpi|디젤|diesel/.test(tnNorm)) score -= 100;
+      // 가솔린 트림은 중립 (HEV ↔ 가솔린 분기 어려움)
+    } else if (fuel === '디젤') {
+      if (/디젤|diesel/.test(tnNorm)) score += 80;
+      else if (/lpg|lpi|하이브리드|hev/.test(tnNorm)) score -= 100;
+    } else if (fuel === '가솔린') {
+      if (/lpg|lpi|하이브리드|hev|hybrid|디젤|diesel/.test(tnNorm)) score -= 80;
+      else score += 20;
+    } else if (fuel === '전기') {
+      if (/전기|ev|electric/.test(tnNorm)) score += 80;
+    }
 
     // 배기량 가중
     if (disp && tnNorm.includes(disp.replace('.', ''))) score += 40;

@@ -540,7 +540,13 @@
         "USB",
         "MIRRORING",
         "MIRRORING_WIRELESS",
-        "VOICE_RECOG"
+        "VOICE_RECOG",
+        "REAR_LED_COMBI",
+        "REAR_MIRROR",
+        "RCTA",
+        "SEAT_LEATHER",
+        "POWER_WINDOW",
+        "WPC"
       ],
       "select": [],
       "select_groups": []
@@ -678,7 +684,13 @@
         "USB",
         "MIRRORING",
         "MIRRORING_WIRELESS",
-        "VOICE_RECOG"
+        "VOICE_RECOG",
+        "REAR_LED_COMBI",
+        "REAR_MIRROR",
+        "RCTA",
+        "SEAT_LEATHER",
+        "POWER_WINDOW",
+        "WPC"
       ],
       "select": [],
       "select_groups": []
@@ -816,7 +828,13 @@
         "USB",
         "MIRRORING",
         "MIRRORING_WIRELESS",
-        "VOICE_RECOG"
+        "VOICE_RECOG",
+        "REAR_LED_COMBI",
+        "REAR_MIRROR",
+        "RCTA",
+        "SEAT_LEATHER",
+        "POWER_WINDOW",
+        "WPC"
       ],
       "select": [],
       "select_groups": []
@@ -882,7 +900,13 @@
         "USB",
         "MIRRORING",
         "MIRRORING_WIRELESS",
-        "VOICE_RECOG"
+        "VOICE_RECOG",
+        "REAR_LED_COMBI",
+        "REAR_MIRROR",
+        "RCTA",
+        "SEAT_LEATHER",
+        "POWER_WINDOW",
+        "WPC"
       ],
       "select": [],
       "select_groups": []
@@ -1020,7 +1044,13 @@
         "USB",
         "MIRRORING",
         "MIRRORING_WIRELESS",
-        "VOICE_RECOG"
+        "VOICE_RECOG",
+        "REAR_LED_COMBI",
+        "REAR_MIRROR",
+        "RCTA",
+        "SEAT_LEATHER",
+        "POWER_WINDOW",
+        "WPC"
       ],
       "select": [],
       "select_groups": []
