@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_ttrs_8s",
-  "title": "아우디 TTRS (8S)",
+  "title": "아우디 TTRS 8S",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 TTRS (8S)": {
+    "기본 TTRS 8S": {
       "slug": "기본 TTRS (8S)",
       "price": {},
       "basic": [],

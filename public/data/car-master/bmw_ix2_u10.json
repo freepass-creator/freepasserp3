@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_ix2_u10",
-  "title": "BMW iX2 (U10)",
+  "title": "BMW iX2 U10",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 iX2 (U10)": {
+    "기본 iX2 U10": {
       "slug": "기본 iX2 (U10)",
       "price": {},
       "basic": [],

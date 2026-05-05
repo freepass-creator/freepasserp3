@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_rs6_c8",
-  "title": "아우디 RS6 (C8)",
+  "title": "아우디 RS6 C8",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 RS6 (C8)": {
+    "기본 RS6 C8": {
       "slug": "기본 RS6 (C8)",
       "price": {},
       "basic": [],

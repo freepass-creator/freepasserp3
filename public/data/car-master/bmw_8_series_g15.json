@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_8_series_g15",
-  "title": "BMW 8시리즈 (G15)",
+  "title": "BMW 8시리즈 G15",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 8시리즈 (G15)": {
+    "기본 8시리즈 G15": {
       "slug": "기본 8시리즈 (G15)",
       "price": {},
       "basic": [],

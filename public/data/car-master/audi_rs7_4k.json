@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_rs7_4k",
-  "title": "아우디 RS7 (4K)",
+  "title": "아우디 RS7 4K",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 RS7 (4K)": {
+    "기본 RS7 4K": {
       "slug": "기본 RS7 (4K)",
       "price": {},
       "basic": [],

@@ -9,21 +9,21 @@
   "options": {},
   "categories": {},
   "trims": {
-    "Modern": {
+    "모던": {
       "slug": "modern",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "Premium": {
+    "프리미엄": {
       "slug": "premium",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "Luxury": {
+    "럭셔리": {
       "slug": "luxury",
       "price": {},
       "basic": [],
@@ -37,7 +37,7 @@
       "select": [],
       "select_groups": []
     },
-    "Calligraphy": {
+    "캘리그래피": {
       "slug": "calligraphy",
       "price": {},
       "basic": [],

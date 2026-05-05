@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_2_series_g42",
-  "title": "BMW 2시리즈 (G42)",
+  "title": "BMW 2시리즈 G42",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 2시리즈 (G42)": {
+    "기본 2시리즈 G42": {
       "slug": "기본 2시리즈 (G42)",
       "price": {},
       "basic": [],

@@ -1,6 +1,6 @@
 {
   "catalog_id": "jeep_랭글러_jl",
-  "title": "지프 랭글러 (JL)",
+  "title": "지프 랭글러 JL",
   "maker": "지프",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 랭글러 (JL)": {
+    "기본 랭글러 JL": {
       "slug": "기본 랭글러 (JL)",
       "price": {},
       "basic": [],

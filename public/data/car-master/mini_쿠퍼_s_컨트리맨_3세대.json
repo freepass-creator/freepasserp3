@@ -1,6 +1,6 @@
 {
   "catalog_id": "mini_쿠퍼_s_컨트리맨_3세대",
-  "title": "미니 쿠퍼 S 컨트리맨 3세대",
+  "title": "미니 쿠퍼 S 컨트리맨",
   "maker": "미니",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 쿠퍼 S 컨트리맨 3세대": {
+    "기본 쿠퍼 S 컨트리맨": {
       "slug": "기본 쿠퍼 S 컨트리맨 3세대",
       "price": {},
       "basic": [],

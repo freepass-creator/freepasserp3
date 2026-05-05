@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_s4_b9",
-  "title": "아우디 S4 (B9)",
+  "title": "아우디 S4 B9",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 S4 (B9)": {
+    "기본 S4 B9": {
       "slug": "기본 S4 (B9)",
       "price": {},
       "basic": [],

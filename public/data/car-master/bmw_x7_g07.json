@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_x7_g07",
-  "title": "BMW X7 (G07)",
+  "title": "BMW X7 G07",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 X7 (G07)": {
+    "기본 X7 G07": {
       "slug": "기본 X7 (G07)",
       "price": {},
       "basic": [],

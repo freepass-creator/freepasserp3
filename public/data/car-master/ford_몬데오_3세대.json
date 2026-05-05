@@ -1,6 +1,6 @@
 {
   "catalog_id": "ford_몬데오_3세대",
-  "title": "포드 몬데오 3세대",
+  "title": "포드 몬데오",
   "maker": "포드",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 몬데오 3세대": {
+    "기본 몬데오": {
       "slug": "기본 몬데오 3세대",
       "price": {},
       "basic": [],

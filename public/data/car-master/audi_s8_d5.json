@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_s8_d5",
-  "title": "아우디 S8 (D5)",
+  "title": "아우디 S8 D5",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 S8 (D5)": {
+    "기본 S8 D5": {
       "slug": "기본 S8 (D5)",
       "price": {},
       "basic": [],

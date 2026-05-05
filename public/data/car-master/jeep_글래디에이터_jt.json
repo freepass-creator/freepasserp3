@@ -1,6 +1,6 @@
 {
   "catalog_id": "jeep_글래디에이터_jt",
-  "title": "지프 글래디에이터 (JT)",
+  "title": "지프 글래디에이터 JT",
   "maker": "지프",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 글래디에이터 (JT)": {
+    "기본 글래디에이터 JT": {
       "slug": "기본 글래디에이터 (JT)",
       "price": {},
       "basic": [],

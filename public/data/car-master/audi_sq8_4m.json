@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_sq8_4m",
-  "title": "아우디 SQ8 (4M)",
+  "title": "아우디 SQ8 4M",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 SQ8 (4M)": {
+    "기본 SQ8 4M": {
       "slug": "기본 SQ8 (4M)",
       "price": {},
       "basic": [],

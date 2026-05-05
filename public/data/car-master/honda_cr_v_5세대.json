@@ -1,6 +1,6 @@
 {
   "catalog_id": "honda_cr_v_5세대",
-  "title": "혼다 CR-V 5세대",
+  "title": "혼다 CR-V",
   "maker": "혼다",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 CR-V 5세대": {
+    "기본 CR-V": {
       "slug": "기본 CR-V 5세대",
       "price": {},
       "basic": [],

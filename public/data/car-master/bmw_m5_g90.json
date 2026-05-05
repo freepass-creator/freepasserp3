@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_m5_g90",
-  "title": "BMW M5 (G90)",
+  "title": "BMW M5 G90",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 M5 (G90)": {
+    "기본 M5 G90": {
       "slug": "기본 M5 (G90)",
       "price": {},
       "basic": [],

@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_x6m_g06",
-  "title": "BMW X6M (G06)",
+  "title": "BMW X6M G06",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 X6M (G06)": {
+    "기본 X6M G06": {
       "slug": "기본 X6M (G06)",
       "price": {},
       "basic": [],

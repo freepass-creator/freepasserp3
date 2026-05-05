@@ -1,6 +1,6 @@
 {
   "catalog_id": "volvo_v60_크로스컨트리_2세대",
-  "title": "볼보 V60 크로스컨트리 2세대",
+  "title": "볼보 V60 크로스컨트리",
   "maker": "볼보",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 V60 크로스컨트리 2세대": {
+    "기본 V60 크로스컨트리": {
       "slug": "기본 V60 크로스컨트리 2세대",
       "price": {},
       "basic": [],

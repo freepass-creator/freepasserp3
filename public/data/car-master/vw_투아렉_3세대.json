@@ -1,6 +1,6 @@
 {
   "catalog_id": "vw_투아렉_3세대",
-  "title": "폭스바겐 투아렉 3세대",
+  "title": "폭스바겐 투아렉",
   "maker": "폭스바겐",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 투아렉 3세대": {
+    "기본 투아렉": {
       "slug": "기본 투아렉 3세대",
       "price": {},
       "basic": [],

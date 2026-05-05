@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_sq5_fy",
-  "title": "아우디 SQ5 (FY)",
+  "title": "아우디 SQ5 FY",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 SQ5 (FY)": {
+    "기본 SQ5 FY": {
       "slug": "기본 SQ5 (FY)",
       "price": {},
       "basic": [],

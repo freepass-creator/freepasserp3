@@ -1,6 +1,6 @@
 {
   "catalog_id": "jeep_컴패스_2세대",
-  "title": "지프 컴패스 2세대",
+  "title": "지프 컴패스",
   "maker": "지프",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 컴패스 2세대": {
+    "기본 컴패스": {
       "slug": "기본 컴패스 2세대",
       "price": {},
       "basic": [],

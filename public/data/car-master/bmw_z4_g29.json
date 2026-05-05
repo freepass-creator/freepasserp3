@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_z4_g29",
-  "title": "BMW Z4 (G29)",
+  "title": "BMW Z4 G29",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 Z4 (G29)": {
+    "기본 Z4 G29": {
       "slug": "기본 Z4 (G29)",
       "price": {},
       "basic": [],

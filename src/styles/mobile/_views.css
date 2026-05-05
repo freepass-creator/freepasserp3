@@ -387,6 +387,76 @@
     padding: 0 18px 0 4px;
   }
 
+  /* ── 4단계 카드 (v4) — 모바일 ── */
+  .m-view-body .ct-step-card {
+    border: 1px solid var(--c-border);
+    border-radius: var(--m-radius-sharp);
+    background: var(--c-surface);
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .m-view-body .ct-step-card.is-done { border-color: var(--c-ok); }
+  .m-view-body .ct-step-card.is-rejected { border-color: var(--c-err); }
+  .m-view-body .ct-step-card.is-locked { opacity: 0.55; }
+
+  .m-view-body .ct-step-head {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    background: var(--c-bg-sub);
+    font-size: var(--fs-xs);
+  }
+  .m-view-body .ct-step-head .ct-step-num {
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--c-text-muted); color: var(--c-surface);
+    border-radius: 999px;
+    font-size: 10px; font-weight: var(--fw-semibold);
+  }
+  .m-view-body .ct-step-card.is-done .ct-step-head .ct-step-num { background: var(--c-ok); }
+  .m-view-body .ct-step-card.is-rejected .ct-step-head .ct-step-num { background: var(--c-err); }
+  .m-view-body .ct-step-head i { font-size: 14px; color: var(--c-text-sub); }
+  .m-view-body .ct-step-card.is-done .ct-step-head i { color: var(--c-ok); }
+  .m-view-body .ct-step-card.is-rejected .ct-step-head i { color: var(--c-err); }
+  .m-view-body .ct-step-title { font-weight: var(--fw-semibold); color: var(--c-text); }
+  .m-view-body .ct-step-count {
+    margin-left: auto;
+    font-size: 10px; color: var(--c-text-sub);
+    padding: 1px 6px; background: var(--c-surface);
+    border-radius: 999px;
+  }
+
+  /* 영업자(좌) / 공급사(우) 2열 grid */
+  .m-view-body .ct-substep-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--c-border);
+    border-top: 1px solid var(--c-border);
+  }
+  .m-view-body .ct-substep-cell {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 10px;
+    background: var(--c-surface);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-medium);
+    min-height: 36px;
+  }
+  .m-view-body .ct-substep-cell i { font-size: 14px; flex-shrink: 0; }
+  .m-view-body .ct-substep-cell.is-done { background: var(--c-ok-bg); color: var(--c-ok); }
+  .m-view-body .ct-substep-cell.is-done i { color: var(--c-ok); }
+  .m-view-body .ct-substep-cell.is-rejected { background: var(--c-err-bg); color: var(--c-err); }
+  .m-view-body .ct-substep-cell.is-rejected i { color: var(--c-err); }
+  .m-view-body .ct-substep-cell.is-pending { color: var(--c-text); }
+  .m-view-body .ct-substep-cell.is-pending i { color: var(--c-text-muted); }
+  .m-view-body .ct-substep-cell.is-locked { color: var(--c-text-muted); opacity: 0.6; }
+  .m-view-body .ct-substep-cell[data-clickable] { cursor: pointer; }
+  .m-view-body .ct-substep-cell[data-clickable]:active { background: var(--c-bg-hover); }
+  .m-view-body .ct-substep-cell.empty { background: var(--c-bg-sub); }
+  .m-view-body .ct-substep-label {
+    flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
   /* ── 탭 (계약 뷰 등) ── */
   /* 계약 상세 레이아웃 — 상단 topbar(view) + 중간 스크롤 panels + 하단 tabs */
   .m-view-body:has(> .m-ct-layout) { overflow: hidden; }

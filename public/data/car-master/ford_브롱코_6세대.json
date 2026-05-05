@@ -1,6 +1,6 @@
 {
   "catalog_id": "ford_브롱코_6세대",
-  "title": "포드 브롱코 6세대",
+  "title": "포드 브롱코",
   "maker": "포드",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 브롱코 6세대": {
+    "기본 브롱코": {
       "slug": "기본 브롱코 6세대",
       "price": {},
       "basic": [],

@@ -1,6 +1,6 @@
 {
   "catalog_id": "honda_어코드_10세대",
-  "title": "혼다 어코드 10세대",
+  "title": "혼다 어코드",
   "maker": "혼다",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 어코드 10세대": {
+    "기본 어코드": {
       "slug": "기본 어코드 10세대",
       "price": {},
       "basic": [],

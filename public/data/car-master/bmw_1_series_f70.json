@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_1_series_f70",
-  "title": "BMW 1시리즈 (F70)",
+  "title": "BMW 1시리즈 F70",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 1시리즈 (F70)": {
+    "기본 1시리즈 F70": {
       "slug": "기본 1시리즈 (F70)",
       "price": {},
       "basic": [],

@@ -1,6 +1,6 @@
 {
   "catalog_id": "vw_파사트_gt_b8",
-  "title": "폭스바겐 파사트 GT(B8)",
+  "title": "폭스바겐 파사트 GT B8",
   "maker": "폭스바겐",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 파사트 GT(B8)": {
+    "기본 파사트 GT B8": {
       "slug": "기본 파사트 GT(B8)",
       "price": {},
       "basic": [],

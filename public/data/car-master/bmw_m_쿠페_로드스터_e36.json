@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_m_쿠페_로드스터_e36",
-  "title": "BMW M 쿠페/로드스터 (E36)",
+  "title": "BMW M 쿠페/로드스터 E36",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 M 쿠페/로드스터 (E36)": {
+    "기본 M 쿠페/로드스터 E36": {
       "slug": "기본 M 쿠페/로드스터 (E36)",
       "price": {},
       "basic": [],

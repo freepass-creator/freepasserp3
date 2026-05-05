@@ -1,6 +1,6 @@
 {
   "catalog_id": "honda_파일럿_4세대",
-  "title": "혼다 파일럿 4세대",
+  "title": "혼다 파일럿",
   "maker": "혼다",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 파일럿 4세대": {
+    "기본 파일럿": {
       "slug": "기본 파일럿 4세대",
       "price": {},
       "basic": [],

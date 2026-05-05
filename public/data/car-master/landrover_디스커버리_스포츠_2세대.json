@@ -1,6 +1,6 @@
 {
   "catalog_id": "landrover_디스커버리_스포츠_2세대",
-  "title": "랜드로버 디스커버리 스포츠 2세대",
+  "title": "랜드로버 디스커버리 스포츠",
   "maker": "랜드로버",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 디스커버리 스포츠 2세대": {
+    "기본 디스커버리 스포츠": {
       "slug": "기본 디스커버리 스포츠 2세대",
       "price": {},
       "basic": [],

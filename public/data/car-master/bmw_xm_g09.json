@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_xm_g09",
-  "title": "BMW XM (G09)",
+  "title": "BMW XM G09",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 XM (G09)": {
+    "기본 XM G09": {
       "slug": "기본 XM (G09)",
       "price": {},
       "basic": [],

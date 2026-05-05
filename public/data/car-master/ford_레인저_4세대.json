@@ -1,6 +1,6 @@
 {
   "catalog_id": "ford_레인저_4세대",
-  "title": "포드 레인저 4세대",
+  "title": "포드 레인저",
   "maker": "포드",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 레인저 4세대": {
+    "기본 레인저": {
       "slug": "기본 레인저 4세대",
       "price": {},
       "basic": [],

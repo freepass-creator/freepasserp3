@@ -684,9 +684,10 @@ function renderProgressPanel(c) {
           <span class="m-info-section-title">진행 단계</span>
           <span class="sb-badge is-visible" style="background:${progressColor};">${prog.done}/${prog.total}</span>
         </div>
-        <div class="ct-steps" style="padding:var(--sp-3);">
-          <div class="ct-step-row" style="font-size:var(--fs-2xs);color:var(--c-text-muted);">
-            <div style="text-align:center;">영업자</div><div></div><div style="text-align:center;">공급사</div>
+        <div class="ct-steps-v4" style="padding:var(--sp-3);">
+          <div class="ct-pair-header" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;font-size:var(--fs-2xs);color:var(--c-text-muted);padding:0 0 6px;">
+            <div style="text-align:center;">영업자</div>
+            <div style="text-align:center;">공급사</div>
           </div>
           ${rows}
         </div>

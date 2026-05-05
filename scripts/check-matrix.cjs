@@ -13,6 +13,8 @@ const SCRIPTS = [
   { name: '생산년도 검증',       file: 'validate-production-years.cjs',   out: 'year-validation-report.md' },
   { name: '트림 가격 정합성',    file: 'audit-trim-prices.cjs',           out: 'trim-price-audit.md' },
   { name: '트림 옵션 풍부도',    file: 'audit-trim-options.cjs',          out: 'trim-options-audit.md' },
+  { name: 'catalog 무결성',      file: 'audit-integrity.cjs',             out: 'catalog-integrity.md' },
+  { name: '매물 매칭 시뮬',      file: 'simulate-product-matching.cjs',   out: 'product-matching-report.md' },
 ];
 
 console.log('━━━ 매트릭스 통합 진단 ━━━\n');

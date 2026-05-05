@@ -1,6 +1,6 @@
 {
   "catalog_id": "porsche_911_992",
-  "title": "포르쉐 911 (992)",
+  "title": "포르쉐 911 992",
   "maker": "포르쉐",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 911 (992)": {
+    "기본 911 992": {
       "slug": "기본 911 (992)",
       "price": {},
       "basic": [],

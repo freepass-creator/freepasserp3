@@ -1,6 +1,6 @@
 {
   "catalog_id": "bmw_m3_g80",
-  "title": "BMW M3 (G80)",
+  "title": "BMW M3 G80",
   "maker": "BMW",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 M3 (G80)": {
+    "기본 M3 G80": {
       "slug": "기본 M3 (G80)",
       "price": {},
       "basic": [],

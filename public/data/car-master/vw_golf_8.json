@@ -1,6 +1,6 @@
 {
   "catalog_id": "vw_golf_8",
-  "title": "폭스바겐 골프 8세대",
+  "title": "폭스바겐 골프",
   "maker": "폭스바겐",
   "source": "stub",
   "source_urls": [],
@@ -16,7 +16,7 @@
       "select": [],
       "select_groups": []
     },
-    "2.0 TDI Style": {
+    "2.0 TDI 스타일": {
       "slug": "2.0_tdi_style",
       "price": {},
       "basic": [],

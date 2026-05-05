@@ -1,6 +1,6 @@
 {
   "catalog_id": "audi_q6_e_트론_gf",
-  "title": "아우디 Q6 e-트론 (GF)",
+  "title": "아우디 Q6 e-트론 GF",
   "maker": "아우디",
   "source": "auto_stub",
   "source_urls": [],
@@ -8,7 +8,7 @@
   "categories": {},
   "options": {},
   "trims": {
-    "기본 Q6 e-트론 (GF)": {
+    "기본 Q6 e-트론 GF": {
       "slug": "기본 Q6 e-트론 (GF)",
       "price": {},
       "basic": [],
