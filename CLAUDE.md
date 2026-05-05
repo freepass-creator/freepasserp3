@@ -1,5 +1,12 @@
 # freepass-v2 — 진행 컨텍스트
 
+> **세션 시작 시 (Claude)**: `git pull` 후 [docs/MATRIX-WORKFLOW.md](docs/MATRIX-WORKFLOW.md) 의 §11 CONTINUE MODE → §12 현재 상태 → §13 작업 큐 순서로 확인하고 진입.
+> Remote `origin` 은 항상 `freepass-creator/freepasserp3.git` 가리켜야 함 (`git remote -v` 점검 — `freepasserp.git` (v1) / `freepasserp2.git` (v2) 아님).
+
+---
+
+
+
 영업자·공급사 간 장기 렌트카 거래 ERP. Vite + vanilla JS + Firebase RTDB, 채팅중심 워크스페이스 + 조건매칭 + 제안서 + 전자계약 플로우.
 
 **최근 활동**: 2026-04-19 ~ 20 집중 개발. MVP 단계 도달, 외부 서비스 연동·Rules 배포만 남음.

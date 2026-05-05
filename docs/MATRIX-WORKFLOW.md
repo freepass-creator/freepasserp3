@@ -8,12 +8,13 @@
 ## 1. 사전 준비 (집 PC 첫 셋업)
 
 ```bash
-git clone https://github.com/freepass-creator/freepasserp.git freepasserp3
+git clone https://github.com/freepass-creator/freepasserp3.git
 cd freepasserp3
 npm install
 ```
 
-> 이 repo 의 master 브랜치는 v3 입니다. v1/v2 와 혼동 주의.
+> ⚠️ Repo 이름 주의 — `freepasserp3` (3 붙은 것). `freepasserp` (v1, Flask) / `freepasserp2` (v2) 와 혼동 금지.
+> 로컬 `origin` 은 반드시 `freepasserp3.git` 을 가리켜야 함 (`git remote -v` 확인).
 
 `vehicle-options-catalog-test.html` 은 정적 페이지 — Vite 없이 브라우저로 직접 열어도 동작. 하지만 dev 서버 켜면 hot reload 됨:
 
