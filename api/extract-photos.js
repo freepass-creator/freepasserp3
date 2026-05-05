@@ -164,7 +164,8 @@ export default async function handler(req, res) {
 
   // Drive 폴더 분기
   if (folderId && url.includes('drive.google.com')) {
-    const apiKey = process.env.DRIVE_API_KEY;
+    // env 우선, 없으면 fallback (api/sync/external-sheet.js 와 동일 패턴)
+    const apiKey = process.env.DRIVE_API_KEY || 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY';
     if (!apiKey) {
       res.status(500).json({ ok: false, message: 'DRIVE_API_KEY 미설정' });
       return;
