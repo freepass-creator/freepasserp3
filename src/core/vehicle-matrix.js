@@ -177,9 +177,13 @@ export async function findCatalog(maker, subModel, model, product = {}) {
   // 필터 후 후보 0개면 원본 후보 유지 (안전 장치)
   const useCandidates = filteredCandidates.length ? filteredCandidates : candidates;
 
-  // 후보별 점수 계산 — 연료 필터 적용된 useCandidates 사용
+  // 후보별 점수 계산 — 매물의 모든 자료 활용 (sub_model / model / year / fuel_type / engine_cc / trim_name)
+  const productCcDisp = ccToDisp(product?.engine_cc);
+  const productFuelN = fuelNorm(productFuel);
+  const productTrimN = aliasNorm(product?.trim_name || product?.trim || '');
   const scored = useCandidates.map(c => {
     let score = 0;
+    const titleN = normName(c.title || '');
     // 코드 매칭 (가장 강한 신호)
     if (c.codeNorm && subN.includes(c.codeNorm)) score += c.codeNorm.length * 5;
     // 토큰 매칭 — sub_model 에 토큰이 substring 으로 들어있으면 가산
@@ -188,9 +192,9 @@ export async function findCatalog(maker, subModel, model, product = {}) {
       if (subN.includes(tn)) score += tn.length;
       else if (mdN && mdN.includes(tn)) score += Math.floor(tn.length / 2);
     }
-    // 모델명 매칭 — sub_model 비어있어도 model 만으로 catalog 후보군 좁힘
+    // 모델명 매칭 — sub_model 비어있어도 model 만으로 catalog 후보군 좁힘 (강한 가산)
     if (mdN && c.tokensNorm.some(tn => tn && (mdN.includes(tn) || tn.includes(mdN)))) {
-      score += 5;   // 같은 model 의 catalog 면 base 점수
+      score += 10;   // 같은 model 의 catalog 면 base 점수
     }
     // year 매칭 — 매물 연식이 catalog year_range 안에 있으면 강한 가산점
     if (productYearVal) {
@@ -198,18 +202,36 @@ export async function findCatalog(maker, subModel, model, product = {}) {
       if (inRange === true) score += 20;       // 연식 일치 — sub_model 약해도 catalog 확정 도움
       else if (inRange === false) score -= 30; // 연식 범위 밖 — penalty
     }
+    // fuel_type 매칭 — catalog title/trims 에 동력원 키워드 있으면 가산/감산
+    if (productFuelN) {
+      const titleHasFuel = (kw) => titleN.includes(kw);
+      if (productFuelN === '하이브리드' && (titleHasFuel('하이브리드') || titleHasFuel('hev'))) score += 8;
+      if (productFuelN === '디젤' && titleHasFuel('디젤')) score += 8;
+      if (productFuelN === 'lpg' && (titleHasFuel('lpg') || titleHasFuel('lpi'))) score += 8;
+      if (productFuelN === '전기' && (titleHasFuel('일렉트리파이드') || titleHasFuel('ev') || titleHasFuel('전기'))) score += 8;
+    }
+    // engine_cc → 배기량 표기 매칭
+    if (productCcDisp && titleN.includes(productCcDisp.replace('.',''))) score += 5;
+    // trim_name 토큰 매칭 (catalog title 안에 trim 토큰 있는 경우 — 페리 후 specific catalog 유리)
+    if (productTrimN) {
+      for (const tn of c.tokensNorm) {
+        if (tn && tn.length >= 2 && productTrimN.includes(tn)) { score += 2; break; }
+      }
+    }
     return { ...c, score };
   });
   scored.sort((a, b) => b.score - a.score);
 
   const top = scored[0];
-  if (!top || top.score === 0) return null;
+  // 점수 0 또는 음수만 있는 경우 = 매칭 실패 (model 토큰조차 안 맞음)
+  // 양수 점수 1+ 면 (model 매칭만 +10 도) catalog 확정 후보로 인정
+  if (!top || top.score <= 0) return null;
   const second = scored[1];
 
   // 신뢰도: 점수 절대값 + 2등과 격차
   let confidence = 'low';
-  if (top.score >= 15) confidence = 'high';   // 코드 3글자(15점)+ 매칭 = 확실
-  else if (top.score >= 8) confidence = 'medium';
+  if (top.score >= 25) confidence = 'high';      // model+year 정합 (10+20) 또는 코드 매칭 = 확실
+  else if (top.score >= 12) confidence = 'medium'; // model + 보조신호 1개 이상
   if (second && (top.score - second.score) < 3) confidence = 'low';  // 박빙이면 확인 필요
 
   return {
@@ -235,6 +257,15 @@ const TRIM_ALIAS = {
   'best':'베스트', 'selection':'셀렉션', 'business':'비즈니스', 'cross':'크로스',
   'urban':'어반', 'sports':'스포츠', 'classic':'클래식',
   'h-pick':'에이치픽', 'hpick':'에이치픽',
+  'deluxe':'디럭스', 'trendy':'트렌디', 'noble':'노블레스',
+  'standard':'스탠다드', 'air':'에어', 'earth':'어스', 'light':'라이트',
+  'long range':'롱레인지', 'longrange':'롱레인지', 'long-range':'롱레인지',
+  'performance':'퍼포먼스', 'long':'롱', 'plus':'플러스', 'special':'스페셜',
+  'edition':'에디션', 'black':'블랙', 'white':'화이트', 'sport':'스포츠',
+  'recharge':'리차지', 'gt-line':'gt라인', 'gtline':'gt라인',
+  'value':'밸류', 'evalue':'이밸류', 'e-value':'이밸류', 'e-light':'이라이트',
+  'tfsi':'tfsi', 'tdi':'tdi', 'matic':'매틱',
+  'm sport':'m스포츠', 'msport':'m스포츠', 'm-sport':'m스포츠',
 };
 function aliasNorm(s) {
   let n = normName(s);
@@ -338,14 +369,30 @@ export function findTrimInCatalog(catalog, trimName, product = {}) {
   const trimNames = Object.keys(catalog.trims);
   if (trimNames.length === 0) return null;
 
-  // 트림명이 없는 경우 — 가장 entry 트림(첫 번째 또는 가격 최저) 추정
+  // 트림명이 없는 경우 — 매물의 fuel_type / displacement 로 trim 추정
   if (!trimName) {
-    const first = trimNames[0];
+    const fuel = fuelNorm(product.fuel_type);
+    const disp = ccToDisp(product.engine_cc || product.displacement);
+    // 매물 fuel/disp 와 매칭되는 첫 trim 우선
+    let bestTrim = trimNames[0];
+    let bestScore = -1;
+    for (const tn of trimNames) {
+      const tnN = aliasNorm(tn);
+      let s = 0;
+      if (fuel === '하이브리드' && /하이브리드|hev|hybrid/.test(tnN)) s += 30;
+      else if (fuel === '디젤' && /디젤|diesel/.test(tnN)) s += 30;
+      else if (fuel === 'lpg' && /lpg|lpi/.test(tnN)) s += 30;
+      else if (fuel === '전기' && /전기|ev|electric/.test(tnN)) s += 30;
+      else if (fuel === '가솔린' && !/하이브리드|hev|hybrid|디젤|lpg|lpi|전기|ev/.test(tnN)) s += 30;
+      else if (!fuel && !/하이브리드|hev|hybrid|디젤|lpg|lpi/.test(tnN)) s += 5; // 가솔린 추정
+      if (disp && tnN.includes(disp.replace('.', ''))) s += 20;
+      if (s > bestScore) { bestScore = s; bestTrim = tn; }
+    }
     return {
-      name: first,
-      trim: catalog.trims[first],
-      confidence: 'low',
-      score: 0,
+      name: bestTrim,
+      trim: catalog.trims[bestTrim],
+      confidence: bestScore > 20 ? 'medium' : 'low',
+      score: bestScore,
       alts: trimNames.slice(0, 3).map(n => ({ name: n, score: 0 })),
     };
   }
@@ -377,13 +424,28 @@ export function findTrimInCatalog(catalog, trimName, product = {}) {
 
   // hint 들
   const fuel = fuelNorm(product.fuel_type);
-  const disp = ccToDisp(product.displacement);
+  const disp = ccToDisp(product.engine_cc || product.displacement);
   const isCommercial = /영업|렌터|운전교습/.test(product.usage_type || '') ||
                         /영업|렌터|운전교습/.test(product.vehicle_status || '');
   const isHandicap = /장애/.test(product.usage_type || '') || /장애/.test(product.special_use || '');
   const isNline = /n\s*라인|n\s*line/i.test(trimName) || /n\s*라인|n\s*line/i.test(product.trim_name || '');
   // 가격 hint — 매물 가격(원) 이 있으면 가격 매칭 가중치
   const targetPrice = Number(product.vehicle_price || product.price || 0);
+  // 매물 fp_options — trim 의 basic 옵션과 매칭도 측정
+  const productFpSet = new Set(Array.isArray(product.fp_options) ? product.fp_options : []);
+  // catalog options 라이브 lookup 캐시
+  const trimFpCache = new Map();
+  function getTrimFp(tn) {
+    if (trimFpCache.has(tn)) return trimFpCache.get(tn);
+    const trim = catalog.trims[tn];
+    const fpSet = new Set();
+    for (const code of (trim?.basic || [])) {
+      const name = catalog.options?.[code]?.name || code;
+      matchFpByName(name).forEach(id => fpSet.add(id));
+    }
+    trimFpCache.set(tn, fpSet);
+    return fpSet;
+  }
   // 모든 트림 가격 미리 계산 (반복 lookup 회피)
   const trimPrices = new Map();
   for (const tn of trimNames) {
@@ -426,6 +488,18 @@ export function findTrimInCatalog(catalog, trimName, product = {}) {
       else if (diffPct < 0.08) score += 30;   // ±8% — 가까움
       else if (diffPct < 0.15) score += 10;   // ±15% — 후보권
       else if (diffPct > 0.30) score -= 30;   // ±30% 초과 — 페널티
+    }
+
+    // 옵션 매칭 — 매물 fp_options 와 trim 의 basic FP 셋의 일치도
+    //   매물 옵션 多 + 그 옵션이 trim 의 basic 에 있으면 강한 시그널
+    //   특정 trim 에만 있는 옵션이면 trim 식별 가능
+    if (productFpSet.size > 0) {
+      const trimFp = getTrimFp(tn);
+      let hits = 0;
+      for (const id of productFpSet) if (trimFp.has(id)) hits++;
+      // 매물 옵션 1개당 +3, 일치율 70%+ 이면 추가 보너스
+      score += hits * 3;
+      if (productFpSet.size >= 5 && hits / productFpSet.size >= 0.7) score += 20;
     }
 
     scored.push({ name: tn, score });

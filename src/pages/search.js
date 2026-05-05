@@ -661,32 +661,38 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <div class="lab">세부모델</div><div class="full">${esc(basicByLabel['세부모델'] || '-')}</div>
         <div class="lab">세부트림</div><div class="full">${esc(specByLabel['트림'] || '-')}</div>
         <div class="lab">선택옵션</div><div class="full ${opts.length ? 'chips-wrap' : ''}">${opts.length ? opts.map(o => `<span class="chip">${esc(o)}</span>`).join('') : '-'}</div>
-        ${(() => {
-          // 표준옵션 — FP 인기 15개 (PRIMARY 10 + SECONDARY 5) 중 매칭된 것만 + 매트릭스 자세히
-          const fpSet = new Set(Array.isArray(p.fp_options) ? p.fp_options : []);
-          const matched = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY]
-            .filter(po => po.ids.some(id => fpSet.has(id)));
-          const top = matched.slice(0, 5);
-          const more = matched.slice(5);
-          return `
-            <div class="lab">표준옵션</div>
-            <div class="full chips-wrap fp-popular">
-              ${top.length ? top.map(po => `<span class="chip chip-fp">${esc(po.label)}</span>`).join('') : '<span class="t-weak fs-label">매칭된 표준옵션 없음</span>'}
-              ${more.length ? `<span class="chip chip-more" data-fp-more>+${more.length} 더보기</span>` : ''}
-              <span class="chip chip-fp-detail" data-fp-detail>옵션 자세히 →</span>
-              ${more.length ? `<div class="fp-popular-extra" data-fp-extra style="display:none;flex-basis:100%;flex-wrap:wrap;gap:4px;margin-top:4px;">
-                ${more.map(po => `<span class="chip chip-fp">${esc(po.label)}</span>`).join('')}
-              </div>` : ''}
-            </div>
-          `;
-        })()}
         ${pair('연식', specByLabel['연식'], '주행거리', specByLabel['주행'])}
         ${pair('연료', specByLabel['연료'], '구동방식', specByLabel['구동'])}
         ${pair('외부색상', specByLabel['외장색'], '내부색상', specByLabel['내장색'])}
       </div>
     </div>
 
-    <!-- 2. 기간별 대여료 및 보증금 -->
+    <!-- 2. 표준옵션 (FP 인기 15) — 엔카 스타일 아이콘 그리드 -->
+    ${(() => {
+      const fpSet = new Set(Array.isArray(p.fp_options) ? p.fp_options : []);
+      const all = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY];
+      const isMatched = (po) => po.ids.some(id => fpSet.has(id));
+      const matchedCount = all.filter(isMatched).length;
+      return `
+        <div class="detail-section">
+          <div class="detail-section-label" style="display:flex;align-items:center;gap:6px;">
+            <span>표준옵션</span>
+            <span class="t-weak fs-label" style="font-weight:400;">${matchedCount}/15</span>
+            <span class="chip chip-fp-detail" data-fp-detail style="margin-left:auto;font-weight:400;">옵션 자세히 →</span>
+          </div>
+          <div class="fp-icon-grid">
+            ${all.map(po => `
+              <div class="fp-icon-item ${isMatched(po) ? 'is-on' : 'is-off'}" title="${esc(po.label)}">
+                <i class="ph ph-${po.icon || 'circle'}"></i>
+                <span>${esc(po.label)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    })()}
+
+    <!-- 3. 기간별 대여료 및 보증금 -->
     ${priceRows.length ? `<div class="detail-section">
       <div class="detail-section-label">2. 기간별 대여료 및 보증금</div>
       <table class="table">

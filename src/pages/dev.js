@@ -175,12 +175,13 @@ function renderMatrixTab(el) {
     if (!_lastResults || !_lastResults.length) return;
     const confOk = (r) => r.confidence === 'high' || r.confidence === 'medium' || (includeLow && r.confidence === 'low');
     const targets = _lastResults
-      .filter(({ p, r }) => r.ok && confOk(r) && r.trimName)
+      // catalog 매칭만 되어도 적용 — trim 없으면 trim 갱신 skip 하되 sub 는 갱신
+      .filter(({ p, r }) => r.ok && confOk(r))
       .map(({ p, r }) => {
         const newSub = deriveNewSubModel(r.catalogTitle, p.maker);
-        const newTrim = r.trimName;
+        const newTrim = r.trimName || '';   // 빈 문자열이면 trim 갱신 skip
         const subChanged = (p.sub_model || '') !== newSub;
-        const trimChanged = (p.trim_name || p.trim || '') !== newTrim;
+        const trimChanged = !!newTrim && (p.trim_name || p.trim || '') !== newTrim;
         const savedFp = Array.isArray(p.fp_options) ? p.fp_options : [];
         const fpAll = r.fpAll || [];
         const fpChanged = fpAll.length > 0 && (savedFp.length !== fpAll.length || !savedFp.every(id => fpAll.includes(id)));

@@ -1,6 +1,6 @@
 # catalog 무결성 보고서
 
-> 생성: 2026-05-05 11:41
+> 생성: 2026-05-05 11:46
 
 ## aliases 빈 catalog (매칭 불가)
 | catalog | title |
