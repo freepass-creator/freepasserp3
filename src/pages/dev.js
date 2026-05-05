@@ -137,6 +137,7 @@ function renderMatrixTab(el) {
         <button class="btn btn-sm btn-primary" id="mtxAnalyze"><i class="ph ph-play"></i> 매물 분석</button>
         <button class="btn btn-sm btn-success" id="mtxApply" disabled><i class="ph ph-check"></i> 확정만 적용 (high/medium)</button>
         <button class="btn btn-sm" id="mtxApplyAll" disabled style="color:#d97706;"><i class="ph ph-check-fat"></i> 확인필요 포함 모두 적용</button>
+        <button class="btn btn-sm" id="mtxExport" disabled><i class="ph ph-download-simple"></i> 결과 JSON 다운로드</button>
         <button class="btn btn-sm" id="mtxCacheClear"><i class="ph ph-arrow-clockwise"></i> 카탈로그 캐시 초기화</button>
         <div style="flex:1;"></div>
         <select class="input" id="mtxFilterStatus" style="font-size:11px;padding:2px 6px;">
@@ -239,6 +240,54 @@ function renderMatrixTab(el) {
   el.querySelector('#mtxApply').addEventListener('click', () => applyMatrix(false));
   el.querySelector('#mtxApplyAll').addEventListener('click', () => applyMatrix(true));
 
+  // 매물 분석 결과 JSON 다운로드 — 검수용
+  el.querySelector('#mtxExport').addEventListener('click', () => {
+    if (!_lastResults?.length) { showToast('먼저 매물 분석을 실행하세요'); return; }
+    const out = _lastResults.map(({ p, r }) => ({
+      // 매물 입력 자료
+      car_number: p.car_number || '',
+      maker: p.maker || '',
+      model: p.model || '',
+      sub_model: p.sub_model || '',
+      trim_name: p.trim_name || p.trim || '',
+      year: p.year || '',
+      first_registration_date: p.first_registration_date || '',
+      fuel_type: p.fuel_type || '',
+      engine_cc: p.engine_cc || '',
+      vehicle_class: p.vehicle_class || '',
+      vehicle_status: p.vehicle_status || '',
+      mileage: p.mileage || 0,
+      vehicle_price: p.vehicle_price || 0,
+      options_text: p.options || '',
+      fp_options: p.fp_options || [],
+      // 매칭 결과
+      result: {
+        ok: r.ok,
+        confidence: r.confidence,
+        catalogId: r.catalogId,
+        catalogTitle: r.catalogTitle,
+        catalogConfidence: r.catalogConfidence,
+        trimName: r.trimName,
+        trimConfidence: r.trimConfidence,
+        trimAlts: r.trimAlts,
+        fpAll: r.fpAll,
+        basicCount: r.basicCount,
+        priceMatch: r.priceMatch,
+        runnerUp: r.runnerUp,
+        score: r.score,
+        reason: r.reason,
+        requiresUserInput: r.requiresUserInput,
+      },
+    }));
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `matrix-analysis-${new Date().toISOString().slice(0,10).replace(/-/g,'')}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast(`${out.length}대 분석 결과 다운로드`);
+  });
+
   el.querySelector('#mtxAnalyze').addEventListener('click', async () => {
     const btn = el.querySelector('#mtxAnalyze');
     const summary = el.querySelector('#mtxSummary');
@@ -271,6 +320,7 @@ function renderMatrixTab(el) {
     _lastResults = results;
     el.querySelector('#mtxApply').disabled = false;
     el.querySelector('#mtxApplyAll').disabled = false;
+    el.querySelector('#mtxExport').disabled = false;
 
     // 메이커별 통계 요약
     const byMaker = {};

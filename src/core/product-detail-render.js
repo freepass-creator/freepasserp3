@@ -8,6 +8,8 @@ import { first, parsePol, findPolicy } from './policy-utils.js';
 import { topBadgesHtml, reviewOverlayHtml, needsReview } from './product-badges.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from './product-photos.js';
 import { normalizeYear } from './normalize.js';
+import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from './fp-options-master.js';
+import { findCatalog } from './vehicle-matrix.js';
 
 const COLOR_MAP = {
   '흰':'#f0f0f0','백':'#f0f0f0','화이트':'#f0f0f0','white':'#f0f0f0','아이보리':'#fffff0',
@@ -301,71 +303,76 @@ function _renderProductDetail(container, product, options = {}) {
 
   // ── 공개 섹션 ── 영업자·손님이 차량 조건을 직관적으로 파악하도록 분리
 
-  // 계약조건 — 심사·연령·주행거리·보험포함 (가장 궁금한 것)
+  // 데스크톱 search.js 와 동일한 8섹션 구성으로 통일.
   // 레거시 "저신용" 표기는 "신용무관"으로 치환 표시
   const creditRaw = first(policy.credit_grade, policy.screening_criteria, p.credit_grade);
   const creditDisplay = String(creditRaw || '').trim() === '저신용' ? '신용무관' : creditRaw;
-  const contractCondRows = [
-    ['심사여부',           needsReview(p) ? '심사필요' : '무심사'],
-    ['심사기준',           creditDisplay],
-    ['기본 운전연령',      first(policy.basic_driver_age, p.base_age, p.min_age)],
-    ['운전연령상한',       first(policy.driver_age_upper_limit)],
-    ['운전연령하향',       first(policy.driver_age_lowering)],
-    ['운전연령하향비용',   first(policy.age_lowering_cost)],
-    ['연간약정주행거리',   first(policy.annual_mileage, p.annual_mileage)],
-    ['1만Km추가비용',      first(policy.mileage_upcharge_per_10000km)],
+
+  // ── 4. 운전자 연령 및 범위 ──
+  const ageScopeRows = [
+    ['기본 연령',          first(policy.basic_driver_age, p.base_age, p.min_age)],
+    ['면허 취득',          first(policy.license_period, p.license_period)],
+    ['연령 상한',          first(policy.driver_age_upper_limit)],
+    ['연령 하향',          first(policy.driver_age_lowering)],
+    ['연령 하향 비용',     first(policy.age_lowering_cost)],
+    ['추가 인원',          first(policy.additional_driver_allowance_count)],
+    ['추가 인원 비용',     first(policy.additional_driver_cost)],
+    ['개인 운전 범위',     first(policy.personal_driver_scope)],
+    ['사업자 운전 범위',   first(policy.business_driver_scope)],
+  ];
+
+  // ── 6. 대여 조건 ── (심사 + 약정주행 + 결제·지역·정비)
+  const rentalCondRows = [
+    ['약정 주행거리',      first(policy.annual_mileage, p.annual_mileage)],
+    ['1만Km 추가비',       first(policy.mileage_upcharge_per_10000km)],
+    ['심사 여부',          needsReview(p) ? '심사필요' : '무심사'],
+    ['심사 기준',          creditDisplay],
+    ['보증금 분납',        first(policy.deposit_installment)],
+    ['보증 카드',          first(policy.deposit_card_payment)],
+    ['결제 방식',          first(policy.payment_method)],
+    ['위약금',             first(policy.penalty_condition)],
+    ['대여 지역',          first(policy.rental_region)],
+    ['탁송비',             first(policy.delivery_fee)],
+    ['정비 서비스',        first(policy.maintenance_service)],
     ['보험 포함',          first(policy.insurance_included, p.insurance_included)],
   ];
 
-  // 결제·이용 — 보증금/결제/위약/지역/운전자/정비 (한 덩어리)
-  const paymentUsageRows = [
-    ['보증금분납',         first(policy.deposit_installment)],
-    ['보증금카드결제',     first(policy.deposit_card_payment)],
-    ['결제방식',           first(policy.payment_method)],
-    ['위약금',             first(policy.penalty_condition)],
-    ['대여지역',           first(policy.rental_region)],
-    ['탁송비',             first(policy.delivery_fee)],
-    ['개인운전자범위',     first(policy.personal_driver_scope)],
-    ['사업자운전자범위',   first(policy.business_driver_scope)],
-    ['추가운전자수',       first(policy.additional_driver_allowance_count)],
-    ['추가운전자비용',     first(policy.additional_driver_cost)],
-    ['정비서비스',         first(policy.maintenance_service)],
-  ];
-
-  // 차량 스펙 — 공개 기타사항
-  const vehicleSpecRows = [
-    ['차량상태',   p.vehicle_status],
-    ['상품구분',   p.product_type],
+  // ── 7. 기타 정보 ── (차량 스펙 + 공급사·정책 + admin 코드)
+  const providerName = (() => {
+    const pr = (store.partners || []).find(pa => (pa.partner_code || pa.company_code || pa._key) === p.provider_company_code);
+    return pr?.partner_name || pr?.company_name || '';
+  })();
+  const otherInfoRows = [
+    ...(providerName ? [['공급사', providerName]] : []),
+    ...(policy.policy_name ? [['정책명', policy.policy_name]] : []),
     ['차종구분',   p.vehicle_class],
     ['인승',       p.seats ? p.seats + '인승' : ''],
     ['배기량',     p.engine_cc ? Number(p.engine_cc).toLocaleString() + 'cc' : ''],
     ['용도',       p.usage],
     ['최초등록일', fmtDate(p.first_registration_date)],
     ['차령만료일', fmtDate(p.vehicle_age_expiry_date)],
+    ['상품구분',   p.product_type],
     ['위치',       p.location],
+    ...(isAdmin ? [
+      ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
+      ['차대번호',   p.vin],
+      ['공급코드',   p.provider_company_code],
+      ['영업코드',   p.partner_code],
+      ['상품코드',   p.product_code],
+      ['정책코드',   policy.policy_code || p.policy_code],
+      ['정책유형',   policy.policy_type],
+      ['상품UID',    p._key],
+    ] : []),
   ];
-
-  // ── 관리자 전용 섹션 ── 정책·내부 코드 (영업자·손님에겐 노이즈)
-  const internalRows = isAdmin ? [
-    ['정책코드',   policy.policy_code || p.policy_code],
-    ['정책명',     policy.policy_name || p.policy_name],
-    ['정책유형',   policy.policy_type],
-    ['차대번호',   p.vin],
-    ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
-    ['공급사',     p.provider_company_code],
-    ['파트너',     p.partner_code],
-    ['상품코드',   p.product_code],
-    ['상품UID',    p._key],
-  ] : [];
 
   const filterRows = rows => rows.filter(([, v]) => v && v !== '-');
   const renderRows = rows => `<div class="cat-rows">${rows.map(([l, v]) => `<div class="cat-row"><span class="cat-row-label">${l}</span><span class="cat-row-value">${v}</span></div>`).join('')}</div>`;
-  const renderSection = (icon, title, rows, extraCls = '') => {
+  const renderSection = (num, icon, title, rows, extraCls = '') => {
     const filtered = filterRows(rows);
     if (!filtered.length) return '';
     return `
       <div class="cat-section ${extraCls}">
-        <div class="cat-section-title"><i class="ph ph-${icon}"></i> ${title}</div>
+        <div class="cat-section-title"><i class="ph ph-${icon}"></i> ${num}. ${title}</div>
         ${renderRows(filtered)}
       </div>`;
   };
@@ -373,35 +380,62 @@ function _renderProductDetail(container, product, options = {}) {
   // 특이사항
   const memoText = (p.partner_memo || p.note || '').trim();
 
+  // ── 2. 표준옵션 (FP 인기 15) — 데스크톱과 동일한 엔카 스타일 아이콘 그리드 ──
+  const fpAll = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY];
+  const fpSet = new Set(Array.isArray(p.fp_options) ? p.fp_options : []);
+  const fpMatched = po => po.ids.some(id => fpSet.has(id));
+  const fpMatchedCount = fpAll.filter(fpMatched).length;
+  const fpGridHtml = `
+    <div class="cat-section">
+      <div class="cat-section-title">
+        <i class="ph ph-list-checks"></i> 2. 표준옵션
+        <span class="cat-section-hint">${fpMatchedCount}/15</span>
+        <span class="cat-fp-detail-link" data-fp-detail>옵션 자세히 →</span>
+      </div>
+      <div class="fp-icon-grid">
+        ${fpAll.map(po => `
+          <div class="fp-icon-item ${fpMatched(po) ? 'is-on' : 'is-off'}" title="${po.label}">
+            <i class="ph ph-${po.icon || 'circle'}"></i>
+            <span>${po.label}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+
   container.innerHTML = `
     <div class="srch-detail-inner">
       ${renderGallery(imgList, { overlayBadges, reviewTag })}
 
-      <!-- 1. 차량정보 -->
+      <!-- 1. 차량정보 — 데스크톱 search.js 와 동일 행 구성 -->
       <div class="cat-hero">
-        <div class="cat-section-title"><i class="ph ph-car-simple"></i> ${modelText || '차량'}${p.car_number ? `<span class="cat-carno">${p.car_number}</span>` : ''}</div>
+        <div class="cat-section-title"><i class="ph ph-car-simple"></i> 1. 차량정보</div>
         <div class="cat-rows">
+          <div class="cat-row"><span class="cat-row-label">차량번호</span><span class="cat-row-value">${p.car_number || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">차량상태</span><span class="cat-row-value">${p.vehicle_status || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">상품구분</span><span class="cat-row-value">${p.product_type || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">제조사</span><span class="cat-row-value">${p.maker || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">모델명</span><span class="cat-row-value">${p.model || '-'}</span></div>
           <div class="cat-row"><span class="cat-row-label">세부모델</span><span class="cat-row-value">${p.sub_model || '-'}</span></div>
           <div class="cat-row"><span class="cat-row-label">세부트림</span><span class="cat-row-value">${trimMinusSub(p.sub_model, p.trim || p.trim_name) || '-'}</span></div>
           <div class="cat-row"><span class="cat-row-label">선택옵션</span><span class="cat-row-value">${p.options || '-'}</span></div>
-        </div>
-        <div class="cat-spec">
-          <span class="cat-spec-item"><i class="ph ph-calendar"></i> ${normalizeYear(p.year) || '-'}</span>
-          <span class="cat-spec-item"><i class="ph ph-gauge"></i> ${p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '-'}</span>
-          <span class="cat-spec-item"><i class="ph ph-gas-pump"></i> ${p.fuel_type || '-'}</span>
-          <span class="cat-spec-item"><i class="ph ph-palette"></i>
-            ${p.ext_color ? `<span class="cat-color-badge" style="background:${colorToHex(p.ext_color)};color:${colorTextContrast(p.ext_color)};">외 ${p.ext_color}</span>` : ''}
-            ${p.int_color ? `<span class="cat-color-badge" style="background:${colorToHex(p.int_color)};color:${colorTextContrast(p.int_color)};">내 ${p.int_color}</span>` : ''}
-          </span>
+          <div class="cat-row"><span class="cat-row-label">연식</span><span class="cat-row-value">${normalizeYear(p.year) || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">주행거리</span><span class="cat-row-value">${p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">연료</span><span class="cat-row-value">${p.fuel_type || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">구동방식</span><span class="cat-row-value">${p.drive_type || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">외부색상</span><span class="cat-row-value">${p.ext_color || '-'}</span></div>
+          <div class="cat-row"><span class="cat-row-label">내부색상</span><span class="cat-row-value">${p.int_color || '-'}</span></div>
         </div>
       </div>
 
-      <!-- 1b. 키 포인트 칩 — 이 차의 셀링포인트 -->
+      <!-- 키 포인트 칩 — 이 차의 셀링포인트 -->
       ${keypointsHtml}
 
-      <!-- 2. 기간별 대여료, 보증금 -->
+      <!-- 2. 표준옵션 (FP 인기 15) -->
+      ${fpGridHtml}
+
+      <!-- 3. 기간별 대여료 및 보증금 -->
       <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-currency-krw"></i> 기간별 대여료, 보증금</div>
+        <div class="cat-section-title"><i class="ph ph-currency-krw"></i> 3. 기간별 대여료 및 보증금</div>
         ${priceRows.length ? `
         <table class="cat-table">
           <thead><tr><th>기간</th><th>대여료</th><th>보증금</th></tr></thead>
@@ -414,38 +448,35 @@ function _renderProductDetail(container, product, options = {}) {
         ${priceSummaryHtml}
       </div>
 
-      <!-- 3. 보험한도 및 면책금 -->
+      <!-- 4. 운전자 연령 및 범위 -->
+      ${renderSection(4, 'user', '운전자 연령 및 범위', ageScopeRows)}
+
+      <!-- 5. 보험 내용 -->
       <div class="cat-section">
-        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험한도 및 면책금</div>
+        <div class="cat-section-title"><i class="ph ph-shield-check"></i> 5. 보험 내용</div>
         <table class="cat-table">
           <thead><tr><th>항목</th><th>한도</th><th>면책금</th></tr></thead>
           <tbody>${insRows.map(([l, lim, ded]) => `<tr><td>${l}</td><td>${lim || '-'}</td><td>${ded || '-'}</td></tr>`).join('')}</tbody>
         </table>
       </div>
 
-      <!-- 4. 계약조건 — 심사·연령·주행 (가장 궁금한 정보) -->
-      ${renderSection('list-checks', '계약조건', contractCondRows)}
+      <!-- 6. 대여 조건 -->
+      ${renderSection(6, 'list-checks', '대여 조건', rentalCondRows)}
 
-      <!-- 5. 결제·이용 — 보증금·결제·지역·운전자·정비 -->
-      ${renderSection('credit-card', '결제·이용', paymentUsageRows)}
+      <!-- 7. 기타 정보 -->
+      ${renderSection(7, 'note', '기타 정보', otherInfoRows)}
 
-      <!-- 6. 차량 스펙 — 타입·배기·등록일 등 -->
-      ${renderSection('note', '차량 스펙', vehicleSpecRows)}
-
-      <!-- 6b. 특이사항 (있을 때만) -->
+      <!-- 특이사항 (있을 때만) -->
       ${memoText ? `
       <div class="cat-section">
         <div class="cat-section-title"><i class="ph ph-warning-circle"></i> 특이사항</div>
         <div class="cat-memo">${memoText.replace(/</g, '&lt;').replace(/\n/g, '<br>')}</div>
       </div>` : ''}
 
-      <!-- 7. 정책·내부 정보 (관리자만) -->
-      ${isAdmin ? renderSection('lock-key', '정책·내부 정보', internalRows, 'cat-section-internal') : ''}
-
       <!-- 8. 수수료 — 영업자/관리자만 (손님·공급사 노출 금지) -->
       ${canSeeCommission ? `
       <div class="cat-section cat-section-fee">
-        <div class="cat-section-title"><i class="ph ph-percent"></i> 수수료 <span class="cat-section-hint">(내부용)</span></div>
+        <div class="cat-section-title"><i class="ph ph-percent"></i> 8. 수수료 <span class="cat-section-hint">(내부용)</span></div>
         ${feeRows.length ? `
         <table class="cat-table">
           <thead><tr><th>기간</th><th>수수료</th></tr></thead>
@@ -462,6 +493,25 @@ function _renderProductDetail(container, product, options = {}) {
   // 갤러리 바인딩 — idx 상태는 모듈 외부가 추적하지 않아도 되도록 로컬 객체
   const galleryState = { idx: 0 };
   bindGallery(container, imgList, galleryState, onGalleryNav);
+
+  // 표준옵션 "옵션 자세히 →" — 차종 매트릭스 페이지 새 창 (데스크톱 search.js 와 동일)
+  container.querySelectorAll('[data-fp-detail]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      try {
+        const cat = await findCatalog(p.maker, p.sub_model, p.model, p);
+        const params = new URLSearchParams();
+        if (cat?.catalogId) params.set('catalog', cat.catalogId);
+        else {
+          if (p.maker)     params.set('maker', p.maker);
+          if (p.model)     params.set('model', p.model);
+          if (p.sub_model) params.set('sub',   p.sub_model);
+        }
+        window.open(`/vehicle-options-catalog-test.html?${params.toString()}`, '_blank', 'noopener');
+      } catch (e) {
+        console.error('[fp-detail] 매트릭스 매핑 실패', e);
+      }
+    });
+  });
 
   // 패널헤드 액션 버튼 주입
   if (showActions) {

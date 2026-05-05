@@ -673,12 +673,15 @@
     width: 100%;
     border-collapse: collapse;
     font-variant-numeric: tabular-nums;
+    border-top: 1px solid var(--c-border);
+    border-left: 1px solid var(--c-border);
   }
   .cat-table th, .cat-table td {
     padding: 5px var(--sp-2);
     font-size: var(--fs-xs);
     text-align: right;
     border-bottom: 1px solid var(--c-border);
+    border-right: 1px solid var(--c-border);
   }
   .cat-table th:first-child, .cat-table td:first-child { text-align: left; }
   .cat-table thead th {

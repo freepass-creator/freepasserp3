@@ -169,27 +169,117 @@
     color: var(--c-text-muted); margin-left: auto;
   }
 
-  /* row */
-  .m-view-body .cat-rows { display: flex; flex-direction: column; }
+  /* row — 데스크톱 .info-grid 와 동일한 2열 표 형태로 통일.
+     라벨(좌) 회색 배경(--c-bg-sub) / 값(우) 흰색. 셀 라인 --c-border 로 또렷이. */
+  .m-view-body .cat-rows {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    border-top: 1px solid var(--c-border);
+    border-left: 1px solid var(--c-border);
+  }
   .m-view-body .cat-row {
-    display: flex; justify-content: space-between; gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--c-border-soft);
+    display: contents;
     font-size: var(--fs-sm); line-height: 1.4;
   }
-  .m-view-body .cat-row:last-child { border-bottom: 0; }
+  .m-view-body .cat-row > .cat-row-label,
+  .m-view-body .cat-row > .cat-row-value {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--c-border);
+    border-right: 1px solid var(--c-border);
+    min-width: 0; overflow-wrap: break-word;
+  }
   .m-view-body .cat-row-label {
-    min-width: 88px; flex-shrink: 0;
-    color: var(--c-text-muted);
-    font-weight: var(--fw-normal);
+    background: var(--c-bg-sub);
+    color: var(--c-text-sub);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
   }
   .m-view-body .cat-row-value {
-    color: var(--c-text); font-weight: var(--fw-medium);
-    text-align: right; word-break: break-word;
+    background: var(--c-surface);
+    color: var(--c-text);
+    font-weight: var(--fw-normal);
+    text-align: left;
+    word-break: break-word;
   }
 
   /* memo */
   .m-view-body .cat-memo { font-size: var(--fs-sm); line-height: 1.55; padding: 0; color: var(--c-text-sub); }
+
+  /* 표 (가격·보험 등) — .cat-row 와 동일 라인·배경 톤으로 통일 */
+  .m-view-body .cat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+    border-top: 1px solid var(--c-border);
+    border-left: 1px solid var(--c-border);
+  }
+  .m-view-body .cat-table th,
+  .m-view-body .cat-table td {
+    padding: 6px 8px;
+    font-size: var(--fs-sm);
+    text-align: right;
+    border-bottom: 1px solid var(--c-border);
+    border-right: 1px solid var(--c-border);
+    background: var(--c-surface);
+    color: var(--c-text);
+  }
+  .m-view-body .cat-table th:first-child,
+  .m-view-body .cat-table td:first-child { text-align: left; }
+  .m-view-body .cat-table thead th {
+    background: var(--c-bg-sub);
+    color: var(--c-text-sub);
+    font-weight: var(--fw-medium);
+  }
+  .m-view-body .cat-table tbody td:first-child { color: var(--c-text-sub); }
+  .m-view-body .cat-price-cell { font-weight: var(--fw-semibold); color: var(--c-accent); }
+
+  /* 표준옵션 (FP 인기 15) — 데스크톱 search.js 와 동일한 5×3 아이콘 그리드 */
+  .m-view-body .cat-section-hint {
+    margin-left: auto;
+    font-size: var(--fs-xs);
+    color: var(--c-text-muted);
+    font-weight: var(--fw-normal);
+  }
+  .m-view-body .cat-fp-detail-link {
+    margin-left: 8px;
+    font-size: var(--fs-xs);
+    color: var(--c-accent);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+  .m-view-body .fp-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    padding: 4px 0;
+  }
+  .m-view-body .fp-icon-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2px;
+    padding: 8px 2px;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .m-view-body .fp-icon-item i { font-size: 20px; }
+  .m-view-body .fp-icon-item span {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+  .m-view-body .fp-icon-item.is-on {
+    background: #e8f0ff;
+    color: #1d4ed8;
+  }
+  .m-view-body .fp-icon-item.is-on i { color: #3b82f6; }
+  .m-view-body .fp-icon-item.is-off {
+    opacity: 0.45;
+    color: var(--c-text-muted);
+  }
+  .m-view-body .fp-icon-item.is-off i { color: var(--c-text-muted); }
 
   /* ── 계약 시작 시트 (채팅·상품 공통, 데스크톱 pickOrCreateCustomer 모바일 포팅) ── */
   .m-contract-start { display: flex; flex-direction: column; gap: 14px; padding: 8px 0 16px; }

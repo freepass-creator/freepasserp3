@@ -1337,7 +1337,15 @@
   }
   .timeline-row:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
 
-  /* 표 셀 라인 — 가로·세로 동일 색. border (#e5e7eb) 로 한 단계 진하게 */
+  /* 표 셀 라인 — 가로·세로 동일 색. border (#e5e7eb) 로 한 단계 진하게.
+     thead/tbody 모두 border-right 부여 → info-grid 와 동일한 모양 */
+  .table {
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .table thead th {
+    border-right: 1px solid var(--border) !important;
+  }
   .table tbody td {
     border-bottom: 1px solid var(--border) !important;
     border-right: 1px solid var(--border) !important;
@@ -1486,23 +1494,27 @@
      단일 항목은 .full 값셀이 cols 2-4 로 spanning. */
   .info-grid {
     display: grid; grid-template-columns: 100px 1fr 100px 1fr;
-    border-top: 1px solid var(--border-soft);
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
     min-width: 0;
   }
   .info-grid > div {
-    padding: 8px 12px; border-bottom: 1px solid var(--border-soft);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
     min-width: 0; overflow-wrap: break-word;
     line-height: 1.5;
   }
   .info-grid > .lab {
-    background: var(--bg-stripe);
-    color: var(--text-sub);     /* 더 진하게 — #6b7280 */
+    background: var(--bg-header);     /* 표 thead와 동일 회색 */
+    color: var(--text-sub);
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis;
   }
   .info-grid > div:not(.lab) {
-    color: var(--text-main);    /* 값은 main 색 명확히 */
+    background: var(--bg-card, #fff);
+    color: var(--text-main);
     word-break: break-word;
   }
   /* 단일 행 — 라벨 1칸 + 값 3칸 spanning (cols 2-4) */

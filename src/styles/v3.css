@@ -271,22 +271,25 @@ kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
   display: none;
 }
 
-/* 정보 / 폼 그리드 — 라벨(lab) 회색, 값(full) 흰색 배경으로 시각 구분 */
+/* 정보 / 폼 그리드 — 라벨(lab) 회색, 값(full) 흰색 배경으로 시각 구분.
+   라인은 .table 과 동일하게 --border (#e5e7eb) 사용 — 페이지 표 통일 */
 .info-grid {
   display: grid; grid-template-columns: 80px 1fr 80px 1fr;
-  border-top: 1px solid var(--border-soft);
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
 }
 .info-grid > div {
-  padding: 4px 8px; border-bottom: 1px solid var(--border-soft);
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
 }
 .info-grid .lab {
-  background: var(--bg-card, #fff);
+  background: var(--bg-header);
   color: var(--text-sub);
   font-weight: 500;
-  border-right: 1px solid var(--border-soft);
 }
 .info-grid .full {
-  background: var(--bg-header);
+  background: var(--bg-card, #fff);
   color: var(--text-main);
 }
 .info-grid .full[colspan], .info-grid .full {
