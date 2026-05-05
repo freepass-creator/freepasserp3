@@ -176,7 +176,7 @@
     "end": "현재"
   },
   "hyundai_grandeur_gn7": {
-    "start": "1987-01",
+    "start": "2022-11",
     "end": "현재"
   },
   "hyundai_grandeur_hg": {
@@ -232,7 +232,7 @@
     "end": "2022-12"
   },
   "hyundai_kona_sx2": {
-    "start": "2023-01",
+    "start": "2023-04",
     "end": "현재"
   },
   "hyundai_nexo_nh2": {
@@ -252,7 +252,7 @@
     "end": "현재"
   },
   "hyundai_santa_fe_mx5": {
-    "start": "2002-01",
+    "start": "2023-08",
     "end": "현재"
   },
   "hyundai_santafe_tm_165": {
@@ -260,11 +260,11 @@
     "end": "2022-12"
   },
   "hyundai_sonata_dn8": {
-    "start": "1994-01",
-    "end": "2023-12"
+    "start": "2019-03",
+    "end": "2023-04"
   },
   "hyundai_sonata_dn8_edge": {
-    "start": "2023-01",
+    "start": "2023-04",
     "end": "현재"
   },
   "hyundai_sonata_dn8_edge_hybrid": {
@@ -296,7 +296,7 @@
     "end": "2023-12"
   },
   "hyundai_tucson_nx4": {
-    "start": "2005-01",
+    "start": "2020-09",
     "end": "현재"
   },
   "hyundai_tucson_tl": {
@@ -400,7 +400,11 @@
     "end": "2021-12"
   },
   "kia_carnival_ka4": {
-    "start": "2004-01",
+    "start": "2020-08",
+    "end": "2024-12"
+  },
+  "kia_carnival_ka4_hi_limousine": {
+    "start": "2020-08",
     "end": "현재"
   },
   "kia_carnival_yp": {
@@ -408,8 +412,8 @@
     "end": "2017-12"
   },
   "kia_carnival_yp_facelift": {
-    "start": "2018-01",
-    "end": "2021-12"
+    "start": "2018-08",
+    "end": "2020-07"
   },
   "kia_ev3": {
     "start": "2024-01",
@@ -432,7 +436,7 @@
     "end": "2023-12"
   },
   "kia_ev9": {
-    "start": "2023-01",
+    "start": "2023-05",
     "end": "현재"
   },
   "kia_k3_bd": {
@@ -448,7 +452,7 @@
     "end": "2018-12"
   },
   "kia_k5_dl3": {
-    "start": "2013-01",
+    "start": "2019-12",
     "end": "현재"
   },
   "kia_k5_jf": {
@@ -472,8 +476,8 @@
     "end": "현재"
   },
   "kia_k8_gl3_pre": {
-    "start": "2021-01",
-    "end": "2023-12"
+    "start": "2021-04",
+    "end": "2024-08"
   },
   "kia_k9_rj": {
     "start": "2012-01",
@@ -492,7 +496,7 @@
     "end": "2023-12"
   },
   "kia_morning_ja_pre": {
-    "start": "2011-01",
+    "start": "2017-01",
     "end": "2020-12"
   },
   "kia_morning_sa": {
@@ -560,8 +564,8 @@
     "end": "2024-03"
   },
   "kia_sportage_ql_facelift": {
-    "start": "2018-01",
-    "end": "2021-12"
+    "start": "2018-08",
+    "end": "2021-06"
   },
   "kia_stinger": {
     "start": "2017-01",

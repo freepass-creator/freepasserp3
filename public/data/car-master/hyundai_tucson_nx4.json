@@ -6,7 +6,7 @@
   "source_urls": [
     "https://www.hyundai.com/contents/repn-car/html/homepage/price/nx4-2026_price.content"
   ],
-  "fetched_at": "2026-04-29",
+  "fetched_at": "2026-05-05",
   "categories": {
     "파워트레인/성능": [
       "NX05001",
@@ -672,8 +672,8 @@
     }
   },
   "trims": {
-    "모던": {
-      "slug": "modern",
+    "모던 1.6 터보": {
+      "slug": "모던 1.6 터보",
       "name_en": null,
       "price": {
         "base": 32130000,
@@ -838,8 +838,8 @@
         }
       ]
     },
-    "프리미엄": {
-      "slug": "premium",
+    "프리미엄 1.6 터보": {
+      "slug": "프리미엄 1.6 터보",
       "name_en": null,
       "price": {
         "base": 34890000,
@@ -1057,8 +1057,8 @@
         }
       ]
     },
-    "에이치-픽": {
-      "slug": "h-pick",
+    "에이치-픽 1.6 터보": {
+      "slug": "에이치-픽 1.6 터보",
       "name_en": null,
       "price": {
         "base": 36000000
@@ -1259,8 +1259,8 @@
         }
       ]
     },
-    "인스퍼레이션": {
-      "slug": "inspiration",
+    "인스퍼레이션 1.6 터보": {
+      "slug": "인스퍼레이션 1.6 터보",
       "name_en": null,
       "price": {
         "base": 38580000,
@@ -1479,8 +1479,8 @@
         }
       ]
     },
-    "블랙 익스테리어": {
-      "slug": "black-exterior",
+    "블랙 익스테리어 1.6 터보": {
+      "slug": "블랙 익스테리어 1.6 터보",
       "name_en": null,
       "price": {
         "base": 39380000
@@ -1690,8 +1690,8 @@
         }
       ]
     },
-    "N 라인": {
-      "slug": "n-inspiration",
+    "N 라인 1.6 터보": {
+      "slug": "N 라인 1.6 터보",
       "name_en": null,
       "price": {
         "base": 36440000,
@@ -1924,6 +1924,6 @@
     "투싼nx4",
     "투싼하이브리드nx4"
   ],
-  "year_start": "2005-01",
+  "year_start": "2020-09",
   "year_end": "현재"
 }

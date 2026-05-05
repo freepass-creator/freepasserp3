@@ -1,0 +1,60 @@
+{
+  "catalog_id": "kia_carnival_ka4_hi_limousine",
+  "title": "기아 카니발 하이리무진",
+  "maker": "기아",
+  "source": "kia_official",
+  "source_urls": [
+    "https://www.kia.com/kr/vehicles/carnival-hi-limousine/price",
+    "https://www.kia.com/content/dam/kwp/kr/ko/vehicles/pdf/price/price_carnival-hi-limousine.pdf"
+  ],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "노블레스 디젤 2.2 9인승": {
+      "slug": "노블레스 디젤 2.2 9인승",
+      "price": { "base": 68040000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 가솔린 3.5 9인승": {
+      "slug": "노블레스 가솔린 3.5 9인승",
+      "price": { "base": 66090000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 가솔린 3.5 7인승": {
+      "slug": "노블레스 가솔린 3.5 7인승",
+      "price": { "base": 69390000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 하이브리드 9인승": {
+      "slug": "노블레스 하이브리드 9인승",
+      "price": { "base": 66990000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "시그니처 하이브리드 9인승": {
+      "slug": "시그니처 하이브리드 9인승",
+      "price": { "base": 70640000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "시그니처 하이브리드 7인승": {
+      "slug": "시그니처 하이브리드 7인승",
+      "price": { "base": 73890000 },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": ["카니발하이리무진", "카니발하이리무진4세대", "카니발하이리무진ka4"],
+  "year_start": "2020-08",
+  "year_end": "현재"
+}

@@ -14,8 +14,7 @@
     "럭셔리": {
       "slug": "럭셔리",
       "price": {
-        "base_hev": 25300000,
-        "base_hev_3p5": 24200000
+        "base": 25300000
       },
       "basic": [],
       "select": [],
@@ -24,8 +23,7 @@
     "프레스티지": {
       "slug": "프레스티지",
       "price": {
-        "base_hev": 27080000,
-        "base_hev_3p5": 25900000
+        "base": 27080000
       },
       "basic": [],
       "select": [],
@@ -34,8 +32,7 @@
     "노블레스": {
       "slug": "노블레스",
       "price": {
-        "base_hev": 29270000,
-        "base_hev_3p5": 28000000
+        "base": 29270000
       },
       "basic": [],
       "select": [],
@@ -44,10 +41,7 @@
     "노블레스 스페셜": {
       "slug": "노블레스_스페셜",
       "price": {
-        "base_hev": 31300000,
-        "base_hev_3p5": 29930000,
-        "base_phev": 38170000,
-        "base_phev_3p5": 36740000
+        "base": 31300000
       },
       "basic": [],
       "select": [],
@@ -56,8 +50,7 @@
     "PHEV": {
       "slug": "phev",
       "price": {
-        "base_phev": 35950000,
-        "base_phev_3p5": 34520000
+        "base": 35950000
       },
       "basic": [],
       "select": [],

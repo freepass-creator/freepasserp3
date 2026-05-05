@@ -4,10 +4,10 @@
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/palisade-G2.5-9_price.content",
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/palisade-G2.5-7_price.content"
+    "https://www.hyundai.com/kr/ko/e/vehicles/the-all-new-palisade/price",
+    "https://www.carnoon.co.kr/newcar/vehicle/11735"
   ],
-  "fetched_at": "2026-04-29",
+  "fetched_at": "2026-05-05",
   "categories": {
     "파워트레인/성능": [
       "FX01001",
@@ -1697,8 +1697,7 @@
       "slug": "exclusive",
       "name_en": null,
       "price": {
-        "tax_5": 45160000,
-        "tax_3_5": 44470000
+        "base": 45160000
       },
       "basic": [
         "FX01001",
@@ -1873,8 +1872,7 @@
       "slug": "prestige",
       "name_en": null,
       "price": {
-        "tax_5": 50990000,
-        "tax_3_5": 50220000
+        "base": 50990000
       },
       "basic": [
         "FX01001",
@@ -2112,8 +2110,7 @@
       "slug": "calligraphy",
       "name_en": null,
       "price": {
-        "tax_5": 57940000,
-        "tax_3_5": 57060000
+        "base": 57940000
       },
       "basic": [
         "FX01001",

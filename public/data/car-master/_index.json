@@ -2590,6 +2590,30 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "kia_carnival_ka4_hi_limousine": {
+    "id": "kia_carnival_ka4_hi_limousine",
+    "title": "기아 카니발 하이리무진",
+    "maker": "기아",
+    "source": {
+      "manufacturer": "https://www.kia.com/kr/vehicles/carnival-hi-limousine/price",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "노블레스 디젤 2.2 9인승",
+      "노블레스 가솔린 3.5 9인승",
+      "노블레스 가솔린 3.5 7인승",
+      "노블레스 하이브리드 9인승",
+      "시그니처 하이브리드 9인승",
+      "시그니처 하이브리드 7인승"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "kia_carnival_yp": {
     "id": "kia_carnival_yp",
     "title": "기아 올 뉴 카니발",

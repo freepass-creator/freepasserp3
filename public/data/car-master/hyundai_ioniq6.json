@@ -6,7 +6,7 @@
   "source_urls": [
     "https://www.hyundai.com/contents/repn-car/html/homepage/price/ce-pe_price.content"
   ],
-  "fetched_at": "2026-04-29",
+  "fetched_at": "2026-05-05",
   "categories": {
     "E-GMP 플랫폼/성능": [
       "CE03001",
@@ -881,7 +881,7 @@
   },
   "trims": {
     "이-밸류 플러스": {
-      "slug": "e-Value+",
+      "slug": "이-밸류 플러스",
       "name_en": null,
       "price": {
         "base": 46950000,
@@ -1011,7 +1011,7 @@
       ]
     },
     "익스클루시브": {
-      "slug": "exclusive-long-range",
+      "slug": "익스클루시브",
       "name_en": null,
       "price": {
         "base": 49450000,
@@ -1200,8 +1200,8 @@
         }
       ]
     },
-    "익스클루시브 N 라인": {
-      "slug": "exclusive-nline",
+    "익스클루시브 N라인": {
+      "slug": "익스클루시브 N라인",
       "name_en": null,
       "price": {
         "base": 51500000
@@ -1389,7 +1389,7 @@
       ]
     },
     "프레스티지": {
-      "slug": "prestige-long-range",
+      "slug": "프레스티지",
       "name_en": null,
       "price": {
         "base": 51150000,
@@ -1590,8 +1590,8 @@
         }
       ]
     },
-    "프레스티지 N 라인": {
-      "slug": "prestige-nline",
+    "프레스티지 N라인": {
+      "slug": "프레스티지 N라인",
       "name_en": null,
       "price": {
         "base": 53000000
@@ -1808,7 +1808,7 @@
       ]
     },
     "이-라이트": {
-      "slug": "e-lite-long-range",
+      "slug": "이-라이트",
       "name_en": null,
       "price": {
         "base": 46950000,

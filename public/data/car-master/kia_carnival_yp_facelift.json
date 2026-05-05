@@ -2,11 +2,11 @@
   "catalog_id": "kia_carnival_yp_facelift",
   "title": "기아 더 뉴 카니발",
   "maker": "기아",
-  "source": "wikicar",
+  "source": "web_research",
   "source_urls": [
-    "http://wikicar.co.kr/allnew_carnival/20387"
+    "https://auto.danawa.com/news/?Tab=N1&Work=detail&no=4006924"
   ],
-  "fetched_at": "2026-05-04",
+  "fetched_at": "2026-05-05",
   "note": "더 뉴 카니발 (YP 페리, 2018-2020). 가격: wikicar 2018.03 OCR. R2.2D 9/11인승 + 람다 3.3G + 7인승 리무진(VIP/프레지던트).",
   "options": {},
   "categories": {},
@@ -14,7 +14,7 @@
     "디럭스": {
       "slug": "디럭스",
       "price": {
-        "base_22d_11": 28800000
+        "base": 28800000
       },
       "basic": [],
       "select": [],
@@ -24,7 +24,7 @@
     "럭셔리": {
       "slug": "럭셔리",
       "price": {
-        "base_22d_9": 31500000
+        "base": 31500000
       },
       "basic": [],
       "select": [],
@@ -33,8 +33,7 @@
     "프레스티지": {
       "slug": "프레스티지",
       "price": {
-        "base_22d_9": 34700000,
-        "base_22d_11": 33900000
+        "base": 34900000
       },
       "basic": [],
       "select": [],
@@ -43,8 +42,7 @@
     "노블레스": {
       "slug": "노블레스",
       "price": {
-        "base_22d_9": 38200000,
-        "base_33g_9": 36000000
+        "base": 38300000
       },
       "basic": [],
       "select": [],
@@ -53,8 +51,7 @@
     "노블레스 스페셜": {
       "slug": "노블레스_스페셜",
       "price": {
-        "base_22d_9": 39200000,
-        "base_33g_9": 36900000
+        "base": 38900000
       },
       "basic": [],
       "select": [],
@@ -63,7 +60,7 @@
     "VIP": {
       "slug": "vip",
       "price": {
-        "base_22d_7l": 37400000
+        "base": 36720000
       },
       "basic": [],
       "select": [],
@@ -73,8 +70,7 @@
     "프레지던트": {
       "slug": "프레지던트",
       "price": {
-        "base_22d_7l": 41100000,
-        "base_33g_7l": 38600000
+        "base": 40450000
       },
       "basic": [],
       "select": [],
@@ -85,6 +81,6 @@
   "aliases": [
     "더뉴카니발"
   ],
-  "year_start": "2018-01",
-  "year_end": "2021-12"
+  "year_start": "2018-08",
+  "year_end": "2020-07"
 }

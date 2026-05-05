@@ -2,98 +2,110 @@
   "catalog_id": "kia_k8_gl3_pre",
   "title": "기아 K8 GL3",
   "maker": "기아",
-  "source": "wikicar",
   "source_urls": [
     "http://wikicar.co.kr/K8/45415"
   ],
-  "fetched_at": "2026-05-04",
+  "fetched_at": "2026-05-05",
   "note": "K8 GL3 페리 전 (2021.04 출시). 가격: wikicar OCR. 2.5 가솔린 / 3.5 가솔린 / 3.5 LPG / 3.5 LPG 렌터카.",
   "options": {},
   "categories": {},
   "trims": {
-    "노블레스 라이트": {
-      "slug": "노블레스_라이트",
+    "노블레스 라이트 2.5 가솔린": {
+      "slug": "노블레스 라이트 2.5 가솔린",
       "price": {
-        "base_25g": 33400000,
-        "base_25g_3p5": 32790000,
-        "base_35g": 36850000,
-        "base_35g_3p5": 36180000
+        "base": 33400000
       },
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "노블레스": {
-      "slug": "노블레스",
+    "노블레스 2.5 가솔린": {
+      "slug": "노블레스 2.5 가솔린",
       "price": {
-        "base_25g": 35750000,
-        "base_25g_3p5": 35100000,
-        "base_35g": 39200000,
-        "base_35g_3p5": 38480000
+        "base": 35750000
       },
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "시그니처": {
-      "slug": "시그니처",
+    "시그니처 2.5 가솔린": {
+      "slug": "시그니처 2.5 가솔린",
       "price": {
-        "base_25g": 39400000,
-        "base_25g_3p5": 38690000,
-        "base_35g": 42550000,
-        "base_35g_3p5": 41770000
+        "base": 39400000
       },
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "플래티넘": {
-      "slug": "플래티넘",
+    "노블레스 라이트 3.5 가솔린": {
+      "slug": "노블레스 라이트 3.5 가솔린",
       "price": {
-        "base_35g": 46100000,
-        "base_35g_3p5": 45240000
+        "base": 36850000
       },
       "basic": [],
       "select": [],
-      "select_groups": [],
-      "note": "3.5 가솔린 전용 최상위 트림"
+      "select_groups": []
     },
-    "프레스티지": {
-      "slug": "프레스티지",
+    "노블레스 3.5 가솔린": {
+      "slug": "노블레스 3.5 가솔린",
       "price": {
-        "base_35lpg": 32800000,
-        "base_35lpg_3p5": 32200000
+        "base": 39200000
       },
       "basic": [],
       "select": [],
-      "select_groups": [],
-      "note": "3.5 LPG 전용 트림"
+      "select_groups": []
     },
-    "스탠다드": {
-      "slug": "스탠다드",
+    "시그니처 3.5 가솔린": {
+      "slug": "시그니처 3.5 가솔린",
       "price": {
-        "base_35lpg_renter": 28700000
+        "base": 42550000
       },
       "basic": [],
       "select": [],
-      "select_groups": [],
-      "note": "3.5 LPG 렌터카 전용"
+      "select_groups": []
     },
-    "트렌디": {
-      "slug": "트렌디",
+    "플래티넘 3.5 가솔린": {
+      "slug": "플래티넘 3.5 가솔린",
       "price": {
-        "base_35lpg_renter": 29800000
+        "base": 46100000
       },
       "basic": [],
       "select": [],
-      "select_groups": [],
-      "note": "3.5 LPG 렌터카 전용"
+      "select_groups": []
+    },
+    "스탠다드 LPG 3.5 렌터카": {
+      "slug": "스탠다드 LPG 3.5 렌터카",
+      "price": {
+        "base": 28200000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "트렌디 LPG 3.5 렌터카": {
+      "slug": "트렌디 LPG 3.5 렌터카",
+      "price": {
+        "base": 29800000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지 LPG 3.5 렌터카": {
+      "slug": "프레스티지 LPG 3.5 렌터카",
+      "price": {
+        "base": 35000000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
     }
   },
   "aliases": [
     "k8",
     "k8하이브리드"
   ],
-  "year_start": "2021-01",
-  "year_end": "2023-12"
+  "year_start": "2021-04",
+  "year_end": "2024-08",
+  "source": "wikicar_ocr"
 }

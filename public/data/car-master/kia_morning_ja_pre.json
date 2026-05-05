@@ -6,51 +6,51 @@
   "source_urls": [
     "http://wikicar.co.kr/morning_ja/19824"
   ],
-  "fetched_at": "2026-05-04",
+  "fetched_at": "2026-05-05",
   "note": "올 뉴 모닝 JA (페리 전, 2017-2020). 가격: wikicar 2017.01 출시 OCR. 카파 1.0 Eco Prime 가솔린.",
   "options": {},
   "categories": {},
   "trims": {
-    "베이직 플러스": {
-      "slug": "베이직_플러스",
+    "베이직 플러스 1.0 가솔린": {
+      "slug": "베이직 플러스 1.0 가솔린",
       "price": {
-        "base_10g": 9500000
+        "base": 9500000
       },
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "디럭스": {
-      "slug": "디럭스",
+    "디럭스 1.0 가솔린": {
+      "slug": "디럭스 1.0 가솔린",
       "price": {
-        "base_10g": 9900000
+        "base": 9900000
       },
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "럭셔리": {
-      "slug": "럭셔리",
+    "럭셔리 1.0 가솔린": {
+      "slug": "럭셔리 1.0 가솔린",
       "price": {
-        "base_10g": 11800000
+        "base": 11800000
       },
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "프레스티지": {
-      "slug": "프레스티지",
+    "프레스티지 1.0 가솔린": {
+      "slug": "프레스티지 1.0 가솔린",
       "price": {
-        "base_10g": 12650000
+        "base": 12650000
       },
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "레이디": {
-      "slug": "레이디",
+    "레이디 1.0 가솔린": {
+      "slug": "레이디 1.0 가솔린",
       "price": {
-        "base_10g": 12200000
+        "base": 12200000
       },
       "basic": [],
       "select": [],
@@ -62,6 +62,6 @@
     "올뉴모닝",
     "올뉴모닝ja"
   ],
-  "year_start": "2011-01",
+  "year_start": "2017-01",
   "year_end": "2020-12"
 }

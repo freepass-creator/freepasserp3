@@ -4,12 +4,10 @@
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/cn7-26-J-L1.6_price.content",
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/cn7-26-H-L1.6_price.content",
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/cn7-26-R-L1.6_price.content",
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/cn7-26-J-G1.6_price.content"
+    "https://www.hyundai.com/kr/ko/e/vehicles/avante/price",
+    "https://car.finance-information.net/21"
   ],
-  "fetched_at": "2026-04-29",
+  "fetched_at": "2026-05-05",
   "categories": {
     "파워트레인/성능": [
       "CN06002",
@@ -715,8 +713,7 @@
       "slug": "smart",
       "name_en": null,
       "price": {
-        "tax_5": 22050000,
-        "tax_3_5": 21720000
+        "base": 21720000
       },
       "basic": [
         "CN06002",
@@ -805,8 +802,7 @@
       "slug": "modern",
       "name_en": null,
       "price": {
-        "tax_5": 25300000,
-        "tax_3_5": 24920000
+        "base": 24920000
       },
       "basic": [
         "CN06002",
@@ -932,8 +928,7 @@
       "slug": "inspiration",
       "name_en": null,
       "price": {
-        "tax_5": 28860000,
-        "tax_3_5": 28420000
+        "base": 28420000
       },
       "basic": [
         "CN06002",
@@ -1323,8 +1318,7 @@
       "slug": "smart",
       "name_en": null,
       "price": {
-        "tax_5": 20650000,
-        "tax_3_5": 20340000
+        "base": 20340000
       },
       "basic": [
         "CN06001",
@@ -1413,8 +1407,7 @@
       "slug": "modern",
       "name_en": null,
       "price": {
-        "tax_5": 23910000,
-        "tax_3_5": 23550000
+        "base": 23550000
       },
       "basic": [
         "CN06001",
@@ -1540,8 +1533,7 @@
       "slug": "inspiration",
       "name_en": null,
       "price": {
-        "tax_5": 27590000,
-        "tax_3_5": 27170000
+        "base": 27170000
       },
       "basic": [
         "CN06001",

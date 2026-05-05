@@ -4,10 +4,11 @@
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/kona-27-J-G2.0_price.content",
-    "https://www.hyundai.com/contents/repn-car/html/homepage/price/kona-27-J-G1.6T_price.content"
+    "https://www.hyundai.com/kr/ko/e/vehicles/kona/price",
+    "https://m.carisyou.com/car/7581",
+    "https://zdnet.co.kr/view/?no=20250423134518"
   ],
-  "fetched_at": "2026-04-29",
+  "fetched_at": "2026-05-05",
   "categories": {
     "파워트레인/성능": [
       "SX04006",
@@ -707,8 +708,7 @@
       "slug": "modern",
       "name_en": null,
       "price": {
-        "tax_5": 23960000,
-        "tax_3_5": 23600000
+        "base": 24090000
       },
       "basic": [
         "SX04006",
@@ -799,8 +799,7 @@
       "slug": "H-Pick",
       "name_en": null,
       "price": {
-        "tax_5": 26280000,
-        "tax_3_5": 25880000
+        "base": 24990000
       },
       "basic": [
         "SX04006",
@@ -936,8 +935,7 @@
       "slug": "modern",
       "name_en": null,
       "price": {
-        "tax_5": 24660000,
-        "tax_3_5": 24290000
+        "base": 24780000
       },
       "basic": [
         "SX04005",
@@ -1027,8 +1025,7 @@
       "slug": "H-Pick",
       "name_en": null,
       "price": {
-        "tax_5": 26880000,
-        "tax_3_5": 26470000
+        "base": 25590000
       },
       "basic": [
         "SX04005",
@@ -1163,8 +1160,7 @@
       "slug": "premium",
       "name_en": null,
       "price": {
-        "tax_5": 29190000,
-        "tax_3_5": 28750000
+        "base": 28210000
       },
       "basic": [
         "SX04005",
@@ -1332,8 +1328,7 @@
       "slug": "inspiration",
       "name_en": null,
       "price": {
-        "tax_5": 31500000,
-        "tax_3_5": 31020000
+        "base": 31020000
       },
       "basic": [
         "SX04005",
@@ -1499,10 +1494,7 @@
     "블랙 익스테리어 1.6T": {
       "slug": "black-exterior",
       "name_en": null,
-      "price": {
-        "tax_5": 31850000,
-        "tax_3_5": 31370000
-      },
+      "price": {},
       "basic": [
         "SX04005",
         "SX04003",
@@ -1667,10 +1659,7 @@
     "N 라인 1.6T": {
       "slug": "n-line",
       "name_en": null,
-      "price": {
-        "tax_5": 32490000,
-        "tax_3_5": 31990000
-      },
+      "price": {},
       "basic": [
         "SX04005",
         "SX04003",
@@ -1829,8 +1818,7 @@
     "이밸류 플러스 일렉트릭": {
       "slug": "evalue_plus_ev",
       "price": {
-        "base": 41420000,
-        "before_tax": 43630000
+        "base": 41420000
       },
       "basic": [
         "SX04005",
@@ -1997,8 +1985,7 @@
     "프리미엄 일렉트릭": {
       "slug": "premium_ev",
       "price": {
-        "base": 43520000,
-        "before_tax": 45840000
+        "base": 43520000
       },
       "basic": [
         "SX04005",
@@ -2161,6 +2148,186 @@
           "name": "실내 컬러 패키지"
         }
       ]
+    },
+    "프리미엄 2.0": {
+      "slug": "프리미엄 2.0",
+      "price": {
+        "base": 27530000
+      },
+      "basic": [
+        "SX04006",
+        "SX04004",
+        "SX04007",
+        "SX04008",
+        "SX04002",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04044",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04035",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04072",
+        "SX04064",
+        "SX04077",
+        "SX04082",
+        "SX04075",
+        "SX04095",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04116",
+        "SX04119",
+        "SX04118"
+      ],
+      "select": [
+        "SX04112",
+        "SX04P06",
+        "SX04P02",
+        "SX04P05"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04112"
+          ],
+          "price": 200000,
+          "name": "하이패스"
+        },
+        {
+          "codes": [
+            "SX04P06"
+          ],
+          "price": 550000,
+          "name": "내비게이션 패키지Ⅰ"
+        },
+        {
+          "codes": [
+            "SX04P02"
+          ],
+          "price": 1100000,
+          "name": "현대 스마트센스Ⅰ"
+        },
+        {
+          "codes": [
+            "SX04P05"
+          ],
+          "price": 400000,
+          "name": "컴포트 초이스"
+        }
+      ]
+    },
+    "인스퍼레이션 2.0": {
+      "slug": "인스퍼레이션 2.0",
+      "price": {
+        "base": 30340000
+      },
+      "basic": [
+        "SX04006",
+        "SX04004",
+        "SX04007",
+        "SX04008",
+        "SX04002",
+        "SX04027",
+        "SX04032",
+        "SX04030",
+        "SX04029",
+        "SX04031",
+        "SX04016",
+        "SX04020",
+        "SX04019",
+        "SX04017",
+        "SX04014",
+        "SX04021",
+        "SX04023",
+        "SX04044",
+        "SX04051",
+        "SX04043",
+        "SX04041",
+        "SX04040",
+        "SX04035",
+        "SX04054",
+        "SX04055",
+        "SX04057",
+        "SX04072",
+        "SX04064",
+        "SX04077",
+        "SX04082",
+        "SX04075",
+        "SX04095",
+        "SX04091",
+        "SX04105",
+        "SX04100",
+        "SX04096",
+        "SX04102",
+        "SX04106",
+        "SX04113",
+        "SX04111",
+        "SX04108",
+        "SX04104",
+        "SX04110",
+        "SX04116",
+        "SX04119",
+        "SX04118"
+      ],
+      "select": [
+        "SX04112",
+        "SX04P06",
+        "SX04P02",
+        "SX04P05"
+      ],
+      "select_groups": [
+        {
+          "codes": [
+            "SX04112"
+          ],
+          "price": 200000,
+          "name": "하이패스"
+        },
+        {
+          "codes": [
+            "SX04P06"
+          ],
+          "price": 550000,
+          "name": "내비게이션 패키지Ⅰ"
+        },
+        {
+          "codes": [
+            "SX04P02"
+          ],
+          "price": 1100000,
+          "name": "현대 스마트센스Ⅰ"
+        },
+        {
+          "codes": [
+            "SX04P05"
+          ],
+          "price": 400000,
+          "name": "컴포트 초이스"
+        }
+      ]
     }
   },
   "aliases": [
@@ -2168,6 +2335,6 @@
     "코나일렉트릭sx2",
     "코나하이브리드sx2"
   ],
-  "year_start": "2023-01",
+  "year_start": "2023-04",
   "year_end": "현재"
 }

@@ -14,8 +14,7 @@
     "스마트": {
       "slug": "smart",
       "price": {
-        "base_16t": 19990000,
-        "base_hev": 25590000
+        "base": 19990000
       },
       "basic": [],
       "select": [],
@@ -24,9 +23,7 @@
     "모던": {
       "slug": "modern",
       "price": {
-        "base_16t": 22160000,
-        "base_hev": 27360000,
-        "base_n_line_16t": 25060000
+        "base": 22160000
       },
       "basic": [],
       "select": [],
@@ -35,9 +32,7 @@
     "인스퍼레이션": {
       "slug": "inspiration",
       "price": {
-        "base_16t": 26970000,
-        "base_hev": 31750000,
-        "base_n_line_16t": 28670000
+        "base": 26970000
       },
       "basic": [],
       "select": [],
@@ -46,7 +41,7 @@
     "N 라인": {
       "slug": "n_line",
       "price": {
-        "base_16t": 25060000
+        "base": 25060000
       },
       "basic": [],
       "select": [],
@@ -56,7 +51,7 @@
     "N": {
       "slug": "kona_n",
       "price": {
-        "base_20t": 34820000
+        "base": 34820000
       },
       "basic": [],
       "select": [],

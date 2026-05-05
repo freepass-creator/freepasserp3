@@ -4,9 +4,9 @@
   "maker": "기아",
   "source": "wikicar",
   "source_urls": [
-    "http://wikicar.co.kr/suv_sportage/43293"
+    "https://www.autoview.co.kr/ko-kr/articles/65116"
   ],
-  "fetched_at": "2026-05-04",
+  "fetched_at": "2026-05-05",
   "note": "스포티지 더 볼드 (QL 페리, 2018-2021). 가격: wikicar 2020년형(2019.08) OCR. R2.0D / 스마트스트림 1.6D / 누우 2.0 가솔린.",
   "options": {},
   "categories": {},
@@ -14,8 +14,7 @@
     "트렌디": {
       "slug": "트렌디",
       "price": {
-        "base_20d": 24300000,
-        "base_16d": 23810000
+        "base": 24300000
       },
       "basic": [],
       "select": [],
@@ -24,9 +23,7 @@
     "프레스티지": {
       "slug": "프레스티지",
       "price": {
-        "base_20d": 26370000,
-        "base_16d": 25880000,
-        "base_20g": 23420000
+        "base": 25480000
       },
       "basic": [],
       "select": [],
@@ -34,7 +31,9 @@
     },
     "노블레스": {
       "slug": "노블레스",
-      "price": {},
+      "price": {
+        "base": 27390000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -43,9 +42,7 @@
     "시그니처": {
       "slug": "시그니처",
       "price": {
-        "base_20d": 29650000,
-        "base_16d": 29160000,
-        "base_20g": 26700000
+        "base": 29160000
       },
       "basic": [],
       "select": [],
@@ -55,6 +52,6 @@
   "aliases": [
     "스포티지더볼드"
   ],
-  "year_start": "2018-01",
-  "year_end": "2021-12"
+  "year_start": "2018-08",
+  "year_end": "2021-06"
 }
