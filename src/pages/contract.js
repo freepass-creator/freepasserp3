@@ -474,7 +474,6 @@ export function renderContractWorkV2(c) {
           <div class="ct-step-num">${idx + 1}</div>
           <i class="ph ${stIcon}"></i>
           <span class="ct-step-title">${esc(step.label)}</span>
-          <span class="ct-step-count">${st.doneCount}/${st.totalCount}</span>
         </div>
         <div class="ct-substep-pair">
           ${renderCell(agentSub, st)}

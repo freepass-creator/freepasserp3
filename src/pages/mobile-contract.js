@@ -641,7 +641,6 @@ function renderProgressPanel(c) {
           <span class="ct-step-num">${idx + 1}</span>
           <i class="ph ${stepIcon}"></i>
           <span class="ct-step-title">${step.label}</span>
-          <span class="ct-step-count">${st?.doneCount}/${st?.totalCount}</span>
         </div>
         <div class="ct-substep-pair">
           ${renderCell(agentSub, st || {})}
