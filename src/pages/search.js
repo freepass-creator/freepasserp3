@@ -662,22 +662,21 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <div class="lab">세부트림</div><div class="full">${esc(specByLabel['트림'] || '-')}</div>
         <div class="lab">선택옵션</div><div class="full ${opts.length ? 'chips-wrap' : ''}">${opts.length ? opts.map(o => `<span class="chip">${esc(o)}</span>`).join('') : '-'}</div>
         ${(() => {
-          // 표준옵션 — FP 인기 15개 (PRIMARY 10 + SECONDARY 5) 중 매칭된 것만
+          // 표준옵션 — FP 인기 15개 (PRIMARY 10 + SECONDARY 5) 중 매칭된 것만 + 매트릭스 자세히
           const fpSet = new Set(Array.isArray(p.fp_options) ? p.fp_options : []);
           const matched = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY]
             .filter(po => po.ids.some(id => fpSet.has(id)));
-          if (matched.length === 0) return '';
           const top = matched.slice(0, 5);
           const more = matched.slice(5);
           return `
             <div class="lab">표준옵션</div>
-            <div class="full chips-wrap fp-popular" data-product-id="${esc(p.product_uid || '')}">
-              ${top.map(po => `<span class="chip chip-fp">${esc(po.label)}</span>`).join('')}
-              ${more.length ? `<span class="chip chip-more" data-fp-more="0">+${more.length} 더보기</span>` : ''}
+            <div class="full chips-wrap fp-popular">
+              ${top.length ? top.map(po => `<span class="chip chip-fp">${esc(po.label)}</span>`).join('') : '<span class="t-weak fs-label">매칭된 표준옵션 없음</span>'}
+              ${more.length ? `<span class="chip chip-more" data-fp-more>+${more.length} 더보기</span>` : ''}
               <span class="chip chip-fp-detail" data-fp-detail>옵션 자세히 →</span>
-              <div class="fp-popular-extra" data-fp-extra style="display:none;flex-basis:100%;display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
+              ${more.length ? `<div class="fp-popular-extra" data-fp-extra style="display:none;flex-basis:100%;flex-wrap:wrap;gap:4px;margin-top:4px;">
                 ${more.map(po => `<span class="chip chip-fp">${esc(po.label)}</span>`).join('')}
-              </div>
+              </div>` : ''}
             </div>
           `;
         })()}
