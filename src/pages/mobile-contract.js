@@ -291,16 +291,9 @@ function renderList() {
     `;
   };
 
-  // 영업자별 섹션 렌더 — 헤더 (이름 + 계약 수) + 카드 리스트
-  el.innerHTML = sortedGroups.map(g => `
-    <div class="m-ct-group ${g.isMine ? 'is-mine' : ''}">
-      <div class="m-ct-group-head">
-        <span class="m-ct-group-name">${g.name}${g.isMine ? ' (나)' : ''}</span>
-        <span class="m-ct-group-count">${g.items.length}건</span>
-      </div>
-      ${g.items.map(renderCard).join('')}
-    </div>
-  `).join('');
+  // 평평한 목록 — 그룹 정렬 순서 그대로 펼쳐서 카드만 나열
+  const flatItems = sortedGroups.flatMap(g => g.items);
+  el.innerHTML = flatItems.map(renderCard).join('');
 }
 
 function openContract(code) {

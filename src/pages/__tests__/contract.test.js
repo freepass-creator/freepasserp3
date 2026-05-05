@@ -1,25 +1,33 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { makeTempContractCode, CONTRACT_STATUSES } from '../contract.js';
 
 /* contract.js 의 격리 가능한 export — 코드 발급, 상수 */
+/* 현재 포맷: TMP-YYMMDD-NN (날짜 6자리 + 시퀀스 2자리)
+   nextSequence 는 firebase 호출이라 mock 필요 */
+
+vi.mock('../../firebase/collections.js', () => {
+  let n = 0;
+  return { nextSequence: vi.fn(async () => { n += 1; return n; }) };
+});
 
 describe('makeTempContractCode', () => {
-  it('TMP-{년}-{6자리} 형식', () => {
-    const code = makeTempContractCode();
-    expect(code).toMatch(/^TMP-\d{4}-[0-9A-Z]{6}$/);
+  it('TMP-{YYMMDD}-{NN} 형식', async () => {
+    const code = await makeTempContractCode();
+    expect(code).toMatch(/^TMP-\d{6}-\d{2}$/);
   });
 
-  it('현재 연도 포함', () => {
-    const code = makeTempContractCode();
-    const yyyy = new Date().getFullYear();
-    expect(code.startsWith(`TMP-${yyyy}-`)).toBe(true);
+  it('현재 날짜 포함 (YYMMDD)', async () => {
+    const code = await makeTempContractCode();
+    const d = new Date();
+    const yymmdd = String(d.getFullYear()).slice(2)
+                 + String(d.getMonth() + 1).padStart(2, '0')
+                 + String(d.getDate()).padStart(2, '0');
+    expect(code.startsWith(`TMP-${yymmdd}-`)).toBe(true);
   });
 
-  it('연속 호출 시 다른 코드 (시간 차)', async () => {
-    const a = makeTempContractCode();
-    // Date.now 변화를 보장하기 위해 짧게 대기 (base36 끝 6자리는 ms 범위)
-    await new Promise(r => setTimeout(r, 50));
-    const b = makeTempContractCode();
+  it('연속 호출 시 다른 코드 (시퀀스 증가)', async () => {
+    const a = await makeTempContractCode();
+    const b = await makeTempContractCode();
     expect(a).not.toBe(b);
   });
 });

@@ -68,8 +68,9 @@ describe('parseVehicleRegistration', () => {
     expect(result.vin).toBe('KMHJ281ABNU123456');
     expect(result.first_registration_date).toBe('2018.05.10');
     expect(result.year).toBe('2018');
-    expect(result.maker).toBe('현대');
-    expect(result.model).toBe('그랜저');
+    // 현재 parser 는 '차명' 으로 cert_car_name 만 추출 (제조사+모델 통합 보존)
+    // maker/model 분리는 사용자 입력 단계에서 처리 (cert_car_name 은 오인식 감지용)
+    expect(result.cert_car_name).toBe('그랜저');
     expect(result.fuel_type).toBe('가솔린');
     expect(result.engine_cc).toBe('2998');
   });
