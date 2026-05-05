@@ -433,36 +433,40 @@ export function renderContractWorkV2(c) {
 
   const ACTOR_LABEL = { agent: '영업자', provider: '공급사', admin: '관리자' };
 
-  // 4단계 카드 — 각 단계 안에 sub-check 묶음
+  // 4단계 카드 — 각 단계 = 영업자/공급사 2열 grid
+  const renderCell = (sub, st) => {
+    if (!sub) return '<div class="ct-substep-cell empty"></div>';
+    const c2 = sub.choices;
+    const canClick = isAdmin
+      || (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
+      || (sub.actor === 'provider' && role === 'provider')
+      || (sub.actor === 'admin'    && role === 'admin');
+    const canEdit = canClick && !st.locked && !sub.done && !sub.rejected && !sub.auto;
+    const cls = sub.rejected ? 'rejected' : sub.done ? 'done' : st.locked ? 'locked' : 'pending';
+    const icon = sub.rejected ? 'ph-x-circle-fill' : sub.done ? 'ph-check-circle-fill' : 'ph-circle';
+    const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
+    const adminBy = c[sub.key + '_by'] === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
+
+    return `
+      <div class="ct-substep-cell ${cls}${canEdit && !c2 ? ' clickable' : ''}" data-key="${esc(sub.key)}">
+        <i class="ph ${icon}"></i>
+        ${c2 && canEdit ? `<select class="ct-step-select" data-key="${esc(sub.key)}">
+          <option value="">${esc(sub.label)}</option>
+          ${c2.map(ch => `<option value="${esc(ch)}" ${sub.choice === ch ? 'selected' : ''}>${esc(ch)}</option>`).join('')}
+        </select>` : `<span class="ct-substep-label">${esc(display)}</span>`}
+        ${adminBy}
+      </div>
+    `;
+  };
+
   const stepRow = (step, idx) => {
     const st = states[step.id] || {};
     const stCls = st.rejected ? 'rejected' : st.done ? 'done' : st.locked ? 'locked' : 'pending';
     const stIcon = st.rejected ? 'ph-x-circle-fill' : st.done ? 'ph-check-circle-fill' : st.locked ? 'ph-lock' : 'ph-circle';
 
-    const subRows = (st.subStates || []).map(sub => {
-      const c2 = sub.choices;
-      const canClick = isAdmin
-        || (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
-        || (sub.actor === 'provider' && role === 'provider')
-        || (sub.actor === 'admin'    && role === 'admin');
-      const canEdit = canClick && !st.locked && !sub.done && !sub.rejected && !sub.auto;
-      const cls = sub.rejected ? 'rejected' : sub.done ? 'done' : st.locked ? 'locked' : 'pending';
-      const icon = sub.rejected ? 'ph-x-circle-fill' : sub.done ? 'ph-check-circle-fill' : 'ph-circle';
-      const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
-      const adminBy = c[sub.key + '_by'] === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
-
-      return `
-        <div class="ct-substep-row ${cls}${canEdit && !c2 ? ' clickable' : ''}" data-key="${esc(sub.key)}">
-          <i class="ph ${icon}"></i>
-          <span class="ct-substep-actor">${ACTOR_LABEL[sub.actor] || ''}</span>
-          ${c2 && canEdit ? `<select class="ct-step-select" data-key="${esc(sub.key)}">
-            <option value="">${esc(sub.label)}</option>
-            ${c2.map(ch => `<option value="${esc(ch)}" ${sub.choice === ch ? 'selected' : ''}>${esc(ch)}</option>`).join('')}
-          </select>` : `<span class="ct-substep-label">${esc(display)}</span>`}
-          ${adminBy}
-        </div>
-      `;
-    }).join('');
+    const subs = st.subStates || [];
+    const agentSub = subs.find(s => s.actor === 'agent') || null;
+    const respSub = subs.find(s => s.actor === 'provider' || s.actor === 'admin') || null;
 
     return `
       <div class="ct-step-card ${stCls}">
@@ -470,10 +474,12 @@ export function renderContractWorkV2(c) {
           <div class="ct-step-num">${idx + 1}</div>
           <i class="ph ${stIcon}"></i>
           <span class="ct-step-title">${esc(step.label)}</span>
-          <span class="ct-step-desc">${esc(step.desc || '')}</span>
           <span class="ct-step-count">${st.doneCount}/${st.totalCount}</span>
         </div>
-        <div class="ct-substeps">${subRows}</div>
+        <div class="ct-substep-pair">
+          ${renderCell(agentSub, st)}
+          ${renderCell(respSub, st)}
+        </div>
       </div>
     `;
   };
@@ -540,7 +546,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
   const reRender = options.reRender || (() => renderContractDetail(c));
 
   // 단계 셀 클릭 (단순 체크 토글) — 영업측 단계 ON 시 공급사·관리자에 알림톡
-  stepCard.querySelectorAll('.ct-step-cell.clickable, .ct-substep-row.clickable').forEach(cell => {
+  stepCard.querySelectorAll('.ct-step-cell.clickable, .ct-substep-cell.clickable').forEach(cell => {
     cell.addEventListener('click', async () => {
       const key = cell.dataset.key;
       if (!key) return;

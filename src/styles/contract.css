@@ -313,33 +313,40 @@
     border-radius: 999px;
   }
 
-  .ct-substeps {
-    display: flex; flex-direction: column;
+  /* 영업자 / 공급사 2열 grid */
+  .ct-substep-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--c-border);
     border-top: 1px solid var(--c-border);
   }
-  .ct-substep-row {
-    display: flex; align-items: center; gap: var(--sp-1);
-    padding: 4px var(--sp-2);
-    border-bottom: 1px solid var(--c-border-soft, var(--c-border));
-    font-size: var(--fs-xs);
+  .ct-substep-cell {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px var(--sp-2);
     background: var(--c-surface);
+    font-size: var(--fs-xs);
   }
-  .ct-substep-row:last-child { border-bottom: 0; }
-  .ct-substep-row i { font-size: 12px; flex-shrink: 0; }
-  .ct-substep-row.done { color: var(--c-ok); background: var(--c-ok-bg); }
-  .ct-substep-row.done i { color: var(--c-ok); }
-  .ct-substep-row.rejected { color: var(--c-err); background: var(--c-err-bg); }
-  .ct-substep-row.rejected i { color: var(--c-err); }
-  .ct-substep-row.pending { color: var(--c-text); }
-  .ct-substep-row.pending i { color: var(--c-text-muted); }
-  .ct-substep-row.locked { color: var(--c-text-muted); cursor: not-allowed; }
-  .ct-substep-row.clickable { cursor: pointer; }
-  .ct-substep-row.clickable:hover { background: var(--c-bg-hover); }
-  .ct-substep-actor {
-    display: inline-block; min-width: 38px;
-    color: var(--c-text-muted); font-size: 10px;
+  .ct-substep-cell i { font-size: 12px; flex-shrink: 0; }
+  .ct-substep-cell.done, .ct-substep-cell.is-done {
+    background: var(--c-ok-bg); color: var(--c-ok);
   }
-  .ct-substep-label { flex: 1; }
+  .ct-substep-cell.done i, .ct-substep-cell.is-done i { color: var(--c-ok); }
+  .ct-substep-cell.rejected, .ct-substep-cell.is-rejected {
+    background: var(--c-err-bg); color: var(--c-err);
+  }
+  .ct-substep-cell.rejected i, .ct-substep-cell.is-rejected i { color: var(--c-err); }
+  .ct-substep-cell.pending, .ct-substep-cell.is-pending { color: var(--c-text); }
+  .ct-substep-cell.pending i, .ct-substep-cell.is-pending i { color: var(--c-text-muted); }
+  .ct-substep-cell.locked, .ct-substep-cell.is-locked {
+    color: var(--c-text-muted); cursor: not-allowed; opacity: 0.6;
+  }
+  .ct-substep-cell.clickable, .ct-substep-cell[data-clickable] { cursor: pointer; }
+  .ct-substep-cell.clickable:hover, .ct-substep-cell[data-clickable]:hover {
+    background: var(--c-bg-hover);
+  }
+  .ct-substep-cell.empty { background: var(--c-bg-sub); }
+  .ct-substep-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* ── Contract Info Section (flat-stacked, canonical) ── */
   .contract-section {
