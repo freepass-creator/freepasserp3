@@ -676,7 +676,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       return `
         <div class="detail-section">
           <div class="detail-section-label" style="display:flex;align-items:center;gap:6px;">
-            <span>표준옵션</span>
+            <span>2. 표준옵션</span>
             <span class="t-weak fs-label" style="font-weight:400;">${matchedCount}/15</span>
             <span class="chip chip-fp-detail" data-fp-detail style="margin-left:auto;font-weight:400;">옵션 자세히 →</span>
           </div>
@@ -694,7 +694,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
     <!-- 3. 기간별 대여료 및 보증금 -->
     ${priceRows.length ? `<div class="detail-section">
-      <div class="detail-section-label">2. 기간별 대여료 및 보증금</div>
+      <div class="detail-section-label">3. 기간별 대여료 및 보증금</div>
       <table class="table">
         <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
         <tbody>${priceRows.map(r => `<tr><td>${r.m}개월</td><td class="num">${fmtMoneyMan(r.rent) || '-'}</td><td class="num">${fmtMoneyMan(r.dep) || '-'}</td></tr>`).join('')}</tbody>
@@ -715,7 +715,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
     <!-- 3. 운전자 연령 및 범위 — 정책 없으면 모든 값 '-' (섹션은 유지) -->
     <div class="detail-section">
-      <div class="detail-section-label">3. 운전자 연령 및 범위</div>
+      <div class="detail-section-label">4. 운전자 연령 및 범위</div>
       <div class="info-grid">
         <div class="lab">기본 연령</div><div class="full">${esc(condByLabel['기본연령'] || '-')}</div>
         ${pair('면허 취득', p._policy?.license_period || p.license_period, '연령 상한', condByLabel['연령상한'])}
@@ -759,7 +759,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       ];
       // 빈 값이어도 섹션은 유지 — 정책 없으면 모두 '-'
       return `<div class="detail-section">
-        <div class="detail-section-label">4. 보험 내용</div>
+        <div class="detail-section-label">5. 보험 내용</div>
         <table class="table">
           <thead><tr><th>구분</th><th>한도</th><th>면책금</th></tr></thead>
           <tbody>${insTableRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${r[2] || '-'}</td></tr>`).join('')}</tbody>
@@ -769,7 +769,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
     <!-- 5. 대여 조건 — 섹션 유지, 정책 없으면 빈칸 -->
     <div class="detail-section">
-      <div class="detail-section-label">5. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
+      <div class="detail-section-label">6. 대여 조건${policyName ? ` <span style="color:var(--text-muted); font-weight:400;">· ${esc(policyName)}</span>` : ''}</div>
       <div class="info-grid">
         ${pair('약정 주행거리', String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, ''), '1만Km 추가비', condByLabel['1만km추가'])}
         ${pair('심사 여부', condByLabel['심사여부'], '심사 기준', condByLabel['심사기준'])}
@@ -784,7 +784,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
     <!-- 6. 기타 정보 -->
     ${(providerName || policyName || specByLabel['최초등록일']) ? `<div class="detail-section">
-      <div class="detail-section-label">6. 기타 정보</div>
+      <div class="detail-section-label">7. 기타 정보</div>
       <div class="info-grid">
         ${providerName ? `<div class="lab">공급사</div><div class="full">${esc(providerName)}</div>` : ''}
         ${policyName ? `<div class="lab">정책명</div><div class="full">${esc(policyName)}</div>` : ''}
@@ -806,7 +806,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
     <!-- 7. 수수료 정보 (영업자/관리자만 — 데이터 없어도 섹션 표시) -->
     ${canSeeFee ? `<div class="detail-section">
-      <div class="detail-section-label">7. 수수료 정보</div>
+      <div class="detail-section-label">8. 수수료 정보</div>
       ${feeRows.length ? `
         <table class="table">
           <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>

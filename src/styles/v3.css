@@ -280,14 +280,14 @@ kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
   padding: 4px 8px; border-bottom: 1px solid var(--border-soft);
 }
 .info-grid .lab {
-  background: var(--bg-stripe);
-  color: var(--text-weak);
+  background: var(--bg-card, #fff);
+  color: var(--text-sub);
   font-weight: 500;
   border-right: 1px solid var(--border-soft);
 }
 .info-grid .full {
-  background: var(--surface, #fff);
-  color: var(--text);
+  background: var(--bg-header);
+  color: var(--text-main);
 }
 .info-grid .full[colspan], .info-grid .full {
   grid-column: 2 / -1;
