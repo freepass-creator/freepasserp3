@@ -604,9 +604,8 @@ function renderProgressPanel(c) {
     </section>
   `;
 
-  // 4단계 — 각 단계 = 영업자/공급사 2열 grid
+  // 4단계 — 한 줄 = 영업자 | → | 공급사 (7단계 시절 레이아웃, 4줄로)
   const renderCell = (sub, st) => {
-    if (!sub) return '<div class="ct-substep-cell empty"></div>';
     const c2 = sub.choices;
     const canClick = isAdmin
       || (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
@@ -617,35 +616,27 @@ function renderProgressPanel(c) {
     const icon = sub.rejected ? 'ph-x-circle' : sub.done ? 'ph-check-circle' : 'ph-circle';
     const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
     return `
-      <div class="ct-substep-cell ${cls}" data-key="${sub.key}" ${canEdit && !c2 ? 'data-clickable' : ''}>
+      <div class="ct-step-cell ${cls}" data-key="${sub.key}" ${canEdit && !c2 ? 'data-clickable' : ''}>
         <i class="ph ${icon}"></i>
         ${c2 && canEdit ? `<select class="ct-step-select" data-key="${sub.key}">
           <option value="">${sub.label}</option>
           ${c2.map(ch => `<option value="${ch}" ${sub.choice === ch ? 'selected' : ''}>${ch}</option>`).join('')}
-        </select>` : `<span class="ct-substep-label">${display}</span>`}
+        </select>` : `<span>${display}</span>`}
       </div>
     `;
   };
 
-  const rows = STEPS.map((step, idx) => {
+  const rows = STEPS.map((step) => {
     const st = states[step.id];
-    const stepCls = st?.rejected ? 'is-rejected' : st?.done ? 'is-done' : st?.locked ? 'is-locked' : 'is-pending';
-    const stepIcon = st?.rejected ? 'ph-x-circle' : st?.done ? 'ph-check-circle' : st?.locked ? 'ph-lock' : 'ph-circle';
     const subs = st?.subStates || [];
-    const agentSub = subs.find(s => s.actor === 'agent') || null;
-    const respSub = subs.find(s => s.actor === 'provider' || s.actor === 'admin') || null;
-
+    const agentSub = subs.find(s => s.actor === 'agent');
+    const respSub = subs.find(s => s.actor === 'provider' || s.actor === 'admin');
+    if (!agentSub || !respSub) return '';
     return `
-      <div class="ct-step-card ${stepCls}">
-        <div class="ct-step-head">
-          <span class="ct-step-num">${idx + 1}</span>
-          <i class="ph ${stepIcon}"></i>
-          <span class="ct-step-title">${step.label}</span>
-        </div>
-        <div class="ct-substep-pair">
-          ${renderCell(agentSub, st || {})}
-          ${renderCell(respSub, st || {})}
-        </div>
+      <div class="ct-step-row">
+        ${renderCell(agentSub, st || {})}
+        <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
+        ${renderCell(respSub, st || {})}
       </div>
     `;
   }).join('');
@@ -683,10 +674,9 @@ function renderProgressPanel(c) {
           <span class="m-info-section-title">진행 단계</span>
           <span class="sb-badge is-visible" style="background:${progressColor};">${prog.done}/${prog.total}</span>
         </div>
-        <div class="ct-steps-v4" style="padding:var(--sp-3);">
-          <div class="ct-pair-header" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;font-size:var(--fs-2xs);color:var(--c-text-muted);padding:0 0 6px;">
-            <div style="text-align:center;">영업자</div>
-            <div style="text-align:center;">공급사</div>
+        <div class="ct-steps" style="padding:var(--sp-3);">
+          <div class="ct-step-row" style="font-size:var(--fs-2xs);color:var(--c-text-muted);">
+            <div style="text-align:center;">영업자</div><div></div><div style="text-align:center;">공급사</div>
           </div>
           ${rows}
         </div>
