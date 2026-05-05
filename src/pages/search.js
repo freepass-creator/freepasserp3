@@ -680,11 +680,11 @@ export function renderSearchDetail(p, targetCard, options = {}) {
             <span class="t-weak fs-label" style="font-weight:400;">${matchedCount}/15</span>
             <span class="chip chip-fp-detail" data-fp-detail style="margin-left:auto;font-weight:400;">옵션 자세히 →</span>
           </div>
-          <div class="fp-icon-grid">
+          <div class="fp-icon-grid" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:4px 0;">
             ${all.map(po => `
-              <div class="fp-icon-item ${isMatched(po) ? 'is-on' : 'is-off'}" title="${esc(po.label)}">
-                <i class="ph ph-${po.icon || 'circle'}"></i>
-                <span>${esc(po.label)}</span>
+              <div class="fp-icon-item ${isMatched(po) ? 'is-on' : 'is-off'}" title="${esc(po.label)}" style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:4px;text-align:center;line-height:1.1;${isMatched(po) ? 'background:#e8f0ff;color:#1d4ed8;' : 'opacity:0.45;color:#9ca3af;'}">
+                <i class="ph ph-${po.icon || 'circle'}" style="font-size:18px;${isMatched(po) ? 'color:#3b82f6;' : 'color:#9ca3af;'}"></i>
+                <span style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;">${esc(po.label)}</span>
               </div>
             `).join('')}
           </div>
