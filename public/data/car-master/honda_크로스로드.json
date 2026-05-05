@@ -1,0 +1,24 @@
+{
+  "catalog_id": "honda_크로스로드",
+  "title": "혼다 크로스로드",
+  "maker": "혼다",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 크로스로드": {
+      "slug": "기본 크로스로드",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "크로스로드"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

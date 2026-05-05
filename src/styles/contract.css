@@ -273,6 +273,74 @@
     padding: 0 20px 0 4px;
   }
 
+  /* ── 4단계 카드 (v4) ── */
+  .ct-steps-v4 { display: flex; flex-direction: column; gap: var(--sp-2); }
+  .ct-step-card {
+    border: 1px solid var(--c-border);
+    border-radius: var(--ctrl-r);
+    background: var(--c-surface);
+    overflow: hidden;
+  }
+  .ct-step-card.done { border-color: var(--c-ok); }
+  .ct-step-card.rejected { border-color: var(--c-err); }
+  .ct-step-card.locked { opacity: 0.55; }
+
+  .ct-step-head {
+    display: flex; align-items: center; gap: var(--sp-1);
+    padding: var(--sp-1) var(--sp-2);
+    background: var(--c-bg-sub);
+    font-size: var(--fs-xs);
+  }
+  .ct-step-head .ct-step-num {
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--c-text-muted); color: var(--c-surface);
+    border-radius: 999px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: var(--fw-semibold);
+  }
+  .ct-step-card.done .ct-step-head .ct-step-num { background: var(--c-ok); }
+  .ct-step-card.rejected .ct-step-head .ct-step-num { background: var(--c-err); }
+  .ct-step-head i { font-size: var(--icon-sm); color: var(--c-text-sub); }
+  .ct-step-card.done .ct-step-head i { color: var(--c-ok); }
+  .ct-step-card.rejected .ct-step-head i { color: var(--c-err); }
+  .ct-step-title { font-weight: var(--fw-semibold); color: var(--c-text); }
+  .ct-step-desc { color: var(--c-text-muted); font-size: var(--fs-2xs); margin-left: var(--sp-1); }
+  .ct-step-count {
+    margin-left: auto;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--c-text-sub);
+    padding: 1px 6px; background: var(--c-surface);
+    border-radius: 999px;
+  }
+
+  .ct-substeps {
+    display: flex; flex-direction: column;
+    border-top: 1px solid var(--c-border);
+  }
+  .ct-substep-row {
+    display: flex; align-items: center; gap: var(--sp-1);
+    padding: 4px var(--sp-2);
+    border-bottom: 1px solid var(--c-border-soft, var(--c-border));
+    font-size: var(--fs-xs);
+    background: var(--c-surface);
+  }
+  .ct-substep-row:last-child { border-bottom: 0; }
+  .ct-substep-row i { font-size: 12px; flex-shrink: 0; }
+  .ct-substep-row.done { color: var(--c-ok); background: var(--c-ok-bg); }
+  .ct-substep-row.done i { color: var(--c-ok); }
+  .ct-substep-row.rejected { color: var(--c-err); background: var(--c-err-bg); }
+  .ct-substep-row.rejected i { color: var(--c-err); }
+  .ct-substep-row.pending { color: var(--c-text); }
+  .ct-substep-row.pending i { color: var(--c-text-muted); }
+  .ct-substep-row.locked { color: var(--c-text-muted); cursor: not-allowed; }
+  .ct-substep-row.clickable { cursor: pointer; }
+  .ct-substep-row.clickable:hover { background: var(--c-bg-hover); }
+  .ct-substep-actor {
+    display: inline-block; min-width: 38px;
+    color: var(--c-text-muted); font-size: 10px;
+  }
+  .ct-substep-label { flex: 1; }
+
   /* ── Contract Info Section (flat-stacked, canonical) ── */
   .contract-section {
     background: transparent;

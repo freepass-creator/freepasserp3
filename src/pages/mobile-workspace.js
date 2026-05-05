@@ -8,7 +8,7 @@ import { store } from '../core/store.js';
 import { watchCollection, updateRecord, pushRecord, incrementAtomic } from '../firebase/db.js';
 import { markRoomRead } from '../firebase/collections.js';
 import { showToast } from '../core/toast.js';
-import { STEPS as CONTRACT_STEPS, getProgress } from '../core/contract-steps.js';
+import { STEPS as CONTRACT_STEPS, getProgress, getStepStates } from '../core/contract-steps.js';
 import { pushMobileView, openBottomSheet } from '../core/mobile-shell.js';
 import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { mEmpty, mLoading } from '../core/format.js';
@@ -336,20 +336,18 @@ function openContractSheet(room) {
   }
 
   const prog = getProgress(c);
+  const states = (typeof getStepStates === 'function') ? getStepStates(c) : null;
   const stepsHtml = CONTRACT_STEPS.map(step => {
-    const agentKey = step.agent?.key;
-    const respKey = step.provider?.key || step.admin?.key;
-    const agentDone = agentKey ? (c[agentKey] === true || c[agentKey] === 'yes') : false;
-    const respVal = respKey ? c[respKey] : null;
-    const respDone = respVal === true || respVal === 'yes' || respVal === '출고 가능' || respVal === '출고 협의' || respVal === '서류 승인';
-    const rejected = respVal === '출고 불가' || respVal === '서류 부결';
-    const agentClass = agentDone ? 'is-done' : 'is-pending';
-    const respClass = rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
+    const st = states?.[step.id];
+    const subDots = (st?.subStates || []).map(s =>
+      `<i class="ph ${s.rejected ? 'ph-x-circle' : s.done ? 'ph-check-circle' : 'ph-circle'}" title="${s.label}${s.choice ? ' · ' + s.choice : ''}"></i>`
+    ).join('');
+    const cls = st?.rejected ? 'is-rejected' : st?.done ? 'is-done' : st?.locked ? 'is-locked' : 'is-pending';
     return `
-      <div class="ct-step-row">
-        <div class="ct-step-cell ${agentClass}"><i class="ph ${agentDone ? 'ph-check-circle' : 'ph-circle'}"></i><span>${step.agent?.label || ''}</span></div>
-        <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
-        <div class="ct-step-cell ${respClass}"><i class="ph ${rejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : 'ph-circle'}"></i><span>${respDone && respVal && respVal !== 'yes' && respVal !== true ? respVal : rejected ? respVal : step.provider?.label || step.admin?.label || ''}</span></div>
+      <div class="ct-step-row ${cls}">
+        <div class="ct-step-cell"><i class="ph ph-${step.icon || 'circle'}"></i><span>${step.label}</span></div>
+        <div class="ct-step-dots">${subDots}</div>
+        <div class="ct-step-count">${st ? `${st.doneCount}/${st.totalCount}` : ''}</div>
       </div>
     `;
   }).join('');

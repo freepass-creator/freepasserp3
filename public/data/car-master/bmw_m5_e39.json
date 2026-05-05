@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_m5_e39",
+  "title": "BMW M5 (E39)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 M5 (E39)": {
+      "slug": "기본 M5 (E39)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "m5e39"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

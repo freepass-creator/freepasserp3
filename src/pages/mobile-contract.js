@@ -336,7 +336,7 @@ function bindContractView(view, c) {
 
   // 진행 스텝 토글
   view.querySelector('[data-panel="progress"]').addEventListener('click', async (e) => {
-    const cell = e.target.closest('.ct-step-cell[data-clickable]');
+    const cell = e.target.closest('.ct-step-cell[data-clickable], .ct-substep-row[data-clickable]');
     if (!cell) return;
     const key = cell.dataset.key;
     if (!key) return;
@@ -604,37 +604,46 @@ function renderProgressPanel(c) {
     </section>
   `;
 
-  const rows = STEPS.map(step => {
+  // 4단계 — 각 단계마다 sub-check 묶음 표시
+  const rows = STEPS.map((step, idx) => {
     const st = states[step.id];
-    const agentKey = step.agent?.key;
-    const respKey = step.provider?.key || step.admin?.key;
-    const respRole = step.admin ? 'admin' : 'provider';
-    const choices = step.provider?.choices || step.admin?.choices || null;
-    const agentDone = agentKey ? (c[agentKey] === true || c[agentKey] === 'yes') : false;
-    const respVal = respKey ? c[respKey] : null;
-    const respDone = respVal === true || respVal === 'yes' || respVal === '출고 가능' || respVal === '출고 협의' || respVal === '서류 승인';
-    const rejected = respVal === '출고 불가' || respVal === '서류 부결';
-    const locked = st?.locked;
-    const canClickAgent = isAdmin || (!locked && role === 'agent' && !agentDone);
-    const canClickResp = isAdmin || (agentDone && !locked && role === respRole && !respDone && !rejected);
+    const stepCls = st?.rejected ? 'is-rejected' : st?.done ? 'is-done' : st?.locked ? 'is-locked' : 'is-pending';
+    const stepIcon = st?.rejected ? 'ph-x-circle' : st?.done ? 'ph-check-circle' : st?.locked ? 'ph-lock' : 'ph-circle';
 
-    const agentClass = locked ? 'is-locked' : agentDone ? 'is-done' : 'is-pending';
-    const respClass = !agentDone && !isAdmin ? 'is-locked' : rejected ? 'is-rejected' : respDone ? 'is-done' : 'is-pending';
+    const subRows = (st?.subStates || []).map(sub => {
+      const c2 = sub.choices;
+      const canClick = isAdmin
+        || (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
+        || (sub.actor === 'provider' && role === 'provider')
+        || (sub.actor === 'admin'    && role === 'admin');
+      const canEdit = canClick && !st.locked && !sub.done && !sub.rejected && !sub.auto;
+      const cls = sub.rejected ? 'is-rejected' : sub.done ? 'is-done' : st.locked ? 'is-locked' : 'is-pending';
+      const icon = sub.rejected ? 'ph-x-circle' : sub.done ? 'ph-check-circle' : 'ph-circle';
+      const actorLabel = { agent: '영업자', provider: '공급사', admin: '관리자' }[sub.actor] || '';
+      const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
+
+      return `
+        <div class="ct-substep-row ${cls}" data-key="${sub.key}" ${canEdit && !c2 ? 'data-clickable' : ''}>
+          <i class="ph ${icon}"></i>
+          <span class="ct-substep-actor">${actorLabel}</span>
+          ${c2 && canEdit ? `<select class="ct-step-select" data-key="${sub.key}">
+            <option value="">${sub.label}</option>
+            ${c2.map(ch => `<option value="${ch}" ${sub.choice === ch ? 'selected' : ''}>${ch}</option>`).join('')}
+          </select>` : `<span class="ct-substep-label">${display}</span>`}
+        </div>
+      `;
+    }).join('');
 
     return `
-      <div class="ct-step-row">
-        <div class="ct-step-cell ${agentClass}" data-key="${agentKey || ''}" ${canClickAgent && agentKey ? 'data-clickable' : ''}>
-          <i class="ph ${agentDone ? 'ph-check-circle' : 'ph-circle'}"></i>
-          <span>${step.agent?.label || ''}</span>
+      <div class="ct-step-card ${stepCls}">
+        <div class="ct-step-head">
+          <i class="ph ${stepIcon}"></i>
+          <span class="ct-step-num">${idx + 1}</span>
+          <span class="ct-step-title">${step.label}</span>
+          <span class="ct-step-desc">${step.desc || ''}</span>
+          <span class="ct-step-count">${st?.doneCount}/${st?.totalCount}</span>
         </div>
-        <div class="ct-step-arrow"><i class="ph ph-arrow-right"></i></div>
-        <div class="ct-step-cell ${respClass}" data-key="${respKey || ''}" ${!choices && canClickResp && respKey ? 'data-clickable' : ''}>
-          <i class="ph ${rejected ? 'ph-x-circle' : respDone ? 'ph-check-circle' : 'ph-circle'}"></i>
-          ${choices && canClickResp ? `<select class="ct-step-select" data-key="${respKey}">
-            <option value="">${step.provider?.label || step.admin?.label || ''}</option>
-            ${choices.map(ch => `<option value="${ch}" ${respVal === ch ? 'selected' : ''}>${ch}</option>`).join('')}
-          </select>` : `<span>${respDone && respVal && respVal !== 'yes' && respVal !== true ? respVal : rejected ? respVal : step.provider?.label || step.admin?.label || ''}</span>`}
-        </div>
+        <div class="ct-substeps">${subRows}</div>
       </div>
     `;
   }).join('');

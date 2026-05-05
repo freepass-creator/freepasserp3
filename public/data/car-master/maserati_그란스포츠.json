@@ -1,0 +1,24 @@
+{
+  "catalog_id": "maserati_그란스포츠",
+  "title": "마세라티 그란스포츠",
+  "maker": "마세라티",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 그란스포츠": {
+      "slug": "기본 그란스포츠",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "그란스포츠"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

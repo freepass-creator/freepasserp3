@@ -1,0 +1,24 @@
+{
+  "catalog_id": "vw_파사트_바리안트",
+  "title": "폭스바겐 파사트 바리안트",
+  "maker": "폭스바겐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 파사트 바리안트": {
+      "slug": "기본 파사트 바리안트",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "파사트바리안트"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

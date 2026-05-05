@@ -1,0 +1,24 @@
+{
+  "catalog_id": "porsche_928",
+  "title": "포르쉐 928",
+  "maker": "포르쉐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 928": {
+      "slug": "기본 928",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "928"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

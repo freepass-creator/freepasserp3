@@ -27,6 +27,26 @@ const MAKER_PREFIX = {
   '포르쉐': 'porsche',
   '랜드로버': 'landrover',
   '지프': 'jeep',
+  '렉서스': 'lexus',
+  '포드': 'ford',
+  '혼다': 'honda',
+  '도요타': 'toyota',
+  '닛산': 'nissan',
+  '캐딜락': 'cadillac',
+  '쉐보레': 'chevrolet',
+  '르노': 'renault',
+  '마세라티': 'maserati',
+  '람보르기니': 'lamborghini',
+  '페라리': 'ferrari',
+  '벤틀리': 'bentley',
+  '롤스로이스': 'rollsroyce',
+  '재규어': 'jaguar',
+  'SAAB': 'saab',
+  // 한국 화이트리스트 외 인기 (매칭률 끌어올리기용 stub)
+  '현대': 'hyundai',
+  '기아': 'kia',
+  '제네시스': 'genesis',
+  'KGM': 'kgm',
 };
 const TARGET_MAKERS = Object.keys(MAKER_PREFIX);
 
@@ -42,17 +62,18 @@ function subToSlug(sub) {
     .replace(/^_|_$/g, '');
 }
 
-// 미매칭 매물 (수입 인기 + 2017+) 추출
+// 미매칭 매물 추출
+//   - 2017 이전 생산은 정책상 제외
+//   - 생산년도 없는 것은 포함 (catalog 매칭은 가능)
 const candidates = encar.filter(e => {
   if (e.archived || !e.sub) return false;
   if (!TARGET_MAKERS.includes(e.maker)) return false;
   const y = parseInt((e.production_start||'').match(/(\d{4})/)?.[1] || 0);
-  if (y && y < 2017) return false;
-  if (!y) return false; // 생산년도 없으면 skip (자료 부족)
+  if (y && y < 2017) return false; // 2017 이전 명시된 것만 제외
   return !aliases[e.maker + '|' + norm(e.sub)];
 });
 
-console.log(`수입 미매칭 (2017+ + 생산년도 명시): ${candidates.length}`);
+console.log(`미매칭 (2017 이전 명시 제외): ${candidates.length}`);
 
 // catalog 생성 + alias 키 셋
 const newCatalogs = [];

@@ -1,0 +1,26 @@
+{
+  "catalog_id": "hyundai_grand_starex_facelift",
+  "title": "현대 더 뉴 그랜드 스타렉스",
+  "maker": "현대",
+  "source": "manual_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본": {
+      "slug": "기본",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "더뉴그랜드스타렉스",
+    "그랜드스타렉스페리",
+    "그랜드스타렉스페리"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2021-12"
+}

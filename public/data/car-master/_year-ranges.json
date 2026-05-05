@@ -1,4 +1,16 @@
 {
+  "audi_100": {
+    "start": "",
+    "end": "현재"
+  },
+  "audi_80": {
+    "start": "",
+    "end": "현재"
+  },
+  "audi_90": {
+    "start": "",
+    "end": "현재"
+  },
   "audi_a3_8y": {
     "start": "2009-01",
     "end": "현재"
@@ -25,6 +37,10 @@
   },
   "audi_a7_4k": {
     "start": "2020-01",
+    "end": "현재"
+  },
+  "audi_a8": {
+    "start": "",
     "end": "현재"
   },
   "audi_a8_d5": {
@@ -71,13 +87,25 @@
     "start": "2017-01",
     "end": "2022-12"
   },
+  "audi_rs3": {
+    "start": "",
+    "end": "현재"
+  },
   "audi_rs3_8y": {
     "start": "2023-01",
+    "end": "현재"
+  },
+  "audi_rs4": {
+    "start": "",
     "end": "현재"
   },
   "audi_rs5_f5": {
     "start": "2023-01",
     "end": "2023-12"
+  },
+  "audi_rs6": {
+    "start": "",
+    "end": "현재"
   },
   "audi_rs6_c8": {
     "start": "2024-01",
@@ -103,6 +131,10 @@
     "start": "2021-01",
     "end": "2023-12"
   },
+  "audi_s5_b10": {
+    "start": "",
+    "end": "현재"
+  },
   "audi_s5_f5": {
     "start": "2023-01",
     "end": "2023-12"
@@ -110,6 +142,10 @@
   "audi_s6_c8": {
     "start": "2020-01",
     "end": "2023-12"
+  },
+  "audi_s6_e_트론": {
+    "start": "",
+    "end": "현재"
   },
   "audi_s7_4k": {
     "start": "2020-01",
@@ -119,9 +155,17 @@
     "start": "2020-01",
     "end": "2023-12"
   },
+  "audi_s_e_트론_gt": {
+    "start": "",
+    "end": "현재"
+  },
   "audi_sq5_fy": {
     "start": "2020-01",
     "end": "2023-12"
+  },
+  "audi_sq6_e_트론_gf": {
+    "start": "",
+    "end": "현재"
   },
   "audi_sq7_4m": {
     "start": "2023-01",
@@ -134,6 +178,26 @@
   "audi_sq8_e_트론_ge": {
     "start": "2024-01",
     "end": "2024-12"
+  },
+  "audi_ttrs": {
+    "start": "",
+    "end": "현재"
+  },
+  "audi_ttrs_8s": {
+    "start": "",
+    "end": "현재"
+  },
+  "audi_v8": {
+    "start": "",
+    "end": "현재"
+  },
+  "audi_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "audi_뉴_s4": {
+    "start": "",
+    "end": "현재"
   },
   "bmw_1_series_f40": {
     "start": "2020-01",
@@ -219,6 +283,14 @@
     "start": "2021-01",
     "end": "현재"
   },
+  "bmw_m5_e28": {
+    "start": "",
+    "end": "현재"
+  },
+  "bmw_m5_e39": {
+    "start": "",
+    "end": "현재"
+  },
   "bmw_m5_f90": {
     "start": "2018-01",
     "end": "2023-12"
@@ -229,6 +301,10 @@
   },
   "bmw_m8_g15": {
     "start": "2020-01",
+    "end": "현재"
+  },
+  "bmw_m_쿠페_로드스터_e36": {
+    "start": "",
     "end": "현재"
   },
   "bmw_x1_u11": {
@@ -273,6 +349,14 @@
   },
   "bmw_z4_g29": {
     "start": "2019-01",
+    "end": "현재"
+  },
+  "bmw_z8": {
+    "start": "",
+    "end": "현재"
+  },
+  "bmw_기타": {
+    "start": "",
     "end": "현재"
   },
   "chevrolet_bolt_ev": {
@@ -327,6 +411,98 @@
     "start": "2013-01",
     "end": "현재"
   },
+  "ford_gt": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_s_max": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_레인저_3세대": {
+    "start": "2021-01",
+    "end": "2022-12"
+  },
+  "ford_레인저_4세대": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "ford_머스탱_7세대": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "ford_머스탱_마하_e": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_몬데오": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_몬데오_3세대": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_브롱코": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_브롱코_6세대": {
+    "start": "2022-01",
+    "end": "현재"
+  },
+  "ford_썬더버드": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_에코스포츠": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_윈드스타": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_익스페디션": {
+    "start": "2021-01",
+    "end": "2022-12"
+  },
+  "ford_익스플로러_6세대": {
+    "start": "2019-01",
+    "end": "현재"
+  },
+  "ford_컨투어": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_토러스": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_파이브_헌드레드": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_프로브": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_프리스타일": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_플렉스": {
+    "start": "",
+    "end": "현재"
+  },
+  "ford_피에스타": {
+    "start": "",
+    "end": "현재"
+  },
   "genesis_g70": {
     "start": "2020-01",
     "end": "현재"
@@ -367,6 +543,98 @@
     "start": "2023-01",
     "end": "현재"
   },
+  "honda_cr_v_5세대": {
+    "start": "2017-01",
+    "end": "2022-12"
+  },
+  "honda_cr_v_6세대": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "honda_fit": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_fit_aria": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_hr_v": {
+    "start": "2017-01",
+    "end": "2018-12"
+  },
+  "honda_s2000": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_라이프": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_레전드": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_리지라인": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_스텝웨건": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_스트림": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_어코드_10세대": {
+    "start": "2018-01",
+    "end": "2022-12"
+  },
+  "honda_어코드_11세대": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "honda_엘리멘트": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_인사이트": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_인스파이어": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_인테그라": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_크로스로드": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_파일럿_4세대": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "honda_패스포트": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_프렐류드": {
+    "start": "",
+    "end": "현재"
+  },
+  "honda_프리드": {
+    "start": "",
+    "end": "현재"
+  },
   "hyundai_avante_ad": {
     "start": "1996-01",
     "end": "2016-12"
@@ -394,6 +662,10 @@
   "hyundai_casper_pre": {
     "start": "2021-01",
     "end": "현재"
+  },
+  "hyundai_grand_starex_facelift": {
+    "start": "2016-01",
+    "end": "2021-12"
   },
   "hyundai_grandeur_gn7": {
     "start": "2022-11",
@@ -530,6 +802,10 @@
   "jeep_cherokee": {
     "start": "1993-01",
     "end": "2023-12"
+  },
+  "jeep_cj": {
+    "start": "",
+    "end": "현재"
   },
   "jeep_글래디에이터_jt": {
     "start": "2020-01",
@@ -819,6 +1095,14 @@
     "start": "1998-01",
     "end": "현재"
   },
+  "landrover_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "landrover_디스커버리": {
+    "start": "",
+    "end": "현재"
+  },
   "landrover_디스커버리_5": {
     "start": "2017-01",
     "end": "현재"
@@ -833,6 +1117,198 @@
   },
   "landrover_레인지로버_이보크_2세대": {
     "start": "2019-01",
+    "end": "현재"
+  },
+  "lexus_es300": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_es300h_7세대": {
+    "start": "2018-01",
+    "end": "현재"
+  },
+  "lexus_gs400": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_gs450h": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_gx460": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_gx470": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_is200": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_is300": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_is350": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_is_f": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_lc": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_lm_2세대": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "lexus_ls400": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_ls500_5세대": {
+    "start": "2018-01",
+    "end": "2024-12"
+  },
+  "lexus_ls500h_5세대": {
+    "start": "2018-01",
+    "end": "2024-12"
+  },
+  "lexus_lx_4세대": {
+    "start": "2025-01",
+    "end": "현재"
+  },
+  "lexus_nx300": {
+    "start": "2018-01",
+    "end": "2020-12"
+  },
+  "lexus_nx350h_2세대": {
+    "start": "2022-01",
+    "end": "현재"
+  },
+  "lexus_nx450h_2세대": {
+    "start": "2022-01",
+    "end": "현재"
+  },
+  "lexus_rc300": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_rx300": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_rx350h_5세대": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "lexus_rx400h": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_rx450h_5세대": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "lexus_rx450hl_4세대": {
+    "start": "2020-01",
+    "end": "2021-12"
+  },
+  "lexus_rx500h_5세대": {
+    "start": "2023-01",
+    "end": "2024-12"
+  },
+  "lexus_rz450e": {
+    "start": "2023-01",
+    "end": "2023-12"
+  },
+  "lexus_sc300": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_ux250h": {
+    "start": "2019-01",
+    "end": "2024-12"
+  },
+  "lexus_ux300e": {
+    "start": "2022-01",
+    "end": "2022-12"
+  },
+  "lexus_ux300h": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "lexus_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_뉴_es250": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_뉴_gs200t": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_뉴_gs300": {
+    "start": "2018-01",
+    "end": "2018-12"
+  },
+  "lexus_뉴_gs_f": {
+    "start": "",
+    "end": "현재"
+  },
+  "lexus_뉴_is300": {
+    "start": "2018-01",
+    "end": "2019-12"
+  },
+  "maserati_3200": {
+    "start": "",
+    "end": "현재"
+  },
+  "maserati_mc12": {
+    "start": "",
+    "end": "현재"
+  },
+  "maserati_mc20": {
+    "start": "2022-01",
+    "end": "2023-12"
+  },
+  "maserati_mc푸라": {
+    "start": "",
+    "end": "현재"
+  },
+  "maserati_그란스포츠": {
+    "start": "",
+    "end": "현재"
+  },
+  "maserati_그란카브리오_2세대": {
+    "start": "2024-01",
+    "end": "현재"
+  },
+  "maserati_그란투리스모_2세대": {
+    "start": "",
+    "end": "현재"
+  },
+  "maserati_그레칼레": {
+    "start": "2023-01",
+    "end": "현재"
+  },
+  "maserati_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "maserati_스파이더": {
+    "start": "",
+    "end": "현재"
+  },
+  "maserati_쿠페": {
+    "start": "",
     "end": "현재"
   },
   "mercedes_a_w177": {
@@ -851,12 +1327,20 @@
     "start": "2022-01",
     "end": "현재"
   },
+  "mercedes_cl_class_c140": {
+    "start": "",
+    "end": "현재"
+  },
   "mercedes_cla_class_c118": {
     "start": "2020-01",
     "end": "현재"
   },
   "mercedes_cle_class_c236": {
     "start": "2024-01",
+    "end": "현재"
+  },
+  "mercedes_clk_class_c208": {
+    "start": "",
     "end": "현재"
   },
   "mercedes_cls_class_c257": {
@@ -939,8 +1423,16 @@
     "start": "2017-01",
     "end": "2019-12"
   },
+  "mercedes_slr": {
+    "start": "",
+    "end": "현재"
+  },
   "mini_cooper": {
     "start": "2004-01",
+    "end": "현재"
+  },
+  "mini_로버_미니": {
+    "start": "",
     "end": "현재"
   },
   "mini_에이스맨_1세대": {
@@ -971,12 +1463,32 @@
     "start": "2020-01",
     "end": "현재"
   },
+  "porsche_928": {
+    "start": "",
+    "end": "현재"
+  },
+  "porsche_944": {
+    "start": "",
+    "end": "현재"
+  },
+  "porsche_968": {
+    "start": "",
+    "end": "현재"
+  },
   "porsche_cayenne": {
     "start": "2003-01",
     "end": "현재"
   },
   "porsche_macan": {
     "start": "2014-01",
+    "end": "현재"
+  },
+  "porsche_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "porsche_카레라_gt": {
+    "start": "",
     "end": "현재"
   },
   "porsche_타이칸": {
@@ -1051,6 +1563,26 @@
     "start": "2024-01",
     "end": "현재"
   },
+  "volvo_740": {
+    "start": "",
+    "end": "현재"
+  },
+  "volvo_760": {
+    "start": "",
+    "end": "현재"
+  },
+  "volvo_850": {
+    "start": "",
+    "end": "현재"
+  },
+  "volvo_940": {
+    "start": "",
+    "end": "현재"
+  },
+  "volvo_960": {
+    "start": "",
+    "end": "현재"
+  },
   "volvo_ex30": {
     "start": "2025-01",
     "end": "현재"
@@ -1059,12 +1591,20 @@
     "start": "2025-01",
     "end": "현재"
   },
+  "volvo_ex40": {
+    "start": "",
+    "end": "현재"
+  },
   "volvo_s60": {
     "start": "2005-01",
     "end": "2024-12"
   },
   "volvo_v60_크로스컨트리_2세대": {
     "start": "2019-01",
+    "end": "현재"
+  },
+  "volvo_v70": {
+    "start": "",
     "end": "현재"
   },
   "volvo_v90_크로스컨트리": {
@@ -1087,8 +1627,24 @@
     "start": "2012-01",
     "end": "2017-12"
   },
+  "volvo_기타": {
+    "start": "",
+    "end": "현재"
+  },
+  "vw_eos": {
+    "start": "",
+    "end": "현재"
+  },
   "vw_golf_8": {
     "start": "1996-01",
+    "end": "현재"
+  },
+  "vw_id_4": {
+    "start": "",
+    "end": "현재"
+  },
+  "vw_id_5": {
+    "start": "",
     "end": "현재"
   },
   "vw_jetta": {
@@ -1099,6 +1655,26 @@
     "start": "2008-01",
     "end": "2024-12"
   },
+  "vw_리알타": {
+    "start": "",
+    "end": "현재"
+  },
+  "vw_마이크로버스": {
+    "start": "",
+    "end": "현재"
+  },
+  "vw_벤토": {
+    "start": "",
+    "end": "현재"
+  },
+  "vw_비틀": {
+    "start": "",
+    "end": "현재"
+  },
+  "vw_사란": {
+    "start": "",
+    "end": "현재"
+  },
   "vw_아테온": {
     "start": "2018-01",
     "end": "2023-12"
@@ -1107,16 +1683,36 @@
     "start": "2025-01",
     "end": "현재"
   },
+  "vw_업": {
+    "start": "",
+    "end": "현재"
+  },
+  "vw_코라도": {
+    "start": "",
+    "end": "현재"
+  },
   "vw_투아렉_3세대": {
     "start": "2020-01",
+    "end": "현재"
+  },
+  "vw_트랜스포터": {
+    "start": "",
     "end": "현재"
   },
   "vw_티록": {
     "start": "2021-01",
     "end": "2022-12"
   },
+  "vw_파사트": {
+    "start": "",
+    "end": "현재"
+  },
   "vw_파사트_gt_b8": {
     "start": "2018-01",
     "end": "2022-12"
+  },
+  "vw_파사트_바리안트": {
+    "start": "",
+    "end": "현재"
   }
 }

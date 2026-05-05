@@ -1,0 +1,24 @@
+{
+  "catalog_id": "ford_익스플로러_6세대",
+  "title": "포드 익스플로러 6세대",
+  "maker": "포드",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 익스플로러 6세대": {
+      "slug": "기본 익스플로러 6세대",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "익스플로러6세대"
+  ],
+  "year_start": "2019-01",
+  "year_end": "현재"
+}

@@ -430,72 +430,52 @@ export function renderContractWorkV2(c) {
   const isAdmin = role === 'admin';
   const states = getStepStates(c);
   const prog = getProgress(c);
-  const isDoneVal = v => v === true || v === 'yes' || v === '출고 가능' || v === '출고 협의' || v === '서류 승인';
 
-  // 단계 번호 — phase 1,2(2a/2b 병렬),3,4,5,6
-  let lastPhase = 0;
-  let parallelIdx = 0;
-  const stepNumOf = (step, idx) => {
-    if (step.parallel) {
-      // 같은 phase 내 첫번째는 'a', 두번째는 'b'
-      if (step.phase !== lastPhase) parallelIdx = 0;
-      const letter = parallelIdx === 0 ? 'a' : 'b';
-      parallelIdx++;
-      return `${step.phase}${letter}`;
-    }
-    parallelIdx = 0;
-    return String(step.phase);
-  };
+  const ACTOR_LABEL = { agent: '영업자', provider: '공급사', admin: '관리자' };
 
+  // 4단계 카드 — 각 단계 안에 sub-check 묶음
   const stepRow = (step, idx) => {
     const st = states[step.id] || {};
-    const locked = !!st.locked;
-    const agentKey = step.agent?.key;
-    const respKey = step.provider?.key || step.admin?.key;
-    const respRole = step.admin ? 'admin' : 'provider';
-    const choices = step.provider?.choices || step.admin?.choices || null;
-    const agentVal = agentKey ? c[agentKey] : null;
-    const respVal = respKey ? c[respKey] : null;
-    const agentDone = isDoneVal(agentVal);
-    const respDone = isDoneVal(respVal);
-    const isRejected = respVal === '출고 불가' || respVal === '서류 부결';
+    const stCls = st.rejected ? 'rejected' : st.done ? 'done' : st.locked ? 'locked' : 'pending';
+    const stIcon = st.rejected ? 'ph-x-circle-fill' : st.done ? 'ph-check-circle-fill' : st.locked ? 'ph-lock' : 'ph-circle';
 
-    const canClickAgent = isAdmin || (!locked && role === 'agent' && !agentDone);
-    const canClickResp = isAdmin || (agentDone && !locked && role === respRole && !respDone && !isRejected);
+    const subRows = (st.subStates || []).map(sub => {
+      const c2 = sub.choices;
+      const canClick = isAdmin
+        || (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
+        || (sub.actor === 'provider' && role === 'provider')
+        || (sub.actor === 'admin'    && role === 'admin');
+      const canEdit = canClick && !st.locked && !sub.done && !sub.rejected && !sub.auto;
+      const cls = sub.rejected ? 'rejected' : sub.done ? 'done' : st.locked ? 'locked' : 'pending';
+      const icon = sub.rejected ? 'ph-x-circle-fill' : sub.done ? 'ph-check-circle-fill' : 'ph-circle';
+      const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
+      const adminBy = c[sub.key + '_by'] === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
 
-    const agentCls = agentDone ? 'done' : (locked ? 'locked' : 'pending');
-    const respCls = isRejected ? 'rejected' : (respDone ? 'done' : ((!agentDone && !isAdmin) || locked ? 'locked' : 'pending'));
-    const agentLabel = step.agent?.label || '-';
-    const respLabel = step.provider?.label || step.admin?.label || '-';
-    const respDisplay = (typeof respVal === 'string' && respVal && respVal !== 'yes') ? respVal : respLabel;
+      return `
+        <div class="ct-substep-row ${cls}${canEdit && !c2 ? ' clickable' : ''}" data-key="${esc(sub.key)}">
+          <i class="ph ${icon}"></i>
+          <span class="ct-substep-actor">${ACTOR_LABEL[sub.actor] || ''}</span>
+          ${c2 && canEdit ? `<select class="ct-step-select" data-key="${esc(sub.key)}">
+            <option value="">${esc(sub.label)}</option>
+            ${c2.map(ch => `<option value="${esc(ch)}" ${sub.choice === ch ? 'selected' : ''}>${esc(ch)}</option>`).join('')}
+          </select>` : `<span class="ct-substep-label">${esc(display)}</span>`}
+          ${adminBy}
+        </div>
+      `;
+    }).join('');
 
-    // 관리자가 대신 처리한 경우
-    const agentBy = c[agentKey + '_by'];
-    const respBy = c[(respKey || '') + '_by'];
-    const agentAdminBadge = agentBy === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
-    const respAdminBadge = respBy === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
-
-    // phase 바뀌면 위에 갭 (parallel 두 번째 행은 갭 없음)
-    const phaseBreak = (step.phase !== lastPhase && !(step.parallel && parallelIdx === 1)) ? 1 : 0;
-    const num = stepNumOf(step, idx);
-    lastPhase = step.phase;
-
-    const arrowCls = isRejected ? 'is-rejected' : (agentDone && respDone ? 'is-done' : '');
-
-    return `<div class="ct-step-row" data-phase-break="${phaseBreak}">
-      <div class="ct-step-num${step.parallel ? ' is-parallel' : ''}">${num}</div>
-      <div class="ct-step-cell ${agentCls}${canClickAgent && agentKey ? ' clickable' : ''}" data-key="${esc(agentKey || '')}">
-        <i class="ph ${agentDone ? 'ph-check-circle-fill' : 'ph-circle'}"></i><span>${esc(agentLabel)}</span>${agentAdminBadge}
+    return `
+      <div class="ct-step-card ${stCls}">
+        <div class="ct-step-head">
+          <div class="ct-step-num">${idx + 1}</div>
+          <i class="ph ${stIcon}"></i>
+          <span class="ct-step-title">${esc(step.label)}</span>
+          <span class="ct-step-desc">${esc(step.desc || '')}</span>
+          <span class="ct-step-count">${st.doneCount}/${st.totalCount}</span>
+        </div>
+        <div class="ct-substeps">${subRows}</div>
       </div>
-      <div class="ct-step-arrow ${arrowCls}"><i class="ph ph-caret-right"></i></div>
-      <div class="ct-step-cell ${respCls}${!choices && canClickResp && respKey ? ' clickable' : ''}" data-key="${esc(respKey || '')}">
-        <i class="ph ${isRejected ? 'ph-x-circle-fill' : respDone ? 'ph-check-circle-fill' : 'ph-circle'}"></i>
-        ${choices && canClickResp ? `<select class="ct-step-select" data-key="${esc(respKey)}">
-          <option value="">${esc(respLabel)}</option>
-          ${choices.map(ch => `<option value="${esc(ch)}" ${respVal === ch ? 'selected' : ''}>${esc(ch)}</option>`).join('')}
-        </select>` : `<span>${esc(respDisplay)}</span>`}${respAdminBadge}
-      </div>
-    </div>`;
+    `;
   };
 
   return `
@@ -507,13 +487,7 @@ export function renderContractWorkV2(c) {
       </div>
       <span style="font-size:12px;color:${prog.done === prog.total ? 'var(--alert-green-text)' : 'var(--alert-blue-text)'};">${prog.done}/${prog.total}</span>
     </div>
-    <div class="ct-steps-v3">
-      <div class="ct-step-row ct-step-head">
-        <div></div>
-        <div>영업</div>
-        <div></div>
-        <div>공급·관리</div>
-      </div>
+    <div class="ct-steps-v4">
       ${CONTRACT_STEPS_V2.map(stepRow).join('')}
     </div>
 
@@ -566,7 +540,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
   const reRender = options.reRender || (() => renderContractDetail(c));
 
   // 단계 셀 클릭 (단순 체크 토글) — 영업측 단계 ON 시 공급사·관리자에 알림톡
-  stepCard.querySelectorAll('.ct-step-cell.clickable').forEach(cell => {
+  stepCard.querySelectorAll('.ct-step-cell.clickable, .ct-substep-row.clickable').forEach(cell => {
     cell.addEventListener('click', async () => {
       const key = cell.dataset.key;
       if (!key) return;

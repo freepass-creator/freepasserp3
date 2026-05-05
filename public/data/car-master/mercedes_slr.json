@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_slr",
+  "title": "벤츠 SLR",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 SLR": {
+      "slug": "기본 SLR",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "slr"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

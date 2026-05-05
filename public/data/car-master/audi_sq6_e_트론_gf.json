@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_sq6_e_트론_gf",
+  "title": "아우디 SQ6 e-트론 (GF)",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 SQ6 e-트론 (GF)": {
+      "slug": "기본 SQ6 e-트론 (GF)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "sq6e트론gf"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

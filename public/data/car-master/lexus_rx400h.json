@@ -1,0 +1,24 @@
+{
+  "catalog_id": "lexus_rx400h",
+  "title": "렉서스 RX400h",
+  "maker": "렉서스",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 RX400h": {
+      "slug": "기본 RX400h",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "rx400h"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

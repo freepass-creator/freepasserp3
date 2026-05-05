@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_뉴_s4",
+  "title": "아우디 뉴 S4",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 뉴 S4": {
+      "slug": "기본 뉴 S4",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "뉴s4"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

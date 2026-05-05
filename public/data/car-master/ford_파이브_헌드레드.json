@@ -1,0 +1,24 @@
+{
+  "catalog_id": "ford_파이브_헌드레드",
+  "title": "포드 파이브 헌드레드",
+  "maker": "포드",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 파이브 헌드레드": {
+      "slug": "기본 파이브 헌드레드",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "파이브헌드레드"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

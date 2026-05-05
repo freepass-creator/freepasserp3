@@ -1,0 +1,24 @@
+{
+  "catalog_id": "vw_마이크로버스",
+  "title": "폭스바겐 마이크로버스",
+  "maker": "폭스바겐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 마이크로버스": {
+      "slug": "기본 마이크로버스",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "마이크로버스"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

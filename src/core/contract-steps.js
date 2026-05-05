@@ -1,154 +1,164 @@
 /**
- * contract-steps.js — 계약 진행단계 단일 소스
+ * contract-steps.js — 계약 진행단계 단일 소스 (v2: 4단계 단순화)
  *
- * 7단계 (2a/2b 병렬):
- *  1  출고문의 → 출고응답 (가능/불가)
- *  2a 계약금입금 → 계약금확인
- *  2b 서류제출 → 서류심사 (승인/부결)
- *  3  계약서요청 → 계약서발송 (관리자)
- *  4  계약서완료 → 잔금완료
- *  5  출고요청 → 출고완료
- *  6  인도확인 → 계약완료 → 정산생성
+ * 4단계:
+ *  1. 출고 문의 — 가능 여부
+ *  2. 서류    — 서류 + 계약서 모두 완료
+ *  3. 입금    — 계약금 + 잔금 모두 완료
+ *  4. 출고    — 출고 요청 + 인도 확인 → 정산 자동
+ *
+ * 기존 14개 체크 키는 그대로 유지 (DB 호환). 단계 정의만 4개로 그룹핑.
  */
 
 export const STEPS = [
   {
-    id: 'delivery_inquiry',
+    id: 'inquiry',
     phase: 1,
-    agent: { key: 'agent_delivery_inquiry', label: '출고 문의' },
-    provider: { key: 'provider_delivery_response', label: '출고 응답', choices: ['출고 가능', '출고 협의', '출고 불가'] },
+    label: '출고 문의',
+    desc: '출고 가능 여부 확인',
+    icon: 'magnifying-glass',
+    checks: [
+      { actor: 'agent',    key: 'agent_delivery_inquiry',     label: '출고 문의' },
+      { actor: 'provider', key: 'provider_delivery_response', label: '출고 응답', choices: ['출고 가능', '출고 협의', '출고 불가'] },
+    ],
   },
   {
-    id: 'deposit',
+    id: 'docs',
     phase: 2,
-    parallel: true,
-    agent: { key: 'agent_deposit_paid', label: '계약금 입금' },
-    provider: { key: 'provider_deposit_confirmed', label: '계약금 확인' },
+    label: '서류',
+    desc: '서류 + 계약서 완료',
+    icon: 'file-text',
+    checks: [
+      { actor: 'agent',    key: 'agent_docs_submitted', label: '서류 제출' },
+      { actor: 'provider', key: 'provider_docs_review', label: '서류 심사', choices: ['서류 승인', '서류 부결'] },
+      { actor: 'agent',    key: 'agent_contract_requested', label: '계약서 요청' },
+      { actor: 'admin',    key: 'admin_contract_sent', label: '계약서 발송' },
+    ],
   },
   {
-    id: 'documents',
-    phase: 2,
-    parallel: true,
-    agent: { key: 'agent_docs_submitted', label: '서류 제출' },
-    provider: { key: 'provider_docs_review', label: '서류 심사', choices: ['서류 승인', '서류 부결'] },
-  },
-  {
-    id: 'contract_request',
+    id: 'payment',
     phase: 3,
-    requires: ['deposit', 'documents'], // 2a + 2b 둘 다 완료 필요
-    agent: { key: 'agent_contract_requested', label: '계약서 요청' },
-    admin: { key: 'admin_contract_sent', label: '계약서 완료' },
-  },
-  {
-    id: 'balance',
-    phase: 4,
-    agent: { key: 'agent_balance_paid', label: '잔금 입금' },
-    provider: { key: 'provider_balance_confirmed', label: '잔금 확인' },
+    label: '입금',
+    desc: '계약금 + 잔금 완료',
+    icon: 'coin',
+    checks: [
+      { actor: 'agent',    key: 'agent_deposit_paid',         label: '계약금 입금' },
+      { actor: 'provider', key: 'provider_deposit_confirmed', label: '계약금 확인' },
+      { actor: 'agent',    key: 'agent_balance_paid',         label: '잔금 입금' },
+      { actor: 'provider', key: 'provider_balance_confirmed', label: '잔금 확인' },
+    ],
   },
   {
     id: 'release',
-    phase: 5,
-    agent: { key: 'agent_release_requested', label: '출고 요청' },
-    provider: { key: 'provider_release_completed', label: '출고 완료' },
-  },
-  {
-    id: 'handover',
-    phase: 6,
-    agent: { key: 'agent_handover_confirmed', label: '인도 확인' },
-    provider: { key: 'provider_contract_completed', label: '계약 완료' },
-    auto: true, // 양쪽 완료 시 → 계약완료 + 정산 생성
+    phase: 4,
+    label: '출고',
+    desc: '출고 + 인도 완료',
+    icon: 'truck',
+    checks: [
+      { actor: 'agent',    key: 'agent_release_requested',      label: '출고 요청' },
+      { actor: 'provider', key: 'provider_release_completed',   label: '출고 완료' },
+      { actor: 'agent',    key: 'agent_handover_confirmed',     label: '인도 확인' },
+      { actor: 'provider', key: 'provider_contract_completed',  label: '계약 완료', auto: true },
+    ],
   },
 ];
 
+/* 체크 값 판정 — true / 'yes' / 긍정 선택지 모두 done 으로 인정 */
+function isDone(value) {
+  if (value === true || value === 'yes') return true;
+  if (typeof value === 'string') {
+    return ['가능', '승인', '출고 가능', '출고 협의', '서류 승인'].includes(value);
+  }
+  return false;
+}
+function isRejected(value) {
+  if (typeof value === 'string') {
+    return ['불가', '부결', '출고 불가', '서류 부결'].includes(value);
+  }
+  return false;
+}
+
 /**
- * 단계별 잠금 상태 계산
- * @param {object} checks - 계약의 체크 필드들 (contract.agent_delivery_inquiry 등)
- * @returns {object} { stepId: { locked, agentDone, providerDone, adminDone, choice } }
+ * 단계별 상태
+ *   states[stepId] = {
+ *     locked:      이전 단계 미완료
+ *     done:        모든 sub-check done (rejected 없을 때)
+ *     rejected:    sub-check 중 하나라도 거부
+ *     subStates:   [{ key, actor, label, done, rejected, choice }]
+ *     doneCount, totalCount
+ *   }
  */
 export function getStepStates(checks = {}) {
   const states = {};
-  const isDone = key => {
-    const v = checks[key];
-    return v === true || v === 'yes' || v === '가능' || v === '승인' || v === '출고 가능' || v === '출고 협의' || v === '서류 승인';
-  };
-  const isRejected = key => {
-    const v = checks[key];
-    return v === '불가' || v === '부결' || v === '출고 불가' || v === '서류 부결';
-  };
-  const getChoice = key => checks[key] || null;
-
-  let prevPhaseDone = true; // 1단계는 항상 열림
+  let prevDone = true;
 
   for (const step of STEPS) {
-    const agentKey = step.agent?.key;
-    const providerKey = step.provider?.key;
-    const adminKey = step.admin?.key;
+    const subStates = (step.checks || []).map((c) => {
+      const v = checks[c.key];
+      return {
+        key: c.key,
+        actor: c.actor,
+        label: c.label,
+        choices: c.choices,
+        auto: !!c.auto,
+        choice: typeof v === 'string' ? v : null,
+        done: isDone(v),
+        rejected: isRejected(v),
+      };
+    });
 
-    const agentDone = agentKey ? isDone(agentKey) : true;
-    const providerDone = providerKey ? isDone(providerKey) : true;
-    const adminDone = adminKey ? isDone(adminKey) : true;
-    const rejected = providerKey ? isRejected(providerKey) : false;
-
-    // 잠금: 이전 단계 미완료 or requires 미충족
-    let locked = false;
-    if (step.phase === 1) {
-      locked = false;
-    } else if (step.requires) {
-      // 병렬 의존: requires의 모든 step이 완료되어야
-      locked = step.requires.some(reqId => {
-        const reqState = states[reqId];
-        return !reqState || !(reqState.agentDone && (reqState.providerDone || reqState.adminDone));
-      });
-    } else if (step.parallel) {
-      // 병렬 단계: 이전 phase 완료 필요
-      const prevPhase = step.phase - 1;
-      const prevSteps = STEPS.filter(s => s.phase === prevPhase);
-      locked = prevSteps.some(s => {
-        const ps = states[s.id];
-        return !ps || !(ps.agentDone && (ps.providerDone || ps.adminDone));
-      });
-    } else {
-      // 순차: 이전 단계 완료 필요
-      const prevIdx = STEPS.indexOf(step) - 1;
-      if (prevIdx >= 0) {
-        const prev = states[STEPS[prevIdx].id];
-        locked = !prev || !(prev.agentDone && (prev.providerDone || prev.adminDone));
-      }
-    }
+    const totalCount = subStates.length;
+    const doneCount = subStates.filter((s) => s.done).length;
+    const rejected = subStates.some((s) => s.rejected);
+    const done = !rejected && totalCount > 0 && doneCount === totalCount;
+    const locked = !prevDone;
 
     states[step.id] = {
       locked,
-      agentDone,
-      providerDone: providerKey ? isDone(providerKey) : true,
-      adminDone: adminKey ? isDone(adminKey) : true,
+      done,
       rejected,
-      choice: providerKey ? getChoice(providerKey) : null,
-      done: agentDone && (providerDone || adminDone) && !rejected,
+      subStates,
+      doneCount,
+      totalCount,
     };
+
+    prevDone = done; // 이 단계 완료해야 다음 단계 활성
   }
 
   return states;
 }
 
 /**
- * 전체 진행률
+ * 전체 진행률 — 단계 단위 (N/4)
  */
 export function getProgress(checks = {}) {
   const states = getStepStates(checks);
   const total = STEPS.length;
-  const done = STEPS.filter(s => states[s.id]?.done).length;
+  const done = STEPS.filter((s) => states[s.id]?.done).length;
   return { done, total };
 }
 
 /**
- * 모든 체크 키 목록
+ * sub-check 단위 진행률 — 카드 등에서 세부 표시용 (예: 8/14)
+ */
+export function getDetailProgress(checks = {}) {
+  let total = 0, done = 0;
+  for (const step of STEPS) {
+    for (const c of step.checks || []) {
+      total += 1;
+      if (isDone(checks[c.key])) done += 1;
+    }
+  }
+  return { done, total };
+}
+
+/**
+ * 모든 체크 키 목록 — 데이터 마이그레이션·필드 검증용
  */
 export function allCheckKeys() {
   const keys = [];
   for (const step of STEPS) {
-    if (step.agent?.key) keys.push(step.agent.key);
-    if (step.provider?.key) keys.push(step.provider.key);
-    if (step.admin?.key) keys.push(step.admin.key);
+    for (const c of step.checks || []) keys.push(c.key);
   }
   return keys;
 }

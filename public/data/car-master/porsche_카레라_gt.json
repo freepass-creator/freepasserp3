@@ -1,0 +1,24 @@
+{
+  "catalog_id": "porsche_카레라_gt",
+  "title": "포르쉐 카레라 GT",
+  "maker": "포르쉐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 카레라 GT": {
+      "slug": "기본 카레라 GT",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "카레라gt"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

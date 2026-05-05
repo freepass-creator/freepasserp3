@@ -1,4 +1,61 @@
 {
+  "audi_100": {
+    "id": "audi_100",
+    "title": "아우디 100",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 100"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_80": {
+    "id": "audi_80",
+    "title": "아우디 80",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 80"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_90": {
+    "id": "audi_90",
+    "title": "아우디 90",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 90"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "audi_a3_8y": {
     "id": "audi_a3_8y",
     "title": "아우디 A3 8Y",
@@ -150,6 +207,25 @@
     },
     "trims": [
       "기본 A7 (4K)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_a8": {
+    "id": "audi_a8",
+    "title": "아우디 A8",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 A8"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -367,6 +443,25 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "audi_rs3": {
+    "id": "audi_rs3",
+    "title": "아우디 RS3",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RS3"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "audi_rs3_8y": {
     "id": "audi_rs3_8y",
     "title": "아우디 RS3 (8Y)",
@@ -386,6 +481,25 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "audi_rs4": {
+    "id": "audi_rs4",
+    "title": "아우디 RS4",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RS4"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "audi_rs5_f5": {
     "id": "audi_rs5_f5",
     "title": "아우디 RS5 (F5)",
@@ -402,6 +516,25 @@
     },
     "trims": [
       "기본 RS5 (F5)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_rs6": {
+    "id": "audi_rs6",
+    "title": "아우디 RS6",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RS6"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -519,6 +652,25 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "audi_s5_b10": {
+    "id": "audi_s5_b10",
+    "title": "아우디 S5 (B10)",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 S5 (B10)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "audi_s5_f5": {
     "id": "audi_s5_f5",
     "title": "아우디 S5 (F5)",
@@ -554,6 +706,25 @@
     },
     "trims": [
       "기본 S6 (C8)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_s6_e_트론": {
+    "id": "audi_s6_e_트론",
+    "title": "아우디 S6 e-트론",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 S6 e-트론"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -595,6 +766,25 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "audi_s_e_트론_gt": {
+    "id": "audi_s_e_트론_gt",
+    "title": "아우디 S e-트론 GT",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 S e-트론 GT"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "audi_sq5_fy": {
     "id": "audi_sq5_fy",
     "title": "아우디 SQ5 (FY)",
@@ -611,6 +801,25 @@
     },
     "trims": [
       "기본 SQ5 (FY)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_sq6_e_트론_gf": {
+    "id": "audi_sq6_e_트론_gf",
+    "title": "아우디 SQ6 e-트론 (GF)",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 SQ6 e-트론 (GF)"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -668,6 +877,101 @@
     },
     "trims": [
       "기본 SQ8 e-트론 (GE)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_ttrs": {
+    "id": "audi_ttrs",
+    "title": "아우디 TTRS",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 TTRS"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_ttrs_8s": {
+    "id": "audi_ttrs_8s",
+    "title": "아우디 TTRS (8S)",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 TTRS (8S)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_v8": {
+    "id": "audi_v8",
+    "title": "아우디 V8",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 V8"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_기타": {
+    "id": "audi_기타",
+    "title": "아우디 기타",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "audi_뉴_s4": {
+    "id": "audi_뉴_s4",
+    "title": "아우디 뉴 S4",
+    "maker": "아우디",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 뉴 S4"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -1116,6 +1420,44 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "bmw_m5_e28": {
+    "id": "bmw_m5_e28",
+    "title": "BMW M5 (E28)",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 M5 (E28)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "bmw_m5_e39": {
+    "id": "bmw_m5_e39",
+    "title": "BMW M5 (E39)",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 M5 (E39)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "bmw_m5_f90": {
     "id": "bmw_m5_f90",
     "title": "BMW M5 (F90)",
@@ -1170,6 +1512,25 @@
     },
     "trims": [
       "기본 M8 (G15)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "bmw_m_쿠페_로드스터_e36": {
+    "id": "bmw_m_쿠페_로드스터_e36",
+    "title": "BMW M 쿠페/로드스터 (E36)",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 M 쿠페/로드스터 (E36)"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -1401,6 +1762,44 @@
     },
     "trims": [
       "기본 Z4 (G29)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "bmw_z8": {
+    "id": "bmw_z8",
+    "title": "BMW Z8",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 Z8"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "bmw_기타": {
+    "id": "bmw_기타",
+    "title": "BMW 기타",
+    "maker": "BMW",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -1691,6 +2090,443 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "ford_gt": {
+    "id": "ford_gt",
+    "title": "포드 GT",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 GT"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_s_max": {
+    "id": "ford_s_max",
+    "title": "포드 S-MAX",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 S-MAX"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_기타": {
+    "id": "ford_기타",
+    "title": "포드 기타",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_레인저_3세대": {
+    "id": "ford_레인저_3세대",
+    "title": "포드 레인저 3세대",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 레인저 3세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_레인저_4세대": {
+    "id": "ford_레인저_4세대",
+    "title": "포드 레인저 4세대",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 레인저 4세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_머스탱_7세대": {
+    "id": "ford_머스탱_7세대",
+    "title": "포드 머스탱 7세대",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 머스탱 7세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_머스탱_마하_e": {
+    "id": "ford_머스탱_마하_e",
+    "title": "포드 머스탱 마하 E",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 머스탱 마하 E"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_몬데오": {
+    "id": "ford_몬데오",
+    "title": "포드 몬데오",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 몬데오"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_몬데오_3세대": {
+    "id": "ford_몬데오_3세대",
+    "title": "포드 몬데오 3세대",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 몬데오 3세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_브롱코": {
+    "id": "ford_브롱코",
+    "title": "포드 브롱코",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 브롱코"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_브롱코_6세대": {
+    "id": "ford_브롱코_6세대",
+    "title": "포드 브롱코 6세대",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 브롱코 6세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_썬더버드": {
+    "id": "ford_썬더버드",
+    "title": "포드 썬더버드",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 썬더버드"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_에코스포츠": {
+    "id": "ford_에코스포츠",
+    "title": "포드 에코스포츠",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 에코스포츠"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_윈드스타": {
+    "id": "ford_윈드스타",
+    "title": "포드 윈드스타",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 윈드스타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_익스페디션": {
+    "id": "ford_익스페디션",
+    "title": "포드 익스페디션",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 익스페디션"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_익스플로러_6세대": {
+    "id": "ford_익스플로러_6세대",
+    "title": "포드 익스플로러 6세대",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 익스플로러 6세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_컨투어": {
+    "id": "ford_컨투어",
+    "title": "포드 컨투어",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 컨투어"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_토러스": {
+    "id": "ford_토러스",
+    "title": "포드 토러스",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 토러스"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_파이브_헌드레드": {
+    "id": "ford_파이브_헌드레드",
+    "title": "포드 파이브 헌드레드",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 파이브 헌드레드"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_프로브": {
+    "id": "ford_프로브",
+    "title": "포드 프로브",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 프로브"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_프리스타일": {
+    "id": "ford_프리스타일",
+    "title": "포드 프리스타일",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 프리스타일"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_플렉스": {
+    "id": "ford_플렉스",
+    "title": "포드 플렉스",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 플렉스"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "ford_피에스타": {
+    "id": "ford_피에스타",
+    "title": "포드 피에스타",
+    "maker": "포드",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 피에스타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "genesis_g70": {
     "id": "genesis_g70",
     "title": "제네시스 더 뉴 G70",
@@ -1967,6 +2803,443 @@
     "fetched_at": "2026-05-04",
     "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)"
   },
+  "honda_cr_v_5세대": {
+    "id": "honda_cr_v_5세대",
+    "title": "혼다 CR-V 5세대",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 CR-V 5세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_cr_v_6세대": {
+    "id": "honda_cr_v_6세대",
+    "title": "혼다 CR-V 6세대",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 CR-V 6세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_fit": {
+    "id": "honda_fit",
+    "title": "혼다 Fit",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 Fit"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_fit_aria": {
+    "id": "honda_fit_aria",
+    "title": "혼다 Fit Aria",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 Fit Aria"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_hr_v": {
+    "id": "honda_hr_v",
+    "title": "혼다 HR-V",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 HR-V"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_s2000": {
+    "id": "honda_s2000",
+    "title": "혼다 S2000",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 S2000"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_기타": {
+    "id": "honda_기타",
+    "title": "혼다 기타",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_라이프": {
+    "id": "honda_라이프",
+    "title": "혼다 라이프",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 라이프"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_레전드": {
+    "id": "honda_레전드",
+    "title": "혼다 레전드",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 레전드"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_리지라인": {
+    "id": "honda_리지라인",
+    "title": "혼다 리지라인",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 리지라인"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_스텝웨건": {
+    "id": "honda_스텝웨건",
+    "title": "혼다 스텝웨건",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 스텝웨건"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_스트림": {
+    "id": "honda_스트림",
+    "title": "혼다 스트림",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 스트림"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_어코드_10세대": {
+    "id": "honda_어코드_10세대",
+    "title": "혼다 어코드 10세대",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 어코드 10세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_어코드_11세대": {
+    "id": "honda_어코드_11세대",
+    "title": "혼다 어코드 11세대",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 어코드 11세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_엘리멘트": {
+    "id": "honda_엘리멘트",
+    "title": "혼다 엘리멘트",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 엘리멘트"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_인사이트": {
+    "id": "honda_인사이트",
+    "title": "혼다 인사이트",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 인사이트"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_인스파이어": {
+    "id": "honda_인스파이어",
+    "title": "혼다 인스파이어",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 인스파이어"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_인테그라": {
+    "id": "honda_인테그라",
+    "title": "혼다 인테그라",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 인테그라"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_크로스로드": {
+    "id": "honda_크로스로드",
+    "title": "혼다 크로스로드",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 크로스로드"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_파일럿_4세대": {
+    "id": "honda_파일럿_4세대",
+    "title": "혼다 파일럿 4세대",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 파일럿 4세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_패스포트": {
+    "id": "honda_패스포트",
+    "title": "혼다 패스포트",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 패스포트"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_프렐류드": {
+    "id": "honda_프렐류드",
+    "title": "혼다 프렐류드",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 프렐류드"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "honda_프리드": {
+    "id": "honda_프리드",
+    "title": "혼다 프리드",
+    "maker": "혼다",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 프리드"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "hyundai_avante_ad": {
     "id": "hyundai_avante_ad",
     "title": "현대 아반떼 AD",
@@ -2137,6 +3410,25 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "페리 전 stub"
+  },
+  "hyundai_grand_starex_facelift": {
+    "id": "hyundai_grand_starex_facelift",
+    "title": "현대 더 뉴 그랜드 스타렉스",
+    "maker": "현대",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본"
+    ],
+    "fetched_at": "2026-05-05"
   },
   "hyundai_grandeur_gn7": {
     "id": "hyundai_grandeur_gn7",
@@ -3040,6 +4332,25 @@
       "오버랜드"
     ],
     "fetched_at": "2026-05-04"
+  },
+  "jeep_cj": {
+    "id": "jeep_cj",
+    "title": "지프 CJ",
+    "maker": "지프",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 CJ"
+    ],
+    "fetched_at": "2026-05-05"
   },
   "jeep_글래디에이터_jt": {
     "id": "jeep_글래디에이터_jt",
@@ -4871,6 +6182,44 @@
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
   },
+  "landrover_기타": {
+    "id": "landrover_기타",
+    "title": "랜드로버 기타",
+    "maker": "랜드로버",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "landrover_디스커버리": {
+    "id": "landrover_디스커버리",
+    "title": "랜드로버 디스커버리",
+    "maker": "랜드로버",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 디스커버리"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "landrover_디스커버리_5": {
     "id": "landrover_디스커버리_5",
     "title": "랜드로버 디스커버리 5",
@@ -4944,6 +6293,918 @@
     },
     "trims": [
       "기본 레인지로버 이보크 2세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_es300": {
+    "id": "lexus_es300",
+    "title": "렉서스 ES300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 ES300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_es300h_7세대": {
+    "id": "lexus_es300h_7세대",
+    "title": "렉서스 ES300h 7세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 ES300h 7세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_gs400": {
+    "id": "lexus_gs400",
+    "title": "렉서스 GS400",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 GS400"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_gs450h": {
+    "id": "lexus_gs450h",
+    "title": "렉서스 GS450h",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 GS450h"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_gx460": {
+    "id": "lexus_gx460",
+    "title": "렉서스 GX460",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 GX460"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_gx470": {
+    "id": "lexus_gx470",
+    "title": "렉서스 GX470",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 GX470"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_is200": {
+    "id": "lexus_is200",
+    "title": "렉서스 IS200",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 IS200"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_is300": {
+    "id": "lexus_is300",
+    "title": "렉서스 IS300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 IS300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_is350": {
+    "id": "lexus_is350",
+    "title": "렉서스 IS350",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 IS350"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_is_f": {
+    "id": "lexus_is_f",
+    "title": "렉서스 IS F",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 IS F"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_lc": {
+    "id": "lexus_lc",
+    "title": "렉서스 LC",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 LC"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_lm_2세대": {
+    "id": "lexus_lm_2세대",
+    "title": "렉서스 LM 2세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 LM 2세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_ls400": {
+    "id": "lexus_ls400",
+    "title": "렉서스 LS400",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 LS400"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_ls500_5세대": {
+    "id": "lexus_ls500_5세대",
+    "title": "렉서스 LS500 5세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 LS500 5세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_ls500h_5세대": {
+    "id": "lexus_ls500h_5세대",
+    "title": "렉서스 LS500h 5세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 LS500h 5세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_lx_4세대": {
+    "id": "lexus_lx_4세대",
+    "title": "렉서스 LX 4세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 LX 4세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_nx300": {
+    "id": "lexus_nx300",
+    "title": "렉서스 NX300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 NX300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_nx350h_2세대": {
+    "id": "lexus_nx350h_2세대",
+    "title": "렉서스 NX350h 2세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 NX350h 2세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_nx450h_2세대": {
+    "id": "lexus_nx450h_2세대",
+    "title": "렉서스 NX450h+ 2세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 NX450h+ 2세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rc300": {
+    "id": "lexus_rc300",
+    "title": "렉서스 RC300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RC300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rx300": {
+    "id": "lexus_rx300",
+    "title": "렉서스 RX300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RX300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rx350h_5세대": {
+    "id": "lexus_rx350h_5세대",
+    "title": "렉서스 RX350h 5세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RX350h 5세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rx400h": {
+    "id": "lexus_rx400h",
+    "title": "렉서스 RX400h",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RX400h"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rx450h_5세대": {
+    "id": "lexus_rx450h_5세대",
+    "title": "렉서스 RX450h+ 5세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RX450h+ 5세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rx450hl_4세대": {
+    "id": "lexus_rx450hl_4세대",
+    "title": "렉서스 RX450hL 4세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RX450hL 4세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rx500h_5세대": {
+    "id": "lexus_rx500h_5세대",
+    "title": "렉서스 RX500h 5세대",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RX500h 5세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_rz450e": {
+    "id": "lexus_rz450e",
+    "title": "렉서스 RZ450e",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 RZ450e"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_sc300": {
+    "id": "lexus_sc300",
+    "title": "렉서스 SC300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 SC300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_ux250h": {
+    "id": "lexus_ux250h",
+    "title": "렉서스 UX250h",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 UX250h"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_ux300e": {
+    "id": "lexus_ux300e",
+    "title": "렉서스 UX300e",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 UX300e"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_ux300h": {
+    "id": "lexus_ux300h",
+    "title": "렉서스 UX300h",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 UX300h"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_기타": {
+    "id": "lexus_기타",
+    "title": "렉서스 기타",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_뉴_es250": {
+    "id": "lexus_뉴_es250",
+    "title": "렉서스 뉴 ES250",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 뉴 ES250"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_뉴_gs200t": {
+    "id": "lexus_뉴_gs200t",
+    "title": "렉서스 뉴 GS200t",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 뉴 GS200t"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_뉴_gs300": {
+    "id": "lexus_뉴_gs300",
+    "title": "렉서스 뉴 GS300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 뉴 GS300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_뉴_gs_f": {
+    "id": "lexus_뉴_gs_f",
+    "title": "렉서스 뉴 GS F",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 뉴 GS F"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "lexus_뉴_is300": {
+    "id": "lexus_뉴_is300",
+    "title": "렉서스 뉴 IS300",
+    "maker": "렉서스",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 뉴 IS300"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_3200": {
+    "id": "maserati_3200",
+    "title": "마세라티 3200",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 3200"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_mc12": {
+    "id": "maserati_mc12",
+    "title": "마세라티 MC12",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 MC12"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_mc20": {
+    "id": "maserati_mc20",
+    "title": "마세라티 MC20",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 MC20"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_mc푸라": {
+    "id": "maserati_mc푸라",
+    "title": "마세라티 MC푸라",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 MC푸라"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_그란스포츠": {
+    "id": "maserati_그란스포츠",
+    "title": "마세라티 그란스포츠",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 그란스포츠"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_그란카브리오_2세대": {
+    "id": "maserati_그란카브리오_2세대",
+    "title": "마세라티 그란카브리오 2세대",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 그란카브리오 2세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_그란투리스모_2세대": {
+    "id": "maserati_그란투리스모_2세대",
+    "title": "마세라티 그란투리스모 2세대",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 그란투리스모 2세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_그레칼레": {
+    "id": "maserati_그레칼레",
+    "title": "마세라티 그레칼레",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 그레칼레"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_기타": {
+    "id": "maserati_기타",
+    "title": "마세라티 기타",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_스파이더": {
+    "id": "maserati_스파이더",
+    "title": "마세라티 스파이더",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 스파이더"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "maserati_쿠페": {
+    "id": "maserati_쿠페",
+    "title": "마세라티 쿠페",
+    "maker": "마세라티",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 쿠페"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -5041,6 +7302,25 @@
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
   },
+  "mercedes_cl_class_c140": {
+    "id": "mercedes_cl_class_c140",
+    "title": "벤츠 CL-클래스 C140",
+    "maker": "벤츠",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 CL-클래스 C140"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "mercedes_cla_class_c118": {
     "id": "mercedes_cla_class_c118",
     "title": "벤츠 CLA-클래스 C118",
@@ -5076,6 +7356,25 @@
     },
     "trims": [
       "기본 CLE-클래스 C236"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "mercedes_clk_class_c208": {
+    "id": "mercedes_clk_class_c208",
+    "title": "벤츠 CLK-클래스 C208",
+    "maker": "벤츠",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 CLK-클래스 C208"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -5506,6 +7805,25 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "mercedes_slr": {
+    "id": "mercedes_slr",
+    "title": "벤츠 SLR",
+    "maker": "벤츠",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 SLR"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "mini_cooper": {
     "id": "mini_cooper",
     "title": "미니 쿠퍼",
@@ -5530,6 +7848,25 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
+  },
+  "mini_로버_미니": {
+    "id": "mini_로버_미니",
+    "title": "미니 로버 미니",
+    "maker": "미니",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 로버 미니"
+    ],
+    "fetched_at": "2026-05-05"
   },
   "mini_에이스맨_1세대": {
     "id": "mini_에이스맨_1세대",
@@ -5664,6 +8001,63 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "porsche_928": {
+    "id": "porsche_928",
+    "title": "포르쉐 928",
+    "maker": "포르쉐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 928"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "porsche_944": {
+    "id": "porsche_944",
+    "title": "포르쉐 944",
+    "maker": "포르쉐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 944"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "porsche_968": {
+    "id": "porsche_968",
+    "title": "포르쉐 968",
+    "maker": "포르쉐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 968"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "porsche_cayenne": {
     "id": "porsche_cayenne",
     "title": "포르쉐 카이엔 PO536",
@@ -5714,6 +8108,44 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
+  },
+  "porsche_기타": {
+    "id": "porsche_기타",
+    "title": "포르쉐 기타",
+    "maker": "포르쉐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "porsche_카레라_gt": {
+    "id": "porsche_카레라_gt",
+    "title": "포르쉐 카레라 GT",
+    "maker": "포르쉐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 카레라 GT"
+    ],
+    "fetched_at": "2026-05-05"
   },
   "porsche_타이칸": {
     "id": "porsche_타이칸",
@@ -6114,6 +8546,101 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "volvo_740": {
+    "id": "volvo_740",
+    "title": "볼보 740",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 740"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "volvo_760": {
+    "id": "volvo_760",
+    "title": "볼보 760",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 760"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "volvo_850": {
+    "id": "volvo_850",
+    "title": "볼보 850",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 850"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "volvo_940": {
+    "id": "volvo_940",
+    "title": "볼보 940",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 940"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "volvo_960": {
+    "id": "volvo_960",
+    "title": "볼보 960",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 960"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "volvo_ex30": {
     "id": "volvo_ex30",
     "title": "볼보 EX30",
@@ -6149,6 +8676,25 @@
     },
     "trims": [
       "기본 EX30 크로스 컨트리"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "volvo_ex40": {
+    "id": "volvo_ex40",
+    "title": "볼보 EX40",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 EX40"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -6192,6 +8738,25 @@
     },
     "trims": [
       "기본 V60 크로스컨트리 2세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "volvo_v70": {
+    "id": "volvo_v70",
+    "title": "볼보 V70",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 V70"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -6312,6 +8877,44 @@
     "fetched_at": "2026-05-04",
     "note": "페리 전/세대 분리 stub"
   },
+  "volvo_기타": {
+    "id": "volvo_기타",
+    "title": "볼보 기타",
+    "maker": "볼보",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 기타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_eos": {
+    "id": "vw_eos",
+    "title": "폭스바겐 EOS",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 EOS"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "vw_golf_8": {
     "id": "vw_golf_8",
     "title": "폭스바겐 골프 8세대",
@@ -6336,6 +8939,44 @@
     ],
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
+  },
+  "vw_id_4": {
+    "id": "vw_id_4",
+    "title": "폭스바겐 ID.4",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 ID.4"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_id_5": {
+    "id": "vw_id_5",
+    "title": "폭스바겐 ID.5",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 ID.5"
+    ],
+    "fetched_at": "2026-05-05"
   },
   "vw_jetta": {
     "id": "vw_jetta",
@@ -6381,6 +9022,101 @@
     "fetched_at": "2026-05-04",
     "note": "수입차 stub"
   },
+  "vw_리알타": {
+    "id": "vw_리알타",
+    "title": "폭스바겐 리알타",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 리알타"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_마이크로버스": {
+    "id": "vw_마이크로버스",
+    "title": "폭스바겐 마이크로버스",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 마이크로버스"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_벤토": {
+    "id": "vw_벤토",
+    "title": "폭스바겐 벤토",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 벤토"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_비틀": {
+    "id": "vw_비틀",
+    "title": "폭스바겐 비틀",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 비틀"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_사란": {
+    "id": "vw_사란",
+    "title": "폭스바겐 사란",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 사란"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "vw_아테온": {
     "id": "vw_아테온",
     "title": "폭스바겐 아테온",
@@ -6419,6 +9155,44 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "vw_업": {
+    "id": "vw_업",
+    "title": "폭스바겐 업",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 업"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_코라도": {
+    "id": "vw_코라도",
+    "title": "폭스바겐 코라도",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 코라도"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "vw_투아렉_3세대": {
     "id": "vw_투아렉_3세대",
     "title": "폭스바겐 투아렉 3세대",
@@ -6435,6 +9209,25 @@
     },
     "trims": [
       "기본 투아렉 3세대"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_트랜스포터": {
+    "id": "vw_트랜스포터",
+    "title": "폭스바겐 트랜스포터",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 트랜스포터"
     ],
     "fetched_at": "2026-05-05"
   },
@@ -6457,6 +9250,25 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "vw_파사트": {
+    "id": "vw_파사트",
+    "title": "폭스바겐 파사트",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 파사트"
+    ],
+    "fetched_at": "2026-05-05"
+  },
   "vw_파사트_gt_b8": {
     "id": "vw_파사트_gt_b8",
     "title": "폭스바겐 파사트 GT(B8)",
@@ -6473,6 +9285,25 @@
     },
     "trims": [
       "기본 파사트 GT(B8)"
+    ],
+    "fetched_at": "2026-05-05"
+  },
+  "vw_파사트_바리안트": {
+    "id": "vw_파사트_바리안트",
+    "title": "폭스바겐 파사트 바리안트",
+    "maker": "폭스바겐",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "기본 파사트 바리안트"
     ],
     "fetched_at": "2026-05-05"
   }

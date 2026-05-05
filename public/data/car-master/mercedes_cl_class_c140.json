@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_cl_class_c140",
+  "title": "벤츠 CL-클래스 C140",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 CL-클래스 C140": {
+      "slug": "기본 CL-클래스 C140",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "cl클래스c140"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

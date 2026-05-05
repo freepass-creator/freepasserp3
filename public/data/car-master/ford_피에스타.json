@@ -1,0 +1,24 @@
+{
+  "catalog_id": "ford_피에스타",
+  "title": "포드 피에스타",
+  "maker": "포드",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 피에스타": {
+      "slug": "기본 피에스타",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "피에스타"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

@@ -1,0 +1,24 @@
+{
+  "catalog_id": "honda_fit_aria",
+  "title": "혼다 Fit Aria",
+  "maker": "혼다",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 Fit Aria": {
+      "slug": "기본 Fit Aria",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "fitaria"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

@@ -1,0 +1,24 @@
+{
+  "catalog_id": "honda_s2000",
+  "title": "혼다 S2000",
+  "maker": "혼다",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 S2000": {
+      "slug": "기본 S2000",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "s2000"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

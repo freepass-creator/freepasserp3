@@ -1,0 +1,24 @@
+{
+  "catalog_id": "maserati_스파이더",
+  "title": "마세라티 스파이더",
+  "maker": "마세라티",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 스파이더": {
+      "slug": "기본 스파이더",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "스파이더"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

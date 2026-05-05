@@ -1,0 +1,24 @@
+{
+  "catalog_id": "lexus_ls400",
+  "title": "렉서스 LS400",
+  "maker": "렉서스",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 LS400": {
+      "slug": "기본 LS400",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "ls400"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}

@@ -1,0 +1,24 @@
+{
+  "catalog_id": "maserati_그란투리스모_2세대",
+  "title": "마세라티 그란투리스모 2세대",
+  "maker": "마세라티",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 그란투리스모 2세대": {
+      "slug": "기본 그란투리스모 2세대",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "그란투리스모2세대"
+  ],
+  "year_start": "",
+  "year_end": "현재"
+}
