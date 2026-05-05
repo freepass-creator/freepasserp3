@@ -95,25 +95,25 @@ export function fpIdsToNames(ids) {
 
 /** 필수 10 — 큰 칩, 메인 줄 (등급 분류 + 안전 ADAS 핵심) */
 export const FP_POPULAR_PRIMARY = [
-  { label: '내비게이션',        icon: 'navigation-arrow',  ids: ['NAVIGATION'] },
-  { label: '썬루프',            icon: 'sun',               ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
-  { label: '열선시트',          icon: 'fire',              ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
-  { label: '통풍시트',          icon: 'fan',               ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
-  { label: '후방카메라',        icon: 'camera',            ids: ['CAM_REAR'] },
-  { label: '어라운드뷰',        icon: 'compass',           ids: ['AVMS'] },
-  { label: '후측방경보',        icon: 'bell-ringing',      ids: ['RCTA'] },
-  { label: '스마트크루즈',      icon: 'speedometer',       ids: ['HDA'] },
-  { label: 'HUD',               icon: 'monitor',           ids: ['HUD'] },
-  { label: '무선 미러링',       icon: 'broadcast',         ids: ['MIRRORING_WIRELESS'] },
+  { label: '내비',     icon: 'navigation-arrow',  ids: ['NAVIGATION'] },
+  { label: '썬루프',   icon: 'sun',               ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
+  { label: '열선',     icon: 'fire',              ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
+  { label: '통풍',     icon: 'fan',               ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
+  { label: '후방캠',   icon: 'camera',            ids: ['CAM_REAR'] },
+  { label: '어라운드', icon: 'compass',           ids: ['AVMS'] },
+  { label: '후측방',   icon: 'bell-ringing',      ids: ['RCTA'] },
+  { label: '크루즈',   icon: 'speedometer',       ids: ['HDA'] },
+  { label: 'HUD',      icon: 'monitor',           ids: ['HUD'] },
+  { label: '미러링',   icon: 'broadcast',         ids: ['MIRRORING_WIRELESS'] },
 ];
 
 /** 보조 5 — 작은 칩, 아래 줄 (편의 + 추가 안전) */
 export const FP_POPULAR_SECONDARY = [
-  { label: '차선이탈경보',      icon: 'arrows-out-line-horizontal', ids: ['LDWS'] },
-  { label: '자동긴급제동',      icon: 'hand',              ids: ['AEB'] },
-  { label: 'LED 헤드램프',      icon: 'lightbulb',         ids: ['HEAD_LED'] },
-  { label: '하이패스',          icon: 'credit-card',       ids: ['HIPASS', 'ECM_HIPASS_RV', 'ECM_HIPASS_MTS'] },
-  { label: '스마트키',          icon: 'key',               ids: ['SMART_KEY'] },
+  { label: '차선이탈', icon: 'arrows-out-line-horizontal', ids: ['LDWS'] },
+  { label: '긴급제동', icon: 'hand',              ids: ['AEB'] },
+  { label: 'LED램프',  icon: 'lightbulb',         ids: ['HEAD_LED'] },
+  { label: '하이패스', icon: 'credit-card',       ids: ['HIPASS', 'ECM_HIPASS_RV', 'ECM_HIPASS_MTS'] },
+  { label: '스마트키', icon: 'key',               ids: ['SMART_KEY'] },
 ];
 
 /** 통합 (편의 — 두 줄을 하나로 보고 싶을 때) */
