@@ -11,6 +11,63 @@ import {
   watchVehicleMaster, createVehicleModel, updateVehicleModel, deleteVehicleModel,
   seedVehicleMaster, uniqueMakers,
 } from '../core/vehicle-master.js';
+import { loadIndex } from '../core/vehicle-matrix.js';
+
+/* catalog _index 캐시 — maker/model/sub/trim cascade 드롭다운 source */
+let _catalogIdx = null;
+async function ensureCatalogIdx() {
+  if (!_catalogIdx) _catalogIdx = await loadIndex();
+  return _catalogIdx;
+}
+
+/** _index.json 에서 maker 셋 (정렬) */
+function catMakers(idx) {
+  const s = new Set();
+  for (const e of Object.values(idx || {})) if (e.maker) s.add(e.maker);
+  return [...s].sort((a, b) => a.localeCompare(b, 'ko'));
+}
+
+/** catalog title 에서 model 명 추출 — 한글 prefix("더","뉴" 등) + 끝 코드("DL3","GN7") 제거 */
+function extractModelFromTitle(title, maker) {
+  let s = (title || '').replace(new RegExp('^' + maker + '\\s+'), '').trim();
+  let tokens = s.split(/\s+/);
+  while (tokens.length && /^(더|뉴|올|신|디|올뉴)$/.test(tokens[0])) tokens.shift();
+  while (tokens.length > 1 && /^[A-Z][A-Z0-9]+$/.test(tokens[tokens.length - 1])) tokens.pop();
+  return tokens.join(' ');
+}
+
+/** maker 의 catalog title 들에서 model 명 목록 */
+function catModelsByMaker(idx, maker) {
+  if (!maker) return [];
+  const s = new Set();
+  for (const e of Object.values(idx || {})) {
+    if (e.maker !== maker) continue;
+    const model = extractModelFromTitle(e.title, maker);
+    if (model) s.add(model);
+  }
+  return [...s].sort((a, b) => a.localeCompare(b, 'ko'));
+}
+
+/** maker + model 에 매칭되는 catalog 목록 → { id, title, subTitle } */
+function catCatalogsByMakerModel(idx, maker, model) {
+  if (!maker || !model) return [];
+  const out = [];
+  for (const e of Object.values(idx || {})) {
+    if (e.maker !== maker) continue;
+    if (extractModelFromTitle(e.title, maker) !== model) continue;
+    const titleNoMaker = (e.title || '').replace(new RegExp('^' + maker + '\\s+'), '').trim();
+    out.push({ id: e.id, title: e.title, subTitle: titleNoMaker });
+  }
+  out.sort((a, b) => a.subTitle.localeCompare(b.subTitle, 'ko'));
+  return out;
+}
+
+/** _index.json 의 entry.trims (배열) — 개별 catalog fetch 불필요 */
+function catTrimsByCatalogId(idx, catalogId) {
+  if (!catalogId) return [];
+  const e = idx?.[catalogId];
+  return Array.isArray(e?.trims) ? e.trims : [];
+}
 
 let unsub = null;
 let models = [];
@@ -137,8 +194,14 @@ async function runSeed() {
   }
 }
 
-function openEditor(v) {
+async function openEditor(v) {
   editingKey = v?._key || null;
+  const idx = await ensureCatalogIdx();
+  const makers = catMakers(idx);
+  const models = v?.maker ? catModelsByMaker(idx, v.maker) : [];
+  const cats   = (v?.maker && v?.model) ? catCatalogsByMakerModel(idx, v.maker, v.model) : [];
+  const trims  = (v?.catalog_id) ? catTrimsByCatalogId(idx, v.catalog_id) : [];
+
   const modal = document.createElement('div');
   modal.className = 'modal-overlay';
   modal.style.cssText = 'position:fixed;inset:0;background:var(--c-overlay-dark);z-index:var(--z-overlay);display:flex;align-items:center;justify-content:center;padding:var(--sp-4);';
@@ -149,10 +212,10 @@ function openEditor(v) {
         <button id="vmCancel" class="btn btn-sm btn-ghost"><i class="ph ph-x"></i></button>
       </header>
       <div style="flex:1;overflow-y:auto;padding:var(--sp-4);display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);">
-        ${fld('제조사', 'maker', v?.maker)}
-        ${fld('모델', 'model', v?.model)}
-        ${fld('세부모델', 'sub', v?.sub, { full: true })}
-        ${fld('트림', 'trim', v?.trim)}
+        ${fldSelect('제조사 (catalog)', 'maker', v?.maker, makers, { allowExternal: true })}
+        ${fldSelect('모델 (catalog)', 'model', v?.model, models, { allowExternal: true })}
+        ${fldCatalogSub('세부모델 (catalog)', 'sub', v?.sub, cats, v?.catalog_id)}
+        ${fldSelect('트림 (catalog)', 'trim', v?.trim, trims, { allowExternal: true })}
         ${fld('차명 (등록증)', 'car_name', v?.car_name)}
         ${fld('형식번호 패턴', 'type_number_pattern', v?.type_number_pattern)}
         ${fld('생산 시작', 'year_start', v?.year_start)}
@@ -178,6 +241,39 @@ function openEditor(v) {
   const close = () => modal.remove();
   modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
   document.getElementById('vmCancel').addEventListener('click', close);
+
+  // ── cascade 핸들러 — maker → model → sub → trim 자동 갱신
+  const sMaker = modal.querySelector('select[data-f="maker"]');
+  const sModel = modal.querySelector('select[data-f="model"]');
+  const sSub   = modal.querySelector('select[data-f="sub"]');
+  const sTrim  = modal.querySelector('select[data-f="trim"]');
+
+  function fillSel(sel, options, val, allowExternal) {
+    const opts = [...new Set([...options, ...(val && !options.includes(val) && allowExternal ? [val] : [])])];
+    sel.innerHTML = `<option value="">-</option>` +
+      opts.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}${options.includes(o) ? '' : ' (catalog 외)'}</option>`).join('');
+  }
+
+  sMaker?.addEventListener('change', () => {
+    const mk = sMaker.value;
+    fillSel(sModel, mk ? catModelsByMaker(idx, mk) : [], '', true);
+    sSub.dataset.catalogId = '';
+    fillSel(sSub, [], '', false);
+    fillSel(sTrim, [], '', true);
+  });
+  sModel?.addEventListener('change', () => {
+    const mk = sMaker.value, md = sModel.value;
+    const cs = (mk && md) ? catCatalogsByMakerModel(idx, mk, md) : [];
+    fillCatalogSub(sSub, cs, '', null);
+    fillSel(sTrim, [], '', true);
+  });
+  sSub?.addEventListener('change', () => {
+    const cid = sSub.options[sSub.selectedIndex]?.dataset?.cid || '';
+    sSub.dataset.catalogId = cid;
+    const trims = cid ? catTrimsByCatalogId(idx, cid) : [];
+    fillSel(sTrim, trims, '', true);
+  });
+
   document.getElementById('vmSave').addEventListener('click', async () => {
     const data = Object.fromEntries(
       [...modal.querySelectorAll('[data-f]')].map(el => {
@@ -187,6 +283,9 @@ function openEditor(v) {
         return [key, val || undefined];
       })
     );
+    // catalog_id 도 같이 저장 (sub select 의 선택된 옵션에서 가져옴)
+    const cid = sSub?.options[sSub.selectedIndex]?.dataset?.cid || sSub?.dataset?.catalogId || '';
+    if (cid) data.catalog_id = cid;
     if (!data.maker || !data.model || !data.sub) { showToast('제조사·모델·세부모델 필수', 'error'); return; }
     try {
       if (editingKey) await updateVehicleModel(editingKey, data);
@@ -203,6 +302,16 @@ function openEditor(v) {
   });
 }
 
+/** select 채우기 — catalog 옵션 + (옵션 외 기존 값이 있으면 마지막에 추가) */
+function fillCatalogSub(sel, cats, val, catalogId) {
+  const opts = cats.map(c => `<option value="${c.subTitle}" data-cid="${c.id}" ${val === c.subTitle ? 'selected' : ''}>${c.subTitle}</option>`);
+  if (val && !cats.some(c => c.subTitle === val)) {
+    opts.push(`<option value="${val}" data-cid="${catalogId || ''}" selected>${val} (catalog 외)</option>`);
+  }
+  sel.innerHTML = `<option value="">-</option>` + opts.join('');
+  sel.dataset.catalogId = catalogId || '';
+}
+
 function fld(label, key, val, opts = {}) {
   const type = opts.type || 'text';
   const ph = opts.placeholder || '';
@@ -214,13 +323,36 @@ function fld(label, key, val, opts = {}) {
     </label>
   `;
 }
-function fldSelect(label, key, val, options) {
+function fldSelect(label, key, val, options, opts = {}) {
+  // opts.allowExternal: catalog 외 기존 값 있으면 옵션에 추가 (selected)
+  const inOptions = options.includes(val);
+  const externalOpt = (opts.allowExternal && val && !inOptions)
+    ? `<option value="${val}" selected>${val} (catalog 외)</option>` : '';
   return `
     <label style="display:flex;flex-direction:column;gap:4px;">
       <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${label}</span>
       <select class="input input-sm" data-f="${key}">
         <option value="">-</option>
         ${options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+        ${externalOpt}
+      </select>
+    </label>
+  `;
+}
+
+/** 세부모델 select — catalog 후보들 (id + subTitle) + 기존 값 fallback */
+function fldCatalogSub(label, key, val, cats, catalogId) {
+  const opts = cats.map(c => `<option value="${c.subTitle}" data-cid="${c.id}" ${val === c.subTitle ? 'selected' : ''}>${c.subTitle}</option>`);
+  const inCats = cats.some(c => c.subTitle === val);
+  if (val && !inCats) {
+    opts.push(`<option value="${val}" data-cid="${catalogId || ''}" selected>${val} (catalog 외)</option>`);
+  }
+  return `
+    <label style="display:flex;flex-direction:column;gap:4px;grid-column:1/-1;">
+      <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${label}</span>
+      <select class="input input-sm" data-f="${key}" data-catalog-id="${catalogId || ''}">
+        <option value="">-</option>
+        ${opts.join('')}
       </select>
     </label>
   `;
