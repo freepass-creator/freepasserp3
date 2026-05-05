@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_x7_g07",
+  "title": "BMW X7 (G07)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 X7 (G07)": {
+      "slug": "기본 X7 (G07)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "x7g07"
+  ],
+  "year_start": "2019-01",
+  "year_end": "현재"
+}

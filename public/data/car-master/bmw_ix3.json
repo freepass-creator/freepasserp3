@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_ix3",
+  "title": "BMW iX3",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 iX3": {
+      "slug": "기본 iX3",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "ix3"
+  ],
+  "year_start": "2021-01",
+  "year_end": "현재"
+}

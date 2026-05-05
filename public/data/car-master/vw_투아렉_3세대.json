@@ -1,0 +1,24 @@
+{
+  "catalog_id": "vw_투아렉_3세대",
+  "title": "폭스바겐 투아렉 3세대",
+  "maker": "폭스바겐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 투아렉 3세대": {
+      "slug": "기본 투아렉 3세대",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "투아렉3세대"
+  ],
+  "year_start": "2020-01",
+  "year_end": "현재"
+}

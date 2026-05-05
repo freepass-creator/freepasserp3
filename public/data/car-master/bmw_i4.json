@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_i4",
+  "title": "BMW i4",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 i4": {
+      "slug": "기본 i4",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "i4"
+  ],
+  "year_start": "2022-01",
+  "year_end": "현재"
+}

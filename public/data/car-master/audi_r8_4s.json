@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_r8_4s",
+  "title": "아우디 R8 (4S)",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 R8 (4S)": {
+      "slug": "기본 R8 (4S)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "r84s"
+  ],
+  "year_start": "2017-01",
+  "year_end": "2022-12"
+}

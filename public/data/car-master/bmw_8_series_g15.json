@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_8_series_g15",
+  "title": "BMW 8시리즈 (G15)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 8시리즈 (G15)": {
+      "slug": "기본 8시리즈 (G15)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "8시리즈g15"
+  ],
+  "year_start": "2019-01",
+  "year_end": "현재"
+}

@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_1_series_f70",
+  "title": "BMW 1시리즈 (F70)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 1시리즈 (F70)": {
+      "slug": "기본 1시리즈 (F70)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "1시리즈f70"
+  ],
+  "year_start": "2025-01",
+  "year_end": "현재"
+}

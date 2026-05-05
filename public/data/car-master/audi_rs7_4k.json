@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_rs7_4k",
+  "title": "아우디 RS7 (4K)",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 RS7 (4K)": {
+      "slug": "기본 RS7 (4K)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "rs74k"
+  ],
+  "year_start": "2021-01",
+  "year_end": "현재"
+}

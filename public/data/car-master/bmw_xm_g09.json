@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_xm_g09",
+  "title": "BMW XM (G09)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 XM (G09)": {
+      "slug": "기본 XM (G09)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "xmg09"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
+}

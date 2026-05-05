@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mini_쿠퍼_컨트리맨_일렉트릭_3세대",
+  "title": "미니 쿠퍼 컨트리맨 일렉트릭 3세대",
+  "maker": "미니",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 쿠퍼 컨트리맨 일렉트릭 3세대": {
+      "slug": "기본 쿠퍼 컨트리맨 일렉트릭 3세대",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "쿠퍼컨트리맨일렉트릭3세대"
+  ],
+  "year_start": "2025-01",
+  "year_end": "현재"
+}

@@ -1,0 +1,24 @@
+{
+  "catalog_id": "porsche_타이칸",
+  "title": "포르쉐 타이칸",
+  "maker": "포르쉐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 타이칸": {
+      "slug": "기본 타이칸",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "타이칸"
+  ],
+  "year_start": "2020-01",
+  "year_end": "현재"
+}

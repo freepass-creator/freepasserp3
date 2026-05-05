@@ -1,0 +1,24 @@
+{
+  "catalog_id": "landrover_디스커버리_스포츠_2세대",
+  "title": "랜드로버 디스커버리 스포츠 2세대",
+  "maker": "랜드로버",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 디스커버리 스포츠 2세대": {
+      "slug": "기본 디스커버리 스포츠 2세대",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "디스커버리스포츠2세대"
+  ],
+  "year_start": "2020-01",
+  "year_end": "현재"
+}

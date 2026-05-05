@@ -1,0 +1,24 @@
+{
+  "catalog_id": "landrover_레인지로버_벨라",
+  "title": "랜드로버 레인지로버 벨라",
+  "maker": "랜드로버",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 레인지로버 벨라": {
+      "slug": "기본 레인지로버 벨라",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "레인지로버벨라"
+  ],
+  "year_start": "2017-01",
+  "year_end": "현재"
+}

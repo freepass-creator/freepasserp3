@@ -191,7 +191,7 @@ function audit({ file, data, error }) {
     return s + (tt?.select_groups?.length || 0);
   }, 0);
   const hasRichOptions = sgCount >= 10 || isAllPriced;
-  if (wikiPages >= 7 && entries.length <= 3 && entries.length > 0 && !hasRichOptions) {
+  if (wikiPages >= 7 && entries.length <= 3 && entries.length > 0 && !hasRichOptions && !isEvOnly) {
     issues.push({
       type: 'C',
       severity: 'medium',

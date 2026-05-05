@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_s3_8y",
+  "title": "아우디 S3 (8Y)",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 S3 (8Y)": {
+      "slug": "기본 S3 (8Y)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "s38y"
+  ],
+  "year_start": "2023-01",
+  "year_end": "2023-12"
+}

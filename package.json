@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build:car-master": "node scripts/autoname-select-groups.cjs && node scripts/build-car-master-bundle.cjs && node scripts/build-aliases-map.cjs",
+    "check:matrix": "node scripts/check-matrix.cjs",
     "predev": "node scripts/autoname-select-groups.cjs && node scripts/build-car-master-bundle.cjs && node scripts/build-aliases-map.cjs",
     "prebuild": "node scripts/autoname-select-groups.cjs && node scripts/build-car-master-bundle.cjs && node scripts/build-aliases-map.cjs"
   },

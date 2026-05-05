@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_g_class_w465",
+  "title": "벤츠 G-클래스 W465",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 G-클래스 W465": {
+      "slug": "기본 G-클래스 W465",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "g클래스w465"
+  ],
+  "year_start": "2024-01",
+  "year_end": "현재"
+}

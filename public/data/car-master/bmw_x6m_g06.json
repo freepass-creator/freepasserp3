@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_x6m_g06",
+  "title": "BMW X6M (G06)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 X6M (G06)": {
+      "slug": "기본 X6M (G06)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "x6mg06"
+  ],
+  "year_start": "2020-01",
+  "year_end": "현재"
+}

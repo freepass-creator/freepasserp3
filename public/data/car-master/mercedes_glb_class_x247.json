@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_glb_class_x247",
+  "title": "벤츠 GLB-클래스 X247",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 GLB-클래스 X247": {
+      "slug": "기본 GLB-클래스 X247",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "glb클래스x247"
+  ],
+  "year_start": "2020-01",
+  "year_end": "현재"
+}

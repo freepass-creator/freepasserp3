@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_6_series_gt_g32",
+  "title": "BMW 6시리즈 GT (G32)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 6시리즈 GT (G32)": {
+      "slug": "기본 6시리즈 GT (G32)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "6시리즈gtg32"
+  ],
+  "year_start": "2017-01",
+  "year_end": "2024-12"
+}

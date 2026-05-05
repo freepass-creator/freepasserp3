@@ -1,0 +1,24 @@
+{
+  "catalog_id": "volvo_ex30_크로스_컨트리",
+  "title": "볼보 EX30 크로스 컨트리",
+  "maker": "볼보",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 EX30 크로스 컨트리": {
+      "slug": "기본 EX30 크로스 컨트리",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "ex30크로스컨트리"
+  ],
+  "year_start": "2025-01",
+  "year_end": "현재"
+}

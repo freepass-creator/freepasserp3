@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_eqe_v295",
+  "title": "벤츠 EQE V295",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 EQE V295": {
+      "slug": "기본 EQE V295",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "eqev295"
+  ],
+  "year_start": "2022-01",
+  "year_end": "2024-12"
+}

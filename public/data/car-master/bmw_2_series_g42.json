@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_2_series_g42",
+  "title": "BMW 2시리즈 (G42)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 2시리즈 (G42)": {
+      "slug": "기본 2시리즈 (G42)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "2시리즈g42"
+  ],
+  "year_start": "2022-01",
+  "year_end": "현재"
+}

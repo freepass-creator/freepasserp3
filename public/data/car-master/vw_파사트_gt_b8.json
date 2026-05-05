@@ -1,0 +1,24 @@
+{
+  "catalog_id": "vw_파사트_gt_b8",
+  "title": "폭스바겐 파사트 GT(B8)",
+  "maker": "폭스바겐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 파사트 GT(B8)": {
+      "slug": "기본 파사트 GT(B8)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "파사트gtb8"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2022-12"
+}

@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_rs3_8y",
+  "title": "아우디 RS3 (8Y)",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 RS3 (8Y)": {
+      "slug": "기본 RS3 (8Y)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "rs38y"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
+}

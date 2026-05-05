@@ -30,11 +30,49 @@ async function fetchDriveImages(folderId, size, apiKey) {
   }
   const data = await r.json();
   const files = Array.isArray(data.files) ? data.files : [];
-  // drive.google.com/thumbnail 형식 — lh3.googleusercontent.com 대비 모바일 브라우저 호환성 우수.
-  // 일부 모바일(특히 Samsung Internet) 의 cross-site tracking prevention 이 lh3 호스트 차단.
   return files
     .filter(f => f && f.id)
     .map(f => `https://drive.google.com/thumbnail?id=${f.id}&sz=w${size}`);
+}
+
+/**
+ * API 우회 — 공개 Drive 폴더의 embeddedfolderview HTML 을 스크래핑해
+ * 파일 ID 만 뽑아낸다. API 키·활성화 불필요. 폴더가 "링크 있는 모든 사용자" 공개일 때 동작.
+ */
+async function scrapeDriveFolderHtml(folderId, size) {
+  const tryUrls = [
+    `https://drive.google.com/embeddedfolderview?id=${folderId}#grid`,
+    `https://drive.google.com/embeddedfolderview?id=${folderId}#list`,
+    `https://drive.google.com/drive/folders/${folderId}`,
+  ];
+  for (const u of tryUrls) {
+    try {
+      const r = await fetch(u, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Accept-Language': 'ko-KR,ko;q=0.9' },
+        signal: AbortSignal.timeout(8000),
+        redirect: 'follow',
+      });
+      if (!r.ok) continue;
+      const html = await r.text();
+      // 다양한 패턴에서 file ID 추출 — /file/d/ID, [\"FILE_ID\", 안의 33자 base64-id, thumbnail?id=
+      const ids = new Set();
+      const patterns = [
+        /\/file\/d\/([a-zA-Z0-9_-]{20,})/g,
+        /thumbnail\?id=([a-zA-Z0-9_-]{20,})/g,
+        /"([a-zA-Z0-9_-]{28,44})",\["\d+",/g,  // 폴더 페이지 JSON 데이터 패턴
+      ];
+      for (const re of patterns) {
+        let m;
+        while ((m = re.exec(html)) !== null) {
+          if (m[1] && m[1] !== folderId) ids.add(m[1]);
+        }
+      }
+      if (ids.size > 0) {
+        return [...ids].map(id => `https://drive.google.com/thumbnail?id=${id}&sz=w${size}`);
+      }
+    } catch (e) { /* 다음 URL 시도 */ }
+  }
+  return [];
 }
 
 function isScrapableHost(pageUrl) {
@@ -162,28 +200,37 @@ export default async function handler(req, res) {
 
   const folderId = extractDriveFolderId(url);
 
-  // Drive 폴더 분기
+  // Drive 폴더 분기 — API 호출 후 실패 시 HTML 스크래핑 fallback
   if (folderId && url.includes('drive.google.com')) {
-    // env 우선, 없으면 fallback (api/sync/external-sheet.js 와 동일 패턴)
     const apiKey = process.env.DRIVE_API_KEY || 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY';
-    if (!apiKey) {
-      res.status(500).json({ ok: false, message: 'DRIVE_API_KEY 미설정' });
-      return;
-    }
     const cacheKey = `drive:${folderId}:${size}`;
+
     try {
       let promise = _inflight.get(cacheKey);
       if (!promise) {
-        promise = fetchDriveImages(folderId, size, apiKey);
+        promise = (async () => {
+          // 1차: Drive API (키 동작 시 가장 정확)
+          if (apiKey) {
+            try {
+              const apiUrls = await fetchDriveImages(folderId, size, apiKey);
+              if (apiUrls.length) return { urls: apiUrls, source: 'drive-api' };
+            } catch (e) {
+              // 403/401/404 등 — 스크래핑으로 fallback
+            }
+          }
+          // 2차: 공개 폴더 HTML 스크래핑 (API 키 무관)
+          const scrapedUrls = await scrapeDriveFolderHtml(folderId, size);
+          return { urls: scrapedUrls, source: 'drive-scrape' };
+        })();
         _inflight.set(cacheKey, promise);
         promise.finally(() => _inflight.delete(cacheKey)).catch(() => {});
       }
-      const urls = await promise;
+      const { urls, source } = await promise;
       res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=600');
-      res.status(200).json({ ok: true, urls, count: urls.length, source: 'drive' });
+      res.status(200).json({ ok: true, urls, count: urls.length, source });
     } catch (e) {
       if (e.name === 'TimeoutError' || e.name === 'AbortError') {
-        res.status(504).json({ ok: false, message: 'Drive API 응답 지연' });
+        res.status(504).json({ ok: false, message: 'Drive 응답 지연' });
         return;
       }
       res.status(502).json({ ok: false, message: e.message || '폴더 조회 실패' });

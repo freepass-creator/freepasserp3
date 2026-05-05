@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_q8_e_트론_ge",
+  "title": "아우디 Q8 e-트론 (GE)",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 Q8 e-트론 (GE)": {
+      "slug": "기본 Q8 e-트론 (GE)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "q8e트론ge"
+  ],
+  "year_start": "2024-01",
+  "year_end": "2024-12"
+}

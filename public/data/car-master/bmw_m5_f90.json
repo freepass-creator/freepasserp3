@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_m5_f90",
+  "title": "BMW M5 (F90)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 M5 (F90)": {
+      "slug": "기본 M5 (F90)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "m5f90"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2023-12"
+}

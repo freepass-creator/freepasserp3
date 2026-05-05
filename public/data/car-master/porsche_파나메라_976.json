@@ -1,0 +1,24 @@
+{
+  "catalog_id": "porsche_파나메라_976",
+  "title": "포르쉐 파나메라 (976)",
+  "maker": "포르쉐",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 파나메라 (976)": {
+      "slug": "기본 파나메라 (976)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "파나메라976"
+  ],
+  "year_start": "2024-01",
+  "year_end": "현재"
+}

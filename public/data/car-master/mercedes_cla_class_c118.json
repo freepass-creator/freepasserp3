@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_cla_class_c118",
+  "title": "벤츠 CLA-클래스 C118",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 CLA-클래스 C118": {
+      "slug": "기본 CLA-클래스 C118",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "cla클래스c118"
+  ],
+  "year_start": "2020-01",
+  "year_end": "현재"
+}

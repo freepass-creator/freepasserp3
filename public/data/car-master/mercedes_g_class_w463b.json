@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_g_class_w463b",
+  "title": "벤츠 G-클래스 W463b",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 G-클래스 W463b": {
+      "slug": "기본 G-클래스 W463b",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "g클래스w463b"
+  ],
+  "year_start": "2019-01",
+  "year_end": "현재"
+}

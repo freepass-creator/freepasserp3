@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_sl_class_r232",
+  "title": "벤츠 SL-클래스 R232",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 SL-클래스 R232": {
+      "slug": "기본 SL-클래스 R232",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "sl클래스r232"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
+}

@@ -1,0 +1,24 @@
+{
+  "catalog_id": "mercedes_eqs_suv_x296",
+  "title": "벤츠 EQS SUV X296",
+  "maker": "벤츠",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 EQS SUV X296": {
+      "slug": "기본 EQS SUV X296",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "eqssuvx296"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
+}

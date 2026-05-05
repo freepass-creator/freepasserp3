@@ -1,0 +1,24 @@
+{
+  "catalog_id": "jeep_랭글러_jl",
+  "title": "지프 랭글러 (JL)",
+  "maker": "지프",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 랭글러 (JL)": {
+      "slug": "기본 랭글러 (JL)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "랭글러jl"
+  ],
+  "year_start": "2018-01",
+  "year_end": "현재"
+}

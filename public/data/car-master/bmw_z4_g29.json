@@ -1,0 +1,24 @@
+{
+  "catalog_id": "bmw_z4_g29",
+  "title": "BMW Z4 (G29)",
+  "maker": "BMW",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 Z4 (G29)": {
+      "slug": "기본 Z4 (G29)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "z4g29"
+  ],
+  "year_start": "2019-01",
+  "year_end": "현재"
+}

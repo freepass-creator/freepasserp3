@@ -1,0 +1,24 @@
+{
+  "catalog_id": "jeep_글래디에이터_jt",
+  "title": "지프 글래디에이터 (JT)",
+  "maker": "지프",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 글래디에이터 (JT)": {
+      "slug": "기본 글래디에이터 (JT)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "글래디에이터jt"
+  ],
+  "year_start": "2020-01",
+  "year_end": "2023-12"
+}

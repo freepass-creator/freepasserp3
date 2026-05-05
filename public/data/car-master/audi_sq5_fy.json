@@ -1,0 +1,24 @@
+{
+  "catalog_id": "audi_sq5_fy",
+  "title": "아우디 SQ5 (FY)",
+  "maker": "아우디",
+  "source": "auto_stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-05",
+  "categories": {},
+  "options": {},
+  "trims": {
+    "기본 SQ5 (FY)": {
+      "slug": "기본 SQ5 (FY)",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "sq5fy"
+  ],
+  "year_start": "2020-01",
+  "year_end": "2023-12"
+}
