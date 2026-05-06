@@ -16,6 +16,37 @@ import { titleToSubModel } from './catalog-source.js';
 const SHEETS_API_KEY = 'AIzaSyBSPo1kZOefX-6NuHoQdUF1htqQDSxXsCs';
 
 /* ──────── 1. 시트 fetch ──────── */
+
+/** URL 에서 sheetId + gid 추출. gid 없으면 첫 탭. */
+export function parseSheetUrl(url) {
+  if (!url) return { sheetId: '', gid: null };
+  // URL 인지 ID 인지 자동 판단
+  if (!/^https?:/i.test(url) && /^[a-zA-Z0-9_-]{20,}$/.test(url.trim())) {
+    return { sheetId: url.trim(), gid: null };
+  }
+  const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  const gidMatch = url.match(/[?#&]gid=(\d+)/);
+  return {
+    sheetId: idMatch?.[1] || '',
+    gid: gidMatch ? Number(gidMatch[1]) : null,
+  };
+}
+
+/** gid → tab title 조회 (Sheets API spreadsheets.get) */
+export async function resolveTabTitle(sheetId, gid) {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?key=${SHEETS_API_KEY}&fields=sheets.properties`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`시트 정보 조회 실패: ${res.status}`);
+  const data = await res.json();
+  const sheets = data.sheets || [];
+  if (gid != null) {
+    const found = sheets.find(s => s.properties?.sheetId === gid);
+    if (found?.properties?.title) return found.properties.title;
+  }
+  // gid 없거나 매칭 안 되면 첫 탭
+  return sheets[0]?.properties?.title || '';
+}
+
 export async function fetchSheetValues(sheetId, tab, range = 'A1:AZ2000') {
   const tabEnc = encodeURIComponent(tab);
   const rangeFull = `${tabEnc}!${range}`;
@@ -24,6 +55,18 @@ export async function fetchSheetValues(sheetId, tab, range = 'A1:AZ2000') {
   if (!res.ok) throw new Error(`시트 fetch 실패: ${res.status}`);
   const data = await res.json();
   return data.values || [];
+}
+
+/** row 의 모든 셀에서 URL 패턴 추출 — photo_link 자동 매핑 */
+export function extractRowUrls(row) {
+  const urlRe = /https?:\/\/[^\s\)\]"<]+/gi;
+  const urls = [];
+  for (const cell of row || []) {
+    if (cell == null) continue;
+    const matches = String(cell).match(urlRe);
+    if (matches) urls.push(...matches);
+  }
+  return urls;
 }
 
 /** header row 1줄 → { 차량번호: 'D', 제조사: 'X', ... } 같은 컬럼 이름 → 인덱스 매핑 */

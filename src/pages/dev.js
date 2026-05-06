@@ -1421,11 +1421,15 @@ function renderMatrixImportTab(el) {
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:10px;height:100%;">
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">
-        <input type="text" class="input" id="miSheetId" value="${MATRIX_IMPORT_DEFAULT_SHEET}" style="flex:1;min-width:280px;font-family:monospace;font-size:11px;">
-        <input type="text" class="input" id="miTab" value="${MATRIX_IMPORT_DEFAULT_TAB}" style="width:120px;">
+        <input type="text" class="input" id="miUrl" placeholder="구글시트 링크 통째로 붙여넣기 (https://docs.google.com/spreadsheets/d/.../edit?gid=...)"
+               value="https://docs.google.com/spreadsheets/d/${MATRIX_IMPORT_DEFAULT_SHEET}/edit"
+               style="flex:1;min-width:320px;font-family:monospace;font-size:11px;">
         <button class="btn btn-sm btn-primary" id="miFetchBtn"><i class="ph ph-google-drive-logo"></i> 시트 불러오기</button>
         <button class="btn btn-sm" id="miImportBtn" disabled><i class="ph ph-cloud-arrow-up"></i> 매칭된 매물 import</button>
         <span id="miStatus" style="font-size:11px;color:var(--text-muted);margin-left:auto;"></span>
+      </div>
+      <div style="font-size:11px;color:var(--text-weak);">
+        URL 의 <code>/d/&lt;ID&gt;/</code> 와 <code>?gid=&lt;NUMBER&gt;</code> 자동 추출. gid 없으면 첫 탭. 종합시트 default 로 채워짐.
       </div>
       <div id="miSummary" style="font-size:12px;padding:8px;background:var(--bg-stripe);border-radius:4px;display:none;"></div>
       <div id="miPreview" style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>

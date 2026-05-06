@@ -84,8 +84,8 @@ for (const f of files) {
   const opts = d.options || (d.options = {});
   const trims = d.trims || {};
   if (!Object.keys(trims).length) continue;
-  // 이미 옵션 사전 풍부 (10+) 면 skip — wikicar 데이터 있는 거 덮어쓰지 않음
-  if (Object.keys(opts).length > 10) continue;
+  // 이미 표준 패키지 적용된 catalog 는 skip (PKG_ADAS 코드로 판별)
+  if (opts['PKG_ADAS']) continue;
 
   const pkgs = buildPackages(d.maker);
 

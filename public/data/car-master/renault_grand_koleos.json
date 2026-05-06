@@ -250,6 +250,46 @@
       "name": "4WD",
       "category": "파워트레인",
       "is_package": false
+    },
+    "PKG_ADAS": {
+      "name": "어시스트 팩",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_CONVENIENCE": {
+      "name": "컨비니언스 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_COMFORT": {
+      "name": "컴포트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_PARKING": {
+      "name": "파킹 어시스트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_EXTERIOR": {
+      "name": "익스테리어 디자인 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_BUILTIN_CAM": {
+      "name": "빌트인 캠 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_SUNROOF": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_HUD": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": true
     }
   },
   "trims": {
@@ -303,6 +343,62 @@
           ],
           "price": 1500000,
           "name": "8 스피커"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 700000,
+          "name": "어시스트 팩"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -353,6 +449,62 @@
           ],
           "price": 400000,
           "name": "20” 투톤 하이랜드 알로이 휠 & 245/45 R20 저소음 폼 타이어"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 700000,
+          "name": "어시스트 팩"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -397,6 +549,62 @@
           ],
           "price": 1000000,
           "name": "증강 현실 헤드업 디스플레이"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 700000,
+          "name": "어시스트 팩"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -444,6 +652,62 @@
           ],
           "price": 1500000,
           "name": "12.3\" 동승석 디스플레이(cinema(OTT), 음악 스트리밍, 웹브라우저, 앱스토어, 포토링크) + FULL 오토 파킹 보조 + 후방 긴급 제동 보조 + 8 스피커"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 700000,
+          "name": "어시스트 팩"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -507,6 +771,62 @@
           ],
           "price": 400000,
           "name": "20\" 투톤 하이랜드 알로이 휠 & 245/45 R20 저소음 썸머 타이어"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 700000,
+          "name": "어시스트 팩"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -560,6 +880,62 @@
           ],
           "price": 1000000,
           "name": "증강현실 헤드업 디스플레이(AR-HUD) + 차음 윈드 실드 글라스"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 700000,
+          "name": "어시스트 팩"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -616,6 +992,62 @@
           ],
           "price": 1000000,
           "name": "증강현실 헤드업 디스플레이(AR-HUD) + 차음 윈드 실드 글라스"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 700000,
+          "name": "어시스트 팩"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     }
