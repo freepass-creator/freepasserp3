@@ -136,8 +136,15 @@
   }
   .detail-actions .btn,
   .detail-actions .btn-primary { flex: 1; }
-  /* 옵션 칩 묶음 */
+  /* 옵션 칩 묶음 — 상세 패널, 표 본문과 동일 규격 (10px) */
   .chips-wrap { display: flex; flex-wrap: wrap; gap: 3px; }
+  .chips-wrap .chip {
+    cursor: default;
+    padding: 1px 5px;
+    font-size: var(--fs-2xs);
+    height: auto;
+    line-height: 1.4;
+  }
 
   /* ── 컬럼 필터 Popover (헤더 클릭 시 — 디자인만 정적 표시) ── */
   /* th 가 overflow:hidden 이라 popover 가 잘림 — popover 열린 th 만 overflow:visible */
