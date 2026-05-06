@@ -195,6 +195,23 @@ export const FP_KEYWORD_RULES = [
   { kw:'컨비니언스패키지', ids:['SMART_KEY','BUTTON_START','MIRROR_FOLD','RAIN_SENSOR'] },
   { kw:'컴포트패키지', ids:['HEAT_SEAT_FRONT','HEAT_STR'] },
 
+  // 신규 편의/내장/미디어 ID 룰
+  { kw:'레인센서', ids:['RAIN_SENSOR'] }, { kw:'레인감지', ids:['RAIN_SENSOR'] },
+  { kw:'워크어웨이락', ids:['WALK_AWAY_LOCK'] }, { kw:'워크어웨이', ids:['WALK_AWAY_LOCK'] },
+  { kw:'세이프티언락', ids:['WALK_AWAY_LOCK'] },
+  { kw:'애프터블로우', ids:['AFTER_BLOW'] },
+  { kw:'공기청정시스템', ids:['AIR_PURIFY'] }, { kw:'공기청정', ids:['AIR_PURIFY'] },
+  { kw:'미세먼지센서', ids:['AIR_PURIFY'] },
+  { kw:'앰비언트무드램프', ids:['AMB_LIGHT'] }, { kw:'앰비언트라이트', ids:['AMB_LIGHT'] },
+  { kw:'무드램프', ids:['AMB_LIGHT'] }, { kw:'엠비언트', ids:['AMB_LIGHT'] },
+  { kw:'패들쉬프트', ids:['PADDLE_SHIFT'] }, { kw:'패들시프트', ids:['PADDLE_SHIFT'] },
+  { kw:'무선소프트웨어업데이트', ids:['OTA'] }, { kw:'otasoftwareupdate', ids:['OTA'] },
+  { kw:'\bota\b', ids:['OTA'] },
+  { kw:'측방주차거리경고', ids:['SPAS'] },
+  { kw:'전방주차충돌방지보조', ids:['SENSOR_FRONT'] },
+  { kw:'주차충돌방지보조전방', ids:['SENSOR_FRONT'] },
+  { kw:'무선충전', ids:['WPC'] }, { kw:'스마트폰무선충전', ids:['WPC'] },
+
   // 외관
   { kw:'fullled헤드램프', ids:['HEAD_LED'] },
   { kw:'led헤드램프', ids:['HEAD_LED'] },
