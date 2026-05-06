@@ -69,6 +69,43 @@ export function extractRowUrls(row) {
   return urls;
 }
 
+/** 차량번호 셀의 chipRuns + hyperlink 추출 → row index → photo URL map.
+ *  external-sheet.js 의 chipRuns 패턴 + hyperlink 보강. drive.google.com 우선. */
+export async function fetchPhotoLinkMap(sheetId, tab, carNumberColLetter = 'D') {
+  const tabEnc = encodeURIComponent(tab);
+  const map = {};
+  // chipRuns + hyperlink 둘 다 fetch
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${tabEnc}!${carNumberColLetter}1:${carNumberColLetter}2000&fields=sheets.data.rowData.values(chipRuns,hyperlink,formattedValue,userEnteredValue.formulaValue)&key=${SHEETS_API_KEY}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return map;
+    const data = await res.json();
+    const rows = data.sheets?.[0]?.data?.[0]?.rowData || [];
+    rows.forEach((rd, ri) => {
+      const cell = (rd.values || [])[0];
+      if (!cell) return;
+      // 1) chipRuns (스마트칩) — drive.google.com 우선
+      for (const chip of (cell.chipRuns || [])) {
+        const uri = chip?.chip?.richLinkProperties?.uri || '';
+        if (uri) {
+          map[ri] = uri.split('?')[0];
+          return;
+        }
+      }
+      // 2) hyperlink (셀 자체에 링크)
+      if (cell.hyperlink) {
+        map[ri] = cell.hyperlink;
+        return;
+      }
+      // 3) HYPERLINK formula
+      const formula = cell.userEnteredValue?.formulaValue || '';
+      const m = formula.match(/HYPERLINK\s*\(\s*"([^"]+)"/i);
+      if (m) map[ri] = m[1];
+    });
+  } catch (e) { console.warn('[photo link map]', e); }
+  return map;
+}
+
 /** header row 1줄 → { 차량번호: 'D', 제조사: 'X', ... } 같은 컬럼 이름 → 인덱스 매핑 */
 export function buildHeaderMap(headerRow) {
   const map = {};

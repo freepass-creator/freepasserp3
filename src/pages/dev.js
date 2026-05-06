@@ -1444,20 +1444,36 @@ function renderMatrixImportTab(el) {
   const tabEl = el.querySelector('#miTab');
 
   fetchBtn.addEventListener('click', async () => {
-    const sheetId = sheetIdEl.value.trim();
-    const tab = tabEl.value.trim();
-    if (!sheetId || !tab) { showToast('sheet ID + tab 필요', 'error'); return; }
+    const inputUrl = el.querySelector('#miUrl').value.trim();
+    if (!inputUrl) { showToast('시트 URL 입력 필요', 'error'); return; }
 
     fetchBtn.disabled = true;
     importBtn.disabled = true;
-    status.textContent = '시트 fetch 중...';
-    devLog(`[matrix-import] fetch: ${sheetId} / ${tab}`);
+    status.textContent = 'URL 파싱 중...';
     try {
-      const { fetchSheetValues, buildHeaderMap, parseRow, enrichWithCatalog, isValidCarNumber } = await import('../core/sheet-importer.js');
-      const values = await fetchSheetValues(sheetId, tab);
+      const SI = await import('../core/sheet-importer.js');
+      const { sheetId, gid } = SI.parseSheetUrl(inputUrl);
+      if (!sheetId) throw new Error('URL 에서 sheet ID 추출 실패');
+
+      status.textContent = '탭 정보 조회 중...';
+      const tab = await SI.resolveTabTitle(sheetId, gid);
+      if (!tab) throw new Error('탭 정보 조회 실패');
+      devLog(`[matrix-import] sheetId=${sheetId} gid=${gid ?? '(default)'} tab="${tab}"`);
+
+      status.textContent = `시트 fetch 중 ("${tab}")...`;
+      const values = await SI.fetchSheetValues(sheetId, tab);
       if (values.length < 2) throw new Error('row 없음');
-      const headerMap = buildHeaderMap(values[0]);
+      const headerMap = SI.buildHeaderMap(values[0]);
       devLog(`[matrix-import] header columns: ${Object.keys(headerMap).join(', ')}`);
+
+      // 차량번호 셀의 외부 링크 (chipRuns + hyperlink) → photo_link 매핑
+      status.textContent = '사진 링크 추출 중 (차량번호 셀의 hyperlink/chip)...';
+      const carColLetter = headerMap['차량번호'] != null
+        ? String.fromCharCode('A'.charCodeAt(0) + headerMap['차량번호'])
+        : 'D';
+      const photoMap = await SI.fetchPhotoLinkMap(sheetId, tab, carColLetter);
+      const photoCount = Object.keys(photoMap).length;
+      devLog(`[matrix-import] photo links: ${photoCount}개 추출`);
 
       // 시스템 차량번호 set (중복 제외용)
       const sysCarNums = new Set(
@@ -1470,10 +1486,12 @@ function renderMatrixImportTab(el) {
       status.textContent = `매칭 분석 중 (${values.length - 1}대)...`;
       const results = [];
       for (let i = 1; i < values.length; i++) {
-        const raw = parseRow(values[i], headerMap);
-        if (!raw.car_number) continue;   // 빈 row skip
+        const raw = SI.parseRow(values[i], headerMap);
+        if (!raw.car_number) continue;
+        // photo_link 주입 (차량번호 셀의 chipRuns / hyperlink — row index i 와 동일)
+        if (photoMap[i]) raw.photo_link = photoMap[i];
         const isDup = sysCarNums.has(raw.car_number);
-        const isValid = isValidCarNumber(raw.car_number);
+        const isValid = SI.isValidCarNumber(raw.car_number);
         let enriched = null;
         let reason = '';
         if (!isValid) {
@@ -1481,8 +1499,12 @@ function renderMatrixImportTab(el) {
         } else if (isDup) {
           reason = '시스템에 이미 존재';
         } else {
-          enriched = await enrichWithCatalog(raw);
+          enriched = await SI.enrichWithCatalog(raw);
           if (!enriched.ok) reason = enriched.reason;
+          // photo_link 를 enrichment 결과에도 전달
+          if (enriched.ok && raw.photo_link) {
+            enriched.matched_product.photo_link = raw.photo_link;
+          }
         }
         results.push({ raw, enriched, isDup, isValid, reason });
       }
