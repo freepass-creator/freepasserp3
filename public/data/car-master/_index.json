@@ -6115,11 +6115,11 @@
   },
   "kia_k5_dl3": {
     "id": "kia_k5_dl3",
-    "title": "기아 더 뉴 K5 DL3",
+    "title": "기아 올 뉴 K5 DL3",
     "maker": "기아",
     "model_root": "K5",
     "year_start": "2019-12",
-    "year_end": "현재",
+    "year_end": "2022-12",
     "source": {
       "manufacturer": "https://www.kia.com/kr/vehicles/k5/price",
       "wikicar": null,
@@ -6153,6 +6153,32 @@
       "시그니처 하이브리드"
     ],
     "fetched_at": "2026-05-05"
+  },
+  "kia_k5_dl3_facelift": {
+    "id": "kia_k5_dl3_facelift",
+    "title": "기아 더 뉴 K5 DL3",
+    "maker": "기아",
+    "model_root": "K5",
+    "year_start": "2023-01",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "노블레스",
+      "시그니처",
+      "GT-라인"
+    ],
+    "fetched_at": "2026-05-06"
   },
   "kia_k5_dl3_hybrid": {
     "id": "kia_k5_dl3_hybrid",
@@ -6229,6 +6255,54 @@
       "SX"
     ],
     "fetched_at": "2026-05-04"
+  },
+  "kia_k5_jf_facelift_hybrid": {
+    "id": "kia_k5_jf_facelift_hybrid",
+    "title": "기아 더 뉴 K5 JF 하이브리드",
+    "maker": "기아",
+    "model_root": "K5",
+    "year_start": "2018-12",
+    "year_end": "2019-12",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프레스티지",
+      "노블레스",
+      "노블레스 스페셜"
+    ],
+    "fetched_at": "2026-05-06"
+  },
+  "kia_k5_jf_hybrid": {
+    "id": "kia_k5_jf_hybrid",
+    "title": "기아 K5 JF 하이브리드",
+    "maker": "기아",
+    "model_root": "K5",
+    "year_start": "2015-07",
+    "year_end": "2018-12",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프레스티지",
+      "노블레스",
+      "노블레스 스페셜"
+    ],
+    "fetched_at": "2026-05-06"
   },
   "kia_k7_premier": {
     "id": "kia_k7_premier",

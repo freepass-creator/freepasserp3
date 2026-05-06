@@ -1,0 +1,23 @@
+{
+  "catalog_id": "kia_k5_jf_facelift_hybrid",
+  "model_root": "K5",
+  "title": "기아 더 뉴 K5 JF 하이브리드",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "K5 2세대 페리 (JF facelift) 하이브리드. 2018-12~2019-12. 트림 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "노블레스 스페셜": { "slug": "noblesse_special", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "aliases": [
+    "더 뉴 K5 JF 하이브리드",
+    "더뉴 K5 하이브리드 2세대"
+  ],
+  "year_start": "2018-12",
+  "year_end": "2019-12"
+}

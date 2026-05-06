@@ -1,0 +1,25 @@
+{
+  "catalog_id": "kia_k5_dl3_facelift",
+  "model_root": "K5",
+  "title": "기아 더 뉴 K5 DL3",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "K5 DL3 페리 (2023-01~). 트림 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "트렌디": { "slug": "trendy", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "시그니처": { "slug": "signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "GT-라인": { "slug": "gt_line", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "aliases": [
+    "더 뉴 K5 DL3",
+    "더뉴 K5 DL3"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
+}

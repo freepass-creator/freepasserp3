@@ -1013,6 +1013,10 @@
   },
   "kia_k5_dl3": {
     "start": "2019-12",
+    "end": "2022-12"
+  },
+  "kia_k5_dl3_facelift": {
+    "start": "2023-01",
     "end": "현재"
   },
   "kia_k5_dl3_hybrid": {
@@ -1026,6 +1030,14 @@
   "kia_k5_jf_facelift": {
     "start": "2018-12",
     "end": "2019-12"
+  },
+  "kia_k5_jf_facelift_hybrid": {
+    "start": "2018-12",
+    "end": "2019-12"
+  },
+  "kia_k5_jf_hybrid": {
+    "start": "2015-07",
+    "end": "2018-12"
   },
   "kia_k7_premier": {
     "start": "2009-01",
