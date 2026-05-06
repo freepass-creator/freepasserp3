@@ -16,6 +16,7 @@ export const FP_OPT_MASTER = {
   ]},
   interior: { label:'내장', items: [
     ['CRUISE','크루즈컨트롤'],['STR_REMOTE','스티어링 휠 리모컨'],
+    ['PADDLE_SHIFT','패들 쉬프트','unc'],
     ['AUTO_LIGHT','오토 라이트 컨트롤'],['POWER_STR','파워 스티어링'],
     ['HANDS_FREE','핸즈프리'],['HEAT_STR','열선 스티어링휠','unc'],
     ['POWER_SEAT_DR','전동시트(운전석)'],['POWER_SEAT_PS','전동시트(동승석)','unc'],
@@ -45,6 +46,9 @@ export const FP_OPT_MASTER = {
     ['DBC','경사로 저속주행 (DBC)','unc'],['ECS','전자제어 서스펜션 (ECS/ALS)','opt'],
     ['HUD','헤드업 디스플레이 (HUD)','opt'],['RCTA','후측방 경보시스템 (RCTA)','unc'],
     ['HAC','경사로 밀림방지 (HAC)'],
+    ['HBA','하이빔 보조 (HBA)','unc'],['ROA','후석 승객 알림 (ROA)','unc'],
+    ['ISLA','지능형 속도 제한 보조 (ISLA)','unc'],['SEW','안전 하차 경고/보조 (SEW)','unc'],
+    ['BVM','후측방 모니터 (BVM)','unc'],['DRIVE_REC','내장형 블랙박스 (빌트인캠)','unc'],
   ]},
   convenience: { label:'편의', items: [
     ['NAVIGATION','내비게이션'],['HIPASS','하이패스','unc'],
@@ -56,12 +60,16 @@ export const FP_OPT_MASTER = {
     ['POWER_TRUNK','파워트렁크','unc'],['POWER_WINDOW','파워윈도우'],
     ['CURTAIN_M','커튼(수동식)','unc'],['CURTAIN_E','커튼(전동식)','opt'],
     ['ECO_GUIDE','경제운전 안내(액티브)','unc'],['WPC','무선충전 시스템(WPC)','unc'],
+    ['RAIN_SENSOR','레인 센서','unc'],['WALK_AWAY_LOCK','워크 어웨이 락','unc'],
+    ['AFTER_BLOW','애프터 블로우','unc'],['AIR_PURIFY','공기청정 시스템','unc'],
+    ['AMB_LIGHT','앰비언트 무드램프','unc'],
   ]},
   media: { label:'미디어', items: [
     ['CD_PLAYER','CD플레이어','opt'],['MP3','MP3'],['REAR_TV','뒷자석 TV','opt'],
     ['BLUETOOTH','블루투스'],['AUX','AUX 단자','opt'],['USB','USB 단자'],
     ['MIRRORING','유선 미러링','unc'],['MIRRORING_WIRELESS','무선 미러링','unc'],
     ['WELCOME','웰컴 시스템','opt'],['VOICE_RECOG','음성인식 시스템','unc'],
+    ['OTA','무선 소프트웨어 업데이트 (OTA)','unc'],
   ]},
 };
 

@@ -172,6 +172,29 @@ export const FP_KEYWORD_RULES = [
   { kw:'6에어백', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE'] },
   { kw:'abs', ids:['ABS'] },
 
+  // 신규 안전 ID (HBA/ROA/ISLA/SEW/BVM)
+  { kw:'하이빔보조', ids:['HBA'] }, { kw:'하이빔어시스트', ids:['HBA'] },
+  { kw:'어드밴스드후석승객알림', ids:['ROA'] },
+  { kw:'후석승객알림', ids:['ROA'] },
+  { kw:'지능형속도제한보조', ids:['ISLA'] },
+  { kw:'안전하차경고', ids:['SEW'] }, { kw:'안전하차보조', ids:['SEW'] },
+  { kw:'후측방모니터', ids:['BVM'] },
+  { kw:'후방차량출발알림', ids:['BVM'] },
+  { kw:'전방차량출발알림', ids:['BVM'] },
+  { kw:'후측방경보', ids:['RCTA'] }, { kw:'후측방충돌방지', ids:['RCTA'] },
+  { kw:'스티어링휠그립감지', ids:['HOD'] },
+
+  // 메이커 ADAS 패키지 — 다중 표준옵션 묶음
+  { kw:'드라이브와이즈', ids:['HDA','LKAS','FCWS','DAW','RCTA','HBA','SEW'] },
+  { kw:'현대스마트센스', ids:['HDA','LKAS','FCWS','DAW','RCTA','HBA','SEW'] },
+  { kw:'스마트센스', ids:['HDA','LKAS','FCWS','DAW','RCTA','HBA'] },
+  { kw:'액티브어시스트', ids:['HDA','LKAS','FCWS','DAW'] },
+  { kw:'세이프티', ids:['LKAS','FCWS','DAW','HBA'] },
+
+  // 컨비니언스/컴포트 패키지 — 일반 편의
+  { kw:'컨비니언스패키지', ids:['SMART_KEY','BUTTON_START','MIRROR_FOLD','RAIN_SENSOR'] },
+  { kw:'컴포트패키지', ids:['HEAT_SEAT_FRONT','HEAT_STR'] },
+
   // 외관
   { kw:'fullled헤드램프', ids:['HEAD_LED'] },
   { kw:'led헤드램프', ids:['HEAD_LED'] },
