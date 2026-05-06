@@ -10,14 +10,10 @@
 // 모바일 유틸 (isMobile / haptic) — 부팅 직후 동기 감지 위해 정적 import
 import { isMobile as isMobileUA, bindGlobalHaptic } from './core/mobile-shell.js';
 
-// 환경별 CSS 분리 — 데스크톱은 base.css (index.html link) + index.html inline 만,
-// 모바일일 때만 tokens.css + mobile.css 로드. 데스크톱 글씨/레이아웃에 새는 영향 0 보장.
+// 환경별 CSS 분리 — tokens.css 와 base.css 는 index.html <link> 로 항상 로드.
+// 모바일일 때만 mobile.css (mobile partials) 추가 로드.
 if (isMobileUA()) {
-  // top-level await 안 쓰고 동기 import — 이미 isMobileUA 가 캐시됨, FOUC 회피
-  await Promise.all([
-    import('./styles/tokens.css'),
-    import('./styles/mobile.css'),
-  ]);
+  await import('./styles/mobile.css');
 }
 
 import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';

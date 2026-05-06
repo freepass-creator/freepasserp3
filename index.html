@@ -31,6 +31,8 @@
      이전 정적 버전 그대로 (Variable 추가 시 데스크톱 글씨 metrics 변화 가능성 회피) -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+<!-- tokens.css 가 base.css 보다 먼저 로드되어야 :root 토큰이 살아남음 -->
+<link rel="stylesheet" href="/src/styles/tokens.css">
 <link rel="stylesheet" href="/src/styles/base.css">
 <link rel="stylesheet" href="/phosphor/style.css">
 <style>
@@ -45,70 +47,9 @@
 </style>
 <script type="module" src="/src/app.js"></script>
 <style>
-  /* ── 클래식 ERP 톤 — 굴림체 / 12px / 단일 weight / 솔리드 chip / 2px 라운드 ── */
-  :root {
-    /* ERP 혼합 폰트 — 영문/숫자: Consolas(Win) / SF Mono(Mac), 한글: Pretendard
-       브라우저가 글리프별로 자동 선택 (mono 폰트는 한글 없음 → Pretendard fallback) */
-    --font: Consolas, 'SF Mono', ui-monospace, 'Pretendard', sans-serif;
-    --font-mono: var(--font);
+  /* ── 토큰 + 전역 룰 (font, .btn/.badge/.chip 컴팩트 톤) 은 tokens.css + base.css 에서 정의.
+     여기는 index.html 페이지 전용 룰만. ── */
 
-    /* 사이즈 — 12px 단일 (보조 사이즈 없음, 위계는 색만) */
-    --font-size:    12px;
-    --font-size-xs: 12px;   /* alias — 호환용 */
-    --font-size-lg: 12px;   /* alias — 호환용 */
-
-    /* 굵기 — 단일 (위계는 색으로) */
-    --fw:        400;
-    --fw-medium: 500;       /* 거의 안 씀 */
-    --fw-bold:   700;       /* 차량번호·금액만 */
-
-    /* 높이 — 컴팩트하지만 호흡 있게 (2줄 wrap 컨텐츠도 안 잘림) */
-    --row-height:    30px;  /* 표 본문 행 — 2줄 wrap 시 자동 확장 (min-height) */
-    --head-height:   30px;  /* 표 헤더 — 본문과 동일 높이 */
-    --input-height:  26px;
-    --button-height: 26px;
-    --chip-height:   20px;  /* 모든 칩/뱃지 */
-    --panel-head-h:  34px;  /* 패널 헤더 */
-    --sb-item-h:     30px;  /* 사이드바 메뉴 */
-    --cell-padding:  4px 8px;
-
-    /* 라운드 — 2px 통일 (각진 ERP) */
-    --radius:      2px;
-    --radius-sm:   2px;
-    --radius-pill: 2px;
-    --ctrl-r:      2px;
-
-    /* 간격 토큰 */
-    --sp-1:  4px;
-    --sp-2:  6px;
-    --sp-3:  8px;
-    --sp-4: 12px;
-    --sp-5: 16px;
-    --sp-6: 24px;
-  }
-  *, *::before, *::after { font-family: var(--font); letter-spacing: 0; }
-  /* ↑ universal 셀렉터가 phosphor 의 .ph::before 까지 시스템폰트로 덮어버림 — 명시 복원 */
-  .ph, .ph::before { font-family: "Phosphor" !important; }
-  body { font-size: 12px; }
-  kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
-
-  /* 버튼·뱃지·칩 — base.css 가 표준 정의 보유 (.btn / .btn-primary / .btn-outline / .btn-danger /
-     .btn-ghost / .btn-sm / .btn-xs / .btn-lg / .btn-icon / .badge / .chip).
-     여기서는 ERP 톤(높이·라운드·폰트) 만 토큰으로 강제. */
-  .btn, .btn-primary, .btn-outline, .btn-danger, .btn-ghost {
-    height: var(--button-height); border-radius: var(--radius); font-size: var(--font-size);
-  }
-  .btn-icon { width: var(--button-height); padding: 0; }
-  .badge, .badge-red, .badge-orange, .badge-green, .badge-blue, .badge-gray {
-    height: var(--chip-height); padding: 0 var(--sp-2); border-radius: var(--radius);
-    font-size: var(--font-size);
-    display: inline-flex; align-items: center; justify-content: center; line-height: 1;
-  }
-  .chip {
-    height: var(--chip-height); padding: 0 var(--sp-3); border-radius: var(--radius);
-    font-size: var(--font-size);
-    display: inline-flex; align-items: center; gap: var(--sp-1); line-height: 1;
-  }
   /* chip 내 카운트 — statbar 통합 (라벨 main / 카운트 weak) */
   .chip em.cnt { font-style: normal; color: var(--text-weak); }
   .chip.active em.cnt { color: var(--text-inverse); opacity: 0.7; }

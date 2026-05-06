@@ -1,152 +1,261 @@
-@layer tokens {
-  :root {
-    /* ── Colors — B2B 톤 (짙고 단단하게) ── */
-    --c-bg:           #ffffff;
-    --c-bg-zebra:     #fafbfc;   /* 표 얼룩 — 아주 옅은 회색 */
-    --c-bg-sub:       #f1f3f5;
-    --c-bg-hover:     #e9ecef;
-    --c-bg-active:    #dee2e6;
-    --c-surface:      #ffffff;
-    --c-border-soft:  #edeef0;    /* 보기모드 입력칸 — 얇고 은은 */
-    --c-border:       #d5d8dc;
-    --c-border-strong:#adb5bd;
+/**
+ * tokens.css — freepasserp v3 단일 디자인 토큰 (canonical)
+ *
+ * 로드: index.html <link> (영구) — 데스크톱·모바일 공용
+ * 정책:
+ *   - 모든 색·간격·라운드·z-index 정의는 여기서 한 번만
+ *   - base.css / index.html <style> / mobile partial 은 var(--*) 만 사용 (재정의 금지)
+ *   - legacy 토큰명(--space-1, --text-main 등) 은 alias 로 유지 — 점진 마이그레이션
+ *
+ * 스케일 결정사항:
+ *   - spacing  : legacy 4/6/8/12/16/24 (확장 32/40/48) — 데스크톱 ERP 기준
+ *   - radius   : 2px (각진 ERP 톤). 모바일은 --m-radius-sharp 4px / --m-radius-pill 999px
+ *   - font     : Consolas + Pretendard 혼합 (영문/숫자=mono, 한글=Pretendard fallback)
+ */
 
-    --c-text:         #111111;
-    --c-text-sub:     #495057;
-    --c-text-muted:   #868e96;
-    --c-text-inv:     #ffffff;
+:root {
+  /* ═════════════════════════════════════════════════════════════
+   * 1. COLORS — B2B 톤 (짙고 단단하게)
+   * ═════════════════════════════════════════════════════════════ */
+  /* surface */
+  --c-bg:           #ffffff;
+  --c-bg-zebra:     #fafbfc;
+  --c-bg-sub:       #f1f3f5;
+  --c-bg-hover:     #e9ecef;
+  --c-bg-active:    #dee2e6;
+  --c-surface:      #ffffff;
 
-    /* freepass mobility CI — main navy + accent sky */
-    --c-accent:       #1B2A4A;    /* main — 딥 네이비 */
-    --c-accent-hover: #0F1B35;    /* 진한 네이비 (hover) */
-    --c-accent-soft:  rgba(27, 42, 74, 0.06);  /* 투명 네이비 — 선택/hover 배경 (다크모드 호환) */
-    --c-accent-soft-solid: #F0F3F9;  /* 불투명 버전 — sticky/overlay 등 투명 못쓰는 곳 */
-    --c-brand-base:   #7F93B3;    /* base (슬레이트) */
-    --c-brand-sky:    #9EC5F3;    /* 악센트 (강조 링크) */
+  /* text */
+  --c-text:         #111111;
+  --c-text-sub:     #495057;
+  --c-text-muted:   #868e96;
+  --c-text-inv:     #ffffff;
 
-    /* Status — 채도 낮고 무게감 */
-    --c-ok:           #0d9488;
-    --c-ok-bg:        #f0fdfa;
-    --c-warn:         #d97706;
-    --c-warn-bg:      #fffbeb;
-    --c-err:          #dc2626;
-    --c-err-bg:       #fef2f2;
-    --c-info:         #2563eb;
-    --c-info-bg:      #eff6ff;
-    /* 썸네일 overlay 전용 반투명 톤 — 사진 위 가독성 고려 */
-    --c-overlay-safe:    rgba(96, 165, 250, 0.60);  /* 연한 파랑: 안전·무심사 */
-    --c-overlay-caution: rgba(244, 114, 182, 0.60); /* 연한 분홍: 주의·심사필요 */
-    /* 모달·팝업·갤러리 overlay (어두운 레이어) */
-    --c-overlay-xdark:   rgba(0, 0, 0, 0.92);  /* 전체화면 이미지 뷰어 */
-    --c-overlay-dark:    rgba(0, 0, 0, 0.60);  /* 모달 backdrop */
-    --c-overlay-med:     rgba(0, 0, 0, 0.50);  /* gallery nav 기본 */
-    --c-overlay-soft:    rgba(0, 0, 0, 0.40);  /* 모바일 backdrop */
-    --c-overlay-chip:    rgba(0, 0, 0, 0.55);  /* 사진 위 칩/버튼 */
-    --c-overlay-thin:    rgba(0, 0, 0, 0.35);  /* avatar 위 글자 */
-    --c-rose:         #be185d;
-    --c-rose-bg:      #fdf2f8;
-    --c-cyan:         #0891b2;
-    --c-cyan-bg:      #ecfeff;
-    --c-lime:         #65a30d;
-    --c-lime-bg:      #f7fee7;
-    --c-emerald:      #059669;
-    --c-emerald-bg:   #d1fae5;
-    --c-gold:         #ca8a04;
-    --c-gold-bg:      #fef3c7;
-    --c-green:        #16a34a;
-    --c-green-bg:     #dcfce7;
-    --c-purple:       #9333ea;
-    --c-purple-bg:    #faf5ff;
-    --c-sky:          #0284c7;
-    --c-sky-bg:       #f0f9ff;
-    --c-pink:         #db2777;
-    --c-pink-bg:      #fdf2f8;
+  /* border */
+  --c-border-soft:  #edeef0;
+  --c-border:       #d5d8dc;
+  --c-border-strong:#adb5bd;
 
-    /* Vehicle status */
-    --c-status-avail:     #0d9488;
-    --c-status-consult:   #d97706;
-    --c-status-contract:  #2563eb;
-    --c-status-delivered: #4b5563;
-    --c-status-blocked:   #dc2626;
+  /* accent — freepass mobility CI */
+  --c-accent:       #1B2A4A;
+  --c-accent-hover: #0F1B35;
+  --c-accent-soft:  rgba(27, 42, 74, 0.06);
+  --c-accent-soft-solid: #F0F3F9;
+  --c-brand-base:   #7F93B3;
+  --c-brand-sky:    #9EC5F3;
 
-    /* ── Typography ── */
-    /* --font 은 base.css 에서 시스템폰트 단일 로 정의됨 (Claude Style v1.0). 여기 재정의 금지 */
-    --fs-2xs:         10px;   /* 뱃지·아주 작은 보조텍스트 */
-    --fs-xs:          11px;
-    --fs-sm:          12px;
-    --fs-base:        13px;
-    --fs-md:          14px;
-    --fs-lg:          16px;
-    --fs-xl:          18px;
-    --fs-2xl:         22px;
-    /* 텍스트 굵기 — "쨍"하지 않게, 계층 3단 + 히어로 전용
-     *  normal  (400) 본문 · 보조 텍스트
-     *  medium  (500) 목록 값·강조 라벨 — 얇지만 눈에 띔
-     *  semibold(600) 섹션 제목·카드 제목 · 숫자 강조 — 기본 "굵은" 단계
-     *  heavy   (700) 페이지 타이틀·hero — 매우 절제 (일반 제목 금지)
-     *  ※ fw-bold 토큰은 제거됨 — semibold(600)와 동일 의미, 혼동 방지 */
-    --fw-normal:      400;
-    --fw-medium:      500;
-    --fw-semibold:    600;
-    --fw-heavy:       700;
-    --lh:             1.5;
+  /* status */
+  --c-ok:           #0d9488;
+  --c-ok-bg:        #f0fdfa;
+  --c-warn:         #d97706;
+  --c-warn-bg:      #fffbeb;
+  --c-err:          #dc2626;
+  --c-err-bg:       #fef2f2;
+  --c-info:         #2563eb;
+  --c-info-bg:      #eff6ff;
 
-    /* ── Spacing (4pt grid) ── */
-    --sp-1:   4px;
-    --sp-2:   8px;
-    --sp-3:   12px;
-    --sp-4:   16px;
-    --sp-5:   20px;
-    --sp-6:   24px;
-    --sp-8:   32px;
-    --sp-10:  40px;
-    --sp-12:  48px;
+  /* overlays */
+  --c-overlay-safe:    rgba(96, 165, 250, 0.60);
+  --c-overlay-caution: rgba(244, 114, 182, 0.60);
+  --c-overlay-xdark:   rgba(0, 0, 0, 0.92);
+  --c-overlay-dark:    rgba(0, 0, 0, 0.60);
+  --c-overlay-med:     rgba(0, 0, 0, 0.50);
+  --c-overlay-soft:    rgba(0, 0, 0, 0.40);
+  --c-overlay-chip:    rgba(0, 0, 0, 0.55);
+  --c-overlay-thin:    rgba(0, 0, 0, 0.35);
 
-    /* ── Sizing ── */
-    --ctrl-h-xs:      22px;
-    --ctrl-h-sm:      28px;
-    --ctrl-h:         32px;
-    --ctrl-h-lg:      40px;
-    --ctrl-r:         4px;     /* 기본 라운드 — 버튼·입력·칩 (ERP 각진 패널과 톤 맞춤) */
-    --card-r:         6px;     /* 카드·섹션 */
-    --bubble-r:       12px;    /* 말풍선·리치 카드 */
-    --pill-r:         999px;   /* 동그란 버튼·태그 */
-    --ctrl-pad:       6px 10px;
-    --panel-head-h:   40px;
-    --topbar-h:       48px;
-    /* 아이콘 크기 — 기존 14/16/18/20px 하드코딩 산재 통일용 */
-    --icon-sm:        14px;
-    --icon-base:      16px;
-    --icon-md:        18px;   /* 탑바 액션·채팅 아바타 중간톤 */
-    --icon-lg:        20px;
-    --icon-xl:        24px;
-    /* 칩 높이 — .chip 기본(24px) / .chip-xs 소형(22px) 모두 여기서 관리 */
-    --chip-h:         24px;
-    --chip-h-xs:      22px;
+  /* extended palette (badge/chip 강조) */
+  --c-rose:    #be185d;  --c-rose-bg:    #fdf2f8;
+  --c-cyan:    #0891b2;  --c-cyan-bg:    #ecfeff;
+  --c-lime:    #65a30d;  --c-lime-bg:    #f7fee7;
+  --c-emerald: #059669;  --c-emerald-bg: #d1fae5;
+  --c-gold:    #ca8a04;  --c-gold-bg:    #fef3c7;
+  --c-green:   #16a34a;  --c-green-bg:   #dcfce7;
+  --c-purple:  #9333ea;  --c-purple-bg:  #faf5ff;
+  --c-sky:     #0284c7;  --c-sky-bg:     #f0f9ff;
+  --c-pink:    #db2777;  --c-pink-bg:    #fdf2f8;
 
-    /* ── Sidebar ── */
-    --sb-w:           200px;
+  /* vehicle status */
+  --c-status-avail:     #0d9488;
+  --c-status-consult:   #d97706;
+  --c-status-contract:  #2563eb;
+  --c-status-delivered: #4b5563;
+  --c-status-blocked:   #dc2626;
 
-    /* ── Shadows — 은은한 depth (border 단독 감성 탈피) ── */
-    --shadow-xs:      0 1px 2px rgba(17, 17, 17, 0.04);
-    --shadow-sm:      0 1px 3px rgba(17, 17, 17, 0.06), 0 1px 2px rgba(17, 17, 17, 0.04);
-    --shadow-md:      0 2px 6px rgba(17, 17, 17, 0.08), 0 1px 2px rgba(17, 17, 17, 0.04);
-    --shadow-lg:      0 4px 12px rgba(17, 17, 17, 0.10), 0 2px 4px rgba(17, 17, 17, 0.05);
-    --shadow-popup:   0 8px 24px rgba(17, 17, 17, 0.14), 0 2px 6px rgba(17, 17, 17, 0.06);
+  /* ───────── legacy color alias (base.css·index.html <style> 호환) ───────── */
+  --bg-page:        #f3f4f6;
+  --bg-card:        #ffffff;
+  --bg-header:      #eef1f5;
+  --bg-stripe:      #fafafa;
+  --bg-hover:       #eff6ff;
+  --bg-selected:    #dbeafe;
+  --bg-disabled:    #f9fafb;
 
-    /* ── Z-index ── */
-    --z-base:         1;
-    --z-sticky:       100;
-    --z-dropdown:     500;
-    --z-overlay:      1000;
-    --z-modal:        2000;
-    --z-toast:        3000;
+  --text-main:      #0f172a;
+  --text-sub:       #475569;
+  --text-weak:      #64748b;
+  --text-muted:     #94a3b8;
+  --text-inverse:   #ffffff;
+  --text-link:      #1d4ed8;
 
-    /* ── Transitions ── 전역 토큰. 멋보다 기능 — 짧고 딱딱하게.
-       hover/feedback 은 ~80ms, 패널/슬라이드는 ~120ms. */
-    --ease:           ease-out;
-    --dur:            80ms;
-    --dur-fast:       60ms;
-    --dur-slow:       120ms;
-  }
+  --border:         #e5e7eb;
+  --border-soft:    #f3f4f6;
+  --border-strong:  #d1d5db;
+  --border-focus:   #1f2937;
+
+  --alert-red-bg:    #fef2f2;  --alert-red-text:    #dc2626;  --alert-red-border:    #fecaca;
+  --alert-orange-bg: #fffbeb;  --alert-orange-text: #d97706;  --alert-orange-border: #fde68a;
+  --alert-green-bg:  #f0fdf4;  --alert-green-text:  #15803d;  --alert-green-border:  #bbf7d0;
+  --alert-blue-bg:   #eff6ff;  --alert-blue-text:   #1e40af;  --alert-blue-border:   #bfdbfe;
+
+  --state-운행: #10b981;
+  --state-대기: #9ca3af;
+  --state-정비: #f59e0b;
+  --state-사고: #ef4444;
+  --state-예약: #3b82f6;
+
+
+  /* ═════════════════════════════════════════════════════════════
+   * 2. TYPOGRAPHY — ERP 혼합 폰트 (영문 mono + 한글 Pretendard)
+   * ═════════════════════════════════════════════════════════════ */
+  --font:        Consolas, 'SF Mono', ui-monospace, 'Pretendard', sans-serif;
+  --font-mono:   var(--font);
+
+  /* 단일 사이즈 — ERP 위계는 색으로 (12px 본문) */
+  --font-size:    12px;
+  --font-size-xs: 12px;   /* alias */
+  --font-size-lg: 12px;   /* alias */
+  --line-height:  1.5;
+  --lh:           1.5;
+
+  --font-weight:        400;
+  --font-weight-medium: 500;
+  --fw:        400;
+  --fw-medium: 500;
+  --fw-bold:   700;       /* 차량번호·금액만 */
+
+  /* 위계용 사이즈 — 모달·tooltip·모바일 카드에서 사용 */
+  --fs-2xs: 10px;
+  --fs-xs:  11px;
+  --fs-sm:  12px;
+  --fs-base:13px;
+  --fs-md:  14px;
+  --fs-lg:  16px;
+  --fs-xl:  18px;
+  --fs-2xl: 22px;
+
+  /* 굵기 — 4단 (heavy 는 hero 만) */
+  --fw-normal:   400;
+  --fw-medium:   500;     /* 위에 정의된 alias 와 동일 */
+  --fw-semibold: 600;
+  --fw-heavy:    700;
+
+
+  /* ═════════════════════════════════════════════════════════════
+   * 3. SPACING — legacy 4/6/8/12/16/24 (canonical) + 확장
+   * ═════════════════════════════════════════════════════════════ */
+  --sp-1: 4px;
+  --sp-2: 6px;
+  --sp-3: 8px;
+  --sp-4: 12px;
+  --sp-5: 16px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 48px;
+
+  /* base.css 호환 alias */
+  --space-1: var(--sp-1);
+  --space-2: var(--sp-2);
+  --space-3: var(--sp-3);
+  --space-4: var(--sp-4);
+  --space-5: var(--sp-5);
+  --space-6: var(--sp-6);
+
+
+  /* ═════════════════════════════════════════════════════════════
+   * 4. SIZING — ERP 컴팩트 톤
+   * ═════════════════════════════════════════════════════════════ */
+  --row-height:    30px;   /* 표 본문 행 (2줄 wrap 시 자동 확장) */
+  --head-height:   30px;
+  --input-height:  26px;
+  --button-height: 26px;
+  --chip-height:   20px;
+  --panel-head-h:  34px;
+  --topbar-h:      42px;     /* 상단바 — 패널 헤더(34px)보다 살짝 큼 */
+  --sb-item-h:     30px;
+  --cell-padding:  4px 8px;
+
+  /* 컨트롤 높이 단계 (모달·모바일에서 사용) */
+  --ctrl-h-xs: 22px;
+  --ctrl-h-sm: 28px;
+  --ctrl-h:    32px;
+  --ctrl-h-lg: 40px;
+  --ctrl-pad:  6px 10px;
+
+  /* 아이콘 */
+  --icon-sm:   14px;
+  --icon-base: 16px;
+  --icon-md:   18px;
+  --icon-lg:   20px;
+  --icon-xl:   24px;
+
+  /* 칩 (모바일 큰 chip) */
+  --chip-h:    24px;
+  --chip-h-xs: 22px;
+
+  /* 사이드바 */
+  --sb-w:      200px;
+
+
+  /* ═════════════════════════════════════════════════════════════
+   * 5. RADIUS — ERP 각진 톤 (2px). 모바일은 sharp 4px / pill 999px
+   * ═════════════════════════════════════════════════════════════ */
+  --radius:      2px;
+  --radius-sm:   2px;
+  --radius-pill: 2px;     /* desktop ERP — 사실상 각진 */
+  --ctrl-r:      2px;
+
+  --card-r:      6px;     /* 카드·섹션 */
+  --bubble-r:    12px;    /* 말풍선·리치 카드 */
+  --pill-r:      999px;   /* 명시적 pill 필요 시 */
+
+  /* 모바일 */
+  --m-radius-sharp: 4px;
+  --m-radius-pill:  999px;
+  --m-edge:         16px;
+
+
+  /* ═════════════════════════════════════════════════════════════
+   * 6. SHADOWS
+   * ═════════════════════════════════════════════════════════════ */
+  --shadow-xs:    0 1px 2px rgba(17, 17, 17, 0.04);
+  --shadow-sm:    0 1px 3px rgba(17, 17, 17, 0.06), 0 1px 2px rgba(17, 17, 17, 0.04);
+  --shadow-md:    0 2px 6px rgba(17, 17, 17, 0.08), 0 1px 2px rgba(17, 17, 17, 0.04);
+  --shadow-lg:    0 4px 12px rgba(17, 17, 17, 0.10), 0 2px 4px rgba(17, 17, 17, 0.05);
+  --shadow-popup: 0 8px 24px rgba(17, 17, 17, 0.14), 0 2px 6px rgba(17, 17, 17, 0.06);
+
+
+  /* ═════════════════════════════════════════════════════════════
+   * 7. Z-INDEX
+   * ═════════════════════════════════════════════════════════════ */
+  --z-base:               1;
+  --z-table-cell:         0;
+  --z-table-sticky-col:   5;
+  --z-table-sticky-header: 10;
+  --z-table-corner:       20;
+  --z-sticky:             100;
+  --z-dropdown:           500;
+  --z-overlay:            1000;
+  --z-modal:              2000;
+  --z-toast:              3000;
+
+
+  /* ═════════════════════════════════════════════════════════════
+   * 8. TRANSITIONS — 짧고 딱딱하게 (멋보다 기능)
+   * ═════════════════════════════════════════════════════════════ */
+  --ease:      ease-out;
+  --dur:       80ms;
+  --dur-fast:  60ms;
+  --dur-slow:  120ms;
 }

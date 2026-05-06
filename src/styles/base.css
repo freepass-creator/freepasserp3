@@ -8,90 +8,9 @@
 
 
 /* ═══════════════════════════════════════════════════════════════
- * 1. DESIGN TOKENS (CSS Variables)
+ * 1. DESIGN TOKENS — tokens.css 가 단일 소스 (canonical)
+ *    이 파일은 토큰을 정의하지 않음. var(--*) 만 참조.
  * ═══════════════════════════════════════════════════════════════ */
-
-:root {
-  /* ── Typography ── */
-  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
-          'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', Consolas, 'D2Coding', 
-               'Menlo', monospace;
-  --font-size: 12px;
-  --line-height: 1.5;
-  --font-weight: 400;
-  --font-weight-medium: 500;
-
-  /* ── Layering (3단계) ── */
-  --bg-page: #f3f4f6;
-  --bg-card: #ffffff;
-  --bg-header: #eef1f5;       /* 헤더 — 본문 zebra (#fafafa) 와 구분되게 한 톤 darker */
-  --bg-stripe: #fafafa;
-  --bg-hover: #eff6ff;
-  --bg-selected: #dbeafe;
-  --bg-disabled: #f9fafb;
-
-  /* ── Text Hierarchy (4단계) ── */
-  --text-main: #0f172a;       /* 핵심 데이터 — 거의 검정 (가독성↑) */
-  --text-sub: #475569;        /* 보조 정보 — 진한 슬레이트 */
-  --text-weak: #64748b;       /* 라벨/메타 — 중간 슬레이트 */
-  --text-muted: #94a3b8;      /* 비활성 — 옅은 슬레이트 */
-  --text-inverse: #ffffff;
-  --text-link: #1d4ed8;
-
-  /* ── Borders (2단계) ── */
-  --border: #e5e7eb;
-  --border-soft: #f3f4f6;
-  --border-strong: #d1d5db;
-  --border-focus: #1f2937;
-
-  /* ── Alerts ── */
-  --alert-red-bg: #fef2f2;
-  --alert-red-text: #dc2626;
-  --alert-red-border: #fecaca;
-  --alert-orange-bg: #fffbeb;
-  --alert-orange-text: #d97706;
-  --alert-orange-border: #fde68a;
-  --alert-green-bg: #f0fdf4;
-  --alert-green-text: #15803d;
-  --alert-green-border: #bbf7d0;
-  --alert-blue-bg: #eff6ff;
-  --alert-blue-text: #1e40af;
-  --alert-blue-border: #bfdbfe;
-
-  /* ── Status ── */
-  --state-운행: #10b981;
-  --state-대기: #9ca3af;
-  --state-정비: #f59e0b;
-  --state-사고: #ef4444;
-  --state-예약: #3b82f6;
-
-  /* ── Spacing ── */
-  --space-1: 4px;
-  --space-2: 6px;
-  --space-3: 8px;
-  --space-4: 12px;
-  --space-5: 16px;
-  --space-6: 24px;
-
-  /* ── Sizing ── */
-  --radius: 4px;
-  --radius-sm: 2px;
-  --radius-pill: 999px;
-  --row-height: 36px;
-  --input-height: 26px;
-  --button-height: 26px;
-  --cell-padding: 6px 8px;
-
-  /* ── Z-index ── */
-  --z-table-cell: 0;
-  --z-table-sticky-col: 5;
-  --z-table-sticky-header: 10;
-  --z-table-corner: 20;
-  --z-dropdown: 100;
-  --z-modal: 1000;
-  --z-toast: 2000;
-}
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -891,58 +810,15 @@ kbd, .kbd {
 
 
 /* ═══════════════════════════════════════════════════════════════
- * ERP 톤 토큰 override — 위 default 값을 덮어쓰는 ERP 스타일.
- *  inline <style> 보다 늦게 로드되도록 base.css 맨 끝에 둠 (Vercel 빌드에서
- *  bundle CSS 가 inline <style> 보다 뒤에 주입되어 inline override 가 무력화되는
- *  문제 해결).
+ * ERP 컴포넌트 톤 강제 — 토큰은 tokens.css 가 단일 소스, 여기는 룰만
  * ═══════════════════════════════════════════════════════════════ */
 
-:root {
-  /* ERP 혼합 폰트 — 영문/숫자: Consolas(Win)/SF Mono(Mac), 한글: Pretendard */
-  --font: Consolas, 'SF Mono', ui-monospace, 'Pretendard', sans-serif;
-  --font-mono: var(--font);
-
-  /* 사이즈 — 12px 단일 (위계는 색만) */
-  --font-size:    12px;
-  --font-size-xs: 12px;
-  --font-size-lg: 12px;
-
-  /* 굵기 단일 */
-  --fw:        400;
-  --fw-medium: 500;
-  --fw-bold:   700;
-
-  /* 컴팩트 높이 */
-  --row-height:    30px;
-  --head-height:   30px;
-  --input-height:  26px;
-  --button-height: 26px;
-  --chip-height:   20px;
-  --panel-head-h:  34px;
-  --topbar-h:      42px;     /* 상단바만 살짝 키움 (입력칸/패널 헤더 그대로) */
-  --sb-item-h:     30px;
-  --cell-padding:  4px 8px;
-
-  /* 라운드 — 2px 통일 (각진 ERP) */
-  --radius:      2px;
-  --radius-sm:   2px;
-  --radius-pill: 2px;
-  --ctrl-r:      2px;
-
-  /* 간격 토큰 */
-  --sp-1:  4px;
-  --sp-2:  6px;
-  --sp-3:  8px;
-  --sp-4: 12px;
-  --sp-5: 16px;
-  --sp-6: 24px;
-}
 *, *::before, *::after { font-family: var(--font); letter-spacing: 0; }
 .ph, .ph::before { font-family: "Phosphor" !important; }
 body { font-size: 12px; }
 kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
 
-/* 버튼·뱃지·칩 — ERP 톤 강제 */
+/* 버튼·뱃지·칩 — ERP 톤 강제 (높이/라운드/폰트) */
 .btn, .btn-primary, .btn-outline, .btn-danger, .btn-ghost {
   height: var(--button-height); border-radius: var(--radius); font-size: var(--font-size);
 }

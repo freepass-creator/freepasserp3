@@ -16,10 +16,10 @@ freepass-v2 전역 디자인 시스템 기준 (2026-04-19 감사 후 정립).
 - 카드 제목·필드 값은 `--fw-medium(500)` — 얇지만 눈에 띔
 - 본문·보조는 `--fw-normal(400)`
 - **하드코드 font-weight 금지** — 반드시 `var(--fw-*)` 사용
-- 제목은 canonical 클래스 재사용: `.title-lg` · `.title-md` · `.title-sm` · `.title-xs` (controls.css)
+- 제목은 canonical 클래스 재사용: `.title-lg` · `.title-md` · `.title-sm` · `.title-xs` (index.html `<style>`)
 
 ## 2. 섹션
-- canonical: `.section` + `.section-title` + `.section-body` (controls.css 정의)
+- canonical: `.section` + `.section-title` + `.section-body` (index.html `<style>` 정의)
 - 페이지별 prefix(`pd-`·`contract-`·`cat-`·`vehicle-`·`ac-`) 신규 금지
 - 기존 prefix는 레거시 호환 위해 유지하되 canonical로 점진 마이그레이션
 
@@ -41,7 +41,7 @@ freepass-v2 전역 디자인 시스템 기준 (2026-04-19 감사 후 정립).
 
 ## 5. 색상·overlay
 - 모든 색상은 `var(--c-*)` 토큰 사용 — 하드코드 `#fff`·`rgba()` 금지
-- overlay 전용 토큰 (tokens.css):
+- overlay 전용 토큰 (`tokens.css`):
   - `--c-overlay-xdark` (0.92) — 전체화면 이미지 뷰어
   - `--c-overlay-dark` (0.60) — 모달 backdrop
   - `--c-overlay-med` (0.50) — 갤러리 nav
@@ -56,7 +56,7 @@ freepass-v2 전역 디자인 시스템 기준 (2026-04-19 감사 후 정립).
 - 신규 inline style 버튼 만들지 말 것
 
 ## 7. 리스트 행
-- `.list-row` 기본 구조 사용 (controls.css)
+- `.list-row` 기본 구조 사용 (index.html `<style>`)
 - 파생 `.srch-item`·`.room-item`·`.m-card` 는 이걸 상속
 - 새 리스트 타입 만들 때도 `.list-row` 먼저 재사용
 

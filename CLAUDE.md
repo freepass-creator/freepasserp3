@@ -53,7 +53,7 @@
 
 ## 디자인 시스템 canonical (이것만 지키면 통일)
 
-### 입력칸 3모드 (controls.css 전역)
+### 입력칸 3모드 (index.html `<style>` 전역)
 - **보기(view)**: `border: 1px solid var(--c-border-soft)` 얇은 회색 라인, 투명 배경
 - **수정(focus)**: accent 라인 + 흰 배경 (수정 중 시그널)
 - **신규(draft)**: 부모에 `.is-draft` → accent-soft 배경 + dashed accent (신규 등록 시그널)
@@ -64,10 +64,10 @@
 - 굵기 4단: `--fw-normal(400)` · `--fw-medium(500)` · `--fw-semibold(600)` · `--fw-heavy(700)`
 - heavy는 hero만. 일반 제목·숫자 강조는 semibold. "쨍"하지 않게
 - `--fw-bold` 토큰은 제거됨 (semibold와 동일, 혼동 방지) — 신규 코드에서 쓰지 말 것
-- Canonical 클래스: `.title-lg / .title-md / .title-sm / .title-xs` (controls.css)
+- Canonical 클래스: `.title-lg / .title-md / .title-sm / .title-xs` (index.html `<style>`)
 
 ### 섹션
-- Canonical: `.section / .section-title / .section-body` (controls.css 정의)
+- Canonical: `.section / .section-title / .section-body` (index.html `<style>` 정의)
 - 페이지 prefix(`pd-` · `contract-` · `cat-` · `vehicle-` · `ac-`)는 **레거시** — 신규 작업에선 canonical 우선 사용
 - **다음 세션 TODO**: 기존 prefix를 canonical로 점진 마이그레이션 + `.contract-section` 박스 제거 후 flat stacked로 통일 (product-manage 방식이 기준)
 
@@ -82,7 +82,7 @@
 - 흰 글자 필요 시 `var(--c-text-inv)`
 
 ### 리스트 행
-- `.list-row` 기본 (controls.css) — `.srch-item / .room-item / .m-card` 모두 상속
+- `.list-row` 기본 (index.html `<style>`) — `.srch-item / .room-item / .m-card` 모두 상속
 
 ### 모달
 - 네이티브 `<dialog>` 사용, `showModal()` + `::backdrop` + AbortController
