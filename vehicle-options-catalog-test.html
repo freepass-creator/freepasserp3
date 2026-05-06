@@ -9,6 +9,7 @@
 <script src="./public/data/trim-options-seed.js" onerror="this.dataset.failed=1"></script>
 <script src="./data/trim-options-seed.js" onerror="this.dataset.failed=1"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   /* 페이지 세로 스크롤바 항상 자리 확보 — 트림 변경 시 좌우 흔들림 방지 */
@@ -310,26 +311,27 @@ const OPTIONS = {
   ]},
 };
 const FP_TOTAL = Object.values(OPTIONS).reduce((s,c)=>s+c.items.length, 0);
-// 표준 주요옵션 15개 — 사용자 정의 순서: 미디어편의 → 외관+기타편의 → 안전
+// 표준 주요옵션 15개 — Phosphor Icons (ph-*) 기반
+// 사용자 정의 순서: 미디어편의 → 외관+기타편의 → 안전
 const POPULAR_OPTIONS = [
-  // 미디어편의 (7) — 인포·디스플레이·카메라·하이패스·스마트키
-  ['NAVIGATION','내비','navigation'],
-  ['MIRRORING_WIRELESS','무선미러링','smartphone'],
+  // 미디어편의 (7)
+  ['NAVIGATION','내비','navigation-arrow'],
+  ['MIRRORING_WIRELESS','무선미러링','broadcast'],
   ['HUD','HUD','monitor'],
   ['CAM_REAR','후방캠','camera'],
-  ['AVMS','어라운드','scan'],
+  ['AVMS','어라운드','compass'],
   ['HIPASS','하이패스','credit-card'],
   ['SMART_KEY','스마트키','key'],
-  // 외관 + 기타 편의 (4) — 외관·시트
+  // 외관 + 기타 편의 (4)
   ['SUNROOF_PANO','썬루프','sun'],
   ['HEAD_LED','LED램프','lightbulb'],
-  ['HEAT_SEAT_FRONT','열선','flame'],
-  ['VENT_SEAT_DR','통풍','wind'],
+  ['HEAT_SEAT_FRONT','열선','fire'],
+  ['VENT_SEAT_DR','통풍','fan'],
   // 안전 ADAS (4)
-  ['HDA','스마트크루즈','gauge'],
-  ['RCTA','후측방','shield-alert'],
-  ['LDWS','차선이탈','triangle-alert'],
-  ['AEB','긴급제동','octagon-alert']
+  ['HDA','스마트크루즈','speedometer'],
+  ['RCTA','후측방','bell-ringing'],
+  ['LDWS','차선이탈','arrows-out-line-horizontal'],
+  ['AEB','긴급제동','hand']
 ];
 const SUB_POPULAR_OPTIONS = [];   // 통합 — 보조 영역 폐기
 
@@ -350,7 +352,7 @@ function renderFpOptions() {
     if (has) popCnt++;
     const div = document.createElement('div');
     div.className = 'pop-card' + (has ? ' has' : '');
-    div.innerHTML = `<div class="icon"><i data-lucide="${icon}" style="width:26px;height:26px"></i></div><div class="lbl">${label}</div>`;
+    div.innerHTML = `<div class="icon"><i class="ph ph-${icon}" style="font-size:26px"></i></div><div class="lbl">${label}</div>`;
     div.addEventListener('click', () => fpToggle(id));
     grid.appendChild(div);
   });
@@ -365,7 +367,7 @@ function renderFpOptions() {
     if (has) subCnt++;
     const div = document.createElement('div');
     div.className = 'pop-card-sm' + (has ? ' has' : '');
-    div.innerHTML = `<div class="icon"><i data-lucide="${icon}" style="width:16px;height:16px"></i></div><div class="lbl">${label}</div>`;
+    div.innerHTML = `<div class="icon"><i class="ph ph-${icon}" style="font-size:16px"></i></div><div class="lbl">${label}</div>`;
     div.addEventListener('click', () => fpToggle(id));
     subGrid.appendChild(div);
   });
