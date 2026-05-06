@@ -23,7 +23,7 @@ import { parseVehicleRegistration } from '../core/ocr-parsers/vehicle-registrati
 import { inferCarModel } from '../core/car-model-infer.js';
 import { getMakers, getModelsByMaker, getSubModels, findCarModel } from '../core/car-models.js';
 import { analyzeProduct as analyzeMatrix, loadIndex as loadMatrixIndex, findCatalog as findMatrixCatalog, loadCatalog as loadMatrixCatalog } from '../core/vehicle-matrix.js';
-import { fpIdsToNames } from '../core/fp-options-master.js';
+import { fpIdsToNames, FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { pickPartner } from '../core/dialogs.js';
 import {
   esc, shortStatus, fmtTime, fmtDate, fmtMileage,
@@ -257,6 +257,60 @@ async function refreshMatrixBanner(card, p) {
   }
 }
 
+/* 표준옵션 chip — FP 인기 15개 (PRIMARY 10 + SECONDARY 5).
+ *  매물 fp_options 에 group.ids 중 하나라도 있으면 활성. 클릭 시 토글 → 자동저장.
+ *  PRIMARY (큰 칩) + SECONDARY (작은 칩) 위계 분리. */
+function renderFpChips(p, canEdit) {
+  const saved = new Set(Array.isArray(p.fp_options) ? p.fp_options : []);
+  const isOn = (group) => group.ids.some(id => saved.has(id));
+  const cls = (on) => on ? 'chip is-active' : 'chip';
+  const renderOne = (g, sm = false) => {
+    const onCls = cls(isOn(g));
+    const sty = sm ? 'font-size:11px;padding:0 6px;height:20px;' : 'font-size:12px;padding:0 8px;height:24px;';
+    return `<button type="button" class="${onCls}" data-fp-grp="${esc(g.label)}" style="${sty}"${canEdit ? '' : ' disabled'}>${g.icon ? `<i class="ph ph-${g.icon}"></i> ` : ''}${esc(g.label)}</button>`;
+  };
+  return `<div class="form-section-title"><i class="ph ph-list-checks"></i> 표준옵션 <span class="form-section-hint" style="font-size:10px;color:var(--text-muted);">매트릭스 매칭 후 자동 저장됨. 직접 토글도 가능.</span></div>
+    <div class="ff fp-chips" data-fp-chips style="display:flex;flex-direction:column;gap:6px;padding:0 4px;">
+      <div style="display:flex;flex-wrap:wrap;gap:4px;">
+        ${FP_POPULAR_PRIMARY.map(g => renderOne(g, false)).join('')}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;">
+        ${FP_POPULAR_SECONDARY.map(g => renderOne(g, true)).join('')}
+      </div>
+    </div>`;
+}
+
+/* fp chip 클릭 핸들러 — 토글 + Firebase 자동저장 */
+function bindFpChips(card, p) {
+  const wrap = card.querySelector('[data-fp-chips]');
+  if (!wrap) return;
+  wrap.addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-fp-grp]');
+    if (!btn || btn.disabled) return;
+    const label = btn.dataset.fpGrp;
+    const group = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY].find(g => g.label === label);
+    if (!group) return;
+    const cur = new Set(Array.isArray(p.fp_options) ? p.fp_options : []);
+    const isOn = group.ids.some(id => cur.has(id));
+    if (isOn) {
+      // 토글 OFF — 그룹의 모든 ID 제거
+      for (const id of group.ids) cur.delete(id);
+    } else {
+      // 토글 ON — 첫 번째 (대표) ID 추가. 다중 변형 (썬루프 일반/파노라마/세이프티) 은 매트릭스가 정확한 ID 결정.
+      cur.add(group.ids[0]);
+    }
+    const newOptions = [...cur];
+    p.fp_options = newOptions;
+    btn.classList.toggle('is-active');
+    try {
+      await updateRecord(`products/${p._key}`, { fp_options: newOptions });
+    } catch (err) {
+      console.error('[fp chip save]', err);
+      btn.classList.toggle('is-active');   // rollback
+    }
+  });
+}
+
 /* 세부모델 선택되면 vehicle_master 매칭 row 의 vehicle_class·fuel_type 자동 채움 */
 function autoFillFromCarModel(card, maker, model, sub_model) {
   if (!maker || !model || !sub_model) return;
@@ -414,10 +468,12 @@ export function renderProductDetail(p) {
         ${ffi('위치',      'location',      p.location, dis)}
         <div class="ff"><label>메모</label><textarea class="input" data-f="partner_memo" style="height: 50px;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(p.partner_memo || p.note || '')}</textarea></div>
       `)}
+      ${renderFpChips(p, canEdit)}
     `;
     if (canEdit) {
       bindFormSave(page, 'products', p._key, p);
       bindCarPicker(assetCard, p);
+      bindFpChips(assetCard, p);   // FP 인기옵션 chip 토글 (자동저장)
     }
     // 차종 매트릭스 매칭 미리보기 — 비동기로 banner 채우기 + 필드 변경 시 자동 갱신
     refreshMatrixBanner(assetCard, p);
