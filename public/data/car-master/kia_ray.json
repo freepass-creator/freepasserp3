@@ -1,7 +1,7 @@
 {
   "catalog_id": "kia_ray",
   "model_root": "레이",
-  "title": "기아 더 뉴 레이",
+  "title": "기아 더 뉴 레이 TAM PE2",
   "maker": "기아",
   "source": "kia_official",
   "source_urls": [
@@ -1355,6 +1355,6 @@
   "aliases": [
     "더뉴기아레이"
   ],
-  "year_start": "2024-04",
+  "year_start": "2022-09",
   "year_end": "현재"
 }

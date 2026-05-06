@@ -7426,10 +7426,10 @@
   },
   "kia_ray": {
     "id": "kia_ray",
-    "title": "기아 더 뉴 레이",
+    "title": "기아 더 뉴 레이 TAM PE2",
     "maker": "기아",
     "model_root": "레이",
-    "year_start": "2024-04",
+    "year_start": "2022-09",
     "year_end": "현재",
     "source": {
       "manufacturer": "https://www.kia.com/kr/vehicles/ray/price",
@@ -7459,7 +7459,7 @@
   },
   "kia_ray_ev": {
     "id": "kia_ray_ev",
-    "title": "기아 더 뉴 레이 EV",
+    "title": "기아 더 뉴 레이 TAM PE2 EV",
     "maker": "기아",
     "model_root": "레이",
     "year_start": "2024-09",
@@ -7486,11 +7486,11 @@
   },
   "kia_ray_tam_facelift1": {
     "id": "kia_ray_tam_facelift1",
-    "title": "기아 더 뉴 레이 TAM 페리1",
+    "title": "기아 더 뉴 레이 TAM PE",
     "maker": "기아",
     "model_root": "레이",
-    "year_start": "2022-09",
-    "year_end": "2024-04",
+    "year_start": "2017-10",
+    "year_end": "2022-09",
     "source": {
       "manufacturer": null,
       "wikicar": null,
