@@ -754,6 +754,11 @@
       "name": "나파가죽 시트",
       "category": "선택사양",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -823,7 +828,8 @@
         "WK_C타입_USB_포트_1열_2개__2열_2개_",
         "WK_레인센서",
         "WK_12_3인치_디스플레이_오디오_폰_프로젝션__6스피커__라디오__MP3__블루투스_핸즈프리",
-        "WK_무선_소프트웨어_업데이트_OTA_Software_Update_"
+        "WK_무선_소프트웨어_업데이트_OTA_Software_Update_",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_빌트인_캠_2",
@@ -995,7 +1001,8 @@
         "WK_C타입_USB_포트_1열_2개__2열_2개_",
         "WK_레인센서",
         "WK_12_3인치_디스플레이_오디오_폰_프로젝션__6스피커__라디오__MP3__블루투스_핸즈프리",
-        "WK_무선_소프트웨어_업데이트_OTA_Software_Update_"
+        "WK_무선_소프트웨어_업데이트_OTA_Software_Update_",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_파킹_어시스트_I",
@@ -1154,7 +1161,8 @@
         "WK_C타입_USB_포트_1열_2개__2열_2개_",
         "WK_레인센서",
         "WK_12_3인치_디스플레이_오디오_폰_프로젝션__6스피커__라디오__MP3__블루투스_핸즈프리",
-        "WK_무선_소프트웨어_업데이트_OTA_Software_Update_"
+        "WK_무선_소프트웨어_업데이트_OTA_Software_Update_",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_파노라마_선루프",

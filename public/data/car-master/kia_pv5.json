@@ -9,41 +9,57 @@
   ],
   "fetched_at": "2026-05-04",
   "note": "PV5 — PBV 1세대 (2025~). 패신저/카고 변형. 트림명만 stub.",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
     "패신저 5인승": {
       "slug": "passenger_5",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "패신저 7인승": {
       "slug": "passenger_7",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "카고 스탠다드": {
       "slug": "cargo_standard",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "카고 롱": {
       "slug": "cargo_long",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "샤시캡": {
       "slug": "chassis_cab",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     }

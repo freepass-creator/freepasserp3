@@ -212,6 +212,15 @@ export const FP_KEYWORD_RULES = [
   { kw:'주차충돌방지보조전방', ids:['SENSOR_FRONT'] },
   { kw:'무선충전', ids:['WPC'] }, { kw:'스마트폰무선충전', ids:['WPC'] },
 
+  // 카플레이 / 안드로이드 오토 / 미러링 — 신차 표준
+  { kw:'무선애플카플레이', ids:['MIRRORING_WIRELESS'] },
+  { kw:'무선안드로이드오토', ids:['MIRRORING_WIRELESS'] },
+  { kw:'애플카플레이', ids:['MIRRORING'] }, { kw:'apple​carplay', ids:['MIRRORING'] },
+  { kw:'안드로이드오토', ids:['MIRRORING'] }, { kw:'androidauto', ids:['MIRRORING'] },
+  { kw:'스마트미러링', ids:['MIRRORING'] },
+  { kw:'양방향풀미러링', ids:['MIRRORING'] },
+  { kw:'스마트폰프로젝션', ids:['MIRRORING'] },
+
   // 외관
   { kw:'fullled헤드램프', ids:['HEAD_LED'] },
   { kw:'led헤드램프', ids:['HEAD_LED'] },

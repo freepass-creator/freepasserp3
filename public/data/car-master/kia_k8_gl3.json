@@ -1134,6 +1134,11 @@
       "name": "헤드업 디스플레이 + 스마트 커넥트",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1231,7 +1236,8 @@
         "KRGL301007",
         "KRGL301049",
         "KRGL301083",
-        "KRGL301102"
+        "KRGL301102",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRGL301048",
@@ -1434,7 +1440,8 @@
         "KRGL301102",
         "KRGL301134",
         "KRGL301084",
-        "KRGL301049"
+        "KRGL301049",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRGL301048",
@@ -1639,7 +1646,8 @@
         "KRGL301114",
         "KRGL301101",
         "KRGL301132",
-        "KRGL301049"
+        "KRGL301049",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRGL301048",
@@ -1851,7 +1859,8 @@
         "KRGL301102",
         "KRGL301134",
         "KRGL301084",
-        "KRGL301049"
+        "KRGL301049",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRGL301048",
@@ -2107,7 +2116,8 @@
         "KRGL301102",
         "KRGL301134",
         "KRGL301084",
-        "KRGL301049"
+        "KRGL301049",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRGL301159",
@@ -2265,7 +2275,8 @@
         "KRGL301173",
         "KRGL301178",
         "KRGL301177",
-        "KRGL301174"
+        "KRGL301174",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRGL301048",

@@ -552,6 +552,11 @@
       "name": "보타이 프로젝션 퍼들램프",
       "category": "외관 사양",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -643,7 +648,8 @@
         "WK_A_C_타입_USB_포트_IP___콘솔_내부_",
         "WK_BOSE__프리미엄_사운드_앰프_서브우퍼_포함_10_스피커_",
         "WK_스마트폰_무선_충전_시스템",
-        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_"
+        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK___주차보조_기능_미작동"
@@ -751,7 +757,8 @@
         "WK_A_C_타입_USB_포트_IP___콘솔_내부_",
         "WK_BOSE__프리미엄_사운드_앰프_서브우퍼_포함_10_스피커_",
         "WK_스마트폰_무선_충전_시스템",
-        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_"
+        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK___주차보조_기능_미작동"

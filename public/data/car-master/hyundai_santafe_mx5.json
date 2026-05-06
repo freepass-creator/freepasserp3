@@ -7,27 +7,39 @@
   "source_urls": [],
   "fetched_at": "2026-05-06",
   "note": "싼타페 5세대 (MX5, 2023-08~). 트림 stub.",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
     "익스클루시브": {
       "slug": "exclusive",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "프레스티지": {
       "slug": "prestige",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "캘리그래피": {
       "slug": "calligraphy",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     }

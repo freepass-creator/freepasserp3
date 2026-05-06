@@ -830,6 +830,11 @@
       "name": "V6 람다Ⅱ 개선 3.3 T-GDI 가솔린 엔진",
       "category": "파워트레인",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -929,7 +934,8 @@
         "KRJR296132",
         "KRJR296133",
         "KRJR296134",
-        "KRJR296143"
+        "KRJR296143",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRJR296051",
@@ -1101,7 +1107,8 @@
         "KRJR296133",
         "KRJR296134",
         "KRJR296143",
-        "KRJR296073"
+        "KRJR296073",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRJR296051",
@@ -1294,7 +1301,8 @@
         "KRJR296P02",
         "KRJR296P03",
         "KRJR296015",
-        "KRJR296073"
+        "KRJR296073",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRJR296051",
@@ -1491,7 +1499,8 @@
         "KRJR296P02",
         "KRJR296P03",
         "KRJR296015",
-        "KRJR296073"
+        "KRJR296073",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRJR296051",

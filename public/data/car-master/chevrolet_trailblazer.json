@@ -612,6 +612,11 @@
       "name": "D컷 스티어링 휠 & 블랙 보타이",
       "category": "내장 사양",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -688,7 +693,8 @@
         "WK_스티어링_휠_오디오_리모트_컨트롤",
         "WK_6_스피커",
         "WK_일루미네이티드_듀얼_USB_포트_A__C타입_",
-        "WK_온스타"
+        "WK_온스타",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_파노라마_선루프",
@@ -811,7 +817,8 @@
         "WK_스티어링_휠_오디오_리모트_컨트롤",
         "WK_6_스피커",
         "WK_일루미네이티드_듀얼_USB_포트_A__C타입_",
-        "WK_온스타"
+        "WK_온스타",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_프리미엄_패키지",
@@ -932,7 +939,8 @@
         "WK_스티어링_휠_오디오_리모트_컨트롤",
         "WK_6_스피커",
         "WK_일루미네이티드_듀얼_USB_포트_A__C타입_",
-        "WK_온스타"
+        "WK_온스타",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_프리미엄_패키지",

@@ -817,6 +817,11 @@
       "name": "실내 V2L",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "categories": {
@@ -1068,7 +1073,8 @@
         "KRST290164",
         "KRST290073",
         "KRST290P20",
-        "KRST290P01"
+        "KRST290P01",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1181,7 +1187,8 @@
         "KRST290P05",
         "KRST290P06",
         "KRST290P07",
-        "KRST290P08"
+        "KRST290P08",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1336,7 +1343,8 @@
         "KRST290161",
         "KRST290P14",
         "KRST290P18",
-        "KRST290P03"
+        "KRST290P03",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []

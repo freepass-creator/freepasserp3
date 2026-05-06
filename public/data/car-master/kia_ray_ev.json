@@ -718,6 +718,11 @@
       "name": "운전석 열선시트",
       "category": "시트",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -789,7 +794,8 @@
         "KRTM258103",
         "KRTM258100",
         "KRTM258101",
-        "KRTM258102"
+        "KRTM258102",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRTM258P09",
@@ -888,7 +894,8 @@
         "KRTM258100",
         "KRTM258101",
         "KRTM258102",
-        "KRTM258054"
+        "KRTM258054",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRTM258P07"

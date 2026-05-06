@@ -1043,6 +1043,11 @@
       "name": "2열 전동식 틸팅형 워크인",
       "category": "시트",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1139,7 +1144,8 @@
         "FX01157",
         "FX01156",
         "FX01155",
-        "FX01158"
+        "FX01158",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -1339,7 +1345,8 @@
         "FX01062",
         "FX01088",
         "FX01124",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -1598,7 +1605,8 @@
         "FX01088",
         "FX01124",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -1791,7 +1799,8 @@
         "FX01155",
         "FX01158",
         "FX01110",
-        "FX01112"
+        "FX01112",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -2018,7 +2027,8 @@
         "FX01149",
         "FX01159",
         "FX01069",
-        "FX01112"
+        "FX01112",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -2290,7 +2300,8 @@
         "FX01110",
         "FX01113",
         "FX01069",
-        "FX01112"
+        "FX01112",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -2539,7 +2550,8 @@
         "FX01062",
         "FX01088",
         "FX01124",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -2781,7 +2793,8 @@
         "FX01088",
         "FX01124",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -3028,7 +3041,8 @@
         "FX01103",
         "FX01105",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -3270,7 +3284,8 @@
         "FX01062",
         "FX01088",
         "FX01124",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -3513,7 +3528,8 @@
         "FX01088",
         "FX01124",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -3761,7 +3777,8 @@
         "FX01103",
         "FX01105",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",

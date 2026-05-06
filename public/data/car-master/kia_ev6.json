@@ -1037,6 +1037,11 @@
       "name": "스웨이드 컬렉션",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1134,7 +1139,8 @@
         "KRCV253160",
         "KRCV253161",
         "KRCV253162",
-        "KRCV253163"
+        "KRCV253163",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -1312,7 +1318,8 @@
         "KRCV253162",
         "KRCV253163",
         "KRCV253002",
-        "KRCV253078"
+        "KRCV253078",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -1539,7 +1546,8 @@
         "KRCV253049",
         "KRCV253073",
         "KRCV253125",
-        "KRCV253078"
+        "KRCV253078",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -1697,7 +1705,8 @@
         "KRCV253161",
         "KRCV253162",
         "KRCV253163",
-        "KRCV253177"
+        "KRCV253177",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -1891,7 +1900,8 @@
         "KRCV253162",
         "KRCV253163",
         "KRCV253177",
-        "KRCV253078"
+        "KRCV253078",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -2142,7 +2152,8 @@
         "KRCV253049",
         "KRCV253073",
         "KRCV253125",
-        "KRCV253078"
+        "KRCV253078",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -2380,7 +2391,8 @@
         "KRCV253049",
         "KRCV253073",
         "KRCV253125",
-        "KRCV253078"
+        "KRCV253078",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -2590,7 +2602,8 @@
         "KRCV253139",
         "KRCV253140",
         "KRCV253141",
-        "KRCV253124"
+        "KRCV253124",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -2817,7 +2830,8 @@
         "KRCV253151",
         "KRCV253152",
         "KRCV253153",
-        "KRCV253031"
+        "KRCV253031",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -3071,7 +3085,8 @@
         "KRCV253078",
         "KRCV253066",
         "KRCV253094",
-        "KRCV253116"
+        "KRCV253116",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",
@@ -3309,7 +3324,8 @@
         "KRCV253049",
         "KRCV253073",
         "KRCV253125",
-        "KRCV253078"
+        "KRCV253078",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCV253068",

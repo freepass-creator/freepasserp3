@@ -778,6 +778,11 @@
       "name": "하만카돈 프리미엄 사운드",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -860,7 +865,8 @@
         "KRSG300147",
         "KRSG300148",
         "KRSG300149",
-        "KRSG300150"
+        "KRSG300150",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSG300063",
@@ -1022,7 +1028,8 @@
         "KRSG300067",
         "KRSG300084",
         "KRSG300088",
-        "KRSG300144"
+        "KRSG300144",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSG300063",
@@ -1247,7 +1254,8 @@
         "KRSG300067",
         "KRSG300084",
         "KRSG300088",
-        "KRSG300144"
+        "KRSG300144",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSG300063",

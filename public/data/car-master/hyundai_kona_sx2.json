@@ -702,6 +702,11 @@
       "name": "알칸타라 인테리어 패키지",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -806,7 +811,8 @@
         "SX04049",
         "SX04052",
         "SX04036",
-        "SX04085"
+        "SX04085",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04112",
@@ -946,7 +952,8 @@
         "SX04046",
         "SX04049",
         "SX04052",
-        "SX04036"
+        "SX04036",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04112",
@@ -1118,7 +1125,8 @@
         "SX04049",
         "SX04052",
         "SX04036",
-        "SX04085"
+        "SX04085",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04112",
@@ -1258,7 +1266,8 @@
         "SX04046",
         "SX04049",
         "SX04052",
-        "SX04036"
+        "SX04036",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04112",
@@ -1430,7 +1439,8 @@
         "SX04084",
         "SX04080",
         "SX04079",
-        "SX04087"
+        "SX04087",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04001",
@@ -1618,7 +1628,8 @@
         "SX04004",
         "SX04002",
         "SX04045",
-        "SX04061"
+        "SX04061",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04001",
@@ -1783,7 +1794,8 @@
         "SX04035",
         "SX04082",
         "SX04095",
-        "SX04116"
+        "SX04116",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04001",
@@ -1950,7 +1962,8 @@
         "SX04035",
         "SX04082",
         "SX04095",
-        "SX04116"
+        "SX04116",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04001",
@@ -2113,7 +2126,8 @@
         "SX04004",
         "SX04002",
         "SX04045",
-        "SX04061"
+        "SX04061",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04001",
@@ -2300,7 +2314,8 @@
         "SX04004",
         "SX04002",
         "SX04045",
-        "SX04061"
+        "SX04061",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04001",
@@ -2487,7 +2502,8 @@
         "SX04046",
         "SX04049",
         "SX04052",
-        "SX04036"
+        "SX04036",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04112",
@@ -2626,7 +2642,8 @@
         "SX04084",
         "SX04080",
         "SX04079",
-        "SX04087"
+        "SX04087",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "SX04112",

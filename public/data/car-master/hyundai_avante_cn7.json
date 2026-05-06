@@ -707,6 +707,11 @@
       "name": "[N 퍼포먼스 파츠] N로고 플로어 매트",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -760,7 +765,8 @@
         "CN06091",
         "CN06108",
         "CN06001",
-        "CN06004"
+        "CN06004",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06P01",
@@ -871,7 +877,8 @@
         "CN06095",
         "CN06096",
         "CN06001",
-        "CN06004"
+        "CN06004",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06049",
@@ -1034,7 +1041,8 @@
         "CN06093",
         "CN06094",
         "CN06095",
-        "CN06096"
+        "CN06096",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06049",
@@ -1127,7 +1135,8 @@
         "CN06004",
         "CN06098",
         "CN06034",
-        "CN06108"
+        "CN06108",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1182,7 +1191,8 @@
         "CN06091",
         "CN06108",
         "CN06001",
-        "CN06004"
+        "CN06004",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06P01",
@@ -1293,7 +1303,8 @@
         "CN06095",
         "CN06096",
         "CN06001",
-        "CN06004"
+        "CN06004",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06049",
@@ -1396,7 +1407,8 @@
         "CN06089",
         "CN06090",
         "CN06091",
-        "CN06108"
+        "CN06108",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06P01",
@@ -1502,7 +1514,8 @@
         "CN06034",
         "CN06108",
         "CN06002",
-        "CN06003"
+        "CN06003",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06049",
@@ -1664,7 +1677,8 @@
         "CN06093",
         "CN06094",
         "CN06095",
-        "CN06096"
+        "CN06096",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06049",
@@ -1800,7 +1814,8 @@
         "CN06093",
         "CN06094",
         "CN06095",
-        "CN06096"
+        "CN06096",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "CN06049",

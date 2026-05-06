@@ -914,6 +914,11 @@
       "name": "컴포트Ⅱ",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1010,7 +1015,8 @@
         "NE05147",
         "NE05158",
         "NE05003",
-        "NE05146"
+        "NE05146",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NE05014",
@@ -1222,7 +1228,8 @@
         "NE05147",
         "NE05158",
         "NE05003",
-        "NE05146"
+        "NE05146",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NE05014",
@@ -1456,7 +1463,8 @@
         "NE05P01",
         "NE05054",
         "NE05P02",
-        "NE05P06"
+        "NE05P06",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NE05014",
@@ -1697,7 +1705,8 @@
         "NE05P01",
         "NE05054",
         "NE05P02",
-        "NE05P06"
+        "NE05P06",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NE05014",
@@ -1876,7 +1885,8 @@
         "NE05012",
         "NE05064",
         "NE05092",
-        "NE05146"
+        "NE05146",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NE05014",
@@ -2043,7 +2053,8 @@
         "NE05147",
         "NE05158",
         "NE05003",
-        "NE05146"
+        "NE05146",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -2123,7 +2134,8 @@
         "NE05088",
         "NE05109",
         "NE05129",
-        "NE05131"
+        "NE05131",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NE05P06",

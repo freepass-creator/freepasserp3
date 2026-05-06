@@ -707,6 +707,11 @@
       "name": "알칸타라/천연가죽 시트",
       "category": "선택사양",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "categories": {
@@ -937,7 +942,8 @@
         "CE03095",
         "CE03096",
         "CE03113",
-        "CE03114"
+        "CE03114",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1039,7 +1045,8 @@
         "CE03116",
         "CE03117",
         "CE03118",
-        "CE03119"
+        "CE03119",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1176,7 +1183,8 @@
         "CE03119",
         "CE03120",
         "CE03121",
-        "CE03122"
+        "CE03122",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []

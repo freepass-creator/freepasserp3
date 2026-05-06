@@ -929,6 +929,11 @@
       "name": "서라운드 뷰 모니터",
       "category": "편의",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1002,7 +1007,8 @@
         "DN07067",
         "DN07060",
         "DN07083",
-        "DN07151"
+        "DN07151",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -1179,7 +1185,8 @@
         "DN07083",
         "DN07001",
         "DN07002",
-        "DN07004"
+        "DN07004",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -1317,7 +1324,8 @@
         "DN07073",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -1492,7 +1500,8 @@
         "DN07037",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -1604,7 +1613,8 @@
         "DN07067",
         "DN07060",
         "DN07083",
-        "DN07151"
+        "DN07151",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -1781,7 +1791,8 @@
         "DN07151",
         "DN07121",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -1930,7 +1941,8 @@
         "DN07058",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -2107,7 +2119,8 @@
         "DN07037",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -2278,7 +2291,8 @@
         "DN07037",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -2489,7 +2503,8 @@
         "DN07037",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -2641,7 +2656,8 @@
         "DN07067",
         "DN07060",
         "DN07083",
-        "DN07151"
+        "DN07151",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -2822,7 +2838,8 @@
         "DN07058",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -2991,7 +3008,8 @@
         "DN07037",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P19",
@@ -3087,7 +3105,8 @@
         "DN07115",
         "DN07116",
         "DN07135",
-        "DN07136"
+        "DN07136",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P22",
@@ -3225,7 +3244,8 @@
         "DN07002",
         "DN07003",
         "DN07004",
-        "DN07008"
+        "DN07008",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "DN07P22",
@@ -3381,7 +3401,8 @@
         "DN07058",
         "DN07151",
         "DN07067",
-        "DN07083"
+        "DN07083",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []

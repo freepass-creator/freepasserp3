@@ -928,6 +928,11 @@
       "name": "GT-Line 전용 프리미엄 바이오 인조가죽시트",
       "category": "시트",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1031,7 +1036,8 @@
         "KRSV292145",
         "KRSV292146",
         "KRSV292147",
-        "KRSV292148"
+        "KRSV292148",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSV292067",
@@ -1279,7 +1285,8 @@
         "KRSV292132",
         "KRSV292133",
         "KRSV292134",
-        "KRSV292135"
+        "KRSV292135",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSV292067",
@@ -1535,7 +1542,8 @@
         "KRSV292008",
         "KRSV292045",
         "KRSV292048",
-        "KRSV292070"
+        "KRSV292070",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSV292067",
@@ -1763,7 +1771,8 @@
         "KRSV292150",
         "KRSV292151",
         "KRSV292083",
-        "KRSV292152"
+        "KRSV292152",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSV292067",
@@ -1999,7 +2008,8 @@
         "KRSV292090",
         "KRSV292045",
         "KRSV292048",
-        "KRSV292070"
+        "KRSV292070",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSV292067",
@@ -2211,7 +2221,8 @@
         "KRSV292090",
         "KRSV292045",
         "KRSV292048",
-        "KRSV292070"
+        "KRSV292070",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRSV292067",

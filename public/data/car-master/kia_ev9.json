@@ -1199,6 +1199,11 @@
       "name": "하이테크",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1325,7 +1330,8 @@
         "KRMV297188",
         "KRMV297189",
         "KRMV297190",
-        "KRMV297191"
+        "KRMV297191",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",
@@ -1559,7 +1565,8 @@
         "KRMV297165",
         "KRMV297166",
         "KRMV297167",
-        "KRMV297243"
+        "KRMV297243",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",
@@ -1833,7 +1840,8 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159"
+        "KRMV297159",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",
@@ -2091,7 +2099,8 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159"
+        "KRMV297159",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",
@@ -2416,7 +2425,8 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159"
+        "KRMV297159",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",
@@ -2677,7 +2687,8 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159"
+        "KRMV297159",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",
@@ -2987,7 +2998,8 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159"
+        "KRMV297159",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",
@@ -3289,7 +3301,8 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159"
+        "KRMV297159",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRMV297083",

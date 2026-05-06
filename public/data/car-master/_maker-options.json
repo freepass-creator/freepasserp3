@@ -1042,6 +1042,20 @@
         "플래티넘 기본 품목 외"
       ]
     },
+    "무선 Apple CarPlay & Android Auto": {
+      "fp_ids": [
+        "MIRRORING"
+      ],
+      "used_in": 22,
+      "used_as_basic": 106,
+      "used_as_select": 0,
+      "codes": [
+        "WIRELESS_MIRROR"
+      ],
+      "categories": [
+        "편의/멀티미디어"
+      ]
+    },
     "유아용 시트 고정 장치": {
       "fp_ids": [],
       "used_in": 22,
@@ -22085,6 +22099,20 @@
         "편의 사양"
       ]
     },
+    "무선 Apple CarPlay & Android Auto": {
+      "fp_ids": [
+        "MIRRORING"
+      ],
+      "used_in": 2,
+      "used_as_basic": 5,
+      "used_as_select": 0,
+      "codes": [
+        "WIRELESS_MIRROR"
+      ],
+      "categories": [
+        "편의/멀티미디어"
+      ]
+    },
     "전자식 파워 스티어링": {
       "fp_ids": [
         "POWER_STR"
@@ -27512,6 +27540,20 @@
       "categories": [
         "편의",
         "안전"
+      ]
+    },
+    "무선 Apple CarPlay & Android Auto": {
+      "fp_ids": [
+        "MIRRORING"
+      ],
+      "used_in": 7,
+      "used_as_basic": 22,
+      "used_as_select": 0,
+      "codes": [
+        "WIRELESS_MIRROR"
+      ],
+      "categories": [
+        "편의/멀티미디어"
       ]
     },
     "고스트 도어 클로징": {
@@ -37988,6 +38030,20 @@
       ],
       "categories": [
         "안전"
+      ]
+    },
+    "무선 Apple CarPlay & Android Auto": {
+      "fp_ids": [
+        "MIRRORING"
+      ],
+      "used_in": 23,
+      "used_as_basic": 143,
+      "used_as_select": 0,
+      "codes": [
+        "WIRELESS_MIRROR"
+      ],
+      "categories": [
+        "편의/멀티미디어"
       ]
     },
     "후방 모니터": {
@@ -60214,6 +60270,20 @@
       ],
       "categories": [
         "선택사양"
+      ]
+    },
+    "무선 Apple CarPlay & Android Auto": {
+      "fp_ids": [
+        "MIRRORING"
+      ],
+      "used_in": 3,
+      "used_as_basic": 8,
+      "used_as_select": 0,
+      "codes": [
+        "WIRELESS_MIRROR"
+      ],
+      "categories": [
+        "편의/멀티미디어"
       ]
     },
     "가솔린 1.5 T-GDi 엔진": {

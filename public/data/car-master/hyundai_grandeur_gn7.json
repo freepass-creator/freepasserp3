@@ -864,6 +864,11 @@
       "name": "블랙 잉크 전용 블랙 내장 디자인(블랙 컬러 리얼 알루미늄 내장재, 블랙 컬러 인조 가죽 감싸기 및 스웨이드 내장재, 블랙 컬러 도어스텝, 스피커 그릴 등)",
       "category": "내장",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -986,7 +991,8 @@
         "GN03123",
         "GN03054",
         "GN03073",
-        "GN03057"
+        "GN03057",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -1197,7 +1203,8 @@
         "GN03123",
         "GN03054",
         "GN03073",
-        "GN03057"
+        "GN03057",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -1416,7 +1423,8 @@
         "GN03116",
         "GN03105",
         "GN03073",
-        "GN03057"
+        "GN03057",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -1619,7 +1627,8 @@
         "GN03133",
         "GN03010",
         "GN03135",
-        "GN03136"
+        "GN03136",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -1800,7 +1809,8 @@
         "GN03120",
         "GN03077",
         "GN03078",
-        "GN03091"
+        "GN03091",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -1984,7 +1994,8 @@
         "GN03120",
         "GN03077",
         "GN03078",
-        "GN03091"
+        "GN03091",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -2166,7 +2177,8 @@
         "GN03054",
         "GN03073",
         "GN03057",
-        "GN03074"
+        "GN03074",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -2361,7 +2373,8 @@
         "GN03123",
         "GN03054",
         "GN03073",
-        "GN03057"
+        "GN03057",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -2556,7 +2569,8 @@
         "GN03123",
         "GN03054",
         "GN03073",
-        "GN03057"
+        "GN03057",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -2685,7 +2699,8 @@
         "GN03123",
         "GN03054",
         "GN03073",
-        "GN03057"
+        "GN03057",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -2896,7 +2911,8 @@
         "GN03133",
         "GN03010",
         "GN03135",
-        "GN03136"
+        "GN03136",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -3115,7 +3131,8 @@
         "GN03133",
         "GN03010",
         "GN03135",
-        "GN03136"
+        "GN03136",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -3310,7 +3327,8 @@
         "GN03133",
         "GN03010",
         "GN03135",
-        "GN03136"
+        "GN03136",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",
@@ -3505,7 +3523,8 @@
         "GN03131",
         "GN03132",
         "GN03129",
-        "GN03133"
+        "GN03133",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "GN03051",

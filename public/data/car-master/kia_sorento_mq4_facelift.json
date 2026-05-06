@@ -7,13 +7,51 @@
   "source_urls": [],
   "fetched_at": "2026-05-06",
   "note": "쏘렌토 MQ4 페리 (2023-08~). 트림 stub.",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
-    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "시그니처": { "slug": "signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "그래비티": { "slug": "gravity", "price": {}, "basic": [], "select": [], "select_groups": [] }
+    "프레스티지": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스": {
+      "slug": "noblesse",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "시그니처": {
+      "slug": "signature",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "그래비티": {
+      "slug": "gravity",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    }
   },
   "aliases": [
     "더 뉴 쏘렌토 MQ4",

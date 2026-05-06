@@ -958,6 +958,11 @@
       "name": "빌트인캠 2 플러스",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1065,7 +1070,8 @@
         "KROV262154",
         "KROV262155",
         "KROV262156",
-        "KROV262157"
+        "KROV262157",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KROV262161",
@@ -1259,7 +1265,8 @@
         "KROV262155",
         "KROV262156",
         "KROV262157",
-        "KROV262164"
+        "KROV262164",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KROV262165",
@@ -1488,7 +1495,8 @@
         "KROV262002",
         "KROV262048",
         "KROV262069",
-        "KROV262072"
+        "KROV262072",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KROV262161",
@@ -1711,7 +1719,8 @@
         "KROV262164",
         "KROV262048",
         "KROV262069",
-        "KROV262072"
+        "KROV262072",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KROV262165",
@@ -1948,7 +1957,8 @@
         "KROV262088",
         "KROV262048",
         "KROV262069",
-        "KROV262072"
+        "KROV262072",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KROV262168",
@@ -2179,7 +2189,8 @@
         "KROV262088",
         "KROV262048",
         "KROV262069",
-        "KROV262072"
+        "KROV262072",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KROV262165",

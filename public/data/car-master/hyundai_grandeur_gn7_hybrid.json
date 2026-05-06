@@ -7,12 +7,42 @@
   "source_urls": [],
   "fetched_at": "2026-05-06",
   "note": "그랜저 7세대 (GN7) 하이브리드. 2022-11~. 트림 stub.",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
-    "프리미엄": { "slug": "premium", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "익스클루시브": { "slug": "exclusive", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "캘리그래피": { "slug": "calligraphy", "price": {}, "basic": [], "select": [], "select_groups": [] }
+    "프리미엄": {
+      "slug": "premium",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "익스클루시브": {
+      "slug": "exclusive",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "calligraphy",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    }
   },
   "aliases": [
     "그랜저 GN7 하이브리드",

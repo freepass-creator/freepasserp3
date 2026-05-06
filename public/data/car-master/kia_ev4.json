@@ -964,6 +964,11 @@
       "name": "요트 매트 블루",
       "category": "선택사양",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1069,7 +1074,8 @@
         "KRCT294152",
         "KRCT294153",
         "KRCT294154",
-        "KRCT294164"
+        "KRCT294164",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCT294161",
@@ -1275,7 +1281,8 @@
         "KRCT294153",
         "KRCT294154",
         "KRCT294164",
-        "KRCT294002"
+        "KRCT294002",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCT294161",
@@ -1536,7 +1543,8 @@
         "KRCT294081",
         "KRCT294091",
         "KRCT294110",
-        "KRCT294119"
+        "KRCT294119",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCT294161",
@@ -1757,7 +1765,8 @@
         "KRCT294081",
         "KRCT294091",
         "KRCT294110",
-        "KRCT294119"
+        "KRCT294119",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCT294161",
@@ -2000,7 +2009,8 @@
         "KRCT294081",
         "KRCT294091",
         "KRCT294110",
-        "KRCT294119"
+        "KRCT294119",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCT294161",
@@ -2227,7 +2237,8 @@
         "KRCT294081",
         "KRCT294091",
         "KRCT294110",
-        "KRCT294119"
+        "KRCT294119",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRCT294161",

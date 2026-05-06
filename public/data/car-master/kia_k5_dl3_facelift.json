@@ -7,14 +7,60 @@
   "source_urls": [],
   "fetched_at": "2026-05-06",
   "note": "K5 DL3 페리 (2023-01~). 트림 stub.",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
-    "트렌디": { "slug": "trendy", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "시그니처": { "slug": "signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "GT-라인": { "slug": "gt_line", "price": {}, "basic": [], "select": [], "select_groups": [] }
+    "트렌디": {
+      "slug": "trendy",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스": {
+      "slug": "noblesse",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "시그니처": {
+      "slug": "signature",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "GT-라인": {
+      "slug": "gt_line",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": []
+    }
   },
   "aliases": [
     "더 뉴 K5 DL3",

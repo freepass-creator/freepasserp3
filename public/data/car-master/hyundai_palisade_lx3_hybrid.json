@@ -7,7 +7,13 @@
   "source_urls": [],
   "fetched_at": "2026-05-06",
   "note": "현대 팰리세이드 하이브리드 — hyundai_palisade_lx3 의 하이브리드 트림 추출",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
     "익스클루시브 9인승": {
@@ -152,7 +158,8 @@
         "FX01062",
         "FX01088",
         "FX01124",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -394,7 +401,8 @@
         "FX01088",
         "FX01124",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -641,7 +649,8 @@
         "FX01103",
         "FX01105",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -883,7 +892,8 @@
         "FX01062",
         "FX01088",
         "FX01124",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -1126,7 +1136,8 @@
         "FX01088",
         "FX01124",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",
@@ -1374,7 +1385,8 @@
         "FX01103",
         "FX01105",
         "FX01070",
-        "FX01092"
+        "FX01092",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "FX01008",

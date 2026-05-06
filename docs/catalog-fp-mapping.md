@@ -9,15 +9,15 @@
 | catalog 총수 | 160 |
 | trim 보유 catalog | 160 |
 | trim 총수 | 782 |
-| 옵션 텍스트 보유 trim | 467 (59.7%) |
-| 옵션 텍스트 총수 | 53505 |
-| **FP 매칭 성공** | 24848 (46.4%) |
+| 옵션 텍스트 보유 trim | 533 (68.2%) |
+| 옵션 텍스트 총수 | 53789 |
+| **FP 매칭 성공** | 25132 (46.7%) |
 | FP 매칭 실패 | 28657 |
-| FP_KEYWORD_RULES 등록 키워드 | 259 |
+| FP_KEYWORD_RULES 등록 키워드 | 268 |
 
 ## A. 옵션 텍스트 비어있는 catalog (trim 키만, basic/select 모두 빈 stub)
 
-총 67건 — 트림 옵션 데이터 보강 필요
+총 50건 — 트림 옵션 데이터 보강 필요
 
 | catalog_id | title | trim 수 |
 |---|---|---|
@@ -33,56 +33,39 @@
 | hyundai_avante_ad | 현대 아반떼 AD | 5 |
 | hyundai_avante_ad_facelift | 현대 더 뉴 아반떼 AD | 5 |
 | hyundai_avante_ad_facelift_hybrid | 현대 더 뉴 아반떼 AD 하이브리드 | 4 |
-| hyundai_avante_cn7_hybrid | 현대 더 뉴 아반떼 CN7 하이브리드 | 4 |
 | hyundai_grand_starex_facelift | 현대 더 뉴 그랜드 스타렉스 | 1 |
-| hyundai_grandeur_gn7_hybrid | 현대 그랜저 GN7 하이브리드 | 3 |
 | hyundai_grandeur_hg | 현대 그랜저 HG | 5 |
 | hyundai_grandeur_ig_pre | 현대 그랜저 IG | 4 |
 | hyundai_kona_os_facelift_hybrid | 현대 더 뉴 코나 OS 하이브리드 | 4 |
 | hyundai_kona_os_hybrid | 현대 코나 OS 하이브리드 | 4 |
-| hyundai_kona_sx2_hybrid | 현대 코나 SX2 하이브리드 | 4 |
-| hyundai_palisade_lx3_hybrid | 현대 디 올 뉴 팰리세이드 LX3 하이브리드 | 6 |
-| hyundai_santafe_mx5 | 현대 디 올 뉴 싼타페 MX5 | 3 |
-| hyundai_santafe_mx5_hybrid | 현대 디 올 뉴 싼타페 MX5 하이브리드 | 4 |
 | hyundai_sonata_lf | 현대 LF 쏘나타 | 4 |
 | hyundai_sonata_newrise | 현대 쏘나타 뉴 라이즈 | 4 |
 | hyundai_tucson_nx4_hybrid | 현대 더 뉴 투싼 NX4 하이브리드 | 4 |
 | hyundai_tucson_tl | 현대 올 뉴 투싼 TL | 4 |
-| kgm_musso_ev_o100 | KGM 무쏘 EV O100 | 2 |
-| kgm_musso_q300 | KGM 무쏘 Q300 | 3 |
 | kgm_musso_sports | KGM 무쏘 스포츠 | 3 |
-| kgm_musso_sports_khan | KGM 무쏘 스포츠 칸 | 3 |
 | kgm_rexton_sports_facelift | KGM 더 뉴 렉스턴 스포츠 | 5 |
 | kgm_rexton_sports_khan | KGM 렉스턴 스포츠 칸 | 4 |
 | kgm_rexton_sports_khan_facelift | KGM 더 뉴 렉스턴 스포츠 칸 | 6 |
 | kgm_rexton_sports_pre | KGM 렉스턴 스포츠 페리 전 | 3 |
 | kgm_tivoli_air | KGM 티볼리 에어 | 3 |
 | kgm_tivoli_armour | KGM 티볼리 아머 | 4 |
-| kia_carnival_ka4_facelift_hybrid | 기아 더 뉴 카니발 KA4 하이브리드 | 4 |
 | kia_carnival_ka4_hybrid | 기아 더 뉴 카니발 KA4 하이브리드 | 4 |
 | kia_carnival_yp | 기아 올 뉴 카니발 YP | 8 |
 | kia_k3_bd | 기아 올 뉴 K3 BD | 5 |
 | kia_k3_bd_facelift | 기아 더 뉴 K3 BD | 5 |
 | kia_k3_yd | 기아 K3 YD | 5 |
 | kia_k3_yd_facelift | 기아 더 뉴 K3 YD | 5 |
-| kia_k5_dl3_facelift | 기아 더 뉴 K5 DL3 | 5 |
-| kia_k5_dl3_facelift_hybrid | 기아 더 뉴 K5 DL3 하이브리드 | 4 |
 | kia_k5_dl3_hybrid | 기아 올 뉴 K5 DL3 하이브리드 | 3 |
 | kia_k5_jf | 기아 K5 JF | 5 |
 | kia_k5_jf_facelift_hybrid | 기아 더 뉴 K5 JF 하이브리드 | 3 |
 | kia_k5_jf_hybrid | 기아 K5 JF 하이브리드 | 3 |
 | kia_k7_premier | 기아 K7 프리미어 | 7 |
 | kia_k7_yg | 기아 올 뉴 K7 YG | 3 |
-| kia_k8_gl3_hybrid | 기아 더 뉴 K8 GL3 하이브리드 | 4 |
 | kia_k8_gl3_pre_hybrid | 기아 K8 GL3 하이브리드 | 4 |
 | kia_k9_rj_pre | 기아 K9 RJ | 4 |
 | kia_morning_sa | 기아 모닝 SA | 5 |
 | kia_morning_sa_facelift | 기아 더 뉴 모닝 SA | 4 |
 | kia_niro_de | 기아 더 뉴 니로 DE | 5 |
-| kia_niro_sg2_hybrid | 기아 디 올 뉴 니로 SG2 하이브리드 | 4 |
-| kia_pv5 | 기아 PV5 | 5 |
-| kia_sorento_mq4_facelift | 기아 더 뉴 쏘렌토 MQ4 | 4 |
-| kia_sorento_mq4_facelift_hybrid | 기아 더 뉴 쏘렌토 MQ4 하이브리드 | 4 |
 | kia_sorento_mq4_hybrid | 기아 더 뉴 쏘렌토 MQ4 하이브리드 | 4 |
 | kia_sorento_um | 기아 올 뉴 쏘렌토 UM | 4 |
 | kia_sorento_um_facelift | 기아 쏘렌토 더 마스터 UM | 6 |
@@ -253,32 +236,32 @@
 | catalog_id | title | 옵션 수 |
 |---|---|---|
 | kia_k5_dl3 | 기아 올 뉴 K5 DL3 | 3161 |
-| hyundai_grandeur_gn7 | 현대 그랜저 GN7 | 1861 |
-| hyundai_palisade_lx3 | 현대 디 올 뉴 팰리세이드 LX3 | 1857 |
+| hyundai_grandeur_gn7 | 현대 그랜저 GN7 | 1875 |
+| hyundai_palisade_lx3 | 현대 디 올 뉴 팰리세이드 LX3 | 1869 |
+| hyundai_sonata_dn8_edge | 현대 쏘나타 디 엣지 DN8 | 1740 |
 | hyundai_sonata_dn8 | 현대 쏘나타 DN8 | 1727 |
-| hyundai_sonata_dn8_edge | 현대 쏘나타 디 엣지 DN8 | 1724 |
 | kia_sportage_nq5 | 기아 더 뉴 스포티지 NQ5 | 1683 |
-| kia_ev6 | 기아 더 뉴 EV6 | 1590 |
-| kia_ev9 | 기아 EV9 | 1416 |
+| kia_ev6 | 기아 더 뉴 EV6 | 1601 |
+| kia_ev9 | 기아 EV9 | 1424 |
 | hyundai_santafe_tm_165 | 현대 더 뉴 싼타페 | 1411 |
-| hyundai_kona_sx2 | 현대 코나 SX2 | 1302 |
-| hyundai_santa_fe_mx5 | 현대 싼타페 MX5 | 1233 |
+| hyundai_kona_sx2 | 현대 코나 SX2 | 1314 |
+| hyundai_santa_fe_mx5 | 현대 싼타페 MX5 | 1243 |
 | kia_k8_gl3_pre | 기아 K8 GL3 | 1226 |
 | kia_carnival_ka4 | 기아 더 뉴 카니발 KA4 | 1074 |
-| kia_ev3 | 기아 EV3 | 891 |
-| kia_ev4 | 기아 EV4 | 867 |
-| kia_ev5 | 기아 EV5 | 851 |
-| hyundai_ioniq5 | 현대 더 뉴 아이오닉5 | 829 |
-| kia_k8_gl3 | 기아 더 뉴 K8 GL3 | 785 |
-| hyundai_ioniq9 | 현대 아이오닉9 | 769 |
-| hyundai_avante_cn7 | 현대 더 뉴 아반떼 CN7 | 756 |
+| kia_ev3 | 기아 EV3 | 897 |
+| kia_ev4 | 기아 EV4 | 873 |
+| kia_ev5 | 기아 EV5 | 857 |
+| hyundai_ioniq5 | 현대 더 뉴 아이오닉5 | 836 |
+| kia_k8_gl3 | 기아 더 뉴 K8 GL3 | 791 |
+| hyundai_ioniq9 | 현대 아이오닉9 | 775 |
+| hyundai_avante_cn7 | 현대 더 뉴 아반떼 CN7 | 766 |
 | hyundai_avante_cn7_pre | 현대 아반떼 CN7 | 738 |
-| hyundai_ioniq6 | 현대 더 뉴 아이오닉6 | 709 |
-| genesis_gv70 | 제네시스 디 올 뉴 GV70 | 630 |
+| hyundai_ioniq6 | 현대 더 뉴 아이오닉6 | 715 |
+| genesis_gv70 | 제네시스 디 올 뉴 GV70 | 634 |
 | kia_k5_jf_facelift | 기아 더 뉴 K5 JF | 620 |
 | genesis_gv70_pre | 제네시스 GV70 | 618 |
-| kia_seltos | 기아 더 뉴 셀토스 | 612 |
+| kia_seltos | 기아 더 뉴 셀토스 | 616 |
 | hyundai_tucson_nx4 | 현대 더 뉴 투싼 NX4 | 593 |
 | kia_carnival_yp_facelift | 기아 더 뉴 카니발 YP | 593 |
+| kia_tasman | 기아 타스만 | 584 |
 | kia_ev6_pre | 기아 EV6 | 581 |
-| kia_tasman | 기아 타스만 | 580 |

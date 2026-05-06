@@ -605,6 +605,11 @@
       "name": "카고 실내 우드 트림(상측)",
       "category": "내장",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -672,7 +677,8 @@
         "TS02083",
         "TS02026",
         "TS02041",
-        "TS02096"
+        "TS02096",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "TS02079",
@@ -784,7 +790,8 @@
         "TS02083",
         "TS02026",
         "TS02041",
-        "TS02096"
+        "TS02096",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "TS02079",
@@ -865,7 +872,8 @@
         "TS02066",
         "TS02067",
         "TS02084",
-        "TS02082"
+        "TS02082",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "TS02079",

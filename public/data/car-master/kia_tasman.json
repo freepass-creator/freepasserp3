@@ -1120,6 +1120,11 @@
       "name": "더블데커 캐노피 Ⅱ 패키지",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1214,7 +1219,8 @@
         "KRPK222173",
         "KRPK222172",
         "KRPK222169",
-        "KRPK222170"
+        "KRPK222170",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRPK222062",
@@ -1388,7 +1394,8 @@
         "KRPK222078",
         "KRPK222082",
         "KRPK222092",
-        "KRPK222093"
+        "KRPK222093",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRPK222062",
@@ -1643,7 +1650,8 @@
         "KRPK222078",
         "KRPK222082",
         "KRPK222092",
-        "KRPK222093"
+        "KRPK222093",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRPK222062",
@@ -1932,7 +1940,8 @@
         "KRPK222078",
         "KRPK222082",
         "KRPK222092",
-        "KRPK222093"
+        "KRPK222093",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRPK222062",

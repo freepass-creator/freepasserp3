@@ -784,6 +784,11 @@
       "name": "컴포트",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -838,7 +843,8 @@
         "KRTM257099",
         "KRTM257101",
         "KRTM257102",
-        "KRTM257106"
+        "KRTM257106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRTM257P01",
@@ -928,7 +934,8 @@
         "KRTM257099",
         "KRTM257101",
         "KRTM257102",
-        "KRTM257106"
+        "KRTM257106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRTM257P01",
@@ -1071,7 +1078,8 @@
         "KRTM257099",
         "KRTM257101",
         "KRTM257102",
-        "KRTM257060"
+        "KRTM257060",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRTM257P04",
@@ -1207,7 +1215,8 @@
         "KRTM257099",
         "KRTM257101",
         "KRTM257102",
-        "KRTM257060"
+        "KRTM257060",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRTM257P15",
@@ -1293,7 +1302,8 @@
         "KRTM257106",
         "KRTM257105",
         "KRTM257104",
-        "KRTM257060"
+        "KRTM257060",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "KRTM257P01",

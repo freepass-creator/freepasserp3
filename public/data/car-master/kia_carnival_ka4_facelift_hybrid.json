@@ -7,34 +7,48 @@
   "source_urls": [],
   "fetched_at": "2026-05-06",
   "note": "기아 더 뉴 카니발 KA4 하이브리드 stub. 트림 데이터 별도 보강 필요.",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
     "프리미엄": {
       "slug": "premium",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "익스클루시브": {
       "slug": "exclusive",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "프레스티지": {
       "slug": "prestige",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "캘리그래피": {
       "slug": "calligraphy",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     }

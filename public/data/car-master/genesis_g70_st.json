@@ -532,6 +532,11 @@
       "name": "알칸타라 콘솔 암레스트",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "categories": {
@@ -695,7 +700,8 @@
         "WK_가솔린_2_5_터보",
         "WK_225_45R18_브리지스톤_타이어___다크_하이퍼_실버_휠",
         "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다이아몬드_컷팅_휠",
-        "WK_블랙_소프트_페인트_도어_가니쉬"
+        "WK_블랙_소프트_페인트_도어_가니쉬",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -764,7 +770,8 @@
         "WK_2WD_후륜_",
         "WK_AWD",
         "WK_전자제어_서스펜션",
-        "WK_차동제한장치_LSD_"
+        "WK_차동제한장치_LSD_",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -859,7 +866,8 @@
         "WK_매트_컬러__무광__3종_중_선택_",
         "WK_와이드_선루프",
         "WK_헤드업_디스플레이",
-        "WK_제네시스_디지털_키_2_터치"
+        "WK_제네시스_디지털_키_2_터치",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []

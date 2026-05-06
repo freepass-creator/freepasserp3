@@ -622,6 +622,11 @@
       "name": "카메라 패키지",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -693,7 +698,8 @@
         "NH01097",
         "NH01114",
         "NH01115",
-        "NH01116"
+        "NH01116",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NH01101"
@@ -786,7 +792,8 @@
         "NH01116",
         "NH01020",
         "NH01070",
-        "NH01071"
+        "NH01071",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NH01P01",
@@ -930,7 +937,8 @@
         "NH01115",
         "NH01020",
         "NH01070",
-        "NH01071"
+        "NH01071",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NH01P01",

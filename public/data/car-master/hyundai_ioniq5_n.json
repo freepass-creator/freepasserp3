@@ -576,6 +576,11 @@
       "name": "비전루프",
       "category": "선택사양",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -655,7 +660,8 @@
         "NEN6104",
         "NEN6106",
         "NEN6108",
-        "NEN6109"
+        "NEN6109",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NEN6P03",
@@ -798,7 +804,8 @@
         "NEN6108",
         "NEN6109",
         "NEN6042",
-        "NEN6120"
+        "NEN6120",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "NEN6P03",

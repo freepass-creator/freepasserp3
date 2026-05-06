@@ -742,6 +742,11 @@
       "name": "블랙잉크 플러스",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -823,7 +828,8 @@
         "MX03107",
         "MX03108",
         "MX03122",
-        "MX03124"
+        "MX03124",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -1055,7 +1061,8 @@
         "MX03124",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -1285,7 +1292,8 @@
         "MX03092",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -1519,7 +1527,8 @@
         "MX03056",
         "MX03069",
         "MX03082",
-        "MX03118"
+        "MX03118",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -1753,7 +1762,8 @@
         "MX03092",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -1995,7 +2005,8 @@
         "MX03092",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -2245,7 +2256,8 @@
         "MX03092",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -2487,7 +2499,8 @@
         "MX03092",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -2729,7 +2742,8 @@
         "MX03092",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",
@@ -2971,7 +2985,8 @@
         "MX03092",
         "MX03025",
         "MX03040",
-        "MX03106"
+        "MX03106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "MX03P11",

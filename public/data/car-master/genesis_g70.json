@@ -656,6 +656,11 @@
       "name": "알칸타라 콘솔 암레스트",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -739,7 +744,8 @@
         "WK_고탄성_폴리우레탄_PPF_보호필름",
         "WK_알칸타라_콘솔_암레스트",
         "WK_가솔린_2_5_터보_엔진",
-        "WK_2WD_후륜_"
+        "WK_2WD_후륜_",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_Full_LED_헤드램프",
@@ -884,7 +890,8 @@
         "WK_알칸타라_콘솔_암레스트",
         "WK_가솔린_2_5_터보_엔진",
         "WK_AWD",
-        "WK_2WD_후륜_"
+        "WK_2WD_후륜_",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_Full_LED_헤드램프",

@@ -7,27 +7,39 @@
   "source_urls": [],
   "fetched_at": "2026-05-04",
   "note": "body type/세대 분리 stub — 트림명만.",
-  "options": {},
+  "options": {
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
+    }
+  },
   "categories": {},
   "trims": {
     "L5": {
       "slug": "l5",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "V5": {
       "slug": "v5",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     },
     "X5": {
       "slug": "x5",
       "price": {},
-      "basic": [],
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
       "select": [],
       "select_groups": []
     }

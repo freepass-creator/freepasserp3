@@ -899,6 +899,11 @@
       "name": "운전석 자세 메모리 시스템(운전석 시트, 아웃사이드 미러, 스티어링 휠 연동)",
       "category": "시트",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -991,7 +996,8 @@
         "ME02112",
         "ME02106",
         "ME02094",
-        "ME02100"
+        "ME02100",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "ME02P01",
@@ -1199,7 +1205,8 @@
         "ME02100",
         "ME02111",
         "ME02112",
-        "ME02106"
+        "ME02106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "ME02P01",
@@ -1453,7 +1460,8 @@
         "ME02100",
         "ME02111",
         "ME02112",
-        "ME02106"
+        "ME02106",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "ME02P01",
@@ -1674,7 +1682,8 @@
         "ME02150",
         "ME02154",
         "ME02157",
-        "ME02152"
+        "ME02152",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "ME02P01",
@@ -1871,7 +1880,8 @@
         "ME02154",
         "ME02081",
         "ME02110",
-        "ME02099"
+        "ME02099",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "ME02P01",
@@ -2116,7 +2126,8 @@
         "ME02098",
         "ME02099",
         "ME02091",
-        "ME02108"
+        "ME02108",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "ME02P01",

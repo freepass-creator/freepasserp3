@@ -1012,6 +1012,11 @@
       "name": "고탄성 폴리 우레탄 보호 필름",
       "category": "선택사양",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -1093,7 +1098,8 @@
         "WK_G90_Long_Wheel_Base_전용_실크_카페트",
         "WK_토퍼_2EA_포함",
         "WK_Genesis_G90_Black_전용_세미_애닐린_가죽_퀼팅_",
-        "WK_가솔린_3_5_터보_엔진"
+        "WK_가솔린_3_5_터보_엔진",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_Full_LED_리어_콤비_램프",
@@ -1330,7 +1336,8 @@
         "WK_토퍼_2EA_포함",
         "WK_Genesis_G90_Black_전용_세미_애닐린_가죽_퀼팅_",
         "WK_가솔린_3_5_터보_엔진",
-        "WK_AWD"
+        "WK_AWD",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_Full_LED_리어_콤비_램프",
@@ -1568,7 +1575,8 @@
         "WK_Genesis_G90_Black_전용_세미_애닐린_가죽_퀼팅_",
         "WK_가솔린_3_5_터보_48V_일렉트릭_슈퍼차저",
         "WK_AWD",
-        "WK_가솔린_3_5_터보_엔진"
+        "WK_가솔린_3_5_터보_엔진",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "WK_Full_LED_리어_콤비_램프",

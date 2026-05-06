@@ -735,6 +735,11 @@
       "name": "트레일러 패키지(면세)",
       "category": "선택사양",
       "is_package": true
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "trims": {
@@ -791,7 +796,8 @@
         "US04112",
         "US04113",
         "US04114",
-        "US04130"
+        "US04130",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "US04041",
@@ -886,7 +892,8 @@
         "US04119",
         "US04034",
         "US04069",
-        "US04084"
+        "US04084",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "US04041",
@@ -1058,7 +1065,8 @@
         "US04089",
         "US04034",
         "US04069",
-        "US04084"
+        "US04084",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "US04P39",
@@ -1161,7 +1169,8 @@
         "US04119",
         "US04034",
         "US04069",
-        "US04084"
+        "US04084",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "US04041",
@@ -1304,7 +1313,8 @@
         "US04119",
         "US04034",
         "US04069",
-        "US04084"
+        "US04084",
+        "WIRELESS_MIRROR"
       ],
       "select": [
         "US04041",

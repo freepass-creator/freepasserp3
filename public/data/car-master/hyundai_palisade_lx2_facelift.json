@@ -854,6 +854,11 @@
       "name": "2열 전동식 틸팅형 워크인",
       "category": "시트",
       "is_package": false
+    },
+    "WIRELESS_MIRROR": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "편의/멀티미디어",
+      "is_package": false
     }
   },
   "categories": {
@@ -1158,7 +1163,8 @@
         "FX01P07",
         "FX01P01",
         "FX01P02",
-        "FX01P18"
+        "FX01P18",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1275,7 +1281,8 @@
         "FX01P07",
         "FX01P01",
         "FX01P02",
-        "FX01P18"
+        "FX01P18",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1438,7 +1445,8 @@
         "FX01033",
         "FX01P04",
         "FX01P22",
-        "FX01P23"
+        "FX01P23",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
@@ -1601,7 +1609,8 @@
         "FX01033",
         "FX01P04",
         "FX01P22",
-        "FX01P23"
+        "FX01P23",
+        "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": []
