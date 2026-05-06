@@ -1,0 +1,48 @@
+{
+  "catalog_id": "kia_k8_gl3_hybrid",
+  "model_root": "K8",
+  "title": "기아 더 뉴 K8 GL3 하이브리드",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "K8 하이브리드 stub. 트림 데이터 별도 추가 필요.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프리미엄": {
+      "slug": "premium",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "익스클루시브": {
+      "slug": "exclusive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "calligraphy",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "K8 하이브리드",
+    "더 뉴 K8 GL3 하이브리드"
+  ],
+  "year_start": "2024-09",
+  "year_end": "현재"
+}

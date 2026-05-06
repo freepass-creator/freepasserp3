@@ -3802,6 +3802,31 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "hyundai_avante_cn7_hybrid": {
+    "id": "hyundai_avante_cn7_hybrid",
+    "title": "현대 더 뉴 아반떼 CN7 하이브리드",
+    "maker": "현대",
+    "model_root": "아반떼",
+    "year_start": "2023-03",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "hyundai_avante_cn7_pre": {
     "id": "hyundai_avante_cn7_pre",
     "title": "현대 아반떼 CN7",
@@ -4325,6 +4350,31 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "hyundai_kona_sx2_hybrid": {
+    "id": "hyundai_kona_sx2_hybrid",
+    "title": "현대 코나 SX2 하이브리드",
+    "maker": "현대",
+    "model_root": "코나",
+    "year_start": "2023-04",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "hyundai_nexo_nh2": {
     "id": "hyundai_nexo_nh2",
     "title": "현대 디 올 뉴 넥쏘 NH2",
@@ -4432,6 +4482,31 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "hyundai_palisade_lx3_hybrid": {
+    "id": "hyundai_palisade_lx3_hybrid",
+    "title": "현대 디 올 뉴 팰리세이드 LX3 하이브리드",
+    "maker": "현대",
+    "model_root": "팰리세이드",
+    "year_start": "2025-01",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "hyundai_santa_fe_mx5": {
     "id": "hyundai_santa_fe_mx5",
     "title": "현대 싼타페 MX5",
@@ -4462,6 +4537,55 @@
       "캘리그래피 하이브리드"
     ],
     "fetched_at": "2026-05-05"
+  },
+  "hyundai_santafe_mx5": {
+    "id": "hyundai_santafe_mx5",
+    "title": "현대 디 올 뉴 싼타페 MX5",
+    "maker": "현대",
+    "model_root": "싼타페",
+    "year_start": "2023-08",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
+  "hyundai_santafe_mx5_hybrid": {
+    "id": "hyundai_santafe_mx5_hybrid",
+    "title": "현대 디 올 뉴 싼타페 MX5 하이브리드",
+    "maker": "현대",
+    "model_root": "싼타페",
+    "year_start": "2023-08",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
   },
   "hyundai_santafe_tm_165": {
     "id": "hyundai_santafe_tm_165",
@@ -4785,6 +4909,31 @@
       "N 라인 1.6 터보"
     ],
     "fetched_at": "2026-05-05"
+  },
+  "hyundai_tucson_nx4_hybrid": {
+    "id": "hyundai_tucson_nx4_hybrid",
+    "title": "현대 더 뉴 투싼 NX4 하이브리드",
+    "maker": "현대",
+    "model_root": "투싼",
+    "year_start": "2020-09",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
   },
   "hyundai_tucson_tl": {
     "id": "hyundai_tucson_tl",
@@ -5608,6 +5757,31 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "kia_carnival_ka4_hybrid": {
+    "id": "kia_carnival_ka4_hybrid",
+    "title": "기아 더 뉴 카니발 KA4 하이브리드",
+    "maker": "기아",
+    "model_root": "카니발",
+    "year_start": "2020-08",
+    "year_end": "2024-12",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "kia_carnival_yp": {
     "id": "kia_carnival_yp",
     "title": "기아 올 뉴 카니발 YP",
@@ -5978,6 +6152,31 @@
     ],
     "fetched_at": "2026-05-05"
   },
+  "kia_k5_dl3_hybrid": {
+    "id": "kia_k5_dl3_hybrid",
+    "title": "기아 더 뉴 K5 DL3 하이브리드",
+    "maker": "기아",
+    "model_root": "K5",
+    "year_start": "2019-12",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "kia_k5_jf": {
     "id": "kia_k5_jf",
     "title": "기아 K5 JF",
@@ -6158,6 +6357,31 @@
       "프레스티지"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "kia_k8_gl3_hybrid": {
+    "id": "kia_k8_gl3_hybrid",
+    "title": "기아 더 뉴 K8 GL3 하이브리드",
+    "maker": "기아",
+    "model_root": "K8",
+    "year_start": "2024-09",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
   },
   "kia_k8_gl3_pre": {
     "id": "kia_k8_gl3_pre",
@@ -6416,6 +6640,31 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "kia_niro_sg2_hybrid": {
+    "id": "kia_niro_sg2_hybrid",
+    "title": "기아 디 올 뉴 니로 SG2 하이브리드",
+    "maker": "기아",
+    "model_root": "니로",
+    "year_start": "2022-07",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "kia_pv5": {
     "id": "kia_pv5",
     "title": "기아 PV5",
@@ -6614,6 +6863,31 @@
     ],
     "fetched_at": "2026-04-29"
   },
+  "kia_sorento_mq4_hybrid": {
+    "id": "kia_sorento_mq4_hybrid",
+    "title": "기아 더 뉴 쏘렌토 MQ4 하이브리드",
+    "maker": "기아",
+    "model_root": "쏘렌토",
+    "year_start": "2020-03",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "kia_sorento_um": {
     "id": "kia_sorento_um",
     "title": "기아 올 뉴 쏘렌토 UM",
@@ -6698,6 +6972,31 @@
       "시그니처 X-Line 하이브리드"
     ],
     "fetched_at": "2026-05-05"
+  },
+  "kia_sportage_nq5_hybrid": {
+    "id": "kia_sportage_nq5_hybrid",
+    "title": "기아 더 뉴 스포티지 NQ5 하이브리드",
+    "maker": "기아",
+    "model_root": "스포티지",
+    "year_start": "2021-08",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "fetched_at": "2026-05-06"
   },
   "kia_sportage_ql": {
     "id": "kia_sportage_ql",

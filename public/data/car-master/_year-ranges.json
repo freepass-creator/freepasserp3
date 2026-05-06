@@ -659,6 +659,10 @@
     "start": "2023-03",
     "end": "현재"
   },
+  "hyundai_avante_cn7_hybrid": {
+    "start": "2023-03",
+    "end": "현재"
+  },
   "hyundai_avante_cn7_pre": {
     "start": "2020-04",
     "end": "2023-03"
@@ -739,6 +743,10 @@
     "start": "2023-04",
     "end": "현재"
   },
+  "hyundai_kona_sx2_hybrid": {
+    "start": "2023-04",
+    "end": "현재"
+  },
   "hyundai_nexo_nh2": {
     "start": "2025-04",
     "end": "현재"
@@ -755,7 +763,19 @@
     "start": "2025-01",
     "end": "현재"
   },
+  "hyundai_palisade_lx3_hybrid": {
+    "start": "2025-01",
+    "end": "현재"
+  },
   "hyundai_santa_fe_mx5": {
+    "start": "2023-08",
+    "end": "현재"
+  },
+  "hyundai_santafe_mx5": {
+    "start": "2023-08",
+    "end": "현재"
+  },
+  "hyundai_santafe_mx5_hybrid": {
     "start": "2023-08",
     "end": "현재"
   },
@@ -804,6 +824,10 @@
     "end": "2024-11"
   },
   "hyundai_tucson_nx4": {
+    "start": "2020-09",
+    "end": "현재"
+  },
+  "hyundai_tucson_nx4_hybrid": {
     "start": "2020-09",
     "end": "현재"
   },
@@ -935,6 +959,10 @@
     "start": "2020-08",
     "end": "현재"
   },
+  "kia_carnival_ka4_hybrid": {
+    "start": "2020-08",
+    "end": "2024-12"
+  },
   "kia_carnival_yp": {
     "start": "2014-06",
     "end": "2018-08"
@@ -987,6 +1015,10 @@
     "start": "2019-12",
     "end": "현재"
   },
+  "kia_k5_dl3_hybrid": {
+    "start": "2019-12",
+    "end": "현재"
+  },
   "kia_k5_jf": {
     "start": "2015-07",
     "end": "2018-12"
@@ -1012,6 +1044,10 @@
     "end": "2019-12"
   },
   "kia_k8_gl3": {
+    "start": "2024-09",
+    "end": "현재"
+  },
+  "kia_k8_gl3_hybrid": {
     "start": "2024-09",
     "end": "현재"
   },
@@ -1055,6 +1091,10 @@
     "start": "2022-07",
     "end": "현재"
   },
+  "kia_niro_sg2_hybrid": {
+    "start": "2022-07",
+    "end": "현재"
+  },
   "kia_pv5": {
     "start": "2025-01",
     "end": "현재"
@@ -1087,6 +1127,10 @@
     "start": "2020-03",
     "end": "현재"
   },
+  "kia_sorento_mq4_hybrid": {
+    "start": "2020-03",
+    "end": "현재"
+  },
   "kia_sorento_um": {
     "start": "2014-09",
     "end": "2017-07"
@@ -1096,6 +1140,10 @@
     "end": "2020-03"
   },
   "kia_sportage_nq5": {
+    "start": "2021-08",
+    "end": "현재"
+  },
+  "kia_sportage_nq5_hybrid": {
     "start": "2021-08",
     "end": "현재"
   },

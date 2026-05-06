@@ -1228,66 +1228,47 @@ function renderDataTab(el) {
   });
 }
 
-/* ──────── 8. 차종 마스터 (엔카마스터) ──────── */
-const VM_CATEGORIES = ['경차','소형차','준중형차','중형차','준대형차','대형차','SUV','RV','승합','화물','수입세단','수입SUV','스포츠카','전기차'];
-const VM_FUELS = ['가솔린','디젤','LPG','하이브리드','전기','수소'];
-const VM_ORIGINS = ['국산','수입'];
-const VM_POWERTRAINS = ['내연','하이브리드','전기','수소'];
-
+/* ──────── 8. 차종 마스터 (catalog 매트릭스 viewer) ────────
+ *  데이터원: public/data/car-master/_index.json (단일 진실원)
+ *  좌측 list: catalog 메이커/모델/세부모델/연식/트림수/상품수
+ *  우측 detail: catalog json 미리보기 (view-only, 편집은 git stub 직접)
+ */
+let _vmCatalogIdx = null;
 let _vmState = {
-  selectedKey: null,
-  mode: 'idle',     // idle / view / edit / new
+  selectedCid: null,
   filterMaker: '',
   filterQ: '',
-  showArchived: false,
-  models: [],       // vehicle_master rows
-  productCounts: new Map(),  // maker|model|sub → count
 };
 
-function renderVehicleTab(el) {
-  el.innerHTML = `<div style="padding:12px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> 로딩 중...</div>`;
-
-  // 데이터 로드 + 구독
-  const loadAndRender = async () => {
-    const data = await fetchCollection('vehicle_master');
-    _vmState.models = data.filter(m => m.status !== 'deleted');
-    // 상품 카운트 — products 의 maker|model|sub 매칭 수
-    const cnt = new Map();
-    for (const p of (store.products || [])) {
-      if (p._deleted || p.status === 'deleted') continue;
-      const k = [p.maker, p.model, p.sub_model].filter(Boolean).join('|');
-      if (k) cnt.set(k, (cnt.get(k) || 0) + 1);
-    }
-    _vmState.productCounts = cnt;
-    drawVehicleTab(el);
-  };
-
-  loadAndRender();
-  // 실시간 동기화 — vehicle_master 변경 시 자동 갱신
-  const unsub = watchRecord('vehicle_master', () => loadAndRender());
-  devUnsubs.push(unsub);
-}
-
-/* 정렬 우선순위 — 국산 메이저 → 국산 기타 → 수입.
-   같은 그룹 내에서는 제조사명 → 모델명 → 세부모델 모두 한국어 로케일 asc */
 const KOR_MAKER_ORDER = ['현대', '기아', '제네시스', '쌍용', 'KGM', '르노', '르노삼성', '쉐보레', '한국GM', 'GM대우', '대우'];
 
-function vehicleSortKey(m) {
-  const isKor = m.origin === '국산' || KOR_MAKER_ORDER.includes(m.maker);
-  const korIdx = KOR_MAKER_ORDER.indexOf(m.maker);
-  // 1) 국산 먼저(0) / 수입 나중(1)
-  // 2) 국산 메이저 우선순위 인덱스 (없으면 999)
-  // 3) 제조사명 asc
-  return [isKor ? 0 : 1, korIdx >= 0 ? korIdx : 999, m.maker || ''];
+function _vmYy(v) { const m = (v || '').match(/^(\d{4})/); return m ? m[1].slice(2) : ''; }
+function _vmYearLabel(c) {
+  const ys = _vmYy(c.year_start);
+  const ye = _vmYy(c.year_end);
+  if (ys && (c.year_end === '현재' || !ye)) return `${ys}~`;
+  if (ys && ye) return `${ys}~${ye}`;
+  return '';
+}
+
+async function renderVehicleTab(el) {
+  el.innerHTML = `<div style="padding:12px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> catalog 로드 중...</div>`;
+  const { loadIndex } = await import('../core/vehicle-matrix.js');
+  _vmCatalogIdx = await loadIndex();
+  drawVehicleTab(el);
 }
 
 function drawVehicleTab(el) {
-  const { selectedKey, mode, filterMaker, filterQ, showArchived, models, productCounts } = _vmState;
+  const { selectedCid, filterMaker, filterQ } = _vmState;
   const detailEl = document.getElementById('devDetail');
+  const idx = _vmCatalogIdx || {};
+  const all = Object.values(idx);
+  const total = all.length;
 
-  // 제조사 select 옵션 — 정렬 순서대로
-  const makerSet = new Set(models.map(m => m.maker).filter(Boolean));
-  const makers = [...makerSet].sort((a, b) => {
+  // 제조사 카운트 + 정렬 (국산 우선 → 가나다)
+  const makerCounts = new Map();
+  for (const c of all) if (c.maker) makerCounts.set(c.maker, (makerCounts.get(c.maker) || 0) + 1);
+  const makers = [...makerCounts.keys()].sort((a, b) => {
     const ai = KOR_MAKER_ORDER.indexOf(a), bi = KOR_MAKER_ORDER.indexOf(b);
     const aIsKor = ai >= 0, bIsKor = bi >= 0;
     if (aIsKor !== bIsKor) return aIsKor ? -1 : 1;
@@ -1295,61 +1276,61 @@ function drawVehicleTab(el) {
     return a.localeCompare(b, 'ko');
   });
 
-  const filtered = models
-    .filter(m => showArchived || !m.archived)
-    .filter(m => !filterMaker || m.maker === filterMaker)
-    .filter(m => {
-      if (!filterQ) return true;
-      const q = filterQ.toLowerCase();
-      return [m.maker, m.model, m.sub, m.car_name, m.category].some(v => v && String(v).toLowerCase().includes(q));
-    })
-    .map(m => ({ ...m, _count: productCounts.get([m.maker, m.model, m.sub].filter(Boolean).join('|')) || 0 }));
+  // 매물 보유대수 — products.catalog_id 또는 (maker, sub_model) 기반
+  const productCounts = new Map();
+  for (const p of (store.products || [])) {
+    if (p._deleted || p.status === 'deleted') continue;
+    if (p.catalog_id) productCounts.set(p.catalog_id, (productCounts.get(p.catalog_id) || 0) + 1);
+  }
 
-  // 정렬 — 국산우선 → 제조사우선순위 → 제조사명 → 모델명 → 세부모델
-  filtered.sort((a, b) => {
-    const ka = vehicleSortKey(a), kb = vehicleSortKey(b);
-    if (ka[0] !== kb[0]) return ka[0] - kb[0];
-    if (ka[1] !== kb[1]) return ka[1] - kb[1];
-    const m1 = String(a.maker || '').localeCompare(String(b.maker || ''), 'ko');
-    if (m1) return m1;
-    const m2 = String(a.model || '').localeCompare(String(b.model || ''), 'ko');
-    if (m2) return m2;
-    return String(a.sub || '').localeCompare(String(b.sub || ''), 'ko');
+  // 필터
+  let list = all;
+  if (filterMaker) list = list.filter(c => c.maker === filterMaker);
+  if (filterQ) {
+    const q = filterQ.toLowerCase();
+    list = list.filter(c => [c.maker, c.model_root, c.title, c.id].some(s => s && String(s).toLowerCase().includes(q)));
+  }
+  // 정렬 — 메이커 → model_root → year_start desc
+  list.sort((a, b) => {
+    if ((a.maker || '') !== (b.maker || '')) {
+      const ai = KOR_MAKER_ORDER.indexOf(a.maker), bi = KOR_MAKER_ORDER.indexOf(b.maker);
+      const aIsKor = ai >= 0, bIsKor = bi >= 0;
+      if (aIsKor !== bIsKor) return aIsKor ? -1 : 1;
+      if (aIsKor) return ai - bi;
+      return (a.maker || '').localeCompare(b.maker || '', 'ko');
+    }
+    if ((a.model_root || '') !== (b.model_root || '')) return (a.model_root || '').localeCompare(b.model_root || '', 'ko');
+    return (b.year_start || '').localeCompare(a.year_start || '');
   });
 
-  // 제조사별 그룹 행 삽입 — 같은 제조사 처음 등장 시 헤더 row
-  const archivedCount = models.filter(m => m.archived).length;
-  const sel = selectedKey ? models.find(m => m._key === selectedKey) : null;
+  const sel = selectedCid ? idx[selectedCid] : null;
 
-  const rowsHtml = filtered.length ? filtered.slice(0, 800).map(m => {
-    const rowSel = m._key === selectedKey;
-    return `<tr data-key="${esc(m._key)}" style="cursor:pointer;${rowSel ? 'background:var(--bg-selected);' : ''}">
-      <td>${esc(m.maker || '-')}</td>
-      <td>${esc(m.model || '-')}</td>
-      <td>${esc(m.sub || m.car_name || '-')}${m.archived ? ' <span style="color:var(--text-muted);font-size:9px;">[단종]</span>' : ''}</td>
-      <td style="color:var(--text-sub);">${esc(m.category || '')}</td>
-      <td style="color:var(--text-sub);">${esc(m.year_start || '')}</td>
-      <td style="color:var(--text-sub);">${esc(m.year_end || '')}</td>
-      <td style="text-align:right;">${m._count || ''}</td>
+  const rowsHtml = list.length ? list.slice(0, 800).map(c => {
+    const isSel = c.id === selectedCid;
+    const cnt = productCounts.get(c.id) || 0;
+    const trimCount = Array.isArray(c.trims) ? c.trims.length : 0;
+    return `<tr data-cid="${esc(c.id)}" style="cursor:pointer;${isSel ? 'background:var(--bg-selected);' : ''}">
+      <td>${esc(c.maker || '-')}</td>
+      <td>${esc(c.model_root || '-')}</td>
+      <td>${esc((c.title || '').replace(c.maker + ' ', '') || c.id)}</td>
+      <td style="color:var(--text-sub);font-size:10px;">${_vmYearLabel(c) || '-'}</td>
+      <td style="color:var(--text-sub);text-align:right;">${trimCount || ''}</td>
+      <td style="color:var(--text-muted);font-family:monospace;font-size:10px;">${esc(c.id)}</td>
+      <td style="text-align:right;">${cnt || ''}</td>
     </tr>`;
   }).join('') : `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">데이터 없음</td></tr>`;
 
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:8px;height:100%;">
-      <!-- 필터바 -->
       <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
-        <input class="input" id="vmQ" placeholder="검색 (제조사·모델·세부)" value="${esc(filterQ)}" style="flex:1;min-width:140px;">
+        <input class="input" id="vmQ" placeholder="검색 (제조사·모델·세부·catalog_id)" value="${esc(filterQ)}" style="flex:1;min-width:140px;">
         <select class="input" id="vmMaker" style="width:140px;">
-          <option value="">전체 제조사 (${models.length})</option>
-          ${makers.map(m => `<option value="${esc(m)}" ${m === filterMaker ? 'selected' : ''}>${esc(m)} (${models.filter(x => x.maker === m).length})</option>`).join('')}
+          <option value="">전체 제조사 (${total})</option>
+          ${makers.map(m => `<option value="${esc(m)}" ${m === filterMaker ? 'selected' : ''}>${esc(m)} (${makerCounts.get(m)})</option>`).join('')}
         </select>
-        <label style="font-size:11px;color:var(--text-sub);display:flex;align-items:center;gap:4px;cursor:pointer;">
-          <input type="checkbox" id="vmShowArchived" ${showArchived ? 'checked' : ''}> 단종 ${archivedCount}건
-        </label>
-        <button class="btn btn-sm btn-primary" id="vmNew"><i class="ph ph-plus"></i> 새 차종</button>
+        <span style="font-size:11px;color:var(--text-muted);"><i class="ph ph-info"></i> catalog json 단일 진실원 — git stub 직접 추가</span>
       </div>
 
-      <!-- 목록만 (상세는 우측 패널) -->
       <div style="flex:1;border:1px solid var(--border);border-radius:4px;overflow:auto;min-width:0;">
         <table class="table" style="width:100%;font-size:11px;">
           <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
@@ -1357,176 +1338,64 @@ function drawVehicleTab(el) {
               <th style="text-align:left;">제조사</th>
               <th style="text-align:left;">모델</th>
               <th style="text-align:left;">세부모델</th>
-              <th style="text-align:left;">차종구분</th>
-              <th style="text-align:left;">생산시작</th>
-              <th style="text-align:left;">생산종료</th>
-              <th style="text-align:right;">상품수</th>
+              <th style="text-align:left;">연식</th>
+              <th style="text-align:right;">트림</th>
+              <th style="text-align:left;">catalog_id</th>
+              <th style="text-align:right;">매물수</th>
             </tr>
           </thead>
           <tbody id="vmRows">${rowsHtml}</tbody>
         </table>
-        ${filtered.length > 800 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 800건 | 총 ${filtered.length}건 (필터로 좁히세요)</div>` : ''}
+        ${list.length > 800 ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">상위 800건 | 총 ${list.length}건 (필터로 좁히세요)</div>` : ''}
       </div>
     </div>
   `;
 
-  // 우측 detail 패널 채우기
-  if (detailEl) detailEl.innerHTML = renderVehicleDetail(sel, mode);
+  if (detailEl) detailEl.innerHTML = renderVehicleDetail(sel);
 
-  // 필터 이벤트
   el.querySelector('#vmQ').addEventListener('input', (e) => { _vmState.filterQ = e.target.value; drawVehicleTab(el); });
   el.querySelector('#vmMaker').addEventListener('change', (e) => { _vmState.filterMaker = e.target.value; drawVehicleTab(el); });
-  el.querySelector('#vmShowArchived').addEventListener('change', (e) => { _vmState.showArchived = e.target.checked; drawVehicleTab(el); });
-  el.querySelector('#vmNew').addEventListener('click', () => { _vmState.selectedKey = null; _vmState.mode = 'new'; drawVehicleTab(el); });
 
-  // 행 클릭 → 선택
-  el.querySelectorAll('#vmRows tr[data-key]').forEach(tr => {
+  el.querySelectorAll('#vmRows tr[data-cid]').forEach(tr => {
     tr.addEventListener('click', () => {
-      _vmState.selectedKey = tr.dataset.key;
-      _vmState.mode = 'view';
+      _vmState.selectedCid = tr.dataset.cid;
       drawVehicleTab(el);
     });
   });
 
-  // 상세 패널 액션 (우측 detail 영역에서)
-  bindVehicleDetailActions(el, sel);
+  // 상세 패널 — view-only, 편집 액션 없음
 }
 
-function renderVehicleDetail(sel, mode) {
-  if (mode === 'idle' || (!sel && mode === 'view')) {
-    return `<div style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:12px;">왼쪽에서 차종 선택<br><span style="font-size:11px;">또는 우상단 "새 차종" 추가</span></div>`;
+function renderVehicleDetail(sel) {
+  if (!sel) {
+    return `<div style="text-align:center;color:var(--text-muted);padding:40px 0;font-size:12px;">왼쪽에서 catalog 선택<br><span style="font-size:11px;">신규 등록은 public/data/car-master/{id}.json 직접 추가</span></div>`;
   }
+  const trims = Array.isArray(sel.trims) ? sel.trims : [];
+  const cnt = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted' && p.catalog_id === sel.id).length;
+  const yr = _vmYearLabel(sel);
 
-  const isEdit = mode === 'edit' || mode === 'new';
-  const m = sel || {};
-  const row = (label, field, value, type = 'input', opts = null) => {
-    if (!isEdit && (value == null || value === '')) return '';
-    if (isEdit) {
-      if (type === 'select') {
-        return `<div class="ff" style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
-          <label style="width:80px;color:var(--text-muted);font-size:11px;">${esc(label)}</label>
-          <select class="input" data-vm-f="${field}" style="flex:1;">
-            <option value="">-</option>
-            ${(opts || []).map(o => `<option value="${esc(o)}" ${o === value ? 'selected' : ''}>${esc(o)}</option>`).join('')}
-          </select>
-        </div>`;
-      }
-      return `<div class="ff" style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
-        <label style="width:80px;color:var(--text-muted);font-size:11px;">${esc(label)}</label>
-        <input class="input" data-vm-f="${field}" value="${esc(value || '')}" style="flex:1;">
-      </div>`;
-    }
-    return `<div style="display:flex;gap:8px;margin-bottom:4px;font-size:12px;">
-      <span style="width:80px;color:var(--text-muted);">${esc(label)}</span>
-      <span>${esc(value)}</span>
-    </div>`;
-  };
+  const rowKV = (label, val) => val ? `<div style="display:flex;gap:8px;margin-bottom:4px;font-size:12px;">
+    <span style="width:90px;color:var(--text-muted);">${esc(label)}</span>
+    <span>${esc(val)}</span>
+  </div>` : '';
 
   return `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <span style="font-weight:600;font-size:13px;">${isEdit ? (mode === 'new' ? '새 차종 등록' : '편집') : `${esc(m.maker || '')} ${esc(m.sub || m.car_name || '')}`}</span>
-      <div style="display:flex;gap:4px;">
-        ${isEdit ? `
-          <button class="btn btn-sm btn-primary" id="vmSave"><i class="ph ph-check"></i> 저장</button>
-          <button class="btn btn-sm" id="vmCancel">취소</button>
-        ` : `
-          <button class="btn btn-sm" id="vmEdit"><i class="ph ph-pencil"></i> 편집</button>
-          <button class="btn btn-sm" id="vmArchive">${m.archived ? '복원' : '단종'}</button>
-          <button class="btn btn-sm is-danger" id="vmDelete"><i class="ph ph-trash"></i></button>
-        `}
-      </div>
-    </div>
+    <div style="margin-bottom:10px;font-weight:600;font-size:13px;">${esc(sel.title || sel.id)}</div>
     <div>
-      ${row('제조사*', 'maker', m.maker || '')}
-      ${row('모델*', 'model', m.model || '')}
-      ${row('세부모델*', 'sub', m.sub || m.car_name || '')}
-      ${row('분류', 'category', m.category || '', 'select', VM_CATEGORIES)}
-      ${row('연료', 'fuel_type', m.fuel_type || '', 'select', VM_FUELS)}
-      ${row('구분', 'origin', m.origin || '', 'select', VM_ORIGINS)}
-      ${row('동력', 'powertrain', m.powertrain || '', 'select', VM_POWERTRAINS)}
-      ${row('생산 시작', 'year_start', m.year_start || '')}
-      ${row('생산 종료', 'year_end', m.year_end || '')}
-      ${row('승차정원', 'seats', m.seats || '')}
-      ${row('배기량', 'displacement', m.displacement || '')}
-      ${row('배터리(kWh)', 'battery_kwh', m.battery_kwh || '')}
-      ${row('코드', 'code', m.code || '')}
-      ${!isEdit && m._count ? `<div style="margin-top:12px;padding:8px;background:var(--bg-stripe);border-radius:4px;font-size:11px;color:var(--text-sub);">📦 등록된 상품 ${m._count}대</div>` : ''}
+      ${rowKV('catalog_id', sel.id)}
+      ${rowKV('제조사', sel.maker)}
+      ${rowKV('모델 (root)', sel.model_root)}
+      ${rowKV('생산', yr || (sel.year_start ? `${sel.year_start} ~ ${sel.year_end || '-'}` : ''))}
+      ${rowKV('source', sel.source?.manufacturer || '')}
+      ${cnt ? `<div style="margin-top:10px;padding:6px 10px;background:var(--bg-stripe);border-radius:4px;font-size:11px;color:var(--text-sub);">📦 등록 매물 ${cnt}대</div>` : ''}
+      ${trims.length ? `
+        <div style="margin-top:12px;font-size:11px;font-weight:600;color:var(--text-sub);">트림 (${trims.length})</div>
+        <div style="margin-top:4px;font-size:11px;">${trims.map(t => `<span style="display:inline-block;padding:1px 6px;margin:2px;background:var(--bg-stripe);border-radius:3px;">${esc(t)}</span>`).join('')}</div>
+      ` : '<div style="margin-top:12px;color:var(--text-muted);font-size:11px;">트림 데이터 없음</div>'}
+      <div style="margin-top:14px;padding:8px;background:var(--bg-stripe);border-radius:4px;font-size:10px;color:var(--text-muted);font-family:monospace;">
+        편집: <code>public/data/car-master/${esc(sel.id)}.json</code>
+      </div>
     </div>
   `;
 }
 
-function bindVehicleDetailActions(el, sel) {
-  const detailEl = el.querySelector('[data-vm-f="maker"]')?.closest('div')?.parentElement;
-  const collectForm = () => {
-    const data = {};
-    el.querySelectorAll('[data-vm-f]').forEach(input => {
-      const f = input.dataset.vmF;
-      const v = input.value.trim();
-      if (v) data[f] = v;
-    });
-    return data;
-  };
-
-  el.querySelector('#vmSave')?.addEventListener('click', async () => {
-    const form = collectForm();
-    if (!form.maker || !form.model || !form.sub) { showToast('제조사·모델·세부모델 필수', 'error'); return; }
-
-    // 숫자 변환
-    if (form.seats) form.seats = Number(form.seats);
-    if (form.displacement) form.displacement = Number(form.displacement);
-    if (form.battery_kwh) form.battery_kwh = Number(form.battery_kwh);
-
-    try {
-      const { ref, get, push, set, update } = await import('firebase/database');
-      const { db } = await import('../firebase/config.js');
-      if (_vmState.mode === 'new') {
-        // 중복 체크
-        const dup = _vmState.models.some(m => m.maker === form.maker && m.model === form.model && m.sub === form.sub);
-        if (dup) { showToast('이미 등록된 세부모델', 'error'); return; }
-        const newRef = push(ref(db, 'vehicle_master'));
-        await set(newRef, { ...form, status: 'active', created_at: Date.now(), updated_at: Date.now() });
-        _vmState.selectedKey = newRef.key;
-        devLog(`✓ 차종 추가: ${form.maker} ${form.sub}`);
-        showToast(`${form.maker} ${form.sub} 추가`, 'success');
-      } else {
-        await update(ref(db, `vehicle_master/${_vmState.selectedKey}`), { ...form, updated_at: Date.now() });
-        devLog(`✓ 차종 수정: ${form.maker} ${form.sub}`);
-        showToast('수정 완료', 'success');
-      }
-      _vmState.mode = 'view';
-      drawVehicleTab(el);
-    } catch (e) {
-      console.error('[vm save]', e);
-      devLog(`✗ 저장 실패: ${e.message}`);
-      showToast('저장 실패: ' + (e.code || e.message), 'error');
-    }
-  });
-
-  el.querySelector('#vmCancel')?.addEventListener('click', () => {
-    _vmState.mode = sel ? 'view' : 'idle';
-    drawVehicleTab(el);
-  });
-  el.querySelector('#vmEdit')?.addEventListener('click', () => { _vmState.mode = 'edit'; drawVehicleTab(el); });
-
-  el.querySelector('#vmArchive')?.addEventListener('click', async () => {
-    if (!sel) return;
-    const next = !sel.archived;
-    try {
-      await updateRecord(`vehicle_master/${sel._key}`, { archived: next, updated_at: Date.now() });
-      devLog(`${next ? '✓ 단종' : '✓ 복원'}: ${sel.maker} ${sel.sub}`);
-      showToast(next ? '단종 처리' : '복원 완료');
-    } catch (e) { showToast('실패: ' + e.message, 'error'); }
-  });
-
-  el.querySelector('#vmDelete')?.addEventListener('click', async () => {
-    if (!sel) return;
-    if (!confirm(`"${sel.maker} ${sel.sub}" 삭제? (soft delete)`)) return;
-    try {
-      await softDelete(`vehicle_master/${sel._key}`);
-      devLog(`✓ 삭제: ${sel.maker} ${sel.sub}`);
-      _vmState.selectedKey = null;
-      _vmState.mode = 'idle';
-      showToast('삭제 완료');
-    } catch (e) { showToast('실패: ' + e.message, 'error'); }
-  });
-}
