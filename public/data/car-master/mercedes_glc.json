@@ -1,7 +1,7 @@
 {
   "catalog_id": "mercedes_glc",
-  "model_root": "GLC",
-  "title": "벤츠 GLC",
+  "model_root": "GLC-클래스",
+  "title": "벤츠 GLC-클래스",
   "maker": "벤츠",
   "source": "stub",
   "source_urls": [],

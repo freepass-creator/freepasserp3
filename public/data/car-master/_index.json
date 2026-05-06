@@ -311,7 +311,7 @@
     "id": "audi_e_트론_gt",
     "title": "아우디 e-트론 GT",
     "maker": "아우디",
-    "model_root": "e-트론",
+    "model_root": "e-트론 GT",
     "year_start": "2021-01",
     "year_end": "2023-12",
     "source": {
@@ -668,7 +668,7 @@
     "id": "audi_rs_e_트론_gt",
     "title": "아우디 RS e-트론 GT",
     "maker": "아우디",
-    "model_root": "RS",
+    "model_root": "e-트론 GT",
     "year_start": "2021-01",
     "year_end": "2023-12",
     "source": {
@@ -888,7 +888,7 @@
     "id": "audi_s_e_트론_gt",
     "title": "아우디 S e-트론 GT",
     "maker": "아우디",
-    "model_root": "S",
+    "model_root": "e-트론 GT",
     "year_start": "",
     "year_end": "현재",
     "source": {
@@ -4615,7 +4615,7 @@
     "id": "hyundai_sonata_lf",
     "title": "현대 LF 쏘나타",
     "maker": "현대",
-    "model_root": "LF 쏘나타",
+    "model_root": "쏘나타",
     "year_start": "2014-01",
     "year_end": "2018-12",
     "source": {
@@ -6495,7 +6495,7 @@
     "id": "kia_ray_tam_facelift1",
     "title": "기아 더 뉴 레이 TAM 페리1",
     "maker": "기아",
-    "model_root": "레이 TAM 페리1",
+    "model_root": "레이",
     "year_start": "2022-09",
     "year_end": "2024-04",
     "source": {
@@ -7239,9 +7239,9 @@
   },
   "mercedes_a_w177": {
     "id": "mercedes_a_w177",
-    "title": "벤츠 A클래스 W177",
+    "title": "벤츠 A-클래스 W177",
     "maker": "벤츠",
-    "model_root": "A클래스",
+    "model_root": "A-클래스",
     "year_start": "2013-01",
     "year_end": "현재",
     "source": {
@@ -7292,9 +7292,9 @@
   },
   "mercedes_c_w205": {
     "id": "mercedes_c_w205",
-    "title": "벤츠 C클래스 W205",
+    "title": "벤츠 C-클래스 W205",
     "maker": "벤츠",
-    "model_root": "C클래스",
+    "model_root": "C-클래스",
     "year_start": "1995-01",
     "year_end": "2021-12",
     "source": {
@@ -7464,9 +7464,9 @@
   },
   "mercedes_e_w213": {
     "id": "mercedes_e_w213",
-    "title": "벤츠 E클래스 W213",
+    "title": "벤츠 E-클래스 W213",
     "maker": "벤츠",
-    "model_root": "E클래스",
+    "model_root": "E-클래스",
     "year_start": "1993-01",
     "year_end": "2023-12",
     "source": {
@@ -7771,9 +7771,9 @@
   },
   "mercedes_glc": {
     "id": "mercedes_glc",
-    "title": "벤츠 GLC",
+    "title": "벤츠 GLC-클래스",
     "maker": "벤츠",
-    "model_root": "GLC",
+    "model_root": "GLC-클래스",
     "year_start": "",
     "year_end": "",
     "source": {
