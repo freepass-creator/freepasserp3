@@ -1,0 +1,20 @@
+{
+  "catalog_id": "kia_k3_yd",
+  "title": "기아 K3 YD",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "K3 1세대 YD pre-facelift (2012~2015). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "디럭스": { "slug": "deluxe", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "트렌디": { "slug": "trendy", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "럭셔리": { "slug": "luxury", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "year_start": "2012-09",
+  "year_end": "2015-08"
+}
