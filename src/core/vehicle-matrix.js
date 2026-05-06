@@ -189,17 +189,30 @@ export async function findCatalog(maker, subModel, model, product = {}) {
   const productDate = extractProductDate(product);  // "YYYY-MM" or null
   const productYearVal = Number(product?.year || 0);
 
-  // 1차 — alias-map 직접 매핑 + year_range 검증.
-  //   build-aliases-map.cjs 가 생성한 _aliases-map.json 의 catalog-level aliases 활용.
-  //   매물 sub_model 이 catalog alias 와 정확 일치 + year 범위 안 → high confidence 즉시 반환.
-  //   year 범위 밖이면 alias 매칭 무시하고 score 매칭으로 분기 (Juniper 매물이 1세대로 잘못 떨어지는 거 차단).
+  // 연료 기반 분류 — alias-direct/score 매칭 모두에서 사용 (가솔린 ↔ 하이브리드 ↔ EV 분리)
+  const productFuel = product?.fuel_type || '';
+  const subIsEV = /(일렉트리파이드|electrified|일렉트릭|electric|\bev\b)/i.test(subModel || '');
+  const subIsHybrid = /(하이브리드|hybrid|hev)/i.test(subModel || '');
+  const fuelIsEV = /전기|ev|electric/i.test(productFuel) || subIsEV;
+  const fuelIsHybrid = /하이브리드|hev|hybrid/i.test(productFuel) || subIsHybrid;
+  const isEVCatalogTitle = (title) => /(일렉트리파이드|electrified|일렉트릭|electric|\bev\b|아이오닉|ioniq|볼트\s*ev|모델\s*[3SXY]|타이칸)/i.test(title || '');
+  const isHybridCatalogTitle = (title) => /(하이브리드|hybrid|hev)/i.test(title || '');
+
+  // 1차 — alias-map 직접 매핑 + year_range + fuel 검증.
+  //   매물 sub_model 이 catalog alias 와 정확 일치 + year 범위 + fuel 일치 → high confidence 즉시 반환.
+  //   fuel mismatch (가솔린 매물 ↔ 하이브리드 catalog 등) → alias 매칭 무시하고 score 로 fallback.
   const encarMap = await loadEncarMap();
   if (subN && encarMap[`${m}|${subN}`]) {
     const aliasCandidateId = encarMap[`${m}|${subN}`];
     const range = yearRanges[aliasCandidateId];
     const inR = productDate ? isDateInRange(productDate, range) : isYearInRange(productYearVal, range);
-    if (inR !== false) {
-      // year 검증 통과 (true) 또는 정보 부족 (null) — alias 매칭 채택
+    const aliasTitle = idx[aliasCandidateId]?.title || '';
+    const aliasIsEV = isEVCatalogTitle(aliasTitle);
+    const aliasIsHybrid = !aliasIsEV && isHybridCatalogTitle(aliasTitle);
+    const fuelOk = !productFuel
+      || (fuelIsEV ? aliasIsEV : !aliasIsEV)
+        && (fuelIsHybrid ? aliasIsHybrid : !aliasIsHybrid);
+    if (inR !== false && fuelOk) {
       return {
         catalogId: aliasCandidateId,
         confidence: 'high',
@@ -208,22 +221,20 @@ export async function findCatalog(maker, subModel, model, product = {}) {
         via: 'alias-direct',
       };
     }
-    // inR === false: year 범위 밖 — fall through to score matching
+    // inR === false 또는 fuel mismatch — fall through to score matching
   }
 
-  // 연료/연식 기반 후보 필터 — product.fuel_type / year 사용.
-  //  - 전기차 매물은 EV 전용 catalog 만 매칭 (G80 가솔린이 일렉트리파이드 G80 으로 잘못 잡히는 문제 해결)
-  //  - 비-전기 매물은 EV catalog 제외
-  //  TODO: 등록증 OCR 통합 후 year 기반 generation 필터 (catalog year range 데이터 필요)
-  const productFuel = product?.fuel_type || '';
-  const productYear = Number(product?.year || 0);
-  const subIsEV = /(일렉트리파이드|electrified|일렉트릭|electric|\bev\b)/i.test(subModel || '');
-  const fuelIsEV = /전기|ev|electric/i.test(productFuel) || subIsEV;
-  const isEVCatalogTitle = (title) => /(일렉트리파이드|electrified|일렉트릭|electric|\bev\b|아이오닉|ioniq|볼트\s*ev|모델\s*[3SXY]|타이칸)/i.test(title || '');
+  // 연료/연식 기반 후보 필터 — product.fuel_type 으로 가솔린 / 하이브리드 / EV catalog 분리.
+  //  - 전기차 매물 → EV 전용 catalog 만
+  //  - 하이브리드 매물 → 하이브리드 전용 catalog 만 (가솔린 catalog 배제)
+  //  - 가솔린/디젤/LPG 매물 → 하이브리드/EV catalog 배제
   const filteredCandidates = candidates.filter(c => {
     const titleEV = isEVCatalogTitle(c.title);
+    const titleHybrid = !titleEV && isHybridCatalogTitle(c.title);
     if (fuelIsEV && !titleEV) return false;
     if (!fuelIsEV && titleEV) return false;
+    if (productFuel && fuelIsHybrid && !titleHybrid) return false;
+    if (productFuel && !fuelIsHybrid && titleHybrid) return false;
     return true;
   });
   // 필터 후 후보 0개면 원본 후보 유지 (안전 장치)
