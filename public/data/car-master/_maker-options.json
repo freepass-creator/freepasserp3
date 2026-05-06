@@ -878,7 +878,9 @@
       ]
     },
     "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 23,
       "used_as_basic": 77,
       "used_as_select": 2,
@@ -1310,7 +1312,9 @@
       ]
     },
     "주행모드 통합제어 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 20,
       "used_as_basic": 126,
       "used_as_select": 0,
@@ -1362,7 +1366,9 @@
       ]
     },
     "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 19,
       "used_as_basic": 107,
       "used_as_select": 0,
@@ -2113,7 +2119,9 @@
       ]
     },
     "파노라믹 커브드 디스플레이": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 13,
       "used_as_basic": 86,
       "used_as_select": 0,
@@ -4216,7 +4224,9 @@
       ]
     },
     "실외 V2L 커넥터": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 5,
       "used_as_basic": 20,
       "used_as_select": 0,
@@ -4341,7 +4351,9 @@
       ]
     },
     "실내 V2L 콘센트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 5,
       "used_as_basic": 29,
       "used_as_select": 0,
@@ -8041,7 +8053,9 @@
       ]
     },
     "실내 V2L": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 3,
       "used_as_basic": 0,
       "used_as_select": 6,
@@ -9895,7 +9909,9 @@
       ]
     },
     "슈퍼비전 클러스터(7인치 칼라 TFT LCD)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 2,
       "used_as_basic": 4,
       "used_as_select": 2,
@@ -13379,7 +13395,9 @@
       ]
     },
     "주행모드 통합제어 시스템(스노우/머드/샌드, 험로주행)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -14212,7 +14230,9 @@
       ]
     },
     "슈퍼비전 클러스터(10.25인치 칼라 TFT LCD)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -16916,7 +16936,9 @@
       ]
     },
     "E-Tech 하이브리드(가솔린 1.5 터보 엔진, 멀티모드 오토, 듀얼 모터 시스템(100kW 구동모터, 60kW 보조모터), 배터리 용량 1.64kWh), 드라이브 모드(Eco/Comfort/Sport/AI/Snow), 전자식 변속 노브(SBW), 2WD": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 1,
       "used_as_basic": 7,
       "used_as_select": 0,
@@ -17270,7 +17292,9 @@
       ]
     },
     "드라이브 모드(Eco/Comfort/Sport/AI/Snow)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -17407,7 +17431,8 @@
     },
     "드라이브 모드(Eco/Comfort/Sport/AI/Snow/Off Road)": {
       "fp_ids": [
-        "ROA"
+        "ROA",
+        "DRIVE_MODE"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -22446,7 +22471,9 @@
       ]
     },
     "드라이브 모드(오프로드, 견인/운반)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -23432,7 +23459,9 @@
       ]
     },
     "10단 자동변속기(드라이브 모드)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -24381,7 +24410,9 @@
       ]
     },
     "드라이브 모드(노멀/스포츠/스노우)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -27088,7 +27119,9 @@
       ]
     },
     "ISG 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISG"
+      ],
       "used_in": 10,
       "used_as_basic": 31,
       "used_as_select": 0,
@@ -27225,7 +27258,9 @@
       ]
     },
     "통합 주행 모드": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 10,
       "used_as_basic": 31,
       "used_as_select": 0,
@@ -30035,7 +30070,9 @@
       ]
     },
     "통합 주행 모드(에코/컴포트/스포츠/스포츠+/커스텀)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 2,
       "used_as_basic": 3,
       "used_as_select": 2,
@@ -33454,7 +33491,9 @@
       ]
     },
     "실내 V2L(Vehicle to Load)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -33490,7 +33529,9 @@
       ]
     },
     "실내 V2L": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -33976,7 +34017,9 @@
       ]
     },
     "실외 V2L(Vehicle to Load) 젠더": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -33988,7 +34031,9 @@
       ]
     },
     "실내 V2L(러기지)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -38577,7 +38622,9 @@
       ]
     },
     "통합 주행 모드": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 20,
       "used_as_basic": 117,
       "used_as_select": 2,
@@ -39480,7 +39527,9 @@
       ]
     },
     "통합주행모드": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 11,
       "used_as_basic": 72,
       "used_as_select": 0,
@@ -39883,7 +39932,9 @@
       ]
     },
     "ISG 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISG"
+      ],
       "used_in": 10,
       "used_as_basic": 74,
       "used_as_select": 0,
@@ -39939,7 +39990,9 @@
       ]
     },
     "실내 V2L": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 9,
       "used_as_basic": 32,
       "used_as_select": 0,
@@ -39990,7 +40043,9 @@
       ]
     },
     "실외 V2L 커넥터": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 9,
       "used_as_basic": 19,
       "used_as_select": 6,
@@ -40930,7 +40985,9 @@
       ]
     },
     "파노라믹 커브드 디스플레이": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 6,
       "used_as_basic": 42,
       "used_as_select": 0,
@@ -49219,7 +49276,8 @@
     },
     "하이브리드 전용 e-Motion Drive 시스템(e-Dynamic Drive, e-Comfort Drive), 랙 구동형 전동식 파워 스티어링(R-MDPS), 통합 주행 모드, 전자식 변속 레버(컬럼 타입)": {
       "fp_ids": [
-        "POWER_STR"
+        "POWER_STR",
+        "DRIVE_MODE"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -50891,7 +50949,9 @@
       ]
     },
     "실내외 V2L": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -53980,7 +54040,9 @@
       ]
     },
     "ISG시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISG"
+      ],
       "used_in": 1,
       "used_as_basic": 15,
       "used_as_select": 0,
@@ -54676,7 +54738,9 @@
       ]
     },
     "파노라마 커브드 디스플레이": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -56479,7 +56543,9 @@
       ]
     },
     "통합 주행모드": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 1,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -57679,7 +57745,9 @@
   },
   "KGM": {
     "드라이브 모드 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRIVE_MODE"
+      ],
       "used_in": 11,
       "used_as_basic": 30,
       "used_as_select": 0,
@@ -58567,7 +58635,9 @@
       ]
     },
     "ISG 시스템(공회전 제한 장치)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISG"
+      ],
       "used_in": 6,
       "used_as_basic": 13,
       "used_as_select": 0,
@@ -59204,7 +59274,9 @@
       ]
     },
     "슈퍼비전 클러스터(3.5인치 모노 LCD)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 5,
       "used_as_basic": 15,
       "used_as_select": 0,
@@ -60148,7 +60220,9 @@
       ]
     },
     "10.25인치 풀 디지털 클러스터": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 4,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -61472,7 +61546,9 @@
       ]
     },
     "실외 V2L 커넥터": {
-      "fp_ids": [],
+      "fp_ids": [
+        "V2L"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 2,

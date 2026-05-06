@@ -326,6 +326,8 @@ let _editSelected = null;
 function applyEditMode(on) {
   const page = document.querySelector('.pt-page.active');
   document.body.classList.toggle('is-edit-mode', !!on);
+  // 편집모드 OFF 시 신규 draft 시각 마커도 자동 제거
+  if (!on) document.body.classList.remove('is-draft-mode');
   if (!page) return;
   page.querySelectorAll('[data-edit-lock="1"]:not([data-permanent-lock])').forEach(el => {
     if (on) {

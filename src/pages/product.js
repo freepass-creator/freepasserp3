@@ -54,6 +54,7 @@ export const PRODUCT_OPTS = {
   fuel_type: ['가솔린','디젤','LPG','하이브리드','전기','수소'],
   vehicle_class: ['경차','소형','준중형','중형','준대형','대형','SUV','RV','승합','화물','수입'],
   drive_type: ['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'],
+  transmission: ['자동','수동','CVT','DCT','세미오토'],
   usage: ['자가용','영업용','관용'],
   year: Array.from({ length: 12 }, (_, i) => String(2026 - i)),
 };
@@ -223,6 +224,30 @@ async function refreshTrimDatalist(card, p) {
   } catch {}
 }
 
+/* 차량번호 중복 검증 — input 변경 시 store.products 와 비교, 중복이면 경고 + 값 되돌림 */
+function bindCarNumberDupCheck(card, p) {
+  const input = card.querySelector('[data-f="car_number"]');
+  if (!input) return;
+  const original = p.car_number || '';
+  const check = () => {
+    const v = (input.value || '').trim();
+    if (!v) return;
+    const dup = (store.products || []).find(x =>
+      x._key !== p._key && !x._deleted && (x.car_number || '').trim() === v
+    );
+    if (dup) {
+      const owner = dup.provider_company_code || dup.partner_code || '?';
+      showToast(`이미 등록된 차량번호: ${v} (공급사: ${owner})`, 'error');
+      // 입력값 되돌림 (저장 차단)
+      input.value = original;
+      input.focus();
+    }
+  };
+  input.addEventListener('blur', check);
+  // change 시에도 — Enter 등으로 즉시 확인
+  input.addEventListener('change', check);
+}
+
 /* 트림 매칭 결과로 옵션 chip 풀 갱신 — chip 클릭 토글 + product.options 자동 저장 */
 async function refreshTrimOptionChips(card, p) {
   const chipsBox = card.querySelector('#trimOptionsChips');
@@ -240,6 +265,8 @@ async function refreshTrimOptionChips(card, p) {
   };
   let pool;
   try { pool = await getOptionPool(live); } catch (e) { pool = { groups: [], allNames: new Set(), source: 'none' }; }
+  // 디버깅 — 사용자가 안 나온다고 할 때 콘솔에서 어디 단계에서 빠지는지 추적용
+  console.debug('[trim-chips]', { live: { maker: live.maker, model: live.model, sub_model: live.sub_model, trim_name: live.trim_name }, source: pool.source, groups: pool.groups.length, catalogId: pool.catalogId, trimName: pool.trimName });
 
   // 현재 선택된 옵션들 (product.options 또는 hidden value)
   const currentText = hidden.value || (Array.isArray(p.options) ? p.options.join(', ') : (p.options || ''));
@@ -253,6 +280,7 @@ async function refreshTrimOptionChips(card, p) {
         'no-trim':        '트림을 먼저 선택하세요',
         'no-catalog':     '카탈로그에 등록되지 않은 차종',
         'no-trim-match':  '이 트림의 옵션 데이터 없음',
+        'stub-catalog':   '카탈로그 옵션 데이터 미완성 (stub) — 위키카 OCR 진행 중',
       }[pool.source] || '옵션 풀 없음';
       hint.innerHTML = `<i class="ph ph-info"></i> ${reason} — 아래 직접 입력으로 추가하세요`;
     }
@@ -270,7 +298,10 @@ async function refreshTrimOptionChips(card, p) {
       </div>
     `).join('');
     if (hint) {
-      hint.innerHTML = `<i class="ph ph-check-circle"></i> 트림 「${esc(pool.trimName)}」 옵션 — 클릭으로 토글`;
+      const label = pool.source === 'maker-wide'
+        ? `제조사 카탈로그 전체 옵션 (트림 「${esc(pool.trimName)}」 매칭 실패)`
+        : `트림 「${esc(pool.trimName)}」 옵션`;
+      hint.innerHTML = `<i class="ph ph-check-circle"></i> ${label} — 클릭으로 토글`;
     }
   }
 
@@ -655,8 +686,12 @@ export function renderProductDetail(p) {
         ${ffi('외장색',    'ext_color',     p.ext_color, dis)}
         ${ffi('내장색',    'int_color',     p.int_color, dis)}
         ${ffs('구동방식',  'drive_type',    p.drive_type, O.drive_type, dis)}
+        ${ffs('변속기',    'transmission',  p.transmission, O.transmission, dis)}
         ${ffs('차종구분',  'vehicle_class', p.vehicle_class, O.vehicle_class, dis)}
         ${ffi('차량가격',  'vehicle_price', p.vehicle_price, dis)}
+        ${ffi('차령만료일', 'vehicle_age_expiry_date', p.vehicle_age_expiry_date, dis)}
+        ${ffi('위치',      'location',      p.location, dis)}
+        <div class="ff" style="grid-column:1/-1;"><label>메모</label><textarea class="input" data-f="partner_memo" style="height:50px;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(p.partner_memo || p.note || '')}</textarea></div>
       `)}
       ${sect('등록증스펙', 'file-text', `
         ${ffi('차명(등록증)', 'cert_car_name', p.cert_car_name, dis)}
@@ -669,10 +704,6 @@ export function renderProductDetail(p) {
         ${ffi('형식번호',  'type_number',   p.type_number, dis)}
         ${ffi('원동기형식', 'engine_type',   p.engine_type, dis)}
         ${ffs('용도',      'usage',         p.usage, O.usage, dis)}
-        ${ffi('변속기',    'transmission',  p.transmission, dis)}
-        ${ffi('차령만료일', 'vehicle_age_expiry_date', p.vehicle_age_expiry_date, dis)}
-        ${ffi('위치',      'location',      p.location, dis)}
-        <div class="ff"><label>메모</label><textarea class="input" data-f="partner_memo" style="height: 50px;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(p.partner_memo || p.note || '')}</textarea></div>
       `)}
       ${renderFpChips(p, canEdit)}
     `;
@@ -680,6 +711,7 @@ export function renderProductDetail(p) {
       bindFormSave(page, 'products', p._key, p);
       bindCarPicker(assetCard, p);
       bindFpChips(assetCard, p);   // FP 인기옵션 chip 토글 (자동저장)
+      bindCarNumberDupCheck(assetCard, p);   // 차량번호 중복 검증
     }
     // 차종 매트릭스 매칭 미리보기 — 비동기로 banner 채우기 + 필드 변경 시 자동 갱신
     refreshMatrixBanner(assetCard, p);

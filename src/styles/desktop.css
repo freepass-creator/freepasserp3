@@ -1204,6 +1204,15 @@
     background-color: #fffceb !important;
     border-color: var(--text-main);
   }
+  /* 신규 등록 모드 (draft) — 하늘색 배경으로 "수정" 과 시각 구분.
+     body.is-draft-mode 는 store 에 미저장 draft 가 활성 매물/정책일 때 추가됨. */
+  body.is-edit-mode.is-draft-mode .pt-page.active [data-edit-lock="1"]:not([data-permanent-lock]) {
+    background-color: var(--alert-blue-bg) !important;
+    border-color: var(--alert-blue-border);
+  }
+  body.is-draft-mode .pt-actions {
+    box-shadow: inset 0 2px 0 var(--alert-blue-text);
+  }
   /* 보기 모드에서 모든 업로드 UI 숨김 — 차량등록증/사진/면허증/첨부서류 등 (.pd-dropzone 일괄)
      클릭/드래그 자체가 안 보이게 해서 "보기인데 업로드 가능" 인 혼란 회피.
      편집 모드 진입하면 자동 노출.

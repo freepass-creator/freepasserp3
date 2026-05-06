@@ -288,6 +288,8 @@ window.refreshPageActions = function(pageName) {
   const coll = collMap[p];
   const isNewDraft = isEditing && coll && activeId && isDraftPending(coll, activeId);
   const draftStarted = isNewDraft && hasDraftStarted(coll, activeId);
+  // body.is-draft-mode — 신규 draft 활성 시 시각 구분 (하늘색). 편집모드 OFF / 다른 매물 선택 시 자동 제거
+  document.body.classList.toggle('is-draft-mode', !!isNewDraft);
 
   const editToggle = (isNewDraft && !draftStarted)
     ? {
@@ -1591,6 +1593,10 @@ function bindGenericListInteractions() {
     const list = item.parentElement;
     list.querySelectorAll('.room-item').forEach(r => r.classList.remove('active'));
     item.classList.add('active');
+    // 매물/정책/파트너 등 선택 변경 시 편집모드 자동 종료 — 명시적 [수정] 버튼으로만 진입
+    if (document.body.classList.contains('is-edit-mode')) {
+      window.toggleEditMode?.(false);
+    }
     window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage);   // 선택 바뀌면 액션바 disabled 상태 갱신

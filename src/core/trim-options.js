@@ -23,9 +23,14 @@ export async function getOptionPool(product) {
   const catalog = await loadCatalog(cat.catalogId);
   if (!catalog) return { ...empty, source: 'no-catalog' };
 
+  // catalog options 자체가 비어있으면 (stub catalog) → 안내
+  const optionCount = catalog.options ? Object.keys(catalog.options).length : 0;
+  if (optionCount === 0) {
+    return { ...empty, source: 'stub-catalog', catalogId: cat.catalogId, trimName };
+  }
   // trim 정확 매칭 — 실패 시 catalog 전체 옵션 (제조사 풀) 폴백
   const trim = findTrimInCatalog(catalog, trimName, product);
-  if (!trim || !catalog.options) {
+  if (!trim) {
     const widePool = makeMakerWidePool(catalog);
     return { ...widePool, source: 'maker-wide', catalogId: cat.catalogId, trimName };
   }
@@ -57,6 +62,23 @@ export async function getOptionPool(product) {
   for (const g of groups) for (const o of g.options) allNames.add(o.name);
 
   return { groups, allNames, source: 'trim', catalogId: cat.catalogId, trimName: trim.name || trimName };
+}
+
+/** maker 전체 catalog 옵션 합집합 — trim 매칭 실패 시 폴백 풀 (카테고리별 그룹) */
+function makeMakerWidePool(catalog) {
+  const groups = [];
+  const allNames = new Set();
+  if (catalog?.options) {
+    const byCategory = new Map();
+    for (const [id, o] of Object.entries(catalog.options)) {
+      const cat = o.category || '기타';
+      if (!byCategory.has(cat)) byCategory.set(cat, []);
+      byCategory.get(cat).push({ id, name: o.name, category: cat, is_package: !!o.is_package });
+      allNames.add(o.name);
+    }
+    for (const [name, opts] of byCategory) groups.push({ name, options: opts });
+  }
+  return { groups, allNames };
 }
 
 /**

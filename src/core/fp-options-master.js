@@ -49,6 +49,7 @@ export const FP_OPT_MASTER = {
     ['HBA','하이빔 보조 (HBA)','unc'],['ROA','후석 승객 알림 (ROA)','unc'],
     ['ISLA','지능형 속도 제한 보조 (ISLA)','unc'],['SEW','안전 하차 경고/보조 (SEW)','unc'],
     ['BVM','후측방 모니터 (BVM)','unc'],['DRIVE_REC','내장형 블랙박스 (빌트인캠)','unc'],
+    ['ISG','ISG 공회전 제한','unc'],
   ]},
   convenience: { label:'편의', items: [
     ['NAVIGATION','내비게이션'],['HIPASS','하이패스','unc'],
@@ -62,7 +63,9 @@ export const FP_OPT_MASTER = {
     ['ECO_GUIDE','경제운전 안내(액티브)','unc'],['WPC','무선충전 시스템(WPC)','unc'],
     ['RAIN_SENSOR','레인 센서','unc'],['WALK_AWAY_LOCK','워크 어웨이 락','unc'],
     ['AFTER_BLOW','애프터 블로우','unc'],['AIR_PURIFY','공기청정 시스템','unc'],
-    ['AMB_LIGHT','앰비언트 무드램프','unc'],
+    ['AMB_LIGHT','앰비언트 무드램프','unc'],['DRIVE_MODE','드라이브 모드 시스템','unc'],
+    ['DISPLAY_LCD','디지털 클러스터 / 대형 LCD 디스플레이','unc'],
+    ['V2L','실외 V2L (전기차)','unc'],
   ]},
   media: { label:'미디어', items: [
     ['CD_PLAYER','CD플레이어','opt'],['MP3','MP3'],['REAR_TV','뒷자석 TV','opt'],
