@@ -970,8 +970,8 @@ function normalizeSub(row) {
 }
 
 function withinScope(row) {
-  const ps = row.production_start || '';
-  return ps >= '2011-01';
+  // 모든 catalog 노출 — 재고관리 cascade 와 동일 데이터 (단일 진실원)
+  return true;
 }
 
 async function loadMaster() {
