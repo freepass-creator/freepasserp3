@@ -1660,9 +1660,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "ev6"
-  ],
+  "aliases": [],
   "year_start": "2021-08",
   "year_end": "2024-08"
 }

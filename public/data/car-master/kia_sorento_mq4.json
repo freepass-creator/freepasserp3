@@ -1,7 +1,7 @@
 {
   "catalog_id": "kia_sorento_mq4",
   "model_root": "쏘렌토",
-  "title": "기아 더 뉴 쏘렌토 MQ4",
+  "title": "기아 쏘렌토 MQ4",
   "maker": "기아",
   "source": "kia_official",
   "source_urls": [
@@ -1812,5 +1812,5 @@
     "더뉴쏘렌토4세대"
   ],
   "year_start": "2020-03",
-  "year_end": "현재"
+  "year_end": "2023-07"
 }

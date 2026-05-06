@@ -474,9 +474,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "ex30"
-  ],
+  "aliases": [],
   "year_start": "2025-01",
   "year_end": "현재"
 }

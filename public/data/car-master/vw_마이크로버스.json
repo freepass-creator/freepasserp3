@@ -474,9 +474,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "마이크로버스"
-  ],
+  "aliases": [],
   "year_start": "",
   "year_end": "현재"
 }

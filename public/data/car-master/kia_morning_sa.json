@@ -46,9 +46,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "모닝"
-  ],
+  "aliases": [],
   "year_start": "2005-01",
   "year_end": "2007-12"
 }

@@ -474,9 +474,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "q2"
-  ],
+  "aliases": [],
   "year_start": "2020-01",
   "year_end": "2023-12"
 }

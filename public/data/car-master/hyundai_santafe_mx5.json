@@ -10,12 +10,29 @@
   "options": {},
   "categories": {},
   "trims": {
-    "익스클루시브": { "slug": "exclusive", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "캘리그래피": { "slug": "calligraphy", "price": {}, "basic": [], "select": [], "select_groups": [] }
+    "익스클루시브": {
+      "slug": "exclusive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "calligraphy",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
   },
   "aliases": [
-    "싼타페",
     "디 올 뉴 싼타페",
     "싼타페 MX5"
   ],

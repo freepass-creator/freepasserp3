@@ -48,9 +48,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "xm3"
-  ],
+  "aliases": [],
   "year_start": "2020-01",
   "year_end": "2024-12"
 }

@@ -6230,56 +6230,6 @@
     ],
     "fetched_at": "2026-05-04"
   },
-  "kia_k5_tf": {
-    "id": "kia_k5_tf",
-    "title": "기아 K5 TF",
-    "maker": "기아",
-    "model_root": "K5",
-    "year_start": "2010-04",
-    "year_end": "2013-06",
-    "source": {
-      "manufacturer": null,
-      "wikicar": null,
-      "encar": []
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": false,
-      "encar": false
-    },
-    "trims": [
-      "디럭스",
-      "럭셔리",
-      "프레스티지",
-      "노블레스"
-    ],
-    "fetched_at": "2026-05-06"
-  },
-  "kia_k5_tf_facelift": {
-    "id": "kia_k5_tf_facelift",
-    "title": "기아 더 뉴 K5 TF",
-    "maker": "기아",
-    "model_root": "K5",
-    "year_start": "2013-07",
-    "year_end": "2015-07",
-    "source": {
-      "manufacturer": null,
-      "wikicar": null,
-      "encar": []
-    },
-    "verified": {
-      "manufacturer": false,
-      "wikicar": false,
-      "encar": false
-    },
-    "trims": [
-      "디럭스",
-      "럭셔리",
-      "프레스티지",
-      "노블레스"
-    ],
-    "fetched_at": "2026-05-06"
-  },
   "kia_k7_premier": {
     "id": "kia_k7_premier",
     "title": "기아 K7 프리미어",
@@ -6841,11 +6791,11 @@
   },
   "kia_sorento_mq4": {
     "id": "kia_sorento_mq4",
-    "title": "기아 더 뉴 쏘렌토 MQ4",
+    "title": "기아 쏘렌토 MQ4",
     "maker": "기아",
     "model_root": "쏘렌토",
     "year_start": "2020-03",
-    "year_end": "현재",
+    "year_end": "2023-07",
     "source": {
       "manufacturer": "https://www.kia.com/kr/vehicles/sorento/price",
       "wikicar": null,
@@ -6863,6 +6813,31 @@
       "X-Line"
     ],
     "fetched_at": "2026-04-29"
+  },
+  "kia_sorento_mq4_facelift": {
+    "id": "kia_sorento_mq4_facelift",
+    "title": "기아 더 뉴 쏘렌토 MQ4",
+    "maker": "기아",
+    "model_root": "쏘렌토",
+    "year_start": "2023-08",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프레스티지",
+      "노블레스",
+      "시그니처",
+      "그래비티"
+    ],
+    "fetched_at": "2026-05-06"
   },
   "kia_sorento_mq4_hybrid": {
     "id": "kia_sorento_mq4_hybrid",

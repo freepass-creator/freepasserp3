@@ -480,9 +480,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "slr"
-  ],
+  "aliases": [],
   "year_start": "",
   "year_end": "현재"
 }

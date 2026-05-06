@@ -474,9 +474,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "i4"
-  ],
+  "aliases": [],
   "year_start": "2022-01",
   "year_end": "현재"
 }

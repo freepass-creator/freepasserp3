@@ -805,9 +805,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "xc40"
-  ],
+  "aliases": [],
   "year_start": "2018-01",
   "year_end": "현재"
 }

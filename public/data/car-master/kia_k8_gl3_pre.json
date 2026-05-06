@@ -2464,10 +2464,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "k8",
-    "k8하이브리드"
-  ],
+  "aliases": [],
   "year_start": "2021-04",
   "year_end": "2024-09",
   "source": "wikicar_ocr"

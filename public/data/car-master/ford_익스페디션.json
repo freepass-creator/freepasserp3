@@ -17,9 +17,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "익스페디션"
-  ],
+  "aliases": [],
   "year_start": "2021-01",
   "year_end": "2022-12"
 }

@@ -2315,9 +2315,7 @@
       ]
     }
   },
-  "aliases": [
-    "ev4"
-  ],
+  "aliases": [],
   "year_start": "2025-01",
   "year_end": "현재"
 }

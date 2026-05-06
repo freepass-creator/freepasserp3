@@ -2275,9 +2275,7 @@
       ]
     }
   },
-  "aliases": [
-    "ev5"
-  ],
+  "aliases": [],
   "year_start": "2026-01",
   "year_end": "현재"
 }

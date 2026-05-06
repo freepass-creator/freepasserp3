@@ -17,9 +17,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "mc20"
-  ],
+  "aliases": [],
   "year_start": "2022-01",
   "year_end": "2023-12"
 }

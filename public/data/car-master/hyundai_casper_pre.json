@@ -1109,10 +1109,7 @@
       "select_groups": []
     }
   },
-  "aliases": [
-    "캐스퍼",
-    "캐스퍼일렉트릭"
-  ],
+  "aliases": [],
   "year_start": "2021-09",
   "year_end": "2024-04"
 }

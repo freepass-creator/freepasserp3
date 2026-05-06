@@ -1,0 +1,24 @@
+{
+  "catalog_id": "kia_sorento_mq4_facelift",
+  "model_root": "쏘렌토",
+  "title": "기아 더 뉴 쏘렌토 MQ4",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "쏘렌토 MQ4 페리 (2023-08~). 트림 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "시그니처": { "slug": "signature", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "그래비티": { "slug": "gravity", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "aliases": [
+    "더 뉴 쏘렌토 MQ4",
+    "더뉴 쏘렌토 MQ4"
+  ],
+  "year_start": "2023-08",
+  "year_end": "현재"
+}
