@@ -6030,6 +6030,56 @@
     ],
     "fetched_at": "2026-05-04"
   },
+  "kia_k5_tf": {
+    "id": "kia_k5_tf",
+    "title": "기아 K5 TF",
+    "maker": "기아",
+    "model_root": "K5",
+    "year_start": "2010-04",
+    "year_end": "2013-06",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "디럭스",
+      "럭셔리",
+      "프레스티지",
+      "노블레스"
+    ],
+    "fetched_at": "2026-05-06"
+  },
+  "kia_k5_tf_facelift": {
+    "id": "kia_k5_tf_facelift",
+    "title": "기아 더 뉴 K5 TF",
+    "maker": "기아",
+    "model_root": "K5",
+    "year_start": "2013-07",
+    "year_end": "2015-07",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "디럭스",
+      "럭셔리",
+      "프레스티지",
+      "노블레스"
+    ],
+    "fetched_at": "2026-05-06"
+  },
   "kia_k7_premier": {
     "id": "kia_k7_premier",
     "title": "기아 K7 프리미어",

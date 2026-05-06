@@ -1,0 +1,25 @@
+{
+  "catalog_id": "kia_k5_tf",
+  "model_root": "K5",
+  "title": "기아 K5 TF",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "K5 1세대 (TF, 2010-2013). 트림명만 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "디럭스": { "slug": "deluxe", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "럭셔리": { "slug": "luxury", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "aliases": [
+    "K5",
+    "K5 1세대",
+    "K5 TF"
+  ],
+  "year_start": "2010-04",
+  "year_end": "2013-06"
+}
