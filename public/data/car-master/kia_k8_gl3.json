@@ -1237,7 +1237,9 @@
         "KRGL301049",
         "KRGL301083",
         "KRGL301102",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRGL301046",
+        "KRGL301036"
       ],
       "select": [
         "KRGL301048",
@@ -1647,7 +1649,9 @@
         "KRGL301101",
         "KRGL301132",
         "KRGL301049",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRGL301046",
+        "KRGL301036"
       ],
       "select": [
         "KRGL301048",
@@ -2276,7 +2280,9 @@
         "KRGL301178",
         "KRGL301177",
         "KRGL301174",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRGL301046",
+        "KRGL301036"
       ],
       "select": [
         "KRGL301048",

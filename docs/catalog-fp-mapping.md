@@ -10,9 +10,9 @@
 | trim 보유 catalog | 160 |
 | trim 총수 | 782 |
 | 옵션 텍스트 보유 trim | 533 (68.2%) |
-| 옵션 텍스트 총수 | 53789 |
-| **FP 매칭 성공** | 25132 (46.7%) |
-| FP 매칭 실패 | 28657 |
+| 옵션 텍스트 총수 | 53947 |
+| **FP 매칭 성공** | 25282 (46.9%) |
+| FP 매칭 실패 | 28665 |
 | FP_KEYWORD_RULES 등록 키워드 | 268 |
 
 ## A. 옵션 텍스트 비어있는 catalog (trim 키만, basic/select 모두 빈 stub)
@@ -238,10 +238,10 @@
 | kia_k5_dl3 | 기아 올 뉴 K5 DL3 | 3161 |
 | hyundai_grandeur_gn7 | 현대 그랜저 GN7 | 1875 |
 | hyundai_palisade_lx3 | 현대 디 올 뉴 팰리세이드 LX3 | 1869 |
-| hyundai_sonata_dn8_edge | 현대 쏘나타 디 엣지 DN8 | 1740 |
+| hyundai_sonata_dn8_edge | 현대 쏘나타 디 엣지 DN8 | 1763 |
 | hyundai_sonata_dn8 | 현대 쏘나타 DN8 | 1727 |
 | kia_sportage_nq5 | 기아 더 뉴 스포티지 NQ5 | 1683 |
-| kia_ev6 | 기아 더 뉴 EV6 | 1601 |
+| kia_ev6 | 기아 더 뉴 EV6 | 1605 |
 | kia_ev9 | 기아 EV9 | 1424 |
 | hyundai_santafe_tm_165 | 현대 더 뉴 싼타페 | 1411 |
 | hyundai_kona_sx2 | 현대 코나 SX2 | 1314 |
@@ -251,13 +251,13 @@
 | kia_ev3 | 기아 EV3 | 897 |
 | kia_ev4 | 기아 EV4 | 873 |
 | kia_ev5 | 기아 EV5 | 857 |
-| hyundai_ioniq5 | 현대 더 뉴 아이오닉5 | 836 |
-| kia_k8_gl3 | 기아 더 뉴 K8 GL3 | 791 |
+| hyundai_ioniq5 | 현대 더 뉴 아이오닉5 | 844 |
+| kia_k8_gl3 | 기아 더 뉴 K8 GL3 | 797 |
+| hyundai_avante_cn7 | 현대 더 뉴 아반떼 CN7 | 780 |
 | hyundai_ioniq9 | 현대 아이오닉9 | 775 |
-| hyundai_avante_cn7 | 현대 더 뉴 아반떼 CN7 | 766 |
 | hyundai_avante_cn7_pre | 현대 아반떼 CN7 | 738 |
-| hyundai_ioniq6 | 현대 더 뉴 아이오닉6 | 715 |
-| genesis_gv70 | 제네시스 디 올 뉴 GV70 | 634 |
+| hyundai_ioniq6 | 현대 더 뉴 아이오닉6 | 721 |
+| genesis_gv70 | 제네시스 디 올 뉴 GV70 | 638 |
 | kia_k5_jf_facelift | 기아 더 뉴 K5 JF | 620 |
 | genesis_gv70_pre | 제네시스 GV70 | 618 |
 | kia_seltos | 기아 더 뉴 셀토스 | 616 |

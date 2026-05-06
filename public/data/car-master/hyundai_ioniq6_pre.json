@@ -943,7 +943,10 @@
         "CE03096",
         "CE03113",
         "CE03114",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CE03032",
+        "CE03035",
+        "CE03036"
       ],
       "select": [],
       "select_groups": []

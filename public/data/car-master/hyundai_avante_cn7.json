@@ -766,7 +766,9 @@
         "CN06108",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CN06016",
+        "CN06022"
       ],
       "select": [
         "CN06P01",
@@ -878,7 +880,9 @@
         "CN06096",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CN06016",
+        "CN06022"
       ],
       "select": [
         "CN06049",
@@ -1136,7 +1140,9 @@
         "CN06098",
         "CN06034",
         "CN06108",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CN06016",
+        "CN06022"
       ],
       "select": [],
       "select_groups": []
@@ -1192,7 +1198,9 @@
         "CN06108",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CN06016",
+        "CN06022"
       ],
       "select": [
         "CN06P01",
@@ -1304,7 +1312,9 @@
         "CN06096",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CN06016",
+        "CN06022"
       ],
       "select": [
         "CN06049",
@@ -1408,7 +1418,9 @@
         "CN06090",
         "CN06091",
         "CN06108",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CN06016",
+        "CN06022"
       ],
       "select": [
         "CN06P01",
@@ -1515,7 +1527,9 @@
         "CN06108",
         "CN06002",
         "CN06003",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CN06016",
+        "CN06022"
       ],
       "select": [
         "CN06049",

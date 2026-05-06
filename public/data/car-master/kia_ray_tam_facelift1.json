@@ -841,7 +841,9 @@
         "KRTM257105",
         "KRTM257P01",
         "KRTM257P02",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRTM257118",
+        "KRTM257006"
       ],
       "select": [],
       "select_groups": []

@@ -970,7 +970,9 @@
         "CE03130",
         "CE03131",
         "CE03133",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CE03035",
+        "CE03036"
       ],
       "select": [
         "CE03127",
@@ -1113,7 +1115,9 @@
         "CE03087",
         "CE03108",
         "CE03002",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CE03035",
+        "CE03036"
       ],
       "select": [
         "CE03127",
@@ -1932,7 +1936,9 @@
         "CE03131",
         "CE03133",
         "CE03002",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "CE03035",
+        "CE03036"
       ],
       "select": [
         "CE03014",

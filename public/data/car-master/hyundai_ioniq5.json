@@ -1016,7 +1016,9 @@
         "NE05158",
         "NE05003",
         "NE05146",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "NE05035",
+        "NE05036"
       ],
       "select": [
         "NE05014",
@@ -1229,7 +1231,9 @@
         "NE05158",
         "NE05003",
         "NE05146",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "NE05035",
+        "NE05036"
       ],
       "select": [
         "NE05014",
@@ -1886,7 +1890,9 @@
         "NE05064",
         "NE05092",
         "NE05146",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "NE05035",
+        "NE05036"
       ],
       "select": [
         "NE05014",
@@ -2135,7 +2141,9 @@
         "NE05109",
         "NE05129",
         "NE05131",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "NE05035",
+        "NE05036"
       ],
       "select": [
         "NE05P06",

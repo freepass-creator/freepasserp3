@@ -382,7 +382,7 @@
         "ROA"
       ],
       "used_in": 27,
-      "used_as_basic": 146,
+      "used_as_basic": 151,
       "used_as_select": 0,
       "codes": [
         "KRCT294119",
@@ -1739,7 +1739,7 @@
         "RCTA"
       ],
       "used_in": 16,
-      "used_as_basic": 75,
+      "used_as_basic": 85,
       "used_as_select": 0,
       "codes": [
         "KRCV253023",
@@ -2093,7 +2093,7 @@
         "SEW"
       ],
       "used_in": 13,
-      "used_as_basic": 62,
+      "used_as_basic": 69,
       "used_as_select": 0,
       "codes": [
         "KRCV253025",
@@ -3174,7 +3174,7 @@
         "SEW"
       ],
       "used_in": 9,
-      "used_as_basic": 20,
+      "used_as_basic": 26,
       "used_as_select": 0,
       "codes": [
         "KRJA232006",
@@ -9379,7 +9379,7 @@
         "RCTA"
       ],
       "used_in": 2,
-      "used_as_basic": 11,
+      "used_as_basic": 14,
       "used_as_select": 0,
       "codes": [
         "KRGL301046"
@@ -27200,7 +27200,7 @@
         "HDA"
       ],
       "used_in": 9,
-      "used_as_basic": 24,
+      "used_as_basic": 25,
       "used_as_select": 0,
       "codes": [
         "WK_고속도로_주행_보조"
@@ -27574,7 +27574,7 @@
         "HDA"
       ],
       "used_in": 7,
-      "used_as_basic": 9,
+      "used_as_basic": 13,
       "used_as_select": 9,
       "codes": [
         "WK_고속도로_주행_보조_2_차로_변경_보조_제어_기능_포함_"
@@ -27987,7 +27987,7 @@
         "LKAS"
       ],
       "used_in": 5,
-      "used_as_basic": 11,
+      "used_as_basic": 12,
       "used_as_select": 0,
       "codes": [
         "WK_차로_유지_보조"
@@ -29980,7 +29980,7 @@
         "SEW"
       ],
       "used_in": 2,
-      "used_as_basic": 4,
+      "used_as_basic": 5,
       "used_as_select": 0,
       "codes": [
         "WK_안전_하차_경고"
@@ -29994,7 +29994,7 @@
         "ROA"
       ],
       "used_in": 2,
-      "used_as_basic": 4,
+      "used_as_basic": 5,
       "used_as_select": 0,
       "codes": [
         "WK_후석_승객_알림"
@@ -37735,7 +37735,7 @@
         "RCTA"
       ],
       "used_in": 30,
-      "used_as_basic": 146,
+      "used_as_basic": 149,
       "used_as_select": 8,
       "codes": [
         "CE03040",
@@ -37927,7 +37927,7 @@
         "HDA"
       ],
       "used_in": 25,
-      "used_as_basic": 135,
+      "used_as_basic": 139,
       "used_as_select": 6,
       "codes": [
         "CE03026",
@@ -37980,7 +37980,7 @@
         "ROA"
       ],
       "used_in": 24,
-      "used_as_basic": 135,
+      "used_as_basic": 139,
       "used_as_select": 2,
       "codes": [
         "CE03029",
@@ -38098,7 +38098,7 @@
         "HDA"
       ],
       "used_in": 23,
-      "used_as_basic": 127,
+      "used_as_basic": 132,
       "used_as_select": 8,
       "codes": [
         "CE03028",
@@ -38176,7 +38176,7 @@
         "RCTA"
       ],
       "used_in": 21,
-      "used_as_basic": 112,
+      "used_as_basic": 129,
       "used_as_select": 0,
       "codes": [
         "CE03035",
@@ -38425,7 +38425,7 @@
         "SEW"
       ],
       "used_in": 20,
-      "used_as_basic": 104,
+      "used_as_basic": 118,
       "used_as_select": 2,
       "codes": [
         "CE03036",
@@ -38832,7 +38832,7 @@
         "FCWS"
       ],
       "used_in": 14,
-      "used_as_basic": 84,
+      "used_as_basic": 92,
       "used_as_select": 0,
       "codes": [
         "CN06008",
@@ -39247,7 +39247,7 @@
         "LKAS"
       ],
       "used_in": 12,
-      "used_as_basic": 69,
+      "used_as_basic": 70,
       "used_as_select": 0,
       "codes": [
         "CE03032",
@@ -39941,7 +39941,7 @@
         "SEW"
       ],
       "used_in": 8,
-      "used_as_basic": 31,
+      "used_as_basic": 43,
       "used_as_select": 6,
       "codes": [
         "CN06022",
@@ -46361,7 +46361,7 @@
         "RCTA"
       ],
       "used_in": 2,
-      "used_as_basic": 5,
+      "used_as_basic": 9,
       "used_as_select": 0,
       "codes": [
         "NE05035"
@@ -55095,7 +55095,7 @@
         "RCTA"
       ],
       "used_in": 1,
-      "used_as_basic": 1,
+      "used_as_basic": 3,
       "used_as_select": 0,
       "codes": [
         "TS02015"
@@ -57478,7 +57478,7 @@
         "LKAS"
       ],
       "used_in": 11,
-      "used_as_basic": 18,
+      "used_as_basic": 25,
       "used_as_select": 2,
       "codes": [
         "WK_차선_유지_보조_LKA_"
@@ -57520,7 +57520,7 @@
         "TPMS"
       ],
       "used_in": 11,
-      "used_as_basic": 23,
+      "used_as_basic": 31,
       "used_as_select": 0,
       "codes": [
         "WK_타이어_공기압_경보_시스템_TPMS_"
@@ -57639,7 +57639,7 @@
     "부주의 운전 경고(DAW)": {
       "fp_ids": [],
       "used_in": 10,
-      "used_as_basic": 16,
+      "used_as_basic": 23,
       "used_as_select": 0,
       "codes": [
         "WK_부주의_운전_경고_DAW_"
@@ -57703,7 +57703,7 @@
         "RCTA"
       ],
       "used_in": 10,
-      "used_as_basic": 13,
+      "used_as_basic": 24,
       "used_as_select": 2,
       "codes": [
         "WK_후측방_접근_충돌_보조_RCTA_"
@@ -57757,7 +57757,7 @@
         "SEW"
       ],
       "used_in": 10,
-      "used_as_basic": 14,
+      "used_as_basic": 25,
       "used_as_select": 5,
       "codes": [
         "WK_안전_하차_경고_SEW_"
@@ -58583,7 +58583,7 @@
     "다중 충돌 방지 시스템": {
       "fp_ids": [],
       "used_in": 5,
-      "used_as_basic": 13,
+      "used_as_basic": 14,
       "used_as_select": 0,
       "codes": [
         "WK_다중_충돌_방지_시스템"

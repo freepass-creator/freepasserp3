@@ -844,7 +844,10 @@
         "KRTM257101",
         "KRTM257102",
         "KRTM257106",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRTM257118",
+        "KRTM257100",
+        "KRTM257006"
       ],
       "select": [
         "KRTM257P01",
@@ -935,7 +938,10 @@
         "KRTM257101",
         "KRTM257102",
         "KRTM257106",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRTM257118",
+        "KRTM257100",
+        "KRTM257006"
       ],
       "select": [
         "KRTM257P01",
@@ -1303,7 +1309,10 @@
         "KRTM257105",
         "KRTM257104",
         "KRTM257060",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRTM257118",
+        "KRTM257100",
+        "KRTM257006"
       ],
       "select": [
         "KRTM257P01",

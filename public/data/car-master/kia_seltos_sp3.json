@@ -1074,7 +1074,9 @@
         "KRST290073",
         "KRST290P20",
         "KRST290P01",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRST290024",
+        "KRST290026"
       ],
       "select": [],
       "select_groups": []
@@ -1188,7 +1190,9 @@
         "KRST290P06",
         "KRST290P07",
         "KRST290P08",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRST290024",
+        "KRST290026"
       ],
       "select": [],
       "select_groups": []

@@ -19,7 +19,7 @@ import {
 } from '../core/product-photos.js';
 import { openFullscreen } from '../core/product-detail-render.js';
 import { ocrFile } from '../core/ocr.js';
-import { parseVehicleRegistration } from '../core/ocr-parsers/vehicle-registration.js';
+import { parseVehicleRegistration, deriveMakerFromRegistration } from '../core/ocr-parsers/vehicle-registration.js';
 import { inferCarModel } from '../core/car-model-infer.js';
 import { findCarModel } from '../core/car-models.js';
 import { analyzeProduct as analyzeMatrix, loadIndex as loadMatrixIndex, findCatalog as findMatrixCatalog, loadCatalog as loadMatrixCatalog } from '../core/vehicle-matrix.js';
@@ -354,7 +354,7 @@ function renderFpChips(p, canEdit) {
     const sty = sm ? 'font-size:11px;padding:0 6px;height:20px;' : 'font-size:12px;padding:0 8px;height:24px;';
     return `<button type="button" class="${onCls}" data-fp-grp="${esc(g.label)}" style="${sty}"${canEdit ? '' : ' disabled'}>${g.icon ? `<i class="ph ph-${g.icon}"></i> ` : ''}${esc(g.label)}</button>`;
   };
-  return `<div class="form-section-title"><i class="ph ph-list-checks"></i> 표준옵션 <span class="form-section-hint" style="font-size:10px;color:var(--text-muted);">매트릭스 매칭 후 자동 저장됨. 직접 토글도 가능.</span></div>
+  return `<div class="form-section-title"><i class="ph ph-list-checks"></i> 표준 주요옵션 <span class="form-section-hint" style="font-size:10px;color:var(--text-muted);">15개 (인기 10 + 보조 5). 매트릭스 매칭 후 자동 저장 + 직접 토글 가능.</span></div>
     <div class="ff fp-chips" data-fp-chips style="display:flex;flex-direction:column;gap:6px;padding:0 4px;">
       <div style="display:flex;flex-wrap:wrap;gap:4px;">
         ${FP_POPULAR_PRIMARY.map(g => renderOne(g, false)).join('')}
@@ -523,7 +523,6 @@ export function renderProductDetail(p) {
     assetCard.querySelector('.ws4-body').innerHTML = `
       ${sect('기본정보', 'identification-card', `
         ${ffi('차량번호',  'car_number', p.car_number, dis)}
-        ${ffi('차대번호',  'vin',        p.vin, dis)}
         ${providerField}
         ${ro('상품코드',   p.product_code)}
       `)}
@@ -539,6 +538,7 @@ export function renderProductDetail(p) {
       `)}
       ${sect('등록증스펙', 'file-text', `
         ${ffi('차명(등록증)', 'cert_car_name', p.cert_car_name, dis)}
+        ${ffi('차대번호',  'vin',           p.vin, dis)}
         ${ffs('연식',      'year',          p.year ? String(p.year) : '', O.year, dis)}
         ${ffi('배기량',    'engine_cc',     p.engine_cc, dis)}
         ${ffi('승차정원',  'seats',         p.seats, dis)}
@@ -693,25 +693,9 @@ function renderProductPhotoPanel(photoCard, p, canEdit) {
   const dis          = canEdit ? '' : ' disabled';
 
   photoCard.querySelector('.ws4-body').innerHTML = `
-    ${sect('차량등록증', 'identification-card', `
-      ${regImg
-        ? `<div style="position:relative; display:inline-block;">
-             ${regIsPdf
-               ? `<a href="${esc(regImg)}" target="_blank" class="pd-reg-pdf"><i class="ph ph-file-pdf"></i>차량등록증.pdf</a>`
-               : `<img src="${esc(regImg)}" class="pd-reg-image" id="pdRegImg">`}
-             ${canEdit ? '<button class="pd-reg-del" id="pdRegDel"><i class="ph ph-x"></i> 제거</button>' : ''}
-           </div>`
-        : (canEdit ? `
-            <label class="pd-dropzone" id="pdRegDropzone" for="pdRegFile">
-              <i class="ph ph-identification-card"></i>
-              <div class="pd-dropzone-text">차량등록증을 끌어놓거나 클릭해서 업로드</div>
-              <div class="pd-dropzone-hint">이미지(JPG/PNG) 또는 PDF | 차명·등록일로 자동 매칭</div>
-              <input type="file" id="pdRegFile" hidden accept="image/*,application/pdf">
-            </label>` : '<div style="font-size:12px; color:var(--text-weak);">미등록</div>')}
-    `)}
-    ${sect('차량 사진', 'image-square', `
+    ${sect('사진 첨부', 'image-square', `
       ${allImgs.length ? `
-        <div class="pd-photo-grid">
+        <div class="pd-photo-grid" style="grid-column:1/-1;">
           ${allImgs.map((src, i) => `
             <div class="pd-photo-item${i === 0 ? ' is-primary' : ''}" data-idx="${i}" data-src="${esc(src)}">
               <img src="${esc(src)}" loading="lazy">
@@ -721,20 +705,39 @@ function renderProductPhotoPanel(photoCard, p, canEdit) {
             </div>
           `).join('')}
         </div>
-        <div style="font-size:11px; color:var(--text-weak); margin: 4px 0 8px;">
+        <div style="grid-column:1/-1;font-size:11px;color:var(--text-weak);margin:4px 0 8px;">
           <i class="ph ph-image"></i> ${allImgs.length}장 — 클릭: 크게보기 / <i class="ph ph-crown"></i> 대표 설정
         </div>
       ` : ''}
       ${canEdit ? `
-        <label class="pd-dropzone" id="pdDropzone" for="pdPhotoFile">
+        <label class="pd-dropzone" id="pdDropzone" for="pdPhotoFile" style="grid-column:1/-1;">
           <i class="ph ph-upload-simple"></i>
-          <div class="pd-dropzone-text">이미지를 끌어놓거나 클릭해서 업로드</div>
-          <div class="pd-dropzone-hint">최대 ${MAX_PHOTOS}장 | 클릭=크게보기 / 별표=대표 설정</div>
+          <div class="pd-dropzone-text">차량사진 업로드</div>
+          <div class="pd-dropzone-hint">이미지 (JPG/PNG) 다중 선택 — 최대 ${MAX_PHOTOS}장</div>
           <input type="file" id="pdPhotoFile" multiple hidden accept="image/*">
         </label>` : ''}
     `)}
     ${sect('사진 링크', 'link', `
-      <textarea class="input" data-f="photo_link" rows="2" placeholder="https://... (콤마/줄바꿈 구분)" style="width:100%; resize:vertical;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(photoLink)}</textarea>
+      <textarea class="input" data-f="photo_link" rows="2" placeholder="https://... (콤마/줄바꿈 구분)" style="grid-column:1/-1;width:100%;resize:vertical;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(photoLink)}</textarea>
+    `)}
+    ${sect('차량등록증', 'identification-card', `
+      ${regImg ? `
+        <div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--border-soft);border-radius:4px;font-size:11px;">
+          <i class="ph ph-identification-card" style="font-size:14px;color:var(--text-weak);"></i>
+          <span class="text-weak">등록된 등록증:</span>
+          ${regIsPdf
+            ? `<a href="${esc(regImg)}" target="_blank">차량등록증.pdf</a>`
+            : `<a href="${esc(regImg)}" target="_blank">차량등록증 이미지</a>`}
+          ${canEdit ? '<button class="btn btn-outline btn-xs" id="pdRegDel" style="margin-left:auto;"><i class="ph ph-x"></i>제거</button>' : ''}
+        </div>
+      ` : ''}
+      ${canEdit ? `
+        <label class="pd-dropzone" id="pdRegDropzone" for="pdRegFile" style="grid-column:1/-1;">
+          <i class="ph ph-identification-card"></i>
+          <div class="pd-dropzone-text">차량등록증 업로드 (OCR)</div>
+          <div class="pd-dropzone-hint">이미지 또는 PDF | OCR 로 등록증 정보 자동 채움 + PDF 는 사진 첨부 끝에 미리보기 추가</div>
+          <input type="file" id="pdRegFile" hidden accept="image/*,application/pdf">
+        </label>` : `${regImg ? '' : '<div style="grid-column:1/-1;font-size:12px;color:var(--text-weak);">미등록</div>'}`}
     `)}
   `;
 
@@ -807,6 +810,7 @@ function bindPhotoUpload(photoCard, p, currentImgs) {
   const dropzone  = photoCard.querySelector('#pdDropzone');
 
   const upload = async (files) => {
+    // 차량 사진 dropzone — 이미지만 (등록증은 별도 dropzone 에서 OCR 처리)
     const imgFiles = files.filter(f => f.type.startsWith('image/'));
     if (!imgFiles.length) return;
     const remaining = MAX_PHOTOS - currentImgs.length;
@@ -874,21 +878,99 @@ function bindPhotoUpload(photoCard, p, currentImgs) {
   });
 }
 
-/* 등록증 OCR + 차종마스터 추론 */
-async function tryOCRRegistration(file) {
+/* OCR 결과 → 자산정보/제조사스펙 폼 input 직접 채움 + flashSaved (초록 ring 1.5초).
+ * watchCollection 콜백 재렌더 기다리지 않고 즉시 시각 반영.
+ * select 의 경우 옵션에 없는 값이면 콘솔 경고 (디버깅용). */
+function applyOcrFieldsToForm(p, fields) {
+  const page = document.querySelector('.pt-page[data-page="product"]');
+  if (!page) return [];
+  const filled = [];
+  const skipped = [];
+  for (const [key, val] of Object.entries(fields)) {
+    if (val == null || val === '') continue;
+    const el = page.querySelector(`[data-f="${key}"]`);
+    if (!el) { skipped.push(`${key}(no-input)`); continue; }
+    const v = String(val);
+    if (el.tagName === 'SELECT') {
+      const ok = [...el.options].some(o => o.value === v);
+      if (!ok) { skipped.push(`${key}=${v}(no-option)`); continue; }
+    }
+    el.value = v;
+    el.removeAttribute('readonly');
+    flashSaved(el);
+    filled.push(key);
+  }
+  if (skipped.length) console.warn('[ocr→form] skipped:', skipped);
+  return filled;
+}
+
+/* 등록증 OCR + 제조사스펙 자동 채움 + 공급코드 매칭.
+ *  onProgress: dropzone 진행 텍스트 갱신용 콜백 ({ stage, message }) */
+async function tryOCRRegistration(file, onProgress) {
+  const progress = (msg) => onProgress?.(msg);
   try {
-    showToast('OCR 분석 중...', 'info');
-    const { text } = await ocrFile(file);
+    progress('OCR 분석 중...');
+    const { text } = await ocrFile(file, {
+      onProgress: ({ stage, done, total }) => progress(`${stage} ${done}/${total}`),
+    });
     if (!text || text.length < 20) return null;
     const parsed = parseVehicleRegistration(text);
     for (const k of Object.keys(parsed)) if (!parsed[k]) delete parsed[k];
 
-    const inferred = inferCarModel(parsed.model, parsed.year, parsed.first_registration_date, store.carModels || []);
-    if (inferred) {
-      parsed.maker = inferred.maker;
-      parsed.model = inferred.model;
-      parsed.sub_model = inferred.sub_model;
-      if (inferred.vehicle_class) parsed.vehicle_class = inferred.vehicle_class;
+    // 1) maker 추론 + catalog 매칭 (제조사스펙 자동 채움)
+    progress('차종 매칭 중...');
+    const maker = deriveMakerFromRegistration(parsed);
+    if (maker) {
+      try {
+        const { findCatalog, loadCatalog } = await import('../core/vehicle-matrix.js');
+        const match = await findCatalog(maker, parsed.cert_car_name, parsed.cert_car_name, {
+          fuel_type: parsed.fuel_type,
+          year: parsed.year,
+          first_registration_date: parsed.first_registration_date,
+          type_number: parsed.type_number,
+        });
+        if (match?.catalogId) {
+          const cat = await loadCatalog(match.catalogId);
+          if (cat) {
+            parsed.maker = maker;
+            parsed.model = cat.model || '';
+            parsed.sub_model = cat.title || cat.sub_model || '';
+          }
+        } else {
+          parsed.maker = maker;
+        }
+      } catch (e) { console.warn('[catalog match]', e); }
+    }
+
+    // 2) car_models (vehicle_master) fallback
+    if (!parsed.model) {
+      const inferred = inferCarModel(parsed.cert_car_name, parsed.year, parsed.first_registration_date, store.carModels || []);
+      if (inferred) {
+        parsed.maker = parsed.maker || inferred.maker;
+        parsed.model = inferred.model;
+        parsed.sub_model = inferred.sub_model;
+        if (inferred.vehicle_class) parsed.vehicle_class = inferred.vehicle_class;
+      }
+    }
+
+    // 3) 공급코드 매칭 — owner_name (등록증 ⑨ 성명/명칭) ↔ partners.partner_name
+    progress('공급사 매칭 중...');
+    if (parsed.owner_name) {
+      const norm = (s) => String(s || '').replace(/[\s\(\)\(\)㈜주식회사유한회사]/g, '').toLowerCase();
+      const target = norm(parsed.owner_name);
+      const partner = (store.partners || [])
+        .filter(pa => !pa._deleted)
+        .find(pa => {
+          const t = pa.partner_type || '';
+          if (t === '운영사' || t === 'operator' || t === '영업채널' || t === 'sales_channel') return false;
+          const name = norm(pa.partner_name || pa.company_name);
+          if (!name || !target) return false;
+          return name === target || name.includes(target) || target.includes(name);
+        });
+      if (partner) {
+        parsed.provider_company_code = partner.partner_code || partner.company_code || partner._key;
+        parsed.partner_code = parsed.provider_company_code;
+      }
     }
 
     return Object.keys(parsed).length ? parsed : null;
@@ -899,38 +981,97 @@ async function tryOCRRegistration(file) {
   }
 }
 
+/* PDF 첫 페이지를 JPG File 로 변환 — 차량사진 그리드에 등록증 미리보기로 추가용 */
+async function pdfFirstPageToImage(pdfFile) {
+  const pdfjsLib = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+  const buf = await pdfFile.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  const page = await pdf.getPage(1);
+  const viewport = page.getViewport({ scale: 1.6 });
+  const canvas = document.createElement('canvas');
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+  return new File([blob], pdfFile.name.replace(/\.pdf$/i, '.jpg'), { type: 'image/jpeg' });
+}
+
+/* 등록증 업로드 헬퍼 — OCR + 폼 직접 채움 + Storage + PDF→이미지 변환. */
+async function uploadRegistration(p, file) {
+  if (!file) return;
+  // 편집모드 자동 진입 — 보기모드에서 등록증 올렸을 때 폼 input 의 readonly 자동 해제
+  if (!document.body.classList.contains('is-edit-mode')) {
+    window.toggleEditMode?.(true);
+  }
+  const zone = document.querySelector('.pt-page[data-page="product"] #pdRegDropzone');
+  const textEl = zone?.querySelector('.pd-dropzone-text');
+  const origText = textEl?.textContent || '';
+  zone?.classList.add('is-uploading');
+
+  // 1) OCR 먼저 — dropzone 진행 표시 + 폼 직접 채움 + flash
+  try {
+    const ocrFields = await tryOCRRegistration(file, (msg) => {
+      if (textEl) textEl.textContent = msg;
+    });
+    if (ocrFields && Object.keys(ocrFields).length) {
+      // 자산 정보 폼 input 직접 채움 + flash (watchCollection 콜백 기다리지 않음)
+      const filled = applyOcrFieldsToForm(p, ocrFields);
+      // RTDB 동기화 (영구 저장)
+      await updateRecord(`products/${p._key}`, { ...ocrFields, updated_at: Date.now() }, { silent: true });
+      Object.assign(p, ocrFields);
+      showToast(`OCR: ${filled.length}개 필드 자동 채움`, 'success');
+    } else {
+      showToast('OCR 결과 없음 — 수동 입력해주세요', 'info');
+    }
+  } catch (e) {
+    console.error('[reg ocr]', e);
+    showToast(`OCR 실패: ${e?.message || e}`, 'error');
+  } finally {
+    zone?.classList.remove('is-uploading');
+    if (textEl) textEl.textContent = origText;
+  }
+  const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+  // 2) Storage 업로드 (등록증 원본 + PDF인 경우 변환된 이미지)
+  try {
+    showToast('등록증 파일 저장 중...', 'info');
+    const regPath = `product-images/${p._key}/reg_${Date.now()}_${file.name}`;
+    const { url: regUrl } = await uploadImage(regPath, file);
+    const patch = {
+      registration_image: regUrl,
+      registration_type: isPdf ? 'pdf' : 'image',
+      updated_at: Date.now(),
+    };
+    // PDF → 첫 페이지 이미지 변환 + 차량사진 끝에 추가
+    if (isPdf) {
+      try {
+        const imgFile = await pdfFirstPageToImage(file);
+        const imgPath = `product-images/${p._key}/reg-img_${Date.now()}_${imgFile.name}`;
+        const { url: imgUrl } = await uploadImage(imgPath, imgFile);
+        const cur = Array.isArray(p.image_urls) ? p.image_urls : [];
+        patch.image_urls = [...cur, imgUrl];
+      } catch (e) {
+        console.warn('[reg pdf→img]', e);
+      }
+    }
+    await updateRecord(`products/${p._key}`, patch);
+    showToast('등록증 파일 저장 완료', 'success');
+  } catch (e) {
+    console.error('[reg upload]', e);
+    const msg = e?.code === 'storage/unauthorized'
+      ? '파일 저장 권한 없음 — Firebase Storage rules 배포 필요 (firebase deploy --only storage)'
+      : `파일 저장 실패: ${e?.message || e?.code || e}`;
+    showToast(msg, 'error');
+  }
+}
+
 function bindRegUpload(photoCard, p) {
   const regInput = photoCard.querySelector('#pdRegFile');
   const regZone  = photoCard.querySelector('#pdRegDropzone');
-  const regDel   = photoCard.querySelector('#pdRegDel');
-
-  const upload = async (file) => {
-    if (!file) return;
-    try {
-      showToast('등록증 업로드 중...', 'info');
-      const path = `product-images/${p._key}/reg_${Date.now()}_${file.name}`;
-      const { url } = await uploadImage(path, file);
-      const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
-      await updateRecord(`products/${p._key}`, {
-        registration_image: url,
-        registration_type: isPdf ? 'pdf' : 'image',
-        updated_at: Date.now(),
-      });
-      showToast('등록증 업로드 완료', 'success');
-
-      // OCR 자동 채움
-      const ocr = await tryOCRRegistration(file);
-      if (ocr && Object.keys(ocr).length) {
-        await updateRecord(`products/${p._key}`, { ...ocr, updated_at: Date.now() });
-        showToast(`OCR: ${Object.keys(ocr).length}개 필드 자동 채움`, 'success');
-      } else {
-        showToast('OCR 결과 없음 — 수동 입력해주세요', 'info');
-      }
-    } catch (e) { console.error('[reg upload]', e); showToast('등록증 업로드 실패', 'error'); }
-  };
 
   regInput?.addEventListener('change', async () => {
-    await upload(regInput.files[0]);
+    const f = regInput.files?.[0];
+    if (f) await uploadRegistration(p, f);
     regInput.value = '';
   });
   if (regZone) {
@@ -942,10 +1083,10 @@ function bindRegUpload(photoCard, p) {
       if (!e.dataTransfer.files.length) return;
       e.preventDefault();
       regZone.classList.remove('is-drop-target');
-      await upload(e.dataTransfer.files[0]);
+      await uploadRegistration(p, e.dataTransfer.files[0]);
     });
   }
-  regDel?.addEventListener('click', async () => {
+  photoCard.querySelector('#pdRegDel')?.addEventListener('click', async () => {
     if (!confirm('등록증을 제거할까요?')) return;
     await updateRecord(`products/${p._key}`, { registration_image: null, registration_type: null, updated_at: Date.now() });
   });

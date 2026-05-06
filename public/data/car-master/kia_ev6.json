@@ -1140,7 +1140,9 @@
         "KRCV253161",
         "KRCV253162",
         "KRCV253163",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRCV253023",
+        "KRCV253025"
       ],
       "select": [
         "KRCV253068",
@@ -1706,7 +1708,9 @@
         "KRCV253162",
         "KRCV253163",
         "KRCV253177",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "KRCV253023",
+        "KRCV253025"
       ],
       "select": [
         "KRCV253068",

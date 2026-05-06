@@ -678,7 +678,9 @@
         "TS02026",
         "TS02041",
         "TS02096",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "TS02015",
+        "TS02018"
       ],
       "select": [
         "TS02079",
@@ -873,7 +875,9 @@
         "TS02067",
         "TS02084",
         "TS02082",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "TS02015",
+        "TS02018"
       ],
       "select": [
         "TS02079",

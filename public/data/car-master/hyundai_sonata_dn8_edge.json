@@ -1008,7 +1008,11 @@
         "DN07060",
         "DN07083",
         "DN07151",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07029",
+        "DN07020",
+        "DN07032",
+        "DN07034"
       ],
       "select": [
         "DN07P19",
@@ -1186,7 +1190,8 @@
         "DN07001",
         "DN07002",
         "DN07004",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07020"
       ],
       "select": [
         "DN07P19",
@@ -1325,7 +1330,8 @@
         "DN07151",
         "DN07067",
         "DN07083",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07020"
       ],
       "select": [
         "DN07P19",
@@ -1614,7 +1620,11 @@
         "DN07060",
         "DN07083",
         "DN07151",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07029",
+        "DN07020",
+        "DN07032",
+        "DN07034"
       ],
       "select": [
         "DN07P19",
@@ -1792,7 +1802,8 @@
         "DN07121",
         "DN07067",
         "DN07083",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07020"
       ],
       "select": [
         "DN07P19",
@@ -2657,7 +2668,11 @@
         "DN07060",
         "DN07083",
         "DN07151",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07029",
+        "DN07020",
+        "DN07032",
+        "DN07034"
       ],
       "select": [
         "DN07P19",
@@ -3106,7 +3121,11 @@
         "DN07116",
         "DN07135",
         "DN07136",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07029",
+        "DN07020",
+        "DN07032",
+        "DN07034"
       ],
       "select": [
         "DN07P22",
@@ -3245,7 +3264,11 @@
         "DN07003",
         "DN07004",
         "DN07008",
-        "WIRELESS_MIRROR"
+        "WIRELESS_MIRROR",
+        "DN07029",
+        "DN07020",
+        "DN07032",
+        "DN07034"
       ],
       "select": [
         "DN07P22",
