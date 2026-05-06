@@ -5018,7 +5018,9 @@
       ]
     },
     "19인치 휠 &amp; 타이어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 4,
       "used_as_basic": 0,
       "used_as_select": 24,
@@ -7531,7 +7533,9 @@
       ]
     },
     "별물형 USB 충전기": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 3,
       "used_as_basic": 10,
       "used_as_select": 0,
@@ -8534,7 +8538,9 @@
       ]
     },
     "20인치 휠&amp;타이어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 2,
       "used_as_basic": 1,
       "used_as_select": 16,
@@ -9873,7 +9879,9 @@
       ]
     },
     "LED DRL": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DRL"
+      ],
       "used_in": 2,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -10373,7 +10381,9 @@
       ]
     },
     "차로 이탈 경고": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LDWS"
+      ],
       "used_in": 1,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -12143,7 +12153,9 @@
       ]
     },
     "20인치 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -12425,7 +12437,9 @@
       ]
     },
     "21인치 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 6,
@@ -12437,7 +12451,9 @@
       ]
     },
     "트레일러 패키지(19인치 휠)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 6,
@@ -12449,7 +12465,9 @@
       ]
     },
     "트레일러 패키지(21인치 휠)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 10,
@@ -13047,7 +13065,9 @@
       ]
     },
     "19인치 휠&amp;타이어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -14031,7 +14051,9 @@
       ]
     },
     "18인치 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 6,
@@ -14514,7 +14536,9 @@
       ]
     },
     "19인치 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -16919,13 +16943,14 @@
     },
     "QRescue 코드, 다중충돌방지제동보조, 앞좌석 에어백(운전석/동승석 듀얼 스테이지), 파사이드 에어백(앞), 사이드(앞)/커튼 에어백, 경사로 밀림방지장치(HSA), 차선 자세 제어장치(HDC), 차체 자세 제어장치(ESC), 타이어 공기압 자동 감지 시스템, EBD-ABS(BAS 내장), 급제동 경보 시스템(ESS), 전/후륜 디스크 브레이크(전륜 벤틸레이티드), 충돌 감지 도어록 해제 장치, 차속 감응 오토 도어록, 앞좌석 3점식 시트벨트(듀얼 프리텐셔너/리마인드 경고 기능), 뒷좌석 3점식 시트벨트(리마인드 경고 기능), 뒷좌석 좌/우 측면 좌석 프리텐셔너 포함), ISOFIX 유아용 시트 고정 장치, 차량용 소화기": {
       "fp_ids": [
-        "VDC",
+        "TPMS",
         "HAC",
-        "AIRBAG_DR",
-        "AIRBAG_SIDE",
-        "ESS",
+        "VDC",
         "BAS",
-        "ABS"
+        "ABS",
+        "ESS",
+        "AIRBAG_SIDE",
+        "AIRBAG_DR"
       ],
       "used_in": 1,
       "used_as_basic": 7,
@@ -16940,11 +16965,11 @@
     "로장주 패턴 라디에이터 그릴, 19” 투톤 레이크 알로이 휠 & 235/50 R19 타이어, FULL LED 헤드램프(프로젝션 타입), FULL LED 리어 콤비네이션 램프, LED 주간 주행등, LED 방향 지시등(전방), 글로시 블랙 루프랙, 글로시 블랙 사이드 가니시, 글로시 블랙 샤크핀 안테나, 글로시 블랙 아웃사이드 미러 커버, 바디 컬러 아웃사이드 도어 핸들": {
       "fp_ids": [
         "HEAD_LED",
-        "MIRROR_FOLD",
         "REAR_LED_COMBI",
+        "MIRROR_FOLD",
         "DRL",
-        "ALUMINUM_WHEEL",
-        "ROOF_RACK"
+        "ROOF_RACK",
+        "ALUMINUM_WHEEL"
       ],
       "used_in": 1,
       "used_as_basic": 7,
@@ -17130,13 +17155,13 @@
     },
     "FULL 오토 파킹 보조, 운전석 파워 시트(8way), 전동식 요추 받침 장치(4way), 뒷좌석 열선 시트, 하이패스 시스템(ETCS), 전자식 룸미러(ECM), 주차 보조 시스템(전방/후방/측방 경보), 스마트폰 무선 충전": {
       "fp_ids": [
+        "HIPASS",
+        "TCS",
+        "MTS_E_MIRROR",
         "WPC",
         "HEAT_SEAT_REAR",
         "POWER_SEAT_DR",
-        "HIPASS",
-        "MTS_E_MIRROR",
-        "HEAT_SEAT_FRONT",
-        "TCS"
+        "HEAT_SEAT_FRONT"
       ],
       "used_in": 1,
       "used_as_basic": 6,
@@ -17377,7 +17402,9 @@
       ]
     },
     "드라이브 모드(Eco/Comfort/Sport/AI/Snow/Off Road)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ROA"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -17491,7 +17518,9 @@
       ]
     },
     "타이어공기압자동감지시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "TPMS"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -17640,7 +17669,9 @@
       ]
     },
     "LED PURE VISION 헤드램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -18170,7 +18201,9 @@
       ]
     },
     "AUX&USB(iPOD)단자": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -18560,7 +18593,9 @@
       ]
     },
     "2포트 USB(iPod)단자": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -21863,7 +21898,9 @@
       ]
     },
     "LED 프로젝션 헤드램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 3,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -22633,7 +22670,9 @@
       ]
     },
     "타이어 공기압 모니터링": {
-      "fp_ids": [],
+      "fp_ids": [
+        "TPMS"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -23614,7 +23653,9 @@
       ]
     },
     "타이어 공기압 모니터링 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "TPMS"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -24226,7 +24267,9 @@
       ]
     },
     "C 타입 USB 충전 포트(2열 2개 & 3열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -24376,7 +24419,9 @@
       ]
     },
     "타이어 공기압 모니터링 시스템(직접 자동감압 알림 포함)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "TPMS"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -29501,7 +29546,9 @@
       ]
     },
     "프라임 나파 가죽 내장재(스티어링 휠 혼 커버)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ],
       "used_in": 3,
       "used_as_basic": 4,
       "used_as_select": 6,
@@ -30739,7 +30786,9 @@
       ]
     },
     "19인치 휠 선택 시 '하이퍼 실버 휠(A)' 또는 '다이아몬드 컷팅 휠(B)' 중 택 1": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 6,
@@ -30801,7 +30850,9 @@
       ]
     },
     "프라임 나파 가죽 내장재(센터콘솔 암레스트, 스티어링 휠 혼 커버)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 6,
@@ -32461,7 +32512,9 @@
       ]
     },
     "프라임 나파 가죽 내장재(센터콘솔 암레스트, 도어 센터 트림, 도어 암레스트)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 3,
@@ -41954,7 +42007,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개/충전·데이터 스위치타입 1개, 2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 4,
       "used_as_basic": 28,
       "used_as_select": 0,
@@ -42313,7 +42368,9 @@
       ]
     },
     "USB-C 충전기(1열 1개, 2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 3,
       "used_as_basic": 21,
       "used_as_select": 0,
@@ -42738,7 +42795,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개/충전·데이터 스위치 타입 1개, 2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 3,
       "used_as_basic": 21,
       "used_as_select": 0,
@@ -43987,7 +44046,9 @@
       ]
     },
     "100W USB C타입 단자(1열 충전 2개, 2열 충전 2개, 3열 충전 2개, 전용 충전 케이블 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 3,
       "used_as_basic": 20,
       "used_as_select": 0,
@@ -43999,7 +44060,9 @@
       ]
     },
     "충전 및 데이터 스위치타입 USB C타입 단자": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 3,
       "used_as_basic": 20,
       "used_as_select": 0,
@@ -45280,8 +45343,8 @@
     },
     "N Line 전용 디자인(프론트/리어범퍼, 라디에이터 그릴, 18인치 알로이 휠 & 타이어, 유광 블랙 DLO 몰딩(벨트라인 포함), 립타입 리어 스포일러, 사이드 스커트, 리어 디퓨저, 싱글 트윈 팁 머플러, 블랙 아웃사이드 미러 커버, N Line 엠블럼)": {
       "fp_ids": [
-        "MIRROR_FOLD",
-        "ALUMINUM_WHEEL"
+        "ALUMINUM_WHEEL",
+        "MIRROR_FOLD"
       ],
       "used_in": 2,
       "used_as_basic": 2,
@@ -45857,7 +45920,9 @@
       ]
     },
     "USB C 타입 단자(2열 충전 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 6,
@@ -46039,7 +46104,9 @@
       ]
     },
     "다중 충돌방지 자동 제어 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "FCWS"
+      ],
       "used_in": 2,
       "used_as_basic": 11,
       "used_as_select": 0,
@@ -46139,7 +46206,9 @@
       ]
     },
     "USB-C 타입 단자(충전·데이터 스위치 타입 1개/유니버설 아일랜드 하단 2개/2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 9,
       "used_as_select": 0,
@@ -46515,7 +46584,9 @@
       ]
     },
     "USB-C 타입 단자(충전·데이터 스위치 타입 1개/2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -46527,7 +46598,9 @@
       ]
     },
     "USB-C 타입 단자(충전·데이터 스위치 타입 1개/센터 콘솔 하단 2개/2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 7,
       "used_as_select": 0,
@@ -46716,7 +46789,9 @@
       ]
     },
     "100W USB C타입 단자(1열 1개, 2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 9,
       "used_as_select": 0,
@@ -46728,7 +46803,9 @@
       ]
     },
     "멀티미디어용 USB C 타입 단자(1열 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 9,
       "used_as_select": 0,
@@ -46808,7 +46885,9 @@
       ]
     },
     "20인치 휠 & 피렐리 타이어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 2,
       "used_as_basic": 3,
       "used_as_select": 10,
@@ -47007,7 +47086,9 @@
       ]
     },
     "앰비언트 라이팅 오토 플러시 도어 핸들": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AMB_LIGHT"
+      ],
       "used_in": 2,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -47746,7 +47827,9 @@
       ]
     },
     "USB 충전기(1열 2개, 2열 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 14,
       "used_as_select": 0,
@@ -48021,7 +48104,9 @@
       ]
     },
     "멀티미디어 내비플러스Ⅰ(카고)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "NAVIGATION"
+      ],
       "used_in": 2,
       "used_as_basic": 5,
       "used_as_select": 2,
@@ -48109,7 +48194,9 @@
       ]
     },
     "멀티미디어 내비플러스Ⅱ(카고)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "NAVIGATION"
+      ],
       "used_in": 2,
       "used_as_basic": 5,
       "used_as_select": 6,
@@ -48267,7 +48354,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 2개/충전 및 데이터 스위치타입 1개/2열 충전 2개/3열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -48293,7 +48382,9 @@
       ]
     },
     "USB C타입 단자(4열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 2,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -48401,7 +48492,9 @@
       ]
     },
     "멀티미디어 내비플러스Ⅱ": {
-      "fp_ids": [],
+      "fp_ids": [
+        "NAVIGATION"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 2,
@@ -48485,7 +48578,9 @@
       ]
     },
     "멀티미디어 내비플러스Ⅰ(투어러)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "NAVIGATION"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -48524,7 +48619,9 @@
       ]
     },
     "멀티미디어 내비플러스Ⅱ(투어러)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "NAVIGATION"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -49083,15 +49180,15 @@
     },
     "지능형 안전 기술: 전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차), 차로 이탈방지 보조, 차로 유지 보조, 지능형 속도 제한 보조, 운전자 주의 경고, 하이빔 보조, 스마트 크루즈 컨트롤(정차 및 재출발 기능 포함), 내비게이션 기반 스마트 크루즈 컨트롤(안전구간/곡선로), 고속도로 주행 보조, 후측방 충돌방지 보조": {
       "fp_ids": [
-        "HDA",
-        "NAVIGATION",
-        "RCTA",
-        "ISLA",
         "AEB",
         "FCWS",
-        "DAW",
+        "HDA",
+        "NAVIGATION",
         "CRUISE",
+        "RCTA",
+        "ISLA",
         "LDWS",
+        "DAW",
         "LKAS",
         "HBA"
       ],
@@ -49107,10 +49204,10 @@
     },
     "외관: 18인치 알로이 휠 & 타이어, 수평형 LED 램프(심리스 호라이즌 램프), Full LED 헤드램프(프로젝션 타입), LED 리어 콤비램프, LED 보조제동등, LED 방향지시등(뒤), 프레임리스 도어, 오토 플러시 도어 핸들, 이중접합 차음유리(윈드실드/앞좌석/뒷좌석 도어), 자외선 차단 유리(윈드실드), 아웃사이드 미러(열선, 전동 조절, 전동 접이, LED 방향지시등)": {
       "fp_ids": [
-        "HEAD_LED",
         "MIRROR_FOLD",
-        "REAR_LED_COMBI",
-        "ALUMINUM_WHEEL"
+        "HEAD_LED",
+        "ALUMINUM_WHEEL",
+        "REAR_LED_COMBI"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -49124,8 +49221,8 @@
     },
     "내장: 클러스터(12.3인치 컬러 LCD), 앳지 타입 가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트), 페달 미니언스 인디케이터, 앰비언트 무드 램프(크래쉬 패드, 도어 트림, 센터 콘솔), LED 실내등(맵 램프, 룸 램프, 선바이저 램프, 러기지 램프)": {
       "fp_ids": [
-        "AMB_LIGHT",
-        "HEAT_STR"
+        "HEAT_STR",
+        "AMB_LIGHT"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -49141,7 +49238,8 @@
       "fp_ids": [
         "POWER_SEAT_DR",
         "HEAT_SEAT_REAR",
-        "HEAT_SEAT_FRONT"
+        "HEAT_SEAT_FRONT",
+        "POWER_SEAT_PS"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -49155,24 +49253,24 @@
     },
     "편의/주차: 버튼 시동 & 스마트 키, 패들 쉬프트, 수동식 틸트 & 텔레스코픽 스티어링 휠, 듀얼 풀 오토 에어컨(미세먼지 센서/공기청정 모드/애프터 블로우), 오토 디포그/미세먼지 센서, 레인 센서, 세이프티 파워 윈도우(전좌석), 전동식 파킹 브레이크(오토 홀드 포함), 스마트 트렁크, 하이패스 시스템, 전방/후방 주차 거리 경고, 후방 모니터, USB C타입 단자(1열 2개/2열 2개), 파워 아웃렛(센터 콘솔)": {
       "fp_ids": [
-        "SENSOR_FRONT",
-        "SENSOR_REAR",
-        "HIPASS",
-        "SMART_TRUNK",
-        "AFTER_BLOW",
-        "AIR_PURIFY",
-        "AUTO_AC",
-        "CAM_REAR",
-        "PADDLE_SHIFT",
-        "POWER_WINDOW",
-        "SMART_KEY",
         "EPB",
+        "POWER_WINDOW",
         "LKAS",
         "FCWS",
         "DAW",
         "HBA",
-        "RAIN_SENSOR",
-        "BUTTON_START"
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SMART_KEY",
+        "BUTTON_START",
+        "AUTO_AC",
+        "HIPASS",
+        "SMART_TRUNK",
+        "AFTER_BLOW",
+        "AIR_PURIFY",
+        "CAM_REAR",
+        "PADDLE_SHIFT",
+        "RAIN_SENSOR"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -49187,11 +49285,11 @@
     "인포테인먼트: 12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 현대 카페이/e hi-pass), 일반 오디오 시스템(8스피커), 무선 소프트웨어 업데이트(OTA Software Update, 방전 예방 이중 제어 시스템)": {
       "fp_ids": [
         "OTA",
-        "HIPASS",
         "NAVIGATION",
-        "MIRRORING",
         "HANDS_FREE",
-        "BLUETOOTH"
+        "BLUETOOTH",
+        "HIPASS",
+        "MIRRORING"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -49296,13 +49394,13 @@
     },
     "편의/주차: 디지털 키 2, 스마트 전동식 트렁크, 스마트폰 무선 충전, 실내 지문 인증 시스템(개인화, 시동, 결제 등), 서라운드 뷰 모니터, 후측방 모니터, 후방 주차 거리 경고, 원격 스마트 주차 보조, 후진 가이드 램프": {
       "fp_ids": [
+        "BVM",
+        "AVMS",
         "POWER_TRUNK",
         "SMART_TRUNK",
         "SPAS",
         "WPC",
         "SENSOR_REAR",
-        "BVM",
-        "AVMS",
         "SMART_KEY"
       ],
       "used_in": 1,
@@ -49365,12 +49463,12 @@
       "fp_ids": [
         "HDA",
         "NAVIGATION",
+        "CRUISE",
         "ROA",
         "RCTA",
         "HOD",
         "AEB",
-        "FCWS",
-        "CRUISE"
+        "FCWS"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -49724,7 +49822,9 @@
       ]
     },
     "USB C 타입 단자(1열 충전 1개 및 충전·데이터 스위치 타입 1개/ 센터콘솔 중앙 1개/2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -50051,7 +50151,9 @@
       ]
     },
     "100W USB C타입 단자(1열 충전 2개, 2열 충전 2개, 3열 충전 2개, 충전 케이블 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 6,
       "used_as_select": 0,
@@ -50300,7 +50402,9 @@
       ]
     },
     "21인치 휠 & 타이어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -50482,7 +50586,9 @@
       ]
     },
     "19인치 휠 & 타이어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -51038,7 +51144,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개/충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 7,
       "used_as_select": 0,
@@ -51424,7 +51532,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개/충전 및 데이터 스위치 1개, 2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 10,
       "used_as_select": 0,
@@ -51636,7 +51746,9 @@
       ]
     },
     "외관: 캘리그래피 전용 디자인 (20인치 휠 & 타이어)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -51849,7 +51961,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개/충전 및 데이터 스위치 타입 1개, 2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 10,
       "used_as_select": 0,
@@ -52049,7 +52163,9 @@
       ]
     },
     "20인치 휠 & 타이어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -52061,7 +52177,9 @@
       ]
     },
     "[N 퍼포먼스 파츠]알콘(alcon) 모노블록 브레이크 & 20인치 휠 패키지": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -52123,7 +52241,9 @@
       ]
     },
     "[N 퍼포먼스 파츠]알콘(alcon) 모노블록 브레이크 & 21인치 휠 패키지": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 12,
@@ -52360,7 +52480,9 @@
       ]
     },
     "USB 충전기(1열 2개": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -52788,7 +52910,9 @@
       ]
     },
     "동승석 4way 전동시트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 2,
@@ -52943,7 +53067,9 @@
       ]
     },
     "USB 충전기(1열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 7,
       "used_as_select": 0,
@@ -53048,10 +53174,10 @@
       "fp_ids": [
         "HDA",
         "NAVIGATION",
-        "RCTA",
+        "CRUISE",
         "AEB",
         "FCWS",
-        "CRUISE",
+        "RCTA",
         "ROA",
         "SEW"
       ],
@@ -53095,8 +53221,8 @@
     "가죽 시트(블랙/새들브라운), 운전석 자세 메모리 시스템, 동승석 4way 전동시트, 동승석 워크인 디바이스, 동승석 릴렉션 컴포트 시트, 뒷좌석 열선시트, 뒷좌석 암레스트": {
       "fp_ids": [
         "MEMORY_SEAT_DR",
-        "HEAT_SEAT_REAR",
         "POWER_SEAT_PS",
+        "HEAT_SEAT_REAR",
         "HEAT_SEAT_FRONT",
         "SEAT_LEATHER"
       ],
@@ -53421,7 +53547,9 @@
       ]
     },
     "동승석 4way 전동 시트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ],
       "used_in": 1,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -53477,9 +53605,9 @@
       "fp_ids": [
         "HDA",
         "NAVIGATION",
+        "CRUISE",
         "AEB",
         "FCWS",
-        "CRUISE",
         "ROA"
       ],
       "used_in": 1,
@@ -54695,11 +54823,11 @@
       "fp_ids": [
         "HDA",
         "NAVIGATION",
-        "RCTA",
-        "SENSOR_REAR",
+        "CRUISE",
         "AEB",
         "FCWS",
-        "CRUISE",
+        "RCTA",
+        "SENSOR_REAR",
         "SEW"
       ],
       "used_in": 1,
@@ -54741,8 +54869,8 @@
     "시트 : 가죽 시트(블랙/네이비), 운전석 자세 메모리 시스템, 동승석 4way 전동시트, 동승석 릴렉션 컴포트 시트, 뒷좌석 열선시트, 뒷좌석 암레스트(스키쓰루 포함)": {
       "fp_ids": [
         "MEMORY_SEAT_DR",
-        "HEAT_SEAT_REAR",
         "POWER_SEAT_PS",
+        "HEAT_SEAT_REAR",
         "HEAT_SEAT_FRONT",
         "SEAT_LEATHER"
       ],
@@ -54789,9 +54917,9 @@
     },
     "10.25인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이), 내비게이션 무선 업데이트, 스마트폰 무선 충전, 디지털 키, 하프 크롬 & 터치 타입 아웃사이드 도어핸들": {
       "fp_ids": [
-        "WPC",
         "NAVIGATION",
         "MIRRORING",
+        "WPC",
         "SMART_KEY"
       ],
       "used_in": 1,
@@ -54824,11 +54952,11 @@
       "fp_ids": [
         "HDA",
         "NAVIGATION",
-        "RCTA",
-        "SENSOR_REAR",
+        "CRUISE",
         "AEB",
         "FCWS",
-        "CRUISE",
+        "RCTA",
+        "SENSOR_REAR",
         "SEW"
       ],
       "used_in": 1,
@@ -56408,7 +56536,9 @@
       ]
     },
     "USB A타입 단자(1열 데이터 타입 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -56420,7 +56550,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개/2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -57770,7 +57902,9 @@
       ]
     },
     "차선 이탈 경고(LDW)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LDWS"
+      ],
       "used_in": 10,
       "used_as_basic": 25,
       "used_as_select": 2,
@@ -57783,7 +57917,9 @@
       ]
     },
     "부주의 운전 경고(DAW)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DAW"
+      ],
       "used_in": 10,
       "used_as_basic": 23,
       "used_as_select": 0,
@@ -58108,7 +58244,9 @@
       ]
     },
     "전방 추돌 경고(FCW)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "FCWS"
+      ],
       "used_in": 9,
       "used_as_basic": 23,
       "used_as_select": 2,
@@ -58438,7 +58576,9 @@
       ]
     },
     "USB 미디어": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 6,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -58528,7 +58668,9 @@
       ]
     },
     "USB 충전기(소켓타입)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 6,
       "used_as_basic": 16,
       "used_as_select": 0,
@@ -58730,7 +58872,9 @@
       ]
     },
     "다중 충돌 방지 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "FCWS"
+      ],
       "used_in": 5,
       "used_as_basic": 14,
       "used_as_select": 0,
@@ -59233,7 +59377,9 @@
       ]
     },
     "운전자 졸음주의 경고(DDAW)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DAW"
+      ],
       "used_in": 4,
       "used_as_basic": 11,
       "used_as_select": 0,
@@ -60499,7 +60645,9 @@
       ]
     },
     "Full LED 프로젝션 헤드램프(상향등, 하향등, 턴시그널 램프)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 3,
       "used_as_basic": 9,
       "used_as_select": 0,
@@ -60574,7 +60722,9 @@
       ]
     },
     "USB C 타입 단자(1열 충전 1개, 데이터 & 충전 1개, 2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 3,
       "used_as_basic": 9,
       "used_as_select": 0,
@@ -61544,7 +61694,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개, 데이터 & 충전 1개 / 2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -62225,11 +62377,11 @@
     },
     "9인치 터치 스크린 내비게이션, 양방향 풀 미러링(안드로이드 운영체제 기반 적용), 안드로이드 오토, 애플 카플레이, 라디오 주파수 자동변경 기능, 음성인식 기능, 실시간 라디오 음원저장, 후방 카메라, AM/FM 라디오, 음성 메모, USB 단자, TPEG, 지상파 HD DMB, 화면 5:5 분할기능, 안전제일 서비스(에어백 전개 알림), 올인원 서비스(차량 원격 제어 등), 프리미엄 서비스(지니 뮤직, 팟캐스트 등)": {
       "fp_ids": [
-        "NAVIGATION",
         "MIRRORING",
+        "NAVIGATION",
+        "VOICE_RECOG",
         "CAM_REAR",
-        "USB",
-        "VOICE_RECOG"
+        "USB"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -62244,9 +62396,9 @@
     "8인치 터치스크린, 양방향 풀미러링(안드로이드 운영체제 기반 적용), 안드로이드 오토, 애플카플레이, 라디오 주파수 자동변경 기능, 음성인식 기능, 실시간 라디오 음원저장, 후방 카메라, AM/FM 라디오, USB 단자": {
       "fp_ids": [
         "MIRRORING",
+        "VOICE_RECOG",
         "CAM_REAR",
-        "USB",
-        "VOICE_RECOG"
+        "USB"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -62602,7 +62754,9 @@
       ]
     },
     "운전석 2way 전동시트 & 2way 전동식 럼버서포트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -62614,7 +62768,9 @@
       ]
     },
     "USB C타입 단자(1열 충전 1개, 데이터 & 충전 1개/2열 충전 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -62697,7 +62853,9 @@
       ]
     },
     "부주의 안전 경고(DAW)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DAW"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -63546,7 +63704,9 @@
       ]
     },
     "USB C타입 단자(1열: 충전1개, 데이터 & 충전 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -64114,7 +64274,9 @@
       ]
     },
     "동승석 6way 전동시트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -64188,7 +64350,9 @@
       ]
     },
     "블랙 휠(18인치 휠\b18인치 블랙 휠, 20인치 스퍼터링 휠\b20인치 다크 스퍼터링 휠)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -64498,7 +64662,9 @@
       ]
     },
     "Full LED 프로젝션 헤드램프(4구점등, 상향등, 하향등)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -64596,7 +64762,9 @@
       ]
     },
     "USB C타입 단자(1열: 충전 1개, 데이터 & 충전 1개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "USB"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -64746,7 +64914,9 @@
       ]
     },
     "나파 가죽 퀼팅 시트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 0,
