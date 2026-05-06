@@ -1,5 +1,6 @@
 {
   "catalog_id": "chevrolet_tahoe",
+  "model_root": "타호",
   "title": "쉐보레 타호",
   "maker": "쉐보레",
   "source": "wikicar_ocr",

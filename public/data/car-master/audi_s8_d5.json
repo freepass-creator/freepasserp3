@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_s8_d5",
+  "model_root": "S8",
   "title": "아우디 S8 D5",
   "maker": "아우디",
   "source": "auto_stub",

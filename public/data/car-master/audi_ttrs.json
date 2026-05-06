@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_ttrs",
+  "model_root": "TTRS",
   "title": "아우디 TTRS",
   "maker": "아우디",
   "source": "auto_stub",

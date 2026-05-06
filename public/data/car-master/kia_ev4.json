@@ -1,5 +1,6 @@
 {
   "catalog_id": "kia_ev4",
+  "model_root": "EV4",
   "title": "기아 EV4",
   "maker": "기아",
   "source": "kia_official",

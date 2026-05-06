@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_ix3",
+  "model_root": "iX3",
   "title": "BMW iX3",
   "maker": "BMW",
   "source": "auto_stub",

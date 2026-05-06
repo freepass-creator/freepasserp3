@@ -1,5 +1,6 @@
 {
   "catalog_id": "kgm_actyon",
+  "model_root": "액티언",
   "title": "KGM 액티언",
   "maker": "KGM",
   "source": "wikicar_ocr",

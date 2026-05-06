@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_z8",
+  "model_root": "Z8",
   "title": "BMW Z8",
   "maker": "BMW",
   "source": "auto_stub",

@@ -1,5 +1,6 @@
 {
   "catalog_id": "kgm_korando",
+  "model_root": "코란도",
   "title": "KGM 코란도",
   "maker": "KGM",
   "source": "wikicar_ocr",

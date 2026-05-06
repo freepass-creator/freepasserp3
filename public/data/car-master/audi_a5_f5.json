@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_a5_f5",
+  "model_root": "A5",
   "title": "아우디 A5 F5",
   "maker": "아우디",
   "source": "auto_stub",

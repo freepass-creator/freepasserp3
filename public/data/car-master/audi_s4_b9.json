@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_s4_b9",
+  "model_root": "S4",
   "title": "아우디 S4 B9",
   "maker": "아우디",
   "source": "auto_stub",

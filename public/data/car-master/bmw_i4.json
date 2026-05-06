@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_i4",
+  "model_root": "i4",
   "title": "BMW i4",
   "maker": "BMW",
   "source": "auto_stub",

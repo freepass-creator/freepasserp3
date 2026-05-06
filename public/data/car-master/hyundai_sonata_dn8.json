@@ -1,5 +1,6 @@
 {
   "catalog_id": "hyundai_sonata_dn8",
+  "model_root": "쏘나타",
   "title": "현대 쏘나타 DN8",
   "maker": "현대",
   "source": "wikicar_ocr",

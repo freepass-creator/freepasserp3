@@ -1,5 +1,6 @@
 {
   "catalog_id": "ford_프리스타일",
+  "model_root": "프리스타일",
   "title": "포드 프리스타일",
   "maker": "포드",
   "source": "auto_stub",

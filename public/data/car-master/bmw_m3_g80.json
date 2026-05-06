@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_m3_g80",
+  "model_root": "M3",
   "title": "BMW M3 G80",
   "maker": "BMW",
   "source": "auto_stub",

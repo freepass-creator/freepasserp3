@@ -1,5 +1,6 @@
 {
   "catalog_id": "hyundai_casper",
+  "model_root": "캐스퍼",
   "title": "현대 더 뉴 캐스퍼",
   "maker": "현대",
   "source": "wikicar_ocr",

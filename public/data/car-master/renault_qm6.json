@@ -1,5 +1,6 @@
 {
   "catalog_id": "renault_qm6",
+  "model_root": "QM6",
   "title": "르노 더 뉴 QM6",
   "maker": "르노",
   "source": "wikicar_ocr",

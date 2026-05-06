@@ -1,5 +1,6 @@
 {
   "catalog_id": "kgm_rexton_sports",
+  "model_root": "렉스턴 스포츠",
   "title": "KGM 렉스턴 스포츠",
   "maker": "KGM",
   "source": "wikicar_ocr",

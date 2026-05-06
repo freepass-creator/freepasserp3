@@ -1,5 +1,6 @@
 {
   "catalog_id": "kia_stinger",
+  "model_root": "스팅어",
   "title": "기아 스팅어 마이스터",
   "maker": "기아",
   "source": "wikicar_ocr",

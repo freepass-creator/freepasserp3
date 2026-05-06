@@ -1,5 +1,6 @@
 {
   "catalog_id": "chevrolet_trailblazer",
+  "model_root": "트레일블레이저",
   "title": "쉐보레 더 뉴 트레일블레이저",
   "maker": "쉐보레",
   "source": "wikicar_ocr",

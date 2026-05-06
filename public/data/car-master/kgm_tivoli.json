@@ -1,5 +1,6 @@
 {
   "catalog_id": "kgm_tivoli",
+  "model_root": "티볼리",
   "title": "KGM 티볼리",
   "maker": "KGM",
   "source": "wikicar_ocr",

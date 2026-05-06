@@ -1,5 +1,6 @@
 {
   "catalog_id": "vw_트랜스포터",
+  "model_root": "트랜스포터",
   "title": "폭스바겐 트랜스포터",
   "maker": "폭스바겐",
   "source": "auto_stub",

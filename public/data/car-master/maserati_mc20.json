@@ -1,5 +1,6 @@
 {
   "catalog_id": "maserati_mc20",
+  "model_root": "MC20",
   "title": "마세라티 MC20",
   "maker": "마세라티",
   "source": "auto_stub",

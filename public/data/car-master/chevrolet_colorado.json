@@ -1,5 +1,6 @@
 {
   "catalog_id": "chevrolet_colorado",
+  "model_root": "콜로라도",
   "title": "쉐보레 올 뉴 콜로라도",
   "maker": "쉐보레",
   "source": "wikicar_ocr",

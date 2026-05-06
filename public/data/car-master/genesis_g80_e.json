@@ -1,5 +1,6 @@
 {
   "catalog_id": "genesis_g80_e",
+  "model_root": "G80",
   "title": "제네시스 일렉트리파이드 G80",
   "maker": "제네시스",
   "source": "wikicar_ocr",

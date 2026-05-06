@@ -29,13 +29,14 @@ for (const f of files) {
     const trimNames = data.trims ? Object.keys(data.trims) : [];
 
     if (updated[cid]) {
-      // 기존 entry — title / trims / maker 만 catalog.json 기준 동기화
+      // 기존 entry — title / trims / maker / model_root 만 catalog.json 기준 동기화
       // source/verified/encar 매핑은 보존 (수동으로 관리하는 데이터)
       const cur = updated[cid];
       let changed = false;
       const newTitle = data.title || cid;
       if (cur.title !== newTitle) { cur.title = newTitle; changed = true; }
       if (data.maker && cur.maker !== data.maker) { cur.maker = data.maker; changed = true; }
+      if (data.model_root && cur.model_root !== data.model_root) { cur.model_root = data.model_root; changed = true; }
       // trims 비교 — 길이/내용 다르면 갱신
       const curTrims = Array.isArray(cur.trims) ? cur.trims : [];
       const trimsDiff = curTrims.length !== trimNames.length || curTrims.some((t, i) => t !== trimNames[i]);
@@ -49,6 +50,7 @@ for (const f of files) {
       id: cid,
       title: data.title || cid,
       maker: data.maker || '',
+      model_root: data.model_root || '',
       source: {
         manufacturer: Array.isArray(data.source_urls) && data.source_urls[0] ? data.source_urls[0] : null,
         wikicar: null,

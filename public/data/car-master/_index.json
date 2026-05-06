@@ -16,7 +16,8 @@
     "trims": [
       "기본 100"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "100"
   },
   "audi_80": {
     "id": "audi_80",
@@ -35,7 +36,8 @@
     "trims": [
       "기본 80"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "80"
   },
   "audi_90": {
     "id": "audi_90",
@@ -54,7 +56,8 @@
     "trims": [
       "기본 90"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "90"
   },
   "audi_a3_8y": {
     "id": "audi_a3_8y",
@@ -80,7 +83,8 @@
       "S3",
       "RS3"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "A3"
   },
   "audi_a4_b9": {
     "id": "audi_a4_b9",
@@ -106,7 +110,8 @@
       "S4",
       "RS4"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "A4"
   },
   "audi_a5_b10": {
     "id": "audi_a5_b10",
@@ -125,7 +130,8 @@
     "trims": [
       "기본 A5 B10"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "A5"
   },
   "audi_a5_f5": {
     "id": "audi_a5_f5",
@@ -144,7 +150,8 @@
     "trims": [
       "기본 A5 F5"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "A5"
   },
   "audi_a6_c8": {
     "id": "audi_a6_c8",
@@ -174,7 +181,8 @@
       "S6"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "A6"
   },
   "audi_a6_e_트론": {
     "id": "audi_a6_e_트론",
@@ -193,7 +201,8 @@
     "trims": [
       "기본 A6 e-트론"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "A6"
   },
   "audi_a7_4k": {
     "id": "audi_a7_4k",
@@ -212,7 +221,8 @@
     "trims": [
       "기본 A7 4K"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "A7"
   },
   "audi_a8": {
     "id": "audi_a8",
@@ -231,7 +241,8 @@
     "trims": [
       "기본 A8"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "A8"
   },
   "audi_a8_d5": {
     "id": "audi_a8_d5",
@@ -250,7 +261,8 @@
     "trims": [
       "기본 A8 D5"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "A8"
   },
   "audi_e_트론": {
     "id": "audi_e_트론",
@@ -269,7 +281,8 @@
     "trims": [
       "기본 e-트론"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "e-트론"
   },
   "audi_e_트론_gt": {
     "id": "audi_e_트론_gt",
@@ -288,7 +301,8 @@
     "trims": [
       "기본 e-트론 GT"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "e-트론"
   },
   "audi_q2": {
     "id": "audi_q2",
@@ -307,7 +321,8 @@
     "trims": [
       "기본 Q2"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Q2"
   },
   "audi_q3_f3": {
     "id": "audi_q3_f3",
@@ -326,7 +341,8 @@
     "trims": [
       "기본 Q3 F3"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Q3"
   },
   "audi_q4_e_트론_f4": {
     "id": "audi_q4_e_트론_f4",
@@ -345,7 +361,8 @@
     "trims": [
       "기본 Q4 e-트론 F4"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Q4"
   },
   "audi_q5_fy": {
     "id": "audi_q5_fy",
@@ -372,7 +389,8 @@
       "50 TDI 콰트로"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "Q5"
   },
   "audi_q6_e_트론_gf": {
     "id": "audi_q6_e_트론_gf",
@@ -391,7 +409,8 @@
     "trims": [
       "기본 Q6 e-트론 GF"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Q6"
   },
   "audi_q8_4m": {
     "id": "audi_q8_4m",
@@ -410,7 +429,8 @@
     "trims": [
       "기본 Q8 4M"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Q8"
   },
   "audi_q8_e_트론_ge": {
     "id": "audi_q8_e_트론_ge",
@@ -429,7 +449,8 @@
     "trims": [
       "기본 Q8 e-트론 GE"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Q8"
   },
   "audi_r8_4s": {
     "id": "audi_r8_4s",
@@ -448,7 +469,8 @@
     "trims": [
       "기본 R8 4S"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "R8"
   },
   "audi_rs3": {
     "id": "audi_rs3",
@@ -467,7 +489,8 @@
     "trims": [
       "기본 RS3"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS3"
   },
   "audi_rs3_8y": {
     "id": "audi_rs3_8y",
@@ -486,7 +509,8 @@
     "trims": [
       "기본 RS3 8Y"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS3"
   },
   "audi_rs4": {
     "id": "audi_rs4",
@@ -505,7 +529,8 @@
     "trims": [
       "기본 RS4"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS4"
   },
   "audi_rs5_f5": {
     "id": "audi_rs5_f5",
@@ -524,7 +549,8 @@
     "trims": [
       "기본 RS5 F5"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS5"
   },
   "audi_rs6": {
     "id": "audi_rs6",
@@ -543,7 +569,8 @@
     "trims": [
       "기본 RS6"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS6"
   },
   "audi_rs6_c8": {
     "id": "audi_rs6_c8",
@@ -562,7 +589,8 @@
     "trims": [
       "기본 RS6 C8"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS6"
   },
   "audi_rs7_4k": {
     "id": "audi_rs7_4k",
@@ -581,7 +609,8 @@
     "trims": [
       "기본 RS7 4K"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS7"
   },
   "audi_rs_e_트론_gt": {
     "id": "audi_rs_e_트론_gt",
@@ -600,7 +629,8 @@
     "trims": [
       "기본 RS e-트론 GT"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RS"
   },
   "audi_rsq8_4m": {
     "id": "audi_rsq8_4m",
@@ -619,7 +649,8 @@
     "trims": [
       "기본 RSQ8 4M"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "RSQ8"
   },
   "audi_s3_8y": {
     "id": "audi_s3_8y",
@@ -638,7 +669,8 @@
     "trims": [
       "기본 S3 8Y"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S3"
   },
   "audi_s4_b9": {
     "id": "audi_s4_b9",
@@ -657,7 +689,8 @@
     "trims": [
       "기본 S4 B9"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S4"
   },
   "audi_s5_b10": {
     "id": "audi_s5_b10",
@@ -676,7 +709,8 @@
     "trims": [
       "기본 S5 B10"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S5"
   },
   "audi_s5_f5": {
     "id": "audi_s5_f5",
@@ -695,7 +729,8 @@
     "trims": [
       "기본 S5 F5"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S5"
   },
   "audi_s6_c8": {
     "id": "audi_s6_c8",
@@ -714,7 +749,8 @@
     "trims": [
       "기본 S6 C8"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S6"
   },
   "audi_s6_e_트론": {
     "id": "audi_s6_e_트론",
@@ -733,7 +769,8 @@
     "trims": [
       "기본 S6 e-트론"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S6"
   },
   "audi_s7_4k": {
     "id": "audi_s7_4k",
@@ -752,7 +789,8 @@
     "trims": [
       "기본 S7 4K"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S7"
   },
   "audi_s8_d5": {
     "id": "audi_s8_d5",
@@ -771,7 +809,8 @@
     "trims": [
       "기본 S8 D5"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S8"
   },
   "audi_s_e_트론_gt": {
     "id": "audi_s_e_트론_gt",
@@ -790,7 +829,8 @@
     "trims": [
       "기본 S e-트론 GT"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S"
   },
   "audi_sq5_fy": {
     "id": "audi_sq5_fy",
@@ -809,7 +849,8 @@
     "trims": [
       "기본 SQ5 FY"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SQ5"
   },
   "audi_sq6_e_트론_gf": {
     "id": "audi_sq6_e_트론_gf",
@@ -828,7 +869,8 @@
     "trims": [
       "기본 SQ6 e-트론 GF"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SQ6"
   },
   "audi_sq7_4m": {
     "id": "audi_sq7_4m",
@@ -847,7 +889,8 @@
     "trims": [
       "기본 SQ7 4M"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SQ7"
   },
   "audi_sq8_4m": {
     "id": "audi_sq8_4m",
@@ -866,7 +909,8 @@
     "trims": [
       "기본 SQ8 4M"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SQ8"
   },
   "audi_sq8_e_트론_ge": {
     "id": "audi_sq8_e_트론_ge",
@@ -885,7 +929,8 @@
     "trims": [
       "기본 SQ8 e-트론 GE"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SQ8"
   },
   "audi_ttrs": {
     "id": "audi_ttrs",
@@ -904,7 +949,8 @@
     "trims": [
       "기본 TTRS"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "TTRS"
   },
   "audi_ttrs_8s": {
     "id": "audi_ttrs_8s",
@@ -923,7 +969,8 @@
     "trims": [
       "기본 TTRS 8S"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "TTRS"
   },
   "audi_v8": {
     "id": "audi_v8",
@@ -942,7 +989,8 @@
     "trims": [
       "기본 V8"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "V8"
   },
   "audi_기타": {
     "id": "audi_기타",
@@ -961,7 +1009,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "audi_뉴_s4": {
     "id": "audi_뉴_s4",
@@ -980,7 +1029,8 @@
     "trims": [
       "기본 뉴 S4"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S4"
   },
   "bmw_1_series_f40": {
     "id": "bmw_1_series_f40",
@@ -999,7 +1049,8 @@
     "trims": [
       "기본 1시리즈 F40"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "1시리즈"
   },
   "bmw_1_series_f70": {
     "id": "bmw_1_series_f70",
@@ -1018,7 +1069,8 @@
     "trims": [
       "기본 1시리즈 F70"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "1시리즈"
   },
   "bmw_2_series_g42": {
     "id": "bmw_2_series_g42",
@@ -1037,7 +1089,8 @@
     "trims": [
       "기본 2시리즈 G42"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "2시리즈"
   },
   "bmw_2_series_그란쿠페_f44": {
     "id": "bmw_2_series_그란쿠페_f44",
@@ -1056,7 +1109,8 @@
     "trims": [
       "기본 2시리즈 그란쿠페 F44"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "2시리즈 그란쿠페"
   },
   "bmw_2_series_그란쿠페_f74": {
     "id": "bmw_2_series_그란쿠페_f74",
@@ -1075,7 +1129,8 @@
     "trims": [
       "기본 2시리즈 그란쿠페 F74"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "2시리즈 그란쿠페"
   },
   "bmw_2_series_액티브_투어러_u06": {
     "id": "bmw_2_series_액티브_투어러_u06",
@@ -1094,7 +1149,8 @@
     "trims": [
       "기본 2시리즈 액티브 투어러 U06"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "2시리즈 액티브 투어러"
   },
   "bmw_3_f30": {
     "id": "bmw_3_f30",
@@ -1121,7 +1177,8 @@
       "330d M Sport",
       "M3"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "3시리즈"
   },
   "bmw_3_g20": {
     "id": "bmw_3_g20",
@@ -1152,7 +1209,8 @@
       "M340i"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "3시리즈"
   },
   "bmw_4_g22": {
     "id": "bmw_4_g22",
@@ -1179,7 +1237,8 @@
       "M4",
       "M440i"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "4시리즈"
   },
   "bmw_5_g30": {
     "id": "bmw_5_g30",
@@ -1208,7 +1267,8 @@
       "M5",
       "540i"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "5시리즈"
   },
   "bmw_5_g60": {
     "id": "bmw_5_g60",
@@ -1241,7 +1301,8 @@
       "540i"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "5시리즈"
   },
   "bmw_6_series_gt_g32": {
     "id": "bmw_6_series_gt_g32",
@@ -1260,7 +1321,8 @@
     "trims": [
       "기본 6시리즈 GT G32"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "6시리즈"
   },
   "bmw_7_g70": {
     "id": "bmw_7_g70",
@@ -1288,7 +1350,8 @@
       "750e",
       "i7"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "7시리즈"
   },
   "bmw_8_series_g15": {
     "id": "bmw_8_series_g15",
@@ -1307,7 +1370,8 @@
     "trims": [
       "기본 8시리즈 G15"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "8시리즈"
   },
   "bmw_i4": {
     "id": "bmw_i4",
@@ -1326,7 +1390,8 @@
     "trims": [
       "기본 i4"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "i4"
   },
   "bmw_ix": {
     "id": "bmw_ix",
@@ -1345,7 +1410,8 @@
     "trims": [
       "기본 iX"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "iX"
   },
   "bmw_ix2_u10": {
     "id": "bmw_ix2_u10",
@@ -1364,7 +1430,8 @@
     "trims": [
       "기본 iX2 U10"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "iX2"
   },
   "bmw_ix3": {
     "id": "bmw_ix3",
@@ -1383,7 +1450,8 @@
     "trims": [
       "기본 iX3"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "iX3"
   },
   "bmw_m2_g87": {
     "id": "bmw_m2_g87",
@@ -1402,7 +1470,8 @@
     "trims": [
       "기본 M2 G87"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M2"
   },
   "bmw_m3_g80": {
     "id": "bmw_m3_g80",
@@ -1421,7 +1490,8 @@
     "trims": [
       "기본 M3 G80"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M3"
   },
   "bmw_m4_g82": {
     "id": "bmw_m4_g82",
@@ -1440,7 +1510,8 @@
     "trims": [
       "기본 M4 G82"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M4"
   },
   "bmw_m5_e28": {
     "id": "bmw_m5_e28",
@@ -1459,7 +1530,8 @@
     "trims": [
       "기본 M5 E28"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M5"
   },
   "bmw_m5_e39": {
     "id": "bmw_m5_e39",
@@ -1478,7 +1550,8 @@
     "trims": [
       "기본 M5 E39"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M5"
   },
   "bmw_m5_f90": {
     "id": "bmw_m5_f90",
@@ -1497,7 +1570,8 @@
     "trims": [
       "기본 M5 F90"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M5"
   },
   "bmw_m5_g90": {
     "id": "bmw_m5_g90",
@@ -1516,7 +1590,8 @@
     "trims": [
       "기본 M5 G90"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M5"
   },
   "bmw_m8_g15": {
     "id": "bmw_m8_g15",
@@ -1535,7 +1610,8 @@
     "trims": [
       "기본 M8 G15"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M8"
   },
   "bmw_m_쿠페_로드스터_e36": {
     "id": "bmw_m_쿠페_로드스터_e36",
@@ -1554,7 +1630,8 @@
     "trims": [
       "기본 M 쿠페/로드스터 E36"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "M 쿠페/로드스터"
   },
   "bmw_x1_u11": {
     "id": "bmw_x1_u11",
@@ -1580,7 +1657,8 @@
       "sDrive20i",
       "xDrive20d"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "X1"
   },
   "bmw_x2_f39": {
     "id": "bmw_x2_f39",
@@ -1599,7 +1677,8 @@
     "trims": [
       "기본 X2 F39"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "X2"
   },
   "bmw_x2_u10": {
     "id": "bmw_x2_u10",
@@ -1618,7 +1697,8 @@
     "trims": [
       "기본 X2 U10"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "X2"
   },
   "bmw_x3_g01": {
     "id": "bmw_x3_g01",
@@ -1647,7 +1727,8 @@
       "xDrive30e"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "X3"
   },
   "bmw_x4_g02": {
     "id": "bmw_x4_g02",
@@ -1670,7 +1751,8 @@
       "M40i",
       "X4 M"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "X4"
   },
   "bmw_x5_g05": {
     "id": "bmw_x5_g05",
@@ -1698,7 +1780,8 @@
       "X5 M"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "X5"
   },
   "bmw_x6_g06": {
     "id": "bmw_x6_g06",
@@ -1717,7 +1800,8 @@
     "trims": [
       "기본 X6 G06"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "X6"
   },
   "bmw_x6m_g06": {
     "id": "bmw_x6m_g06",
@@ -1736,7 +1820,8 @@
     "trims": [
       "기본 X6M G06"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "X6M"
   },
   "bmw_x7_g07": {
     "id": "bmw_x7_g07",
@@ -1755,7 +1840,8 @@
     "trims": [
       "기본 X7 G07"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "X7"
   },
   "bmw_xm_g09": {
     "id": "bmw_xm_g09",
@@ -1774,7 +1860,8 @@
     "trims": [
       "기본 XM G09"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "XM"
   },
   "bmw_z4_g29": {
     "id": "bmw_z4_g29",
@@ -1793,7 +1880,8 @@
     "trims": [
       "기본 Z4 G29"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Z4"
   },
   "bmw_z8": {
     "id": "bmw_z8",
@@ -1812,7 +1900,8 @@
     "trims": [
       "기본 Z8"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Z8"
   },
   "bmw_기타": {
     "id": "bmw_기타",
@@ -1831,7 +1920,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "chevrolet_bolt_ev": {
     "id": "chevrolet_bolt_ev",
@@ -1851,7 +1941,8 @@
       "LT",
       "프리미어"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "볼트"
   },
   "chevrolet_camaro": {
     "id": "chevrolet_camaro",
@@ -1871,7 +1962,8 @@
       "SS",
       "ZL1"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "카마로"
   },
   "chevrolet_colorado": {
     "id": "chevrolet_colorado",
@@ -1892,7 +1984,8 @@
     "trims": [
       "Z71"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "콜로라도"
   },
   "chevrolet_colorado_pre": {
     "id": "chevrolet_colorado_pre",
@@ -1916,7 +2009,8 @@
       "LT"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "콜로라도"
   },
   "chevrolet_cruze": {
     "id": "chevrolet_cruze",
@@ -1937,7 +2031,8 @@
       "LT",
       "LTZ"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "크루즈"
   },
   "chevrolet_equinox": {
     "id": "chevrolet_equinox",
@@ -1958,7 +2053,8 @@
       "LT",
       "프리미어"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "이쿼녹스"
   },
   "chevrolet_impala": {
     "id": "chevrolet_impala",
@@ -1979,7 +2075,8 @@
       "LT",
       "LTZ"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "임팔라"
   },
   "chevrolet_malibu": {
     "id": "chevrolet_malibu",
@@ -2001,7 +2098,8 @@
       "프리미어",
       "RS"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "말리부"
   },
   "chevrolet_spark": {
     "id": "chevrolet_spark",
@@ -2023,7 +2121,8 @@
       "프리미어",
       "RS"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "스파크"
   },
   "chevrolet_tahoe": {
     "id": "chevrolet_tahoe",
@@ -2045,7 +2144,8 @@
       "High Country",
       "Dark Knight"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "타호"
   },
   "chevrolet_trailblazer": {
     "id": "chevrolet_trailblazer",
@@ -2068,7 +2168,8 @@
       "ACTIV",
       "RS"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "트레일블레이저"
   },
   "chevrolet_trailblazer_pre": {
     "id": "chevrolet_trailblazer_pre",
@@ -2094,7 +2195,8 @@
       "ACTIV"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "트레일블레이저"
   },
   "chevrolet_trax_crossover": {
     "id": "chevrolet_trax_crossover",
@@ -2118,7 +2220,8 @@
       "ACTIV",
       "RS"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "트랙스 크로스오버"
   },
   "ford_gt": {
     "id": "ford_gt",
@@ -2137,7 +2240,8 @@
     "trims": [
       "기본 GT"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "GT"
   },
   "ford_s_max": {
     "id": "ford_s_max",
@@ -2156,7 +2260,8 @@
     "trims": [
       "기본 S-MAX"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S-MAX"
   },
   "ford_기타": {
     "id": "ford_기타",
@@ -2175,7 +2280,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "ford_레인저_3세대": {
     "id": "ford_레인저_3세대",
@@ -2194,7 +2300,8 @@
     "trims": [
       "기본 레인저"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "레인저"
   },
   "ford_레인저_4세대": {
     "id": "ford_레인저_4세대",
@@ -2213,7 +2320,8 @@
     "trims": [
       "기본 레인저"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "레인저"
   },
   "ford_머스탱_7세대": {
     "id": "ford_머스탱_7세대",
@@ -2232,7 +2340,8 @@
     "trims": [
       "기본 머스탱"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "머스탱"
   },
   "ford_머스탱_마하_e": {
     "id": "ford_머스탱_마하_e",
@@ -2251,7 +2360,8 @@
     "trims": [
       "기본 머스탱 마하 E"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "머스탱 마하 E"
   },
   "ford_몬데오": {
     "id": "ford_몬데오",
@@ -2270,7 +2380,8 @@
     "trims": [
       "기본 몬데오"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "몬데오"
   },
   "ford_몬데오_3세대": {
     "id": "ford_몬데오_3세대",
@@ -2289,7 +2400,8 @@
     "trims": [
       "기본 몬데오"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "몬데오"
   },
   "ford_브롱코": {
     "id": "ford_브롱코",
@@ -2308,7 +2420,8 @@
     "trims": [
       "기본 브롱코"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "브롱코"
   },
   "ford_브롱코_6세대": {
     "id": "ford_브롱코_6세대",
@@ -2327,7 +2440,8 @@
     "trims": [
       "기본 브롱코"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "브롱코"
   },
   "ford_썬더버드": {
     "id": "ford_썬더버드",
@@ -2346,7 +2460,8 @@
     "trims": [
       "기본 썬더버드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "썬더버드"
   },
   "ford_에코스포츠": {
     "id": "ford_에코스포츠",
@@ -2365,7 +2480,8 @@
     "trims": [
       "기본 에코스포츠"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "에코스포츠"
   },
   "ford_윈드스타": {
     "id": "ford_윈드스타",
@@ -2384,7 +2500,8 @@
     "trims": [
       "기본 윈드스타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "윈드스타"
   },
   "ford_익스페디션": {
     "id": "ford_익스페디션",
@@ -2403,7 +2520,8 @@
     "trims": [
       "기본 익스페디션"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "익스페디션"
   },
   "ford_익스플로러_6세대": {
     "id": "ford_익스플로러_6세대",
@@ -2422,7 +2540,8 @@
     "trims": [
       "기본 익스플로러"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "익스플로러"
   },
   "ford_컨투어": {
     "id": "ford_컨투어",
@@ -2441,7 +2560,8 @@
     "trims": [
       "기본 컨투어"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "컨투어"
   },
   "ford_토러스": {
     "id": "ford_토러스",
@@ -2460,7 +2580,8 @@
     "trims": [
       "기본 토러스"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "토러스"
   },
   "ford_파이브_헌드레드": {
     "id": "ford_파이브_헌드레드",
@@ -2479,7 +2600,8 @@
     "trims": [
       "기본 파이브 헌드레드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "파이브 헌드레드"
   },
   "ford_프로브": {
     "id": "ford_프로브",
@@ -2498,7 +2620,8 @@
     "trims": [
       "기본 프로브"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "프로브"
   },
   "ford_프리스타일": {
     "id": "ford_프리스타일",
@@ -2517,7 +2640,8 @@
     "trims": [
       "기본 프리스타일"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "프리스타일"
   },
   "ford_플렉스": {
     "id": "ford_플렉스",
@@ -2536,7 +2660,8 @@
     "trims": [
       "기본 플렉스"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "플렉스"
   },
   "ford_피에스타": {
     "id": "ford_피에스타",
@@ -2555,7 +2680,8 @@
     "trims": [
       "기본 피에스타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "피에스타"
   },
   "genesis_g70": {
     "id": "genesis_g70",
@@ -2577,7 +2703,8 @@
       "가솔린 2.5T",
       "가솔린 2.5T AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "G70"
   },
   "genesis_g70_st": {
     "id": "genesis_g70_st",
@@ -2601,7 +2728,8 @@
       "스포츠 프레스티지"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "G70"
   },
   "genesis_g80_e": {
     "id": "genesis_g80_e",
@@ -2622,7 +2750,8 @@
     "trims": [
       "일렉트리파이드 AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "G80"
   },
   "genesis_g80_rg3": {
     "id": "genesis_g80_rg3",
@@ -2645,7 +2774,8 @@
       "2.5T AWD",
       "3.5T AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "G80"
   },
   "genesis_g80_rg3_pre": {
     "id": "genesis_g80_rg3_pre",
@@ -2667,7 +2797,8 @@
       "3.5T AWD"
     ],
     "fetched_at": "2026-04-30",
-    "note": "페리 전 G80 RG3 (2020-2023). FL split 매핑."
+    "note": "페리 전 G80 RG3 (2020-2023). FL split 매핑.",
+    "model_root": "G80"
   },
   "genesis_g90_rs4": {
     "id": "genesis_g90_rs4",
@@ -2690,7 +2821,8 @@
       "3.5T AWD",
       "3.5T 슈퍼차저 AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "G90"
   },
   "genesis_gv60": {
     "id": "genesis_gv60",
@@ -2713,7 +2845,8 @@
       "스탠다드 AWD",
       "퍼포먼스 AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "GV60"
   },
   "genesis_gv70": {
     "id": "genesis_gv70",
@@ -2737,7 +2870,8 @@
       "가솔린 3.5T",
       "가솔린 3.5T AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "GV70"
   },
   "genesis_gv70_e": {
     "id": "genesis_gv70_e",
@@ -2758,7 +2892,8 @@
     "trims": [
       "일렉트리파이드 AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "GV70"
   },
   "genesis_gv70_pre": {
     "id": "genesis_gv70_pre",
@@ -2781,7 +2916,8 @@
       "가솔린 3.5T AWD"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)"
+    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)",
+    "model_root": "GV70"
   },
   "genesis_gv80": {
     "id": "genesis_gv80",
@@ -2804,7 +2940,8 @@
       "가솔린 3.5T AWD",
       "가솔린 3.5T 슈퍼차저 AWD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "GV80"
   },
   "genesis_gv80_coupe": {
     "id": "genesis_gv80_coupe",
@@ -2829,7 +2966,8 @@
       "3.5 터보 스포츠 플러스 패키지"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "GV80"
   },
   "genesis_gv80_pre": {
     "id": "genesis_gv80_pre",
@@ -2851,7 +2989,8 @@
       "가솔린 3.5T 슈퍼차저 AWD"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)"
+    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)",
+    "model_root": "GV80"
   },
   "honda_cr_v_5세대": {
     "id": "honda_cr_v_5세대",
@@ -2870,7 +3009,8 @@
     "trims": [
       "기본 CR-V"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CR-V"
   },
   "honda_cr_v_6세대": {
     "id": "honda_cr_v_6세대",
@@ -2889,7 +3029,8 @@
     "trims": [
       "기본 CR-V"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CR-V"
   },
   "honda_fit": {
     "id": "honda_fit",
@@ -2908,7 +3049,8 @@
     "trims": [
       "기본 Fit"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Fit"
   },
   "honda_fit_aria": {
     "id": "honda_fit_aria",
@@ -2927,7 +3069,8 @@
     "trims": [
       "기본 Fit Aria"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "Fit"
   },
   "honda_hr_v": {
     "id": "honda_hr_v",
@@ -2946,7 +3089,8 @@
     "trims": [
       "기본 HR-V"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "HR-V"
   },
   "honda_s2000": {
     "id": "honda_s2000",
@@ -2965,7 +3109,8 @@
     "trims": [
       "기본 S2000"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "S2000"
   },
   "honda_기타": {
     "id": "honda_기타",
@@ -2984,7 +3129,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "honda_라이프": {
     "id": "honda_라이프",
@@ -3003,7 +3149,8 @@
     "trims": [
       "기본 라이프"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "라이프"
   },
   "honda_레전드": {
     "id": "honda_레전드",
@@ -3022,7 +3169,8 @@
     "trims": [
       "기본 레전드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "레전드"
   },
   "honda_리지라인": {
     "id": "honda_리지라인",
@@ -3041,7 +3189,8 @@
     "trims": [
       "기본 리지라인"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "리지라인"
   },
   "honda_스텝웨건": {
     "id": "honda_스텝웨건",
@@ -3060,7 +3209,8 @@
     "trims": [
       "기본 스텝웨건"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "스텝웨건"
   },
   "honda_스트림": {
     "id": "honda_스트림",
@@ -3079,7 +3229,8 @@
     "trims": [
       "기본 스트림"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "스트림"
   },
   "honda_어코드_10세대": {
     "id": "honda_어코드_10세대",
@@ -3098,7 +3249,8 @@
     "trims": [
       "기본 어코드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "어코드"
   },
   "honda_어코드_11세대": {
     "id": "honda_어코드_11세대",
@@ -3117,7 +3269,8 @@
     "trims": [
       "기본 어코드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "어코드"
   },
   "honda_엘리멘트": {
     "id": "honda_엘리멘트",
@@ -3136,7 +3289,8 @@
     "trims": [
       "기본 엘리멘트"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "엘리멘트"
   },
   "honda_인사이트": {
     "id": "honda_인사이트",
@@ -3155,7 +3309,8 @@
     "trims": [
       "기본 인사이트"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "인사이트"
   },
   "honda_인스파이어": {
     "id": "honda_인스파이어",
@@ -3174,7 +3329,8 @@
     "trims": [
       "기본 인스파이어"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "인스파이어"
   },
   "honda_인테그라": {
     "id": "honda_인테그라",
@@ -3193,7 +3349,8 @@
     "trims": [
       "기본 인테그라"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "인테그라"
   },
   "honda_크로스로드": {
     "id": "honda_크로스로드",
@@ -3212,7 +3369,8 @@
     "trims": [
       "기본 크로스로드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "크로스로드"
   },
   "honda_파일럿_4세대": {
     "id": "honda_파일럿_4세대",
@@ -3231,7 +3389,8 @@
     "trims": [
       "기본 파일럿"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "파일럿"
   },
   "honda_패스포트": {
     "id": "honda_패스포트",
@@ -3250,7 +3409,8 @@
     "trims": [
       "기본 패스포트"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "패스포트"
   },
   "honda_프렐류드": {
     "id": "honda_프렐류드",
@@ -3269,7 +3429,8 @@
     "trims": [
       "기본 프렐류드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "프렐류드"
   },
   "honda_프리드": {
     "id": "honda_프리드",
@@ -3288,7 +3449,8 @@
     "trims": [
       "기본 프리드"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "프리드"
   },
   "hyundai_avante_ad": {
     "id": "hyundai_avante_ad",
@@ -3314,7 +3476,8 @@
       "스포츠"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "아반떼"
   },
   "hyundai_avante_ad_facelift": {
     "id": "hyundai_avante_ad_facelift",
@@ -3340,7 +3503,8 @@
       "스포츠"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "아반떼"
   },
   "hyundai_avante_cn7": {
     "id": "hyundai_avante_cn7",
@@ -3371,7 +3535,8 @@
       "인스퍼레이션 1.6",
       "N 라인 1.6"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "아반떼"
   },
   "hyundai_avante_cn7_pre": {
     "id": "hyundai_avante_cn7_pre",
@@ -3400,7 +3565,8 @@
       "N 라인 1.6"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)"
+    "note": "페리 전 별도 카탈로그 (FL_SPLITS 매핑)",
+    "model_root": "아반떼"
   },
   "hyundai_avante_n": {
     "id": "hyundai_avante_n",
@@ -3421,7 +3587,8 @@
     "trims": [
       "N"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "아반떼"
   },
   "hyundai_casper": {
     "id": "hyundai_casper",
@@ -3444,7 +3611,8 @@
       "인스퍼레이션",
       "크로스"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "캐스퍼"
   },
   "hyundai_casper_pre": {
     "id": "hyundai_casper_pre",
@@ -3470,7 +3638,8 @@
       "크로스"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 stub"
+    "note": "페리 전 stub",
+    "model_root": "캐스퍼"
   },
   "hyundai_grand_starex_facelift": {
     "id": "hyundai_grand_starex_facelift",
@@ -3489,7 +3658,8 @@
     "trims": [
       "기본"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "그랜드 스타렉스"
   },
   "hyundai_grandeur_gn7": {
     "id": "hyundai_grandeur_gn7",
@@ -3524,7 +3694,8 @@
       "캘리그래피 블랙 익스테리어 하이브리드",
       "캘리그래피 블랙 잉크 하이브리드"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "그랜저"
   },
   "hyundai_grandeur_hg": {
     "id": "hyundai_grandeur_hg",
@@ -3551,7 +3722,8 @@
       "캘리그래피"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "그랜저"
   },
   "hyundai_grandeur_ig": {
     "id": "hyundai_grandeur_ig",
@@ -3576,7 +3748,8 @@
       "르블랑"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "그랜저"
   },
   "hyundai_grandeur_ig_163": {
     "id": "hyundai_grandeur_ig_163",
@@ -3599,7 +3772,8 @@
       "익스클루시브",
       "캘리그래피"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "그랜저"
   },
   "hyundai_grandeur_ig_hybrid_pre": {
     "id": "hyundai_grandeur_ig_hybrid_pre",
@@ -3623,7 +3797,8 @@
       "익스클루시브 스페셜"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "그랜저"
   },
   "hyundai_grandeur_ig_pre": {
     "id": "hyundai_grandeur_ig_pre",
@@ -3648,7 +3823,8 @@
       "모던"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "그랜저"
   },
   "hyundai_ioniq5": {
     "id": "hyundai_ioniq5",
@@ -3675,7 +3851,8 @@
       "영업용",
       "이-밸류 플러스"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "아이오닉5"
   },
   "hyundai_ioniq5_n": {
     "id": "hyundai_ioniq5_n",
@@ -3695,7 +3872,8 @@
       "아이오닉 5 N 에센셜",
       "아이오닉 5 N"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "아이오닉5"
   },
   "hyundai_ioniq5_pre": {
     "id": "hyundai_ioniq5_pre",
@@ -3720,7 +3898,8 @@
       "롱레인지 프레스티지"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 stub"
+    "note": "페리 전 stub",
+    "model_root": "아이오닉5"
   },
   "hyundai_ioniq6": {
     "id": "hyundai_ioniq6",
@@ -3746,7 +3925,8 @@
       "프레스티지 N라인",
       "이-라이트"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "아이오닉6"
   },
   "hyundai_ioniq6_pre": {
     "id": "hyundai_ioniq6_pre",
@@ -3770,7 +3950,8 @@
       "롱레인지 프레스티지"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 stub"
+    "note": "페리 전 stub",
+    "model_root": "아이오닉6"
   },
   "hyundai_ioniq9": {
     "id": "hyundai_ioniq9",
@@ -3796,7 +3977,8 @@
       "프레스티지 7인승",
       "캘리그래피 7인승"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "아이오닉9"
   },
   "hyundai_kona_os": {
     "id": "hyundai_kona_os",
@@ -3824,7 +4006,8 @@
       "일렉트릭"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "코나"
   },
   "hyundai_kona_os_facelift": {
     "id": "hyundai_kona_os_facelift",
@@ -3851,7 +4034,8 @@
       "N"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 코나 (OS 페리)"
+    "note": "더 뉴 코나 (OS 페리)",
+    "model_root": "코나"
   },
   "hyundai_kona_sx2": {
     "id": "hyundai_kona_sx2",
@@ -3885,7 +4069,8 @@
       "프리미엄 2.0",
       "인스퍼레이션 2.0"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "코나"
   },
   "hyundai_nexo_nh2": {
     "id": "hyundai_nexo_nh2",
@@ -3908,7 +4093,8 @@
       "익스클루시브 스페셜",
       "프레스티지"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "넥쏘"
   },
   "hyundai_palisade_lx2": {
     "id": "hyundai_palisade_lx2",
@@ -3933,7 +4119,8 @@
       "VIP"
     ],
     "fetched_at": "2026-05-04",
-    "note": "팰리세이드 LX2 (페리 전)"
+    "note": "팰리세이드 LX2 (페리 전)",
+    "model_root": "팰리세이드"
   },
   "hyundai_palisade_lx2_facelift": {
     "id": "hyundai_palisade_lx2_facelift",
@@ -3958,7 +4145,8 @@
       "VIP"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 팰리세이드 LX2 (페리)"
+    "note": "더 뉴 팰리세이드 LX2 (페리)",
+    "model_root": "팰리세이드"
   },
   "hyundai_palisade_lx3": {
     "id": "hyundai_palisade_lx3",
@@ -3990,7 +4178,8 @@
       "프레스티지 하이브리드 7인승",
       "캘리그래피 하이브리드 7인승"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "팰리세이드"
   },
   "hyundai_santa_fe_mx5": {
     "id": "hyundai_santa_fe_mx5",
@@ -4020,7 +4209,8 @@
       "프레스티지 플러스 하이브리드",
       "캘리그래피 하이브리드"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "싼타페"
   },
   "hyundai_santafe_tm_165": {
     "id": "hyundai_santafe_tm_165",
@@ -4050,7 +4240,8 @@
       "러기지 패키지",
       "라이프 스타일"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "싼타페"
   },
   "hyundai_sonata_dn8": {
     "id": "hyundai_sonata_dn8",
@@ -4081,7 +4272,8 @@
       "스타일 렌터카 LPi 2.0",
       "스마트 렌터카 LPi 2.0"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "쏘나타"
   },
   "hyundai_sonata_dn8_edge": {
     "id": "hyundai_sonata_dn8_edge",
@@ -4117,7 +4309,8 @@
       "비즈니스2 렌터카 LPG 2.0",
       "익스클루시브 LPG 2.0 장애인용"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "쏘나타"
   },
   "hyundai_sonata_dn8_edge_hybrid": {
     "id": "hyundai_sonata_dn8_edge_hybrid",
@@ -4140,7 +4333,8 @@
       "익스클루시브",
       "인스퍼레이션"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "쏘나타"
   },
   "hyundai_sonata_dn8_hybrid": {
     "id": "hyundai_sonata_dn8_hybrid",
@@ -4163,7 +4357,8 @@
       "프리미엄 플러스",
       "인스퍼레이션"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "쏘나타"
   },
   "hyundai_sonata_lf": {
     "id": "hyundai_sonata_lf",
@@ -4189,7 +4384,8 @@
       "프리미엄 스페셜"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "LF 쏘나타"
   },
   "hyundai_sonata_newrise": {
     "id": "hyundai_sonata_newrise",
@@ -4215,7 +4411,8 @@
       "인스퍼레이션"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "쏘나타"
   },
   "hyundai_st1": {
     "id": "hyundai_st1",
@@ -4238,7 +4435,8 @@
       "프리미엄",
       "스타일"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "ST1"
   },
   "hyundai_staria": {
     "id": "hyundai_staria",
@@ -4263,7 +4461,8 @@
       "모빌리티 9 9인승",
       "모빌리티 7 7인승"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "스타리아"
   },
   "hyundai_staria_lounge": {
     "id": "hyundai_staria_lounge",
@@ -4282,7 +4481,8 @@
     "trims": [
       "인스퍼레이션"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "스타리아 라운지"
   },
   "hyundai_staria_pre": {
     "id": "hyundai_staria_pre",
@@ -4308,7 +4508,8 @@
       "라운지 7인승"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 stub"
+    "note": "페리 전 stub",
+    "model_root": "스타리아"
   },
   "hyundai_tucson_nx4": {
     "id": "hyundai_tucson_nx4",
@@ -4335,7 +4536,8 @@
       "블랙 익스테리어 1.6 터보",
       "N 라인 1.6 터보"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "투싼"
   },
   "hyundai_tucson_tl": {
     "id": "hyundai_tucson_tl",
@@ -4360,7 +4562,8 @@
       "인스퍼레이션"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "투싼"
   },
   "hyundai_venue": {
     "id": "hyundai_venue",
@@ -4385,7 +4588,8 @@
       "프리미엄",
       "플럭스"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "베뉴"
   },
   "jeep_cherokee": {
     "id": "jeep_cherokee",
@@ -4409,7 +4613,8 @@
       "오버랜드",
       "서밋"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "체로키"
   },
   "jeep_cj": {
     "id": "jeep_cj",
@@ -4428,7 +4633,8 @@
     "trims": [
       "기본 CJ"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CJ"
   },
   "jeep_글래디에이터_jt": {
     "id": "jeep_글래디에이터_jt",
@@ -4447,7 +4653,8 @@
     "trims": [
       "기본 글래디에이터 JT"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "글래디에이터"
   },
   "jeep_랭글러_jl": {
     "id": "jeep_랭글러_jl",
@@ -4466,7 +4673,8 @@
     "trims": [
       "기본 랭글러 JL"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "랭글러"
   },
   "jeep_어벤저": {
     "id": "jeep_어벤저",
@@ -4485,7 +4693,8 @@
     "trims": [
       "기본 어벤저"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "어벤저"
   },
   "jeep_컴패스_2세대": {
     "id": "jeep_컴패스_2세대",
@@ -4504,7 +4713,8 @@
     "trims": [
       "기본 컴패스"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "컴패스"
   },
   "kgm_actyon": {
     "id": "kgm_actyon",
@@ -4527,7 +4737,8 @@
       "S9",
       ""
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "액티언"
   },
   "kgm_korando": {
     "id": "kgm_korando",
@@ -4551,7 +4762,8 @@
       "E5",
       "EV"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "코란도"
   },
   "kgm_musso": {
     "id": "kgm_musso",
@@ -4572,7 +4784,8 @@
       "블랙 엣지",
       "블랙엣지"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "무쏘"
   },
   "kgm_musso_ev_o100": {
     "id": "kgm_musso_ev_o100",
@@ -4595,7 +4808,8 @@
       "프레스티지"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "무쏘"
   },
   "kgm_musso_q300": {
     "id": "kgm_musso_q300",
@@ -4619,7 +4833,8 @@
       "X5"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "무쏘"
   },
   "kgm_musso_sports": {
     "id": "kgm_musso_sports",
@@ -4643,7 +4858,8 @@
       "X5"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "무쏘 스포츠"
   },
   "kgm_musso_sports_khan": {
     "id": "kgm_musso_sports_khan",
@@ -4667,7 +4883,8 @@
       "X5"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "무쏘 스포츠 칸"
   },
   "kgm_rexton_sports": {
     "id": "kgm_rexton_sports",
@@ -4720,7 +4937,8 @@
       "디럭스 하드탑 G4",
       "폴켓커버"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "렉스턴 스포츠"
   },
   "kgm_rexton_sports_facelift": {
     "id": "kgm_rexton_sports_facelift",
@@ -4746,7 +4964,8 @@
       "익스트림"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "렉스턴 스포츠"
   },
   "kgm_rexton_sports_khan": {
     "id": "kgm_rexton_sports_khan",
@@ -4771,7 +4990,8 @@
       "헤리티지"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "렉스턴 스포츠 칸"
   },
   "kgm_rexton_sports_khan_facelift": {
     "id": "kgm_rexton_sports_khan_facelift",
@@ -4798,7 +5018,8 @@
       "리미티드 X"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "렉스턴 스포츠 칸"
   },
   "kgm_rexton_sports_pre": {
     "id": "kgm_rexton_sports_pre",
@@ -4822,7 +5043,8 @@
       "헤리티지"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "렉스턴 스포츠"
   },
   "kgm_tivoli": {
     "id": "kgm_tivoli",
@@ -4853,7 +5075,8 @@
       "V5",
       "V7"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "티볼리"
   },
   "kgm_tivoli_air": {
     "id": "kgm_tivoli_air",
@@ -4877,7 +5100,8 @@
       "LX 디스커버리"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "티볼리 에어"
   },
   "kgm_tivoli_air_facelift": {
     "id": "kgm_tivoli_air_facelift",
@@ -4901,7 +5125,8 @@
       "V7"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "티볼리 에어"
   },
   "kgm_tivoli_armour": {
     "id": "kgm_tivoli_armour",
@@ -4926,7 +5151,8 @@
       "기어 에디션"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "티볼리 아머"
   },
   "kgm_tivoli_facelift": {
     "id": "kgm_tivoli_facelift",
@@ -4950,7 +5176,8 @@
       "V7"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "티볼리"
   },
   "kgm_tivoli_very_new": {
     "id": "kgm_tivoli_very_new",
@@ -4974,7 +5201,8 @@
       "LX"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "티볼리"
   },
   "kgm_torres": {
     "id": "kgm_torres",
@@ -4997,7 +5225,8 @@
       "T7",
       ""
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "토레스"
   },
   "kgm_torres_evx": {
     "id": "kgm_torres_evx",
@@ -5021,7 +5250,8 @@
       "X7"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "토레스"
   },
   "kgm_torres_facelift": {
     "id": "kgm_torres_facelift",
@@ -5045,7 +5275,8 @@
       "V7 PRO"
     ],
     "fetched_at": "2026-05-04",
-    "note": "body type/세대 분리 stub"
+    "note": "body type/세대 분리 stub",
+    "model_root": "토레스"
   },
   "kia_bongo3": {
     "id": "kia_bongo3",
@@ -5070,7 +5301,8 @@
       "GL",
       "GLS"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "봉고3"
   },
   "kia_carnival_ka4": {
     "id": "kia_carnival_ka4",
@@ -5098,7 +5330,8 @@
       "시그니처 디젤 2.2 7인승",
       "X-Line 디젤 2.2 7인승"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "카니발"
   },
   "kia_carnival_ka4_hi_limousine": {
     "id": "kia_carnival_ka4_hi_limousine",
@@ -5122,7 +5355,8 @@
       "시그니처 하이브리드 9인승",
       "시그니처 하이브리드 7인승"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "카니발"
   },
   "kia_carnival_yp": {
     "id": "kia_carnival_yp",
@@ -5151,7 +5385,8 @@
       "프레지던트"
     ],
     "fetched_at": "2026-05-04",
-    "note": "올 뉴 카니발 (YP)"
+    "note": "올 뉴 카니발 (YP)",
+    "model_root": "카니발"
   },
   "kia_carnival_yp_facelift": {
     "id": "kia_carnival_yp_facelift",
@@ -5179,7 +5414,8 @@
       "프레지던트"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 카니발 (YP 페리)"
+    "note": "더 뉴 카니발 (YP 페리)",
+    "model_root": "카니발"
   },
   "kia_ev3": {
     "id": "kia_ev3",
@@ -5205,7 +5441,8 @@
       "GT-Line 스탠다드",
       "GT-Line 롱레인지"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "EV3"
   },
   "kia_ev4": {
     "id": "kia_ev4",
@@ -5231,7 +5468,8 @@
       "GT-Line 스탠다드",
       "GT-Line 롱레인지"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "EV4"
   },
   "kia_ev5": {
     "id": "kia_ev5",
@@ -5257,7 +5495,8 @@
       "GT-Line 스탠다드",
       "GT-Line 롱레인지"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "EV5"
   },
   "kia_ev6": {
     "id": "kia_ev6",
@@ -5288,7 +5527,8 @@
       "어스 롱레인지 4WD",
       "GT-Line 롱레인지 4WD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "EV6"
   },
   "kia_ev6_pre": {
     "id": "kia_ev6_pre",
@@ -5314,7 +5554,8 @@
       "GT"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전 stub"
+    "note": "페리 전 stub",
+    "model_root": "EV6"
   },
   "kia_ev9": {
     "id": "kia_ev9",
@@ -5342,7 +5583,8 @@
       "GT-Line 롱레인지",
       "GT"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "EV9"
   },
   "kia_k3_bd": {
     "id": "kia_k3_bd",
@@ -5368,7 +5610,8 @@
       "GT 라인"
     ],
     "fetched_at": "2026-05-04",
-    "note": "올 뉴 K3 (BD)"
+    "note": "올 뉴 K3 (BD)",
+    "model_root": "K3"
   },
   "kia_k3_bd_facelift": {
     "id": "kia_k3_bd_facelift",
@@ -5394,7 +5637,8 @@
       "GT"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 K3 (BD 페리)"
+    "note": "더 뉴 K3 (BD 페리)",
+    "model_root": "K3"
   },
   "kia_k3_yd": {
     "id": "kia_k3_yd",
@@ -5417,7 +5661,8 @@
       "프레스티지",
       "노블레스"
     ],
-    "fetched_at": "2026-05-06"
+    "fetched_at": "2026-05-06",
+    "model_root": "K3"
   },
   "kia_k3_yd_facelift": {
     "id": "kia_k3_yd_facelift",
@@ -5443,7 +5688,8 @@
       "노블레스"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 K3 (YD 페리, 1세대 페리)"
+    "note": "더 뉴 K3 (YD 페리, 1세대 페리)",
+    "model_root": "K3"
   },
   "kia_k5_dl3": {
     "id": "kia_k5_dl3",
@@ -5484,7 +5730,8 @@
       "노블레스 하이브리드",
       "시그니처 하이브리드"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "K5"
   },
   "kia_k5_jf": {
     "id": "kia_k5_jf",
@@ -5511,7 +5758,8 @@
       "GT 라인"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "K5"
   },
   "kia_k5_jf_facelift": {
     "id": "kia_k5_jf_facelift",
@@ -5538,7 +5786,8 @@
       "SX"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "K5"
   },
   "kia_k7_premier": {
     "id": "kia_k7_premier",
@@ -5567,7 +5816,8 @@
       "트렌디"
     ],
     "fetched_at": "2026-05-04",
-    "note": "K7 프리미어 (YG 페리)"
+    "note": "K7 프리미어 (YG 페리)",
+    "model_root": "K7"
   },
   "kia_k7_yg": {
     "id": "kia_k7_yg",
@@ -5592,7 +5842,8 @@
       "노블레스 스페셜"
     ],
     "fetched_at": "2026-05-04",
-    "note": "올 뉴 K7 (YG)"
+    "note": "올 뉴 K7 (YG)",
+    "model_root": "K7"
   },
   "kia_k8_gl3": {
     "id": "kia_k8_gl3",
@@ -5619,7 +5870,8 @@
       "시그니처 블랙",
       "프레스티지"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "K8"
   },
   "kia_k8_gl3_pre": {
     "id": "kia_k8_gl3_pre",
@@ -5651,7 +5903,8 @@
       "프레스티지 LPG 3.5 렌터카"
     ],
     "fetched_at": "2026-05-04",
-    "note": "K8 GL3 페리 전 (2021.04 출시)"
+    "note": "K8 GL3 페리 전 (2021.04 출시)",
+    "model_root": "K8"
   },
   "kia_k9_rj": {
     "id": "kia_k9_rj",
@@ -5675,7 +5928,8 @@
       "마스터즈",
       "베스트 셀렉션 Ⅱ"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "K9"
   },
   "kia_mohave": {
     "id": "kia_mohave",
@@ -5698,7 +5952,8 @@
       "마스터즈 3.0 디젤",
       "그래비티 3.0 디젤"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "모하비"
   },
   "kia_morning_ja": {
     "id": "kia_morning_ja",
@@ -5723,7 +5978,8 @@
       "GT-Line"
     ],
     "fetched_at": "2026-04-29",
-    "note": "더 뉴 기아 모닝 (JA 페리2, 2023+)"
+    "note": "더 뉴 기아 모닝 (JA 페리2, 2023+)",
+    "model_root": "모닝"
   },
   "kia_morning_ja_facelift1": {
     "id": "kia_morning_ja_facelift1",
@@ -5748,7 +6004,8 @@
       "시그니처"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 모닝 JA (페리1, 2020-2023)"
+    "note": "더 뉴 모닝 JA (페리1, 2020-2023)",
+    "model_root": "모닝"
   },
   "kia_morning_ja_pre": {
     "id": "kia_morning_ja_pre",
@@ -5774,7 +6031,8 @@
       "레이디 1.0 가솔린"
     ],
     "fetched_at": "2026-05-04",
-    "note": "올 뉴 모닝 JA (페리 전, 2017-2020)"
+    "note": "올 뉴 모닝 JA (페리 전, 2017-2020)",
+    "model_root": "모닝"
   },
   "kia_morning_sa": {
     "id": "kia_morning_sa",
@@ -5797,7 +6055,8 @@
       "SLX",
       "Picanto"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "모닝"
   },
   "kia_morning_sa_facelift": {
     "id": "kia_morning_sa_facelift",
@@ -5822,7 +6081,8 @@
       "SLX"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 모닝 SA (2015-2017 페리) — stub"
+    "note": "더 뉴 모닝 SA (2015-2017 페리) — stub",
+    "model_root": "모닝"
   },
   "kia_niro_de": {
     "id": "kia_niro_de",
@@ -5849,7 +6109,8 @@
       "PHEV"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 뉴 니로 (DE 1세대 페리)"
+    "note": "더 뉴 니로 (DE 1세대 페리)",
+    "model_root": "니로"
   },
   "kia_niro_sg2": {
     "id": "kia_niro_sg2",
@@ -5873,7 +6134,8 @@
       "프레스티지",
       "시그니처"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "니로"
   },
   "kia_pv5": {
     "id": "kia_pv5",
@@ -5896,7 +6158,8 @@
       "카고 롱",
       "샤시캡"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "PV5"
   },
   "kia_ray": {
     "id": "kia_ray",
@@ -5921,7 +6184,8 @@
       "X-Line",
       "프레스티지 스페셜"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "레이"
   },
   "kia_ray_ev": {
     "id": "kia_ray_ev",
@@ -5943,7 +6207,8 @@
       "라이트",
       "에어"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "레이"
   },
   "kia_ray_tam_facelift1": {
     "id": "kia_ray_tam_facelift1",
@@ -5968,7 +6233,8 @@
       "에코"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "레이 TAM 페리1"
   },
   "kia_seltos": {
     "id": "kia_seltos",
@@ -5992,7 +6258,8 @@
       "시그니처",
       "X-Line"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "셀토스"
   },
   "kia_seltos_sp2": {
     "id": "kia_seltos_sp2",
@@ -6016,7 +6283,8 @@
       "노블레스"
     ],
     "fetched_at": "2026-05-04",
-    "note": "셀토스 SP2 (페리 전)"
+    "note": "셀토스 SP2 (페리 전)",
+    "model_root": "셀토스"
   },
   "kia_seltos_sp3": {
     "id": "kia_seltos_sp3",
@@ -6040,7 +6308,8 @@
       "시그니처"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "셀토스"
   },
   "kia_sorento_mq4": {
     "id": "kia_sorento_mq4",
@@ -6064,7 +6333,8 @@
       "시그니처",
       "X-Line"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "쏘렌토"
   },
   "kia_sorento_um": {
     "id": "kia_sorento_um",
@@ -6089,7 +6359,8 @@
       "노블레스"
     ],
     "fetched_at": "2026-05-04",
-    "note": "구형 한국차 stub"
+    "note": "구형 한국차 stub",
+    "model_root": "쏘렌토"
   },
   "kia_sorento_um_facelift": {
     "id": "kia_sorento_um_facelift",
@@ -6116,7 +6387,8 @@
       "마스터 R2.2"
     ],
     "fetched_at": "2026-05-04",
-    "note": "쏘렌토 더 마스터 (UM 페리)"
+    "note": "쏘렌토 더 마스터 (UM 페리)",
+    "model_root": "쏘렌토"
   },
   "kia_sportage_nq5": {
     "id": "kia_sportage_nq5",
@@ -6149,7 +6421,8 @@
       "시그니처 하이브리드",
       "시그니처 X-Line 하이브리드"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "스포티지"
   },
   "kia_sportage_ql": {
     "id": "kia_sportage_ql",
@@ -6176,7 +6449,8 @@
       "스타일 에디션"
     ],
     "fetched_at": "2026-05-04",
-    "note": "더 SUV 스포티지 (QL 4세대 페리 전)"
+    "note": "더 SUV 스포티지 (QL 4세대 페리 전)",
+    "model_root": "스포티지"
   },
   "kia_sportage_ql_facelift": {
     "id": "kia_sportage_ql_facelift",
@@ -6201,7 +6475,8 @@
       "시그니처"
     ],
     "fetched_at": "2026-05-04",
-    "note": "스포티지 더 볼드 (QL 페리)"
+    "note": "스포티지 더 볼드 (QL 페리)",
+    "model_root": "스포티지"
   },
   "kia_stinger": {
     "id": "kia_stinger",
@@ -6227,7 +6502,8 @@
       "GT",
       "트리뷰트 에디션"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "스팅어"
   },
   "kia_tasman": {
     "id": "kia_tasman",
@@ -6251,7 +6527,8 @@
       "익스트림",
       "X-Pro"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "타스만"
   },
   "landrover_defender": {
     "id": "landrover_defender",
@@ -6281,7 +6558,8 @@
       "V8"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "디펜더"
   },
   "landrover_range_sport": {
     "id": "landrover_range_sport",
@@ -6311,7 +6589,8 @@
       "P635 SV"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "레인지로버 스포츠"
   },
   "landrover_기타": {
     "id": "landrover_기타",
@@ -6330,7 +6609,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "landrover_디스커버리": {
     "id": "landrover_디스커버리",
@@ -6349,7 +6629,8 @@
     "trims": [
       "기본 디스커버리"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "디스커버리"
   },
   "landrover_디스커버리_5": {
     "id": "landrover_디스커버리_5",
@@ -6368,7 +6649,8 @@
     "trims": [
       "기본 디스커버리 5"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "디스커버리 5"
   },
   "landrover_디스커버리_스포츠_2세대": {
     "id": "landrover_디스커버리_스포츠_2세대",
@@ -6387,7 +6669,8 @@
     "trims": [
       "기본 디스커버리 스포츠"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "디스커버리 스포츠"
   },
   "landrover_레인지로버_벨라": {
     "id": "landrover_레인지로버_벨라",
@@ -6406,7 +6689,8 @@
     "trims": [
       "기본 레인지로버 벨라"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "레인지로버 벨라"
   },
   "landrover_레인지로버_이보크_2세대": {
     "id": "landrover_레인지로버_이보크_2세대",
@@ -6425,7 +6709,8 @@
     "trims": [
       "기본 레인지로버 이보크"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "레인지로버 이보크"
   },
   "maserati_3200": {
     "id": "maserati_3200",
@@ -6444,7 +6729,8 @@
     "trims": [
       "기본 3200"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "3200"
   },
   "maserati_mc12": {
     "id": "maserati_mc12",
@@ -6463,7 +6749,8 @@
     "trims": [
       "기본 MC12"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "MC12"
   },
   "maserati_mc20": {
     "id": "maserati_mc20",
@@ -6482,7 +6769,8 @@
     "trims": [
       "기본 MC20"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "MC20"
   },
   "maserati_mc푸라": {
     "id": "maserati_mc푸라",
@@ -6501,7 +6789,8 @@
     "trims": [
       "기본 MC푸라"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "MC푸라"
   },
   "maserati_그란스포츠": {
     "id": "maserati_그란스포츠",
@@ -6520,7 +6809,8 @@
     "trims": [
       "기본 그란스포츠"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "그란스포츠"
   },
   "maserati_그란카브리오_2세대": {
     "id": "maserati_그란카브리오_2세대",
@@ -6539,7 +6829,8 @@
     "trims": [
       "기본 그란카브리오"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "그란카브리오"
   },
   "maserati_그란투리스모_2세대": {
     "id": "maserati_그란투리스모_2세대",
@@ -6558,7 +6849,8 @@
     "trims": [
       "기본 그란투리스모"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "그란투리스모"
   },
   "maserati_그레칼레": {
     "id": "maserati_그레칼레",
@@ -6577,7 +6869,8 @@
     "trims": [
       "기본 그레칼레"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "그레칼레"
   },
   "maserati_기타": {
     "id": "maserati_기타",
@@ -6596,7 +6889,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "maserati_스파이더": {
     "id": "maserati_스파이더",
@@ -6615,7 +6909,8 @@
     "trims": [
       "기본 스파이더"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "스파이더"
   },
   "maserati_쿠페": {
     "id": "maserati_쿠페",
@@ -6634,7 +6929,8 @@
     "trims": [
       "기본 쿠페"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "쿠페"
   },
   "mercedes_a_w177": {
     "id": "mercedes_a_w177",
@@ -6662,7 +6958,8 @@
       "A 250",
       "AMG A 35"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "A클래스"
   },
   "mercedes_amg_gt_c192": {
     "id": "mercedes_amg_gt_c192",
@@ -6681,7 +6978,8 @@
     "trims": [
       "기본 AMG GT C192"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "AMG"
   },
   "mercedes_c_w205": {
     "id": "mercedes_c_w205",
@@ -6710,7 +7008,8 @@
       "C 300",
       "AMG C 43"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "C클래스"
   },
   "mercedes_c_w206": {
     "id": "mercedes_c_w206",
@@ -6740,7 +7039,8 @@
       "AMG C 43"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "C-클래스"
   },
   "mercedes_cl_class_c140": {
     "id": "mercedes_cl_class_c140",
@@ -6759,7 +7059,8 @@
     "trims": [
       "기본 CL-클래스 C140"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CL-클래스"
   },
   "mercedes_cla_class_c118": {
     "id": "mercedes_cla_class_c118",
@@ -6778,7 +7079,8 @@
     "trims": [
       "기본 CLA-클래스 C118"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CLA-클래스"
   },
   "mercedes_cle_class_c236": {
     "id": "mercedes_cle_class_c236",
@@ -6797,7 +7099,8 @@
     "trims": [
       "기본 CLE-클래스 C236"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CLE-클래스"
   },
   "mercedes_clk_class_c208": {
     "id": "mercedes_clk_class_c208",
@@ -6816,7 +7119,8 @@
     "trims": [
       "기본 CLK-클래스 C208"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CLK-클래스"
   },
   "mercedes_cls_class_c257": {
     "id": "mercedes_cls_class_c257",
@@ -6835,7 +7139,8 @@
     "trims": [
       "기본 CLS-클래스 C257"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "CLS-클래스"
   },
   "mercedes_e_w213": {
     "id": "mercedes_e_w213",
@@ -6868,7 +7173,8 @@
       "E 350",
       "AMG E 53"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "E클래스"
   },
   "mercedes_e_w214": {
     "id": "mercedes_e_w214",
@@ -6897,7 +7203,8 @@
       "E 450 4MATIC"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "E-클래스"
   },
   "mercedes_eqa_h243": {
     "id": "mercedes_eqa_h243",
@@ -6916,7 +7223,8 @@
     "trims": [
       "기본 EQA H243"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EQA"
   },
   "mercedes_eqb_x243": {
     "id": "mercedes_eqb_x243",
@@ -6935,7 +7243,8 @@
     "trims": [
       "기본 EQB X243"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EQB"
   },
   "mercedes_eqc_n293": {
     "id": "mercedes_eqc_n293",
@@ -6954,7 +7263,8 @@
     "trims": [
       "기본 EQC N293"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EQC"
   },
   "mercedes_eqe_suv_x294": {
     "id": "mercedes_eqe_suv_x294",
@@ -6973,7 +7283,8 @@
     "trims": [
       "기본 EQE SUV X294"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EQE"
   },
   "mercedes_eqe_v295": {
     "id": "mercedes_eqe_v295",
@@ -6992,7 +7303,8 @@
     "trims": [
       "기본 EQE V295"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EQE"
   },
   "mercedes_eqs_suv_x296": {
     "id": "mercedes_eqs_suv_x296",
@@ -7011,7 +7323,8 @@
     "trims": [
       "기본 EQS SUV X296"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EQS"
   },
   "mercedes_eqs_v297": {
     "id": "mercedes_eqs_v297",
@@ -7030,7 +7343,8 @@
     "trims": [
       "기본 EQS V297"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EQS"
   },
   "mercedes_g_class_w463b": {
     "id": "mercedes_g_class_w463b",
@@ -7049,7 +7363,8 @@
     "trims": [
       "기본 G-클래스 W463b"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "G-클래스"
   },
   "mercedes_g_class_w465": {
     "id": "mercedes_g_class_w465",
@@ -7068,7 +7383,8 @@
     "trims": [
       "기본 G-클래스 W465"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "G-클래스"
   },
   "mercedes_gla_class_h247": {
     "id": "mercedes_gla_class_h247",
@@ -7087,7 +7403,8 @@
     "trims": [
       "기본 GLA-클래스 H247"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "GLA-클래스"
   },
   "mercedes_glb_class_x247": {
     "id": "mercedes_glb_class_x247",
@@ -7106,7 +7423,8 @@
     "trims": [
       "기본 GLB-클래스 X247"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "GLB-클래스"
   },
   "mercedes_glc": {
     "id": "mercedes_glc",
@@ -7134,7 +7452,8 @@
       "GLC 300 e",
       "GLC 400 4MATIC"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "GLC"
   },
   "mercedes_glc_class_x254": {
     "id": "mercedes_glc_class_x254",
@@ -7153,7 +7472,8 @@
     "trims": [
       "기본 GLC-클래스 X254"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "GLC-클래스"
   },
   "mercedes_gle_class_w167": {
     "id": "mercedes_gle_class_w167",
@@ -7172,7 +7492,8 @@
     "trims": [
       "기본 GLE-클래스 W167"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "GLE-클래스"
   },
   "mercedes_gls_class_x167": {
     "id": "mercedes_gls_class_x167",
@@ -7191,7 +7512,8 @@
     "trims": [
       "기본 GLS-클래스 X167"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "GLS-클래스"
   },
   "mercedes_s_w223": {
     "id": "mercedes_s_w223",
@@ -7222,7 +7544,8 @@
       "S 580 4MATIC"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "S-클래스"
   },
   "mercedes_sl_class_r232": {
     "id": "mercedes_sl_class_r232",
@@ -7241,7 +7564,8 @@
     "trims": [
       "기본 SL-클래스 R232"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SL-클래스"
   },
   "mercedes_slc_class_r172": {
     "id": "mercedes_slc_class_r172",
@@ -7260,7 +7584,8 @@
     "trims": [
       "기본 SLC-클래스 R172"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SLC-클래스"
   },
   "mercedes_slr": {
     "id": "mercedes_slr",
@@ -7279,7 +7604,8 @@
     "trims": [
       "기본 SLR"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "SLR"
   },
   "mini_cooper": {
     "id": "mini_cooper",
@@ -7306,7 +7632,8 @@
       "쿠퍼 S"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "쿠퍼"
   },
   "mini_로버_미니": {
     "id": "mini_로버_미니",
@@ -7325,7 +7652,8 @@
     "trims": [
       "기본 로버 미니"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "로버 미니"
   },
   "mini_에이스맨_1세대": {
     "id": "mini_에이스맨_1세대",
@@ -7344,7 +7672,8 @@
     "trims": [
       "기본 에이스맨"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "에이스맨"
   },
   "mini_쿠퍼_c_컨버터블_4세대": {
     "id": "mini_쿠퍼_c_컨버터블_4세대",
@@ -7363,7 +7692,8 @@
     "trims": [
       "기본 쿠퍼 C 컨버터블"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "쿠퍼 C 컨버터블"
   },
   "mini_쿠퍼_s_컨버터블_4세대": {
     "id": "mini_쿠퍼_s_컨버터블_4세대",
@@ -7382,7 +7712,8 @@
     "trims": [
       "기본 쿠퍼 S 컨버터블"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "쿠퍼 S 컨버터블"
   },
   "mini_쿠퍼_s_컨트리맨_3세대": {
     "id": "mini_쿠퍼_s_컨트리맨_3세대",
@@ -7401,7 +7732,8 @@
     "trims": [
       "기본 쿠퍼 S 컨트리맨"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "쿠퍼 S 컨트리맨"
   },
   "mini_쿠퍼_컨트리맨_일렉트릭_3세대": {
     "id": "mini_쿠퍼_컨트리맨_일렉트릭_3세대",
@@ -7420,7 +7752,8 @@
     "trims": [
       "기본 쿠퍼 컨트리맨 일렉트릭"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "쿠퍼 컨트리맨"
   },
   "porsche_718_카이맨": {
     "id": "porsche_718_카이맨",
@@ -7439,7 +7772,8 @@
     "trims": [
       "기본 718 카이맨"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "718 카이맨"
   },
   "porsche_911_992": {
     "id": "porsche_911_992",
@@ -7458,7 +7792,8 @@
     "trims": [
       "기본 911 992"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "911 992"
   },
   "porsche_928": {
     "id": "porsche_928",
@@ -7477,7 +7812,8 @@
     "trims": [
       "기본 928"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "928"
   },
   "porsche_944": {
     "id": "porsche_944",
@@ -7496,7 +7832,8 @@
     "trims": [
       "기본 944"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "944"
   },
   "porsche_968": {
     "id": "porsche_968",
@@ -7515,7 +7852,8 @@
     "trims": [
       "기본 968"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "968"
   },
   "porsche_cayenne": {
     "id": "porsche_cayenne",
@@ -7546,7 +7884,8 @@
       "카이엔 터보 E-하이브리드"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "카이엔"
   },
   "porsche_macan": {
     "id": "porsche_macan",
@@ -7574,7 +7913,8 @@
       "마칸 터보"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "마칸"
   },
   "porsche_기타": {
     "id": "porsche_기타",
@@ -7593,7 +7933,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "porsche_카레라_gt": {
     "id": "porsche_카레라_gt",
@@ -7612,7 +7953,8 @@
     "trims": [
       "기본 카레라 GT"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "카레라"
   },
   "porsche_타이칸": {
     "id": "porsche_타이칸",
@@ -7631,7 +7973,8 @@
     "trims": [
       "기본 타이칸"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "타이칸"
   },
   "porsche_파나메라_971": {
     "id": "porsche_파나메라_971",
@@ -7650,7 +7993,8 @@
     "trims": [
       "기본 파나메라 971"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "파나메라 971"
   },
   "porsche_파나메라_976": {
     "id": "porsche_파나메라_976",
@@ -7669,7 +8013,8 @@
     "trims": [
       "기본 파나메라 976"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "파나메라 976"
   },
   "renault_arkana": {
     "id": "renault_arkana",
@@ -7693,7 +8038,8 @@
       "E-Tech 145 RE",
       "E-Tech 145 RE 시그니처"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "아르카나"
   },
   "renault_grand_koleos": {
     "id": "renault_grand_koleos",
@@ -7720,7 +8066,8 @@
       "esprit Alpine",
       "esprit Alpine 4WD"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "그랑 콜레오스"
   },
   "renault_qm3": {
     "id": "renault_qm3",
@@ -7742,7 +8089,8 @@
       "TCe 90 RE",
       "TCe 90 RE 인텐스"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "QM3"
   },
   "renault_qm5": {
     "id": "renault_qm5",
@@ -7763,7 +8111,8 @@
       "SE Plus",
       "RE"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "QM5"
   },
   "renault_qm6": {
     "id": "renault_qm6",
@@ -7787,7 +8136,8 @@
       "RE",
       "VAN 밴"
     ],
-    "fetched_at": "2026-04-29"
+    "fetched_at": "2026-04-29",
+    "model_root": "QM6"
   },
   "renault_sm3": {
     "id": "renault_sm3",
@@ -7809,7 +8159,8 @@
       "LE",
       "SE Plus"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "SM3"
   },
   "renault_sm5": {
     "id": "renault_sm5",
@@ -7831,7 +8182,8 @@
       "RE",
       "RE LPe"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "SM5"
   },
   "renault_sm6": {
     "id": "renault_sm6",
@@ -7853,7 +8205,8 @@
       "RE",
       "프리미에르"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "SM6"
   },
   "renault_sm7": {
     "id": "renault_sm7",
@@ -7875,7 +8228,8 @@
       "RE",
       "RE 35"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "SM7"
   },
   "renault_xm3": {
     "id": "renault_xm3",
@@ -7898,7 +8252,8 @@
       "1.6 GTe LE",
       "1.6 GTe RE"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "XM3"
   },
   "tesla_model_3": {
     "id": "tesla_model_3",
@@ -7925,7 +8280,8 @@
       "퍼포먼스 AWD"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "모델 3"
   },
   "tesla_model_s": {
     "id": "tesla_model_s",
@@ -7950,7 +8306,8 @@
       "플래드 AWD"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "모델 S"
   },
   "tesla_model_x": {
     "id": "tesla_model_x",
@@ -7975,7 +8332,8 @@
       "플래드 AWD"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "모델 X"
   },
   "tesla_model_y": {
     "id": "tesla_model_y",
@@ -7999,7 +8357,8 @@
       "퍼포먼스 AWD"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "모델 Y"
   },
   "tesla_model_y_facelift": {
     "id": "tesla_model_y_facelift",
@@ -8021,7 +8380,8 @@
       "롱레인지 AWD",
       "퍼포먼스"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "모델 Y 주니퍼"
   },
   "tesla_사이버트럭": {
     "id": "tesla_사이버트럭",
@@ -8040,7 +8400,8 @@
     "trims": [
       "기본 사이버트럭"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "사이버트럭"
   },
   "volvo_740": {
     "id": "volvo_740",
@@ -8059,7 +8420,8 @@
     "trims": [
       "기본 740"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "740"
   },
   "volvo_760": {
     "id": "volvo_760",
@@ -8078,7 +8440,8 @@
     "trims": [
       "기본 760"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "760"
   },
   "volvo_850": {
     "id": "volvo_850",
@@ -8097,7 +8460,8 @@
     "trims": [
       "기본 850"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "850"
   },
   "volvo_940": {
     "id": "volvo_940",
@@ -8116,7 +8480,8 @@
     "trims": [
       "기본 940"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "940"
   },
   "volvo_960": {
     "id": "volvo_960",
@@ -8135,7 +8500,8 @@
     "trims": [
       "기본 960"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "960"
   },
   "volvo_ex30": {
     "id": "volvo_ex30",
@@ -8154,7 +8520,8 @@
     "trims": [
       "기본 EX30"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EX30"
   },
   "volvo_ex30_크로스_컨트리": {
     "id": "volvo_ex30_크로스_컨트리",
@@ -8173,7 +8540,8 @@
     "trims": [
       "기본 EX30 크로스 컨트리"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EX30 크로스 컨트리"
   },
   "volvo_ex40": {
     "id": "volvo_ex40",
@@ -8192,7 +8560,8 @@
     "trims": [
       "기본 EX40"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EX40"
   },
   "volvo_s60": {
     "id": "volvo_s60",
@@ -8217,7 +8586,8 @@
       "B5"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "S60"
   },
   "volvo_v60_크로스컨트리_2세대": {
     "id": "volvo_v60_크로스컨트리_2세대",
@@ -8236,7 +8606,8 @@
     "trims": [
       "기본 V60 크로스컨트리"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "V60 크로스컨트리"
   },
   "volvo_v70": {
     "id": "volvo_v70",
@@ -8255,7 +8626,8 @@
     "trims": [
       "기본 V70"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "V70"
   },
   "volvo_v90_크로스컨트리": {
     "id": "volvo_v90_크로스컨트리",
@@ -8274,7 +8646,8 @@
     "trims": [
       "기본 V90 크로스컨트리"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "V90 크로스컨트리"
   },
   "volvo_xc40": {
     "id": "volvo_xc40",
@@ -8300,7 +8673,8 @@
       "T8 Recharge"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "XC40"
   },
   "volvo_xc40_pre": {
     "id": "volvo_xc40_pre",
@@ -8327,7 +8701,8 @@
       "D4"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "XC40"
   },
   "volvo_xc60": {
     "id": "volvo_xc60",
@@ -8354,7 +8729,8 @@
       "B6"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "XC60"
   },
   "volvo_xc60_gen1": {
     "id": "volvo_xc60_gen1",
@@ -8382,7 +8758,8 @@
       "T8 Recharge"
     ],
     "fetched_at": "2026-05-04",
-    "note": "페리 전/세대 분리 stub"
+    "note": "페리 전/세대 분리 stub",
+    "model_root": "XC60"
   },
   "volvo_기타": {
     "id": "volvo_기타",
@@ -8401,7 +8778,8 @@
     "trims": [
       "기본 기타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "기타"
   },
   "vw_eos": {
     "id": "vw_eos",
@@ -8420,7 +8798,8 @@
     "trims": [
       "기본 EOS"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "EOS"
   },
   "vw_golf_8": {
     "id": "vw_golf_8",
@@ -8447,7 +8826,8 @@
       "2.0 TDI"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "골프"
   },
   "vw_id_4": {
     "id": "vw_id_4",
@@ -8466,7 +8846,8 @@
     "trims": [
       "기본 ID.4"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "ID.4"
   },
   "vw_id_5": {
     "id": "vw_id_5",
@@ -8485,7 +8866,8 @@
     "trims": [
       "기본 ID.5"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "ID.5"
   },
   "vw_jetta": {
     "id": "vw_jetta",
@@ -8507,7 +8889,8 @@
       "R-Line",
       "1.4 TSI"
     ],
-    "fetched_at": "2026-05-04"
+    "fetched_at": "2026-05-04",
+    "model_root": "제타"
   },
   "vw_tiguan": {
     "id": "vw_tiguan",
@@ -8532,7 +8915,8 @@
       "2.0 TDI"
     ],
     "fetched_at": "2026-05-04",
-    "note": "수입차 stub"
+    "note": "수입차 stub",
+    "model_root": "티구안 올스페이스"
   },
   "vw_리알타": {
     "id": "vw_리알타",
@@ -8551,7 +8935,8 @@
     "trims": [
       "기본 리알타"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "리알타"
   },
   "vw_마이크로버스": {
     "id": "vw_마이크로버스",
@@ -8570,7 +8955,8 @@
     "trims": [
       "기본 마이크로버스"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "마이크로버스"
   },
   "vw_벤토": {
     "id": "vw_벤토",
@@ -8589,7 +8975,8 @@
     "trims": [
       "기본 벤토"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "벤토"
   },
   "vw_비틀": {
     "id": "vw_비틀",
@@ -8608,7 +8995,8 @@
     "trims": [
       "기본 비틀"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "비틀"
   },
   "vw_사란": {
     "id": "vw_사란",
@@ -8627,7 +9015,8 @@
     "trims": [
       "기본 사란"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "사란"
   },
   "vw_아테온": {
     "id": "vw_아테온",
@@ -8646,7 +9035,8 @@
     "trims": [
       "기본 아테온"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "아테온"
   },
   "vw_아틀라스": {
     "id": "vw_아틀라스",
@@ -8665,7 +9055,8 @@
     "trims": [
       "기본 아틀라스"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "아틀라스"
   },
   "vw_업": {
     "id": "vw_업",
@@ -8684,7 +9075,8 @@
     "trims": [
       "기본 업"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "업"
   },
   "vw_코라도": {
     "id": "vw_코라도",
@@ -8703,7 +9095,8 @@
     "trims": [
       "기본 코라도"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "코라도"
   },
   "vw_투아렉_3세대": {
     "id": "vw_투아렉_3세대",
@@ -8722,7 +9115,8 @@
     "trims": [
       "기본 투아렉"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "투아렉"
   },
   "vw_트랜스포터": {
     "id": "vw_트랜스포터",
@@ -8741,7 +9135,8 @@
     "trims": [
       "기본 트랜스포터"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "트랜스포터"
   },
   "vw_티록": {
     "id": "vw_티록",
@@ -8760,7 +9155,8 @@
     "trims": [
       "기본 티록"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "티록"
   },
   "vw_파사트": {
     "id": "vw_파사트",
@@ -8779,7 +9175,8 @@
     "trims": [
       "기본 파사트"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "파사트"
   },
   "vw_파사트_gt_b8": {
     "id": "vw_파사트_gt_b8",
@@ -8798,7 +9195,8 @@
     "trims": [
       "기본 파사트 GT B8"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "파사트"
   },
   "vw_파사트_바리안트": {
     "id": "vw_파사트_바리안트",
@@ -8817,6 +9215,7 @@
     "trims": [
       "기본 파사트 바리안트"
     ],
-    "fetched_at": "2026-05-05"
+    "fetched_at": "2026-05-05",
+    "model_root": "파사트 바리안트"
   }
 }

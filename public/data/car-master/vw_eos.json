@@ -1,5 +1,6 @@
 {
   "catalog_id": "vw_eos",
+  "model_root": "EOS",
   "title": "폭스바겐 EOS",
   "maker": "폭스바겐",
   "source": "auto_stub",

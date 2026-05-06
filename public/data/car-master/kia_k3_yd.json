@@ -1,5 +1,6 @@
 {
   "catalog_id": "kia_k3_yd",
+  "model_root": "K3",
   "title": "기아 K3 YD",
   "maker": "기아",
   "source": "stub",
@@ -9,11 +10,41 @@
   "options": {},
   "categories": {},
   "trims": {
-    "디럭스": { "slug": "deluxe", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "트렌디": { "slug": "trendy", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "럭셔리": { "slug": "luxury", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
-    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] }
+    "디럭스": {
+      "slug": "deluxe",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "트렌디": {
+      "slug": "trendy",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "럭셔리": {
+      "slug": "luxury",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스": {
+      "slug": "noblesse",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
   },
   "year_start": "2012-09",
   "year_end": "2015-08"

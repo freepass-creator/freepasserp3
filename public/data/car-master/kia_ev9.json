@@ -1,5 +1,6 @@
 {
   "catalog_id": "kia_ev9",
+  "model_root": "EV9",
   "title": "기아 EV9",
   "maker": "기아",
   "source": "kia_official",

@@ -1,5 +1,6 @@
 {
   "catalog_id": "volvo_ex30",
+  "model_root": "EX30",
   "title": "볼보 EX30",
   "maker": "볼보",
   "source": "auto_stub",

@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_q2",
+  "model_root": "Q2",
   "title": "아우디 Q2",
   "maker": "아우디",
   "source": "auto_stub",

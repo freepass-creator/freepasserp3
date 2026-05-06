@@ -1,5 +1,6 @@
 {
   "catalog_id": "kgm_musso",
+  "model_root": "무쏘",
   "title": "KGM 무쏘",
   "maker": "KGM",
   "source": "wikicar_ocr",

@@ -1,5 +1,6 @@
 {
   "catalog_id": "ford_컨투어",
+  "model_root": "컨투어",
   "title": "포드 컨투어",
   "maker": "포드",
   "source": "auto_stub",

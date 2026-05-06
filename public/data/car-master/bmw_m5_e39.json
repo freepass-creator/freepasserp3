@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_m5_e39",
+  "model_root": "M5",
   "title": "BMW M5 E39",
   "maker": "BMW",
   "source": "auto_stub",

@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_ix",
+  "model_root": "iX",
   "title": "BMW iX",
   "maker": "BMW",
   "source": "auto_stub",

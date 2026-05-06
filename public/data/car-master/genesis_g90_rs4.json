@@ -1,5 +1,6 @@
 {
   "catalog_id": "genesis_g90_rs4",
+  "model_root": "G90",
   "title": "제네시스 G90 RS4",
   "maker": "제네시스",
   "source": "wikicar_ocr",

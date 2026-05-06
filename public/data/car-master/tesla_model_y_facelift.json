@@ -1,5 +1,6 @@
 {
   "catalog_id": "tesla_model_y_facelift",
+  "model_root": "모델 Y 주니퍼",
   "title": "테슬라 모델 Y 주니퍼",
   "maker": "테슬라",
   "source": "stub",
@@ -385,7 +386,9 @@
   "trims": {
     "프리미엄 RWD": {
       "slug": "premium_rwd",
-      "price": { "base": 50990000 },
+      "price": {
+        "base": 50990000
+      },
       "basic": [
         "SUNROOF_PANO",
         "HEAD_LED",
@@ -452,7 +455,9 @@
     },
     "롱레인지 RWD": {
       "slug": "long_range_rwd",
-      "price": { "base": 59900000 },
+      "price": {
+        "base": 59900000
+      },
       "basic": [
         "SUNROOF_PANO",
         "HEAD_LED",
@@ -520,7 +525,9 @@
     },
     "롱레인지 AWD": {
       "slug": "long_range_awd",
-      "price": { "base": 64900000 },
+      "price": {
+        "base": 64900000
+      },
       "basic": [
         "SUNROOF_PANO",
         "HEAD_LED",
@@ -588,7 +595,9 @@
     },
     "퍼포먼스": {
       "slug": "performance",
-      "price": { "base": 77890000 },
+      "price": {
+        "base": 77890000
+      },
       "basic": [
         "SUNROOF_PANO",
         "HEAD_LED",

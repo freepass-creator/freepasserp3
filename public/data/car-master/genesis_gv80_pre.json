@@ -1,5 +1,6 @@
 {
   "catalog_id": "genesis_gv80_pre",
+  "model_root": "GV80",
   "title": "제네시스 GV80",
   "maker": "제네시스",
   "source": "wikicar_ocr",

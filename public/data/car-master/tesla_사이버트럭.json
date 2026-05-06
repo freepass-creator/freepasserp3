@@ -1,5 +1,6 @@
 {
   "catalog_id": "tesla_사이버트럭",
+  "model_root": "사이버트럭",
   "title": "테슬라 사이버트럭",
   "maker": "테슬라",
   "source": "auto_stub",

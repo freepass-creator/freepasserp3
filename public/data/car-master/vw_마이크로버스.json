@@ -1,5 +1,6 @@
 {
   "catalog_id": "vw_마이크로버스",
+  "model_root": "마이크로버스",
   "title": "폭스바겐 마이크로버스",
   "maker": "폭스바겐",
   "source": "auto_stub",

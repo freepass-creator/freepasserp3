@@ -1,5 +1,6 @@
 {
   "catalog_id": "genesis_gv60",
+  "model_root": "GV60",
   "title": "제네시스 GV60",
   "maker": "제네시스",
   "source": "wikicar_ocr",

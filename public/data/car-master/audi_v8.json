@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_v8",
+  "model_root": "V8",
   "title": "아우디 V8",
   "maker": "아우디",
   "source": "auto_stub",

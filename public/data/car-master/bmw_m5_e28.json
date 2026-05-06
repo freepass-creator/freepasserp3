@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_m5_e28",
+  "model_root": "M5",
   "title": "BMW M5 E28",
   "maker": "BMW",
   "source": "auto_stub",

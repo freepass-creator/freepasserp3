@@ -1,5 +1,6 @@
 {
   "catalog_id": "tesla_model_x",
+  "model_root": "모델 X",
   "title": "테슬라 모델 X",
   "maker": "테슬라",
   "source": "stub",

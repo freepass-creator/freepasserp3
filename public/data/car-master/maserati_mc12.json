@@ -1,5 +1,6 @@
 {
   "catalog_id": "maserati_mc12",
+  "model_root": "MC12",
   "title": "마세라티 MC12",
   "maker": "마세라티",
   "source": "auto_stub",

@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_s3_8y",
+  "model_root": "S3",
   "title": "아우디 S3 8Y",
   "maker": "아우디",
   "source": "auto_stub",

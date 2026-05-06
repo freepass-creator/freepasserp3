@@ -1,5 +1,6 @@
 {
   "catalog_id": "mercedes_slr",
+  "model_root": "SLR",
   "title": "벤츠 SLR",
   "maker": "벤츠",
   "source": "auto_stub",

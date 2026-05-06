@@ -1,5 +1,6 @@
 {
   "catalog_id": "kia_ev5",
+  "model_root": "EV5",
   "title": "기아 EV5",
   "maker": "기아",
   "source": "kia_official",

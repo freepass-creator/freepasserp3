@@ -1,5 +1,6 @@
 {
   "catalog_id": "jeep_cj",
+  "model_root": "CJ",
   "title": "지프 CJ",
   "maker": "지프",
   "source": "auto_stub",

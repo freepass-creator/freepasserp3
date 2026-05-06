@@ -1,5 +1,6 @@
 {
   "catalog_id": "porsche_944",
+  "model_root": "944",
   "title": "포르쉐 944",
   "maker": "포르쉐",
   "source": "auto_stub",

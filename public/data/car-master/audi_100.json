@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_100",
+  "model_root": "100",
   "title": "아우디 100",
   "maker": "아우디",
   "source": "auto_stub",

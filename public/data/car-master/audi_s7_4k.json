@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_s7_4k",
+  "model_root": "S7",
   "title": "아우디 S7 4K",
   "maker": "아우디",
   "source": "auto_stub",

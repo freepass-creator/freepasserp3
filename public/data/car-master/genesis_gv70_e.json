@@ -1,5 +1,6 @@
 {
   "catalog_id": "genesis_gv70_e",
+  "model_root": "GV70",
   "title": "제네시스 일렉트리파이드 GV70",
   "maker": "제네시스",
   "source": "wikicar_ocr",

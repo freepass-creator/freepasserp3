@@ -1,5 +1,6 @@
 {
   "catalog_id": "kgm_torres",
+  "model_root": "토레스",
   "title": "KGM 토레스",
   "maker": "KGM",
   "source": "wikicar_ocr",

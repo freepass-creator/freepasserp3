@@ -1,5 +1,6 @@
 {
   "catalog_id": "ford_gt",
+  "model_root": "GT",
   "title": "포드 GT",
   "maker": "포드",
   "source": "auto_stub",

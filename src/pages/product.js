@@ -21,8 +21,21 @@ import { openFullscreen } from '../core/product-detail-render.js';
 import { ocrFile } from '../core/ocr.js';
 import { parseVehicleRegistration } from '../core/ocr-parsers/vehicle-registration.js';
 import { inferCarModel } from '../core/car-model-infer.js';
-import { getMakers, getModelsByMaker, getSubModels, findCarModel } from '../core/car-models.js';
+import { findCarModel } from '../core/car-models.js';
 import { analyzeProduct as analyzeMatrix, loadIndex as loadMatrixIndex, findCatalog as findMatrixCatalog, loadCatalog as loadMatrixCatalog } from '../core/vehicle-matrix.js';
+import {
+  ensureCatalogSource,
+  getCatalogMakers, getCatalogModels, getCatalogSubModels, getCatalogTrims,
+  findCatalogBySubModel, getCatalogById, titleToSubModel,
+} from '../core/catalog-source.js';
+// 모듈 import 시 catalog _index.json prefetch — 로드 완료 시 재고 페이지 활성이면 자산정보 재렌더
+ensureCatalogSource().then(() => {
+  if (document.querySelector('.pt-page.active')?.dataset.page === 'product') {
+    const activeId = document.querySelector('.pt-page[data-page="product"] .room-item.is-active')?.dataset.id;
+    const target = (store.products || []).find(x => x._key === activeId) || (store.products || [])[0];
+    if (target) renderProductDetail(target);
+  }
+});
 import { fpIdsToNames, FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { pickPartner } from '../core/dialogs.js';
 import {
@@ -47,81 +60,118 @@ export const PRODUCT_TERMS = ['1', '12', '24', '36', '48', '60'];   // v2 PRICE_
 const MAX_PHOTOS = 30;
 const UPLOAD_CONCURRENCY = 4;
 
-/* ──────── A. 차종마스터 cascade picker (vehicle_master 엄격 매칭) ──────── */
-function carInventoryCounts() {
-  const byMaker = new Map();
-  const byMakerModel = new Map();
-  const byMakerModelSub = new Map();
+/* ──────── A. 차종 매트릭스 4단 cascade picker (catalog _index.json 기반) ──────── */
+//  메이커 → 모델(model_root) → 세부모델(catalog title - maker prefix) → 트림(catalog.trims)
+//  catalog_id 는 hidden input 으로 자동 추적 (세부모델 선택 시 set, 매칭 시 사용)
+
+/** 매물 보유대수 — 메이커/모델/세부모델별 (cascade option label "(N)" 표기) */
+function inventoryCounts() {
+  const m = new Map(), mm = new Map(), mms = new Map();
   for (const p of store.products || []) {
     if (p._deleted || p.status === 'deleted') continue;
     const mk = p.maker || '', md = p.model || '', sb = p.sub_model || '';
-    if (mk) byMaker.set(mk, (byMaker.get(mk) || 0) + 1);
-    if (mk && md) byMakerModel.set(`${mk}|${md}`, (byMakerModel.get(`${mk}|${md}`) || 0) + 1);
-    if (mk && md && sb) byMakerModelSub.set(`${mk}|${md}|${sb}`, (byMakerModelSub.get(`${mk}|${md}|${sb}`) || 0) + 1);
+    if (mk) m.set(mk, (m.get(mk) || 0) + 1);
+    if (mk && md) mm.set(`${mk}|${md}`, (mm.get(`${mk}|${md}`) || 0) + 1);
+    if (mk && md && sb) mms.set(`${mk}|${md}|${sb}`, (mms.get(`${mk}|${md}|${sb}`) || 0) + 1);
   }
-  return { byMaker, byMakerModel, byMakerModelSub };
+  return { m, mm, mms };
 }
 
 function renderCarPicker(p, dis = '') {
   const curMk = p.maker || '';
   const curMd = p.model || '';
   const curSub = p.sub_model || '';
-  const makers = getMakers();
-  const models = curMk ? getModelsByMaker(curMk) : [];
-  const subs = (curMk && curMd) ? getSubModels(curMk, curMd) : [];
+  const curTrim = p.trim_name || p.trim || '';
+  const curCid = p.catalog_id
+    || (findCatalogBySubModel(curMk, curSub)?.id || '');
 
-  return `${pickerSelect('제조사',   'maker', curMk, makers, { mk: curMk, md: curMd }, dis)}
-          ${pickerSelect('모델',     'model', curMd, models, { mk: curMk, md: curMd }, dis)}
-          ${pickerSelect('세부모델', 'sub_model', curSub, subs, { mk: curMk, md: curMd }, dis)}`;
+  const makers = getCatalogMakers();
+  const models = curMk ? getCatalogModels(curMk) : [];
+  const subs = (curMk && curMd) ? getCatalogSubModels(curMk, curMd) : [];
+  const trims = curCid ? getCatalogTrims(curCid) : [];
+
+  // sub_model option: { val, label, attr } — data-cid 로 catalog_id 추적
+  const subOpts = subs.map(s => ({ val: s.sub, label: s.sub, attr: ` data-cid="${esc(s.id)}"` }));
+  const makerOpts = makers.map(m => ({ val: m, label: m }));
+  const modelOpts = models.map(m => ({ val: m, label: m }));
+  const trimOpts = trims.map(t => ({ val: t, label: t }));
+
+  return `${pickerSelect('제조사',   'maker',     curMk,   makerOpts, { ctx: 'maker', mk: curMk }, dis)}
+          ${pickerSelect('모델',     'model',     curMd,   modelOpts, { ctx: 'model', mk: curMk }, dis)}
+          ${pickerSelect('세부모델', 'sub_model', curSub,  subOpts,   { ctx: 'sub_model', mk: curMk, md: curMd }, dis)}
+          ${pickerSelect('트림',     'trim_name', curTrim, trimOpts,  { ctx: 'trim' }, dis)}
+          <input type="hidden" data-f="catalog_id" value="${esc(curCid)}">`;
 }
 
-function pickerSelect(label, field, cur, list, ctx, dis) {
-  // dis 가 없으면 보기모드 잠금 (data-edit-lock="1") — body:not(.is-edit-mode) 일 때 mousedown 차단
+/** opts = [{ val, label, attr? }, ...]  ctx = { ctx, mk?, md? } */
+function pickerSelect(label, field, cur, opts, ctx, dis) {
   const lockAttr = dis ? '' : ' data-edit-lock="1"';
   return `<div class="ff"><label>${esc(label)}</label>
     <select class="input" data-f="${esc(field)}" data-picker="${esc(field)}"${dis}${lockAttr}>
       <option value="">선택</option>
-      ${pickerOptionsHtml(list, cur, field, ctx)}
+      ${pickerOptionsHtml(opts, cur, ctx)}
     </select>
   </div>`;
 }
 
-function pickerOptionsHtml(list, cur, field, ctx) {
-  const { byMaker, byMakerModel, byMakerModelSub } = carInventoryCounts();
-  const labelOf = (o) => {
-    let n = 0;
-    if (field === 'maker') n = byMaker.get(o) || 0;
-    else if (field === 'model') n = byMakerModel.get(`${ctx.mk}|${o}`) || 0;
-    else if (field === 'sub_model') n = byMakerModelSub.get(`${ctx.mk}|${ctx.md}|${o}`) || 0;
-    return n > 0 ? `${o} (${n})` : o;
+function pickerOptionsHtml(opts, cur, ctx) {
+  const { m, mm, mms } = inventoryCounts();
+  const countOf = (val) => {
+    if (ctx.ctx === 'maker') return m.get(val) || 0;
+    if (ctx.ctx === 'model') return mm.get(`${ctx.mk}|${val}`) || 0;
+    if (ctx.ctx === 'sub_model') return mms.get(`${ctx.mk}|${ctx.md}|${val}`) || 0;
+    return 0;
   };
-  const inList = list.includes(cur);
-  return list.map(o => `<option value="${esc(o)}" ${o === cur ? 'selected' : ''}>${esc(labelOf(o))}</option>`).join('') +
-    (cur && !inList ? `<option value="${esc(cur)}" selected>${esc(labelOf(cur))}</option>` : '');
+  const labelOf = (o) => {
+    const n = countOf(o.val);
+    return n > 0 ? `${o.label} (${n})` : o.label;
+  };
+  const inList = opts.some(o => o.val === cur);
+  return opts.map(o => `<option value="${esc(o.val)}"${o.attr || ''} ${o.val === cur ? 'selected' : ''}>${esc(labelOf(o))}</option>`).join('')
+    + (cur && !inList ? `<option value="${esc(cur)}" selected>${esc(cur)}</option>` : '');
 }
 
 function bindCarPicker(card, p) {
   const mkSel = card.querySelector('select[data-picker="maker"]');
   const mdSel = card.querySelector('select[data-picker="model"]');
   const sbSel = card.querySelector('select[data-picker="sub_model"]');
-  if (!mkSel || !mdSel || !sbSel) return;
+  const tmSel = card.querySelector('select[data-picker="trim_name"]');
+  const cidIn = card.querySelector('input[data-f="catalog_id"]');
+  if (!mkSel || !mdSel || !sbSel || !tmSel) return;
 
-  const fillSelect = (sel, field, list, cur, ctx) => {
-    sel.innerHTML = `<option value="">선택</option>` + pickerOptionsHtml(list, cur, field, ctx);
+  const fill = (sel, opts, cur, ctx) => {
+    sel.innerHTML = `<option value="">선택</option>` + pickerOptionsHtml(opts, cur, ctx);
   };
+  const subsToOpts = (subs) => subs.map(s => ({ val: s.sub, label: s.sub, attr: ` data-cid="${esc(s.id)}"` }));
+  const arrToOpts = (arr) => arr.map(v => ({ val: v, label: v }));
 
   mkSel.addEventListener('change', () => {
     const newMk = mkSel.value;
-    fillSelect(mdSel, 'model', newMk ? getModelsByMaker(newMk) : [], '', { mk: newMk, md: '' });
-    fillSelect(sbSel, 'sub_model', [], '', { mk: newMk, md: '' });
+    fill(mdSel, arrToOpts(newMk ? getCatalogModels(newMk) : []), '', { ctx: 'model', mk: newMk });
+    fill(sbSel, [], '', { ctx: 'sub_model', mk: newMk, md: '' });
+    fill(tmSel, [], '', { ctx: 'trim' });
+    if (cidIn) cidIn.value = '';
     autoFillFromCarModel(card, newMk, '', '');
   });
   mdSel.addEventListener('change', () => {
     const mk = mkSel.value, newMd = mdSel.value;
-    fillSelect(sbSel, 'sub_model', (mk && newMd) ? getSubModels(mk, newMd) : [], '', { mk, md: newMd });
+    const subs = (mk && newMd) ? getCatalogSubModels(mk, newMd) : [];
+    fill(sbSel, subsToOpts(subs), '', { ctx: 'sub_model', mk, md: newMd });
+    fill(tmSel, [], '', { ctx: 'trim' });
+    if (cidIn) cidIn.value = '';
     autoFillFromCarModel(card, mk, newMd, '');
   });
   sbSel.addEventListener('change', () => {
+    const mk = mkSel.value;
+    const sub = sbSel.value;
+    // 선택된 option 의 data-cid → catalog_id 자동 set
+    const opt = sbSel.selectedOptions[0];
+    const cid = opt?.dataset?.cid || (findCatalogBySubModel(mk, sub)?.id || '');
+    if (cidIn) cidIn.value = cid;
+    fill(tmSel, arrToOpts(cid ? getCatalogTrims(cid) : []), '', { ctx: 'trim' });
+    autoFillFromCarModel(card, mk, mdSel.value, sub);
+  });
+  tmSel.addEventListener('change', () => {
     autoFillFromCarModel(card, mkSel.value, mdSel.value, sbSel.value);
   });
 }
@@ -185,10 +235,15 @@ async function refreshMatrixBanner(card, p) {
     let confColor = '#16a34a', confLabel = '확정';
     if (r.confidence === 'medium') { confColor = '#0284c7'; confLabel = '추정'; }
     else if (r.confidence === 'low') { confColor = '#d97706'; confLabel = '확인 필요'; }
-    // 카탈로그 표준 sub_model 명 (메이커 prefix 제거)
+    // 카탈로그 표준 model_root + sub_model 명 (메이커 prefix 제거)
+    const catEntry = getCatalogById(r.catalogId);
+    const standardModel = catEntry?.model_root || '';
     const standardSub = (r.catalogTitle || '').replace(new RegExp('^' + (live.maker || '') + '\\s+'), '').trim();
+    const modelDiffers = standardModel && (live.model || '').trim() !== standardModel;
     const subDiffers = standardSub && (live.sub_model || '').trim() !== standardSub;
     const trimDiffers = r.trimName && (live.trim_name || '').trim() !== r.trimName;
+    const cidDiffers = r.catalogId && (live.catalog_id || p.catalog_id || '') !== r.catalogId;
+    const anyDiff = modelDiffers || subDiffers || trimDiffers || cidDiffers;
     banner.style.display = 'block';
     banner.style.borderLeftColor = confColor;
     banner.style.background = r.confidence === 'low' ? '#fffbeb' : 'var(--alert-blue-bg)';
@@ -199,11 +254,12 @@ async function refreshMatrixBanner(card, p) {
     banner.innerHTML = `
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
         <span><b style="color:${confColor};">✓ 매트릭스 ${confLabel}</b> · ${esc(r.catalogTitle)} · ${trimNote} · 표준옵션 <b>${fpCnt}개</b></span>
-        ${(subDiffers || trimDiffers) ? `<button class="btn btn-sm" id="mtxApplyOne" style="font-size:10px;padding:2px 8px;">차종/트림 정정</button>` : ''}
+        ${anyDiff ? `<button class="btn btn-sm" id="mtxApplyOne" style="font-size:10px;padding:2px 8px;">차종/트림 정정</button>` : ''}
         ${fpDiffers ? `<button class="btn btn-sm btn-success" id="mtxApplyFp" style="font-size:10px;padding:2px 8px;">표준옵션 ${fpCnt}개 저장</button>` : (savedFp.length === fpCnt && fpCnt > 0 ? `<span style="font-size:10px;color:#16a34a;">✓ 저장됨</span>` : '')}
       </div>
       ${fpSample ? `<div style="color:var(--text-sub);font-size:10px;margin-top:2px;" title="${esc(fpIdsToNames(r.fpAll || []).join(', '))}">${esc(fpSample)}</div>` : ''}
-      ${subDiffers ? `<div style="color:#0c4a6e;font-size:10px;margin-top:2px;">→ sub_model: <s>${esc(live.sub_model || '')}</s> → <b>${esc(standardSub)}</b></div>` : ''}
+      ${modelDiffers ? `<div style="color:#0c4a6e;font-size:10px;margin-top:2px;">→ model: <s>${esc(live.model || '')}</s> → <b>${esc(standardModel)}</b></div>` : ''}
+      ${subDiffers ? `<div style="color:#0c4a6e;font-size:10px;">→ sub_model: <s>${esc(live.sub_model || '')}</s> → <b>${esc(standardSub)}</b></div>` : ''}
       ${trimDiffers ? `<div style="color:#0c4a6e;font-size:10px;">→ trim_name: <s>${esc(live.trim_name || '')}</s> → <b>${esc(r.trimName)}</b></div>` : ''}
     `;
     // 표준옵션 저장 버튼 — updateRecord(path, data) 시그니처
@@ -226,6 +282,10 @@ async function refreshMatrixBanner(card, p) {
     if (applyBtn) {
       applyBtn.addEventListener('click', async () => {
         const updates = {};
+        if (modelDiffers) {
+          if (p.model_legacy == null) updates.model_legacy = p.model || '';
+          updates.model = standardModel;
+        }
         if (subDiffers) {
           if (p.sub_model_legacy == null) updates.sub_model_legacy = p.sub_model || '';
           updates.sub_model = standardSub;
@@ -234,15 +294,24 @@ async function refreshMatrixBanner(card, p) {
           if (p.trim_name_legacy == null) updates.trim_name_legacy = p.trim_name || p.trim || '';
           updates.trim_name = r.trimName;
         }
+        if (cidDiffers) {
+          updates.catalog_id = r.catalogId;
+        }
         try {
           await updateRecord(`products/${p._key}`, updates);
           Object.assign(p, updates);
           // form 입력값도 업데이트
+          if (modelDiffers) {
+            const el = card.querySelector('[data-f="model"]'); if (el) el.value = standardModel;
+          }
           if (subDiffers) {
             const el = card.querySelector('[data-f="sub_model"]'); if (el) el.value = standardSub;
           }
           if (trimDiffers) {
             const el = card.querySelector('[data-f="trim_name"]'); if (el) el.value = r.trimName;
+          }
+          if (cidDiffers) {
+            const el = card.querySelector('[data-f="catalog_id"]'); if (el) el.value = r.catalogId;
           }
           showToast('매트릭스 정정 적용');
           refreshMatrixBanner(card, p);
@@ -444,7 +513,6 @@ export function renderProductDetail(p) {
       `)}
       ${sect('제조사스펙', 'car-simple', `
         ${renderCarPicker(p, dis)}
-        ${ffi('트림',      'trim_name',     p.trim_name || p.trim, dis)}
         ${ffi('옵션',      'options',       optsValue, dis)}
         <div class="ff" id="mtxBanner" style="display:none;border-left:3px solid var(--alert-blue-text);padding:8px 12px;background:var(--alert-blue-bg);font-size:11px;line-height:1.5;border-radius:4px;margin:4px 0;"></div>
         ${ffi('외장색',    'ext_color',     p.ext_color, dis)}

@@ -1,5 +1,6 @@
 {
   "catalog_id": "ford_s_max",
+  "model_root": "S-MAX",
   "title": "포드 S-MAX",
   "maker": "포드",
   "source": "auto_stub",

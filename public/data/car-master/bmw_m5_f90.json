@@ -1,5 +1,6 @@
 {
   "catalog_id": "bmw_m5_f90",
+  "model_root": "M5",
   "title": "BMW M5 F90",
   "maker": "BMW",
   "source": "auto_stub",

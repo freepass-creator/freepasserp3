@@ -1,5 +1,6 @@
 {
   "catalog_id": "chevrolet_trax_crossover",
+  "model_root": "트랙스 크로스오버",
   "title": "쉐보레 트랙스 크로스오버",
   "maker": "쉐보레",
   "source": "wikicar_ocr",

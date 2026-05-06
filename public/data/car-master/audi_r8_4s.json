@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_r8_4s",
+  "model_root": "R8",
   "title": "아우디 R8 4S",
   "maker": "아우디",
   "source": "auto_stub",

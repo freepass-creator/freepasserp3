@@ -1,5 +1,6 @@
 {
   "catalog_id": "honda_s2000",
+  "model_root": "S2000",
   "title": "혼다 S2000",
   "maker": "혼다",
   "source": "auto_stub",

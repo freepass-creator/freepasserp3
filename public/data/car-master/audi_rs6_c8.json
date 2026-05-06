@@ -1,5 +1,6 @@
 {
   "catalog_id": "audi_rs6_c8",
+  "model_root": "RS6",
   "title": "아우디 RS6 C8",
   "maker": "아우디",
   "source": "auto_stub",
