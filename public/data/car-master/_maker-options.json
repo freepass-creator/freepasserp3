@@ -19449,7 +19449,137 @@
       ]
     }
   },
-  "마세라티": {},
+  "마세라티": {
+    "드라이빙 어시스턴스 패키지": {
+      "fp_ids": [
+        "HDA",
+        "LKAS",
+        "LDWS",
+        "FCWS",
+        "DAW",
+        "RCTA",
+        "HBA"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_ADAS"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "컨비니언스 패키지": {
+      "fp_ids": [
+        "SMART_KEY",
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_CONVENIENCE"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "컴포트 패키지": {
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_COMFORT"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "파킹 어시스트 패키지": {
+      "fp_ids": [
+        "SPAS",
+        "SENSOR_REAR",
+        "RCTA",
+        "AVMS",
+        "BVM"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_PARKING"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "익스테리어 디자인 패키지": {
+      "fp_ids": [
+        "HEAD_LED",
+        "ALUMINUM_WHEEL",
+        "LED_TURN"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_EXTERIOR"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "빌트인 캠 패키지": {
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_BUILTIN_CAM"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "파노라마 선루프": {
+      "fp_ids": [
+        "SUNROOF_PANO",
+        "SUNROOF"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_SUNROOF"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "헤드업 디스플레이": {
+      "fp_ids": [
+        "HUD"
+      ],
+      "used_in": 3,
+      "used_as_basic": 0,
+      "used_as_select": 3,
+      "codes": [
+        "PKG_HUD"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    }
+  },
   "미니": {
     "썬루프(일반)": {
       "fp_ids": [
@@ -36477,7 +36607,129 @@
       ]
     }
   },
-  "포드": {},
+  "포드": {
+    "Co-Pilot360": {
+      "fp_ids": [],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_ADAS"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "컨비니언스 패키지": {
+      "fp_ids": [
+        "SMART_KEY",
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_CONVENIENCE"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "컴포트 패키지": {
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_COMFORT"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "파킹 어시스트 패키지": {
+      "fp_ids": [
+        "SPAS",
+        "SENSOR_REAR",
+        "RCTA",
+        "AVMS",
+        "BVM"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_PARKING"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "익스테리어 디자인 패키지": {
+      "fp_ids": [
+        "HEAD_LED",
+        "ALUMINUM_WHEEL",
+        "LED_TURN"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_EXTERIOR"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "빌트인 캠 패키지": {
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_BUILTIN_CAM"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "파노라마 선루프": {
+      "fp_ids": [
+        "SUNROOF_PANO",
+        "SUNROOF"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_SUNROOF"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "헤드업 디스플레이": {
+      "fp_ids": [
+        "HUD"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_HUD"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    }
+  },
   "포르쉐": {
     "썬루프(일반)": {
       "fp_ids": [
@@ -57635,7 +57887,129 @@
       ]
     }
   },
-  "혼다": {},
+  "혼다": {
+    "Honda Sensing": {
+      "fp_ids": [],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_ADAS"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "컨비니언스 패키지": {
+      "fp_ids": [
+        "SMART_KEY",
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_CONVENIENCE"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "컴포트 패키지": {
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_COMFORT"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "파킹 어시스트 패키지": {
+      "fp_ids": [
+        "SPAS",
+        "SENSOR_REAR",
+        "RCTA",
+        "AVMS",
+        "BVM"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_PARKING"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "익스테리어 디자인 패키지": {
+      "fp_ids": [
+        "HEAD_LED",
+        "ALUMINUM_WHEEL",
+        "LED_TURN"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_EXTERIOR"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "빌트인 캠 패키지": {
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_BUILTIN_CAM"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "파노라마 선루프": {
+      "fp_ids": [
+        "SUNROOF_PANO",
+        "SUNROOF"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_SUNROOF"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    },
+    "헤드업 디스플레이": {
+      "fp_ids": [
+        "HUD"
+      ],
+      "used_in": 6,
+      "used_as_basic": 0,
+      "used_as_select": 6,
+      "codes": [
+        "PKG_HUD"
+      ],
+      "categories": [
+        "선택사양"
+      ]
+    }
+  },
   "BMW": {
     "썬루프(일반)": {
       "fp_ids": [

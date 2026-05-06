@@ -25,6 +25,7 @@ const DEV_TABS = [
   { id: 'data',    icon: 'database',        label: 'RTDB 현황',   sub: '컬렉션 viewer' },
   { id: 'upload',  icon: 'upload-simple',   label: '일괄 업로드', sub: 'CSV / Excel' },
   { id: 'sync',    icon: 'google-drive-logo', label: '외부 상품 동기화', sub: '공급사별 외부 시트 → products' },
+  { id: 'matrix-import', icon: 'magic-wand', label: '종합시트 매트릭스 import', sub: '시트 → catalog 매칭 → 우리형식 정규화' },
   { id: 'stock',   icon: 'trash',           label: '데이터 삭제', sub: '재고 일괄 삭제' },
   { id: 'tools',   icon: 'wrench',          label: '시스템 도구', sub: '캐시·마이그레이션' },
 ];
@@ -120,6 +121,7 @@ function renderDevTab(id) {
   if (id === 'color')   return renderColorTab(el);
   if (id === 'upload')  return renderUploadTab(el);
   if (id === 'sync')    return renderSyncTab(el);
+  if (id === 'matrix-import') return renderMatrixImportTab(el);
   if (id === 'data')    return renderDataTab(el);
 }
 
@@ -1406,5 +1408,181 @@ function renderVehicleDetail(sel) {
       </div>
     </div>
   `;
+}
+
+/* ──────── 종합시트 매트릭스 import ────────
+ *  외부 공급사 종합시트 → row 별 catalog 매칭 → 우리 형식 정규화 → 차량번호 unique 만 미리보기 → import.
+ *  공급사 코드는 비워서 import (사용자가 매물 단위로 추후 매핑). */
+const MATRIX_IMPORT_DEFAULT_SHEET = '1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg';
+const MATRIX_IMPORT_DEFAULT_TAB = '종합';
+let _matrixImportRows = null;
+
+function renderMatrixImportTab(el) {
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:10px;height:100%;">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">
+        <input type="text" class="input" id="miSheetId" value="${MATRIX_IMPORT_DEFAULT_SHEET}" style="flex:1;min-width:280px;font-family:monospace;font-size:11px;">
+        <input type="text" class="input" id="miTab" value="${MATRIX_IMPORT_DEFAULT_TAB}" style="width:120px;">
+        <button class="btn btn-sm btn-primary" id="miFetchBtn"><i class="ph ph-google-drive-logo"></i> 시트 불러오기</button>
+        <button class="btn btn-sm" id="miImportBtn" disabled><i class="ph ph-cloud-arrow-up"></i> 매칭된 매물 import</button>
+        <span id="miStatus" style="font-size:11px;color:var(--text-muted);margin-left:auto;"></span>
+      </div>
+      <div id="miSummary" style="font-size:12px;padding:8px;background:var(--bg-stripe);border-radius:4px;display:none;"></div>
+      <div id="miPreview" style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
+    </div>
+  `;
+  const fetchBtn = el.querySelector('#miFetchBtn');
+  const importBtn = el.querySelector('#miImportBtn');
+  const status = el.querySelector('#miStatus');
+  const summary = el.querySelector('#miSummary');
+  const preview = el.querySelector('#miPreview');
+  const sheetIdEl = el.querySelector('#miSheetId');
+  const tabEl = el.querySelector('#miTab');
+
+  fetchBtn.addEventListener('click', async () => {
+    const sheetId = sheetIdEl.value.trim();
+    const tab = tabEl.value.trim();
+    if (!sheetId || !tab) { showToast('sheet ID + tab 필요', 'error'); return; }
+
+    fetchBtn.disabled = true;
+    importBtn.disabled = true;
+    status.textContent = '시트 fetch 중...';
+    devLog(`[matrix-import] fetch: ${sheetId} / ${tab}`);
+    try {
+      const { fetchSheetValues, buildHeaderMap, parseRow, enrichWithCatalog, isValidCarNumber } = await import('../core/sheet-importer.js');
+      const values = await fetchSheetValues(sheetId, tab);
+      if (values.length < 2) throw new Error('row 없음');
+      const headerMap = buildHeaderMap(values[0]);
+      devLog(`[matrix-import] header columns: ${Object.keys(headerMap).join(', ')}`);
+
+      // 시스템 차량번호 set (중복 제외용)
+      const sysCarNums = new Set(
+        (store.products || [])
+          .filter(p => !p._deleted)
+          .map(p => (p.car_number || '').trim())
+          .filter(Boolean)
+      );
+
+      status.textContent = `매칭 분석 중 (${values.length - 1}대)...`;
+      const results = [];
+      for (let i = 1; i < values.length; i++) {
+        const raw = parseRow(values[i], headerMap);
+        if (!raw.car_number) continue;   // 빈 row skip
+        const isDup = sysCarNums.has(raw.car_number);
+        const isValid = isValidCarNumber(raw.car_number);
+        let enriched = null;
+        let reason = '';
+        if (!isValid) {
+          reason = '차량번호 형식 오류';
+        } else if (isDup) {
+          reason = '시스템에 이미 존재';
+        } else {
+          enriched = await enrichWithCatalog(raw);
+          if (!enriched.ok) reason = enriched.reason;
+        }
+        results.push({ raw, enriched, isDup, isValid, reason });
+      }
+      _matrixImportRows = results;
+
+      const total = results.length;
+      const matched = results.filter(r => r.enriched?.ok).length;
+      const dups = results.filter(r => r.isDup).length;
+      const invalid = results.filter(r => !r.isValid && !r.isDup).length;
+      const failed = total - matched - dups - invalid;
+
+      summary.style.display = 'block';
+      summary.innerHTML = `
+        <b>전체 ${total}</b> ·
+        <span style="color:var(--alert-green-text);">매칭 ${matched}</span> ·
+        <span style="color:var(--alert-orange-text);">중복 ${dups}</span> ·
+        <span style="color:var(--alert-red-text);">잘못된 plate ${invalid}</span> ·
+        <span style="color:var(--text-weak);">매칭실패 ${failed}</span>
+      `;
+
+      preview.style.display = 'block';
+      preview.innerHTML = renderMatrixImportPreview(results);
+
+      importBtn.disabled = matched === 0;
+      status.textContent = matched ? `${matched}대 import 가능` : '매칭 매물 없음';
+      devLog(`[matrix-import] total=${total} matched=${matched} dup=${dups} invalid=${invalid} failed=${failed}`);
+    } catch (e) {
+      console.error('[matrix-import]', e);
+      showToast('시트 fetch 실패: ' + (e.message || e), 'error');
+      status.textContent = '실패: ' + (e.message || e);
+    } finally {
+      fetchBtn.disabled = false;
+    }
+  });
+
+  importBtn.addEventListener('click', async () => {
+    if (!_matrixImportRows) return;
+    const matched = _matrixImportRows.filter(r => r.enriched?.ok);
+    if (!matched.length) { showToast('import 대상 없음', 'warn'); return; }
+    if (!confirm(`매칭된 ${matched.length}대를 products 에 import 합니다.\n공급사 코드는 비워둠 — 추후 매물별 매핑 필요.\n계속할까요?`)) return;
+
+    importBtn.disabled = true;
+    status.textContent = `import 중 (0/${matched.length})...`;
+    const { allocateManualProductUid } = await import('../firebase/collections.js');
+    let success = 0, fail = 0;
+    for (const r of matched) {
+      try {
+        const uid = await allocateManualProductUid();
+        const me = store.currentUser || {};
+        const p = r.enriched.matched_product;
+        const rec = {
+          _key: uid,
+          product_uid: uid,
+          product_code: uid,
+          provider_company_code: '',   // 추후 사용자가 매핑
+          partner_code: '',
+          ...p,
+          is_active: true,
+          created_at: Date.now(),
+          created_by: me.uid || 'matrix-import',
+        };
+        await setRecord(`products/${uid}`, rec);
+        success++;
+        status.textContent = `import 중 (${success}/${matched.length})...`;
+      } catch (e) {
+        console.warn('[matrix-import push]', e);
+        fail++;
+      }
+    }
+    status.textContent = `완료: ${success}대 등록${fail ? ` / ${fail}대 실패` : ''}`;
+    showToast(`${success}대 import 완료${fail ? ` (${fail}대 실패)` : ''}`, fail ? 'warn' : 'success');
+    importBtn.disabled = false;
+  });
+}
+
+function renderMatrixImportPreview(results) {
+  const head = `<tr style="position:sticky;top:0;background:var(--bg-header);">
+    <th style="padding:4px 6px;text-align:left;font-size:11px;">상태</th>
+    <th style="padding:4px 6px;text-align:left;font-size:11px;">차량번호</th>
+    <th style="padding:4px 6px;text-align:left;font-size:11px;">제조사 / 모델</th>
+    <th style="padding:4px 6px;text-align:left;font-size:11px;">세부모델 (시트 → 표준)</th>
+    <th style="padding:4px 6px;text-align:left;font-size:11px;">트림</th>
+    <th style="padding:4px 6px;text-align:left;font-size:11px;">연식 / 연료</th>
+    <th style="padding:4px 6px;text-align:left;font-size:11px;">사유</th>
+  </tr>`;
+  const rows = results.map(r => {
+    const raw = r.raw;
+    const e = r.enriched;
+    const sym = e?.ok ? '✓' : (r.isDup ? '⚠' : '✗');
+    const tone = e?.ok ? 'green' : (r.isDup ? 'orange' : 'red');
+    const sub = e?.ok
+      ? `${esc(raw.sub_model || raw.raw_model || '')} → <b>${esc(e.matched_product.sub_model)}</b>`
+      : esc(raw.sub_model || raw.raw_model || '-');
+    const trim = e?.ok ? esc(e.matched_product.trim_name || '-') : esc(raw.trim_name || '-');
+    return `<tr style="border-bottom:1px solid var(--border-soft);">
+      <td style="padding:3px 6px;color:var(--alert-${tone}-text);font-weight:600;">${sym}</td>
+      <td style="padding:3px 6px;font-family:monospace;">${esc(raw.car_number)}</td>
+      <td style="padding:3px 6px;">${esc(raw.maker || '-')} / ${esc(raw.raw_model || '-')}</td>
+      <td style="padding:3px 6px;font-size:11px;">${sub}</td>
+      <td style="padding:3px 6px;font-size:11px;">${trim}</td>
+      <td style="padding:3px 6px;font-size:11px;">${esc(String(raw.year || '-'))} · ${esc(raw.fuel_type || '-')}</td>
+      <td style="padding:3px 6px;font-size:11px;color:var(--text-weak);">${esc(r.reason || (e?.ok ? `매칭 (${e.confidence})` : '-'))}</td>
+    </tr>`;
+  }).join('');
+  return `<table style="width:100%;border-collapse:collapse;font-size:12px;">${head}${rows}</table>`;
 }
 

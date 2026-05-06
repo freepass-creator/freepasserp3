@@ -13,7 +13,7 @@
 | 옵션 텍스트 총수 | 55316 |
 | **FP 매칭 성공** | 32457 (58.7%) |
 | FP 매칭 실패 | 22859 |
-| FP_KEYWORD_RULES 등록 키워드 | 1545 |
+| FP_KEYWORD_RULES 등록 키워드 | 1569 |
 
 ## A. 옵션 텍스트 비어있는 catalog (trim 키만, basic/select 모두 빈 stub)
 
