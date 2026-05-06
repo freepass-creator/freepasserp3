@@ -1,100 +1,49 @@
 /**
- * 차종 마스터 관리 (admin) — JPKerp2 car-master.tsx 포팅
- * - 전체 차종 리스트 + 검색 + 필터 (제조사)
- * - 신규 등록 / 수정 / 삭제
- * - 한국 차종 263종 일괄 시드 import
+ * 차종 마스터 페이지 — catalog 매트릭스 단일 진실원 viewer
+ *  - 데이터원: public/data/car-master/_index.json (399 catalog)
+ *  - 검색/필터/메이커 그룹화
+ *  - row 클릭 시 detail 모달 (catalog json 미리보기 — view only)
+ *  - 신규 등록/수정/삭제는 catalog json 직접 추가/편집 (dev 도구)
+ *
+ * vehicle_master Firebase 컬렉션은 deprecate — 차종 마스터 화면은 catalog 기반.
  */
-import { store } from '../core/store.js';
 import { showToast } from '../core/toast.js';
 import { setBreadcrumbTail } from '../core/breadcrumb.js';
-import {
-  watchVehicleMaster, createVehicleModel, updateVehicleModel, deleteVehicleModel,
-  seedVehicleMaster, uniqueMakers,
-} from '../core/vehicle-master.js';
-import { loadIndex } from '../core/vehicle-matrix.js';
+import { loadIndex, loadCatalog } from '../core/vehicle-matrix.js';
 
-/* catalog _index 캐시 — maker/model/sub/trim cascade 드롭다운 source */
-let _catalogIdx = null;
-async function ensureCatalogIdx() {
-  if (!_catalogIdx) _catalogIdx = await loadIndex();
-  return _catalogIdx;
-}
-
-/** _index.json 에서 maker 셋 (정렬) */
-function catMakers(idx) {
-  const s = new Set();
-  for (const e of Object.values(idx || {})) if (e.maker) s.add(e.maker);
-  return [...s].sort((a, b) => a.localeCompare(b, 'ko'));
-}
-
-/** catalog title 에서 model 명 추출 — 한글 prefix("더","뉴" 등) + 끝 코드("DL3","GN7") 제거 */
-function extractModelFromTitle(title, maker) {
-  let s = (title || '').replace(new RegExp('^' + maker + '\\s+'), '').trim();
-  let tokens = s.split(/\s+/);
-  while (tokens.length && /^(더|뉴|올|신|디|올뉴)$/.test(tokens[0])) tokens.shift();
-  while (tokens.length > 1 && /^[A-Z][A-Z0-9]+$/.test(tokens[tokens.length - 1])) tokens.pop();
-  return tokens.join(' ');
-}
-
-/** maker 의 catalog title 들에서 model 명 목록 */
-function catModelsByMaker(idx, maker) {
-  if (!maker) return [];
-  const s = new Set();
-  for (const e of Object.values(idx || {})) {
-    if (e.maker !== maker) continue;
-    const model = extractModelFromTitle(e.title, maker);
-    if (model) s.add(model);
-  }
-  return [...s].sort((a, b) => a.localeCompare(b, 'ko'));
-}
-
-/** maker + model 에 매칭되는 catalog 목록 → { id, title, subTitle } */
-function catCatalogsByMakerModel(idx, maker, model) {
-  if (!maker || !model) return [];
-  const out = [];
-  for (const e of Object.values(idx || {})) {
-    if (e.maker !== maker) continue;
-    if (extractModelFromTitle(e.title, maker) !== model) continue;
-    const titleNoMaker = (e.title || '').replace(new RegExp('^' + maker + '\\s+'), '').trim();
-    out.push({ id: e.id, title: e.title, subTitle: titleNoMaker });
-  }
-  out.sort((a, b) => a.subTitle.localeCompare(b.subTitle, 'ko'));
-  return out;
-}
-
-/** _index.json 의 entry.trims (배열) — 개별 catalog fetch 불필요 */
-function catTrimsByCatalogId(idx, catalogId) {
-  if (!catalogId) return [];
-  const e = idx?.[catalogId];
-  return Array.isArray(e?.trims) ? e.trims : [];
-}
-
-let unsub = null;
-let models = [];
+let _index = null;
 let filterMaker = '';
 let searchQuery = '';
-let editingKey = null;
 
-const CATEGORIES = [
-  '경차', '소형 세단', '준중형 세단', '중형 세단', '준대형 세단', '대형 세단', '스포츠 세단',
-  '소형 SUV', '준중형 SUV', '중형 SUV', '준대형 SUV', '대형 SUV',
-  '소형 EV', '준중형 EV', '대형 EV SUV', '소형 EV SUV', '소형 EV 트럭',
-  'MPV', '대형 MPV', '소형 트럭', '픽업트럭',
-];
-const FUEL_TYPES = ['가솔린', '디젤', 'LPG', '하이브리드', '전기', '수소'];
+function yy(v) { const m = (v || '').match(/^(\d{4})/); return m ? m[1].slice(2) : ''; }
+function yearLabel(c) {
+  const ys = yy(c.year_start);
+  const ye = yy(c.year_end);
+  if (ys && (c.year_end === '현재' || !ye)) return `${ys}~`;
+  if (ys && ye) return `${ys}~${ye}`;
+  return '';
+}
 
-export function mount() {
+function makerCounts(idx) {
+  const m = new Map();
+  for (const c of Object.values(idx)) {
+    if (!c.maker) continue;
+    m.set(c.maker, (m.get(c.maker) || 0) + 1);
+  }
+  return [...m.entries()]
+    .map(([maker, count]) => ({ maker, count }))
+    .sort((a, b) => a.maker.localeCompare(b.maker, 'ko'));
+}
+
+export async function mount() {
   setBreadcrumbTail({ icon: 'ph ph-car-profile', label: '차종 마스터' });
   render();
-  unsub = watchVehicleMaster((list) => {
-    models = list;
-    renderList();
-  });
+  _index = await loadIndex();
+  renderList();
 }
 
 export function unmount() {
-  unsub?.();
-  unsub = null;
+  _index = null;
 }
 
 function render() {
@@ -104,14 +53,13 @@ function render() {
       <header style="display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--c-border);flex-shrink:0;">
         <span style="font-size:var(--fs-md);font-weight:var(--fw-semibold);">차종 마스터</span>
         <span id="vmCount" style="font-size:var(--fs-xs);color:var(--c-text-muted);"></span>
-        <span style="margin-left:auto;display:flex;gap:var(--sp-2);">
-          <button class="btn btn-sm btn-outline" id="vmSeed"><i class="ph ph-download-simple"></i> 시드 일괄등록</button>
-          <button class="btn btn-sm btn-primary" id="vmNew"><i class="ph ph-plus"></i> 신규 등록</button>
+        <span style="margin-left:var(--sp-2);font-size:var(--fs-2xs);color:var(--c-text-muted);">
+          <i class="ph ph-info"></i> catalog json 단일 진실원 (수정은 git stub 직접)
         </span>
       </header>
       <div style="display:flex;gap:var(--sp-2);padding:var(--sp-2) var(--sp-4);border-bottom:1px solid var(--c-border-soft);flex-shrink:0;">
-        <input id="vmSearch" class="input input-sm" placeholder="모델·세부모델·차명 검색..." style="flex:1;">
-        <select id="vmMakerFilter" class="input input-sm" style="width:140px;"><option value="">제조사 전체</option></select>
+        <input id="vmSearch" class="input input-sm" placeholder="제조사·모델·세부모델 검색..." style="flex:1;">
+        <select id="vmMakerFilter" class="input input-sm" style="width:160px;"><option value="">제조사 전체</option></select>
       </div>
       <div id="vmList" style="flex:1;overflow-y:auto;"></div>
     </div>
@@ -124,236 +72,118 @@ function render() {
     filterMaker = e.target.value;
     renderList();
   });
-  document.getElementById('vmNew').addEventListener('click', () => openEditor(null));
-  document.getElementById('vmSeed').addEventListener('click', runSeed);
 }
 
 function renderList() {
   const el = document.getElementById('vmList');
-  if (!el) return;
+  if (!el || !_index) return;
 
-  // 제조사 필터 옵션 갱신
+  const total = Object.keys(_index).length;
+  const makers = makerCounts(_index);
   const makerSel = document.getElementById('vmMakerFilter');
-  const makers = uniqueMakers(models);
   const curSel = makerSel.value;
-  makerSel.innerHTML = `<option value="">제조사 전체 (${models.length})</option>` +
+  makerSel.innerHTML = `<option value="">제조사 전체 (${total})</option>` +
     makers.map(m => `<option value="${m.maker}" ${curSel === m.maker ? 'selected' : ''}>${m.maker} (${m.count})</option>`).join('');
 
-  // 필터 적용
-  let list = [...models];
-  if (filterMaker) list = list.filter(v => v.maker === filterMaker);
+  let list = Object.values(_index);
+  if (filterMaker) list = list.filter(c => c.maker === filterMaker);
   if (searchQuery) {
-    list = list.filter(v => [v.maker, v.model, v.sub, v.car_name, v.code, v.type_number_pattern]
+    list = list.filter(c => [c.maker, c.model_root, c.title, c.id]
       .some(s => s && String(s).toLowerCase().includes(searchQuery)));
   }
-  list.sort((a, b) => (a.maker + a.model + a.sub).localeCompare(b.maker + b.model + b.sub, 'ko'));
+  // 메이커 → model_root → year_start desc 정렬
+  list.sort((a, b) => {
+    if (a.maker !== b.maker) return (a.maker || '').localeCompare(b.maker || '', 'ko');
+    if ((a.model_root || '') !== (b.model_root || '')) return (a.model_root || '').localeCompare(b.model_root || '', 'ko');
+    return (b.year_start || '').localeCompare(a.year_start || '');
+  });
 
-  document.getElementById('vmCount').textContent = `${list.length}/${models.length} 종`;
+  document.getElementById('vmCount').textContent = `${list.length}/${total} 종`;
 
   if (!list.length) {
-    el.innerHTML = `<div style="padding:var(--sp-8);text-align:center;color:var(--c-text-muted);">차종 없음 — "시드 일괄등록" 또는 "신규 등록"</div>`;
+    el.innerHTML = `<div style="padding:var(--sp-8);text-align:center;color:var(--c-text-muted);">검색 결과 없음</div>`;
     return;
   }
-  el.innerHTML = list.map(v => {
-    const period = `${v.year_start || ''}~${v.year_end || ''}`;
-    const spec = [
-      v.displacement ? `${v.displacement}cc` : '',
-      v.seats ? `${v.seats}인승` : '',
-      v.battery_kwh ? `${v.battery_kwh}kWh` : '',
-      v.fuel_type, v.category,
-    ].filter(Boolean).join(' · ');
+
+  el.innerHTML = list.map(c => {
+    const yr = yearLabel(c);
+    const trimCount = Array.isArray(c.trims) ? c.trims.length : 0;
     return `
-      <div class="vm-row" data-key="${v._key}" style="display:grid;grid-template-columns:80px 110px 1fr auto auto;gap:var(--sp-3);padding:var(--sp-2) var(--sp-4);border-bottom:1px solid var(--c-border-soft);align-items:center;cursor:pointer;">
-        <span style="font-size:var(--fs-xs);color:var(--c-text-sub);">${v.maker || '-'}</span>
-        <span style="font-size:var(--fs-xs);color:var(--c-text-sub);">${v.model || '-'}</span>
-        <span style="font-size:var(--fs-sm);font-weight:var(--fw-medium);">${v.sub || '-'}</span>
-        <span style="font-size:var(--fs-2xs);color:var(--c-text-muted);">${period}</span>
-        <span style="font-size:var(--fs-2xs);color:var(--c-text-muted);">${spec}</span>
+      <div class="vm-row" data-cid="${c.id}" style="display:grid;grid-template-columns:90px 110px 1fr 90px 60px 130px;gap:var(--sp-3);padding:var(--sp-2) var(--sp-4);border-bottom:1px solid var(--c-border-soft);align-items:center;cursor:pointer;font-size:var(--fs-xs);">
+        <span style="color:var(--c-text-sub);">${c.maker || '-'}</span>
+        <span style="color:var(--c-text-sub);">${c.model_root || '-'}</span>
+        <span style="font-weight:var(--fw-medium);">${(c.title || '').replace(c.maker + ' ', '') || c.id}</span>
+        <span style="color:var(--c-text-muted);font-size:var(--fs-2xs);">${yr || '-'}</span>
+        <span style="color:var(--c-text-muted);font-size:var(--fs-2xs);">${trimCount ? `트림 ${trimCount}` : '-'}</span>
+        <span style="color:var(--c-text-muted);font-family:monospace;font-size:var(--fs-2xs);">${c.id}</span>
       </div>
     `;
   }).join('');
+
   el.querySelectorAll('.vm-row').forEach(row => {
     row.addEventListener('click', () => {
-      const v = models.find(x => x._key === row.dataset.key);
-      if (v) openEditor(v);
+      const cid = row.dataset.cid;
+      openDetail(cid);
     });
   });
 }
 
-async function runSeed() {
-  if (!confirm('한국 차종 263종을 일괄 등록합니다. 이미 있는 차종은 건너뜁니다. 계속?')) return;
-  showToast('시드 import 시작...');
+async function openDetail(catalogId) {
+  if (!catalogId) return;
   try {
-    const result = await seedVehicleMaster(({ i, total, added }) => {
-      if (i % 20 === 0) console.log(`[seed] ${i}/${total} (추가 ${added})`);
-    });
-    showToast(`완료: 추가 ${result.added} | 스킵 ${result.skipped} / 총 ${result.total}`);
-  } catch (e) {
-    console.error('[vmSeed]', e);
-    showToast(`시드 실패: ${e?.code || e?.message}`, 'error');
-  }
-}
+    const c = await loadCatalog(catalogId);
+    if (!c) { showToast(`catalog 로드 실패: ${catalogId}`); return; }
 
-async function openEditor(v) {
-  editingKey = v?._key || null;
-  const idx = await ensureCatalogIdx();
-  const makers = catMakers(idx);
-  const models = v?.maker ? catModelsByMaker(idx, v.maker) : [];
-  const cats   = (v?.maker && v?.model) ? catCatalogsByMakerModel(idx, v.maker, v.model) : [];
-  const trims  = (v?.catalog_id) ? catTrimsByCatalogId(idx, v.catalog_id) : [];
+    const trims = c.trims || {};
+    const trimRows = Object.entries(trims).map(([name, t]) => {
+      const price = t?.price?.base ? `${(t.price.base / 10000).toLocaleString()}만` : '-';
+      return `<tr><td style="padding:4px 8px;">${name}</td><td style="padding:4px 8px;color:var(--c-text-muted);">${t?.slug || ''}</td><td style="padding:4px 8px;text-align:right;">${price}</td></tr>`;
+    }).join('');
 
-  const modal = document.createElement('div');
-  modal.className = 'modal-overlay';
-  modal.style.cssText = 'position:fixed;inset:0;background:var(--c-overlay-dark);z-index:var(--z-overlay);display:flex;align-items:center;justify-content:center;padding:var(--sp-4);';
-  modal.innerHTML = `
-    <div style="background:var(--c-surface);border-radius:var(--ctrl-r);width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;">
-      <header style="display:flex;align-items:center;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--c-border);">
-        <span style="font-size:var(--fs-md);font-weight:var(--fw-semibold);flex:1;">${v ? '차종 수정' : '신규 차종'}</span>
-        <button id="vmCancel" class="btn btn-sm btn-ghost"><i class="ph ph-x"></i></button>
-      </header>
-      <div style="flex:1;overflow-y:auto;padding:var(--sp-4);display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3);">
-        ${fldSelect('제조사 (catalog)', 'maker', v?.maker, makers, { allowExternal: true })}
-        ${fldSelect('모델 (catalog)', 'model', v?.model, models, { allowExternal: true })}
-        ${fldCatalogSub('세부모델 (catalog)', 'sub', v?.sub, cats, v?.catalog_id)}
-        ${fldSelect('트림 (catalog)', 'trim', v?.trim, trims, { allowExternal: true })}
-        ${fld('차명 (등록증)', 'car_name', v?.car_name)}
-        ${fld('형식번호 패턴', 'type_number_pattern', v?.type_number_pattern)}
-        ${fld('생산 시작', 'year_start', v?.year_start)}
-        ${fld('생산 종료', 'year_end', v?.year_end, { placeholder: '현재' })}
-        ${fldSelect('카테고리', 'category', v?.category, CATEGORIES)}
-        ${fldSelect('연료', 'fuel_type', v?.fuel_type, FUEL_TYPES)}
-        ${fld('배기량 (cc)', 'displacement', v?.displacement, { type: 'number' })}
-        ${fld('승차정원', 'seats', v?.seats, { type: 'number' })}
-        ${fld('구동방식', 'drive_type', v?.drive_type, { placeholder: '전륜/후륜/4륜' })}
-        ${fld('변속기', 'transmission', v?.transmission)}
-        ${fld('엔진형식', 'engine_type', v?.engine_type)}
-        ${fld('배터리 (kWh)', 'battery_kwh', v?.battery_kwh, { type: 'number' })}
-        ${fld('EV 주행거리 (km)', 'ev_range', v?.ev_range, { type: 'number' })}
-        ${fld('내부코드', 'code', v?.code)}
+    const aliases = Array.isArray(c.aliases) && c.aliases.length
+      ? c.aliases.map(a => `<span style="display:inline-block;padding:1px 6px;margin:2px;background:var(--c-surface-2);border-radius:3px;font-size:var(--fs-2xs);">${a}</span>`).join('')
+      : '<span style="color:var(--c-text-muted);">-</span>';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.style.cssText = 'position:fixed;inset:0;background:var(--c-overlay-dark);z-index:var(--z-overlay);display:flex;align-items:center;justify-content:center;padding:var(--sp-4);';
+    modal.innerHTML = `
+      <div style="background:var(--c-surface);border-radius:var(--ctrl-r);width:100%;max-width:640px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;">
+        <header style="display:flex;align-items:center;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--c-border);">
+          <span style="font-size:var(--fs-md);font-weight:var(--fw-semibold);flex:1;">${c.title || c.catalog_id}</span>
+          <button id="vmDetailClose" class="btn btn-sm btn-ghost"><i class="ph ph-x"></i></button>
+        </header>
+        <div style="flex:1;overflow-y:auto;padding:var(--sp-4);font-size:var(--fs-xs);">
+          <div style="display:grid;grid-template-columns:100px 1fr;gap:var(--sp-2) var(--sp-3);margin-bottom:var(--sp-4);">
+            <span style="color:var(--c-text-muted);">catalog_id</span><span style="font-family:monospace;">${c.catalog_id || catalogId}</span>
+            <span style="color:var(--c-text-muted);">제조사</span><span>${c.maker || '-'}</span>
+            <span style="color:var(--c-text-muted);">모델</span><span>${c.model_root || '-'}</span>
+            <span style="color:var(--c-text-muted);">생산</span><span>${c.year_start || '-'} ~ ${c.year_end || '-'}</span>
+            <span style="color:var(--c-text-muted);">source</span><span>${c.source || '-'}</span>
+            <span style="color:var(--c-text-muted);">aliases</span><span>${aliases}</span>
+          </div>
+          ${trimRows ? `
+            <div style="font-weight:var(--fw-semibold);margin-bottom:var(--sp-2);">트림 (${Object.keys(trims).length})</div>
+            <table style="width:100%;border-collapse:collapse;border:1px solid var(--c-border-soft);">
+              <thead><tr style="background:var(--c-surface-2);"><th style="padding:4px 8px;text-align:left;">이름</th><th style="padding:4px 8px;text-align:left;">slug</th><th style="padding:4px 8px;text-align:right;">가격</th></tr></thead>
+              <tbody>${trimRows}</tbody>
+            </table>
+          ` : '<div style="color:var(--c-text-muted);">트림 데이터 없음</div>'}
+          ${c.note ? `<div style="margin-top:var(--sp-3);padding:var(--sp-2);background:var(--c-surface-2);border-radius:4px;color:var(--c-text-sub);"><b>note:</b> ${c.note}</div>` : ''}
+        </div>
+        <footer style="display:flex;gap:var(--sp-2);padding:var(--sp-3) var(--sp-4);border-top:1px solid var(--c-border);justify-content:flex-end;">
+          <span style="flex:1;font-size:var(--fs-2xs);color:var(--c-text-muted);align-self:center;">수정은 catalog json 직접 편집: <code>public/data/car-master/${c.catalog_id || catalogId}.json</code></span>
+          <button id="vmDetailOk" class="btn btn-sm">닫기</button>
+        </footer>
       </div>
-      <footer style="display:flex;gap:var(--sp-2);padding:var(--sp-3) var(--sp-4);border-top:1px solid var(--c-border);">
-        ${v ? `<button id="vmDel" class="btn btn-sm btn-danger"><i class="ph ph-trash"></i> 삭제</button>` : ''}
-        <button id="vmSave" class="btn btn-sm btn-primary" style="margin-left:auto;"><i class="ph ph-check"></i> 저장</button>
-      </footer>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  const close = () => modal.remove();
-  modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
-  document.getElementById('vmCancel').addEventListener('click', close);
-
-  // ── cascade 핸들러 — maker → model → sub → trim 자동 갱신
-  const sMaker = modal.querySelector('select[data-f="maker"]');
-  const sModel = modal.querySelector('select[data-f="model"]');
-  const sSub   = modal.querySelector('select[data-f="sub"]');
-  const sTrim  = modal.querySelector('select[data-f="trim"]');
-
-  function fillSel(sel, options, val, allowExternal) {
-    const opts = [...new Set([...options, ...(val && !options.includes(val) && allowExternal ? [val] : [])])];
-    sel.innerHTML = `<option value="">-</option>` +
-      opts.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}${options.includes(o) ? '' : ' (catalog 외)'}</option>`).join('');
+    `;
+    document.body.appendChild(modal);
+    const close = () => modal.remove();
+    modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+    document.getElementById('vmDetailClose').addEventListener('click', close);
+    document.getElementById('vmDetailOk').addEventListener('click', close);
+  } catch (e) {
+    console.error('[vmDetail]', e);
+    showToast('catalog 로드 실패: ' + (e.message || e));
   }
-
-  sMaker?.addEventListener('change', () => {
-    const mk = sMaker.value;
-    fillSel(sModel, mk ? catModelsByMaker(idx, mk) : [], '', true);
-    sSub.dataset.catalogId = '';
-    fillSel(sSub, [], '', false);
-    fillSel(sTrim, [], '', true);
-  });
-  sModel?.addEventListener('change', () => {
-    const mk = sMaker.value, md = sModel.value;
-    const cs = (mk && md) ? catCatalogsByMakerModel(idx, mk, md) : [];
-    fillCatalogSub(sSub, cs, '', null);
-    fillSel(sTrim, [], '', true);
-  });
-  sSub?.addEventListener('change', () => {
-    const cid = sSub.options[sSub.selectedIndex]?.dataset?.cid || '';
-    sSub.dataset.catalogId = cid;
-    const trims = cid ? catTrimsByCatalogId(idx, cid) : [];
-    fillSel(sTrim, trims, '', true);
-  });
-
-  document.getElementById('vmSave').addEventListener('click', async () => {
-    const data = Object.fromEntries(
-      [...modal.querySelectorAll('[data-f]')].map(el => {
-        const key = el.dataset.f;
-        let val = el.value.trim();
-        if (el.type === 'number') val = val ? Number(val) : undefined;
-        return [key, val || undefined];
-      })
-    );
-    // catalog_id 도 같이 저장 (sub select 의 선택된 옵션에서 가져옴)
-    const cid = sSub?.options[sSub.selectedIndex]?.dataset?.cid || sSub?.dataset?.catalogId || '';
-    if (cid) data.catalog_id = cid;
-    if (!data.maker || !data.model || !data.sub) { showToast('제조사·모델·세부모델 필수', 'error'); return; }
-    try {
-      if (editingKey) await updateVehicleModel(editingKey, data);
-      else await createVehicleModel(data);
-      showToast('저장됨');
-      close();
-    } catch (e) { showToast(`실패: ${e?.code || e?.message}`, 'error'); }
-  });
-  document.getElementById('vmDel')?.addEventListener('click', async () => {
-    if (!confirm(`"${v.sub}" 차종을 삭제하시겠습니까?`)) return;
-    await deleteVehicleModel(v._key);
-    showToast('삭제됨');
-    close();
-  });
-}
-
-/** select 채우기 — catalog 옵션 + (옵션 외 기존 값이 있으면 마지막에 추가) */
-function fillCatalogSub(sel, cats, val, catalogId) {
-  const opts = cats.map(c => `<option value="${c.subTitle}" data-cid="${c.id}" ${val === c.subTitle ? 'selected' : ''}>${c.subTitle}</option>`);
-  if (val && !cats.some(c => c.subTitle === val)) {
-    opts.push(`<option value="${val}" data-cid="${catalogId || ''}" selected>${val} (catalog 외)</option>`);
-  }
-  sel.innerHTML = `<option value="">-</option>` + opts.join('');
-  sel.dataset.catalogId = catalogId || '';
-}
-
-function fld(label, key, val, opts = {}) {
-  const type = opts.type || 'text';
-  const ph = opts.placeholder || '';
-  const full = opts.full ? 'grid-column:1/-1;' : '';
-  return `
-    <label style="display:flex;flex-direction:column;gap:4px;${full}">
-      <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${label}</span>
-      <input class="input input-sm" data-f="${key}" type="${type}" value="${val ?? ''}" placeholder="${ph}">
-    </label>
-  `;
-}
-function fldSelect(label, key, val, options, opts = {}) {
-  // opts.allowExternal: catalog 외 기존 값 있으면 옵션에 추가 (selected)
-  const inOptions = options.includes(val);
-  const externalOpt = (opts.allowExternal && val && !inOptions)
-    ? `<option value="${val}" selected>${val} (catalog 외)</option>` : '';
-  return `
-    <label style="display:flex;flex-direction:column;gap:4px;">
-      <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${label}</span>
-      <select class="input input-sm" data-f="${key}">
-        <option value="">-</option>
-        ${options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
-        ${externalOpt}
-      </select>
-    </label>
-  `;
-}
-
-/** 세부모델 select — catalog 후보들 (id + subTitle) + 기존 값 fallback */
-function fldCatalogSub(label, key, val, cats, catalogId) {
-  const opts = cats.map(c => `<option value="${c.subTitle}" data-cid="${c.id}" ${val === c.subTitle ? 'selected' : ''}>${c.subTitle}</option>`);
-  const inCats = cats.some(c => c.subTitle === val);
-  if (val && !inCats) {
-    opts.push(`<option value="${val}" data-cid="${catalogId || ''}" selected>${val} (catalog 외)</option>`);
-  }
-  return `
-    <label style="display:flex;flex-direction:column;gap:4px;grid-column:1/-1;">
-      <span style="font-size:var(--fs-xs);color:var(--c-text-muted);">${label}</span>
-      <select class="input input-sm" data-f="${key}" data-catalog-id="${catalogId || ''}">
-        <option value="">-</option>
-        ${opts.join('')}
-      </select>
-    </label>
-  `;
 }
