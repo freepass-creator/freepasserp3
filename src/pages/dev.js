@@ -1253,8 +1253,17 @@ function _vmYearLabel(c) {
 
 async function renderVehicleTab(el) {
   el.innerHTML = `<div style="padding:12px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> catalog 로드 중...</div>`;
-  const { loadIndex } = await import('../core/vehicle-matrix.js');
-  _vmCatalogIdx = await loadIndex();
+  try {
+    _vmCatalogIdx = await loadIndex();
+  } catch (e) {
+    console.error('[vmTab] loadIndex 실패', e);
+    el.innerHTML = `<div style="padding:12px;color:#dc2626;">catalog 로드 실패: ${e.message || e}</div>`;
+    return;
+  }
+  if (!_vmCatalogIdx || Object.keys(_vmCatalogIdx).length === 0) {
+    el.innerHTML = `<div style="padding:12px;color:#dc2626;">_index.json 비어있음 (build 확인 필요)</div>`;
+    return;
+  }
   drawVehicleTab(el);
 }
 
