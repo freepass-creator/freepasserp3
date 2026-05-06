@@ -2659,8 +2659,12 @@ function renderCatalog() {
       if (conflictWith) {
         div.title = `「${conflictWith}」와 함께 선택 시 자동 해제됨`;
       }
-      const head = pkgName && pkgName !== names[0] ? `<div class="pkg-head">${pkgName}${price ? ` <span class="pkg-price">${(price/10000).toFixed(0)}만</span>` : ''}</div>` : '';
-      const body = pkgName && pkgName !== names[0] ? `<div class="pkg-items">${names.join(' · ')}</div>` : `<div class="pkg-name">${names.join(' + ')}${price ? ` <span class="pkg-price">${(price/10000).toFixed(0)}만</span>` : ''}</div>`;
+      // 옵션명에서 괄호 설명 제거 — 옵션명만 표시
+      const stripParen = (s) => (s || '').replace(/\s*\([^)]*\)/g, '').replace(/\s+/g, ' ').trim();
+      const cleanNames = names.map(stripParen);
+      const cleanPkgName = stripParen(pkgName);
+      const head = cleanPkgName && cleanPkgName !== cleanNames[0] ? `<div class="pkg-head">${cleanPkgName}${price ? ` <span class="pkg-price">${(price/10000).toFixed(0)}만</span>` : ''}</div>` : '';
+      const body = cleanPkgName && cleanPkgName !== cleanNames[0] ? `<div class="pkg-items">${cleanNames.join(' · ')}</div>` : `<div class="pkg-name">${cleanNames.join(' + ')}${price ? ` <span class="pkg-price">${(price/10000).toFixed(0)}만</span>` : ''}</div>`;
       const conflictNote = conflictWith ? `<div class="conflict-with">⚠ 「${conflictWith}」와 배타 — 클릭 시 자동 교체</div>` : '';
       div.innerHTML = head + body + conflictNote;
       div.addEventListener('click', () => {
