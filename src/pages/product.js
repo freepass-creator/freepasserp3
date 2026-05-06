@@ -501,6 +501,32 @@ async function refreshMatrixBanner(card, p) {
         }
       });
     }
+    // 자동 적용 — high confidence + 매물 sub_model 가 catalog 표준과 다르면 자동 보정.
+    //   기존 값은 *_legacy 필드에 보존하여 손상 회피. 사용자 [수정] 모드 진입 전이면 silent.
+    if (anyDiff && r.confidence === 'high' && !document.body.classList.contains('is-edit-mode')) {
+      const autoUpdates = {};
+      if (subDiffers && (!p.sub_model || p.sub_model.length < (standardSub || '').length / 2)) {
+        if (p.sub_model_legacy == null) autoUpdates.sub_model_legacy = p.sub_model || '';
+        autoUpdates.sub_model = standardSub;
+      }
+      if (cidDiffers && !p.catalog_id) {
+        autoUpdates.catalog_id = r.catalogId;
+      }
+      if (modelDiffers && (!p.model || p.model === p.maker)) {
+        if (p.model_legacy == null) autoUpdates.model_legacy = p.model || '';
+        autoUpdates.model = standardModel;
+      }
+      if (Object.keys(autoUpdates).length) {
+        updateRecord(`products/${p._key}`, autoUpdates, { silent: true })
+          .then(() => {
+            Object.assign(p, autoUpdates);
+            const fields = Object.keys(autoUpdates).filter(k => !k.endsWith('_legacy'));
+            if (fields.length) showToast(`매트릭스 자동보정: ${fields.join(', ')}`, 'info');
+          })
+          .catch(e => console.warn('[matrix auto-apply]', e));
+      }
+    }
+
     // 정정 적용 버튼 — updateRecord(path, data) 시그니처
     const applyBtn = banner.querySelector('#mtxApplyOne');
     if (applyBtn) {
