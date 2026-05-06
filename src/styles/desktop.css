@@ -1280,10 +1280,19 @@
     vertical-align: middle;
     font-size: 12px;
   }
-  /* 3줄 이상 → 본문 축소 (영업자 의견: 정보 다 보이는게 우선) */
-  .table-fixed tbody td.is-cramped {
+  /* 선택옵션 컬럼 — 모든 칩 규격 통일 (11px), 자연 wrap (row 가 옵션 수만큼 늘어남) */
+  .table-fixed tbody td.col-options {
+    white-space: normal;
+    line-height: 1.5;
+    padding: 4px 6px;
+  }
+  .table-fixed tbody td.col-options .chip {
+    cursor: default;
+    margin: 1px;
+    padding: 1px 5px;
     font-size: var(--fs-2xs);
-    line-height: 1.2;
+    height: auto;
+    line-height: 1.4;
   }
   /* 차량번호 / 대여기간 헤더 — weight 동일, 색 그대로 (다른 헤더와 구분 없음) */
   [data-page="search"] table.table-fixed thead th.sticky-col,

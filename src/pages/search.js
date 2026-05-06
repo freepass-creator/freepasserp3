@@ -148,29 +148,21 @@ export function renderSearchTable(products) {
     const isOpen = ws4 && !ws4.classList.contains('is-collapsed');
     if (p && (isOpen || !restored)) renderSearchDetail(p);
   }
-  // 2줄 초과 셀 → 글씨 축소 (.is-cramped). 가독성 보조용이라 idle 에 늦게 적용해도 무방.
-  // 직전 호출 취소 (검색 디바운스 중 빠른 재실행 시 누적 방지)
-  if (_crampPassHandle) {
-    (window.cancelIdleCallback || clearTimeout)(_crampPassHandle);
-  }
-  const schedule = window.requestIdleCallback || ((fn) => setTimeout(fn, 80));
-  _crampPassHandle = schedule(() => {
-    const cells = tbody.querySelectorAll('td');
-    if (!cells.length) return;
-    const lh = parseFloat(getComputedStyle(cells[0]).lineHeight) || 16;
-    const threshold = lh * 2 + 1;
-    const overflow = new Array(cells.length);
-    for (let i = 0; i < cells.length; i++) overflow[i] = cells[i].scrollHeight > threshold;
-    for (let i = 0; i < cells.length; i++) cells[i].classList.toggle('is-cramped', overflow[i]);
-  });
+  // 선택옵션 셀 cramped 동적 토글 제거 — 매물 수만큼 scrollHeight 측정이 강제 reflow 유발해 페이지 먹통.
+  // CSS 의 line-clamp 로 정적 처리 (col-options 셀 안의 chip 들이 N줄 초과하면 자동 잘림).
 }
-let _crampPassHandle = null;
 
 function renderSearchRow(p) {
   const status = p.vehicle_status || '대기';
   const stShort = shortStatus(status);
   const credit = (p._policy && (p._policy.credit_grade || p._policy.screening_criteria)) || p.credit_grade || '-';
-  const opts = Array.isArray(p.options) ? p.options.join('·') : (p.options || '-');
+  const optsArr = Array.isArray(p.options)
+    ? p.options
+    : (p.options ? String(p.options).split(/[\s·,/]+/).filter(Boolean) : []);
+  const opts = optsArr.length ? optsArr.join(' ') : '-';
+  const optsHtml = optsArr.length
+    ? optsArr.map(o => `<span class="chip">${esc(o)}</span>`).join('')
+    : '<span class="dim">-</span>';
   const maker = p.maker || '-';
   const model = p.model || '-';
   const subModel = p.sub_model || '-';
@@ -186,7 +178,7 @@ function renderSearchRow(p) {
       <td title="${esc(model)}">${model}</td>
       <td title="${esc(subModel)}">${subModel}</td>
       <td title="${esc(trim)}">${trim}</td>
-      <td class="dim" title="${esc(opts)}">${opts}</td>
+      <td class="col-options" title="${esc(opts)}">${optsHtml}</td>
       <td class="center">${p.year || '-'}</td>
       <td class="num">${fmtMileage(p.mileage)}</td>
       <td class="center col-tight" title="${esc(p.fuel_type || '')}">${fuelB}</td>
