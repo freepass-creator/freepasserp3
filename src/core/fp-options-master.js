@@ -9,7 +9,7 @@ export const FP_OPT_MASTER = {
   exterior: { label:'외관', items: [
     ['SUNROOF','썬루프(일반)','opt'],['SUNROOF_PANO','파노라마 썬루프','opt'],['SUNROOF_SAFETY','세이프티 썬루프','opt'],
     ['HEAD_LED','LED 헤드램프'],['HEAD_HID','제논 헤드램프(HID)','unc'],['POSITION_LED','LED 포지션램프'],
-    ['DRL','주간 주행등'],
+    ['DRL','주간 주행등'],['LED_TURN','LED 방향지시등','unc'],
     ['MIRROR_FOLD','전동접이 사이드미러'],
     ['ROOF_RACK','루프랙','unc'],['ALUMINUM_WHEEL','알루미늄휠'],
     ['FOG_LED','안개등 (LED)'],['REAR_LED_COMBI','LED 리어 콤비네이션 램프'],
@@ -24,6 +24,7 @@ export const FP_OPT_MASTER = {
     ['HEAT_SEAT_FRONT','열선시트(앞좌석)'],['HEAT_SEAT_REAR','열선시트(뒷좌석)','unc'],
     ['VENT_SEAT_DR','통풍시트(운전석)','unc'],['VENT_SEAT_PS','통풍시트(동승석)','unc'],
     ['SEAT_LEATHER','가죽시트'],['SEAT_FABRIC','직물 시트'],
+    ['STR_LEATHER','가죽 스티어링 휠','unc'],
     ['ECM_MIRROR','ECM룸미러'],
     ['MTS_E_MIRROR','전자식 룸미러(MTS)','opt'],
   ]},
@@ -65,6 +66,8 @@ export const FP_OPT_MASTER = {
     ['V2L','실외 V2L (전기차)','unc'],
     ['ISOFIX','유아용 시트 고정장치 (ISOFIX)','unc'],
     ['REGEN','회생제동 시스템 (전기차)','unc'],
+    ['WORKIN','워크인 디바이스 (동승석)','unc'],
+    ['VESS','가상 엔진 사운드 (VESS, 보행자 보호)','unc'],
   ]},
   media: { label:'미디어', items: [
     ['MP3','MP3'],['BLUETOOTH','블루투스'],['USB','USB 단자'],

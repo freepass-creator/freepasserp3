@@ -1021,7 +1021,9 @@
       ]
     },
     "동승석 워크인 디바이스": {
-      "fp_ids": [],
+      "fp_ids": [
+        "WORKIN"
+      ],
       "used_in": 22,
       "used_as_basic": 105,
       "used_as_select": 2,
@@ -2027,7 +2029,9 @@
       ]
     },
     "인조가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 14,
       "used_as_basic": 65,
       "used_as_select": 0,
@@ -2359,7 +2363,9 @@
       ]
     },
     "가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 12,
       "used_as_basic": 89,
       "used_as_select": 0,
@@ -2495,7 +2501,9 @@
       ]
     },
     "프론트/리어 LED 턴시그널램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 12,
       "used_as_basic": 55,
       "used_as_select": 0,
@@ -3545,7 +3553,9 @@
       ]
     },
     "프론트 LED 턴시그널램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 7,
       "used_as_basic": 17,
       "used_as_select": 0,
@@ -3614,7 +3624,9 @@
       ]
     },
     "가상 엔진 사운드(보행자 보호)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "VESS"
+      ],
       "used_in": 7,
       "used_as_basic": 44,
       "used_as_select": 0,
@@ -6058,7 +6070,9 @@
       ]
     },
     "리어 LED 턴시그널램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 3,
       "used_as_basic": 10,
       "used_as_select": 0,
@@ -6767,7 +6781,9 @@
       ]
     },
     "프론트 LED 턴시그널 램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 3,
       "used_as_basic": 27,
       "used_as_select": 0,
@@ -6838,7 +6854,9 @@
       ]
     },
     "D컷 가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 3,
       "used_as_basic": 16,
       "used_as_select": 0,
@@ -7620,7 +7638,9 @@
       ]
     },
     "가죽 스티어링 휠(블랙 하이그로시 가니쉬 포함)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 3,
       "used_as_basic": 6,
       "used_as_select": 0,
@@ -9329,7 +9349,9 @@
       ]
     },
     "LED 턴시그널램프(프론트/리어)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 2,
       "used_as_basic": 16,
       "used_as_select": 0,
@@ -10957,7 +10979,9 @@
       ]
     },
     "가죽 스티어링 휠&amp;변속기 노브": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -11224,7 +11248,9 @@
       ]
     },
     "리어 LED 턴시그널 램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 1,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -12734,7 +12760,9 @@
       ]
     },
     "프론트/리어 LED 턴시그널 램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -16993,13 +17021,13 @@
     },
     "QRescue 코드, 다중충돌방지제동보조, 앞좌석 에어백(운전석/동승석 듀얼 스테이지), 파사이드 에어백(앞), 사이드(앞)/커튼 에어백, 경사로 밀림방지장치(HSA), 차선 자세 제어장치(HDC), 차체 자세 제어장치(ESC), 타이어 공기압 자동 감지 시스템, EBD-ABS(BAS 내장), 급제동 경보 시스템(ESS), 전/후륜 디스크 브레이크(전륜 벤틸레이티드), 충돌 감지 도어록 해제 장치, 차속 감응 오토 도어록, 앞좌석 3점식 시트벨트(듀얼 프리텐셔너/리마인드 경고 기능), 뒷좌석 3점식 시트벨트(리마인드 경고 기능), 뒷좌석 좌/우 측면 좌석 프리텐셔너 포함), ISOFIX 유아용 시트 고정 장치, 차량용 소화기": {
       "fp_ids": [
+        "ISOFIX",
         "TPMS",
         "HAC",
         "VDC",
         "BAS",
         "ABS",
         "ESS",
-        "ISOFIX",
         "AIRBAG_SIDE",
         "AIRBAG_DR"
       ],
@@ -17018,6 +17046,7 @@
         "HEAD_LED",
         "REAR_LED_COMBI",
         "MIRROR_FOLD",
+        "LED_TURN",
         "DRL",
         "ROOF_RACK",
         "ALUMINUM_WHEEL"
@@ -17034,6 +17063,7 @@
     },
     "블랙 인조가죽 시트, 멜란지 패브릭 내장재(앞좌석/뒷좌석 시트 숄더, 앞좌석/뒷좌석 시트 볼스터, 도어 인서트, IP 센터, 헤드라이닝, A 필라), 6:4 폴딩 2열 시트(리클라이닝, 암레스트, 컵홀더 포함), 나파 인조가죽 스티어링 휠, D/N 룸미러, 운전석/동승석 선바이저(거울, 조명 포함), 브러시드 알루미늄 페인팅 데코, 글로시 블랙 데코 콘솔": {
       "fp_ids": [
+        "STR_LEATHER",
         "SEAT_LEATHER"
       ],
       "used_in": 1,
@@ -17083,6 +17113,7 @@
         "MIRRORING_WIRELESS",
         "OTA",
         "MIRRORING",
+        "DISPLAY_LCD",
         "NAVIGATION",
         "USB",
         "VOICE_RECOG"
@@ -17164,6 +17195,7 @@
       "fp_ids": [
         "MIRRORING_WIRELESS",
         "MIRRORING",
+        "DISPLAY_LCD",
         "NAVIGATION",
         "VOICE_RECOG"
       ],
@@ -17765,7 +17797,9 @@
       ]
     },
     "LED 방향지시등(전방)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -17804,7 +17838,8 @@
     },
     "LED 방향 지시등 일체형 아웃사이드 미러(전동 조절/자동접이/열선 기능 포함)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -17975,7 +18010,9 @@
       ]
     },
     "가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -18966,7 +19003,8 @@
     },
     "LED 방향지시등 일체형 아웃사이드 미러(전동 조절/자동 접이/열선 기능 포함)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 4,
@@ -22338,7 +22376,9 @@
       ]
     },
     "인조가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 2,
       "used_as_basic": 6,
       "used_as_select": 0,
@@ -22980,7 +23020,9 @@
       ]
     },
     "인조 가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -23863,7 +23905,9 @@
       ]
     },
     "LED 방향지시등": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -24600,7 +24644,8 @@
     },
     "LED 방향지시등 일체형 아웃사이드 미러(전동조절/열선내장/전동 접이식)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -25407,7 +25452,8 @@
     },
     "LED 방향지시등 일체형 아웃사이드 미러(전동조절, 열선내장)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 4,
@@ -27063,7 +27109,9 @@
       ]
     },
     "동승석 워크인 디바이스": {
-      "fp_ids": [],
+      "fp_ids": [
+        "WORKIN"
+      ],
       "used_in": 11,
       "used_as_basic": 32,
       "used_as_select": 0,
@@ -29662,7 +29710,9 @@
       ]
     },
     "투톤 가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 3,
       "used_as_basic": 4,
       "used_as_select": 6,
@@ -30291,7 +30341,9 @@
       ]
     },
     "제네시스 인포테인먼트 시스템(10.25인치 디스플레이, Genesis Connected Services, 제네시스 카페이, 발레 모드)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 2,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -38679,7 +38731,9 @@
       ]
     },
     "클러스터(12.3인치 컬러 LCD)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 20,
       "used_as_basic": 77,
       "used_as_select": 16,
@@ -38755,7 +38809,8 @@
     },
     "아웃사이드 미러(열선, 전동접이, 전동조절, LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 18,
       "used_as_basic": 117,
@@ -38872,7 +38927,9 @@
       ]
     },
     "클러스터(4.2인치 컬러 LCD)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 17,
       "used_as_basic": 126,
       "used_as_select": 0,
@@ -39750,7 +39807,9 @@
       ]
     },
     "LED 방향지시등": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 11,
       "used_as_basic": 65,
       "used_as_select": 0,
@@ -39845,7 +39904,9 @@
       ]
     },
     "가상 엔진 사운드(보행자 보호)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "VESS"
+      ],
       "used_in": 10,
       "used_as_basic": 41,
       "used_as_select": 0,
@@ -40222,7 +40283,8 @@
     },
     "가죽 스티어링 휠(열선 포함)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 8,
       "used_as_basic": 66,
@@ -40419,7 +40481,8 @@
     },
     "가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트 포함)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 8,
       "used_as_basic": 44,
@@ -40510,7 +40573,9 @@
       ]
     },
     "LED 방향지시등(앞)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 7,
       "used_as_basic": 24,
       "used_as_select": 0,
@@ -41076,7 +41141,8 @@
     },
     "가죽 스티어링 휠(열선포함)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 6,
       "used_as_basic": 33,
@@ -41197,7 +41263,9 @@
       ]
     },
     "LED 방향지시등(뒤)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 5,
       "used_as_basic": 40,
       "used_as_select": 0,
@@ -41560,7 +41628,9 @@
       ]
     },
     "투톤 가죽 스티어링 휠(블랙 인테리어 선택 시 미적용)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 5,
       "used_as_basic": 32,
       "used_as_select": 0,
@@ -42215,7 +42285,9 @@
       ]
     },
     "LED 방향지시등(앞/뒤)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 4,
       "used_as_basic": 23,
       "used_as_select": 0,
@@ -42740,7 +42812,8 @@
     },
     "바디컬러 아웃사이드 미러(LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 3,
       "used_as_basic": 8,
@@ -42870,7 +42943,8 @@
     },
     "아웃사이드미러(열선, 전동접이, 전동조절, LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 3,
       "used_as_basic": 21,
@@ -42884,7 +42958,8 @@
     },
     "원스포크 타입 가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트 포함)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 3,
       "used_as_basic": 21,
@@ -43055,7 +43130,8 @@
     },
     "동승석 전동시트(8way, 럼버 서포트, 릴렉션 컴포트, 워크인 디바이스)": {
       "fp_ids": [
-        "POWER_SEAT_PS"
+        "POWER_SEAT_PS",
+        "WORKIN"
       ],
       "used_in": 3,
       "used_as_basic": 14,
@@ -44039,7 +44115,8 @@
     },
     "동승석 전동시트(8way, 릴렉션 컴포트, 워크인 디바이스)": {
       "fp_ids": [
-        "POWER_SEAT_PS"
+        "POWER_SEAT_PS",
+        "WORKIN"
       ],
       "used_in": 3,
       "used_as_basic": 20,
@@ -44103,7 +44180,9 @@
       ]
     },
     "동승석 워크인 디바이스": {
-      "fp_ids": [],
+      "fp_ids": [
+        "WORKIN"
+      ],
       "used_in": 3,
       "used_as_basic": 12,
       "used_as_select": 2,
@@ -44423,7 +44502,8 @@
     },
     "동승석 전동시트(럼버서포트, 워크인 디바이스)": {
       "fp_ids": [
-        "POWER_SEAT_PS"
+        "POWER_SEAT_PS",
+        "WORKIN"
       ],
       "used_in": 3,
       "used_as_basic": 18,
@@ -45529,6 +45609,7 @@
     "N Line 전용 내장 디자인(반펀칭 가죽 스티어링 휠(열선, 레드 스티치 포함), 가죽 변속기 노브(레드 스티치 포함), 블랙 헤드라이닝 & 선바이저 & 필라트림, 도어 센터트림 레드 스티치, 패들쉬프트, 메탈 페달 & 풋 레스트)": {
       "fp_ids": [
         "HEAT_STR",
+        "STR_LEATHER",
         "PADDLE_SHIFT"
       ],
       "used_in": 2,
@@ -46181,7 +46262,8 @@
     },
     "천연가죽 스티어링 휠(열선 포함)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 2,
       "used_as_basic": 7,
@@ -46551,7 +46633,8 @@
     },
     "N Line 전용 반펀칭 가죽 스티어링 휠(열선, 그립감지, 진동경고 포함)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 2,
       "used_as_basic": 6,
@@ -47152,7 +47235,9 @@
       ]
     },
     "투톤 가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 2,
       "used_as_basic": 6,
       "used_as_select": 0,
@@ -47165,7 +47250,8 @@
     },
     "동승석 전동시트(8way, 럼버서포트, 릴렉션 컴포트, 워크인 디바이스)": {
       "fp_ids": [
-        "POWER_SEAT_PS"
+        "POWER_SEAT_PS",
+        "WORKIN"
       ],
       "used_in": 2,
       "used_as_basic": 6,
@@ -47420,7 +47506,8 @@
     },
     "아웃사이드 미러(열선, 전동 조절, LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 2,
       "used_as_basic": 18,
@@ -48304,7 +48391,8 @@
     },
     "바디 컬러 아웃사이드 미러(열선, LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 2,
       "used_as_basic": 9,
@@ -48478,7 +48566,8 @@
     },
     "바디 컬러 아웃사이드 미러(전동접이, 전동조절,열선, LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 2,
       "used_as_basic": 1,
@@ -48986,7 +49075,8 @@
     },
     "아웃사이드 미러(열선, 전동 접이, 전동 조절, LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -49001,6 +49091,7 @@
     "N 전용 디자인(반펀칭 가죽 스티어링 휠(열선 포함) & 변속기 노브, 다크 메탈 페인트 인사이드 도어 핸들, 메탈 도어 스커프, 퍼포먼스 블루 내장 액센트, 블랙 헤드라이닝 & 선바이저 & 필라 트림, 클러스터(10.25인치 컬러 LCD), 클러스터/내비게이션 일체형 글라스 및 N 전용 그래픽 포함)": {
       "fp_ids": [
         "HEAT_STR",
+        "STR_LEATHER",
         "NAVIGATION"
       ],
       "used_in": 1,
@@ -49384,7 +49475,8 @@
         "MIRROR_FOLD",
         "HEAD_LED",
         "ALUMINUM_WHEEL",
-        "REAR_LED_COMBI"
+        "REAR_LED_COMBI",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -49398,8 +49490,10 @@
     },
     "내장: 클러스터(12.3인치 컬러 LCD), 앳지 타입 가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트), 페달 미니언스 인디케이터, 앰비언트 무드 램프(크래쉬 패드, 도어 트림, 센터 콘솔), LED 실내등(맵 램프, 룸 램프, 선바이저 램프, 러기지 램프)": {
       "fp_ids": [
+        "DISPLAY_LCD",
         "HEAT_STR",
-        "AMB_LIGHT"
+        "AMB_LIGHT",
+        "STR_LEATHER"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -49556,6 +49650,7 @@
       "fp_ids": [
         "MEMORY_SEAT_DR",
         "POWER_SEAT_DR",
+        "WORKIN",
         "POWER_SEAT_PS",
         "VENT_SEAT_DR"
       ],
@@ -49919,7 +50014,9 @@
       ]
     },
     "클러스터(12.3인치 컬러 LCD, N 전용 그래픽 포함)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -50541,7 +50638,9 @@
       ]
     },
     "1열 릴렉션 컴포트 시트(14way, 럼버서포트, 레그레스트, 동승석 워크인 디바이스)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "WORKIN"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -50751,7 +50850,9 @@
       ]
     },
     "동승석 릴렉션 컴포트 시트(14way, 럼버서포트, 레그레스트, 동승석 워크인 디바이스)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "WORKIN"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -50790,7 +50891,8 @@
     },
     "동승석 전동시트(8way, 럼버서포트, 워크인 디바이스)": {
       "fp_ids": [
-        "POWER_SEAT_PS"
+        "POWER_SEAT_PS",
+        "WORKIN"
       ],
       "used_in": 1,
       "used_as_basic": 6,
@@ -50884,7 +50986,8 @@
     },
     "가죽 스티어링 휠(열선, 투톤, 인터랙티브 픽셀 라이트 포함)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -52577,7 +52680,8 @@
     },
     "아웃사이드 미러(LED 방향지시등": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 8,
@@ -53389,7 +53493,9 @@
       ]
     },
     "클러스터(12.3인치 컬러 LCD), 블랙 니트 패키지 트레이": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -53404,6 +53510,7 @@
       "fp_ids": [
         "MEMORY_SEAT_DR",
         "POWER_SEAT_PS",
+        "WORKIN",
         "HEAT_SEAT_REAR",
         "HEAT_SEAT_FRONT",
         "SEAT_LEATHER"
@@ -53490,7 +53597,9 @@
       ]
     },
     "LED 방향 지시등(앞)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 1,
       "used_as_basic": 9,
       "used_as_select": 0,
@@ -53503,7 +53612,8 @@
     },
     "아웃사이드 미러(열선, 전동 조절, 전동 접이, LED 방향 지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 9,
@@ -53703,7 +53813,9 @@
       ]
     },
     "가죽 스티어링 휠(원발/오른발 장애에만 적용)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 1,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -53818,7 +53930,9 @@
       ]
     },
     "내장: 클러스터(12.3인치 컬러 LCD), 블랙 니트 패키지 트레이": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -53831,7 +53945,8 @@
     },
     "시트: 나파가죽시트(카멜/그레이지/네이비), 동승석 워크인 디바이스, 동승석 릴렉션 컴포트 시트": {
       "fp_ids": [
-        "SEAT_LEATHER"
+        "SEAT_LEATHER",
+        "WORKIN"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -54133,7 +54248,9 @@
       ]
     },
     "펜더 LED 방향지시등": {
-      "fp_ids": [],
+      "fp_ids": [
+        "LED_TURN"
+      ],
       "used_in": 1,
       "used_as_basic": 16,
       "used_as_select": 0,
@@ -54267,7 +54384,8 @@
     },
     "동승석 전동시트(4way, 릴렉션 컴포트, 워크인 디바이스)": {
       "fp_ids": [
-        "POWER_SEAT_PS"
+        "POWER_SEAT_PS",
+        "WORKIN"
       ],
       "used_in": 1,
       "used_as_basic": 12,
@@ -54523,7 +54641,9 @@
       ]
     },
     "가죽 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "STR_LEATHER"
+      ],
       "used_in": 1,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -54675,7 +54795,8 @@
     },
     "아웃사이드 미러(열선, 전동조절, 전동접이, LED 방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -54821,7 +54942,9 @@
       ]
     },
     "워크인 디바이스": {
-      "fp_ids": [],
+      "fp_ids": [
+        "WORKIN"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -55045,7 +55168,9 @@
       ]
     },
     "내장 : 클러스터(12.3인치 컬러 LCD), 블랙 니트 패키지 트레이": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 0,
@@ -55163,7 +55288,8 @@
       "fp_ids": [
         "MEMORY_SEAT_DR",
         "POWER_SEAT_PS",
-        "SEAT_LEATHER"
+        "SEAT_LEATHER",
+        "WORKIN"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -55307,7 +55433,9 @@
       ]
     },
     "클러스터(12.3인치 컬러 LCD, 디지털)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -55320,7 +55448,8 @@
     },
     "가죽 스티어링 휠(열선)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "STR_LEATHER"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -55945,7 +56074,8 @@
     },
     "바디컬러 아웃사이드 미러(열선, 전동접이, 전동조절, LED방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -55959,7 +56089,8 @@
     },
     "라운지 전용 디자인(스웨이드 내장재, 풀사이즈 센터 콘솔, 앰비언트 무드램프, 메탈 도어 스커프, 메탈 페달, 반펀칭 가죽 스티어링 휠)": {
       "fp_ids": [
-        "AMB_LIGHT"
+        "AMB_LIGHT",
+        "STR_LEATHER"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -56053,7 +56184,8 @@
     },
     "동승석 전동 시트(4way, 워크인 디바이스)": {
       "fp_ids": [
-        "POWER_SEAT_PS"
+        "POWER_SEAT_PS",
+        "WORKIN"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -56627,7 +56759,8 @@
     },
     "아웃사이드 미러(열선, 전동접이, 전동조절, LED방향지시등)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 4,
@@ -58481,7 +58614,8 @@
     },
     "아웃사이드 미러(LED 턴시그널 램프, 오토폴딩, 열선, 전동조절)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 8,
       "used_as_basic": 23,
@@ -59003,7 +59137,9 @@
       ]
     },
     "동승석 워크인 디바이스": {
-      "fp_ids": [],
+      "fp_ids": [
+        "WORKIN"
+      ],
       "used_in": 5,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -61597,7 +61733,9 @@
       ]
     },
     "가상 엔진 사운드(VESS)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "VESS"
+      ],
       "used_in": 2,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -62258,7 +62396,8 @@
     },
     "블랙 하이글로시 아웃사이드 미러(LED 턴시그널 램프, 오토폴딩, 전동조절, 전동접이, 열선)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -62799,7 +62938,8 @@
     },
     "아웃사이드 미러(LED 턴시그널, 오토폴딩, 열선, 전동조절)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -64637,7 +64777,8 @@
     },
     "LED 주간 주행등 & LED 턴시그널 램프": {
       "fp_ids": [
-        "DRL"
+        "DRL",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -64901,7 +65042,8 @@
     },
     "아웃사이드 미러(LED 턴 시그널 램프, 오토폴딩, 열선, 전동조절)": {
       "fp_ids": [
-        "MIRROR_FOLD"
+        "MIRROR_FOLD",
+        "LED_TURN"
       ],
       "used_in": 1,
       "used_as_basic": 2,

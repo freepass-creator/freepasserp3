@@ -254,14 +254,15 @@ async function refreshTrimOptionChips(card, p) {
   const hint     = card.querySelector('#trimOptionsHint');
   const hidden   = card.querySelector('input[type="hidden"][data-f="options"]');
   if (!chipsBox || !hidden) return;
-  // 트림 이름에서 fuel 추정 (트림명에 LPG/하이브리드/디젤 포함되면 그게 fuel)
+  // 트림 이름에서 fuel 추정 — 트림명 키워드가 가장 정확 (사용자가 방금 선택한 트림 의도)
   const trimName = card.querySelector('[data-f="trim_name"]')?.value || p.trim_name || '';
   const fuelFromTrim = /하이브리드|hybrid|hev/i.test(trimName) ? '하이브리드'
                      : /\bLPG\b/i.test(trimName) ? 'LPG'
                      : /\b디젤|diesel\b/i.test(trimName) ? '디젤'
                      : /\b전기|EV\b/i.test(trimName) ? '전기'
                      : '';
-  const fuelLive = card.querySelector('[data-f="fuel_type"]')?.value || p.fuel_type || fuelFromTrim;
+  // 트림명 fuel 키워드 우선 — 매물 fuel_type 이 '하이브리드' 인데 사용자가 LPG 트림 선택한 경우 LPG catalog 매칭
+  const fuelLive = fuelFromTrim || card.querySelector('[data-f="fuel_type"]')?.value || p.fuel_type || '';
   const live = {
     maker:     card.querySelector('[data-f="maker"]')?.value || p.maker,
     model:     card.querySelector('[data-f="model"]')?.value || p.model,
@@ -305,44 +306,39 @@ async function refreshTrimOptionChips(card, p) {
       <div class="text-weak" style="grid-column:1/-1;font-size:11px;margin-bottom:4px;">
         선택 패키지 ${pool.packages.length}개${pool.basicCount ? ` · 기본 옵션 ${pool.basicCount}개 (자동 포함)` : ''}
       </div>
-      <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px;">
+      <div style="grid-column:1/-1;display:flex;flex-wrap:wrap;gap:3px;">
         ${pool.packages.map(pkg => {
           const isActive = pkg.items.every(name => currentSet.has(name));
-          const itemsLabel = pkg.items.length > 1 ? pkg.items.join(' + ') : pkg.items[0];
-          return `<div class="trim-pkg-card${isActive ? ' active' : ''}" data-items='${esc(JSON.stringify(pkg.items))}'
-            style="cursor:pointer;padding:6px 8px;border:1px solid var(--border);border-radius:4px;background:${isActive ? 'var(--alert-blue-bg)' : 'var(--bg-card)'};display:flex;flex-direction:column;gap:2px;">
-            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;">
-              <span>${esc(pkg.name)}</span>
-              ${pkg.price ? `<span style="color:var(--text-weak);">${pkg.price}만</span>` : ''}
-            </div>
-            ${pkg.items.length > 1 && pkg.name !== pkg.items[0] ? `<div style="font-size:10px;color:var(--text-weak);">${esc(itemsLabel)}</div>` : ''}
-          </div>`;
+          const tooltip = pkg.items.length > 1 && pkg.name !== pkg.items[0] ? pkg.items.join(' · ') : '';
+          const priceLabel = pkg.price ? ` · ${pkg.price}만` : '';
+          return `<span class="chip${isActive ? ' active' : ''}" data-items='${esc(JSON.stringify(pkg.items))}'
+            title="${esc(tooltip)}"
+            style="cursor:pointer;font-size:11px;padding:1px 6px;line-height:1.4;height:auto;">
+            ${esc(pkg.name)}${priceLabel}
+          </span>`;
         }).join('')}
       </div>
     `;
     if (hint) {
-      hint.innerHTML = `<i class="ph ph-check-circle"></i> 트림 「${esc(pool.trimName)}」 — 패키지 클릭으로 추가/제거`;
+      hint.innerHTML = `<i class="ph ph-check-circle"></i> 트림 「${esc(pool.trimName)}」 — 뱃지 클릭으로 다중 선택`;
     }
   }
 
-  // 패키지 카드 클릭 → 그룹 통째로 toggle + 자동 저장
-  chipsBox.querySelectorAll('.trim-pkg-card[data-items]').forEach(card_ => {
-    card_.addEventListener('click', async () => {
-      const items = JSON.parse(card_.dataset.items || '[]');
+  // 패키지 뱃지 클릭 → 그룹 통째로 toggle + 자동 저장 (다중 선택 가능)
+  chipsBox.querySelectorAll('.chip[data-items]').forEach(chip => {
+    chip.addEventListener('click', async () => {
+      const items = JSON.parse(chip.dataset.items || '[]');
       if (!items.length) return;
       const cur = new Set(splitOptionInput(hidden.value || ''));
       const allIn = items.every(name => cur.has(name));
       if (allIn) {
-        // 모두 들어있음 → 제거
         for (const name of items) cur.delete(name);
       } else {
-        // 일부 빠짐 → 모두 추가
         for (const name of items) cur.add(name);
       }
       const next = [...cur];
       hidden.value = next.join(', ');
-      card_.classList.toggle('active', !allIn);
-      card_.style.background = !allIn ? 'var(--alert-blue-bg)' : 'var(--bg-card)';
+      chip.classList.toggle('active', !allIn);
       try {
         await updateRecord(`products/${p._key}`, { options: next, updated_at: Date.now() }, { silent: true });
         p.options = next;
