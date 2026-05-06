@@ -1,0 +1,773 @@
+/* desktop/_view.css — 인라인 유틸 클래스, 목록 카드, 채팅, 설정/개발도구 탭, 다크 모드, 모바일 SPA 쉘 */
+
+  /* ── 인라인 스타일 클래스화 ── */
+  .spacer { flex: 1; }
+  .head-actions { display: flex; gap: 4px; align-items: center; }
+  .timeline-row {
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 4px; margin-bottom: 4px;
+  }
+  .timeline-row:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
+
+  /* 표 셀 라인 — 가로·세로 동일 색. border (#e5e7eb) 로 한 단계 진하게.
+     thead/tbody 모두 border-right 부여 → info-grid 와 동일한 모양 */
+  .table {
+    border-left: 1px solid var(--border);
+    border-top: 1px solid var(--border);
+  }
+  .table thead th {
+    border-right: 1px solid var(--border) !important;
+  }
+  .table tbody td {
+    border-bottom: 1px solid var(--border) !important;
+    border-right: 1px solid var(--border) !important;
+  }
+  .table tbody tr:hover { background: var(--bg-hover); }
+  /* 다중 선택된 row (Ctrl+click) — 강조 배경 */
+  .table tbody tr.is-checked { background: var(--alert-blue-bg, #e6f0ff) !important; }
+  .table tbody tr.is-checked td.sticky-col { background: var(--alert-blue-bg, #e6f0ff) !important; }
+
+  /* 고정 컬럼폭 — 12px 통일, 굴림체 + tabular-nums (숫자 자릿수 정렬) */
+  .table-fixed {
+    table-layout: fixed;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-fixed thead th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+  }
+  .table-fixed tbody td {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+    overflow: hidden;
+    vertical-align: middle;
+    font-size: 12px;
+  }
+  /* 3줄 이상 → 본문 축소 (영업자 의견: 정보 다 보이는게 우선) */
+  .table-fixed tbody td.is-cramped {
+    font-size: var(--fs-2xs);
+    line-height: 1.2;
+  }
+  /* 차량번호 / 대여기간 헤더 — weight 동일, 색 그대로 (다른 헤더와 구분 없음) */
+  [data-page="search"] table.table-fixed thead th.sticky-col,
+  [data-page="search"] table.table-fixed thead th[data-period] {
+    font-weight: 400;
+  }
+  /* 좌우 스크롤 시 sticky-col 은 좌측 고정 (z-index 우선순위 정리) */
+  .table-fixed thead th.sticky-col,
+  .table-fixed tbody td.sticky-col {
+    position: sticky !important;
+    left: 0 !important;
+    z-index: 6 !important;
+  }
+  /* 코너 (thead × sticky-col) — thead z-index 10 + sticky-col z-index 6 보다 모두 위 */
+  .table-fixed thead th.sticky-col {
+    z-index: 12 !important;
+    top: 0 !important;
+  }
+  /* 패널 헤드 — 32px 표준 (--panel-head-h 토큰) */
+  .ws4-head {
+    height: var(--panel-head-h);
+    padding: 0 var(--sp-3);
+    background: var(--bg-header);
+    color: var(--text-weak);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    gap: var(--sp-2);
+    flex-shrink: 0;
+    font-size: var(--font-size-lg);   /* 13px - 패널 헤더만 */
+  }
+  /* 디테일 패널 닫기 버튼 — 모든 ws4-detail .ws4-head 우측 끝 (자동 주입) */
+  .ws4-detail .ws4-head .ws4-detail-close {
+    margin-left: auto;
+    width: 22px; height: 22px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; background: transparent;
+    color: var(--text-weak);
+    cursor: pointer; border-radius: var(--radius);
+    font-size: 14px;
+  }
+  .ws4-detail .ws4-head .ws4-detail-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-main);
+  }
+  /* 디테일 패널 collapsed — 폭 0 으로 숨김 (검색 페이지의 .srch-detail.is-collapsed 와 별개) */
+  .ws4-detail.is-collapsed:not(.srch-detail) {
+    flex: 0 0 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+  }
+  /* 표 헤더 — 패널 헤더와 동일 높이 (시각 통일).
+     본문 zebra 와 색 구분 + box-shadow 로 위/아래 라인 (sticky 스크롤 시에도 표시) */
+  .table thead th {
+    height: var(--panel-head-h);
+    padding: 0 var(--sp-3);
+    background: var(--bg-header);
+    color: var(--text-sub);            /* text-weak 너무 흐려서 sub 로 진하게 */
+    font-weight: 400;
+    font-size: var(--font-size);
+    box-shadow:
+      inset 0 1px 0 var(--border),
+      inset 0 -1px 0 var(--border);
+  }
+
+  /* ── 모든 페이지 공통 목록 카드 (2줄: 메인 / 보조) ── */
+  .room-item {
+    display: grid; grid-template-columns: 32px 1fr; gap: 8px;
+    padding: 6px 10px; border-bottom: 1px solid var(--border-soft);
+    cursor: pointer;
+    min-width: 0;   /* 자식 truncate 보장 */
+  }
+  .room-item > div:last-child { min-width: 0; overflow: hidden; }
+  .room-item:hover { background: var(--bg-hover); }
+  .room-item.active { background: var(--bg-selected); }
+  .room-item-avatar {
+    width: 32px; height: 32px; display: flex; align-items: center;
+    justify-content: center; flex-direction: column; gap: 1px;
+    background: var(--bg-stripe); border-radius: 2px;
+    color: var(--text-weak); font-size: 9px;
+    flex-shrink: 0;
+  }
+  .room-item-avatar.is-accent { background: var(--alert-blue-bg); color: var(--alert-blue-text); }
+  /* 상태/구분별 톤 컬러 — 2자 뱃지에 의미 색상 입힘 */
+  .room-item-avatar.tone-blue   { background: var(--alert-blue-bg);   color: var(--alert-blue-text); }
+  .room-item-avatar.tone-green  { background: var(--alert-green-bg);  color: var(--alert-green-text); }
+  .room-item-avatar.tone-orange { background: var(--alert-orange-bg); color: var(--alert-orange-text); }
+  .room-item-avatar.tone-red    { background: var(--alert-red-bg);    color: var(--alert-red-text); }
+  .room-item-avatar.tone-gray   { background: var(--bg-stripe);       color: var(--text-weak); }
+  /* 역할 톤 — 관리자만 Freepass CI 네이비 반전 (영업/공급은 기본 회색 유지) */
+  .room-item-avatar.tone-admin { background: #1B2A4A; color: var(--text-inverse); }
+  /* 1줄(메인) — 좌측 이름 + 우측 시간/뱃지, 둘 다 말줄임 */
+  .room-item-top {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 6px; min-width: 0;
+  }
+  .room-item-name {
+    color: var(--text-main);
+    flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .room-item-time {
+    color: var(--text-weak); flex-shrink: 0;
+    white-space: nowrap;
+  }
+  /* 2줄(보조) — 좌측 메시지 + 우측 메타 */
+  .room-item-sub {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 6px; min-width: 0; margin-top: 2px;
+  }
+  .room-item-msg {
+    color: var(--text-sub); flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .room-item-meta {
+    color: var(--text-weak); flex-shrink: 0;
+    white-space: nowrap;
+  }
+  /* 기존 .room-item-bot 사용한 prototype 도 호환 — 숨김 */
+  .room-item-bot { display: none; }
+
+  /* ── 채팅 (v2 ws4-chat 규격, v3 톤 — 11px / 라운드 12) ── */
+  .ws-chat-msgs {
+    flex: 1; overflow-y: auto;
+    display: flex; flex-direction: column;
+    padding: 8px;
+    background: var(--bg-stripe);
+  }
+  .chat-date-sep {
+    align-self: center;
+    padding: 6px 0;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .chat-date-sep span {
+    padding: 2px 10px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+  }
+  .chat-row {
+    display: flex; align-items: flex-start;
+    gap: 6px; max-width: 85%;
+  }
+  .chat-row.is-mine {
+    align-self: flex-end !important;
+    margin-left: auto;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+  .chat-row.is-other { align-self: flex-start !important; margin-right: auto; }
+  .chat-row + .chat-row { margin-top: 3px; }
+  .chat-row + .chat-row.is-sender-start { margin-top: 7px; }
+  .chat-sender {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 1px 4px; height: 16px;
+    font-size: 10px; color: var(--text-inverse);
+    border-radius: 2px; flex-shrink: 0;
+    margin-top: 2px; align-self: flex-start;
+    white-space: nowrap;
+  }
+  /* 역할 뱃지 — 영업/공급은 기존 그대로, 관리자만 Freepass CI 네이비 반전 (#1B2A4A) */
+  .chat-sender-agent    { background: var(--alert-blue-text); }
+  .chat-sender-provider { background: var(--alert-green-text); }
+  .chat-sender-admin    { background: #1B2A4A; color: var(--text-inverse); }
+  /* 같은 발신자 연속 메시지 정렬 — 뱃지 폭 만큼 빈 공간 (실제 뱃지는 auto 라 평균치 사용) */
+  .chat-sender-spacer { flex-shrink: 0; width: 40px; height: 1px; }
+  .chat-row.is-mine .chat-sender-spacer { display: none; }   /* 내 메시지는 우측 끝까지 */
+  .chat-bubble-wrap {
+    display: flex; flex-direction: column;
+    align-items: flex-start; gap: 2px; min-width: 0;
+  }
+  .chat-row.is-mine .chat-bubble-wrap { align-items: flex-end; }
+  .chat-bubble {
+    padding: var(--sp-2) var(--sp-3); font-size: var(--font-size); line-height: 1.45;
+    border-radius: var(--radius); word-break: break-word; max-width: 100%;
+  }
+  /* 채팅 말풍선 — 배경색만으로 구분 (보더 X, 깔끔하게) */
+  .chat-row.is-mine .chat-bubble {
+    background: var(--alert-blue-bg); color: var(--alert-blue-text);
+    border-top-right-radius: 4px;
+  }
+  /* 말풍선 — 테두리 없이 색깔로만 구분 */
+  .chat-bubble { border: 0; }
+  .chat-row.is-other .chat-bubble-agent {
+    background: var(--alert-blue-bg); color: var(--text-main);
+    border-top-left-radius: 4px;
+  }
+  .chat-row.is-other .chat-bubble-provider {
+    background: var(--alert-green-bg); color: var(--text-main);
+    border-top-left-radius: 4px;
+  }
+  /* 관리자 — Freepass CI 네이비 반전 (송/수신 양쪽 모두 적용) */
+  .chat-row.is-other .chat-bubble-admin,
+  .chat-row.is-mine .chat-bubble-admin {
+    background: #1B2A4A; color: var(--text-inverse);
+  }
+  .chat-row.is-other .chat-bubble-admin { border-top-left-radius: 4px; }
+  .chat-row.is-mine .chat-bubble-admin  { border-top-right-radius: 4px; }
+  .chat-meta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; color: var(--text-muted); padding: 0 2px;
+  }
+  .chat-row.is-mine .chat-meta { flex-direction: row-reverse; }
+
+  /* 채팅 입력 (v2 ws4-chat-input 톤) */
+  .ws-input {
+    border-top: 1px solid var(--border); padding: 6px 8px;
+    display: flex; gap: 4px; flex-shrink: 0; background: var(--bg-card);
+  }
+  .ws-input input { flex: 1; }
+
+  /* 계약 진행 7단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
+  .ct-steps-v3 { display: flex; flex-direction: column; gap: 4px; }
+  /* 단계번호 24px | 영업셀 1fr | 화살표 24px | 공급셀 1fr */
+  .ct-step-row {
+    display: grid; grid-template-columns: 24px 1fr 24px 1fr;
+    align-items: center; gap: 6px; font-size: var(--font-size);
+  }
+  /* 헤더 행 */
+  .ct-step-row.ct-step-head {
+    color: var(--text-sub);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .ct-step-row.ct-step-head > div { text-align: center; font-size: 11px; }
+  .ct-step-num {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .ct-step-num.is-parallel {
+    color: var(--alert-blue-text);
+    font-weight: 600;
+  }
+  /* phase 그룹 사이에 살짝 간격 */
+  .ct-step-row[data-phase-break="1"] { margin-top: 6px; }
+
+  /* 영업/공급 셀 — 박스형 */
+  .ct-step-cell {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-sub);
+    white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+    transition: background 80ms ease-out, border-color 80ms ease-out;
+    min-height: 28px;
+    box-sizing: border-box;
+  }
+  .ct-step-cell > i { font-size: 14px; flex-shrink: 0; }
+  .ct-step-cell > span { overflow: hidden; text-overflow: ellipsis; }
+  .ct-step-cell.clickable { cursor: pointer; }
+  .ct-step-cell.clickable:hover { background: var(--bg-hover); border-color: var(--border-strong, #adb5bd); }
+  .ct-step-cell.done {
+    color: var(--alert-green-text);
+    background: var(--alert-green-bg);
+    border-color: var(--alert-green-border);
+    font-weight: 500;
+  }
+  .ct-step-cell.pending {
+    color: var(--text-sub);
+    background: var(--bg-card);
+  }
+  .ct-step-cell.locked {
+    color: var(--text-muted);
+    background: var(--bg-stripe);
+    border-color: var(--border-soft, var(--border));
+    opacity: 0.7;
+  }
+  .ct-step-cell.rejected {
+    color: var(--alert-red-text);
+    background: var(--alert-red-bg);
+    border-color: var(--alert-red-border);
+    font-weight: 500;
+  }
+  /* 활성 단계 — 클릭 가능하고 done 아닌 경우 강조 (현재 액션 필요) */
+  .ct-step-cell.clickable.pending {
+    border-color: var(--alert-blue-text, #1e40af);
+    background: var(--alert-blue-bg);
+    color: var(--alert-blue-text);
+    font-weight: 500;
+  }
+  .ct-step-arrow {
+    color: var(--text-muted);
+    text-align: center;
+    font-size: 12px;
+  }
+  .ct-step-arrow.is-done { color: var(--alert-green-text); }
+  .ct-step-arrow.is-rejected { color: var(--alert-red-text); }
+  /* select (대여료 가능/불가/협의 등) — cell 안에 끼워 넣음 */
+  .ct-step-select {
+    flex: 1;
+    height: 22px;
+    padding: 0 6px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    outline: none;
+  }
+  /* 관리자 대신 처리 표시 */
+  .ct-step-admin {
+    font-size: 9px;
+    color: var(--text-link, #1d4ed8);
+    margin-left: auto;
+    padding: 1px 4px;
+    background: var(--alert-blue-bg);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .step-list { display: flex; flex-direction: column; }
+  .step {
+    display: flex; align-items: center; gap: 6px;
+    padding: 3px 0; color: var(--text-sub);
+  }
+  .step.done { color: var(--text-main); }
+  .step.cur  { color: var(--alert-blue-text); }
+  .step .num {
+    width: 16px; height: 16px; display: inline-flex;
+    align-items: center; justify-content: center;
+    border-radius: 50%; background: var(--bg-stripe);
+    border: 1px solid var(--border); color: var(--text-weak);
+  }
+  .step.done .num { background: var(--text-main); border-color: var(--text-main); color: var(--text-inverse); }
+  .step.cur .num  { background: var(--alert-blue-text); border-color: var(--alert-blue-text); color: var(--text-inverse); }
+
+  strong { font-weight: 400; color: var(--text-main); }
+
+  /* ── 설정/개발도구 페이지 공통 (탭 + 섹션) ── */
+  .settings-tab {
+    display: flex; align-items: flex-start; gap: var(--sp-2);
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    margin-bottom: 2px;
+    border-radius: var(--radius);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-sub);
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--font-size);
+  }
+  .settings-tab:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .settings-tab.is-active {
+    background: var(--bg-selected);
+    color: var(--text-main);
+  }
+  .settings-tab > i {
+    font-size: 16px; line-height: 1.4; flex-shrink: 0;
+    color: var(--text-weak);
+  }
+  .settings-tab.is-active > i { color: var(--text-main); }
+  .settings-tab-text {
+    display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0;
+  }
+  .settings-tab-label { color: inherit; }
+  .settings-tab-sub {
+    color: var(--text-weak); font-size: var(--font-size);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .settings-section {
+    margin-bottom: var(--sp-6);
+  }
+  .settings-section-title {
+    font-size: var(--font-size);
+    color: var(--text-sub);
+    margin-bottom: var(--sp-2);
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-rows {
+    display: flex; flex-direction: column; gap: var(--sp-2);
+  }
+  .settings-row {
+    display: flex; align-items: center; gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+  }
+  .settings-row-toggle {
+    cursor: pointer;
+    border-radius: var(--radius);
+    padding: var(--sp-2) var(--sp-3);
+    margin: 0 calc(-1 * var(--sp-3));
+  }
+  .settings-row-toggle:hover { background: var(--bg-stripe); }
+  .settings-row-label {
+    flex: 0 0 120px; color: var(--text-sub);
+  }
+  .settings-row-control {
+    flex: 1; display: flex; align-items: center; gap: var(--sp-2);
+  }
+  .settings-row-value {
+    margin-left: auto; color: var(--text-sub);
+  }
+  .ac-input { flex: 1; max-width: 320px; }
+  .ac-state {
+    font-size: var(--font-size); color: var(--text-weak);
+    display: inline-flex; align-items: center; gap: 2px;
+  }
+  .ac-state.is-saved { color: var(--alert-green-text); }
+  .ac-state.is-error { color: var(--alert-red-text); }
+
+  /* 프로필 헤더 */
+  .settings-profile {
+    display: flex; align-items: center; gap: var(--sp-4);
+    padding-bottom: var(--sp-4);
+    margin-bottom: var(--sp-4);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--bg-stripe);
+    color: var(--text-sub);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .settings-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .settings-avatar-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.4); color: #fff;
+    display: none;
+    align-items: center; justify-content: center;
+  }
+  .settings-avatar:hover .settings-avatar-overlay { display: flex; }
+  .settings-profile-name { font-size: var(--font-size); color: var(--text-main); margin-bottom: 2px; }
+  .settings-profile-sub { font-size: var(--font-size); color: var(--text-weak); }
+
+  /* 변경 불가 정보 — 입력칸 X, 텍스트 표시 */
+  .settings-row-static {
+    color: var(--text-main);
+    padding: 0 var(--sp-2);
+    font-family: var(--font);
+  }
+
+  /* 사용설명 가이드 — 페이지별 행 레이아웃 */
+  .settings-guide-rows {
+    display: flex; flex-direction: column; gap: var(--sp-3);
+  }
+  .settings-guide-row {
+    display: grid; grid-template-columns: 140px 1fr; gap: var(--sp-3);
+    padding: var(--sp-2) 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-guide-row:last-child { border-bottom: 0; }
+  .settings-guide-label {
+    color: var(--text-main);
+    font-size: var(--font-size);
+    display: flex; align-items: center; gap: var(--sp-2);
+  }
+  .settings-guide-label > i { font-size: 16px; color: var(--text-sub); flex-shrink: 0; }
+  .settings-guide-body {
+    color: var(--text-sub);
+    line-height: 1.6;
+    font-size: var(--font-size);
+  }
+  .settings-guide-body b { color: var(--text-main); }
+  .settings-guide-body ul, .settings-guide-body ol {
+    margin: var(--sp-2) 0 0;
+    padding-left: var(--sp-4);
+  }
+  .settings-guide-body li {
+    margin-bottom: var(--sp-1);
+  }
+
+  /* 도움말 패널 (우측 1/4) */
+  .settings-help {
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+  .settings-help-title {
+    margin: 0 0 var(--sp-3);
+    color: var(--text-main);
+    font-weight: 400;
+    padding-bottom: var(--sp-2);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .settings-help p {
+    margin: 0 0 var(--sp-3);
+  }
+  .settings-help ul {
+    margin: 0 0 var(--sp-3);
+    padding-left: var(--sp-4);
+    list-style: disc;
+  }
+  .settings-help li {
+    margin-bottom: var(--sp-2);
+  }
+  .settings-help b { color: var(--text-main); }
+  .settings-help-tip {
+    background: var(--bg-stripe);
+    padding: var(--sp-3);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent-blue, var(--text-main));
+    color: var(--text-sub);
+  }
+
+  /* 액션 버튼 (비밀번호 변경 / 로그아웃) */
+  .settings-action {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; padding: var(--sp-3);
+    background: transparent; border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-main); cursor: pointer;
+    font-family: inherit; font-size: var(--font-size);
+  }
+  .settings-action:hover { background: var(--bg-stripe); }
+  .settings-action.is-danger { color: var(--alert-red-text); }
+  .settings-action.is-danger:hover { background: var(--alert-red-bg); }
+  .settings-action-body { display: inline-flex; align-items: center; gap: var(--sp-2); }
+  .settings-action-hint { color: var(--text-weak); font-size: var(--font-size); }
+
+  /* ── 다크 모드 — :root[data-theme="dark"] 적용 시 토큰 일괄 override ── */
+  :root[data-theme="dark"] {
+    /* 배경 — 깊은 회색 계열, 카드는 한 톤 밝게 */
+    --bg-page:    #0f1115;
+    --bg-card:    #1a1d23;
+    --bg-header:  #14171d;
+    --bg-stripe:  #181b21;
+    --bg-hover:   #232830;
+    --bg-active:  #2c323b;
+    --bg-selected:#1f3a5f;
+
+    /* 텍스트 — 다크 배경에서 쨍하지 않게. 흰색을 한 톤 더 죽임 */
+    --text-main:  #b0b6c0;   /* 기존 검정 대응 — 부드러운 회백 (이전 c5cad3 보다 살짝 더 죽임) */
+    --text-sub:   #888f9a;
+    --text-weak:  #5e6470;
+    --text-muted: #404550;
+    --text-inv:   #0f1115;
+    --text-inverse: #0f1115;
+
+    /* 보더 */
+    --border:       #2a2f38;
+    --border-soft:  #1f242d;
+    --border-strong:#3a414c;
+    --border-focus: #4f8edc;
+
+    /* 액션 색 — 다크 배경에서도 가독 OK 톤 */
+    --accent-blue:  #6ea0e0;
+    --accent-green: #5fb37a;
+    --accent-orange:#e89f5b;
+    --accent-red:   #e07b7b;
+
+    /* 알림 색 — 옅은 톤 어둡게 */
+    --alert-blue-bg:    #1a2940;
+    --alert-blue-text:  #93b8e8;
+    --alert-blue-border:#2c4670;
+    --alert-green-bg:   #1c3026;
+    --alert-green-text: #6fce91;
+    --alert-green-border:#2e5240;
+    --alert-orange-bg:  #3a2a18;
+    --alert-orange-text:#e9b481;
+    --alert-orange-border:#5a4220;
+    --alert-red-bg:     #3a1f1f;
+    --alert-red-text:   #e89b9b;
+    --alert-red-border: #5a3535;
+  }
+  /* 라이트 모드 기본 — body 도 명시적 색 (브라우저 기본 black 의존 X) */
+  body { background: var(--bg-page); color: var(--text-main); }
+
+  /* 다크 모드 시 추가 보정 — 컨테이너/카드/입력칸/표 본문 색 직접 강제 */
+  :root[data-theme="dark"] body { background: var(--bg-page); color: var(--text-main); }
+  :root[data-theme="dark"] .pt-sb,
+  :root[data-theme="dark"] .pt-tb { background: var(--bg-card); color: var(--text-main); }
+  :root[data-theme="dark"] .login-overlay { background: var(--bg-page); }
+  :root[data-theme="dark"] .ws4-card { background: var(--bg-card); border-color: var(--border); color: var(--text-main); }
+  :root[data-theme="dark"] .ws4-head { background: var(--bg-header); color: var(--text-sub); }
+  :root[data-theme="dark"] .ws4-body { color: var(--text-main); }
+  :root[data-theme="dark"] .ws4-foot { background: var(--bg-header); color: var(--text-sub); border-top-color: var(--border); }
+  :root[data-theme="dark"] .table thead th { background: var(--bg-header); color: var(--text-sub); }
+  :root[data-theme="dark"] .table tbody td { color: var(--text-main); }
+  :root[data-theme="dark"] .table tbody tr:nth-child(even) { background: var(--bg-stripe); }
+  :root[data-theme="dark"] .table tbody tr:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .input,
+  :root[data-theme="dark"] input,
+  :root[data-theme="dark"] select,
+  :root[data-theme="dark"] textarea { background: var(--bg-stripe) !important; color: var(--text-main) !important; border-color: var(--border-soft) !important; }
+  :root[data-theme="dark"] .pt-sb a,
+  :root[data-theme="dark"] .pt-sb-bottom-link { color: var(--text-sub); }
+  :root[data-theme="dark"] .pt-sb a:hover,
+  :root[data-theme="dark"] .pt-sb-bottom-link:hover { background: var(--bg-hover); color: var(--text-main); }
+  :root[data-theme="dark"] .pt-sb a.active,
+  :root[data-theme="dark"] .pt-sb-bottom-link.active { background: var(--bg-selected); color: var(--text-main); }
+  :root[data-theme="dark"] .pt-tb-title { color: var(--text-main); }
+  :root[data-theme="dark"] .pt-tb-user-name { color: var(--text-main); }
+  :root[data-theme="dark"] .pt-tb-user-role { color: var(--text-weak); }
+  :root[data-theme="dark"] .chip { background: var(--bg-stripe); color: var(--text-sub); border-color: var(--border-soft); }
+  :root[data-theme="dark"] .chip.active { background: var(--bg-selected); color: var(--text-main); }
+  :root[data-theme="dark"] .btn { background: var(--bg-stripe); color: var(--text-main); border-color: var(--border); }
+  :root[data-theme="dark"] .btn:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .btn-primary { background: var(--text-main); color: var(--bg-card); border-color: var(--text-main); }
+  :root[data-theme="dark"] .room-item { color: var(--text-main); }
+  :root[data-theme="dark"] .room-item-name { color: var(--text-main); }
+  :root[data-theme="dark"] .room-item-msg { color: var(--text-sub); }
+  :root[data-theme="dark"] .room-item:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .room-item.active { background: var(--bg-selected); }
+  :root[data-theme="dark"] .ctx-menu { background: var(--bg-card); border-color: var(--border); }
+  :root[data-theme="dark"] .ctx-item { color: var(--text-main); }
+  :root[data-theme="dark"] .ctx-item:hover { background: var(--bg-hover); }
+  :root[data-theme="dark"] .settings-tab { color: var(--text-sub); }
+  :root[data-theme="dark"] .settings-tab.is-active { background: var(--bg-selected); color: var(--text-main); }
+  :root[data-theme="dark"] .settings-tab:hover { background: var(--bg-hover); color: var(--text-main); }
+  :root[data-theme="dark"] .settings-section-title { color: var(--text-sub); border-bottom-color: var(--border-soft); }
+  :root[data-theme="dark"] .settings-row-static { color: var(--text-main); }
+  :root[data-theme="dark"] .settings-help-tip { background: var(--bg-stripe); }
+  /* 제조사 뱃지 — 다크 모드에서 어두운 브랜드색(제네시스/벤츠/렉서스 등) 가독 보정.
+     인라인 --mc 가 #1c1c1c 등 어두우면 다크 배경에서 안 보임 → 다크모드에선 text-main 으로 통일 */
+  :root[data-theme="dark"] .maker-badge { color: var(--text-main) !important; }
+
+  /* ── 모바일 SPA 쉘 — body.is-mobile 일 때만 표시 ── */
+  /* 기본은 항상 숨김 — [hidden] 속성보다 우선순위 강하게. 데스크톱은 절대 진입 X */
+  #mobileApp { display: none !important; }
+  body.is-mobile #mobileApp { display: flex !important; }
+  /* body.is-mobile 진입 시 데스크톱 SPA 모두 숨김 */
+  body.is-mobile .pt-sb,
+  body.is-mobile .pt-tb,
+  body.is-mobile .pt-main,
+  body.is-mobile .pt-actions { display: none !important; }
+
+  .m-app {
+    flex-direction: column;
+    height: 100vh; height: 100dvh;
+    background: var(--bg-page);
+    position: fixed; inset: 0;
+    overflow: hidden;
+  }
+  .m-main {
+    flex: 1; min-height: 0;
+    overflow-y: auto; overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .m-tabbar {
+    flex-shrink: 0;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--c-border-soft, var(--border));
+    background: color-mix(in srgb, var(--c-surface, var(--bg-card)) 92%, transparent);
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 10;
+  }
+  .m-tab {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 2px;
+    padding: 8px 4px 6px;
+    color: var(--c-text-muted, var(--text-muted));
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: color 0.15s ease, opacity 0.06s ease;
+  }
+  /* :link/:visited/:hover/:active 모두 밑줄 제거 (a 태그 default 무력화) */
+  .m-tab,
+  .m-tab:link,
+  .m-tab:visited,
+  .m-tab:hover,
+  .m-tab:active,
+  .m-tab:focus { text-decoration: none !important; }
+  .m-tab > i { font-size: 22px; }
+  /* 활성 탭 — accent 색 + bold 만 (인디케이터 바 / 아이콘 위로 이동 / 스케일 모두 제거) */
+  .m-tab.is-active {
+    color: var(--c-accent, #1B2A4A);
+    font-weight: 600;
+  }
+  /* 누름 피드백 — opacity (Toss 톤) */
+  .m-tab:active { opacity: 0.55; }
+
+  /* 모바일 — v2 와 픽셀 단위 정확히 일치 */
+  @media (max-width: 768px) {
+    .login-page {
+      align-items: stretch;
+      padding: max(24px, env(safe-area-inset-top)) 0 max(24px, env(safe-area-inset-bottom));
+      background: #ffffff;
+      gap: 20px;
+    }
+    .login-brand {
+      font-size: 22px;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .login-card {
+      box-shadow: none;
+      border: 0;
+      border-radius: 0;
+      padding: 0 24px;
+      gap: 20px;
+      max-width: none;
+    }
+    .login-title { font-size: 20px; }
+    .login-sub { font-size: 14px; }
+    .login-page .login-field input,
+    .login-page .login-field select {
+      height: 48px;
+      font-size: 16px;
+      border-radius: 4px;
+      padding: 0 16px;
+    }
+    .login-page .login-field label { font-size: 13px; }
+    .login-page .login-submit { height: 48px; font-size: 15px; border-radius: 4px; }
+    .login-links { font-size: 13px; gap: 12px; }
+    .login-copy { text-align: center; padding: 0 24px; }
+  }
