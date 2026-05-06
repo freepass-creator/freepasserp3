@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>프리패스 차종 매트릭스</title>
-<!-- 로컬 file:// 와 Vercel 양쪽 호환 — 둘 다 시도하고 먼저 성공하는 쪽으로 -->
-<script src="./public/data/encar-master-seed.js" onerror="this.dataset.failed=1"></script>
-<script src="./data/encar-master-seed.js" onerror="this.dataset.failed=1"></script>
+<!-- catalog 단일 진실원 — bundle.js 가 window.CAR_MASTER_INDEX / window.CAR_MASTER 노출 -->
 <script src="./public/data/car-master/_bundle.js" onerror="this.dataset.failed=1"></script>
 <script src="./data/car-master/_bundle.js" onerror="this.dataset.failed=1"></script>
 <script src="./public/data/trim-options-seed.js" onerror="this.dataset.failed=1"></script>
@@ -977,12 +975,28 @@ function withinScope(row) {
 }
 
 async function loadMaster() {
-  if (Array.isArray(window.ENCAR_MASTER) && window.ENCAR_MASTER.length) {
-    return window.ENCAR_MASTER
-      .filter(r => r && !r.archived && r.status !== 'deleted')
-      .filter(withinScope);
-  }
-  return null;
+  // catalog _index.json 단일 진실원 — encar-master-seed 폐기
+  // catalog entry → master row 형태로 변환 (maker/model/sub/production_start/end/catalog_id)
+  const idx = await loadIndex();
+  if (!idx || !Object.keys(idx).length) return null;
+  const rows = Object.values(idx).map((c, i) => {
+    const sub = (c.title || '').replace(new RegExp('^' + (c.maker || '') + '\\s+'), '').trim();
+    return {
+      _key: `cat_${c.id || i}`,
+      maker: c.maker || '',
+      model: c.model_root || '',
+      sub: sub || c.id,
+      car_name: c.title || c.id,
+      catalog_id: c.id,
+      production_start: c.year_start || '',
+      production_end: c.year_end || '',
+      archived: false,
+      status: 'active',
+      category: '',
+      fuel_type: '',
+    };
+  });
+  return rows.filter(withinScope);
 }
 
 // 매번 최신 데이터 — dev 단계라 캐시 안 잡힘
@@ -1023,11 +1037,12 @@ async function loadCatalogById(catalogId) {
 }
 
 async function loadCatalog(encarKey) {
-  const idx = await loadIndex();
-  // _index 의 source.encar 에서 encarKey 찾아서 catalog_id 매핑
-  const entry = Object.values(idx).find(v => (v.source?.encar || []).includes(encarKey));
-  if (!entry) return null;
-  return loadCatalogById(entry.id);
+  // master row 의 _key (cat_<catalog_id>) 에서 catalog_id 추출
+  if (!encarKey) return null;
+  const catalogId = String(encarKey).startsWith('cat_')
+    ? String(encarKey).slice(4)
+    : (state.master.find(r => r._key === encarKey)?.catalog_id || encarKey);
+  return loadCatalogById(catalogId);
 }
 
 function uniqueSorted(arr) {
@@ -1445,10 +1460,9 @@ async function init() {
     return;
   }
   state.master = data;
-  // 카탈로그 _index 미리 로드 — encar_key → catalog 정보 매핑 빌드
-  //  codeByEncar: 코드 추출 (e.g., "RG3")
-  //  titleByEncar: 메이커 prefix 제거한 full title (e.g., "디 올 뉴 G80 RG3")
-  //  → titleByEncar 가 우선 (페이스리프트 prefix 등 모두 반영)
+  // catalog _index 단일 진실원 — master row 의 catalog_id 로 직접 매핑
+  //  codeByEncar: row._key → chassis code (e.g., "RG3")
+  //  titleByEncar: row._key → 메이커 prefix 제거한 full title (e.g., "디 올 뉴 G80 RG3")
   const idx = await loadIndex();
   state.codeByEncar = {};
   state.titleByEncar = {};
@@ -1459,14 +1473,13 @@ async function init() {
     }
     return '';
   };
-  for (const entry of Object.values(idx || {})) {
-    const fullTitle = entry.title || '';
-    const titleNoMaker = fullTitle.replace(new RegExp('^' + (entry.maker || '') + '\\s+'), '').trim();
-    const code = _extractCode(fullTitle);
-    for (const ek of (entry.source?.encar || [])) {
-      if (titleNoMaker) state.titleByEncar[ek] = titleNoMaker;
-      if (code) state.codeByEncar[ek] = code;
-    }
+  for (const row of state.master) {
+    const cat = idx[row.catalog_id];
+    if (!cat) continue;
+    const titleNoMaker = (cat.title || '').replace(new RegExp('^' + (cat.maker || '') + '\\s+'), '').trim();
+    const code = _extractCode(cat.title);
+    if (titleNoMaker) state.titleByEncar[row._key] = titleNoMaker;
+    if (code) state.codeByEncar[row._key] = code;
   }
   $('status').textContent = `프리패스 차종 매트릭스 ${data.length}건 로드 완료. (자동 코드 매핑: ${Object.keys(state.codeByEncar).length}건)`;
   fillMakers();
