@@ -193,20 +193,14 @@
   </div>
   <div id="manuWrap" class="open"><div id="trimContent"></div></div>
 
-  <!-- ─── 프리패스 표준 주요옵션 (15개 — 인기 10 + 보조 5) ─── -->
+  <!-- ─── 프리패스 표준 주요옵션 (15개) ─── -->
   <div id="fpOptionsSection" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
-      <h3>프리패스 표준 주요옵션 <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:6px">15개 (인기 10 + 보조 5)</span></h3>
-      <span id="popSummary" style="font-size:11px;color:#6b7280">0 / 10</span>
+      <h3>프리패스 표준 주요옵션 <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:6px">15개</span></h3>
+      <span id="popSummary" style="font-size:11px;color:#6b7280">0 / 15</span>
     </div>
     <div class="popular-grid" id="popularGrid"></div>
-    <div class="pop-sub-section">
-      <div class="pop-sub-header">
-        <span>보조 5</span>
-        <span id="popSubSummary">0 / 5</span>
-      </div>
-      <div class="popular-sub-grid" id="popularSubGrid"></div>
-    </div>
+    <div class="popular-sub-grid" id="popularSubGrid" style="display:none"></div>
     <div class="fp-all-toggle" id="fpAllToggle">
       <span><b id="fpTotalSummary">0 / 95</b>개 세부옵션 모두보기</span>
       <span id="fpChevron">▾</span>
@@ -316,26 +310,30 @@ const OPTIONS = {
   ]},
 };
 const FP_TOTAL = Object.values(OPTIONS).reduce((s,c)=>s+c.items.length, 0);
-// ERP FP_POPULAR_PRIMARY (10) + SECONDARY (5) = 표준 주요옵션 15개
+// 표준 주요옵션 15개 — 카테고리 그룹 (인포·디스플레이 → 외관 → 시트 → ADAS → 편의)
 const POPULAR_OPTIONS = [
+  // 인포 / 디스플레이 / 카메라 (5)
   ['NAVIGATION','내비','navigation'],
-  ['SUNROOF_PANO','썬루프','sun'],
-  ['HEAT_SEAT_FRONT','열선','flame'],
-  ['VENT_SEAT_DR','통풍','wind'],
+  ['MIRRORING_WIRELESS','무선미러링','smartphone'],
+  ['HUD','HUD','monitor-up'],
   ['CAM_REAR','후방캠','camera'],
   ['AVMS','어라운드','scan'],
-  ['RCTA','후측방','shield-alert'],
+  // 외관 / 램프 (2)
+  ['SUNROOF_PANO','썬루프','sun'],
+  ['HEAD_LED','LED램프','lightbulb'],
+  // 시트 (2)
+  ['HEAT_SEAT_FRONT','열선','flame'],
+  ['VENT_SEAT_DR','통풍','wind'],
+  // ADAS 안전 (4)
   ['HDA','크루즈','gauge'],
-  ['HUD','HUD','monitor-up'],
-  ['MIRRORING_WIRELESS','미러링','smartphone']
-];
-const SUB_POPULAR_OPTIONS = [
+  ['RCTA','후측방','shield-alert'],
   ['LDWS','차선이탈','triangle-alert'],
   ['AEB','긴급제동','octagon-alert'],
-  ['HEAD_LED','LED램프','lightbulb'],
+  // 편의 (2)
   ['HIPASS','하이패스','badge'],
   ['SMART_KEY','스마트키','key-round']
 ];
+const SUB_POPULAR_OPTIONS = [];   // 통합 — 보조 영역 폐기
 
 function fpToggle(id) {
   if (state.fpOptions.has(id)) state.fpOptions.delete(id);

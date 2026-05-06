@@ -105,28 +105,32 @@ export function fpIdsToNames(ids) {
  *  4대 중고차 플랫폼 빈도 분석 + 한국 렌트 영업 특성 반영.
  *  ids 가 다중일 경우 OR 매칭 (매물 fp_options 에 하나라도 있으면 hit). */
 
-/** 필수 10 — 큰 칩, 메인 줄 (등급 분류 + 안전 ADAS 핵심) */
+/** 표준 주요옵션 15 — 카테고리 그룹 순서 (인포·디스플레이 → 외관 → 시트 → ADAS → 편의) */
 export const FP_POPULAR_PRIMARY = [
-  { label: '내비',     icon: 'navigation-arrow',  ids: ['NAVIGATION'] },
-  { label: '썬루프',   icon: 'sun',               ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
-  { label: '열선',     icon: 'fire',              ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
-  { label: '통풍',     icon: 'fan',               ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
-  { label: '후방캠',   icon: 'camera',            ids: ['CAM_REAR'] },
-  { label: '어라운드', icon: 'compass',           ids: ['AVMS'] },
-  { label: '후측방',   icon: 'bell-ringing',      ids: ['RCTA'] },
-  { label: '크루즈',   icon: 'speedometer',       ids: ['HDA'] },
-  { label: 'HUD',      icon: 'monitor',           ids: ['HUD'] },
-  { label: '미러링',   icon: 'broadcast',         ids: ['MIRRORING_WIRELESS'] },
+  // 인포 / 디스플레이 / 카메라 (5)
+  { label: '내비',         icon: 'navigation-arrow',  ids: ['NAVIGATION'] },
+  { label: '무선미러링',   icon: 'broadcast',         ids: ['MIRRORING_WIRELESS'] },
+  { label: 'HUD',          icon: 'monitor',           ids: ['HUD'] },
+  { label: '후방캠',       icon: 'camera',            ids: ['CAM_REAR'] },
+  { label: '어라운드',     icon: 'compass',           ids: ['AVMS'] },
+  // 외관 / 램프 (2)
+  { label: '썬루프',       icon: 'sun',               ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
+  { label: 'LED램프',      icon: 'lightbulb',         ids: ['HEAD_LED'] },
+  // 시트 (2)
+  { label: '열선',         icon: 'fire',              ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
+  { label: '통풍',         icon: 'fan',               ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
+  // ADAS 안전 (4)
+  { label: '크루즈',       icon: 'speedometer',       ids: ['HDA'] },
+  { label: '후측방',       icon: 'bell-ringing',      ids: ['RCTA'] },
+  { label: '차선이탈',     icon: 'arrows-out-line-horizontal', ids: ['LDWS'] },
+  { label: '긴급제동',     icon: 'hand',              ids: ['AEB'] },
+  // 편의 (2)
+  { label: '하이패스',     icon: 'credit-card',       ids: ['HIPASS'] },
+  { label: '스마트키',     icon: 'key',               ids: ['SMART_KEY'] },
 ];
 
-/** 보조 5 — 작은 칩, 아래 줄 (편의 + 추가 안전) */
-export const FP_POPULAR_SECONDARY = [
-  { label: '차선이탈', icon: 'arrows-out-line-horizontal', ids: ['LDWS'] },
-  { label: '긴급제동', icon: 'hand',              ids: ['AEB'] },
-  { label: 'LED램프',  icon: 'lightbulb',         ids: ['HEAD_LED'] },
-  { label: '하이패스', icon: 'credit-card',       ids: ['HIPASS', 'ECM_HIPASS_RV', 'ECM_HIPASS_MTS'] },
-  { label: '스마트키', icon: 'key',               ids: ['SMART_KEY'] },
-];
+/** 보조 영역 폐기 — 15개 모두 PRIMARY 로 통합. 호환성을 위해 빈 배열만 유지 */
+export const FP_POPULAR_SECONDARY = [];
 
 /** 통합 (편의 — 두 줄을 하나로 보고 싶을 때) */
 export const FP_POPULAR_ALL = [...FP_POPULAR_PRIMARY, ...FP_POPULAR_SECONDARY];

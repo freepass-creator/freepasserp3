@@ -271,18 +271,28 @@ async function refreshTrimOptionChips(card, p) {
     fuel_type: fuelLive,
     year: p.year,
     first_registration_date: p.first_registration_date,
+    // cascade picker 가 sub_model 선택 시 결정한 catalog_id — 가장 정확한 매칭
+    catalog_id: card.querySelector('[data-f="catalog_id"]')?.value || p.catalog_id || '',
   };
   let pool;
-  try { pool = await getOptionPool(live); } catch (e) { pool = { groups: [], allNames: new Set(), source: 'none' }; }
-  // 디버깅 — 사용자가 안 나온다고 할 때 콘솔에서 어디 단계에서 빠지는지 추적용
-  console.debug('[trim-chips]', { live: { maker: live.maker, model: live.model, sub_model: live.sub_model, trim_name: live.trim_name }, source: pool.source, groups: pool.groups.length, catalogId: pool.catalogId, trimName: pool.trimName });
+  try { pool = await getOptionPool(live); } catch (e) { console.error('[trim-chips] error', e); pool = { groups: [], allNames: new Set(), source: 'none' }; }
+  // 진단 로그 — 콘솔 (F12) 에서 트림 변경 시 출력
+  console.log('[trim-chips]', {
+    live: { maker: live.maker, sub_model: live.sub_model, model: live.model, trim_name: live.trim_name, fuel_type: live.fuel_type },
+    source: pool.source,
+    catalogId: pool.catalogId,
+    trimName: pool.trimName,
+    packages: pool.packages?.length || 0,
+    groups: pool.groups?.length || 0,
+  });
 
   // 현재 선택된 옵션들 (product.options 또는 hidden value)
   const currentText = hidden.value || (Array.isArray(p.options) ? p.options.join(', ') : (p.options || ''));
   const currentSet = new Set(splitOptionInput(currentText));
-  // 풀에 없는 옵션 (= 직접입력 한 것) → 직접입력 input 의 value 로 보여줌
+  // 풀에 없는 옵션 (= 직접입력 한 것) → 직접입력 input value 로 분리.
+  // 단, pool 매칭 성공한 경우만 (trim/maker-wide). 매칭 실패 시 분리 시도하면 모든 옵션이 풀밖으로 잘못 가버림.
   const manualInput = card.querySelector('#optionsManualInput');
-  if (manualInput && pool.allNames) {
+  if (manualInput && pool.allNames && pool.allNames.size > 0 && (pool.source === 'trim' || pool.source === 'maker-wide')) {
     const manualOnly = [...currentSet].filter(opt => !pool.allNames.has(opt));
     manualInput.value = manualOnly.join(', ');
   }
@@ -702,9 +712,12 @@ export function renderProductDetail(p) {
         ${renderCarPicker(p, dis)}
         <div class="ff" style="grid-column:1/-1;" id="trimOptionsArea">
           <label>선택옵션</label>
-          <div id="trimOptionsChips" class="trim-options-chips" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;"></div>
+          <div id="trimOptionsChips" class="trim-options-chips" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;"></div>
           <div id="trimOptionsHint" class="text-weak" style="font-size:11px;margin-top:4px;">트림 선택 시 옵션 칩이 자동 채워집니다.</div>
-          <input type="text" class="input" id="optionsManualInput" placeholder="직접 입력 — 콤마(,) 또는 슬래시(/) 로 구분" style="margin-top:6px;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>
+        </div>
+        <div class="ff" style="grid-column:1/-1;" id="optionsManualArea">
+          <label>옵션 직접 입력</label>
+          <input type="text" class="input" id="optionsManualInput" placeholder="풀에 없는 옵션 직접 입력 — 콤마(,) 또는 슬래시(/) 로 구분"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>
           <input type="hidden" data-f="options" value="${esc(optsValue)}">
         </div>
         <div class="ff" id="mtxBanner" style="display:none;border-left:3px solid var(--alert-blue-text);padding:8px 12px;background:var(--alert-blue-bg);font-size:11px;line-height:1.5;border-radius:4px;margin:4px 0;"></div>

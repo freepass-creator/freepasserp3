@@ -18,18 +18,28 @@ export async function getOptionPool(product) {
   const trimName = product.trim_name || product.trim || '';
   if (!trimName) return { ...empty, source: 'no-trim' };
 
-  const cat = await findCatalog(product.maker, product.sub_model, product.model, product);
-  if (!cat?.catalogId) return { ...empty, source: 'no-catalog' };
-  const catalog = await loadCatalog(cat.catalogId);
+  // 1순위: cascade picker 가 sub_model 선택 시 결정한 explicit catalog_id (가장 정확).
+  //   매물 연식이 catalog year_range 밖이어도 (사용자가 의도적으로 다른 catalog 선택한 경우) 우선.
+  let catalogId = product.catalog_id || null;
+  // 2순위: maker + sub_model 기반 매칭
+  if (!catalogId) {
+    const cat = await findCatalog(product.maker, product.sub_model, product.model, product);
+    if (!cat?.catalogId) return { ...empty, source: 'no-catalog' };
+    catalogId = cat.catalogId;
+  }
+  const catalog = await loadCatalog(catalogId);
   if (!catalog) return { ...empty, source: 'no-catalog' };
+  const cat = { catalogId };
 
   // catalog options 자체가 비어있으면 (stub catalog) → 안내
   const optionCount = catalog.options ? Object.keys(catalog.options).length : 0;
   if (optionCount === 0) {
     return { ...empty, source: 'stub-catalog', catalogId: cat.catalogId, trimName };
   }
-  // trim 정확 매칭 — 실패 시 catalog 전체 옵션 (제조사 풀) 폴백
-  const trim = findTrimInCatalog(catalog, trimName, product);
+  // trim 정확 매칭 — findTrimInCatalog 는 { name, trim, confidence, ... } wrapper 반환.
+  // 실제 trim 데이터는 .trim 안에. catalog.trims[name] 로 직접 접근도 fallback.
+  const trimWrapper = findTrimInCatalog(catalog, trimName, product);
+  const trim = trimWrapper?.trim || (trimName && catalog.trims?.[trimName]) || null;
   if (!trim) {
     const widePool = makeMakerWidePool(catalog);
     return { ...widePool, source: 'maker-wide', catalogId: cat.catalogId, trimName };
