@@ -1,0 +1,18 @@
+{
+  "catalog_id": "hyundai_코티나",
+  "model_root": "코티나",
+  "title": "현대 코티나",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_028_031)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "코티나"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

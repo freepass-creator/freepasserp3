@@ -1,0 +1,19 @@
+{
+  "catalog_id": "audi_q7",
+  "model_root": "Q7",
+  "title": "아우디 Q7",
+  "maker": "아우디",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_011_013_016)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "Q7"
+  ],
+  "year_start": "2007-01",
+  "year_end": "2015-12",
+  "category_seed": "SUV"
+}

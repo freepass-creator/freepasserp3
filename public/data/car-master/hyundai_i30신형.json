@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_i30신형",
+  "model_root": "i30(신형)",
+  "title": "현대 i30(신형)",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_001_117)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "i30(신형)"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2015-12",
+  "category_seed": "준중형차"
+}

@@ -1,0 +1,19 @@
+{
+  "catalog_id": "mini_쿠퍼_쿠페",
+  "model_root": "쿠퍼",
+  "title": "미니 쿠퍼 쿠페",
+  "maker": "미니",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_054_006_110)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "쿠퍼 쿠페"
+  ],
+  "year_start": "2012-01",
+  "year_end": "2012-12",
+  "category_seed": "스포츠카"
+}

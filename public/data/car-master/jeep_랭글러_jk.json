@@ -1,0 +1,19 @@
+{
+  "catalog_id": "jeep_랭글러_jk",
+  "model_root": "랭글러 (JK)",
+  "title": "지프 랭글러 (JK)",
+  "maker": "지프",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_083_001_011)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "랭글러 (JK)"
+  ],
+  "year_start": "2007-01",
+  "year_end": "2017-12",
+  "category_seed": "SUV"
+}

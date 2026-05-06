@@ -1,0 +1,19 @@
+{
+  "catalog_id": "honda_s660",
+  "model_root": "S660",
+  "title": "혼다 S660",
+  "maker": "혼다",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_027_027_030)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "S660"
+  ],
+  "year_start": "2015-01",
+  "year_end": "2015-12",
+  "category_seed": "경차"
+}

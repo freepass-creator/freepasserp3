@@ -1,0 +1,19 @@
+{
+  "catalog_id": "bmw_m2_f87",
+  "model_root": "M2 (F87)",
+  "title": "BMW M2 (F87)",
+  "maker": "BMW",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_012_023_042)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "M2 (F87)"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2021-12",
+  "category_seed": "스포츠카"
+}

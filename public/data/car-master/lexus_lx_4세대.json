@@ -1,0 +1,19 @@
+{
+  "catalog_id": "lexus_lx_4세대",
+  "model_root": "LX 4세대",
+  "title": "렉서스 LX 4세대",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_008_067)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "LX 4세대"
+  ],
+  "year_start": "2025-01",
+  "year_end": "현재",
+  "category_seed": "승합차"
+}

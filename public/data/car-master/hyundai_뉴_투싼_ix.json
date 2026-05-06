@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_뉴_투싼_ix",
+  "model_root": "투싼",
+  "title": "현대 뉴 투싼 ix",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_032_122)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "뉴 투싼 ix"
+  ],
+  "year_start": "2013-01",
+  "year_end": "2015-12",
+  "category_seed": "SUV"
+}

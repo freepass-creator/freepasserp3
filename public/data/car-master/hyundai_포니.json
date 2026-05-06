@@ -1,0 +1,18 @@
+{
+  "catalog_id": "hyundai_포니",
+  "model_root": "포니",
+  "title": "현대 포니",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_036_032)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "포니"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

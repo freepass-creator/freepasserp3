@@ -1,0 +1,19 @@
+{
+  "catalog_id": "kgm_액티언_스포츠",
+  "model_root": "액티언 스포츠",
+  "title": "KGM 액티언 스포츠",
+  "maker": "KGM",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_004_006_019)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "액티언 스포츠"
+  ],
+  "year_start": "2006-01",
+  "year_end": "2011-12",
+  "category_seed": "화물차"
+}

@@ -1,0 +1,19 @@
+{
+  "catalog_id": "lexus_뉴_gs300",
+  "model_root": "GS300",
+  "title": "렉서스 뉴 GS300",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_002_049)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "뉴 GS300"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2018-12",
+  "category_seed": "중형차"
+}

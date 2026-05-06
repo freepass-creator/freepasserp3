@@ -1,0 +1,18 @@
+{
+  "catalog_id": "chevrolet_씨에로",
+  "model_root": "씨에로",
+  "title": "쉐보레 씨에로",
+  "maker": "쉐보레",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_003_020_005)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "씨에로"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

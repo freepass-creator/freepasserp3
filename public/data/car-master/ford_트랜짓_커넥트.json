@@ -1,0 +1,19 @@
+{
+  "catalog_id": "ford_트랜짓_커넥트",
+  "model_root": "트랜짓 커넥트",
+  "title": "포드 트랜짓 커넥트",
+  "maker": "포드",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_024_029_041)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "트랜짓 커넥트"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2011-12",
+  "category_seed": "RV"
+}

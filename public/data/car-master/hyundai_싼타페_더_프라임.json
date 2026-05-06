@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_싼타페_더_프라임",
+  "model_root": "싼타페 더 프라임",
+  "title": "현대 싼타페 더 프라임",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_017_134)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "싼타페 더 프라임"
+  ],
+  "year_start": "2015-01",
+  "year_end": "2018-12",
+  "category_seed": "SUV"
+}

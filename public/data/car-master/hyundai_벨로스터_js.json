@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_벨로스터_js",
+  "model_root": "벨로스터 (JS)",
+  "title": "현대 벨로스터 (JS)",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_048_149)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "벨로스터 (JS)"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2022-12",
+  "category_seed": "준중형차"
+}

@@ -1,0 +1,18 @@
+{
+  "catalog_id": "chevrolet_브로엄",
+  "model_root": "브로엄",
+  "title": "쉐보레 브로엄",
+  "maker": "쉐보레",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_003_017_012)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "브로엄"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

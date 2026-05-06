@@ -1,0 +1,19 @@
+{
+  "catalog_id": "audi_q3",
+  "model_root": "Q3",
+  "title": "아우디 Q3",
+  "maker": "아우디",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_011_026_031)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "Q3"
+  ],
+  "year_start": "2012-01",
+  "year_end": "2016-12",
+  "category_seed": "SUV"
+}

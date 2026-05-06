@@ -1,0 +1,18 @@
+{
+  "catalog_id": "kia_토픽",
+  "model_root": "토픽",
+  "title": "기아 토픽",
+  "maker": "기아",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_002_046_061)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "토픽"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

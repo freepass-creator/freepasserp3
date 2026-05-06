@@ -1,0 +1,19 @@
+{
+  "catalog_id": "renault_세닉",
+  "model_root": "세닉",
+  "title": "르노 세닉",
+  "maker": "르노",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_005_020_078)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "세닉"
+  ],
+  "year_start": "2025-01",
+  "year_end": "현재",
+  "category_seed": "SUV"
+}

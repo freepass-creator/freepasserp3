@@ -37,6 +37,8 @@ for (const f of files) {
       if (cur.title !== newTitle) { cur.title = newTitle; changed = true; }
       if (data.maker && cur.maker !== data.maker) { cur.maker = data.maker; changed = true; }
       if (data.model_root && cur.model_root !== data.model_root) { cur.model_root = data.model_root; changed = true; }
+      if (data.year_start !== undefined && cur.year_start !== data.year_start) { cur.year_start = data.year_start || ''; changed = true; }
+      if (data.year_end !== undefined && cur.year_end !== data.year_end) { cur.year_end = data.year_end || ''; changed = true; }
       // trims 비교 — 길이/내용 다르면 갱신
       const curTrims = Array.isArray(cur.trims) ? cur.trims : [];
       const trimsDiff = curTrims.length !== trimNames.length || curTrims.some((t, i) => t !== trimNames[i]);
@@ -51,6 +53,8 @@ for (const f of files) {
       title: data.title || cid,
       maker: data.maker || '',
       model_root: data.model_root || '',
+      year_start: data.year_start || '',
+      year_end: data.year_end || '',
       source: {
         manufacturer: Array.isArray(data.source_urls) && data.source_urls[0] ? data.source_urls[0] : null,
         wikicar: null,

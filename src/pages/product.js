@@ -90,8 +90,15 @@ function renderCarPicker(p, dis = '') {
   const subs = (curMk && curMd) ? getCatalogSubModels(curMk, curMd) : [];
   const trims = curCid ? getCatalogTrims(curCid) : [];
 
-  // sub_model option: { val, label, attr } — data-cid 로 catalog_id 추적
-  const subOpts = subs.map(s => ({ val: s.sub, label: s.sub, attr: ` data-cid="${esc(s.id)}"` }));
+  // sub_model option: { val, label, attr } — data-cid 로 catalog_id 추적, label 에 생산년도 표기
+  const yearLabel = (s) => {
+    const ys = (s.year_start || '').slice(0, 4);
+    const ye = (s.year_end || '').slice(0, 4);
+    if (ys && (s.year_end === '현재' || !ye)) return ` ${ys}~`;
+    if (ys && ye) return ` ${ys}~${ye}`;
+    return '';
+  };
+  const subOpts = subs.map(s => ({ val: s.sub, label: s.sub + yearLabel(s), attr: ` data-cid="${esc(s.id)}"` }));
   const makerOpts = makers.map(m => ({ val: m, label: m }));
   const modelOpts = models.map(m => ({ val: m, label: m }));
   const trimOpts = trims.map(t => ({ val: t, label: t }));
@@ -142,7 +149,14 @@ function bindCarPicker(card, p) {
   const fill = (sel, opts, cur, ctx) => {
     sel.innerHTML = `<option value="">선택</option>` + pickerOptionsHtml(opts, cur, ctx);
   };
-  const subsToOpts = (subs) => subs.map(s => ({ val: s.sub, label: s.sub, attr: ` data-cid="${esc(s.id)}"` }));
+  const yearLabel = (s) => {
+    const ys = (s.year_start || '').slice(0, 4);
+    const ye = (s.year_end || '').slice(0, 4);
+    if (ys && (s.year_end === '현재' || !ye)) return ` ${ys}~`;
+    if (ys && ye) return ` ${ys}~${ye}`;
+    return '';
+  };
+  const subsToOpts = (subs) => subs.map(s => ({ val: s.sub, label: s.sub + yearLabel(s), attr: ` data-cid="${esc(s.id)}"` }));
   const arrToOpts = (arr) => arr.map(v => ({ val: v, label: v }));
 
   mkSel.addEventListener('change', () => {

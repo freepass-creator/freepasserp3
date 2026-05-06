@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_더_뉴_맥스크루즈",
+  "model_root": "맥스크루즈",
+  "title": "현대 더 뉴 맥스크루즈",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_050_135)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "더 뉴 맥스크루즈"
+  ],
+  "year_start": "2015-01",
+  "year_end": "2018-12",
+  "category_seed": "SUV"
+}

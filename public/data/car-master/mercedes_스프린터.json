@@ -1,0 +1,19 @@
+{
+  "catalog_id": "mercedes_스프린터",
+  "model_root": "스프린터",
+  "title": "벤츠 스프린터",
+  "maker": "벤츠",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_013_030_015)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "스프린터"
+  ],
+  "year_start": "2011-01",
+  "year_end": "현재",
+  "category_seed": "승합차"
+}

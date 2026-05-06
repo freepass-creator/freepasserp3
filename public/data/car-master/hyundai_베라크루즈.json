@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_베라크루즈",
+  "model_root": "베라크루즈",
+  "title": "현대 베라크루즈",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_011_082)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "베라크루즈"
+  ],
+  "year_start": "2006-01",
+  "year_end": "2015-12",
+  "category_seed": "SUV"
+}

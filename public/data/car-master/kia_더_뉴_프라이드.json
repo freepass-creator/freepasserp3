@@ -1,0 +1,19 @@
+{
+  "catalog_id": "kia_더_뉴_프라이드",
+  "model_root": "프라이드",
+  "title": "기아 더 뉴 프라이드",
+  "maker": "기아",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_002_053_115)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "더 뉴 프라이드"
+  ],
+  "year_start": "2015-01",
+  "year_end": "2017-12",
+  "category_seed": "소형차"
+}

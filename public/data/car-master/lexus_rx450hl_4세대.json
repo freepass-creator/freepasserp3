@@ -1,0 +1,19 @@
+{
+  "catalog_id": "lexus_rx450hl_4세대",
+  "model_root": "RX450hL 4세대",
+  "title": "렉서스 RX450hL 4세대",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_005_056)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "RX450hL 4세대"
+  ],
+  "year_start": "2020-01",
+  "year_end": "2021-12",
+  "category_seed": "SUV"
+}

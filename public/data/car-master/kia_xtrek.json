@@ -1,0 +1,18 @@
+{
+  "catalog_id": "kia_xtrek",
+  "model_root": "X-TREK",
+  "title": "기아 X-TREK",
+  "maker": "기아",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_002_003_068)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "X-TREK"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

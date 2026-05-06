@@ -1,0 +1,19 @@
+{
+  "catalog_id": "bmw_m3_f80",
+  "model_root": "M3 (F80)",
+  "title": "BMW M3 (F80)",
+  "maker": "BMW",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_012_024_043)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "M3 (F80)"
+  ],
+  "year_start": "2014-01",
+  "year_end": "2018-12",
+  "category_seed": "스포츠카"
+}

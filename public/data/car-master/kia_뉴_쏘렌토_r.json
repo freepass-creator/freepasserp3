@@ -1,0 +1,19 @@
+{
+  "catalog_id": "kia_뉴_쏘렌토_r",
+  "model_root": "쏘렌토 R",
+  "title": "기아 뉴 쏘렌토 R",
+  "maker": "기아",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_002_027_102)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "뉴 쏘렌토 R"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2014-12",
+  "category_seed": "SUV"
+}

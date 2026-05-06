@@ -1,0 +1,18 @@
+{
+  "catalog_id": "kia_옵티마",
+  "model_root": "옵티마",
+  "title": "기아 옵티마",
+  "maker": "기아",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_002_034_035)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "옵티마"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

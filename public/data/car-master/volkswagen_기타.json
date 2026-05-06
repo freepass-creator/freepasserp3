@@ -1,0 +1,19 @@
+{
+  "catalog_id": "volkswagen_기타",
+  "model_root": "기타",
+  "title": "폭스바겐 기타",
+  "maker": "폭스바겐",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_014_017_999)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "기타"
+  ],
+  "year_start": "2014-01",
+  "year_end": "2014-12",
+  "category_seed": "기타"
+}

@@ -1,0 +1,18 @@
+{
+  "catalog_id": "hyundai_그라나다",
+  "model_root": "그라나다",
+  "title": "현대 그라나다",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_003_034)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "그라나다"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

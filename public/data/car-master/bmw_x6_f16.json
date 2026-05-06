@@ -1,0 +1,19 @@
+{
+  "catalog_id": "bmw_x6_f16",
+  "model_root": "X6 (F16)",
+  "title": "BMW X6 (F16)",
+  "maker": "BMW",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_012_011_023)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "X6 (F16)"
+  ],
+  "year_start": "2014-01",
+  "year_end": "2019-12",
+  "category_seed": "SUV"
+}

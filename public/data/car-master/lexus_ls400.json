@@ -1,0 +1,18 @@
+{
+  "catalog_id": "lexus_ls400",
+  "model_root": "LS400",
+  "title": "렉서스 LS400",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_004_004)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "LS400"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

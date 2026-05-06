@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_더_뉴_아이오닉_일렉트릭",
+  "model_root": "아이오닉",
+  "title": "현대 더 뉴 아이오닉 일렉트릭",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_053_158)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "더 뉴 아이오닉 일렉트릭"
+  ],
+  "year_start": "2019-01",
+  "year_end": "2020-12",
+  "category_seed": "준중형차"
+}

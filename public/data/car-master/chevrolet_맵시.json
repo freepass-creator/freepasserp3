@@ -1,0 +1,18 @@
+{
+  "catalog_id": "chevrolet_맵시",
+  "model_root": "맵시",
+  "title": "쉐보레 맵시",
+  "maker": "쉐보레",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_003_015_020)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "맵시"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_싼타페_tm",
+  "model_root": "싼타페",
+  "title": "현대 싼타페 TM",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_017_150)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "싼타페 TM"
+  ],
+  "year_start": "2018-01",
+  "year_end": "2020-12",
+  "category_seed": "SUV"
+}

@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_더_럭셔리_그랜저",
+  "model_root": "더 럭셔리 그랜저",
+  "title": "현대 더 럭셔리 그랜저",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_004_101)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "더 럭셔리 그랜저"
+  ],
+  "year_start": "2006-01",
+  "year_end": "2011-12",
+  "category_seed": "대형차"
+}

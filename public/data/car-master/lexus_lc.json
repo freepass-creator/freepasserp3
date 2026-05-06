@@ -1,0 +1,18 @@
+{
+  "catalog_id": "lexus_lc",
+  "model_root": "LC",
+  "title": "렉서스 LC",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_015_047)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "LC"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

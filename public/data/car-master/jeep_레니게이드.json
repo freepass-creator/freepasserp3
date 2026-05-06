@@ -1,0 +1,19 @@
+{
+  "catalog_id": "jeep_레니게이드",
+  "model_root": "레니게이드",
+  "title": "지프 레니게이드",
+  "maker": "지프",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_083_006_008)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "레니게이드"
+  ],
+  "year_start": "2015-01",
+  "year_end": "2023-12",
+  "category_seed": "SUV"
+}

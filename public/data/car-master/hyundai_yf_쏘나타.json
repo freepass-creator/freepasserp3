@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_yf_쏘나타",
+  "model_root": "YF 쏘나타",
+  "title": "현대 YF 쏘나타",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_018_098)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "YF 쏘나타"
+  ],
+  "year_start": "2009-01",
+  "year_end": "2012-12",
+  "category_seed": "중형차"
+}

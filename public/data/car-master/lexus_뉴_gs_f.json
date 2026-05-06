@@ -1,0 +1,18 @@
+{
+  "catalog_id": "lexus_뉴_gs_f",
+  "model_root": "GS F",
+  "title": "렉서스 뉴 GS F",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_002_046)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "뉴 GS F"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

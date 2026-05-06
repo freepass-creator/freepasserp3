@@ -1,0 +1,18 @@
+{
+  "catalog_id": "lexus_gx460",
+  "model_root": "GX460",
+  "title": "렉서스 GX460",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_007_024)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "GX460"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

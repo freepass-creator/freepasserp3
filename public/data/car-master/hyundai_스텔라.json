@@ -1,0 +1,18 @@
+{
+  "catalog_id": "hyundai_스텔라",
+  "model_root": "스텔라",
+  "title": "현대 스텔라",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_016_030)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "스텔라"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

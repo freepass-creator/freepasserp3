@@ -1,0 +1,19 @@
+{
+  "catalog_id": "kgm_코란도_c",
+  "model_root": "코란도 C",
+  "title": "KGM 코란도 C",
+  "maker": "KGM",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_004_011_099)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "코란도 C"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2013-12",
+  "category_seed": "SUV"
+}

@@ -1,0 +1,18 @@
+{
+  "catalog_id": "kia_파크타운",
+  "model_root": "파크타운",
+  "title": "기아 파크타운",
+  "maker": "기아",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_002_050_014)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "파크타운"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

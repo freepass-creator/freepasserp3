@@ -1,0 +1,19 @@
+{
+  "catalog_id": "chevrolet_아베오_해치백",
+  "model_root": "아베오 해치백",
+  "title": "쉐보레 아베오 해치백",
+  "maker": "쉐보레",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_003_042_074)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "아베오 해치백"
+  ],
+  "year_start": "2011-01",
+  "year_end": "2016-12",
+  "category_seed": "소형차"
+}

@@ -1,0 +1,19 @@
+{
+  "catalog_id": "audi_sq5",
+  "model_root": "SQ5",
+  "title": "아우디 SQ5",
+  "maker": "아우디",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_011_030_034)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "SQ5"
+  ],
+  "year_start": "2013-01",
+  "year_end": "2016-12",
+  "category_seed": "SUV"
+}

@@ -1,0 +1,18 @@
+{
+  "catalog_id": "lexus_rx400h",
+  "model_root": "RX400h",
+  "title": "렉서스 RX400h",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_005_019)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "RX400h"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

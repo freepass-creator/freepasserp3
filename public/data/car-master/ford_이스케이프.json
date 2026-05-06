@@ -1,0 +1,19 @@
+{
+  "catalog_id": "ford_이스케이프",
+  "model_root": "이스케이프",
+  "title": "포드 이스케이프",
+  "maker": "포드",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_024_008_008)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "이스케이프"
+  ],
+  "year_start": "2009-01",
+  "year_end": "2014-12",
+  "category_seed": "SUV"
+}

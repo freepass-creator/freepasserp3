@@ -1,0 +1,19 @@
+{
+  "catalog_id": "landrover_디스커버리_4",
+  "model_root": "디스커버리 4",
+  "title": "랜드로버 디스커버리 4",
+  "maker": "랜드로버",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_020_001_010)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "디스커버리 4"
+  ],
+  "year_start": "2010-01",
+  "year_end": "2016-12",
+  "category_seed": "SUV"
+}

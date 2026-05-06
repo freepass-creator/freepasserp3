@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_nf_쏘나타_트랜스폼",
+  "model_root": "NF 쏘나타 트랜스폼",
+  "title": "현대 NF 쏘나타 트랜스폼",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_018_092)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "NF 쏘나타 트랜스폼"
+  ],
+  "year_start": "2007-01",
+  "year_end": "2011-12",
+  "category_seed": "중형차"
+}

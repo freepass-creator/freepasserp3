@@ -1,0 +1,19 @@
+{
+  "catalog_id": "hyundai_그랜드_스타렉스",
+  "model_root": "그랜드 스타렉스",
+  "title": "현대 그랜드 스타렉스",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_015_083)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "그랜드 스타렉스"
+  ],
+  "year_start": "2007-01",
+  "year_end": "2018-12",
+  "category_seed": "승합차"
+}

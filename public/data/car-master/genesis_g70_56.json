@@ -1,0 +1,19 @@
+{
+  "catalog_id": "genesis_g70_56",
+  "model_root": "G70",
+  "title": "제네시스 G70",
+  "maker": "제네시스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_007_003_003)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "G70"
+  ],
+  "year_start": "2017-01",
+  "year_end": "2020-12",
+  "category_seed": "중형차"
+}

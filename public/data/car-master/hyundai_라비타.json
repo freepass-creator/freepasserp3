@@ -1,0 +1,18 @@
+{
+  "catalog_id": "hyundai_라비타",
+  "model_root": "라비타",
+  "title": "현대 라비타",
+  "maker": "현대",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_001_007_063)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "라비타"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

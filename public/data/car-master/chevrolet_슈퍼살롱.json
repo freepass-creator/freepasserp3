@@ -1,0 +1,18 @@
+{
+  "catalog_id": "chevrolet_슈퍼살롱",
+  "model_root": "슈퍼살롱",
+  "title": "쉐보레 슈퍼살롱",
+  "maker": "쉐보레",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_003_018_011)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "슈퍼살롱"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

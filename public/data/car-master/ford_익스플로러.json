@@ -1,0 +1,19 @@
+{
+  "catalog_id": "ford_익스플로러",
+  "model_root": "익스플로러",
+  "title": "포드 익스플로러",
+  "maker": "포드",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_024_007_007)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "익스플로러"
+  ],
+  "year_start": "2010-01",
+  "year_end": "2019-12",
+  "category_seed": "SUV"
+}

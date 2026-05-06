@@ -1,0 +1,18 @@
+{
+  "catalog_id": "lexus_is350",
+  "model_root": "IS350",
+  "title": "렉서스 IS350",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_003_017)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "IS350"
+  ],
+  "year_start": "",
+  "year_end": ""
+}

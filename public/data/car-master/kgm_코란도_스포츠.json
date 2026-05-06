@@ -1,0 +1,19 @@
+{
+  "catalog_id": "kgm_코란도_스포츠",
+  "model_root": "코란도 스포츠",
+  "title": "KGM 코란도 스포츠",
+  "maker": "KGM",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_004_011_102)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "코란도 스포츠"
+  ],
+  "year_start": "2012-01",
+  "year_end": "2016-12",
+  "category_seed": "화물차"
+}

@@ -1,0 +1,19 @@
+{
+  "catalog_id": "porsche_718_박스터",
+  "model_root": "718 박스터",
+  "title": "포르쉐 718 박스터",
+  "maker": "포르쉐",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_015_014_014)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "718 박스터"
+  ],
+  "year_start": "2016-01",
+  "year_end": "2024-12",
+  "category_seed": "스포츠카"
+}

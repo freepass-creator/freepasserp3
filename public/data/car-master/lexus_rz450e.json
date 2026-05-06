@@ -1,0 +1,19 @@
+{
+  "catalog_id": "lexus_rz450e",
+  "model_root": "RZ450e",
+  "title": "렉서스 RZ450e",
+  "maker": "렉서스",
+  "source": "encar-seed-auto",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "encar-master-seed 자동 import (encar_035_017_060)",
+  "options": {},
+  "categories": {},
+  "trims": {},
+  "aliases": [
+    "RZ450e"
+  ],
+  "year_start": "2023-01",
+  "year_end": "2023-12",
+  "category_seed": "SUV"
+}
