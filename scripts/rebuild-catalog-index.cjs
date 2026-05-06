@@ -27,6 +27,14 @@ for (const f of files) {
   try {
     const data = JSON.parse(fs.readFileSync(path.join(CATALOG_DIR, f), 'utf8'));
     const trimNames = data.trims ? Object.keys(data.trims) : [];
+    // 트림 가격 메타 — { trim_name: price.base } — 가격순 정렬용
+    const trimsMeta = {};
+    if (data.trims && typeof data.trims === 'object') {
+      for (const [name, t] of Object.entries(data.trims)) {
+        const price = t?.price?.base || 0;
+        if (price) trimsMeta[name] = price;
+      }
+    }
 
     if (updated[cid]) {
       // 기존 entry — title / trims / maker / model_root 만 catalog.json 기준 동기화
@@ -43,6 +51,11 @@ for (const f of files) {
       const curTrims = Array.isArray(cur.trims) ? cur.trims : [];
       const trimsDiff = curTrims.length !== trimNames.length || curTrims.some((t, i) => t !== trimNames[i]);
       if (trimsDiff) { cur.trims = trimNames; changed = true; }
+      // trims_meta 동기화 — 가격순 정렬용
+      const curMeta = cur.trims_meta || {};
+      const metaDiff = Object.keys(curMeta).length !== Object.keys(trimsMeta).length
+        || Object.entries(trimsMeta).some(([k, v]) => curMeta[k] !== v);
+      if (metaDiff) { cur.trims_meta = trimsMeta; changed = true; }
       if (changed) synced++;
       continue;
     }
@@ -66,6 +79,7 @@ for (const f of files) {
         encar: false,
       },
       trims: trimNames,
+      trims_meta: trimsMeta,
       fetched_at: data.fetched_at || new Date().toISOString().slice(0, 10),
     };
     added++;

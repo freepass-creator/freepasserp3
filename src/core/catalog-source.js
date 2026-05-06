@@ -46,16 +46,25 @@ function inventoryCounts() {
   return { m, mm, mms };
 }
 
-/** 메이커 목록 — 보유대수 우선 → 가나다 */
+/** 국산 메이커 인기순 우선 + 수입 메이커 인기순 + 가나다 */
+const KOR_MAKER_RANK = ['현대', '기아', '제네시스', 'KGM', '쌍용', '쉐보레', '한국GM', 'GM대우', '르노', '르노삼성', '대우'];
+const FOREIGN_MAKER_RANK = ['BMW', '벤츠', '아우디', '테슬라', '렉서스', '미니', '볼보', '폭스바겐', '포르쉐', '랜드로버', '재규어', '포드', '지프', '도요타', '토요타', '닛산', '혼다', '인피니티', '캐딜락', '링컨', '크라이슬러', '마세라티', '페라리', '람보르기니', '벤틀리', '롤스로이스', '맥라렌', '애스턴마틴', '부가티'];
+
+/** 메이커 목록 — 국산 인기순 → 수입 인기순 → 가나다 */
 export function getCatalogMakers() {
   if (!_index) return [];
-  const { m: counts } = inventoryCounts();
   const set = new Set();
   for (const c of Object.values(_index)) if (c.maker) set.add(c.maker);
   return [...set].sort((a, b) => {
-    const ca = counts.get(a) || 0, cb = counts.get(b) || 0;
-    if (cb !== ca) return cb - ca;
-    return a.localeCompare(b, 'ko');
+    const ak = KOR_MAKER_RANK.indexOf(a), bk = KOR_MAKER_RANK.indexOf(b);
+    const aIsKor = ak >= 0, bIsKor = bk >= 0;
+    if (aIsKor !== bIsKor) return aIsKor ? -1 : 1;       // 국산 우선
+    if (aIsKor) return ak - bk;                            // 국산 인기순
+    const af = FOREIGN_MAKER_RANK.indexOf(a), bf = FOREIGN_MAKER_RANK.indexOf(b);
+    const aIsKnown = af >= 0, bIsKnown = bf >= 0;
+    if (aIsKnown !== bIsKnown) return aIsKnown ? -1 : 1;
+    if (aIsKnown) return af - bf;                          // 수입 인기순
+    return a.localeCompare(b, 'ko');                       // 그 외 가나다
   });
 }
 
@@ -101,11 +110,19 @@ export function getCatalogSubModels(maker, model_root) {
   return out;
 }
 
-/** catalog_id 의 트림 배열 — _index.json 의 trims 키 */
+/** catalog_id 의 트림 배열 — 가격순 (trims_meta 의 price.base 오름차순), 가격 없는 trim 은 뒤로 */
 export function getCatalogTrims(catalog_id) {
   if (!catalog_id || !_index) return [];
   const c = _index[catalog_id];
-  return Array.isArray(c?.trims) ? [...c.trims] : [];
+  const trims = Array.isArray(c?.trims) ? c.trims : [];
+  const meta = c?.trims_meta || {};
+  return [...trims].sort((a, b) => {
+    const pa = meta[a] || 0, pb = meta[b] || 0;
+    if (pa && pb) return pa - pb;        // 둘 다 가격 있음 → 오름차순
+    if (pa && !pb) return -1;             // 가격 있는 게 먼저
+    if (!pa && pb) return 1;
+    return 0;                             // 둘 다 없으면 원래 순서 유지
+  });
 }
 
 /** maker + sub_model(=title-prefix) → catalog 역조회 */
