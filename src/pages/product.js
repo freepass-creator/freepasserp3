@@ -254,12 +254,20 @@ async function refreshTrimOptionChips(card, p) {
   const hint     = card.querySelector('#trimOptionsHint');
   const hidden   = card.querySelector('input[type="hidden"][data-f="options"]');
   if (!chipsBox || !hidden) return;
+  // 트림 이름에서 fuel 추정 (트림명에 LPG/하이브리드/디젤 포함되면 그게 fuel)
+  const trimName = card.querySelector('[data-f="trim_name"]')?.value || p.trim_name || '';
+  const fuelFromTrim = /하이브리드|hybrid|hev/i.test(trimName) ? '하이브리드'
+                     : /\bLPG\b/i.test(trimName) ? 'LPG'
+                     : /\b디젤|diesel\b/i.test(trimName) ? '디젤'
+                     : /\b전기|EV\b/i.test(trimName) ? '전기'
+                     : '';
+  const fuelLive = card.querySelector('[data-f="fuel_type"]')?.value || p.fuel_type || fuelFromTrim;
   const live = {
     maker:     card.querySelector('[data-f="maker"]')?.value || p.maker,
     model:     card.querySelector('[data-f="model"]')?.value || p.model,
     sub_model: card.querySelector('[data-f="sub_model"]')?.value || p.sub_model,
-    trim_name: card.querySelector('[data-f="trim_name"]')?.value || p.trim_name,
-    fuel_type: p.fuel_type,
+    trim_name: trimName,
+    fuel_type: fuelLive,
     year: p.year,
     first_registration_date: p.first_registration_date,
   };
@@ -271,8 +279,15 @@ async function refreshTrimOptionChips(card, p) {
   // 현재 선택된 옵션들 (product.options 또는 hidden value)
   const currentText = hidden.value || (Array.isArray(p.options) ? p.options.join(', ') : (p.options || ''));
   const currentSet = new Set(splitOptionInput(currentText));
+  // 풀에 없는 옵션 (= 직접입력 한 것) → 직접입력 input 의 value 로 보여줌
+  const manualInput = card.querySelector('#optionsManualInput');
+  if (manualInput && pool.allNames) {
+    const manualOnly = [...currentSet].filter(opt => !pool.allNames.has(opt));
+    manualInput.value = manualOnly.join(', ');
+  }
 
-  if (!pool.groups.length) {
+  // 매트릭스 페이지 패턴: select_groups 의 각 group 을 카드로. items 모두 포함되면 active.
+  if (!pool.packages?.length) {
     chipsBox.innerHTML = '';
     if (hint) {
       const reason = {
@@ -281,39 +296,53 @@ async function refreshTrimOptionChips(card, p) {
         'no-catalog':     '카탈로그에 등록되지 않은 차종',
         'no-trim-match':  '이 트림의 옵션 데이터 없음',
         'stub-catalog':   '카탈로그 옵션 데이터 미완성 (stub) — 위키카 OCR 진행 중',
+        'maker-wide':     '트림 매칭 실패 — 카탈로그 전체에서 직접 입력으로 추가',
       }[pool.source] || '옵션 풀 없음';
       hint.innerHTML = `<i class="ph ph-info"></i> ${reason} — 아래 직접 입력으로 추가하세요`;
     }
   } else {
-    chipsBox.innerHTML = pool.groups.map(g => `
-      <div style="grid-column:1/-1;width:100%;margin-top:4px;">
-        <div class="text-weak" style="font-size:10px;margin-bottom:3px;">${esc(g.name)}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:3px;">
-          ${g.options.map(o => `
-            <span class="chip${currentSet.has(o.name) ? ' active' : ''}" data-opt="${esc(o.name)}" style="cursor:pointer;font-size:11px;padding:1px 6px;line-height:1.4;height:auto;">
-              ${esc(o.name)}
-            </span>
-          `).join('')}
-        </div>
+    chipsBox.innerHTML = `
+      <div class="text-weak" style="grid-column:1/-1;font-size:11px;margin-bottom:4px;">
+        선택 패키지 ${pool.packages.length}개${pool.basicCount ? ` · 기본 옵션 ${pool.basicCount}개 (자동 포함)` : ''}
       </div>
-    `).join('');
+      <div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px;">
+        ${pool.packages.map(pkg => {
+          const isActive = pkg.items.every(name => currentSet.has(name));
+          const itemsLabel = pkg.items.length > 1 ? pkg.items.join(' + ') : pkg.items[0];
+          return `<div class="trim-pkg-card${isActive ? ' active' : ''}" data-items='${esc(JSON.stringify(pkg.items))}'
+            style="cursor:pointer;padding:6px 8px;border:1px solid var(--border);border-radius:4px;background:${isActive ? 'var(--alert-blue-bg)' : 'var(--bg-card)'};display:flex;flex-direction:column;gap:2px;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:500;">
+              <span>${esc(pkg.name)}</span>
+              ${pkg.price ? `<span style="color:var(--text-weak);">${pkg.price}만</span>` : ''}
+            </div>
+            ${pkg.items.length > 1 && pkg.name !== pkg.items[0] ? `<div style="font-size:10px;color:var(--text-weak);">${esc(itemsLabel)}</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    `;
     if (hint) {
-      const label = pool.source === 'maker-wide'
-        ? `제조사 카탈로그 전체 옵션 (트림 「${esc(pool.trimName)}」 매칭 실패)`
-        : `트림 「${esc(pool.trimName)}」 옵션`;
-      hint.innerHTML = `<i class="ph ph-check-circle"></i> ${label} — 클릭으로 토글`;
+      hint.innerHTML = `<i class="ph ph-check-circle"></i> 트림 「${esc(pool.trimName)}」 — 패키지 클릭으로 추가/제거`;
     }
   }
 
-  // chip 클릭 → 토글 + 자동 저장
-  chipsBox.querySelectorAll('.chip[data-opt]').forEach(chip => {
-    chip.addEventListener('click', async () => {
-      const name = chip.dataset.opt;
+  // 패키지 카드 클릭 → 그룹 통째로 toggle + 자동 저장
+  chipsBox.querySelectorAll('.trim-pkg-card[data-items]').forEach(card_ => {
+    card_.addEventListener('click', async () => {
+      const items = JSON.parse(card_.dataset.items || '[]');
+      if (!items.length) return;
       const cur = new Set(splitOptionInput(hidden.value || ''));
-      if (cur.has(name)) cur.delete(name); else cur.add(name);
+      const allIn = items.every(name => cur.has(name));
+      if (allIn) {
+        // 모두 들어있음 → 제거
+        for (const name of items) cur.delete(name);
+      } else {
+        // 일부 빠짐 → 모두 추가
+        for (const name of items) cur.add(name);
+      }
       const next = [...cur];
       hidden.value = next.join(', ');
-      chip.classList.toggle('active');
+      card_.classList.toggle('active', !allIn);
+      card_.style.background = !allIn ? 'var(--alert-blue-bg)' : 'var(--bg-card)';
       try {
         await updateRecord(`products/${p._key}`, { options: next, updated_at: Date.now() }, { silent: true });
         p.options = next;

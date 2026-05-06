@@ -1061,7 +1061,9 @@
       ]
     },
     "유아용 시트 고정 장치": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 22,
       "used_as_basic": 108,
       "used_as_select": 0,
@@ -1239,7 +1241,9 @@
       ]
     },
     "운전석 전동식 허리지지대": {
-      "fp_ids": [],
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ],
       "used_in": 20,
       "used_as_basic": 109,
       "used_as_select": 0,
@@ -1416,7 +1420,9 @@
       ]
     },
     "고성능 에어컨 필터": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AIR_PURIFY"
+      ],
       "used_in": 19,
       "used_as_basic": 109,
       "used_as_select": 0,
@@ -2223,7 +2229,9 @@
       ]
     },
     "동승석 전동식 허리지지대": {
-      "fp_ids": [],
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ],
       "used_in": 13,
       "used_as_basic": 58,
       "used_as_select": 0,
@@ -3073,7 +3081,9 @@
       ]
     },
     "2열 에어벤트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AUTO_AC_REAR"
+      ],
       "used_in": 9,
       "used_as_basic": 52,
       "used_as_select": 0,
@@ -3549,7 +3559,9 @@
       ]
     },
     "회생제동 브레이크 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "REGEN"
+      ],
       "used_in": 7,
       "used_as_basic": 44,
       "used_as_select": 0,
@@ -3635,7 +3647,8 @@
     },
     "회생제동 컨트롤 패들 쉬프트": {
       "fp_ids": [
-        "PADDLE_SHIFT"
+        "PADDLE_SHIFT",
+        "REGEN"
       ],
       "used_in": 7,
       "used_as_basic": 44,
@@ -3859,7 +3872,9 @@
       ]
     },
     "뒷좌석 에어벤트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AUTO_AC_REAR"
+      ],
       "used_in": 6,
       "used_as_basic": 46,
       "used_as_select": 0,
@@ -5670,7 +5685,9 @@
       ]
     },
     "2열/3열 유아용 시트 고정 장치": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 3,
       "used_as_basic": 21,
       "used_as_select": 0,
@@ -8875,7 +8892,9 @@
       ]
     },
     "유아용 시트고정 장치": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 2,
       "used_as_basic": 25,
       "used_as_select": 0,
@@ -9883,7 +9902,9 @@
       ]
     },
     "유아용 시트 고정장치": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 2,
       "used_as_basic": 5,
       "used_as_select": 0,
@@ -11901,7 +11922,9 @@
       ]
     },
     "유아용 시트 고정 장치(2열/3열)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 1,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -14048,7 +14071,8 @@
     },
     "패들 쉬프트(회생제동 컨트롤 포함)": {
       "fp_ids": [
-        "PADDLE_SHIFT"
+        "PADDLE_SHIFT",
+        "REGEN"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -16975,6 +16999,7 @@
         "BAS",
         "ABS",
         "ESS",
+        "ISOFIX",
         "AIRBAG_SIDE",
         "AIRBAG_DR"
       ],
@@ -17672,7 +17697,9 @@
       ]
     },
     "ISOFIX 유아용 시트 고정 장치": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -25717,7 +25744,8 @@
     "뒷좌석 에어벤트 버튼 시동 & 스마트키 시스템": {
       "fp_ids": [
         "SMART_KEY",
-        "BUTTON_START"
+        "BUTTON_START",
+        "AUTO_AC_REAR"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -31239,7 +31267,9 @@
       ]
     },
     "회생제동 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "REGEN"
+      ],
       "used_in": 2,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -33412,7 +33442,8 @@
     },
     "회생제동 컨트롤 패들쉬프트": {
       "fp_ids": [
-        "PADDLE_SHIFT"
+        "PADDLE_SHIFT",
+        "REGEN"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -33978,7 +34009,8 @@
     },
     "회생제동 패들쉬프트": {
       "fp_ids": [
-        "PADDLE_SHIFT"
+        "PADDLE_SHIFT",
+        "REGEN"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -38925,7 +38957,9 @@
       ]
     },
     "유아용 시트 고정장치(2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 16,
       "used_as_basic": 103,
       "used_as_select": 0,
@@ -38992,7 +39026,9 @@
       ]
     },
     "2열 에어벤트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AUTO_AC_REAR"
+      ],
       "used_in": 15,
       "used_as_basic": 84,
       "used_as_select": 0,
@@ -39435,7 +39471,9 @@
       ]
     },
     "마이크로 에어 필터": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AIR_PURIFY"
+      ],
       "used_in": 12,
       "used_as_basic": 72,
       "used_as_select": 0,
@@ -39786,7 +39824,9 @@
       ]
     },
     "회생제동 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "REGEN"
+      ],
       "used_in": 10,
       "used_as_basic": 47,
       "used_as_select": 0,
@@ -40011,7 +40051,9 @@
       ]
     },
     "유아용 시트 고정 장치(2열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 9,
       "used_as_basic": 54,
       "used_as_select": 0,
@@ -40841,7 +40883,8 @@
     },
     "회생제동 컨트롤 패들쉬프트": {
       "fp_ids": [
-        "PADDLE_SHIFT"
+        "PADDLE_SHIFT",
+        "REGEN"
       ],
       "used_in": 6,
       "used_as_basic": 26,
@@ -41934,7 +41977,9 @@
       ]
     },
     "유아용 시트 고정장치(2열 2개, 3열 2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 4,
       "used_as_basic": 26,
       "used_as_select": 0,
@@ -43744,7 +43789,8 @@
     },
     "매뉴얼 에어컨(마이크로 에어필터)": {
       "fp_ids": [
-        "MANUAL_AC"
+        "MANUAL_AC",
+        "AIR_PURIFY"
       ],
       "used_in": 3,
       "used_as_basic": 22,
@@ -45840,7 +45886,8 @@
     },
     "풀오토 에어컨(오토디포그, 마이크로 에어필터)": {
       "fp_ids": [
-        "AUTO_AC"
+        "AUTO_AC",
+        "AIR_PURIFY"
       ],
       "used_in": 2,
       "used_as_basic": 7,
@@ -47734,7 +47781,9 @@
       ]
     },
     "뒷좌석 에어벤트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AUTO_AC_REAR"
+      ],
       "used_in": 2,
       "used_as_basic": 11,
       "used_as_select": 0,
@@ -48793,7 +48842,9 @@
       ]
     },
     "유아용 시트 고정장치(2열2개)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 2,
       "used_as_basic": 6,
       "used_as_select": 0,
@@ -49291,7 +49342,8 @@
     },
     "10 에어백 시스템(앞좌석 어드밴스드, 운전석 무릎, 앞좌석 센터 사이드, 앞 & 뒤 사이드, 전복 대응 커튼), 유아용 시트 고정 장치(2열 2개), 다중 충돌방지 자동 제동 시스템": {
       "fp_ids": [
-        "AEB"
+        "AEB",
+        "ISOFIX"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -51648,7 +51700,8 @@
     },
     "듀얼 풀오토 에어컨(마이크로 에어 필터)": {
       "fp_ids": [
-        "AUTO_AC"
+        "AUTO_AC",
+        "AIR_PURIFY"
       ],
       "used_in": 1,
       "used_as_basic": 10,
@@ -54568,7 +54621,9 @@
       ]
     },
     "하이브리드 시스템(구동모터, 파워컨트롤유닛, 회생제동 시스템)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "REGEN"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -54831,7 +54886,9 @@
       ]
     },
     "하이브리드 시스템(구동모터, 파워컨트롤 유닛, 리튬폴리머배터리, 회생제동 시스템)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "REGEN"
+      ],
       "used_in": 1,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -58068,7 +58125,9 @@
       ]
     },
     "유아용 시트 고정장치(ISOFIX)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 10,
       "used_as_basic": 21,
       "used_as_select": 0,
@@ -58676,7 +58735,9 @@
       ]
     },
     "2열 에어벤트": {
-      "fp_ids": [],
+      "fp_ids": [
+        "AUTO_AC_REAR"
+      ],
       "used_in": 6,
       "used_as_basic": 16,
       "used_as_select": 0,
@@ -61484,7 +61545,9 @@
       ]
     },
     "회생제동 시스템": {
-      "fp_ids": [],
+      "fp_ids": [
+        "REGEN"
+      ],
       "used_in": 2,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -62593,7 +62656,8 @@
     },
     "회생제동 컨트롤 패들쉬프트": {
       "fp_ids": [
-        "PADDLE_SHIFT"
+        "PADDLE_SHIFT",
+        "REGEN"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -62872,7 +62936,8 @@
     "듀얼존 풀오토 에어컨(마이크로 에어필터, 오토 디포그, 애프터 블로우, 컨디셔닝 모드)": {
       "fp_ids": [
         "AFTER_BLOW",
-        "AUTO_AC"
+        "AUTO_AC",
+        "AIR_PURIFY"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -63163,7 +63228,9 @@
       ]
     },
     "유아용 시트 고정장치(ISO FIX)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "ISOFIX"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,

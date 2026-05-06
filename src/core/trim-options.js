@@ -41,27 +41,45 @@ export async function getOptionPool(product) {
     return { id, name: o.name, category: o.category || '', is_package: !!o.is_package };
   };
 
-  const groups = [];
-  // 1. trim 의 기본 옵션 (basic)
-  if (Array.isArray(trim.basic) && trim.basic.length) {
-    const basicOpts = trim.basic.map(lookupOption).filter(Boolean);
-    if (basicOpts.length) groups.push({ name: '기본 옵션', options: basicOpts });
-  }
-  // 2. select_groups (선택 패키지) — 그룹별로 분리해서 표시
+  // 매트릭스 페이지 패턴: select_groups (선택 패키지) 만 카드로. basic 은 자동 포함이라 표시 X.
+  // 각 group = 1 카드: { name, items: [...옵션이름], price?: 만원 단위 }
+  const packages = [];
   if (Array.isArray(trim.select_groups)) {
-    for (const g of trim.select_groups) {
+    trim.select_groups.forEach((g, idx) => {
       const codes = Array.isArray(g) ? g : (g.codes || []);
-      const groupName = (!Array.isArray(g) && g.name) ? g.name : '선택 패키지';
-      const opts = codes.map(lookupOption).filter(Boolean);
-      if (opts.length) groups.push({ name: groupName, options: opts });
-    }
+      const items = codes.map(c => catalog.options[c]?.name).filter(Boolean);
+      if (!items.length) return;
+      const price = Array.isArray(g) ? null : g.price;
+      const pkgName = !Array.isArray(g) && g.name ? g.name : items[0];
+      packages.push({
+        idx,
+        name: pkgName,
+        items,
+        price: price ? Math.round(price / 10000) : null,   // 만원 단위
+      });
+    });
   }
 
-  // allNames Set — 직접 입력 시 중복/유사도 체크용
-  const allNames = new Set();
-  for (const g of groups) for (const o of g.options) allNames.add(o.name);
+  // chip 호환: groups 형식도 같이 반환 (구코드 호환)
+  const groups = packages.length
+    ? [{ name: `선택 패키지 (${packages.length}개)`, options: packages.flatMap(p => p.items.map(name => ({ name }))) }]
+    : [];
 
-  return { groups, allNames, source: 'trim', catalogId: cat.catalogId, trimName: trim.name || trimName };
+  // allNames — 직접 입력 시 중복/유사도 체크용 (basic + select_groups 옵션 모두)
+  const allNames = new Set();
+  for (const code of (trim.basic || [])) {
+    const o = catalog.options[code];
+    if (o?.name) allNames.add(o.name);
+  }
+  for (const pkg of packages) for (const name of pkg.items) allNames.add(name);
+
+  return {
+    groups, packages, allNames,
+    source: 'trim',
+    catalogId: cat.catalogId,
+    trimName: trim.name || trimName,
+    basicCount: (trim.basic || []).length,
+  };
 }
 
 /** maker 전체 catalog 옵션 합집합 — trim 매칭 실패 시 폴백 풀 (카테고리별 그룹) */
