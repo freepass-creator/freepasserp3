@@ -251,10 +251,11 @@ const OPTIONS = {
     ['DRL','주간 주행등'],['HEAD_ESCORT','에스코트 헤드램프','unc'],
     ['MIRROR_FOLD','전동접이 사이드미러'],['MIRROR_ADJ','전동조절 사이드미러','unc'],
     ['ROOF_RACK','루프랙','unc'],['ALUMINUM_WHEEL','알루미늄휠'],
-    ['FOG_LED','안개등 (LED)'],['REAR_LED_COMBI','LED 리어 콤비네이션 램프']
+    ['FOG_LED','안개등 (LED)'],['REAR_LED_COMBI','LED 리어 콤비네이션 램프'],
   ]},
   interior: { label:'내장', items: [
     ['CRUISE','크루즈컨트롤'],['STR_REMOTE','스티어링 휠 리모컨'],
+    ['PADDLE_SHIFT','패들 쉬프트','unc'],
     ['AUTO_LIGHT','오토 라이트 컨트롤'],['POWER_STR','파워 스티어링'],
     ['HANDS_FREE','핸즈프리'],['HEAT_STR','열선 스티어링휠','unc'],
     ['POWER_SEAT_DR','전동시트(운전석)'],['POWER_SEAT_PS','전동시트(동승석)','unc'],
@@ -266,7 +267,7 @@ const OPTIONS = {
     ['ECM_HIPASS_RV','ECM룸미러(하이패스+리어뷰내장)','unc'],
     ['ECM_HIPASS_MTS','ECM룸미러(하이패스+MTS내장)','unc'],
     ['HIPASS_MIRROR','하이패스 룸미러'],['REAR_MIRROR','후방 룸미러'],
-    ['MTS_E_MIRROR','전자식 룸미러(MTS)','opt']
+    ['MTS_E_MIRROR','전자식 룸미러(MTS)','opt'],
   ]},
   safety: { label:'안전', items: [
     ['AIRBAG_DR','에어백(운전석)'],['AIRBAG_PS','에어백(동승석)'],
@@ -283,7 +284,10 @@ const OPTIONS = {
     ['DAW','운전자 주의 경고 (DAW)','unc'],['FCWS','전방 추돌 경보 (FCWS)','unc'],
     ['DBC','경사로 저속주행 (DBC)','unc'],['ECS','전자제어 서스펜션 (ECS/ALS)','opt'],
     ['HUD','헤드업 디스플레이 (HUD)','opt'],['RCTA','후측방 경보시스템 (RCTA)','unc'],
-    ['HAC','경사로 밀림방지 (HAC)']
+    ['HAC','경사로 밀림방지 (HAC)'],
+    ['HBA','하이빔 보조 (HBA)','unc'],['ROA','후석 승객 알림 (ROA)','unc'],
+    ['ISLA','지능형 속도 제한 보조 (ISLA)','unc'],['SEW','안전 하차 경고/보조 (SEW)','unc'],
+    ['BVM','후측방 모니터 (BVM)','unc'],['DRIVE_REC','내장형 블랙박스 (빌트인캠)','unc'],
   ]},
   convenience: { label:'편의', items: [
     ['NAVIGATION','내비게이션'],['HIPASS','하이패스','unc'],
@@ -294,14 +298,18 @@ const OPTIONS = {
     ['SLIDING_DOOR','파워 슬라이딩 도어','unc'],['SMART_TRUNK','스마트 트렁크/테일게이트','unc'],
     ['POWER_TRUNK','파워트렁크','unc'],['POWER_WINDOW','파워윈도우'],
     ['CURTAIN_M','커튼(수동식)','unc'],['CURTAIN_E','커튼(전동식)','opt'],
-    ['ECO_GUIDE','경제운전 안내(액티브)','unc'],['WPC','무선충전 시스템(WPC)','unc']
+    ['ECO_GUIDE','경제운전 안내(액티브)','unc'],['WPC','무선충전 시스템(WPC)','unc'],
+    ['RAIN_SENSOR','레인 센서','unc'],['WALK_AWAY_LOCK','워크 어웨이 락','unc'],
+    ['AFTER_BLOW','애프터 블로우','unc'],['AIR_PURIFY','공기청정 시스템','unc'],
+    ['AMB_LIGHT','앰비언트 무드램프','unc'],
   ]},
   media: { label:'미디어', items: [
     ['CD_PLAYER','CD플레이어','opt'],['MP3','MP3'],['REAR_TV','뒷자석 TV','opt'],
     ['BLUETOOTH','블루투스'],['AUX','AUX 단자','opt'],['USB','USB 단자'],
-    ['MIRRORING','유선 미러링','unc'],['MIRRORING_WIRELESS','무선 카플레이/안드로이드오토','unc'],
-    ['WELCOME','웰컴 시스템','opt'],['VOICE_RECOG','음성인식 시스템','unc']
-  ]}
+    ['MIRRORING','유선 미러링','unc'],['MIRRORING_WIRELESS','무선 미러링','unc'],
+    ['WELCOME','웰컴 시스템','opt'],['VOICE_RECOG','음성인식 시스템','unc'],
+    ['OTA','무선 소프트웨어 업데이트 (OTA)','unc'],
+  ]},
 };
 const FP_TOTAL = Object.values(OPTIONS).reduce((s,c)=>s+c.items.length, 0);
 const POPULAR_OPTIONS = [
@@ -394,7 +402,7 @@ function _normName(s) {
 // 키워드 → FP 옵션 ID 배열 (긴 키 먼저 매칭)
 // 카탈로그 옵션 이름에 키워드가 포함되어 있으면 해당 FP 옵션들 매칭
 const FP_KEYWORD_RULES = [
-  // 선루프 (긴 것 먼저)
+  // 선루프
   { kw:'듀얼와이드선루프', ids:['SUNROOF_PANO'] },
   { kw:'와이드선루프', ids:['SUNROOF_PANO'] }, { kw:'와이드썬루프', ids:['SUNROOF_PANO'] },
   { kw:'파노라마선루프', ids:['SUNROOF_PANO'] }, { kw:'파노라마썬루프', ids:['SUNROOF_PANO'] },
@@ -402,13 +410,16 @@ const FP_KEYWORD_RULES = [
   { kw:'듀얼선루프', ids:['SUNROOF_PANO'] },
   { kw:'선루프', ids:['SUNROOF'] }, { kw:'썬루프', ids:['SUNROOF'] },
 
-  // 스마트크루즈 / HDA (긴 것 먼저)
+  // HDA / 스마트크루즈
   { kw:'내비게이션기반스마트크루즈', ids:['HDA','NAVIGATION'] },
   { kw:'스마트크루즈컨트롤', ids:['HDA'] },
+  { kw:'스마트크루즈', ids:['HDA'] },
+  { kw:'어댑티브크루즈', ids:['HDA'] }, { kw:'adaptivecruise', ids:['HDA'] },
+  { kw:'크루즈컨트롤', ids:['CRUISE'] }, { kw:'cruisecontrol', ids:['CRUISE'] },
   { kw:'고속도로주행보조2', ids:['HDA'] }, { kw:'고속도로주행보조', ids:['HDA'] },
   { kw:'고속도로주행지원', ids:['HDA'] },
 
-  // 내비게이션 (스마트크루즈 매칭 후)
+  // 내비게이션
   { kw:'증강현실내비게이션', ids:['NAVIGATION'] },
   { kw:'인포테인먼트내비', ids:['NAVIGATION'] },
   { kw:'터치스크린내비게이션', ids:['NAVIGATION'] },
@@ -419,7 +430,7 @@ const FP_KEYWORD_RULES = [
   { kw:'어라운드뷰', ids:['AVMS'] },
   { kw:'avm', ids:['AVMS'] },
 
-  // 시트 - 통풍
+  // 통풍시트
   { kw:'운전석동승석통풍시트', ids:['VENT_SEAT_DR','VENT_SEAT_PS'] },
   { kw:'앞좌석통풍시트', ids:['VENT_SEAT_DR','VENT_SEAT_PS'] },
   { kw:'앞좌석통풍열선시트', ids:['VENT_SEAT_DR','VENT_SEAT_PS','HEAT_SEAT_FRONT'] },
@@ -428,11 +439,11 @@ const FP_KEYWORD_RULES = [
   { kw:'1열통풍시트', ids:['VENT_SEAT_DR'] },
   { kw:'운전석통풍시트', ids:['VENT_SEAT_DR'] },
   { kw:'동승석통풍시트', ids:['VENT_SEAT_PS'] },
-  { kw:'2열통풍시트', ids:[] },  // 우리 옵션에 뒷좌석 통풍 없음
+  { kw:'2열통풍시트', ids:[] },
   { kw:'뒷좌석통풍시트', ids:[] },
   { kw:'통풍시트', ids:['VENT_SEAT_DR'] },
 
-  // 시트 - 열선
+  // 열선시트
   { kw:'전좌석열선시트', ids:['HEAT_SEAT_FRONT','HEAT_SEAT_REAR'] },
   { kw:'1열2열열선시트', ids:['HEAT_SEAT_FRONT','HEAT_SEAT_REAR'] },
   { kw:'12열열선시트', ids:['HEAT_SEAT_FRONT','HEAT_SEAT_REAR'] },
@@ -444,7 +455,7 @@ const FP_KEYWORD_RULES = [
   { kw:'운전석열선시트', ids:['HEAT_SEAT_FRONT'] },
   { kw:'열선시트', ids:['HEAT_SEAT_FRONT'] },
 
-  // 헤드업
+  // HUD
   { kw:'증강현실헤드업디스플레이', ids:['HUD'] },
   { kw:'arhud', ids:['HUD'] },
   { kw:'헤드업디스플레이', ids:['HUD'] },
@@ -497,7 +508,7 @@ const FP_KEYWORD_RULES = [
   { kw:'나파가죽시트', ids:['SEAT_LEATHER'] },
   { kw:'가죽시트', ids:['SEAT_LEATHER'] },
 
-  // 스마트키 / 디지털키
+  // 스마트키
   { kw:'인텔리전트스마트키', ids:['SMART_KEY','BUTTON_START','REMOTE_START'] },
   { kw:'디지털키', ids:['SMART_KEY'] },
   { kw:'스마트키', ids:['SMART_KEY'] },
@@ -560,6 +571,65 @@ const FP_KEYWORD_RULES = [
   { kw:'6에어백', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE'] },
   { kw:'abs', ids:['ABS'] },
 
+  // 신규 안전 ID (HBA/ROA/ISLA/SEW/BVM)
+  { kw:'하이빔보조', ids:['HBA'] }, { kw:'하이빔어시스트', ids:['HBA'] },
+  { kw:'어드밴스드후석승객알림', ids:['ROA'] },
+  { kw:'후석승객알림', ids:['ROA'] },
+  { kw:'지능형속도제한보조', ids:['ISLA'] },
+  { kw:'안전하차경고', ids:['SEW'] }, { kw:'안전하차보조', ids:['SEW'] },
+  { kw:'후측방모니터', ids:['BVM'] },
+  { kw:'후방차량출발알림', ids:['BVM'] },
+  { kw:'전방차량출발알림', ids:['BVM'] },
+  { kw:'후측방경보', ids:['RCTA'] }, { kw:'후측방충돌방지', ids:['RCTA'] },
+  { kw:'스티어링휠그립감지', ids:['HOD'] },
+
+  // 메이커 ADAS 패키지 — 다중 표준옵션 묶음
+  { kw:'드라이브와이즈', ids:['HDA','LKAS','FCWS','DAW','RCTA','HBA','SEW'] },
+  { kw:'현대스마트센스', ids:['HDA','LKAS','FCWS','DAW','RCTA','HBA','SEW'] },
+  { kw:'스마트센스', ids:['HDA','LKAS','FCWS','DAW','RCTA','HBA'] },
+  { kw:'액티브어시스트', ids:['HDA','LKAS','FCWS','DAW'] },
+  { kw:'세이프티', ids:['LKAS','FCWS','DAW','HBA'] },
+
+  // 컨비니언스/컴포트 패키지 — 일반 편의
+  { kw:'컨비니언스패키지', ids:['SMART_KEY','BUTTON_START','MIRROR_FOLD','RAIN_SENSOR'] },
+  { kw:'컴포트패키지', ids:['HEAT_SEAT_FRONT','HEAT_STR'] },
+
+  // 신규 편의/내장/미디어 ID 룰
+  { kw:'레인센서', ids:['RAIN_SENSOR'] }, { kw:'레인감지', ids:['RAIN_SENSOR'] },
+  { kw:'워크어웨이락', ids:['WALK_AWAY_LOCK'] }, { kw:'워크어웨이', ids:['WALK_AWAY_LOCK'] },
+  { kw:'세이프티언락', ids:['WALK_AWAY_LOCK'] },
+  { kw:'애프터블로우', ids:['AFTER_BLOW'] },
+  { kw:'공기청정시스템', ids:['AIR_PURIFY'] }, { kw:'공기청정', ids:['AIR_PURIFY'] },
+  { kw:'미세먼지센서', ids:['AIR_PURIFY'] },
+  { kw:'앰비언트무드램프', ids:['AMB_LIGHT'] }, { kw:'앰비언트라이트', ids:['AMB_LIGHT'] },
+  { kw:'무드램프', ids:['AMB_LIGHT'] }, { kw:'엠비언트', ids:['AMB_LIGHT'] },
+  { kw:'패들쉬프트', ids:['PADDLE_SHIFT'] }, { kw:'패들시프트', ids:['PADDLE_SHIFT'] },
+  { kw:'무선소프트웨어업데이트', ids:['OTA'] }, { kw:'otasoftwareupdate', ids:['OTA'] },
+  { kw:'\bota\b', ids:['OTA'] },
+  { kw:'측방주차거리경고', ids:['SPAS'] },
+  { kw:'전방주차충돌방지보조', ids:['SENSOR_FRONT'] },
+  { kw:'주차충돌방지보조전방', ids:['SENSOR_FRONT'] },
+  { kw:'무선충전', ids:['WPC'] }, { kw:'스마트폰무선충전', ids:['WPC'] },
+
+  // 카플레이 / 안드로이드 오토 / 미러링 — 신차 표준 (한글 + 영문 표기 모두)
+  { kw:'무선애플카플레이', ids:['MIRRORING_WIRELESS'] },
+  { kw:'무선안드로이드오토', ids:['MIRRORING_WIRELESS'] },
+  { kw:'무선apple', ids:['MIRRORING_WIRELESS'] },
+  { kw:'무선carplay', ids:['MIRRORING_WIRELESS'] },
+  { kw:'무선android', ids:['MIRRORING_WIRELESS'] },
+  { kw:'wirelessapple', ids:['MIRRORING_WIRELESS'] },
+  { kw:'wirelesscarplay', ids:['MIRRORING_WIRELESS'] },
+  { kw:'wirelessandroid', ids:['MIRRORING_WIRELESS'] },
+  { kw:'애플카플레이', ids:['MIRRORING'] }, { kw:'applecarplay', ids:['MIRRORING'] },
+  { kw:'안드로이드오토', ids:['MIRRORING'] }, { kw:'androidauto', ids:['MIRRORING'] },
+  { kw:'carplay', ids:['MIRRORING'] },
+  { kw:'스마트미러링', ids:['MIRRORING'] },
+  { kw:'양방향풀미러링', ids:['MIRRORING'] },
+  { kw:'스마트폰프로젝션', ids:['MIRRORING'] },
+  { kw:'무선폰프로젝션', ids:['MIRRORING_WIRELESS'] },
+  { kw:'폰프로젝션', ids:['MIRRORING'] },
+  { kw:'디스플레이오디오', ids:['MP3','BLUETOOTH'] },
+
   // 외관
   { kw:'fullled헤드램프', ids:['HEAD_LED'] },
   { kw:'led헤드램프', ids:['HEAD_LED'] },
@@ -570,7 +640,7 @@ const FP_KEYWORD_RULES = [
   { kw:'주간주행등', ids:['DRL'] },
   { kw:'에스코트헤드램프', ids:['HEAD_ESCORT'] },
   { kw:'전동접이사이드미러', ids:['MIRROR_FOLD'] },
-  { kw:'아웃사이드미러', ids:['MIRROR_FOLD'] },  // 보통 전동접이/조절 포함
+  { kw:'아웃사이드미러', ids:['MIRROR_FOLD'] },
   { kw:'전동조절사이드미러', ids:['MIRROR_ADJ'] },
   { kw:'루프랙', ids:['ROOF_RACK'] },
   { kw:'알루미늄휠', ids:['ALUMINUM_WHEEL'] },
@@ -639,7 +709,7 @@ const FP_KEYWORD_RULES = [
   { kw:'다이내믹웰컴라이트', ids:['WELCOME'] },
   { kw:'웰컴라이트', ids:['WELCOME'] },
   { kw:'전자제어서스펜션', ids:['ECS'] },
-  { kw:'에어서스펜션', ids:['ECS'] }
+  { kw:'에어서스펜션', ids:['ECS'] },
 ];
 // 긴 키 우선 정렬 (한 번만)
 FP_KEYWORD_RULES.sort((a, b) => b.kw.length - a.kw.length);
