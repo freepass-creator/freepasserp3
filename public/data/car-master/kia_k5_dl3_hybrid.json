@@ -1,7 +1,7 @@
 {
   "catalog_id": "kia_k5_dl3_hybrid",
   "model_root": "K5",
-  "title": "기아 더 뉴 K5 DL3 하이브리드",
+  "title": "기아 올 뉴 K5 DL3 하이브리드",
   "maker": "기아",
   "source": "derived-from-base",
   "source_urls": [],
@@ -688,5 +688,5 @@
     "더 뉴 K5 DL3 하이브리드"
   ],
   "year_start": "2019-12",
-  "year_end": "현재"
+  "year_end": "2022-12"
 }

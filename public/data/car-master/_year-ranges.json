@@ -655,6 +655,10 @@
     "start": "2018-09",
     "end": "2020-04"
   },
+  "hyundai_avante_ad_facelift_hybrid": {
+    "start": "2018-09",
+    "end": "2020-04"
+  },
   "hyundai_avante_cn7": {
     "start": "2023-03",
     "end": "현재"
@@ -684,6 +688,10 @@
     "end": "2021-12"
   },
   "hyundai_grandeur_gn7": {
+    "start": "2022-11",
+    "end": "현재"
+  },
+  "hyundai_grandeur_gn7_hybrid": {
     "start": "2022-11",
     "end": "현재"
   },
@@ -738,6 +746,14 @@
   "hyundai_kona_os_facelift": {
     "start": "2020-08",
     "end": "2023-04"
+  },
+  "hyundai_kona_os_facelift_hybrid": {
+    "start": "2020-08",
+    "end": "2023-04"
+  },
+  "hyundai_kona_os_hybrid": {
+    "start": "2019-07",
+    "end": "2020-08"
   },
   "hyundai_kona_sx2": {
     "start": "2023-04",
@@ -955,6 +971,10 @@
     "start": "2020-08",
     "end": "2024-12"
   },
+  "kia_carnival_ka4_facelift_hybrid": {
+    "start": "2024-12",
+    "end": "현재"
+  },
   "kia_carnival_ka4_hi_limousine": {
     "start": "2020-08",
     "end": "현재"
@@ -1019,9 +1039,13 @@
     "start": "2023-01",
     "end": "현재"
   },
+  "kia_k5_dl3_facelift_hybrid": {
+    "start": "2023-01",
+    "end": "현재"
+  },
   "kia_k5_dl3_hybrid": {
     "start": "2019-12",
-    "end": "현재"
+    "end": "2022-12"
   },
   "kia_k5_jf": {
     "start": "2015-07",
@@ -1056,6 +1080,10 @@
     "end": "현재"
   },
   "kia_k8_gl3_pre": {
+    "start": "2021-04",
+    "end": "2024-09"
+  },
+  "kia_k8_gl3_pre_hybrid": {
     "start": "2021-04",
     "end": "2024-09"
   },
@@ -1132,6 +1160,10 @@
     "end": "2023-07"
   },
   "kia_sorento_mq4_facelift": {
+    "start": "2023-08",
+    "end": "현재"
+  },
+  "kia_sorento_mq4_facelift_hybrid": {
     "start": "2023-08",
     "end": "현재"
   },

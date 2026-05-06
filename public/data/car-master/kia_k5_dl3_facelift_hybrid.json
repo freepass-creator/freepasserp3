@@ -1,0 +1,24 @@
+{
+  "catalog_id": "kia_k5_dl3_facelift_hybrid",
+  "model_root": "K5",
+  "title": "기아 더 뉴 K5 DL3 하이브리드",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "K5 DL3 페리 (2023-01~) 하이브리드. 트림 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "트렌디": { "slug": "trendy", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "프레스티지": { "slug": "prestige", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "노블레스": { "slug": "noblesse", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "시그니처": { "slug": "signature", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "aliases": [
+    "더 뉴 K5 DL3 하이브리드",
+    "더뉴 K5 DL3 하이브리드"
+  ],
+  "year_start": "2023-01",
+  "year_end": "현재"
+}

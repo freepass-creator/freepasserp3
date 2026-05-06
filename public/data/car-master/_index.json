@@ -3831,6 +3831,32 @@
     ],
     "fetched_at": "2026-05-04"
   },
+  "hyundai_avante_ad_facelift_hybrid": {
+    "id": "hyundai_avante_ad_facelift_hybrid",
+    "title": "현대 더 뉴 아반떼 AD 하이브리드",
+    "maker": "현대",
+    "model_root": "아반떼",
+    "year_start": "2018-09",
+    "year_end": "2020-04",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
+  },
   "hyundai_avante_cn7": {
     "id": "hyundai_avante_cn7",
     "title": "현대 더 뉴 아반떼 CN7",
@@ -4085,6 +4111,31 @@
       "캘리그래피 블랙 익스테리어 하이브리드": 52440000,
       "캘리그래피 블랙 잉크 하이브리드": 53730000
     }
+  },
+  "hyundai_grandeur_gn7_hybrid": {
+    "id": "hyundai_grandeur_gn7_hybrid",
+    "title": "현대 그랜저 GN7 하이브리드",
+    "maker": "현대",
+    "model_root": "그랜저",
+    "year_start": "2022-11",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "캘리그래피"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
   },
   "hyundai_grandeur_hg": {
     "id": "hyundai_grandeur_hg",
@@ -4473,6 +4524,58 @@
       "N 라인": 25060000,
       "N": 34820000
     }
+  },
+  "hyundai_kona_os_facelift_hybrid": {
+    "id": "hyundai_kona_os_facelift_hybrid",
+    "title": "현대 더 뉴 코나 OS 하이브리드",
+    "maker": "현대",
+    "model_root": "코나",
+    "year_start": "2020-08",
+    "year_end": "2023-04",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
+  },
+  "hyundai_kona_os_hybrid": {
+    "id": "hyundai_kona_os_hybrid",
+    "title": "현대 코나 OS 하이브리드",
+    "maker": "현대",
+    "model_root": "코나",
+    "year_start": "2019-07",
+    "year_end": "2020-08",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
   },
   "hyundai_kona_sx2": {
     "id": "hyundai_kona_sx2",
@@ -6053,6 +6156,32 @@
       "X-Line 디젤 2.2 7인승": 47610000
     }
   },
+  "kia_carnival_ka4_facelift_hybrid": {
+    "id": "kia_carnival_ka4_facelift_hybrid",
+    "title": "기아 더 뉴 카니발 KA4 하이브리드",
+    "maker": "기아",
+    "model_root": "카니발",
+    "year_start": "2024-12",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
+  },
   "kia_carnival_ka4_hi_limousine": {
     "id": "kia_carnival_ka4_hi_limousine",
     "title": "기아 카니발 하이리무진 KA4",
@@ -6600,13 +6729,39 @@
     ],
     "fetched_at": "2026-05-06"
   },
-  "kia_k5_dl3_hybrid": {
-    "id": "kia_k5_dl3_hybrid",
+  "kia_k5_dl3_facelift_hybrid": {
+    "id": "kia_k5_dl3_facelift_hybrid",
     "title": "기아 더 뉴 K5 DL3 하이브리드",
     "maker": "기아",
     "model_root": "K5",
-    "year_start": "2019-12",
+    "year_start": "2023-01",
     "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "트렌디",
+      "프레스티지",
+      "노블레스",
+      "시그니처"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
+  },
+  "kia_k5_dl3_hybrid": {
+    "id": "kia_k5_dl3_hybrid",
+    "title": "기아 올 뉴 K5 DL3 하이브리드",
+    "maker": "기아",
+    "model_root": "K5",
+    "year_start": "2019-12",
+    "year_end": "2022-12",
     "source": {
       "manufacturer": null,
       "wikicar": null,
@@ -6897,6 +7052,32 @@
       "트렌디 LPG 3.5 렌터카": 29800000,
       "프레스티지 LPG 3.5 렌터카": 35000000
     }
+  },
+  "kia_k8_gl3_pre_hybrid": {
+    "id": "kia_k8_gl3_pre_hybrid",
+    "title": "기아 K8 GL3 하이브리드",
+    "maker": "기아",
+    "model_root": "K8",
+    "year_start": "2021-04",
+    "year_end": "2024-09",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
   },
   "kia_k9_rj": {
     "id": "kia_k9_rj",
@@ -7439,6 +7620,32 @@
       "시그니처",
       "그래비티"
     ],
+    "fetched_at": "2026-05-06"
+  },
+  "kia_sorento_mq4_facelift_hybrid": {
+    "id": "kia_sorento_mq4_facelift_hybrid",
+    "title": "기아 더 뉴 쏘렌토 MQ4 하이브리드",
+    "maker": "기아",
+    "model_root": "쏘렌토",
+    "year_start": "2023-08",
+    "year_end": "현재",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "프리미엄",
+      "익스클루시브",
+      "프레스티지",
+      "캘리그래피"
+    ],
+    "trims_meta": {},
     "fetched_at": "2026-05-06"
   },
   "kia_sorento_mq4_hybrid": {

@@ -1,0 +1,47 @@
+{
+  "catalog_id": "hyundai_kona_os_facelift_hybrid",
+  "model_root": "코나",
+  "title": "현대 더 뉴 코나 OS 하이브리드",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "현대 더 뉴 코나 OS 하이브리드 stub. 트림 데이터 별도 보강 필요.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프리미엄": {
+      "slug": "premium",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "익스클루시브": {
+      "slug": "exclusive",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "캘리그래피": {
+      "slug": "calligraphy",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    }
+  },
+  "aliases": [
+    "더 뉴 코나 OS 하이브리드"
+  ],
+  "year_start": "2020-08",
+  "year_end": "2023-04"
+}

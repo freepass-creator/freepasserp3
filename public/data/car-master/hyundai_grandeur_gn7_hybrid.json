@@ -1,0 +1,24 @@
+{
+  "catalog_id": "hyundai_grandeur_gn7_hybrid",
+  "model_root": "그랜저",
+  "title": "현대 그랜저 GN7 하이브리드",
+  "maker": "현대",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "그랜저 7세대 (GN7) 하이브리드. 2022-11~. 트림 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "프리미엄": { "slug": "premium", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "익스클루시브": { "slug": "exclusive", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "캘리그래피": { "slug": "calligraphy", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "aliases": [
+    "그랜저 GN7 하이브리드",
+    "그랜저 하이브리드 GN7",
+    "디 올 뉴 그랜저 하이브리드"
+  ],
+  "year_start": "2022-11",
+  "year_end": "현재"
+}
