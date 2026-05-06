@@ -86,31 +86,10 @@
         },
         {
           "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
             "PKG_BUILTIN_CAM"
           ],
           "price": 850000,
           "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
         }
       ]
     }

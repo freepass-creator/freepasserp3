@@ -70,12 +70,15 @@ export const FP_OPT_MASTER = {
     ['REGEN','회생제동 시스템 (전기차)','unc'],
     ['WORKIN','워크인 디바이스 (동승석)','unc'],
     ['VESS','가상 엔진 사운드 (VESS, 보행자 보호)','unc'],
+    ['AWD','4WD/AWD (사륜구동)','opt'],
+    ['LED_INTERIOR','LED 실내등','unc'],
   ]},
   media: { label:'미디어', items: [
     ['MP3','MP3'],['BLUETOOTH','블루투스'],['USB','USB 단자'],
     ['MIRRORING','유선 미러링','unc'],['MIRRORING_WIRELESS','무선 미러링','unc'],
     ['WELCOME','웰컴 시스템','opt'],['VOICE_RECOG','음성인식 시스템','unc'],
     ['OTA','무선 소프트웨어 업데이트 (OTA)','unc'],
+    ['SOUND_PREMIUM','프리미엄 사운드 (KRELL/BOSE/B&O/메리디안 등)','opt'],
   ]},
 };
 

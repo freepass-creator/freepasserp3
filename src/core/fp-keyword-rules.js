@@ -33,6 +33,37 @@ export const FP_KEYWORD_RULES = [
   { kw:'서라운드뷰', ids:['AVMS'] },
   { kw:'어라운드뷰', ids:['AVMS'] },
   { kw:'avm', ids:['AVMS'] },
+  { kw:'리모트360도뷰', ids:['AVMS'] }, { kw:'360도어라운드', ids:['AVMS'] },
+  { kw:'360도뷰', ids:['AVMS'] }, { kw:'서라운드뷰모니터', ids:['AVMS'] },
+
+  // AWD / 4WD
+  { kw:'htrac', ids:['AWD'] }, { kw:'h-trac', ids:['AWD'] },
+  { kw:'awd', ids:['AWD'] }, { kw:'4wd', ids:['AWD'] }, { kw:'4륜구동', ids:['AWD'] },
+  { kw:'사륜구동', ids:['AWD'] }, { kw:'전자식4wd', ids:['AWD'] },
+  { kw:'xdrive', ids:['AWD'] }, { kw:'4matic', ids:['AWD'] },
+  { kw:'quattro', ids:['AWD'] }, { kw:'4motion', ids:['AWD'] },
+  { kw:'symmetricalawd', ids:['AWD'] }, { kw:'super-handlingawd', ids:['AWD'] },
+  { kw:'전자식사륜구동', ids:['AWD'] },
+
+  // 프리미엄 사운드
+  { kw:'krell', ids:['SOUND_PREMIUM'] }, { kw:'크렐', ids:['SOUND_PREMIUM'] },
+  { kw:'krellpremiumsound', ids:['SOUND_PREMIUM'] },
+  { kw:'krell프리미엄사운드', ids:['SOUND_PREMIUM'] },
+  { kw:'bose', ids:['SOUND_PREMIUM'] }, { kw:'보스', ids:['SOUND_PREMIUM'] },
+  { kw:'bowers&wilkins', ids:['SOUND_PREMIUM'] }, { kw:'b&w', ids:['SOUND_PREMIUM'] },
+  { kw:'b&o', ids:['SOUND_PREMIUM'] }, { kw:'bang&olufsen', ids:['SOUND_PREMIUM'] },
+  { kw:'뱅앤올룹슨', ids:['SOUND_PREMIUM'] }, { kw:'meridian', ids:['SOUND_PREMIUM'] },
+  { kw:'메리디안', ids:['SOUND_PREMIUM'] }, { kw:'harmankardon', ids:['SOUND_PREMIUM'] },
+  { kw:'하만카돈', ids:['SOUND_PREMIUM'] }, { kw:'lexicon', ids:['SOUND_PREMIUM'] },
+  { kw:'렉시콘', ids:['SOUND_PREMIUM'] },
+  { kw:'프리미엄사운드', ids:['SOUND_PREMIUM'] },
+  { kw:'프리미엄오디오', ids:['SOUND_PREMIUM'] },
+
+  // LED 실내등
+  { kw:'led실내등', ids:['LED_INTERIOR'] }, { kw:'led룸램프', ids:['LED_INTERIOR'] },
+  { kw:'led맵램프', ids:['LED_INTERIOR'] }, { kw:'led인테리어', ids:['LED_INTERIOR'] },
+  { kw:'led인테리어램프', ids:['LED_INTERIOR'] }, { kw:'led러기지램프', ids:['LED_INTERIOR'] },
+  { kw:'led인테리어무드램프', ids:['LED_INTERIOR'] },
 
   // 통풍시트
   { kw:'운전석동승석통풍시트', ids:['VENT_SEAT_DR','VENT_SEAT_PS'] },

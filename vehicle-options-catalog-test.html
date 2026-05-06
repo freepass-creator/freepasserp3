@@ -236,6 +236,7 @@ const state = {
   selected: null,        // 프리패스 차종 매트릭스 row
   catalog: null,         // car-options-catalog JSON
   activeTrim: null,
+  activeSeat: null,        // seat_options 있는 트림에서 선택된 인승
   selectedPkgs: new Set(), // 선택한 패키지 인덱스
   fpOptions: new Set(),  // 프리패스 표준 옵션 ID 셋
   codeByEncar: {},       // encar_key → catalog code
@@ -308,12 +309,15 @@ const OPTIONS = {
     ['REGEN','회생제동 시스템 (전기차)','unc'],
     ['WORKIN','워크인 디바이스 (동승석)','unc'],
     ['VESS','가상 엔진 사운드 (VESS, 보행자 보호)','unc'],
+    ['AWD','4WD/AWD (사륜구동)','opt'],
+    ['LED_INTERIOR','LED 실내등','unc'],
   ]},
   media: { label:'미디어', items: [
     ['MP3','MP3'],['BLUETOOTH','블루투스'],['USB','USB 단자'],
     ['MIRRORING','유선 미러링','unc'],['MIRRORING_WIRELESS','무선 미러링','unc'],
     ['WELCOME','웰컴 시스템','opt'],['VOICE_RECOG','음성인식 시스템','unc'],
     ['OTA','무선 소프트웨어 업데이트 (OTA)','unc'],
+    ['SOUND_PREMIUM','프리미엄 사운드 (KRELL/BOSE/B&O/메리디안 등)','opt'],
   ]},
 };
 const FP_TOTAL = Object.values(OPTIONS).reduce((s,c)=>s+c.items.length, 0);
@@ -444,6 +448,37 @@ const FP_KEYWORD_RULES = [
   { kw:'서라운드뷰', ids:['AVMS'] },
   { kw:'어라운드뷰', ids:['AVMS'] },
   { kw:'avm', ids:['AVMS'] },
+  { kw:'리모트360도뷰', ids:['AVMS'] }, { kw:'360도어라운드', ids:['AVMS'] },
+  { kw:'360도뷰', ids:['AVMS'] }, { kw:'서라운드뷰모니터', ids:['AVMS'] },
+
+  // AWD / 4WD
+  { kw:'htrac', ids:['AWD'] }, { kw:'h-trac', ids:['AWD'] },
+  { kw:'awd', ids:['AWD'] }, { kw:'4wd', ids:['AWD'] }, { kw:'4륜구동', ids:['AWD'] },
+  { kw:'사륜구동', ids:['AWD'] }, { kw:'전자식4wd', ids:['AWD'] },
+  { kw:'xdrive', ids:['AWD'] }, { kw:'4matic', ids:['AWD'] },
+  { kw:'quattro', ids:['AWD'] }, { kw:'4motion', ids:['AWD'] },
+  { kw:'symmetricalawd', ids:['AWD'] }, { kw:'super-handlingawd', ids:['AWD'] },
+  { kw:'전자식사륜구동', ids:['AWD'] },
+
+  // 프리미엄 사운드
+  { kw:'krell', ids:['SOUND_PREMIUM'] }, { kw:'크렐', ids:['SOUND_PREMIUM'] },
+  { kw:'krellpremiumsound', ids:['SOUND_PREMIUM'] },
+  { kw:'krell프리미엄사운드', ids:['SOUND_PREMIUM'] },
+  { kw:'bose', ids:['SOUND_PREMIUM'] }, { kw:'보스', ids:['SOUND_PREMIUM'] },
+  { kw:'bowers&wilkins', ids:['SOUND_PREMIUM'] }, { kw:'b&w', ids:['SOUND_PREMIUM'] },
+  { kw:'b&o', ids:['SOUND_PREMIUM'] }, { kw:'bang&olufsen', ids:['SOUND_PREMIUM'] },
+  { kw:'뱅앤올룹슨', ids:['SOUND_PREMIUM'] }, { kw:'meridian', ids:['SOUND_PREMIUM'] },
+  { kw:'메리디안', ids:['SOUND_PREMIUM'] }, { kw:'harmankardon', ids:['SOUND_PREMIUM'] },
+  { kw:'하만카돈', ids:['SOUND_PREMIUM'] }, { kw:'lexicon', ids:['SOUND_PREMIUM'] },
+  { kw:'렉시콘', ids:['SOUND_PREMIUM'] },
+  { kw:'프리미엄사운드', ids:['SOUND_PREMIUM'] },
+  { kw:'프리미엄오디오', ids:['SOUND_PREMIUM'] },
+
+  // LED 실내등
+  { kw:'led실내등', ids:['LED_INTERIOR'] }, { kw:'led룸램프', ids:['LED_INTERIOR'] },
+  { kw:'led맵램프', ids:['LED_INTERIOR'] }, { kw:'led인테리어', ids:['LED_INTERIOR'] },
+  { kw:'led인테리어램프', ids:['LED_INTERIOR'] }, { kw:'led러기지램프', ids:['LED_INTERIOR'] },
+  { kw:'led인테리어무드램프', ids:['LED_INTERIOR'] },
 
   // 통풍시트
   { kw:'운전석동승석통풍시트', ids:['VENT_SEAT_DR','VENT_SEAT_PS'] },
@@ -2675,16 +2710,29 @@ function renderCatalog() {
   const wrap = $('trimBarWrap');
   wrap.innerHTML = '';
   wrap.classList.add('visible');
+  // 트림 가격 추출 — seat_options 가 있고 activeSeat 가 매칭되면 그 인승의 가격 사용
+  function trimDisplayPrice(trimKey, seatOverride) {
+    const tInfo = cat.trims[trimKey];
+    if (!tInfo) return null;
+    let p = tInfo.price || {};
+    if (tInfo.seat_options) {
+      const seat = seatOverride != null ? seatOverride
+        : (trimKey === state.activeTrim && state.activeSeat != null ? state.activeSeat
+        : tInfo.default_seat);
+      if (tInfo.seat_options[seat]) p = tInfo.seat_options[seat].price || p;
+    }
+    return p.tax_5_after || p.tax_5_before || p.tax_5
+      || p.tax_3_5_after || p.tax_3_5_before || p.tax_3_5 || p.base || null;
+  }
+
   trims.forEach(t => {
     const btn = document.createElement('button');
     btn.className = 'trim-btn' + (t === state.activeTrim ? ' active' : '');
-    const tInfo = cat.trims[t];
-    const p = tInfo.price || {};
-    const mainPrice = p.tax_5_after || p.tax_5_before || p.tax_5 || p.tax_3_5_after || p.tax_3_5_before || p.tax_3_5 || p.base || null;
+    const mainPrice = trimDisplayPrice(t);
     const priceTxt = mainPrice ? `<span class="trim-price">${(mainPrice/10000).toFixed(0)}만</span>` : '';
     btn.innerHTML = `<span class="trim-name">${t}</span>${priceTxt}`;
     btn.addEventListener('click', () => {
-      if (state.activeTrim !== t) state.selectedPkgs.clear();
+      if (state.activeTrim !== t) { state.selectedPkgs.clear(); state.activeSeat = null; }
       state.activeTrim = t;
       $('trim').value = t;
       renderCatalog();
@@ -2694,6 +2742,28 @@ function renderCatalog() {
   $('trim').value = state.activeTrim;
 
   const t = cat.trims[state.activeTrim];
+
+  // 인승 옵션 chip — seat_options 있는 트림만
+  if (t && t.seat_options) {
+    const seats = Object.keys(t.seat_options).map(Number).sort((a, b) => a - b);
+    if (state.activeSeat == null || !t.seat_options[state.activeSeat]) {
+      state.activeSeat = t.default_seat || seats[0];
+    }
+    const seatRow = document.createElement('div');
+    seatRow.style.cssText = 'display:flex;gap:6px;flex-basis:100%;margin-top:8px;align-items:center';
+    seatRow.innerHTML = `<span style="color:#6b7280;font-size:12px;margin-right:4px">인승</span>`;
+    for (const s of seats) {
+      const sp = (t.seat_options[s].price || {});
+      const price = sp.tax_5_after || sp.tax_5_before || sp.tax_5 || sp.tax_3_5_after || sp.tax_3_5_before || sp.tax_3_5 || sp.base || null;
+      const chip = document.createElement('button');
+      chip.className = 'trim-btn' + (s === state.activeSeat ? ' active' : '');
+      chip.style.cssText = 'padding:4px 10px;font-size:12px';
+      chip.innerHTML = `${s}인승${price ? ` <span class="trim-price">${(price/10000).toFixed(0)}만</span>` : ''}`;
+      chip.addEventListener('click', () => { state.activeSeat = s; renderCatalog(); });
+      seatRow.appendChild(chip);
+    }
+    wrap.appendChild(seatRow);
+  }
   $('summary').innerHTML = `
     <span>총 옵션 <b>${Object.keys(cat.options).length}</b></span>
     <span>기본 <b>${t.basic.length}</b></span>
@@ -2705,11 +2775,8 @@ function renderCatalog() {
   const content = $('trimContent');
   content.innerHTML = '';
 
-  // 트림 기본가 — fallback 체인은 trim-btn 과 동일
-  const priceObj = t.price || {};
-  const basePrice = priceObj.tax_5_after || priceObj.tax_5_before || priceObj.tax_5
-    || priceObj.tax_3_5_after || priceObj.tax_3_5_before || priceObj.tax_3_5
-    || priceObj.base || 0;
+  // 트림 기본가 — seat_options 활성 시 그 인승 가격 우선
+  const basePrice = trimDisplayPrice(state.activeTrim) || 0;
 
   // 1) 선택 패키지 — 트림 바로 아래, 클릭 토글
   let pkgTotal = 0;
