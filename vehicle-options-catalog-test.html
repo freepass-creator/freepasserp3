@@ -2741,9 +2741,8 @@ function renderCatalog() {
       const div = document.createElement('div');
       div.className = 'opt ' + cls;
       const badge = isBasic ? '' : (isSelect ? '<span class="badge">선택</span>' : '<span class="badge">미적용</span>');
-      // 옵션명 정제 — 괄호 안 설명 제거
-      const cleanName = (info.name || '').replace(/\s*\([^)]*\)/g, '').replace(/\s+/g, ' ').trim();
-      div.innerHTML = `<span>${cleanName}</span>${badge}`;
+      // 카테고리 옵션 list — 원본 그대로 표시 (괄호 안 핵심 정보 보존)
+      div.innerHTML = `<span>${info.name}</span>${badge}`;
       grid.appendChild(div);
     });
     content.appendChild(block);
