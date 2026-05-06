@@ -31,12 +31,12 @@ export async function getOptionPool(product) {
   if (!catalog) return { ...empty, source: 'no-catalog' };
   const cat = { catalogId };
 
-  // catalog options 자체가 비어있으면 (stub catalog) → 안내
+  // catalog options 자체가 비어있으면 (stub) — 매트릭스 페이지와 일관되게 안내만
   const optionCount = catalog.options ? Object.keys(catalog.options).length : 0;
   if (optionCount === 0) {
     return { ...empty, source: 'stub-catalog', catalogId: cat.catalogId, trimName };
   }
-  // trim 정확 매칭 — findTrimInCatalog 는 { name, trim, confidence, ... } wrapper 반환.
+  // trim 매칭 — findTrimInCatalog 는 { name, trim, confidence, ... } wrapper 반환.
   // 실제 trim 데이터는 .trim 안에. catalog.trims[name] 로 직접 접근도 fallback.
   const trimWrapper = findTrimInCatalog(catalog, trimName, product);
   const trim = trimWrapper?.trim || (trimName && catalog.trims?.[trimName]) || null;
