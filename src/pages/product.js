@@ -150,6 +150,20 @@ function bindCarPicker(card, p) {
   const cidIn = card.querySelector('input[data-f="catalog_id"]');
   if (!mkSel || !mdSel || !sbSel || !tmSel) return;
 
+  // cascade picker change 시 변경된 cascade 값들 + 동기 채워진 fuel_type/vehicle_class 까지 RTDB 자동 저장.
+  // [저장] 별도로 안 눌러도 다른 매물 이동/새로고침 후 복원 — autoFill 결과도 잃지 않음.
+  const persistCascade = async () => {
+    try {
+      const patch = { updated_at: Date.now() };
+      for (const f of ['maker', 'model', 'sub_model', 'trim_name', 'catalog_id', 'fuel_type', 'vehicle_class']) {
+        const v = card.querySelector(`[data-f="${f}"]`)?.value;
+        if (v != null) patch[f] = v;
+      }
+      await updateRecord(`products/${p._key}`, patch, { silent: true });
+      Object.assign(p, patch);
+    } catch (e) { console.warn('[cascade persist]', e); }
+  };
+
   const fill = (sel, opts, cur, ctx) => {
     sel.innerHTML = `<option value="">선택</option>` + pickerOptionsHtml(opts, cur, ctx);
   };
@@ -171,6 +185,7 @@ function bindCarPicker(card, p) {
     fill(tmSel, [], '', { ctx: 'trim' });
     if (cidIn) cidIn.value = '';
     autoFillFromCarModel(card, newMk, '', '');
+    persistCascade();
   });
   mdSel.addEventListener('change', () => {
     const mk = mkSel.value, newMd = mdSel.value;
@@ -179,6 +194,7 @@ function bindCarPicker(card, p) {
     fill(tmSel, [], '', { ctx: 'trim' });
     if (cidIn) cidIn.value = '';
     autoFillFromCarModel(card, mk, newMd, '');
+    persistCascade();
   });
   sbSel.addEventListener('change', () => {
     const mk = mkSel.value;
@@ -189,9 +205,11 @@ function bindCarPicker(card, p) {
     if (cidIn) cidIn.value = cid;
     fill(tmSel, arrToOpts(cid ? getCatalogTrims(cid) : []), '', { ctx: 'trim' });
     autoFillFromCarModel(card, mk, mdSel.value, sub);
+    persistCascade();
   });
   tmSel.addEventListener('change', () => {
     autoFillFromCarModel(card, mkSel.value, mdSel.value, sbSel.value);
+    persistCascade();
   });
 }
 
@@ -350,8 +368,16 @@ async function refreshTrimOptionChips(card, p) {
       hidden.value = next.join(', ');
       chip.classList.toggle('active', !allIn);
       try {
-        await updateRecord(`products/${p._key}`, { options: next, updated_at: Date.now() }, { silent: true });
-        p.options = next;
+        // cascade picker 의 현재 값들도 함께 저장 (RTDB 의 sub_model/trim_name 이 빈 값이라 watchCollection 콜백
+        //  후 cascade picker 가 reset 되어 trim 매칭이 풀리는 회귀 방지)
+        const patch = { options: next, updated_at: Date.now() };
+        const fields = ['maker', 'model', 'sub_model', 'trim_name', 'catalog_id'];
+        for (const f of fields) {
+          const v = card.querySelector(`[data-f="${f}"]`)?.value;
+          if (v != null && v !== '') patch[f] = v;
+        }
+        await updateRecord(`products/${p._key}`, patch, { silent: true });
+        Object.assign(p, patch);
       } catch (e) { showToast('옵션 저장 실패', 'error'); }
     });
   });

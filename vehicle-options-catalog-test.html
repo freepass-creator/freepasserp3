@@ -310,28 +310,26 @@ const OPTIONS = {
   ]},
 };
 const FP_TOTAL = Object.values(OPTIONS).reduce((s,c)=>s+c.items.length, 0);
-// 표준 주요옵션 15개 — 카테고리 그룹 (인포·디스플레이 → 외관 → 시트 → ADAS → 편의)
+// 표준 주요옵션 15개 — 사용자 정의 순서: 미디어편의 → 외관+기타편의 → 안전
 const POPULAR_OPTIONS = [
-  // 인포 / 디스플레이 / 카메라 (5)
+  // 미디어편의 (7) — 인포·디스플레이·카메라·하이패스·스마트키
   ['NAVIGATION','내비','navigation'],
   ['MIRRORING_WIRELESS','무선미러링','smartphone'],
-  ['HUD','HUD','monitor-up'],
+  ['HUD','HUD','monitor'],
   ['CAM_REAR','후방캠','camera'],
   ['AVMS','어라운드','scan'],
-  // 외관 / 램프 (2)
+  ['HIPASS','하이패스','credit-card'],
+  ['SMART_KEY','스마트키','key'],
+  // 외관 + 기타 편의 (4) — 외관·시트
   ['SUNROOF_PANO','썬루프','sun'],
   ['HEAD_LED','LED램프','lightbulb'],
-  // 시트 (2)
   ['HEAT_SEAT_FRONT','열선','flame'],
   ['VENT_SEAT_DR','통풍','wind'],
-  // ADAS 안전 (4)
-  ['HDA','크루즈','gauge'],
+  // 안전 ADAS (4)
+  ['HDA','스마트크루즈','gauge'],
   ['RCTA','후측방','shield-alert'],
   ['LDWS','차선이탈','triangle-alert'],
-  ['AEB','긴급제동','octagon-alert'],
-  // 편의 (2)
-  ['HIPASS','하이패스','badge'],
-  ['SMART_KEY','스마트키','key-round']
+  ['AEB','긴급제동','octagon-alert']
 ];
 const SUB_POPULAR_OPTIONS = [];   // 통합 — 보조 영역 폐기
 
