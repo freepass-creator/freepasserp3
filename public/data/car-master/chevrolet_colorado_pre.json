@@ -7,7 +7,48 @@
   "source_urls": [],
   "fetched_at": "2026-05-04",
   "note": "페리 전/세대 분리 stub",
-  "options": {},
+  "options": {
+    "PKG_ADAS": {
+      "name": "드라이버 컨피던스 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_CONVENIENCE": {
+      "name": "컨비니언스 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_COMFORT": {
+      "name": "컴포트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_PARKING": {
+      "name": "파킹 어시스트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_EXTERIOR": {
+      "name": "익스테리어 디자인 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_BUILTIN_CAM": {
+      "name": "빌트인 캠 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_SUNROOF": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_HUD": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": true
+    }
+  },
   "categories": {},
   "trims": {
     "익스트림": {
@@ -15,21 +56,192 @@
       "price": {},
       "basic": [],
       "select": [],
-      "select_groups": []
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 900000,
+          "name": "드라이버 컨피던스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ]
     },
     "Z71": {
       "slug": "z71",
       "price": {},
       "basic": [],
       "select": [],
-      "select_groups": []
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 900000,
+          "name": "드라이버 컨피던스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ]
     },
     "LT": {
       "slug": "lt",
       "price": {},
       "basic": [],
       "select": [],
-      "select_groups": []
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 900000,
+          "name": "드라이버 컨피던스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ]
     }
   },
   "aliases": [],

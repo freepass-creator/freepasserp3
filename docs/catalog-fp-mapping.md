@@ -9,72 +9,45 @@
 | catalog 총수 | 160 |
 | trim 보유 catalog | 160 |
 | trim 총수 | 782 |
-| 옵션 텍스트 보유 trim | 533 (68.2%) |
-| 옵션 텍스트 총수 | 54475 |
-| **FP 매칭 성공** | 31654 (58.1%) |
-| FP 매칭 실패 | 22821 |
+| 옵션 텍스트 보유 trim | 639 (81.7%) |
+| 옵션 텍스트 총수 | 55316 |
+| **FP 매칭 성공** | 32457 (58.7%) |
+| FP 매칭 실패 | 22859 |
 | FP_KEYWORD_RULES 등록 키워드 | 1545 |
 
 ## A. 옵션 텍스트 비어있는 catalog (trim 키만, basic/select 모두 빈 stub)
 
-총 50건 — 트림 옵션 데이터 보강 필요
+총 23건 — 트림 옵션 데이터 보강 필요
 
 | catalog_id | title | trim 수 |
 |---|---|---|
-| chevrolet_bolt_ev | 쉐보레 뉴 볼트 EV | 2 |
 | chevrolet_camaro | 쉐보레 더 뉴 카마로 | 2 |
-| chevrolet_colorado_pre | 쉐보레 콜로라도 | 3 |
 | chevrolet_cruze | 쉐보레 더 뉴 크루즈 | 3 |
-| chevrolet_equinox | 쉐보레 더 넥스트 이쿼녹스 | 3 |
 | chevrolet_impala | 쉐보레 임팔라 | 3 |
 | chevrolet_malibu | 쉐보레 더 뉴 말리부 | 4 |
 | chevrolet_spark | 쉐보레 더 뉴 스파크 | 4 |
-| chevrolet_trailblazer_pre | 쉐보레 트레일블레이저 | 5 |
 | hyundai_avante_ad | 현대 아반떼 AD | 5 |
-| hyundai_avante_ad_facelift | 현대 더 뉴 아반떼 AD | 5 |
-| hyundai_avante_ad_facelift_hybrid | 현대 더 뉴 아반떼 AD 하이브리드 | 4 |
-| hyundai_grand_starex_facelift | 현대 더 뉴 그랜드 스타렉스 | 1 |
 | hyundai_grandeur_hg | 현대 그랜저 HG | 5 |
-| hyundai_grandeur_ig_pre | 현대 그랜저 IG | 4 |
-| hyundai_kona_os_facelift_hybrid | 현대 더 뉴 코나 OS 하이브리드 | 4 |
-| hyundai_kona_os_hybrid | 현대 코나 OS 하이브리드 | 4 |
 | hyundai_sonata_lf | 현대 LF 쏘나타 | 4 |
 | hyundai_sonata_newrise | 현대 쏘나타 뉴 라이즈 | 4 |
-| hyundai_tucson_nx4_hybrid | 현대 더 뉴 투싼 NX4 하이브리드 | 4 |
 | hyundai_tucson_tl | 현대 올 뉴 투싼 TL | 4 |
 | kgm_musso_sports | KGM 무쏘 스포츠 | 3 |
-| kgm_rexton_sports_facelift | KGM 더 뉴 렉스턴 스포츠 | 5 |
-| kgm_rexton_sports_khan | KGM 렉스턴 스포츠 칸 | 4 |
-| kgm_rexton_sports_khan_facelift | KGM 더 뉴 렉스턴 스포츠 칸 | 6 |
-| kgm_rexton_sports_pre | KGM 렉스턴 스포츠 페리 전 | 3 |
-| kgm_tivoli_air | KGM 티볼리 에어 | 3 |
-| kgm_tivoli_armour | KGM 티볼리 아머 | 4 |
-| kia_carnival_ka4_hybrid | 기아 더 뉴 카니발 KA4 하이브리드 | 4 |
 | kia_carnival_yp | 기아 올 뉴 카니발 YP | 8 |
 | kia_k3_bd | 기아 올 뉴 K3 BD | 5 |
-| kia_k3_bd_facelift | 기아 더 뉴 K3 BD | 5 |
 | kia_k3_yd | 기아 K3 YD | 5 |
 | kia_k3_yd_facelift | 기아 더 뉴 K3 YD | 5 |
-| kia_k5_dl3_hybrid | 기아 올 뉴 K5 DL3 하이브리드 | 3 |
 | kia_k5_jf | 기아 K5 JF | 5 |
-| kia_k5_jf_facelift_hybrid | 기아 더 뉴 K5 JF 하이브리드 | 3 |
 | kia_k5_jf_hybrid | 기아 K5 JF 하이브리드 | 3 |
 | kia_k7_premier | 기아 K7 프리미어 | 7 |
 | kia_k7_yg | 기아 올 뉴 K7 YG | 3 |
-| kia_k8_gl3_pre_hybrid | 기아 K8 GL3 하이브리드 | 4 |
-| kia_k9_rj_pre | 기아 K9 RJ | 4 |
 | kia_morning_sa | 기아 모닝 SA | 5 |
 | kia_morning_sa_facelift | 기아 더 뉴 모닝 SA | 4 |
-| kia_niro_de | 기아 더 뉴 니로 DE | 5 |
-| kia_sorento_mq4_hybrid | 기아 더 뉴 쏘렌토 MQ4 하이브리드 | 4 |
 | kia_sorento_um | 기아 올 뉴 쏘렌토 UM | 4 |
-| kia_sorento_um_facelift | 기아 쏘렌토 더 마스터 UM | 6 |
-| kia_sportage_nq5_hybrid | 기아 더 뉴 스포티지 NQ5 하이브리드 | 4 |
 | kia_sportage_ql | 기아 더 SUV 스포티지 QL | 6 |
 
 ## B. FP 매칭 실패 옵션 텍스트 (FP_KEYWORD_RULES 보강 후보)
 
-총 1993종 (중복 제거 후)
+총 1994종 (중복 제거 후)
 
 | 빈도 | 옵션 텍스트 |
 |---|---|
@@ -203,6 +176,7 @@
 | 34 | 파워도어록 |
 | 33 | 룸램프 |
 | 33 | 선바이저 램프 |
+| 33 | 드라이빙 어시스트 패키지 II |
 | 33 | 1열 파워시트 |
 | 32 | LED 테일램프 |
 | 31 | 앞좌석 시트백 포켓 |
@@ -227,9 +201,8 @@
 | 29 | 파워 아웃렛(1열 1개, 러기지 1개) |
 | 29 | 3.5 가솔린 |
 | 29 | 터보 하이브리드 |
-| 29 | 앞좌석 슬라이딩 헤드레스트 |
 
-*... +1843종*
+*... +1844종*
 
 ## C. 옵션 텍스트 풍부 catalog Top 30 (참조용)
 

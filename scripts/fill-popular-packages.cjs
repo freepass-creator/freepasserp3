@@ -29,6 +29,7 @@ const ADAS_NAME_BY_MAKER = {
   '기아':   { adas: '드라이브 와이즈 II', adas_price: 1100000 },
   'KGM':    { adas: '드라이빙 어시스트 패키지 II', adas_price: 800000 },
   '쉐보레': { adas: '드라이버 컨피던스 패키지', adas_price: 900000 },
+  '르노':   { adas: '어시스트 팩', adas_price: 700000 },
 };
 
 // 표준 패키지 마스터 (코드 → 이름 + 가격 + 매핑되는 ADAS/편의 그룹)
@@ -52,7 +53,7 @@ let touched = 0;
 for (const f of files) {
   const fp = path.join(CATALOG_DIR, f);
   const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
-  if ((d.year_start || '') < '2022-01') continue;
+  if ((d.year_start || '') < '2016-01') continue;
   if (!ADAS_NAME_BY_MAKER[d.maker]) continue;
   const opts = d.options || (d.options = {});
   const trims = d.trims || {};
