@@ -315,23 +315,23 @@ const FP_TOTAL = Object.values(OPTIONS).reduce((s,c)=>s+c.items.length, 0);
 // 사용자 정의 순서: 미디어편의 → 외관+기타편의 → 안전
 const POPULAR_OPTIONS = [
   // 미디어편의 (7)
-  ['NAVIGATION','내비','navigation-arrow'],
-  ['MIRRORING_WIRELESS','무선미러링','broadcast'],
-  ['HUD','HUD','monitor'],
-  ['CAM_REAR','후방캠','camera'],
-  ['AVMS','어라운드','compass'],
-  ['HIPASS','하이패스','credit-card'],
-  ['SMART_KEY','스마트키','key'],
+  ['NAVIGATION','내비','map-trifold'],
+  ['MIRRORING_WIRELESS','무선미러링','wifi-high'],
+  ['HUD','HUD','airplay'],
+  ['CAM_REAR','후방캠','video-camera'],
+  ['AVMS','어라운드','circles-four'],
+  ['HIPASS','하이패스','barcode'],
+  ['SMART_KEY','스마트키','fingerprint'],
   // 외관 + 기타 편의 (4)
-  ['SUNROOF_PANO','썬루프','sun'],
-  ['HEAD_LED','LED램프','lightbulb'],
-  ['HEAT_SEAT_FRONT','열선','fire'],
-  ['VENT_SEAT_DR','통풍','fan'],
+  ['SUNROOF_PANO','썬루프','sun-horizon'],
+  ['HEAD_LED','LED램프','lightbulb-filament'],
+  ['HEAT_SEAT_FRONT','열선','thermometer-hot'],
+  ['VENT_SEAT_DR','통풍','snowflake'],
   // 안전 ADAS (4)
-  ['HDA','스마트크루즈','speedometer'],
-  ['RCTA','후측방','bell-ringing'],
-  ['LDWS','차선이탈','arrows-out-line-horizontal'],
-  ['AEB','긴급제동','hand']
+  ['HDA','스마트크루즈','gauge'],
+  ['RCTA','후측방','eye'],
+  ['LDWS','차선이탈','road-horizon'],
+  ['AEB','긴급제동','warning']
 ];
 const SUB_POPULAR_OPTIONS = [];   // 통합 — 보조 영역 폐기
 

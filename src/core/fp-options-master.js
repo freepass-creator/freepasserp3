@@ -108,23 +108,23 @@ export function fpIdsToNames(ids) {
 /** 표준 주요옵션 15 — 사용자 정의 순서: 미디어편의 → 외관+기타편의 → 안전 */
 export const FP_POPULAR_PRIMARY = [
   // 미디어편의 (7)
-  { label: '내비',         icon: 'navigation-arrow',  ids: ['NAVIGATION'] },
-  { label: '무선미러링',   icon: 'broadcast',         ids: ['MIRRORING_WIRELESS'] },
-  { label: 'HUD',          icon: 'monitor',           ids: ['HUD'] },
-  { label: '후방캠',       icon: 'camera',            ids: ['CAM_REAR'] },
-  { label: '어라운드',     icon: 'compass',           ids: ['AVMS'] },
-  { label: '하이패스',     icon: 'credit-card',       ids: ['HIPASS'] },
-  { label: '스마트키',     icon: 'key',               ids: ['SMART_KEY'] },
-  // 외관 + 기타 편의 (4) — 외관·시트
-  { label: '썬루프',       icon: 'sun',               ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
-  { label: 'LED램프',      icon: 'lightbulb',         ids: ['HEAD_LED'] },
-  { label: '열선',         icon: 'fire',              ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
-  { label: '통풍',         icon: 'fan',               ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
+  { label: '내비',         icon: 'map-trifold',         ids: ['NAVIGATION'] },
+  { label: '무선미러링',   icon: 'wifi-high',           ids: ['MIRRORING_WIRELESS'] },
+  { label: 'HUD',          icon: 'airplay',             ids: ['HUD'] },
+  { label: '후방캠',       icon: 'video-camera',        ids: ['CAM_REAR'] },
+  { label: '어라운드',     icon: 'circles-four',        ids: ['AVMS'] },
+  { label: '하이패스',     icon: 'barcode',             ids: ['HIPASS'] },
+  { label: '스마트키',     icon: 'fingerprint',         ids: ['SMART_KEY'] },
+  // 외관 + 기타 편의 (4)
+  { label: '썬루프',       icon: 'sun-horizon',         ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
+  { label: 'LED램프',      icon: 'lightbulb-filament',  ids: ['HEAD_LED'] },
+  { label: '열선',         icon: 'thermometer-hot',     ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
+  { label: '통풍',         icon: 'snowflake',           ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
   // 안전 ADAS (4)
-  { label: '스마트크루즈', icon: 'speedometer',       ids: ['HDA'] },
-  { label: '후측방',       icon: 'bell-ringing',      ids: ['RCTA'] },
-  { label: '차선이탈',     icon: 'arrows-out-line-horizontal', ids: ['LDWS'] },
-  { label: '긴급제동',     icon: 'hand',              ids: ['AEB'] },
+  { label: '스마트크루즈', icon: 'gauge',               ids: ['HDA'] },
+  { label: '후측방',       icon: 'eye',                 ids: ['RCTA'] },
+  { label: '차선이탈',     icon: 'road-horizon',        ids: ['LDWS'] },
+  { label: '긴급제동',     icon: 'warning',             ids: ['AEB'] },
 ];
 
 /** 보조 영역 폐기 — 15개 모두 PRIMARY 로 통합. 호환성을 위해 빈 배열만 유지 */
