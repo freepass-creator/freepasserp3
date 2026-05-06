@@ -782,6 +782,13 @@ export function renderProductDetail(p) {
     refreshTrimDatalist(assetCard, p);  // 트림 자동완성 옵션 채우기
     refreshTrimOptionChips(assetCard, p);   // 트림 옵션 chip 영역
     if (canEdit) bindOptionsManualInput(assetCard, p);
+    // 기존 매물의 catalog_id 가 RTDB 에 없으면 (구버전 매물) — picker 의 추론값으로 자동 저장.
+    //  다음 watchCollection 콜백 후에도 chip 매칭 안 풀림 + 같은 매물 다시 선택 시 source='trim' 보장.
+    const inferredCid = assetCard.querySelector('[data-f="catalog_id"]')?.value;
+    if (canEdit && inferredCid && !p.catalog_id) {
+      updateRecord(`products/${p._key}`, { catalog_id: inferredCid }, { silent: true })
+        .catch(e => console.warn('[catalog_id seed]', e));
+    }
     let _mtxDebounce;
     const triggerRefresh = () => {
       clearTimeout(_mtxDebounce);

@@ -48,6 +48,8 @@ export const FP_OPT_MASTER = {
     ['ISLA','지능형 속도 제한 보조 (ISLA)','unc'],['SEW','안전 하차 경고/보조 (SEW)','unc'],
     ['BVM','후측방 모니터 (BVM)','unc'],
     ['ISG','ISG 공회전 제한','unc'],
+    ['HOD','스티어링 휠 그립/진동 감지 (HOD)','unc'],
+    ['DEFOG','오토 디포그','unc'],
   ]},
   convenience: { label:'편의', items: [
     ['NAVIGATION','내비게이션'],['HIPASS','하이패스','unc'],
@@ -115,11 +117,11 @@ export const FP_POPULAR_PRIMARY = [
   { label: '어라운드',     icon: 'circles-four',        ids: ['AVMS'] },
   { label: '하이패스',     icon: 'barcode',             ids: ['HIPASS'] },
   { label: '스마트키',     icon: 'fingerprint',         ids: ['SMART_KEY'] },
-  // 외관 + 기타 편의 (4)
+  // 외관 + 기타 편의 (4) — 썬루프·통풍·열선·LED램프 순
   { label: '썬루프',       icon: 'sun-horizon',         ids: ['SUNROOF', 'SUNROOF_PANO', 'SUNROOF_SAFETY'] },
-  { label: 'LED램프',      icon: 'lightbulb-filament',  ids: ['HEAD_LED'] },
-  { label: '열선',         icon: 'thermometer-hot',     ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
   { label: '통풍',         icon: 'snowflake',           ids: ['VENT_SEAT_DR', 'VENT_SEAT_PS'] },
+  { label: '열선',         icon: 'thermometer-hot',     ids: ['HEAT_SEAT_FRONT', 'HEAT_SEAT_REAR'] },
+  { label: 'LED램프',      icon: 'lightbulb-filament',  ids: ['HEAD_LED'] },
   // 안전 ADAS (4)
   { label: '스마트크루즈', icon: 'gauge',               ids: ['HDA'] },
   { label: '후측방',       icon: 'eye',                 ids: ['RCTA'] },

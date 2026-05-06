@@ -1192,7 +1192,9 @@
       ]
     },
     "오토디포그": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DEFOG"
+      ],
       "used_in": 21,
       "used_as_basic": 117,
       "used_as_select": 0,
@@ -1546,7 +1548,9 @@
       ]
     },
     "스티어링 휠 진동 경고": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HOD"
+      ],
       "used_in": 18,
       "used_as_basic": 100,
       "used_as_select": 0,
@@ -6446,7 +6450,9 @@
       ]
     },
     "스티어링 휠 진동경고": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HOD"
+      ],
       "used_in": 3,
       "used_as_basic": 18,
       "used_as_select": 0,
@@ -6914,7 +6920,9 @@
       ]
     },
     "오토 디포그": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DEFOG"
+      ],
       "used_in": 3,
       "used_as_basic": 10,
       "used_as_select": 0,
@@ -27083,7 +27091,9 @@
       ]
     },
     "진동경고 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HOD"
+      ],
       "used_in": 11,
       "used_as_basic": 7,
       "used_as_select": 26,
@@ -27159,8 +27169,8 @@
         "AVMS"
       ],
       "used_in": 11,
-      "used_as_basic": 20,
-      "used_as_select": 6,
+      "used_as_basic": 23,
+      "used_as_select": 3,
       "codes": [
         "WK_서라운드_뷰_모니터"
       ],
@@ -29394,7 +29404,9 @@
       ]
     },
     "오토디포그": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DEFOG"
+      ],
       "used_in": 3,
       "used_as_basic": 10,
       "used_as_select": 0,
@@ -30855,7 +30867,8 @@
     "독립 제어 풀오토 에어컨(운전석 & 동승석 듀얼 풍량 모드 제어, 후석 공조 전석 제어, 오토디포그, 외부공기 유입 방지 제어, 애프터 블로우 포함)": {
       "fp_ids": [
         "AFTER_BLOW",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 2,
       "used_as_basic": 6,
@@ -32402,7 +32415,8 @@
     },
     "3존 공조(오토 디포그, 외부공기 유입 방지 제어, 애프터 블로우 포함)": {
       "fp_ids": [
-        "AFTER_BLOW"
+        "AFTER_BLOW",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -33547,7 +33561,8 @@
     },
     "독립제어 풀오토 에어컨(운전석 & 동승석 듀얼 온도 및 풍량제어, 오토 디포그, 외부공기 유입 방지 제어, 에프터 블로우 포함)": {
       "fp_ids": [
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -34183,7 +34198,8 @@
     "독립제어 풀오토 에어컨(운전석 & 동승석 듀얼 온도 제어, 후석 공조 전석 제어, 오토디포그, 외부공기 유입 방지 제어, 애프터 블로우 포함)": {
       "fp_ids": [
         "AFTER_BLOW",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -39214,7 +39230,9 @@
       ]
     },
     "진동 경고 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HOD"
+      ],
       "used_in": 14,
       "used_as_basic": 80,
       "used_as_select": 0,
@@ -40627,7 +40645,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 7,
       "used_as_basic": 41,
@@ -40642,7 +40661,9 @@
       ]
     },
     "진동경고 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HOD"
+      ],
       "used_in": 7,
       "used_as_basic": 49,
       "used_as_select": 0,
@@ -40778,7 +40799,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 6,
       "used_as_basic": 35,
@@ -44282,7 +44304,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 3,
       "used_as_basic": 20,
@@ -45968,7 +45991,8 @@
     "풀오토 에어컨(오토디포그, 마이크로 에어필터)": {
       "fp_ids": [
         "AUTO_AC",
-        "AIR_PURIFY"
+        "AIR_PURIFY",
+        "DEFOG"
       ],
       "used_in": 2,
       "used_as_basic": 7,
@@ -47551,7 +47575,9 @@
       ]
     },
     "오토 디포그": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DEFOG"
+      ],
       "used_in": 2,
       "used_as_basic": 19,
       "used_as_select": 0,
@@ -48003,7 +48029,8 @@
     "듀얼 풀오토 에어컨(공기청정모드/오토 디포그/클러스터 이오나이저 포함)": {
       "fp_ids": [
         "AUTO_AC",
-        "AIR_PURIFY"
+        "AIR_PURIFY",
+        "DEFOG"
       ],
       "used_in": 2,
       "used_as_basic": 7,
@@ -49473,10 +49500,10 @@
     "외관: 18인치 알로이 휠 & 타이어, 수평형 LED 램프(심리스 호라이즌 램프), Full LED 헤드램프(프로젝션 타입), LED 리어 콤비램프, LED 보조제동등, LED 방향지시등(뒤), 프레임리스 도어, 오토 플러시 도어 핸들, 이중접합 차음유리(윈드실드/앞좌석/뒷좌석 도어), 자외선 차단 유리(윈드실드), 아웃사이드 미러(열선, 전동 조절, 전동 접이, LED 방향지시등)": {
       "fp_ids": [
         "MIRROR_FOLD",
+        "LED_TURN",
         "HEAD_LED",
         "ALUMINUM_WHEEL",
-        "REAR_LED_COMBI",
-        "LED_TURN"
+        "REAR_LED_COMBI"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -49492,8 +49519,8 @@
       "fp_ids": [
         "DISPLAY_LCD",
         "HEAT_STR",
-        "AMB_LIGHT",
-        "STR_LEATHER"
+        "STR_LEATHER",
+        "AMB_LIGHT"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -49540,6 +49567,7 @@
         "AFTER_BLOW",
         "AIR_PURIFY",
         "CAM_REAR",
+        "DEFOG",
         "PADDLE_SHIFT",
         "RAIN_SENSOR"
       ],
@@ -49634,7 +49662,8 @@
     },
     "내장: 전동식 틸트 & 텔레스코픽 스티어링 휠, 진동 경고 스티어링 휠, 뒷면 전동식 커튼": {
       "fp_ids": [
-        "CURTAIN_E"
+        "CURTAIN_E",
+        "HOD"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -50083,7 +50112,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -50412,7 +50442,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 6,
@@ -51039,7 +51070,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -51305,7 +51337,9 @@
       ]
     },
     "스티어링 휠 진동 경고 스티어링 휠": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HOD"
+      ],
       "used_in": 1,
       "used_as_basic": 7,
       "used_as_select": 0,
@@ -52233,7 +52267,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 10,
@@ -52944,7 +52979,8 @@
     "듀얼 풀오토 에어컨(공기청정 모드/오토 디포그/클러스터 이오나이저 포함)": {
       "fp_ids": [
         "AUTO_AC",
-        "AIR_PURIFY"
+        "AIR_PURIFY",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 6,
@@ -54370,7 +54406,8 @@
     "듀얼 풀오토 에어컨(미세먼지센서/공기청정모드/오토 디포그)": {
       "fp_ids": [
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 12,
@@ -54565,7 +54602,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 8,
@@ -54824,7 +54862,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -56237,7 +56276,8 @@
     },
     "열선 스티어링 휠(진동 경고)": {
       "fp_ids": [
-        "HEAT_STR"
+        "HEAT_STR",
+        "HOD"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -56543,7 +56583,8 @@
     "듀얼 풀오토 에어컨(오토 디포그/미세먼지 센서/공기청정모드 포함)": {
       "fp_ids": [
         "AIR_PURIFY",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 5,
@@ -59663,7 +59704,8 @@
     "듀얼존 풀오토 에어컨(마이크로 에어컨 필터, 오토 디포그, 애프터 블로우)": {
       "fp_ids": [
         "AFTER_BLOW",
-        "AUTO_AC"
+        "AUTO_AC",
+        "DEFOG"
       ],
       "used_in": 4,
       "used_as_basic": 11,
@@ -61707,7 +61749,9 @@
       ]
     },
     "오토 디포그": {
-      "fp_ids": [],
+      "fp_ids": [
+        "DEFOG"
+      ],
       "used_in": 2,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -63077,7 +63121,8 @@
       "fp_ids": [
         "AFTER_BLOW",
         "AUTO_AC",
-        "AIR_PURIFY"
+        "AIR_PURIFY",
+        "DEFOG"
       ],
       "used_in": 1,
       "used_as_basic": 2,
