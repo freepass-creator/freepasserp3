@@ -19,14 +19,32 @@ const files = fs.readdirSync(CATALOG_DIR)
   .filter(f => f.endsWith('.json') && !f.startsWith('_'));
 
 let added = 0;
+let synced = 0;
 const updated = { ...existing };
 
 for (const f of files) {
   const cid = f.replace('.json', '');
-  if (updated[cid]) continue;   // 이미 있음
   try {
     const data = JSON.parse(fs.readFileSync(path.join(CATALOG_DIR, f), 'utf8'));
     const trimNames = data.trims ? Object.keys(data.trims) : [];
+
+    if (updated[cid]) {
+      // 기존 entry — title / trims / maker 만 catalog.json 기준 동기화
+      // source/verified/encar 매핑은 보존 (수동으로 관리하는 데이터)
+      const cur = updated[cid];
+      let changed = false;
+      const newTitle = data.title || cid;
+      if (cur.title !== newTitle) { cur.title = newTitle; changed = true; }
+      if (data.maker && cur.maker !== data.maker) { cur.maker = data.maker; changed = true; }
+      // trims 비교 — 길이/내용 다르면 갱신
+      const curTrims = Array.isArray(cur.trims) ? cur.trims : [];
+      const trimsDiff = curTrims.length !== trimNames.length || curTrims.some((t, i) => t !== trimNames[i]);
+      if (trimsDiff) { cur.trims = trimNames; changed = true; }
+      if (changed) synced++;
+      continue;
+    }
+
+    // 신규 entry
     updated[cid] = {
       id: cid,
       title: data.title || cid,
@@ -51,7 +69,7 @@ for (const f of files) {
   }
 }
 
-if (!added) {
+if (!added && !synced) {
   console.log('✓ _index.json 변경 없음 (모든 catalog entry 존재)');
   process.exit(0);
 }
@@ -60,4 +78,4 @@ if (!added) {
 const sorted = {};
 for (const k of Object.keys(updated).sort()) sorted[k] = updated[k];
 fs.writeFileSync(INDEX_PATH, JSON.stringify(sorted, null, 2));
-console.log(`\n✓ ${added}개 entry 추가 → _index.json 갱신`);
+console.log(`\n✓ 추가 ${added}건, 동기화 ${synced}건 → _index.json 갱신`);
