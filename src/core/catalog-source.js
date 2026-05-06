@@ -98,13 +98,22 @@ export function getCatalogSubModels(maker, model_root) {
       year_end: c.year_end || '',
     });
   }
-  // 최신 연식 우선 (year_start 내림차순) → sub 가나다
+  // 정렬: ① year_start 내림차순 (최신 먼저)
+  //       ② 동일 시점에선 fuel 일반(0) → 하이브리드(1) → EV(2) 순
+  //       ③ 같은 fuel 내에선 sub 가나다
+  const fuelRank = (t) => {
+    if (/일렉트리파이드|electrified|일렉트릭|electric|\bev\b/i.test(t)) return 2;
+    if (/하이브리드|hybrid|hev/i.test(t)) return 1;
+    return 0;
+  };
   out.sort((a, b) => {
     if (a.year_start && b.year_start && a.year_start !== b.year_start) {
       return b.year_start.localeCompare(a.year_start);
     }
     if (a.year_start && !b.year_start) return -1;
     if (!a.year_start && b.year_start) return 1;
+    const ar = fuelRank(a.title || a.sub), br = fuelRank(b.title || b.sub);
+    if (ar !== br) return ar - br;
     return a.sub.localeCompare(b.sub, 'ko');
   });
   return out;
