@@ -7084,7 +7084,7 @@
     "title": "기아 더 뉴 K9 RJ",
     "maker": "기아",
     "model_root": "K9",
-    "year_start": "2012-01",
+    "year_start": "2022-04",
     "year_end": "현재",
     "source": {
       "manufacturer": "https://www.kia.com/kr/vehicles/k9/price",
@@ -7109,6 +7109,32 @@
       "마스터즈": 73950000,
       "베스트 셀렉션 Ⅱ": 82100000
     }
+  },
+  "kia_k9_rj_pre": {
+    "id": "kia_k9_rj_pre",
+    "title": "기아 K9 RJ",
+    "maker": "기아",
+    "model_root": "K9",
+    "year_start": "2018-04",
+    "year_end": "2022-04",
+    "source": {
+      "manufacturer": null,
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "플래티넘 I",
+      "플래티넘 II",
+      "플래티넘 III",
+      "마스터즈"
+    ],
+    "trims_meta": {},
+    "fetched_at": "2026-05-06"
   },
   "kia_mohave": {
     "id": "kia_mohave",

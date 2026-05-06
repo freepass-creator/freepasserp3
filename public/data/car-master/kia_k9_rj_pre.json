@@ -1,0 +1,24 @@
+{
+  "catalog_id": "kia_k9_rj_pre",
+  "model_root": "K9",
+  "title": "기아 K9 RJ",
+  "maker": "기아",
+  "source": "stub",
+  "source_urls": [],
+  "fetched_at": "2026-05-06",
+  "note": "K9 2세대 (RJ) 페리 전 (2018-04~2022-04). 트림 stub.",
+  "options": {},
+  "categories": {},
+  "trims": {
+    "플래티넘 I": { "slug": "platinum_1", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "플래티넘 II": { "slug": "platinum_2", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "플래티넘 III": { "slug": "platinum_3", "price": {}, "basic": [], "select": [], "select_groups": [] },
+    "마스터즈": { "slug": "masters", "price": {}, "basic": [], "select": [], "select_groups": [] }
+  },
+  "aliases": [
+    "K9 RJ",
+    "K9 2세대"
+  ],
+  "year_start": "2018-04",
+  "year_end": "2022-04"
+}
