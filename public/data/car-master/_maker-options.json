@@ -28816,7 +28816,10 @@
       ]
     },
     "스마트 전동식 트렁크": {
-      "fp_ids": [],
+      "fp_ids": [
+        "POWER_TRUNK",
+        "SMART_TRUNK"
+      ],
       "used_in": 3,
       "used_as_basic": 9,
       "used_as_select": 0,
@@ -49293,6 +49296,8 @@
     },
     "편의/주차: 디지털 키 2, 스마트 전동식 트렁크, 스마트폰 무선 충전, 실내 지문 인증 시스템(개인화, 시동, 결제 등), 서라운드 뷰 모니터, 후측방 모니터, 후방 주차 거리 경고, 원격 스마트 주차 보조, 후진 가이드 램프": {
       "fp_ids": [
+        "POWER_TRUNK",
+        "SMART_TRUNK",
         "SPAS",
         "WPC",
         "SENSOR_REAR",
