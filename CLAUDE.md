@@ -272,10 +272,13 @@
 - 사이드바 메뉴 — agent_admin 이 봐야 할 메뉴 매트릭스 (현재 product/policy 만 hide)
 - 모바일 4탭 — 현재 모든 역할 동일. agent_admin 의 소통 탭 (대화 안 봐야) / provider 의 정산 가시성 등 결정
 
-### C. 차종 매트릭스 ↔ 재고 dropdown 통합
-- 재고 dropdown: `store.carModels` (Firebase `vehicle_master`)
-- 매트릭스: `/data/car-master/_index.json` (정적, 63개)
-- 두 소스 통합 필요. A안: 카탈로그 → vehicle_master 일회성 sync (dev-tool)
+### C. 차종 매트릭스 — 단일 진실원 (확정)
+- **데이터원**: `public/data/car-master/*.json` (399 catalog) — 유일
+- **재고 cascade** (product.js): `core/catalog-source.js` 가 `_index.json` lazy-load
+- **차종 마스터 페이지** (vehicle-master.js): catalog 기반 read-only viewer
+- **vehicle_master Firebase 컬렉션**: 폐기 (watch 제거됨, audit 제외, store.carModels = [])
+- 신규 catalog 추가: `public/data/car-master/{id}.json` 직접 stub 작성 → predev/prebuild 가 _index/aliases/bundle 자동 재생성
+- 빠진 차종 후보 audit: 사용자가 알려주거나 product 매물 매칭 실패 케이스에서 추출
 
 ### D. 데스크톱 페이지에 신규등록 추가 안 한 곳
 - 사용자 페이지 — admin 직접 추가 UI 없음 (self-signup 만)

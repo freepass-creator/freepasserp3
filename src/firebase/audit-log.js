@@ -20,7 +20,7 @@ import { store } from '../core/store.js';
 /* 감사 대상 컬렉션 — 고볼륨 (messages 등) 은 의도적으로 제외 */
 const AUDITED_COLLECTIONS = new Set([
   'products', 'contracts', 'policies', 'partners', 'users', 'settlements',
-  'rooms', 'customers', 'vehicle_master',
+  'rooms', 'customers',
 ]);
 
 /* 노이즈 필드 — 채팅 읽음/마지막메시지 업데이트는 감사 의미 없음 (rooms 컬렉션 한정) */

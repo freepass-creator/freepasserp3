@@ -82,8 +82,8 @@ import { filterByRole } from './core/roles.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from './core/chat-render.js';
 import { markRoomRead } from './firebase/collections.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
-import { getMakers, getModelsByMaker, getSubModels, findCarModel } from './core/car-models.js';
-import { inferCarModel } from './core/car-model-infer.js';
+// vehicle_master Firebase 컬렉션 폐기 — catalog (public/data/car-master) 단일 진실원
+// findCarModel/inferCarModel 은 호출처(product.js, vehicle-ocr.js) 에서 직접 import
 import { renderSettings } from './pages/settings.js';
 import { renderDev } from './pages/dev.js';
 import { setPageActions } from './core/page-actions.js';
@@ -1086,22 +1086,8 @@ function startHydration() {
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage); });
   watchCollection('customers',   (list) => { store.customers   = list || []; });
-  // 차종 마스터 (vehicle_master) — 제조사·모델·세부모델 cascade picker 데이터원
-  watchCollection('vehicle_master', (data) => {
-    store.carModels = (data || [])
-      .filter(m => m && m.status !== 'deleted')
-      .map(m => ({
-        ...m,
-        sub_model: m.sub_model || m.sub || '',
-        vehicle_class: m.vehicle_class || m.category || '',
-      }));
-    // 재고 페이지가 활성이면 picker 옵션 갱신 위해 자산정보 재렌더
-    if (document.querySelector('.pt-page.active')?.dataset.page === 'product') {
-      const activeId = document.querySelector('.pt-page[data-page="product"] .room-item.is-active')?.dataset.id;
-      const target = (store.products || []).find(x => x._key === activeId) || (store.products || [])[0];
-      if (target) renderProductDetail(target);
-    }
-  });
+  // vehicle_master Firebase 컬렉션 폐기됨 — 차종 데이터는 catalog (public/data/car-master) 단일 진실원
+  // catalog cascade 데이터는 src/core/catalog-source.js 에서 _index.json 로드
 
   bindSearchInteractions();
   bindGenericListInteractions();

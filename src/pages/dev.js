@@ -480,8 +480,6 @@ function renderToolsTab(el) {
           <button class="btn btn-sm" id="devMigratePartnerType"><i class="ph ph-swap"></i> partner_type 영어 → 한글</button>
           <button class="btn btn-sm" id="devMigrateUserCode"><i class="ph ph-identification-badge"></i> user_code 일괄부여</button>
           <button class="btn btn-sm" id="devMigrateCreditGrade"><i class="ph ph-swap"></i> credit_grade: 저신용 → 신용무관</button>
-          <button class="btn btn-sm" id="devMigrateVehMasterSub"><i class="ph ph-swap"></i> vehicle_master sub_model: 카탈로그 표준명으로 일괄 정정</button>
-          <button class="btn btn-sm" id="devDedupeVehMasterSub"><i class="ph ph-arrows-merge"></i> vehicle_master 중복 sub_model 해소 (동력원 keyword 복원)</button>
         </div>
       </div>
     </div>
@@ -511,8 +509,6 @@ function renderToolsTab(el) {
   el.querySelector('#devMigratePartnerType').addEventListener('click', () => migratePartnerType());
   el.querySelector('#devMigrateUserCode').addEventListener('click', () => migrateUserCode());
   el.querySelector('#devMigrateCreditGrade').addEventListener('click', () => migrateCreditGrade());
-  el.querySelector('#devMigrateVehMasterSub').addEventListener('click', () => migrateVehicleMasterSubModel());
-  el.querySelector('#devDedupeVehMasterSub').addEventListener('click', () => dedupeVehicleMasterSubModel());
 }
 
 async function migrateTermPolicy() {
@@ -655,141 +651,6 @@ async function migrateCreditGrade() {
     }
     devLog(`✓ ${total}건 변환`);
     showToast(`${total}건 완료`);
-  } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
-}
-
-/* 동력원 keyword 추출 — 같은 catalog 안에서 가솔린/하이브리드/EV 가 섞이면
- * standardSub 만 쓰면 dropdown 중복이 생기므로 동력원 표기를 보존한다.
- *  "코나 하이브리드 (SX2)" → "하이브리드"
- *  "코나 일렉트릭"           → "일렉트릭"
- *  "K8 EV"                   → "EV"   (없는 케이스지만)
- *  가솔린/디젤/LPG 일반 동력원은 "" (별도 표기 X — default)
- */
-function extractPowertrainKeyword(rawSub) {
-  const s = String(rawSub || '');
-  if (/하이브리드|HEV|hybrid/i.test(s)) return '하이브리드';
-  if (/플러그인|PHEV/i.test(s)) return '플러그인 하이브리드';
-  if (/일렉트릭|electric/i.test(s)) return '일렉트릭';
-  if (/\bEV\b/.test(s)) return 'EV';
-  if (/전기차|전기/.test(s)) return '전기';
-  return '';
-}
-/* standardSub 에 동력원이 이미 들어있으면 중복 추가 방지 */
-function appendPowertrain(standardSub, kw) {
-  if (!kw) return standardSub;
-  if (standardSub.includes(kw)) return standardSub;
-  // "EV" 같은 짧은 키워드는 이미 정확히 매칭되어 있으면 X
-  return `${standardSub} ${kw}`;
-}
-
-/* vehicle_master 의 sub_model 을 우리 카탈로그 표준명으로 일괄 정정.
- *  예: "K5 3세대 (2019~2023)" → "더 뉴 K5 DL3"
- *      "코나 하이브리드"      → "코나 SX2 하이브리드" (동력원 keyword 보존)
- *  - 매칭된 records 만 변경 (멱등)
- *  - 원본은 sub_model_legacy 로 백업 */
-async function migrateVehicleMasterSubModel() {
-  try {
-    const { findCatalog, loadIndex } = await import('../core/vehicle-matrix.js');
-    await loadIndex();
-    const { ref, get, update } = await import('firebase/database');
-    const { db } = await import('../firebase/config.js');
-    const snap = await get(ref(db, 'vehicle_master'));
-    const all = snap.val() || {};
-    const targets = [];
-    for (const [k, v] of Object.entries(all)) {
-      if (!v || v.status === 'deleted') continue;
-      const maker = v.maker, sub = v.sub_model || v.sub, model = v.model;
-      if (!maker || !sub) continue;
-      const cat = await findCatalog(maker, sub, model);
-      if (!cat) continue;
-      const idx = await loadIndex();
-      const entry = idx[cat.catalogId];
-      if (!entry) continue;
-      const baseSub = (entry.title || '').replace(new RegExp('^' + maker + '\\s+'), '').trim();
-      // 동력원 keyword 는 oldSub (또는 sub_model_legacy) 에서 추출해 standardSub 에 붙임
-      const legacy = v.sub_model_legacy || sub;
-      const kw = extractPowertrainKeyword(legacy) || extractPowertrainKeyword(sub);
-      const standardSub = appendPowertrain(baseSub, kw);
-      if (!standardSub || standardSub === sub) continue;
-      targets.push({ key: k, oldSub: sub, newSub: standardSub, maker, model, conf: cat.confidence });
-    }
-    if (!targets.length) {
-      devLog('vehicle_master 정정 대상 없음 (멱등)');
-      showToast('변경 없음');
-      return;
-    }
-    const preview = targets.slice(0, 10).map(t => `  ${t.maker} ${t.oldSub} → ${t.newSub} (${t.conf})`).join('\n');
-    if (!confirm(`vehicle_master sub_model 정정 ${targets.length}건 (high/medium 신뢰도). 원본은 sub_model_legacy 백업.\n\n샘플:\n${preview}\n\n계속?`)) return;
-    let done = 0, fail = 0;
-    for (const t of targets) {
-      if (t.conf === 'low') continue;  // low 는 자동 skip
-      try {
-        const cur = all[t.key];
-        const updates = { sub_model: t.newSub, sub: t.newSub };
-        if (cur.sub_model_legacy == null) updates.sub_model_legacy = t.oldSub;
-        await update(ref(db, `vehicle_master/${t.key}`), updates);
-        done++;
-      } catch (e) { fail++; }
-      if (done % 20 === 0) devLog(`  ${done}/${targets.length}...`);
-    }
-    devLog(`✓ vehicle_master sub_model 정정: ${done}건 / 실패 ${fail}건`);
-    showToast(`${done}건 완료`);
-  } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
-}
-
-/* vehicle_master dropdown 중복 sub_model 해소.
- *  현상: migration 이 동력원 표기를 떼어버려 같은 sub_model 이름의 row 가 여러 개.
- *        예: "더 뉴 스포티지 NQ5" 가 가솔린 row 와 하이브리드 row 양쪽에 동일 적용
- *  해법: 같은 (maker, model, sub_model) 인 row 들 중 sub_model_legacy 에 동력원 keyword
- *       가 있는 row 는 sub_model 에 keyword 를 다시 붙여 disambiguate.
- */
-async function dedupeVehicleMasterSubModel() {
-  try {
-    const { ref, get, update } = await import('firebase/database');
-    const { db } = await import('../firebase/config.js');
-    const snap = await get(ref(db, 'vehicle_master'));
-    const all = snap.val() || {};
-    // (maker|model|sub_model) → row 들 그룹화
-    const groups = new Map();
-    for (const [k, v] of Object.entries(all)) {
-      if (!v || v.status === 'deleted' || v.archived) continue;
-      const sub = v.sub_model || v.sub;
-      if (!v.maker || !sub) continue;
-      const key = `${v.maker}|${v.model || ''}|${sub}`;
-      if (!groups.has(key)) groups.set(key, []);
-      groups.get(key).push({ k, v });
-    }
-    const targets = [];
-    for (const [gKey, rows] of groups) {
-      if (rows.length < 2) continue;
-      // 그룹 내 row 들에서 동력원 keyword 추출
-      for (const { k, v } of rows) {
-        const legacy = v.sub_model_legacy || '';
-        const kw = extractPowertrainKeyword(legacy);
-        if (!kw) continue;  // 동력원이 legacy 에 없으면 그대로 (= 가솔린 default)
-        const cur = v.sub_model || v.sub;
-        const fixed = appendPowertrain(cur, kw);
-        if (fixed === cur) continue;
-        targets.push({ key: k, oldSub: cur, newSub: fixed, maker: v.maker, model: v.model });
-      }
-    }
-    if (!targets.length) {
-      devLog('vehicle_master dropdown 중복 sub_model 없음');
-      showToast('변경 없음');
-      return;
-    }
-    const preview = targets.slice(0, 10).map(t => `  ${t.maker} ${t.oldSub} → ${t.newSub}`).join('\n');
-    if (!confirm(`vehicle_master dropdown 중복 해소 ${targets.length}건. 동력원 keyword 를 sub_model 에 다시 붙입니다.\n\n샘플:\n${preview}\n\n계속?`)) return;
-    let done = 0, fail = 0;
-    for (const t of targets) {
-      try {
-        await update(ref(db, `vehicle_master/${t.key}`), { sub_model: t.newSub, sub: t.newSub });
-        done++;
-      } catch (e) { fail++; }
-      if (done % 20 === 0) devLog(`  ${done}/${targets.length}...`);
-    }
-    devLog(`✓ vehicle_master 중복 해소: ${done}건 / 실패 ${fail}건`);
-    showToast(`${done}건 완료`);
   } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
 }
 
