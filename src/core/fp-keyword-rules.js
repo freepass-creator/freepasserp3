@@ -17,6 +17,9 @@ export const FP_KEYWORD_RULES = [
   // HDA / 스마트크루즈
   { kw:'내비게이션기반스마트크루즈', ids:['HDA','NAVIGATION'] },
   { kw:'스마트크루즈컨트롤', ids:['HDA'] },
+  { kw:'스마트크루즈', ids:['HDA'] },
+  { kw:'어댑티브크루즈', ids:['HDA'] }, { kw:'adaptivecruise', ids:['HDA'] },
+  { kw:'크루즈컨트롤', ids:['CRUISE'] }, { kw:'cruisecontrol', ids:['CRUISE'] },
   { kw:'고속도로주행보조2', ids:['HDA'] }, { kw:'고속도로주행보조', ids:['HDA'] },
   { kw:'고속도로주행지원', ids:['HDA'] },
 
@@ -212,14 +215,24 @@ export const FP_KEYWORD_RULES = [
   { kw:'주차충돌방지보조전방', ids:['SENSOR_FRONT'] },
   { kw:'무선충전', ids:['WPC'] }, { kw:'스마트폰무선충전', ids:['WPC'] },
 
-  // 카플레이 / 안드로이드 오토 / 미러링 — 신차 표준
+  // 카플레이 / 안드로이드 오토 / 미러링 — 신차 표준 (한글 + 영문 표기 모두)
   { kw:'무선애플카플레이', ids:['MIRRORING_WIRELESS'] },
   { kw:'무선안드로이드오토', ids:['MIRRORING_WIRELESS'] },
-  { kw:'애플카플레이', ids:['MIRRORING'] }, { kw:'apple​carplay', ids:['MIRRORING'] },
+  { kw:'무선apple', ids:['MIRRORING_WIRELESS'] },
+  { kw:'무선carplay', ids:['MIRRORING_WIRELESS'] },
+  { kw:'무선android', ids:['MIRRORING_WIRELESS'] },
+  { kw:'wirelessapple', ids:['MIRRORING_WIRELESS'] },
+  { kw:'wirelesscarplay', ids:['MIRRORING_WIRELESS'] },
+  { kw:'wirelessandroid', ids:['MIRRORING_WIRELESS'] },
+  { kw:'애플카플레이', ids:['MIRRORING'] }, { kw:'applecarplay', ids:['MIRRORING'] },
   { kw:'안드로이드오토', ids:['MIRRORING'] }, { kw:'androidauto', ids:['MIRRORING'] },
+  { kw:'carplay', ids:['MIRRORING'] },
   { kw:'스마트미러링', ids:['MIRRORING'] },
   { kw:'양방향풀미러링', ids:['MIRRORING'] },
   { kw:'스마트폰프로젝션', ids:['MIRRORING'] },
+  { kw:'무선폰프로젝션', ids:['MIRRORING_WIRELESS'] },
+  { kw:'폰프로젝션', ids:['MIRRORING'] },
+  { kw:'디스플레이오디오', ids:['MP3','BLUETOOTH'] },
 
   // 외관
   { kw:'fullled헤드램프', ids:['HEAD_LED'] },

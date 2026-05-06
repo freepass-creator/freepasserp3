@@ -740,7 +740,8 @@
     },
     "스마트 크루즈 컨트롤(정차&amp;재출발)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 23,
       "used_as_basic": 139,
@@ -1044,7 +1045,8 @@
     },
     "무선 Apple CarPlay & Android Auto": {
       "fp_ids": [
-        "MIRRORING"
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
       ],
       "used_in": 22,
       "used_as_basic": 106,
@@ -1432,7 +1434,8 @@
     },
     "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)": {
       "fp_ids": [
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 19,
       "used_as_basic": 71,
@@ -1576,7 +1579,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 17,
       "used_as_basic": 113,
@@ -2953,7 +2957,9 @@
       ]
     },
     "크루즈 컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 9,
       "used_as_basic": 53,
       "used_as_select": 0,
@@ -3409,7 +3415,11 @@
       ]
     },
     "12.3인치 디스플레이 오디오(기아 커넥트, 폰 프로젝션)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MP3",
+        "BLUETOOTH",
+        "MIRRORING"
+      ],
       "used_in": 8,
       "used_as_basic": 22,
       "used_as_select": 0,
@@ -4733,7 +4743,10 @@
       ]
     },
     "8인치 디스플레이 오디오": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MP3",
+        "BLUETOOTH"
+      ],
       "used_in": 5,
       "used_as_basic": 21,
       "used_as_select": 0,
@@ -6864,7 +6877,8 @@
     },
     "스마트 크루즈 컨트롤(운전 스타일 연동)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 3,
       "used_as_basic": 14,
@@ -7823,7 +7837,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(고속도로 內 안전구간/곡선로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 3,
       "used_as_basic": 8,
@@ -8668,7 +8683,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로/진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 2,
       "used_as_basic": 12,
@@ -8725,7 +8741,8 @@
     "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트/e hi-pass)": {
       "fp_ids": [
         "HIPASS",
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 2,
       "used_as_basic": 8,
@@ -9457,7 +9474,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 2,
       "used_as_basic": 12,
@@ -9829,7 +9847,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 안전구간/곡선로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 2,
       "used_as_basic": 5,
@@ -11024,7 +11043,11 @@
       ]
     },
     "8인치 디스플레이 오디오(폰 프로젝션)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MP3",
+        "BLUETOOTH",
+        "MIRRORING"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -11824,7 +11847,8 @@
     },
     "스마트 크루즈 컨트롤(정차&amp;재출발, 운전 스타일 연동 기능 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 8,
@@ -12606,7 +12630,8 @@
     },
     "스마트 크루즈 컨트롤(정차&amp;재출발, 운전스타일 연동 기능 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 4,
@@ -12920,7 +12945,8 @@
     },
     "14.5인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)": {
       "fp_ids": [
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -13354,7 +13380,8 @@
     },
     "스마트 크루즈 컨트롤(정차 및 재출발 기능 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -13619,7 +13646,8 @@
     },
     "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 기아 페이)": {
       "fp_ids": [
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 1,
       "used_as_basic": 0,
@@ -13727,7 +13755,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -14182,7 +14211,8 @@
     },
     "8인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)": {
       "fp_ids": [
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -14525,7 +14555,8 @@
     },
     "스마트 크루즈 컨트롤(정차&재출발)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -14917,7 +14948,9 @@
       ]
     },
     "폰 프로젝션": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MIRRORING"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -15777,7 +15810,9 @@
       ]
     },
     "X-TREK(험로 저속 크루즈 컨트롤)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,
@@ -16082,7 +16117,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 8,
       "used_as_basic": 24,
       "used_as_select": 0,
@@ -16865,6 +16902,7 @@
     "인텔리전트 크루즈 컨트롤(정차 및 재출발), active driver assist(차선 유지 보조/자동 차로 변경 보조/차로 내 편향 주행), 클리어뷰 어라운드 뷰 모니터, 긴급 제동 보조(차량/보행자/자전거 탑승자/오토바이 탑승자/교차로 대향차), 차선이탈경보/차선이탈 방지 보조, 전방 교차 충돌 경보, 후방 교차 충돌 경보/후방 교차 충돌 방지 보조, 전방 차량 대동/후방 차량 대동 이탈 방지 보조, 후방 충돌 경보, 사각지대 경보, 안전 하차 경보, 사각지대 경보, 오토매틱 하이빔": {
       "fp_ids": [
         "RCTA",
+        "CRUISE",
         "LDWS",
         "LKAS",
         "AVMS"
@@ -17962,7 +18000,9 @@
       ]
     },
     "크루즈 컨트롤/스피드 리미터": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -19190,7 +19230,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 7,
       "used_as_basic": 12,
       "used_as_select": 0,
@@ -20088,7 +20130,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 30,
       "used_as_basic": 96,
       "used_as_select": 0,
@@ -20986,7 +21030,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 17,
       "used_as_basic": 40,
       "used_as_select": 0,
@@ -21875,7 +21921,9 @@
       ]
     },
     "크루즈 컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 3,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -22023,7 +22071,10 @@
       ]
     },
     "무선 폰 프로젝션": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MIRRORING_WIRELESS",
+        "MIRRORING"
+      ],
       "used_in": 2,
       "used_as_basic": 3,
       "used_as_select": 0,
@@ -22062,7 +22113,10 @@
       ]
     },
     "어댑티브 크루즈 컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HDA",
+        "CRUISE"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 10,
@@ -22101,7 +22155,8 @@
     },
     "무선 Apple CarPlay & Android Auto": {
       "fp_ids": [
-        "MIRRORING"
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
       ],
       "used_in": 2,
       "used_as_basic": 5,
@@ -25426,7 +25481,9 @@
       ]
     },
     "폰 프로젝션": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MIRRORING"
+      ],
       "used_in": 1,
       "used_as_basic": 4,
       "used_as_select": 0,
@@ -26033,7 +26090,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 50,
       "used_as_basic": 77,
       "used_as_select": 0,
@@ -27544,7 +27603,8 @@
     },
     "무선 Apple CarPlay & Android Auto": {
       "fp_ids": [
-        "MIRRORING"
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
       ],
       "used_in": 7,
       "used_as_basic": 22,
@@ -27739,7 +27799,8 @@
     },
     "스마트 크루즈 컨트롤(Stop & Go 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 6,
       "used_as_basic": 13,
@@ -27767,7 +27828,8 @@
     },
     "스마트 크루즈 컨트롤(운전 스타일 연동)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 6,
       "used_as_basic": 18,
@@ -27782,7 +27844,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 6,
       "used_as_basic": 15,
@@ -28232,7 +28295,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 4,
       "used_as_basic": 8,
@@ -29186,6 +29250,7 @@
     "스마트 크루즈 컨트롤(안전구간, 곡선로, 차로 유지 보조2, 조향 연동 후방 모니터)": {
       "fp_ids": [
         "HDA",
+        "CRUISE",
         "LKAS",
         "CAM_REAR"
       ],
@@ -29508,7 +29573,8 @@
     },
     "운전 스타일 연동 스마트 크루즈 컨트롤": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 3,
       "used_as_basic": 6,
@@ -30591,6 +30657,7 @@
       "fp_ids": [
         "HDA",
         "NAVIGATION",
+        "CRUISE",
         "LKAS",
         "CAM_REAR"
       ],
@@ -30867,7 +30934,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(진출입로, 고속도로 주행 보조 2(차로 변경 제어 기능 포함)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 2,
       "used_as_basic": 6,
@@ -32126,7 +32194,8 @@
     },
     "스마트 크루즈 컨트롤(정차 및 재출발 기능)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -32153,7 +32222,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로, 진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -33673,7 +33743,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(진출입로, 고속도로 및 자동차 전용도로 2차로 변경 보조 제어 기능 포함)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -34158,7 +34229,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 6,
       "used_as_basic": 11,
       "used_as_select": 0,
@@ -35028,7 +35101,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 6,
       "used_as_basic": 22,
       "used_as_select": 0,
@@ -35955,7 +36030,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 12,
       "used_as_basic": 27,
       "used_as_select": 0,
@@ -36853,7 +36930,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 21,
       "used_as_basic": 32,
       "used_as_select": 0,
@@ -37924,7 +38003,8 @@
     },
     "스마트 크루즈 컨트롤(스탑앤고 기능 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 25,
       "used_as_basic": 139,
@@ -38034,7 +38114,8 @@
     },
     "무선 Apple CarPlay & Android Auto": {
       "fp_ids": [
-        "MIRRORING"
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
       ],
       "used_in": 23,
       "used_as_basic": 143,
@@ -39066,7 +39147,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 13,
       "used_as_basic": 65,
@@ -39628,7 +39710,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 10,
       "used_as_basic": 43,
@@ -39697,7 +39780,9 @@
       ]
     },
     "크루즈 컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 9,
       "used_as_basic": 64,
       "used_as_select": 0,
@@ -40004,7 +40089,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(안전구간/곡선로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 8,
       "used_as_basic": 54,
@@ -41029,6 +41115,7 @@
     "12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트)": {
       "fp_ids": [
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -41543,7 +41630,8 @@
     },
     "스마트 크루즈 컨트롤(운전 스타일 연동 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 4,
       "used_as_basic": 8,
@@ -41765,7 +41853,8 @@
     "12.3인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트/e hi-pass, 아케이드 게임(6종))": {
       "fp_ids": [
         "HIPASS",
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 4,
       "used_as_basic": 22,
@@ -42685,6 +42774,7 @@
       "fp_ids": [
         "HIPASS",
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -42792,7 +42882,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(안전구간/곡선로/진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 3,
       "used_as_basic": 17,
@@ -43259,7 +43350,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(진출입로 포함)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 3,
       "used_as_basic": 4,
@@ -43479,7 +43571,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 3,
       "used_as_basic": 20,
       "used_as_select": 0,
@@ -43492,8 +43586,10 @@
     },
     "12.3인치 디스플레이 오디오(블루링크, 폰 프로젝션, 블루투스 핸즈프리)": {
       "fp_ids": [
-        "HANDS_FREE",
-        "BLUETOOTH"
+        "MP3",
+        "BLUETOOTH",
+        "MIRRORING",
+        "HANDS_FREE"
       ],
       "used_in": 3,
       "used_as_basic": 12,
@@ -44828,8 +44924,10 @@
     },
     "12.3인치 디스플레이 오디오(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 6스피커)": {
       "fp_ids": [
-        "HANDS_FREE",
-        "BLUETOOTH"
+        "MP3",
+        "BLUETOOTH",
+        "MIRRORING",
+        "HANDS_FREE"
       ],
       "used_in": 3,
       "used_as_basic": 6,
@@ -44942,9 +45040,11 @@
     },
     "8인치 디스플레이 오디오(6스피커, 라디오, MP3, 블루투스 핸즈프리, 무선 폰 프로젝션 포함)": {
       "fp_ids": [
-        "HANDS_FREE",
+        "MP3",
         "BLUETOOTH",
-        "MP3"
+        "MIRRORING_WIRELESS",
+        "MIRRORING",
+        "HANDS_FREE"
       ],
       "used_in": 2,
       "used_as_basic": 20,
@@ -44985,6 +45085,7 @@
     "10.25인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트, 발레모드)": {
       "fp_ids": [
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -45618,6 +45719,7 @@
     "10.25인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트, 블루투스 핸즈프리)": {
       "fp_ids": [
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -46061,6 +46163,7 @@
       "fp_ids": [
         "HIPASS",
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -47291,7 +47394,8 @@
     },
     "스마트 크루즈 컨트롤(정차 및 재출발 기능 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 2,
       "used_as_basic": 13,
@@ -47522,9 +47626,9 @@
     },
     "8인치 디스플레이 오디오(6스피커, 라디오, MP3, 블루투스 핸즈프리)": {
       "fp_ids": [
-        "HANDS_FREE",
+        "MP3",
         "BLUETOOTH",
-        "MP3"
+        "HANDS_FREE"
       ],
       "used_in": 2,
       "used_as_basic": 12,
@@ -47538,7 +47642,8 @@
     },
     "10.25인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)": {
       "fp_ids": [
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 2,
       "used_as_basic": 6,
@@ -48724,7 +48829,8 @@
     },
     "10.25인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트, 발레모드)": {
       "fp_ids": [
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -48981,6 +49087,7 @@
         "AEB",
         "FCWS",
         "DAW",
+        "CRUISE",
         "LDWS",
         "LKAS",
         "HBA"
@@ -49079,6 +49186,7 @@
         "OTA",
         "HIPASS",
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -49256,7 +49364,8 @@
         "RCTA",
         "HOD",
         "AEB",
-        "FCWS"
+        "FCWS",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -49488,7 +49597,8 @@
     },
     "스마트 크루즈 컨트롤 (스탑앤고 기능 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -49503,7 +49613,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤 (안전구간/곡선로 포함)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 2,
@@ -49649,6 +49760,7 @@
       "fp_ids": [
         "HIPASS",
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -49693,7 +49805,8 @@
     },
     "스마트 크루즈 컨트롤 (운전스타일 연동 포함)": {
       "fp_ids": [
-        "HDA"
+        "HDA",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 1,
@@ -49764,7 +49877,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로,진출입로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 6,
@@ -50934,6 +51048,7 @@
       "fp_ids": [
         "HIPASS",
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -51264,7 +51379,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤(안전 구간, 곡선로)": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 10,
@@ -51743,6 +51859,7 @@
       "fp_ids": [
         "HIPASS",
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -52262,7 +52379,10 @@
       ]
     },
     "8인치 디스플레이 오디오(6스피커": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MP3",
+        "BLUETOOTH"
+      ],
       "used_in": 1,
       "used_as_basic": 8,
       "used_as_select": 0,
@@ -52450,7 +52570,9 @@
       ]
     },
     "폰 프로젝션": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MIRRORING"
+      ],
       "used_in": 1,
       "used_as_basic": 6,
       "used_as_select": 4,
@@ -52573,7 +52695,8 @@
     "내비게이션 기반 스마트 크루즈 컨트롤-안전구간/곡선로": {
       "fp_ids": [
         "HDA",
-        "NAVIGATION"
+        "NAVIGATION",
+        "CRUISE"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -52923,6 +53046,7 @@
         "RCTA",
         "AEB",
         "FCWS",
+        "CRUISE",
         "ROA",
         "SEW"
       ],
@@ -53350,6 +53474,7 @@
         "NAVIGATION",
         "AEB",
         "FCWS",
+        "CRUISE",
         "ROA"
       ],
       "used_in": 1,
@@ -53426,7 +53551,8 @@
     },
     "인포테인먼트: 10.25인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이), 내비게이션 무선 업데이트, Bose 프리미엄 사운드(12스피커, 외장앰프)": {
       "fp_ids": [
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -53587,7 +53713,10 @@
       ]
     },
     "8인치 디스플레이 오디오": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MP3",
+        "BLUETOOTH"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 2,
@@ -53715,9 +53844,10 @@
     },
     "12.3인치 디스플레이 오디오(블루링크, 폰 프로젝션, 6스피커, 라디오, MP3, 블루투스 핸즈프리)": {
       "fp_ids": [
-        "HANDS_FREE",
+        "MP3",
         "BLUETOOTH",
-        "MP3"
+        "MIRRORING",
+        "HANDS_FREE"
       ],
       "used_in": 1,
       "used_as_basic": 16,
@@ -54090,7 +54220,8 @@
     "12.3인치 내비게이션(블루링크, 폰 프로젝션, 인카페이먼트/e hi-pass)": {
       "fp_ids": [
         "HIPASS",
-        "NAVIGATION"
+        "NAVIGATION",
+        "MIRRORING"
       ],
       "used_in": 1,
       "used_as_basic": 8,
@@ -54267,9 +54398,10 @@
     },
     "12.3인치 디스플레이 오디오(폰 프로젝션, 6스피커, 라디오, MP3, 블루투스 핸즈프리)": {
       "fp_ids": [
-        "HANDS_FREE",
+        "MP3",
         "BLUETOOTH",
-        "MP3"
+        "MIRRORING",
+        "HANDS_FREE"
       ],
       "used_in": 1,
       "used_as_basic": 3,
@@ -54562,6 +54694,7 @@
         "SENSOR_REAR",
         "AEB",
         "FCWS",
+        "CRUISE",
         "SEW"
       ],
       "used_in": 1,
@@ -54653,6 +54786,7 @@
       "fp_ids": [
         "WPC",
         "NAVIGATION",
+        "MIRRORING",
         "SMART_KEY"
       ],
       "used_in": 1,
@@ -54689,6 +54823,7 @@
         "SENSOR_REAR",
         "AEB",
         "FCWS",
+        "CRUISE",
         "SEW"
       ],
       "used_in": 1,
@@ -55052,6 +55187,7 @@
     "10.25인치 내비게이션(T맵 AUTO, 폰 프로젝션, 라디오, MP3, USB, 블루투스 핸즈프리, 2스피커)": {
       "fp_ids": [
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH",
         "MP3"
@@ -56252,9 +56388,9 @@
     },
     "8인치 디스플레이 오디오(4스피커, 라디오, MP3, 블루투스 핸즈프리)": {
       "fp_ids": [
-        "HANDS_FREE",
+        "MP3",
         "BLUETOOTH",
-        "MP3"
+        "HANDS_FREE"
       ],
       "used_in": 1,
       "used_as_basic": 4,
@@ -56357,6 +56493,7 @@
     "8인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리)": {
       "fp_ids": [
         "NAVIGATION",
+        "MIRRORING",
         "HANDS_FREE",
         "BLUETOOTH"
       ],
@@ -56577,7 +56714,9 @@
       ]
     },
     "크루즈컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 40,
       "used_as_basic": 119,
       "used_as_select": 0,
@@ -57599,7 +57738,9 @@
       ]
     },
     "크루즈 컨트롤": {
-      "fp_ids": [],
+      "fp_ids": [
+        "CRUISE"
+      ],
       "used_in": 10,
       "used_as_basic": 28,
       "used_as_select": 0,
@@ -58126,7 +58267,10 @@
       ]
     },
     "인텔리전트 어댑티브 크루즈 컨트롤(IACC)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HDA",
+        "CRUISE"
+      ],
       "used_in": 7,
       "used_as_basic": 15,
       "used_as_select": 0,
@@ -60274,7 +60418,8 @@
     },
     "무선 Apple CarPlay & Android Auto": {
       "fp_ids": [
-        "MIRRORING"
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
       ],
       "used_in": 3,
       "used_as_basic": 8,
@@ -62027,6 +62172,8 @@
     },
     "인텔리전트 어댑티브 크루즈 컨트롤(IACC: 정차 및 재출발, 선행차량 추종 제어(차선 대신 앞차를 인식하여 주행 및 제어)), 후측방 경고(BSW), 차선변경 경고(LCW), 후측방 접근 경고(RCTW), 후측방 접근 출동 보조(RCTA), 안전 하차 경고(SEW)": {
       "fp_ids": [
+        "HDA",
+        "CRUISE",
         "SEW",
         "RCTA"
       ],
@@ -63572,7 +63719,9 @@
       ]
     },
     "폰 프로젝션": {
-      "fp_ids": [],
+      "fp_ids": [
+        "MIRRORING"
+      ],
       "used_in": 1,
       "used_as_basic": 0,
       "used_as_select": 2,
