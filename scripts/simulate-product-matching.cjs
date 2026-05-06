@@ -63,6 +63,7 @@ const isPopularSub = (maker, sub) => {
 };
 const missedSamples = [];
 const popMissedSamples = [];
+const yearOutSamples = [];
 const matchedByMaker = {};
 
 for (const e of encar) {
@@ -97,7 +98,14 @@ for (const e of encar) {
   const inR = inRange(year, range);
   if (inR === null) { stats.yearUnknown++; }
   else if (inR) stats.yearInRange++;
-  else stats.yearOutRange++;
+  else {
+    stats.yearOutRange++;
+    yearOutSamples.push({
+      maker, sub: e.sub, year,
+      catalogId, range_start: range.start, range_end: range.end,
+      prod_start: e.production_start, prod_end: e.production_end,
+    });
+  }
 }
 
 const lines = [];
@@ -137,6 +145,28 @@ lines.push(`- 🟢 catalog year_range 안: **${stats.yearInRange}** (${(stats.ye
 lines.push(`- 🟡 범위 밖: **${stats.yearOutRange}** (${(stats.yearOutRange/stats.aliasMatched*100).toFixed(1)}%)`);
 lines.push(`- ⚪ 연식/range 정보 없음: **${stats.yearUnknown}**`);
 lines.push('');
+
+// 범위 밖 케이스 — catalog year_range 부정확 또는 잘못된 alias 매핑
+if (yearOutSamples.length) {
+  lines.push('### 연식 범위 밖 상세 (catalog year_range 검토 필요)');
+  lines.push('');
+  lines.push('| 메이커 | sub_model (매물) | 매물 연식 | catalog | catalog 범위 |');
+  lines.push('|---|---|---:|---|---|');
+  // catalog 별 그룹화 (가장 자주 문제되는 catalog 상위)
+  const byCatalog = new Map();
+  for (const s of yearOutSamples) {
+    if (!byCatalog.has(s.catalogId)) byCatalog.set(s.catalogId, []);
+    byCatalog.get(s.catalogId).push(s);
+  }
+  // catalog 별 상위 20 표시
+  [...byCatalog.entries()].sort((a, b) => b[1].length - a[1].length).slice(0, 20).forEach(([cid, list]) => {
+    list.slice(0, 3).forEach(s => {
+      lines.push(`| ${s.maker} | ${s.sub} | ${s.year} | \`${cid}\` | ${s.range_start || '?'} ~ ${s.range_end || '?'} |`);
+    });
+    if (list.length > 3) lines.push(`| | (+${list.length - 3} 동일 catalog) | | | |`);
+  });
+  lines.push('');
+}
 lines.push('## 메이커별 매칭 매물 수');
 lines.push('');
 lines.push('| 메이커 | 매칭 수 |');
