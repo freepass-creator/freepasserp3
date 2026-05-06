@@ -53,7 +53,7 @@ function matchFp(name) {
 
 // catalog 순회
 const files = fs.readdirSync(CATALOG_DIR).filter(f => f.endsWith('.json') && !f.startsWith('_'));
-const byMaker = {};   // maker → { optName: { fp_ids: Set, used_in: count, codes: Set, categories: Set } }
+const byMaker = {};
 
 for (const f of files) {
   const d = JSON.parse(fs.readFileSync(path.join(CATALOG_DIR, f), 'utf8'));
@@ -61,6 +61,7 @@ for (const f of files) {
   if (!maker) continue;
   if (!byMaker[maker]) byMaker[maker] = {};
   const bag = byMaker[maker];
+  const cid = d.catalog_id || f;
 
   const opts = d.options || {};
   for (const [code, info] of Object.entries(opts)) {
@@ -70,12 +71,30 @@ for (const f of files) {
     if (!bag[name]) bag[name] = {
       fp_ids: new Set(matchFp(name)),
       used_in: new Set(),
+      used_as_basic: 0,
+      used_as_select: 0,
       codes: new Set(),
       categories: new Set(),
     };
-    bag[name].used_in.add(d.catalog_id || f);
+    bag[name].used_in.add(cid);
     bag[name].codes.add(code);
     if (cat) bag[name].categories.add(cat);
+  }
+  // basic / select 분류 — trim 별로 카운트
+  const trims = d.trims || {};
+  for (const trim of Object.values(trims)) {
+    const basicCodes = Array.isArray(trim?.basic) ? trim.basic : [];
+    const selectCodes = Array.isArray(trim?.select) ? trim.select : [];
+    const groupCodes = (Array.isArray(trim?.select_groups) ? trim.select_groups : [])
+      .flatMap(g => [...(Array.isArray(g?.codes) ? g.codes : []), ...(Array.isArray(g?.items) ? g.items : [])]);
+    for (const code of basicCodes) {
+      const name = opts[code]?.name;
+      if (name && bag[name]) bag[name].used_as_basic++;
+    }
+    for (const code of [...selectCodes, ...groupCodes]) {
+      const name = opts[code]?.name;
+      if (name && bag[name]) bag[name].used_as_select++;
+    }
   }
 }
 
@@ -93,6 +112,8 @@ for (const maker of Object.keys(byMaker).sort((a, b) => a.localeCompare(b, 'ko')
     out[maker][name] = {
       fp_ids: fpIds,
       used_in: v.used_in.size,
+      used_as_basic: v.used_as_basic,
+      used_as_select: v.used_as_select,
       codes: [...v.codes].sort(),
       categories: [...v.categories],
     };
