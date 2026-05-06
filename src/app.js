@@ -355,6 +355,9 @@ window.refreshPageActions = function(pageName) {
         { label: '붙여넣기', icon: 'ph-clipboard-text', disabled: !hasSelection || !_productClipboard,
           title: '복사된 정보를 현재 차량에 적용 (차량번호 제외)',
           onClick: () => pasteToProduct(product) },
+        { label: '초기화', icon: 'ph-arrow-counter-clockwise', disabled: !hasSelection,
+          title: '입력값 모두 비움 (차량번호/공급코드 유지)',
+          onClick: () => resetProduct(product) },
         { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
           onClick: () => deleteProduct(product) },
       ],
@@ -689,6 +692,20 @@ async function createNewProduct() {
     showToast('차량 등록은 공급사·관리자 전용', 'error');
     return;
   }
+  // 이미 입력 중인 빈 draft 있으면 그쪽으로 이동 (중복 신규등록 방지)
+  const pendingDraft = (store.products || []).find(p => isDraftPending('products', p._key));
+  if (pendingDraft) {
+    const item = document.querySelector(`.pt-page[data-page="product"] .ws4-list .room-item[data-id="${pendingDraft._key}"]`);
+    if (item) {
+      document.querySelectorAll('.pt-page[data-page="product"] .room-item').forEach(r => r.classList.remove('active'));
+      item.classList.add('active');
+      item.scrollIntoView({ block: 'nearest' });
+    }
+    const m = await import('./pages/product.js');
+    m.renderProductDetail(pendingDraft);
+    showToast('이미 입력 중인 신규 매물이 있습니다', 'info');
+    return;
+  }
   let providerCode = '';
   let partnerCode = '';
   if (role === 'provider') {
@@ -793,6 +810,95 @@ function copyPolicy(pol) {
   _policyClipboard = snap;
   showToast(`${pol.policy_name || '정책'} 정보 복사됨 — 다른 정책 선택 후 붙여넣기`);
   window.refreshPageActions?.('policy');
+}
+
+/* 정책 신규등록 — 빈 레코드 + 즉시 편집 모드 + draft tracking */
+async function createNewPolicy() {
+  const me = store.currentUser;
+  const role = me?.role;
+  if (!(role === 'admin' || role === 'provider')) {
+    showToast('정책 등록은 관리자·공급사 전용', 'error');
+    return;
+  }
+  // 중복 신규등록 방지 — 이미 입력 중인 빈 draft 있으면 그쪽 활성화
+  const pendingDraft = (store.policies || []).find(p => isDraftPending('policies', p._key));
+  if (pendingDraft) {
+    const item = document.querySelector(`.pt-page[data-page="policy"] .ws4-list .room-item[data-id="${pendingDraft._key}"]`);
+    if (item) {
+      document.querySelectorAll('.pt-page[data-page="policy"] .room-item').forEach(r => r.classList.remove('active'));
+      item.classList.add('active');
+      item.scrollIntoView({ block: 'nearest' });
+    }
+    const m = await import('./pages/policy.js');
+    m.renderPolicyDetail(pendingDraft);
+    showToast('이미 입력 중인 신규 정책이 있습니다', 'info');
+    return;
+  }
+  let providerCode = '';
+  if (role === 'provider') {
+    providerCode = me.company_code || me.partner_code || '';
+    if (!providerCode) { showToast('소속 공급사 정보가 없습니다 — 관리자 문의', 'error'); return; }
+  }
+  const { allocatePolicyCode } = await import('./firebase/collections.js');
+  const code = await allocatePolicyCode();
+  const newRec = {
+    _key: code,
+    policy_code: code,
+    policy_name: '',
+    provider_company_code: providerCode,
+    status: 'active',
+    created_at: Date.now(),
+    created_by: me.uid,
+  };
+  store.policies = [newRec, ...(store.policies || [])];
+  const m = await import('./pages/policy.js');
+  m.renderPolicyList(store.policies);
+  const item = document.querySelector(`.pt-page[data-page="policy"] .ws4-list .room-item[data-id="${code}"]`);
+  if (item) {
+    document.querySelectorAll('.pt-page[data-page="policy"] .room-item').forEach(r => r.classList.remove('active'));
+    item.classList.add('active');
+    item.scrollIntoView({ block: 'nearest' });
+  }
+  m.renderPolicyDetail(newRec);
+  window.refreshPageActions?.();
+  // 정책명 + (admin 인 경우) 공급코드 필수
+  trackDraft('policies', code, role === 'admin' ? ['policy_name', 'provider_company_code'] : 'policy_name');
+  window.toggleEditMode?.(true);
+  // 정책명 input 포커스
+  setTimeout(() => {
+    document.querySelector('.pt-page[data-page="policy"] [data-f="policy_name"]')?.focus();
+  }, 50);
+}
+
+/* 재고관리 매물 초기화 — 입력값 모두 비움. 차량번호/공급코드/시스템 메타는 유지. */
+async function resetProduct(p) {
+  if (!p) return;
+  const ok = await customConfirm({
+    title: '매물 초기화',
+    message: `${p.car_number || p.product_code} 의 입력값을 모두 비웁니다.\n차량번호 / 공급코드 / 상품코드는 유지됩니다.`,
+    okLabel: '초기화', danger: true,
+  });
+  if (!ok) return;
+  try {
+    const reset = {
+      maker: '', model: '', sub_model: '', trim_name: '',
+      cert_car_name: '', vin: '', type_number: '', engine_type: '',
+      year: null, engine_cc: null, seats: null, fuel_type: '',
+      first_registration_date: '', vehicle_class: '', usage: '',
+      ext_color: '', int_color: '', drive_type: '',
+      vehicle_price: null, vehicle_age_expiry_date: '', location: '',
+      options: [], fp_options: [],
+      image_urls: [], registration_image: null, registration_type: null,
+      photo_link: '', partner_memo: '',
+      price: null,
+      updated_at: Date.now(),
+    };
+    await updateRecord(`products/${p._key}`, reset);
+    showToast('매물 초기화 완료', 'success');
+  } catch (e) {
+    console.error('[reset product]', e);
+    showToast('초기화 실패: ' + (e.message || e), 'error');
+  }
 }
 
 async function pastePolicy(pol) {

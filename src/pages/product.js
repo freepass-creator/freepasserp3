@@ -19,6 +19,8 @@ import {
 } from '../core/product-photos.js';
 import { openFullscreen } from '../core/product-detail-render.js';
 import { ocrFile } from '../core/ocr.js';
+import { extractDocument } from '../core/ocr-gemini.js';
+import { getOptionPool, splitOptionInput, findSimilarInPool } from '../core/trim-options.js';
 import { parseVehicleRegistration, deriveMakerFromRegistration } from '../core/ocr-parsers/vehicle-registration.js';
 import { inferCarModel } from '../core/car-model-infer.js';
 import { findCarModel } from '../core/car-models.js';
@@ -219,6 +221,120 @@ async function refreshTrimDatalist(card, p) {
     dl.innerHTML = trims.map(t => `<option value="${esc(t)}">`).join('');
     trimInput.setAttribute('list', 'mtxTrimList');
   } catch {}
+}
+
+/* 트림 매칭 결과로 옵션 chip 풀 갱신 — chip 클릭 토글 + product.options 자동 저장 */
+async function refreshTrimOptionChips(card, p) {
+  const chipsBox = card.querySelector('#trimOptionsChips');
+  const hint     = card.querySelector('#trimOptionsHint');
+  const hidden   = card.querySelector('input[type="hidden"][data-f="options"]');
+  if (!chipsBox || !hidden) return;
+  const live = {
+    maker:     card.querySelector('[data-f="maker"]')?.value || p.maker,
+    model:     card.querySelector('[data-f="model"]')?.value || p.model,
+    sub_model: card.querySelector('[data-f="sub_model"]')?.value || p.sub_model,
+    trim_name: card.querySelector('[data-f="trim_name"]')?.value || p.trim_name,
+    fuel_type: p.fuel_type,
+    year: p.year,
+    first_registration_date: p.first_registration_date,
+  };
+  let pool;
+  try { pool = await getOptionPool(live); } catch (e) { pool = { groups: [], allNames: new Set(), source: 'none' }; }
+
+  // 현재 선택된 옵션들 (product.options 또는 hidden value)
+  const currentText = hidden.value || (Array.isArray(p.options) ? p.options.join(', ') : (p.options || ''));
+  const currentSet = new Set(splitOptionInput(currentText));
+
+  if (!pool.groups.length) {
+    chipsBox.innerHTML = '';
+    if (hint) {
+      const reason = {
+        'none':           '제조사 미입력',
+        'no-trim':        '트림을 먼저 선택하세요',
+        'no-catalog':     '카탈로그에 등록되지 않은 차종',
+        'no-trim-match':  '이 트림의 옵션 데이터 없음',
+      }[pool.source] || '옵션 풀 없음';
+      hint.innerHTML = `<i class="ph ph-info"></i> ${reason} — 아래 직접 입력으로 추가하세요`;
+    }
+  } else {
+    chipsBox.innerHTML = pool.groups.map(g => `
+      <div style="grid-column:1/-1;width:100%;margin-top:4px;">
+        <div class="text-weak" style="font-size:10px;margin-bottom:3px;">${esc(g.name)}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:3px;">
+          ${g.options.map(o => `
+            <span class="chip${currentSet.has(o.name) ? ' active' : ''}" data-opt="${esc(o.name)}" style="cursor:pointer;font-size:11px;padding:1px 6px;line-height:1.4;height:auto;">
+              ${esc(o.name)}
+            </span>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+    if (hint) {
+      hint.innerHTML = `<i class="ph ph-check-circle"></i> 트림 「${esc(pool.trimName)}」 옵션 — 클릭으로 토글`;
+    }
+  }
+
+  // chip 클릭 → 토글 + 자동 저장
+  chipsBox.querySelectorAll('.chip[data-opt]').forEach(chip => {
+    chip.addEventListener('click', async () => {
+      const name = chip.dataset.opt;
+      const cur = new Set(splitOptionInput(hidden.value || ''));
+      if (cur.has(name)) cur.delete(name); else cur.add(name);
+      const next = [...cur];
+      hidden.value = next.join(', ');
+      chip.classList.toggle('active');
+      try {
+        await updateRecord(`products/${p._key}`, { options: next, updated_at: Date.now() }, { silent: true });
+        p.options = next;
+      } catch (e) { showToast('옵션 저장 실패', 'error'); }
+    });
+  });
+}
+
+/* 직접 입력 input 처리 — 콤마/슬래시 split + 풀 유사도 알림 + 자동 저장 */
+function bindOptionsManualInput(card, p) {
+  const input = card.querySelector('#optionsManualInput');
+  const hidden = card.querySelector('input[type="hidden"][data-f="options"]');
+  if (!input || !hidden) return;
+  // Enter 또는 blur 시 저장
+  const commit = async () => {
+    const tokens = splitOptionInput(input.value);
+    if (!tokens.length) return;
+    // 현재 옵션들과 합치기 (중복 제거)
+    const cur = new Set(splitOptionInput(hidden.value || ''));
+    // 풀 유사도 체크
+    try {
+      const pool = await getOptionPool({
+        maker: card.querySelector('[data-f="maker"]')?.value || p.maker,
+        model: card.querySelector('[data-f="model"]')?.value || p.model,
+        sub_model: card.querySelector('[data-f="sub_model"]')?.value || p.sub_model,
+        trim_name: card.querySelector('[data-f="trim_name"]')?.value || p.trim_name,
+        fuel_type: p.fuel_type, year: p.year, first_registration_date: p.first_registration_date,
+      });
+      const sims = findSimilarInPool(tokens, pool.allNames);
+      if (sims.length) {
+        const msg = sims.map(s => `'${s.token}' ↔ '${s.match}' (${s.similarity})`).join(', ');
+        showToast(`비슷한 풀 옵션 있음: ${msg}`, 'warn');
+      }
+    } catch {}
+    for (const t of tokens) cur.add(t);
+    const next = [...cur];
+    hidden.value = next.join(', ');
+    input.value = '';
+    try {
+      await updateRecord(`products/${p._key}`, { options: next, updated_at: Date.now() }, { silent: true });
+      p.options = next;
+      // chip 영역 다시 그려서 새로 추가된 옵션 active 표시
+      refreshTrimOptionChips(card, p);
+      showToast(`옵션 추가: ${tokens.join(', ')}`, 'success');
+    } catch (e) { showToast('옵션 저장 실패', 'error'); }
+  };
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); commit(); }
+  });
+  input.addEventListener('blur', () => {
+    if (input.value.trim()) commit();
+  });
 }
 
 /* 차종 매트릭스 매칭 결과를 banner 로 표시 — 카탈로그/트림/표준옵션 + 정정 액션 */
@@ -528,7 +644,13 @@ export function renderProductDetail(p) {
       `)}
       ${sect('제조사스펙', 'car-simple', `
         ${renderCarPicker(p, dis)}
-        ${ffi('옵션',      'options',       optsValue, dis)}
+        <div class="ff" style="grid-column:1/-1;" id="trimOptionsArea">
+          <label>선택옵션</label>
+          <div id="trimOptionsChips" class="trim-options-chips" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:4px;"></div>
+          <div id="trimOptionsHint" class="text-weak" style="font-size:11px;margin-top:4px;">트림 선택 시 옵션 칩이 자동 채워집니다.</div>
+          <input type="text" class="input" id="optionsManualInput" placeholder="직접 입력 — 콤마(,) 또는 슬래시(/) 로 구분" style="margin-top:6px;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>
+          <input type="hidden" data-f="options" value="${esc(optsValue)}">
+        </div>
         <div class="ff" id="mtxBanner" style="display:none;border-left:3px solid var(--alert-blue-text);padding:8px 12px;background:var(--alert-blue-bg);font-size:11px;line-height:1.5;border-radius:4px;margin:4px 0;"></div>
         ${ffi('외장색',    'ext_color',     p.ext_color, dis)}
         ${ffi('내장색',    'int_color',     p.int_color, dis)}
@@ -562,12 +684,15 @@ export function renderProductDetail(p) {
     // 차종 매트릭스 매칭 미리보기 — 비동기로 banner 채우기 + 필드 변경 시 자동 갱신
     refreshMatrixBanner(assetCard, p);
     refreshTrimDatalist(assetCard, p);  // 트림 자동완성 옵션 채우기
+    refreshTrimOptionChips(assetCard, p);   // 트림 옵션 chip 영역
+    if (canEdit) bindOptionsManualInput(assetCard, p);
     let _mtxDebounce;
     const triggerRefresh = () => {
       clearTimeout(_mtxDebounce);
       _mtxDebounce = setTimeout(() => {
         refreshMatrixBanner(assetCard, p);
         refreshTrimDatalist(assetCard, p);
+        refreshTrimOptionChips(assetCard, p);   // 트림 변경 시 chip 풀 갱신
       }, 250);
     };
     ['maker','model','sub_model','trim_name','options'].forEach(f => {
@@ -905,21 +1030,55 @@ function applyOcrFieldsToForm(p, fields) {
 }
 
 /* 등록증 OCR + 제조사스펙 자동 채움 + 공급코드 매칭.
- *  onProgress: dropzone 진행 텍스트 갱신용 콜백 ({ stage, message }) */
+ *  Gemini schema-based extraction (jpkerp-v4 패턴 포팅).
+ *  onProgress: dropzone 진행 텍스트 갱신용 콜백. */
 async function tryOCRRegistration(file, onProgress) {
   const progress = (msg) => onProgress?.(msg);
   try {
-    progress('OCR 분석 중...');
-    const { text } = await ocrFile(file, {
-      onProgress: ({ stage, done, total }) => progress(`${stage} ${done}/${total}`),
-    });
-    if (!text || text.length < 20) return null;
-    const parsed = parseVehicleRegistration(text);
-    for (const k of Object.keys(parsed)) if (!parsed[k]) delete parsed[k];
+    const r = await extractDocument(file, 'vehicle_reg', { onProgress: progress });
+    if (!r.ok) {
+      showToast(`OCR 실패: ${r.error}`, 'error');
+      return null;
+    }
+    // Gemini 결과 → freepasserp3 product 필드명으로 매핑
+    const e = r.extracted || {};
+    const parsed = {};
+    if (e.car_number) parsed.car_number = e.car_number;
+    if (e.car_name) parsed.cert_car_name = e.car_name;
+    if (e.type_number) parsed.type_number = e.type_number;
+    if (e.car_year_month) parsed.year = String(e.car_year_month).slice(0, 4);
+    if (e.vin) parsed.vin = e.vin;
+    if (e.engine_type) parsed.engine_type = e.engine_type;
+    if (e.usage_type) parsed.usage = e.usage_type;
+    if (e.engine_cc) parsed.engine_cc = String(e.engine_cc);
+    if (e.seats) parsed.seats = Number(e.seats);
+    if (e.fuel_type) parsed.fuel_type = e.fuel_type;
+    if (e.first_registration_date) {
+      parsed.first_registration_date = String(e.first_registration_date).replace(/-/g, '.');
+      if (!parsed.year) parsed.year = String(e.first_registration_date).slice(0, 4);
+    }
+    if (e.owner_name) parsed.owner_name = e.owner_name;
+    if (e.owner_biz_no) parsed.owner_biz_no = e.owner_biz_no;
+    // category_hint → vehicle_class 정규화 (대형 승용 → 대형, 중형 승합 → 승합)
+    if (e.category_hint) {
+      const v = String(e.category_hint);
+      if (/승합/.test(v)) parsed.vehicle_class = '승합';
+      else if (/화물/.test(v)) parsed.vehicle_class = '화물';
+      else {
+        const sz = v.match(/(경형|소형|중형|대형)/);
+        if (sz) parsed.vehicle_class = sz[1] === '경형' ? '경차' : sz[1];
+      }
+    }
 
     // 1) maker 추론 + catalog 매칭 (제조사스펙 자동 채움)
     progress('차종 매칭 중...');
     const maker = deriveMakerFromRegistration(parsed);
+    if (maker) parsed.maker = maker;
+    // cert_car_name → 모델 후보 (catalog 매칭 실패해도 일단 model 에 차명 넣음)
+    if (parsed.cert_car_name && !parsed.model) {
+      // 차명 첫 단어가 보통 모델명 ("그랜저 하이브리드" → "그랜저")
+      parsed.model = parsed.cert_car_name.split(/\s+/)[0] || parsed.cert_car_name;
+    }
     if (maker) {
       try {
         const { findCatalog, loadCatalog } = await import('../core/vehicle-matrix.js');
@@ -932,22 +1091,23 @@ async function tryOCRRegistration(file, onProgress) {
         if (match?.catalogId) {
           const cat = await loadCatalog(match.catalogId);
           if (cat) {
-            parsed.maker = maker;
-            parsed.model = cat.model || '';
-            parsed.sub_model = cat.title || cat.sub_model || '';
+            // catalog json: { model_root, title, maker, ... } — model_root 가 모델명, title 이 세부모델
+            if (cat.model_root) parsed.model = cat.model_root;
+            else if (cat.model) parsed.model = cat.model;
+            // 세부모델 — title 에서 maker prefix 제거 ("현대 그랜저 IG 하이브리드" → "그랜저 IG 하이브리드")
+            const title = cat.title || cat.sub_model || '';
+            parsed.sub_model = title.replace(new RegExp(`^${maker}\\s+`), '').trim() || title;
           }
-        } else {
-          parsed.maker = maker;
         }
       } catch (e) { console.warn('[catalog match]', e); }
     }
 
-    // 2) car_models (vehicle_master) fallback
-    if (!parsed.model) {
+    // 2) car_models (vehicle_master) fallback — catalog 매칭 실패 시
+    if (!parsed.sub_model) {
       const inferred = inferCarModel(parsed.cert_car_name, parsed.year, parsed.first_registration_date, store.carModels || []);
       if (inferred) {
         parsed.maker = parsed.maker || inferred.maker;
-        parsed.model = inferred.model;
+        parsed.model = parsed.model || inferred.model;
         parsed.sub_model = inferred.sub_model;
         if (inferred.vehicle_class) parsed.vehicle_class = inferred.vehicle_class;
       }
@@ -1006,8 +1166,11 @@ async function uploadRegistration(p, file) {
   }
   const zone = document.querySelector('.pt-page[data-page="product"] #pdRegDropzone');
   const textEl = zone?.querySelector('.pd-dropzone-text');
+  const iconEl = zone?.querySelector(':scope > i');
   const origText = textEl?.textContent || '';
+  const origIconClass = iconEl?.className || '';
   zone?.classList.add('is-uploading');
+  if (iconEl) iconEl.className = 'ph ph-circle-notch';   // 회전 가능한 아이콘
 
   // 1) OCR 먼저 — dropzone 진행 표시 + 폼 직접 채움 + flash
   try {
@@ -1030,6 +1193,7 @@ async function uploadRegistration(p, file) {
   } finally {
     zone?.classList.remove('is-uploading');
     if (textEl) textEl.textContent = origText;
+    if (iconEl) iconEl.className = origIconClass;
   }
   const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
   // 2) Storage 업로드 (등록증 원본 + PDF인 경우 변환된 이미지)

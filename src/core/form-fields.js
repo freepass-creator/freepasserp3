@@ -370,5 +370,24 @@ window.addEventListener('hashchange', () => {
   if (document.body.classList.contains('is-edit-mode')) applyEditMode(false);
 });
 
+/* 편집 모드 유지 중 폼 재렌더 시 새 input 의 readonly 자동 해제.
+ * watchCollection 콜백 등으로 .ws4-body innerHTML 가 갈리면 새 input 에 readonly 가 다시 붙음.
+ * 그 시점에 body.is-edit-mode 가 살아있으면 즉시 readonly 제거해서 커서가 그대로 동작. */
+const _editLockObserver = new MutationObserver((mutations) => {
+  if (!document.body.classList.contains('is-edit-mode')) return;
+  for (const mu of mutations) {
+    for (const node of mu.addedNodes) {
+      if (node.nodeType !== 1) continue;
+      const inputs = node.matches?.('[data-edit-lock="1"]:not([data-permanent-lock])')
+        ? [node]
+        : [...(node.querySelectorAll?.('[data-edit-lock="1"]:not([data-permanent-lock])') || [])];
+      for (const el of inputs) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.removeAttribute('readonly');
+      }
+    }
+  }
+});
+_editLockObserver.observe(document.body, { childList: true, subtree: true });
+
 /* 플로팅 "수정중/저장됨" 태그는 제거 — bindAutoSave 가 input 옆 .form-state 에 인라인 표시.
    (이전: position:fixed 로 body 에 띄우다가 input 위치 계산 오류 시 엉뚱한 좌표에 튀어나오는 버그) */

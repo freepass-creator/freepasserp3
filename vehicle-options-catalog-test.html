@@ -599,6 +599,19 @@ const FP_KEYWORD_RULES = [
   { kw:'컨비니언스패키지', ids:['SMART_KEY','BUTTON_START','MIRROR_FOLD','RAIN_SENSOR'] },
   { kw:'컴포트패키지', ids:['HEAT_SEAT_FRONT','HEAT_STR'] },
 
+  // 제네시스 / 현대 / 기아 — wikicar OCR 가 패키지 안 옵션 분해 못 한 케이스 보강
+  { kw:'파퓰러패키지', ids:['SMART_KEY','BUTTON_START','REMOTE_LOCK','HEAT_SEAT_FRONT','HEAT_STR','VENT_SEAT_DR','VENT_SEAT_PS'] },
+  { kw:'드라이빙어시스턴스패키지i', ids:['HDA','LKAS','LDWS','FCWS','DAW','RCTA','HBA','SEW'] },
+  { kw:'드라이빙어시스턴스패키지ii', ids:['HDA','LKAS','LDWS','FCWS','DAW','RCTA','HBA','SEW','AVMS','BVM'] },
+  { kw:'드라이빙어시스턴스패키지', ids:['HDA','LKAS','LDWS','FCWS','DAW','RCTA','HBA'] },
+  { kw:'2열컴포트패키지', ids:['HEAT_SEAT_REAR','POWER_SEAT_PS'] },
+  { kw:'빌트인캠패키지', ids:['BUILTIN_CAM'] },
+  { kw:'뱅앤올룹슨사운드패키지', ids:['BLUETOOTH','USB'] },
+  { kw:'헤드업디스플레이', ids:['HUD'] },
+  { kw:'지능형헤드램프', ids:['HEAD_LED'] },
+  { kw:'파노라마선루프', ids:['SUNROOF_PANO'] },
+  { kw:'서라운드뷰모니터', ids:['AVMS'] },
+
   // 신규 편의/내장/미디어 ID 룰
   { kw:'레인센서', ids:['RAIN_SENSOR'] }, { kw:'레인감지', ids:['RAIN_SENSOR'] },
   { kw:'워크어웨이락', ids:['WALK_AWAY_LOCK'] }, { kw:'워크어웨이', ids:['WALK_AWAY_LOCK'] },
@@ -744,7 +757,7 @@ const FP_KEYWORD_RULES = [
   { kw:'8에어백시스템운전석동승석어드밴스드에어백1열사이드2열사이드및커튼에어백전복감지센서포함', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE','AIRBAG_KNEE'] },
   { kw:'블랙잉크전용내장인테리어20인치블랙잉크전용알로이휠피렐리타이어프리뷰전자제어서스펜션ii', ids:['ECS','ALUMINUM_WHEEL'] },
   { kw:'10에어백운전석동승석어드밴스드운전석무릎앞좌석센터사이드전복감지커튼앞좌석뒷좌석사이드', ids:['AIRBAG_DR'] },
-  { kw:'시트:운전석8way전동시트운전석2way럼버서포트동승석4way전동시트뒷좌석열선시트', ids:['POWER_SEAT_DR','HEAT_SEAT_REAR','HEAT_SEAT_FRONT'] },
+  { kw:'시트:운전석8way전동시트운전석2way럼버서포트동승석4way전동시트뒷좌석열선시트', ids:['POWER_SEAT_DR','HEAT_SEAT_REAR','HEAT_SEAT_FRONT','POWER_SEAT_PS'] },
   { kw:'듀얼풀오토에어컨항균처리고성능콤비필터오토디포그미세먼지센서공기청정모드애프터블로우포함', ids:['AFTER_BLOW','AIR_PURIFY','AUTO_AC'] },
   { kw:'뒷좌석열선시트뒷좌석암레스트스키쓰루포함뒷좌석수동식도어커튼뒷면전동식커튼후석승객알림', ids:['HEAT_SEAT_REAR','CURTAIN_M','ROA','CURTAIN_E','HEAT_SEAT_FRONT'] },
   { kw:'1025인치내비게이션t맵auto폰프로젝션라디오mp3usb블루투스핸즈프리2스피커', ids:['NAVIGATION','MIRRORING','HANDS_FREE','BLUETOOTH','MP3'] },

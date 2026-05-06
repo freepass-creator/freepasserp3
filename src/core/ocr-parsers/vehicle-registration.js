@@ -67,12 +67,25 @@ export function parseVehicleRegistration(text) {
     if (carNo) out.car_number = carNo;
   }
 
+  // ③ 용도 → usage (자가용/영업용/관용)
+  const c3 = cells.get(3);
+  if (c3) {
+    const m = c3.match(/(자가용|영업용|관용)/);
+    if (m) out.usage = m[1];
+  }
+
   // ② 차종 → vehicle_class (대형/중형/소형/경형 + 승용/승합/화물/특수)
   const c2 = cells.get(2);
   if (c2) {
     const v = stripLabel(c2, /^차\s*종\s*[:：]?\s*/);
-    const cat = v.match(/((?:대형|중형|소형|경형)\s*(?:승용|승합|화물|특수))/);
-    if (cat) out.vehicle_class = cat[1].replace(/\s+/g, '');
+    // 등록증 표기 ("대형 승용", "중형 승합" 등) → freepasserp3 PRODUCT_OPTS.vehicle_class 와 매칭
+    //   '경차/소형/준중형/중형/준대형/대형/SUV/RV/승합/화물/수입' 옵션에 맞게 정규화.
+    if (/승합/.test(v))      out.vehicle_class = '승합';
+    else if (/화물/.test(v)) out.vehicle_class = '화물';
+    else {
+      const sz = v.match(/(경형|소형|중형|대형)/);
+      if (sz) out.vehicle_class = sz[1] === '경형' ? '경차' : sz[1];
+    }
   }
 
   // ④ 차명 → cert_car_name (등록증상 원본 보존, 사용자가 입력한 model 과 별도)
@@ -187,6 +200,81 @@ export function parseVehicleRegistration(text) {
   }
 
   return out;
+}
+
+/**
+ * VIN 의 WMI (앞 3글자) + 차명 한글 → 제조사 추론
+ *
+ * 우선순위:
+ *  1. WMI 표 매칭 (가장 정확 — 차대번호는 OCR 오인식 적음)
+ *  2. 차명 prefix 한글 매칭 ("BMW M5" 같이 첫 단어 = maker 영문/한글)
+ */
+const WMI_MAKER = {
+  // 현대
+  KMH: '현대', KMF: '현대', KMJ: '현대', KMU: '현대', KMC: '현대',
+  // 기아
+  KNA: '기아', KNC: '기아', KND: '기아', KNH: '기아', KNF: '기아', KNB: '기아', KNM: '기아',
+  // KGM (구 쌍용)
+  KPA: 'KGM', KPB: 'KGM', KPT: 'KGM',
+  // 쉐보레 (한국 GM)
+  KLA: '쉐보레', KL1: '쉐보레', KL3: '쉐보레', KL5: '쉐보레',
+  // 르노코리아
+  KMP: '르노코리아', KPM: '르노코리아', VF1: '르노',
+  // BMW
+  WBA: 'BMW', WBS: 'BMW', WBY: 'BMW', '4US': 'BMW',
+  // 메르세데스 벤츠
+  WDB: '벤츠', WDD: '벤츠', WDF: '벤츠', WDC: '벤츠', '4JG': '벤츠',
+  // 아우디
+  WAU: '아우디', WA1: '아우디',
+  // 폭스바겐
+  WVW: '폭스바겐', WV1: '폭스바겐', WV2: '폭스바겐',
+  // 볼보
+  YV1: '볼보', YV4: '볼보',
+  // Tesla
+  '5YJ': '테슬라', '7SA': '테슬라',
+  // 포르쉐
+  WP0: '포르쉐', WP1: '포르쉐',
+  // 재규어 / 랜드로버
+  SAJ: '재규어', SAL: '랜드로버', SAD: '재규어',
+  // 미니
+  WMW: '미니',
+  // 일본
+  JHM: '혼다', JTM: '렉서스', JTH: '렉서스', JTD: '도요타', JT1: '도요타', JN1: '닛산',
+};
+
+const NAME_MAKER_HINTS = [
+  ['현대', /(현대|hyundai|아이오닉|코나|투싼|싼타페|쏘나타|아반떼|그랜저|팰리세이드|스타리아|베뉴|넥쏘|캐스퍼)/i],
+  ['기아', /(기아|kia|카니발|쏘렌토|스포티지|셀토스|레이|모닝|니로|ev[0-9]|\bk[3578]\b|모하비|봉고|타스만|스팅어)/i],
+  ['제네시스', /(제네시스|genesis|\bg[789]0\b|\bgv[678]0\b)/i],
+  ['KGM',  /(쌍용|kgm|티볼리|코란도|렉스턴|토레스|무쏘|액티언)/i],
+  ['BMW',  /\bbmw\b|미니쿠퍼/i],
+  ['벤츠', /(벤츠|mercedes|amg)/i],
+  ['아우디', /(아우디|audi)/i],
+  ['폭스바겐', /(폭스바겐|volkswagen|\bvw\b)/i],
+  ['볼보', /(볼보|volvo)/i],
+  ['테슬라', /(테슬라|tesla|모델\s*[3SXY])/i],
+  ['포르쉐', /(포르쉐|porsche)/i],
+  ['렉서스', /(렉서스|lexus)/i],
+  ['도요타', /(도요타|toyota)/i],
+  ['혼다', /(혼다|honda)/i],
+  ['미니', /\bmini\b/i],
+  ['쉐보레', /(쉐보레|chevrolet|크루즈|말리부|스파크|트레일블레이저|볼트)/i],
+  ['르노코리아', /(르노|renault|sm[3-7]|qm[3-6]|아르카나)/i],
+];
+
+export function deriveMakerFromRegistration(parsed) {
+  if (!parsed) return null;
+  // 1. WMI
+  if (parsed.vin && parsed.vin.length === 17) {
+    const wmi = parsed.vin.slice(0, 3).toUpperCase();
+    if (WMI_MAKER[wmi]) return WMI_MAKER[wmi];
+  }
+  // 2. 차명 한글 키워드
+  const name = parsed.cert_car_name || '';
+  for (const [maker, re] of NAME_MAKER_HINTS) {
+    if (re.test(name)) return maker;
+  }
+  return null;
 }
 
 /** 파싱 결과가 너무 부실한지 — 재시도 / 사용자 알림 판단용 */

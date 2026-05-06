@@ -3881,7 +3881,9 @@
       ]
     },
     "지능형 헤드램프(IFS)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 6,
       "used_as_basic": 18,
       "used_as_select": 0,
@@ -13287,7 +13289,9 @@
       ]
     },
     "지능형 헤드램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 1,
       "used_as_basic": 2,
       "used_as_select": 0,
@@ -26948,7 +26952,9 @@
       ]
     },
     "지능형 헤드램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 12,
       "used_as_basic": 20,
       "used_as_select": 15,
@@ -27346,7 +27352,16 @@
       ]
     },
     "드라이빙 어시스턴스 패키지 I": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HDA",
+        "LKAS",
+        "LDWS",
+        "FCWS",
+        "DAW",
+        "RCTA",
+        "HBA",
+        "SEW"
+      ],
       "used_in": 9,
       "used_as_basic": 0,
       "used_as_select": 48,
@@ -27486,7 +27501,18 @@
       ]
     },
     "드라이빙 어시스턴스 패키지 II": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HDA",
+        "LKAS",
+        "LDWS",
+        "FCWS",
+        "DAW",
+        "RCTA",
+        "HBA",
+        "SEW",
+        "AVMS",
+        "BVM"
+      ],
       "used_in": 8,
       "used_as_basic": 0,
       "used_as_select": 33,
@@ -27779,7 +27805,10 @@
       ]
     },
     "뱅앤올룹슨 사운드 패키지": {
-      "fp_ids": [],
+      "fp_ids": [
+        "BLUETOOTH",
+        "USB"
+      ],
       "used_in": 7,
       "used_as_basic": 0,
       "used_as_select": 26,
@@ -27939,7 +27968,15 @@
       ]
     },
     "파퓰러 패키지": {
-      "fp_ids": [],
+      "fp_ids": [
+        "SMART_KEY",
+        "BUTTON_START",
+        "REMOTE_LOCK",
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR",
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ],
       "used_in": 6,
       "used_as_basic": 0,
       "used_as_select": 26,
@@ -28171,6 +28208,8 @@
     },
     "2열 컴포트 패키지": {
       "fp_ids": [
+        "HEAT_SEAT_REAR",
+        "POWER_SEAT_PS",
         "HEAT_SEAT_FRONT",
         "HEAT_STR"
       ],
@@ -30490,7 +30529,15 @@
       ]
     },
     "드라이빙 어시스턴스 패키지": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HDA",
+        "LKAS",
+        "LDWS",
+        "FCWS",
+        "DAW",
+        "RCTA",
+        "HBA"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 4,
@@ -31600,7 +31647,15 @@
       ]
     },
     "파퓰러 패키지 I": {
-      "fp_ids": [],
+      "fp_ids": [
+        "SMART_KEY",
+        "BUTTON_START",
+        "REMOTE_LOCK",
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR",
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 16,
@@ -31837,7 +31892,15 @@
       ]
     },
     "파퓰러 패키지 II": {
-      "fp_ids": [],
+      "fp_ids": [
+        "SMART_KEY",
+        "BUTTON_START",
+        "REMOTE_LOCK",
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR",
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ],
       "used_in": 2,
       "used_as_basic": 0,
       "used_as_select": 8,
@@ -40739,7 +40802,9 @@
       ]
     },
     "지능형 헤드램프(IFS)": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 6,
       "used_as_basic": 13,
       "used_as_select": 0,
@@ -43081,6 +43146,8 @@
     },
     "2열 컴포트 패키지": {
       "fp_ids": [
+        "HEAT_SEAT_REAR",
+        "POWER_SEAT_PS",
         "HEAT_SEAT_FRONT",
         "HEAT_STR"
       ],
@@ -50860,7 +50927,9 @@
       ]
     },
     "지능형 헤드램프": {
-      "fp_ids": [],
+      "fp_ids": [
+        "HEAD_LED"
+      ],
       "used_in": 1,
       "used_as_basic": 1,
       "used_as_select": 0,

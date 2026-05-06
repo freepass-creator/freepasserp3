@@ -1206,8 +1206,9 @@
   }
   /* 보기 모드에서 모든 업로드 UI 숨김 — 차량등록증/사진/면허증/첨부서류 등 (.pd-dropzone 일괄)
      클릭/드래그 자체가 안 보이게 해서 "보기인데 업로드 가능" 인 혼란 회피.
-     편집 모드 진입하면 자동 노출. */
-  body:not(.is-edit-mode) .pt-page.active .pd-dropzone {
+     편집 모드 진입하면 자동 노출.
+     예외: #pdRegDropzone (등록증 OCR) — 보기 모드에서도 항상 표시 (올리는 순간 자동 편집모드 진입) */
+  body:not(.is-edit-mode) .pt-page.active .pd-dropzone:not(#pdRegDropzone) {
     display: none !important;
   }
   /* 편집 모드 진입 시 액션바 상단 강조 (저장 버튼 색상은 .is-primary 가 처리) */
@@ -1513,10 +1514,20 @@
     color: var(--text-main);
   }
   .pd-dropzone.is-uploading {
-    border-color: var(--accent-orange);
-    background: var(--accent-orange-bg);
-    color: var(--accent-orange);
+    border-color: var(--alert-orange-text);
+    background: var(--alert-orange-bg);
+    color: var(--alert-orange-text);
     cursor: progress; pointer-events: none;
+  }
+  .pd-dropzone.is-uploading > i {
+    animation: pd-dropzone-spin 1s linear infinite;
+  }
+  @keyframes pd-dropzone-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .pd-dropzone.is-uploading .pd-dropzone-text {
+    font-weight: var(--fw-medium);
   }
   .pd-dropzone > i { font-size: 22px; display: block; margin-bottom: 4px; }
   .pd-dropzone-text { font-size: 12px; margin-bottom: 2px; }
