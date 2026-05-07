@@ -3,9 +3,9 @@
   "model_root": "그랜저",
   "title": "현대 그랜저 IG",
   "maker": "현대",
-  "source": "stub",
+  "source": "wikicar_ocr",
   "source_urls": [],
-  "fetched_at": "2026-05-04",
+  "fetched_at": "2026-05-06",
   "note": "구형 한국차 stub — 트림명만. 옵션/가격 추후 OCR.",
   "options": {
     "PKG_ADAS": {
@@ -51,11 +51,8 @@
   },
   "categories": {},
   "trims": {
-    "프리미엄": {
+    "모던 가솔린 2.4/3.0": {
       "slug": "프리미엄",
-      "price": {
-        "base": 32350000
-      },
       "basic": [],
       "select": [],
       "select_groups": [
@@ -73,124 +70,13 @@
           "price": 700000,
           "name": "컴포트 패키지"
         }
-      ]
-    },
-    "익스클루시브": {
-      "slug": "익스클루시브",
-      "price": {
-        "base": 36080000
-      },
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1000000,
-          "name": "현대 스마트센스 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        }
-      ]
-    },
-    "캘리그래피": {
-      "slug": "캘리그래피",
-      "price": {
-        "base": 42700000
-      },
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1000000,
-          "name": "현대 스마트센스 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ]
-    },
-    "모던": {
-      "slug": "프리미엄",
+      ],
       "price": {
         "base": 31120000
-      },
+      }
+    },
+    "프리미엄 가솔린 2.4/3.0": {
+      "slug": "프리미엄",
       "basic": [],
       "select": [],
       "select_groups": [
@@ -208,7 +94,130 @@
           "price": 700000,
           "name": "컴포트 패키지"
         }
-      ]
+      ],
+      "price": {
+        "base": 32350000
+      }
+    },
+    "익스클루시브 스페셜 가솔린 2.4/3.0": {
+      "slug": "프리미엄",
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ],
+      "price": {
+        "base": 36080000
+      }
+    },
+    "셀러브리티 가솔린 3.3": {
+      "slug": "프리미엄",
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ],
+      "price": {
+        "base": 42700000
+      }
+    },
+    "모던 LPi 3.0": {
+      "slug": "프리미엄",
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ],
+      "price": {
+        "base": 30860000
+      }
+    },
+    "익스클루시브 LPi 3.0": {
+      "slug": "프리미엄",
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ],
+      "price": {
+        "base": 34970000
+      }
+    },
+    "익스클루시브 스페셜 LPi 3.0": {
+      "slug": "프리미엄",
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ],
+      "price": {
+        "base": 37010000
+      }
     }
   },
   "aliases": [

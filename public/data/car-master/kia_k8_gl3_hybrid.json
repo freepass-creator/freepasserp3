@@ -1,7 +1,7 @@
 {
   "catalog_id": "kia_k8_gl3_hybrid",
   "model_root": "K8",
-  "title": "기아 더 뉴 K8 GL3 하이브리드",
+  "title": "기아 더 뉴 K8 하이브리드 GL3",
   "maker": "기아",
   "source": "stub",
   "source_urls": [],
@@ -56,7 +56,7 @@
   },
   "categories": {},
   "trims": {
-    "프리미엄": {
+    "프리미엄 하이브리드 1.6": {
       "slug": "premium",
       "price": {},
       "basic": [
@@ -80,7 +80,7 @@
         }
       ]
     },
-    "익스클루시브": {
+    "익스클루시브 하이브리드 1.6": {
       "slug": "exclusive",
       "price": {},
       "basic": [
@@ -125,7 +125,7 @@
         }
       ]
     },
-    "프레스티지": {
+    "프레스티지 하이브리드 1.6": {
       "slug": "prestige",
       "price": {},
       "basic": [
@@ -170,7 +170,7 @@
         }
       ]
     },
-    "캘리그래피": {
+    "캘리그래피 하이브리드 1.6": {
       "slug": "calligraphy",
       "price": {},
       "basic": [

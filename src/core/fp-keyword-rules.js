@@ -65,6 +65,45 @@ export const FP_KEYWORD_RULES = [
   { kw:'led인테리어램프', ids:['LED_INTERIOR'] }, { kw:'led러기지램프', ids:['LED_INTERIOR'] },
   { kw:'led인테리어무드램프', ids:['LED_INTERIOR'] },
 
+  // 전자식 변속 (다이얼/칼럼)
+  { kw:'전자식변속다이얼', ids:['SHIFT_BY_WIRE'] }, { kw:'전자식변속칼럼', ids:['SHIFT_BY_WIRE'] },
+  { kw:'전자식변속레버', ids:['SHIFT_BY_WIRE'] }, { kw:'sbw', ids:['SHIFT_BY_WIRE'] },
+  { kw:'shift-by-wire', ids:['SHIFT_BY_WIRE'] }, { kw:'shiftbywire', ids:['SHIFT_BY_WIRE'] },
+
+  // 틸트 & 텔레스코픽 스티어링
+  { kw:'틸트&텔레스코픽스티어링', ids:['STEER_TILT'] },
+  { kw:'틸트텔레스코픽스티어링', ids:['STEER_TILT'] },
+  { kw:'수동식틸트텔레스코픽스티어링', ids:['STEER_TILT'] },
+  { kw:'수동식틸트&텔레스코픽스티어링', ids:['STEER_TILT'] },
+  { kw:'전동식틸트텔레스코픽스티어링', ids:['STEER_TILT'] },
+  { kw:'전동틸트&텔레스코픽', ids:['STEER_TILT'] },
+  { kw:'스마트포지션', ids:['STEER_TILT'] },
+  { kw:'tilt&telescopic', ids:['STEER_TILT'] },
+
+  // 지문 인증
+  { kw:'지문인증시스템', ids:['FINGERPRINT'] },
+  { kw:'실내지문인증시스템', ids:['FINGERPRINT'] },
+  { kw:'지문인증', ids:['FINGERPRINT'] }, { kw:'fingerprint', ids:['FINGERPRINT'] },
+
+  // 도어 조명 → 앰비언트
+  { kw:'도어손잡이조명', ids:['AMB_LIGHT'] },
+  { kw:'도어포켓라이팅', ids:['AMB_LIGHT'] },
+  { kw:'도어포켓조명', ids:['AMB_LIGHT'] },
+  { kw:'도어스폿램프', ids:['AMB_LIGHT'] },
+  { kw:'도어스팟램프', ids:['AMB_LIGHT'] },
+  { kw:'led도어스커프', ids:['AMB_LIGHT'] },
+  { kw:'웰컴라이트', ids:['AMB_LIGHT','WELCOME'] },
+
+  // 자동변속기
+  { kw:'8단자동변속기', ids:['TRANS_AT'] }, { kw:'6단자동변속기', ids:['TRANS_AT'] },
+  { kw:'7단자동변속기', ids:['TRANS_AT'] }, { kw:'10단자동변속기', ids:['TRANS_AT'] },
+  { kw:'9단자동변속기', ids:['TRANS_AT'] },
+  { kw:'스마트스트림6at', ids:['TRANS_AT'] }, { kw:'스마트스트림8at', ids:['TRANS_AT'] },
+  { kw:'8단듀얼클러치', ids:['TRANS_AT'] }, { kw:'7단듀얼클러치', ids:['TRANS_AT'] },
+  { kw:'8dct', ids:['TRANS_AT'] }, { kw:'7dct', ids:['TRANS_AT'] },
+  { kw:'무단변속기', ids:['TRANS_AT'] }, { kw:'cvt', ids:['TRANS_AT'] },
+  { kw:'iv-cvt', ids:['TRANS_AT'] }, { kw:'tiptronic', ids:['TRANS_AT'] },
+
   // 통풍시트
   { kw:'운전석동승석통풍시트', ids:['VENT_SEAT_DR','VENT_SEAT_PS'] },
   { kw:'앞좌석통풍시트', ids:['VENT_SEAT_DR','VENT_SEAT_PS'] },

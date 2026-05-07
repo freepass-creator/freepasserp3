@@ -1010,7 +1010,7 @@
     }
   },
   "trims": {
-    "노블레스 디젤 2.2": {
+    "노블레스 디젤 2.2 9인승": {
       "slug": "노블레스 디젤 2.2 9인승",
       "price": {
         "base": 68040000
@@ -1071,17 +1071,72 @@
         "KRKP256172"
       ],
       "select": [],
-      "select_groups": [],
-      "seat_options": {
-        "9": {
-          "price": {
-            "base": 68040000
-          }
-        }
-      },
-      "default_seat": 9
+      "select_groups": []
     },
-    "노블레스 가솔린 3.5": {
+    "노블레스 가솔린 3.5 7인승": {
+      "slug": "노블레스 가솔린 3.5 7인승",
+      "price": {
+        "base": 69390000
+      },
+      "basic": [
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256040",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256047",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256161",
+        "KRKP256064",
+        "KRKP256065",
+        "KRKP256067",
+        "KRKP256077",
+        "KRKP256078",
+        "KRKP256079",
+        "KRKP256080",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256121",
+        "KRKP256104",
+        "KRKP256105",
+        "KRKP256106",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256020",
+        "KRKP256172"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 가솔린 3.5 9인승": {
       "slug": "노블레스 가솔린 3.5 7인승",
       "price": {
         "base": 66090000
@@ -1142,22 +1197,9 @@
         "KRKP256172"
       ],
       "select": [],
-      "select_groups": [],
-      "seat_options": {
-        "7": {
-          "price": {
-            "base": 69390000
-          }
-        },
-        "9": {
-          "price": {
-            "base": 66090000
-          }
-        }
-      },
-      "default_seat": 9
+      "select_groups": []
     },
-    "노블레스 하이브리드": {
+    "노블레스 하이브리드 9인승": {
       "slug": "노블레스 하이브리드 9인승",
       "price": {
         "base": 66990000
@@ -1218,17 +1260,159 @@
         "KRKP256172"
       ],
       "select": [],
-      "select_groups": [],
-      "seat_options": {
-        "9": {
-          "price": {
-            "base": 66990000
-          }
-        }
-      },
-      "default_seat": 9
+      "select_groups": []
     },
-    "시그니처 하이브리드": {
+    "시그니처 하이브리드 7인승": {
+      "slug": "시그니처 하이브리드 7인승",
+      "price": {
+        "base": 73890000
+      },
+      "basic": [
+        "KRKP256010",
+        "KRKP256011",
+        "KRKP256012",
+        "KRKP256013",
+        "KRKP256184",
+        "KRKP256015",
+        "KRKP256016",
+        "KRKP256017",
+        "KRKP256018",
+        "KRKP256183",
+        "KRKP256028",
+        "KRKP256029",
+        "KRKP256030",
+        "KRKP256031",
+        "KRKP256032",
+        "KRKP256033",
+        "KRKP256034",
+        "KRKP256035",
+        "KRKP256036",
+        "KRKP256037",
+        "KRKP256038",
+        "KRKP256039",
+        "KRKP256040",
+        "KRKP256041",
+        "KRKP256042",
+        "KRKP256043",
+        "KRKP256044",
+        "KRKP256045",
+        "KRKP256046",
+        "KRKP256047",
+        "KRKP256048",
+        "KRKP256049",
+        "KRKP256063",
+        "KRKP256050",
+        "KRKP256051",
+        "KRKP256052",
+        "KRKP256053",
+        "KRKP256185",
+        "KRKP256060",
+        "KRKP256188",
+        "KRKP256187",
+        "KRKP256057",
+        "KRKP256058",
+        "KRKP256189",
+        "KRKP256062",
+        "KRKP256163",
+        "KRKP256161",
+        "KRKP256064",
+        "KRKP256065",
+        "KRKP256067",
+        "KRKP256068",
+        "KRKP256071",
+        "KRKP256162",
+        "KRKP256070",
+        "KRKP256072",
+        "KRKP256073",
+        "KRKP256074",
+        "KRKP256075",
+        "KRKP256077",
+        "KRKP256078",
+        "KRKP256079",
+        "KRKP256080",
+        "KRKP256081",
+        "KRKP256082",
+        "KRKP256083",
+        "KRKP256084",
+        "KRKP256085",
+        "KRKP256086",
+        "KRKP256087",
+        "KRKP256088",
+        "KRKP256089",
+        "KRKP256164",
+        "KRKP256169",
+        "KRKP256165",
+        "KRKP256095",
+        "KRKP256096",
+        "KRKP256097",
+        "KRKP256098",
+        "KRKP256099",
+        "KRKP256100",
+        "KRKP256101",
+        "KRKP256102",
+        "KRKP256103",
+        "KRKP256121",
+        "KRKP256104",
+        "KRKP256105",
+        "KRKP256106",
+        "KRKP256107",
+        "KRKP256108",
+        "KRKP256109",
+        "KRKP256110",
+        "KRKP256111",
+        "KRKP256112",
+        "KRKP256113",
+        "KRKP256114",
+        "KRKP256115",
+        "KRKP256116",
+        "KRKP256117",
+        "KRKP256118",
+        "KRKP256182",
+        "KRKP256120",
+        "KRKP256122",
+        "KRKP256123",
+        "KRKP256124",
+        "KRKP256125",
+        "KRKP256126",
+        "KRKP256127",
+        "KRKP256128",
+        "KRKP256129",
+        "KRKP256166",
+        "KRKP256167",
+        "KRKP256148",
+        "KRKP256149",
+        "KRKP256150",
+        "KRKP256151",
+        "KRKP256152",
+        "KRKP256153",
+        "KRKP256154",
+        "KRKP256P01",
+        "KRKP256P03",
+        "KRKP256054",
+        "KRKP256P04",
+        "KRKP256P05",
+        "KRKP256P15",
+        "KRKP256P19",
+        "KRKP256P06",
+        "KRKP256P09",
+        "KRKP256P13",
+        "KRKP256P16",
+        "KRKP256P20",
+        "KRKP256P23",
+        "KRKP256061",
+        "KRKP256P26",
+        "KRKP256P27",
+        "KRKP256P07",
+        "KRKP256P10",
+        "KRKP256020",
+        "KRKP256172",
+        "KRKP256021",
+        "KRKP256022"
+      ],
+      "select": [],
+      "select_groups": []
+    },
+    "시그니처 하이브리드 9인승": {
       "slug": "시그니처 하이브리드 7인승",
       "price": {
         "base": 70640000
@@ -1376,20 +1560,7 @@
         "KRKP256022"
       ],
       "select": [],
-      "select_groups": [],
-      "seat_options": {
-        "7": {
-          "price": {
-            "base": 73890000
-          }
-        },
-        "9": {
-          "price": {
-            "base": 70640000
-          }
-        }
-      },
-      "default_seat": 9
+      "select_groups": []
     }
   },
   "aliases": [

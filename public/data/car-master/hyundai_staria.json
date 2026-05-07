@@ -1,7 +1,7 @@
 {
   "catalog_id": "hyundai_staria",
   "model_root": "스타리아",
-  "title": "현대 더 뉴 스타리아",
+  "title": "현대 더 뉴 스타리아 US4",
   "maker": "현대",
   "source": "hyundai_official",
   "source_urls": [
@@ -974,7 +974,7 @@
         }
       ]
     },
-    "휠체어리프트": {
+    "휠체어리프트 7인승": {
       "slug": "wheelchairlift7",
       "name_en": null,
       "price": {
@@ -1105,17 +1105,9 @@
           "price": 7430000,
           "name": "전동 회전시트"
         }
-      ],
-      "seat_options": {
-        "7": {
-          "price": {
-            "base": 49520000
-          }
-        }
-      },
-      "default_seat": 7
+      ]
     },
-    "모빌리티 9": {
+    "모빌리티 9 9인승": {
       "slug": "mobility_9",
       "price": {
         "base": 36318182,
@@ -1258,18 +1250,9 @@
           "price": 470000,
           "name": "차량 보호 필름(면세)"
         }
-      ],
-      "seat_options": {
-        "9": {
-          "price": {
-            "base": 36318182,
-            "before_tax": 39950000
-          }
-        }
-      },
-      "default_seat": 9
+      ]
     },
-    "모빌리티 7": {
+    "모빌리티 7 7인승": {
       "slug": "mobility_7",
       "price": {
         "base": 36263636,
@@ -1412,16 +1395,7 @@
           "price": 470000,
           "name": "차량 보호 필름(면세)"
         }
-      ],
-      "seat_options": {
-        "7": {
-          "price": {
-            "base": 36263636,
-            "before_tax": 39890000
-          }
-        }
-      },
-      "default_seat": 7
+      ]
     }
   },
   "aliases": [

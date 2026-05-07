@@ -1,7 +1,7 @@
 {
   "catalog_id": "kia_k5_dl3_facelift_hybrid",
   "model_root": "K5",
-  "title": "기아 더 뉴 K5 DL3 하이브리드",
+  "title": "기아 더 뉴 K5 하이브리드 DL3",
   "maker": "기아",
   "source": "stub",
   "source_urls": [],
@@ -56,7 +56,7 @@
   },
   "categories": {},
   "trims": {
-    "트렌디": {
+    "트렌디 하이브리드 2.0": {
       "slug": "trendy",
       "price": {},
       "basic": [
@@ -80,7 +80,7 @@
         }
       ]
     },
-    "프레스티지": {
+    "프레스티지 하이브리드 2.0": {
       "slug": "prestige",
       "price": {},
       "basic": [
@@ -125,7 +125,7 @@
         }
       ]
     },
-    "노블레스": {
+    "노블레스 하이브리드 2.0": {
       "slug": "noblesse",
       "price": {},
       "basic": [
@@ -170,7 +170,7 @@
         }
       ]
     },
-    "시그니처": {
+    "시그니처 하이브리드 2.0": {
       "slug": "signature",
       "price": {},
       "basic": [

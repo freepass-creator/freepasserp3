@@ -1,7 +1,7 @@
 {
   "catalog_id": "hyundai_grandeur_ig_hybrid_pre",
   "model_root": "그랜저",
-  "title": "현대 그랜저 IG 하이브리드",
+  "title": "현대 그랜저 하이브리드 IG",
   "maker": "현대",
   "source": "stub",
   "source_urls": [],
@@ -864,7 +864,7 @@
     ]
   },
   "trims": {
-    "프리미엄": {
+    "프리미엄 하이브리드 2.4": {
       "slug": "프리미엄",
       "price": {
         "base": 35760000,
@@ -964,7 +964,7 @@
       "select": [],
       "select_groups": []
     },
-    "익스클루시브": {
+    "익스클루시브 하이브리드 2.4": {
       "slug": "익스클루시브",
       "price": {
         "base": 37870000,
@@ -1064,7 +1064,7 @@
       "select": [],
       "select_groups": []
     },
-    "익스클루시브 스페셜": {
+    "익스클루시브 스페셜 하이브리드 2.4": {
       "slug": "익스클루시브",
       "price": {
         "base": 39930000,

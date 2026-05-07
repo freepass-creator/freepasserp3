@@ -72,6 +72,10 @@ export const FP_OPT_MASTER = {
     ['VESS','가상 엔진 사운드 (VESS, 보행자 보호)','unc'],
     ['AWD','4WD/AWD (사륜구동)','opt'],
     ['LED_INTERIOR','LED 실내등','unc'],
+    ['SHIFT_BY_WIRE','전자식 변속 (다이얼/칼럼)','unc'],
+    ['STEER_TILT','틸트 & 텔레스코픽 스티어링','unc'],
+    ['TRANS_AT','자동변속기 (6/8/10단·CVT·DCT)','unc'],
+    ['FINGERPRINT','실내 지문 인증 시스템','opt'],
   ]},
   media: { label:'미디어', items: [
     ['MP3','MP3'],['BLUETOOTH','블루투스'],['USB','USB 단자'],

@@ -1,7 +1,7 @@
 {
   "catalog_id": "hyundai_kona_os_facelift_hybrid",
   "model_root": "코나",
-  "title": "현대 더 뉴 코나 OS 하이브리드",
+  "title": "현대 더 뉴 코나 하이브리드 OS",
   "maker": "현대",
   "source": "stub",
   "source_urls": [],
@@ -51,7 +51,7 @@
   },
   "categories": {},
   "trims": {
-    "프리미엄": {
+    "프리미엄 하이브리드 1.6": {
       "slug": "premium",
       "price": {},
       "basic": [],
@@ -73,7 +73,7 @@
         }
       ]
     },
-    "익스클루시브": {
+    "익스클루시브 하이브리드 1.6": {
       "slug": "exclusive",
       "price": {},
       "basic": [],
@@ -116,7 +116,7 @@
         }
       ]
     },
-    "프레스티지": {
+    "프레스티지 하이브리드 1.6": {
       "slug": "prestige",
       "price": {},
       "basic": [],
@@ -159,7 +159,7 @@
         }
       ]
     },
-    "캘리그래피": {
+    "캘리그래피 하이브리드 1.6": {
       "slug": "calligraphy",
       "price": {},
       "basic": [],
