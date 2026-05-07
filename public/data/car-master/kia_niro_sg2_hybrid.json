@@ -1101,23 +1101,131 @@
       "slug": "premium",
       "price": {},
       "basic": [
+        "KRSG300001",
+        "KRSG300002",
+        "KRSG300003",
+        "KRSG300004",
+        "KRSG300005",
+        "KRSG300006",
+        "KRSG300007",
+        "KRSG300008",
+        "KRSG300009",
+        "KRSG300010",
+        "KRSG300011",
+        "KRSG300012",
+        "KRSG300013",
+        "KRSG300014",
+        "KRSG300015",
+        "KRSG300027",
+        "KRSG300028",
+        "KRSG300029",
+        "KRSG300030",
+        "KRSG300031",
+        "KRSG300032",
+        "KRSG300033",
+        "KRSG300034",
+        "KRSG300035",
+        "KRSG300036",
+        "KRSG300037",
+        "KRSG300041",
+        "KRSG300042",
+        "KRSG300043",
+        "KRSG300044",
+        "KRSG300045",
+        "KRSG300046",
+        "KRSG300047",
+        "KRSG300048",
+        "KRSG300049",
+        "KRSG300050",
+        "KRSG300064",
+        "KRSG300065",
+        "KRSG300066",
+        "KRSG300067",
+        "KRSG300068",
+        "KRSG300069",
+        "KRSG300070",
+        "KRSG300084",
+        "KRSG300085",
+        "KRSG300086",
+        "KRSG300087",
+        "KRSG300088",
+        "KRSG300089",
+        "KRSG300103",
+        "KRSG300104",
+        "KRSG300105",
+        "KRSG300106",
+        "KRSG300107",
+        "KRSG300108",
+        "KRSG300109",
+        "KRSG300110",
+        "KRSG300111",
+        "KRSG300112",
+        "KRSG300113",
+        "KRSG300114",
+        "KRSG300115",
+        "KRSG300116",
+        "KRSG300117",
+        "KRSG300118",
+        "KRSG300119",
+        "KRSG300144",
+        "KRSG300145",
+        "KRSG300146",
+        "KRSG300147",
+        "KRSG300148",
+        "KRSG300149",
+        "KRSG300150",
         "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": [
         {
           "codes": [
-            "PKG_CONVENIENCE"
+            "KRSG300063"
           ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
-            "PKG_COMFORT"
+            "KRSG300P01"
           ],
-          "price": 700000,
-          "name": "컴포트 패키지"
+          "price": 650000,
+          "name": "컨비니언스"
+        },
+        {
+          "codes": [
+            "KRSG300P03"
+          ],
+          "price": 490000,
+          "name": "18인치 휠"
+        },
+        {
+          "codes": [
+            "KRSG300P05"
+          ],
+          "price": 420000,
+          "name": "드라이브 와이즈 Ⅰ"
+        },
+        {
+          "codes": [
+            "KRSG300P06"
+          ],
+          "price": 1150000,
+          "name": "12.3인치 클러스터 팩"
+        },
+        {
+          "codes": [
+            "KRSG300P10"
+          ],
+          "price": 450000,
+          "name": "빌트인 캠 2 플러스"
+        },
+        {
+          "codes": [
+            "KRSG300P16"
+          ],
+          "price": 100000,
+          "name": "마이 컴포트 패키지"
         }
       ]
     },
@@ -1125,44 +1233,193 @@
       "slug": "exclusive",
       "price": {},
       "basic": [
+        "KRSG300016",
+        "KRSG300017",
+        "KRSG300051",
+        "KRSG300071",
+        "KRSG300072",
+        "KRSG300073",
+        "KRSG300090",
+        "KRSG300091",
+        "KRSG300092",
+        "KRSG300093",
+        "KRSG300094",
+        "KRSG300095",
+        "KRSG300120",
+        "KRSG300121",
+        "KRSG300122",
+        "KRSG300123",
+        "KRSG300124",
+        "KRSG300125",
+        "KRSG300126",
+        "KRSG300127",
+        "KRSG300001",
+        "KRSG300002",
+        "KRSG300003",
+        "KRSG300004",
+        "KRSG300005",
+        "KRSG300006",
+        "KRSG300007",
+        "KRSG300008",
+        "KRSG300009",
+        "KRSG300010",
+        "KRSG300011",
+        "KRSG300012",
+        "KRSG300013",
+        "KRSG300014",
+        "KRSG300015",
+        "KRSG300027",
+        "KRSG300028",
+        "KRSG300029",
+        "KRSG300030",
+        "KRSG300031",
+        "KRSG300032",
+        "KRSG300033",
+        "KRSG300034",
+        "KRSG300035",
+        "KRSG300036",
+        "KRSG300037",
+        "KRSG300041",
+        "KRSG300042",
+        "KRSG300043",
+        "KRSG300044",
+        "KRSG300045",
+        "KRSG300046",
+        "KRSG300047",
+        "KRSG300048",
+        "KRSG300049",
+        "KRSG300050",
+        "KRSG300065",
+        "KRSG300066",
+        "KRSG300068",
+        "KRSG300069",
+        "KRSG300070",
+        "KRSG300085",
+        "KRSG300086",
+        "KRSG300087",
+        "KRSG300089",
+        "KRSG300103",
+        "KRSG300104",
+        "KRSG300105",
+        "KRSG300106",
+        "KRSG300107",
+        "KRSG300108",
+        "KRSG300109",
+        "KRSG300110",
+        "KRSG300111",
+        "KRSG300112",
+        "KRSG300113",
+        "KRSG300114",
+        "KRSG300115",
+        "KRSG300116",
+        "KRSG300117",
+        "KRSG300118",
+        "KRSG300119",
+        "KRSG300145",
+        "KRSG300146",
+        "KRSG300147",
+        "KRSG300148",
+        "KRSG300149",
+        "KRSG300150",
+        "KRSG300064",
+        "KRSG300067",
+        "KRSG300084",
+        "KRSG300088",
+        "KRSG300144",
         "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": [
         {
           "codes": [
-            "PKG_ADAS"
+            "KRSG300063"
           ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
-            "PKG_CONVENIENCE"
+            "KRSG300P02"
           ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
+          "price": 970000,
+          "name": "스타일"
         },
         {
           "codes": [
-            "PKG_COMFORT"
+            "KRSG300P03"
           ],
-          "price": 700000,
-          "name": "컴포트 패키지"
+          "price": 490000,
+          "name": "18인치 휠"
         },
         {
           "codes": [
-            "PKG_PARKING"
+            "KRSG300P04"
           ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
+          "price": 1240000,
+          "name": "프리미엄"
         },
         {
           "codes": [
-            "PKG_BUILTIN_CAM"
+            "KRSG300P05"
+          ],
+          "price": 420000,
+          "name": "드라이브 와이즈 Ⅰ"
+        },
+        {
+          "codes": [
+            "KRSG300P07"
+          ],
+          "price": 400000,
+          "name": "12.3인치 클러스터 팩"
+        },
+        {
+          "codes": [
+            "KRSG300P08"
+          ],
+          "price": 990000,
+          "name": "드라이브 와이즈 Ⅱ"
+        },
+        {
+          "codes": [
+            "KRSG300P09"
+          ],
+          "price": 590000,
+          "name": "HUD"
+        },
+        {
+          "codes": [
+            "KRSG300P10"
+          ],
+          "price": 450000,
+          "name": "빌트인 캠 2 플러스"
+        },
+        {
+          "codes": [
+            "KRSG300P11"
+          ],
+          "price": 750000,
+          "name": "컴포트"
+        },
+        {
+          "codes": [
+            "KRSG300P13"
           ],
           "price": 850000,
-          "name": "빌트인 캠 패키지"
+          "name": "스마트 커넥트"
+        },
+        {
+          "codes": [
+            "KRSG300P15"
+          ],
+          "price": 450000,
+          "name": "선루프 + LED 실내등"
+        },
+        {
+          "codes": [
+            "KRSG300P16"
+          ],
+          "price": 100000,
+          "name": "마이 컴포트 패키지"
         }
       ]
     },
@@ -1378,65 +1635,208 @@
       "slug": "calligraphy",
       "price": {},
       "basic": [
+        "KRSG300038",
+        "KRSG300039",
+        "KRSG300052",
+        "KRSG300053",
+        "KRSG300071",
+        "KRSG300074",
+        "KRSG300075",
+        "KRSG300076",
+        "KRSG300077",
+        "KRSG300078",
+        "KRSG300128",
+        "KRSG300129",
+        "KRSG300130",
+        "KRSG300131",
+        "KRSG300132",
+        "KRSG300133",
+        "KRSG300001",
+        "KRSG300002",
+        "KRSG300003",
+        "KRSG300004",
+        "KRSG300005",
+        "KRSG300006",
+        "KRSG300007",
+        "KRSG300008",
+        "KRSG300009",
+        "KRSG300010",
+        "KRSG300011",
+        "KRSG300012",
+        "KRSG300013",
+        "KRSG300014",
+        "KRSG300015",
+        "KRSG300016",
+        "KRSG300017",
+        "KRSG300027",
+        "KRSG300028",
+        "KRSG300029",
+        "KRSG300030",
+        "KRSG300031",
+        "KRSG300032",
+        "KRSG300033",
+        "KRSG300034",
+        "KRSG300035",
+        "KRSG300036",
+        "KRSG300037",
+        "KRSG300041",
+        "KRSG300042",
+        "KRSG300043",
+        "KRSG300044",
+        "KRSG300045",
+        "KRSG300046",
+        "KRSG300047",
+        "KRSG300048",
+        "KRSG300049",
+        "KRSG300050",
+        "KRSG300051",
+        "KRSG300066",
+        "KRSG300068",
+        "KRSG300069",
+        "KRSG300070",
+        "KRSG300072",
+        "KRSG300073",
+        "KRSG300085",
+        "KRSG300086",
+        "KRSG300087",
+        "KRSG300089",
+        "KRSG300090",
+        "KRSG300091",
+        "KRSG300092",
+        "KRSG300093",
+        "KRSG300094",
+        "KRSG300095",
+        "KRSG300103",
+        "KRSG300104",
+        "KRSG300105",
+        "KRSG300106",
+        "KRSG300107",
+        "KRSG300108",
+        "KRSG300109",
+        "KRSG300110",
+        "KRSG300111",
+        "KRSG300112",
+        "KRSG300113",
+        "KRSG300114",
+        "KRSG300115",
+        "KRSG300116",
+        "KRSG300117",
+        "KRSG300118",
+        "KRSG300119",
+        "KRSG300120",
+        "KRSG300121",
+        "KRSG300122",
+        "KRSG300123",
+        "KRSG300124",
+        "KRSG300125",
+        "KRSG300126",
+        "KRSG300127",
+        "KRSG300145",
+        "KRSG300146",
+        "KRSG300147",
+        "KRSG300148",
+        "KRSG300149",
+        "KRSG300150",
+        "KRSG300065",
+        "KRSG300064",
+        "KRSG300067",
+        "KRSG300084",
+        "KRSG300088",
+        "KRSG300144",
         "WIRELESS_MIRROR"
       ],
       "select": [],
       "select_groups": [
         {
           "codes": [
-            "PKG_ADAS"
+            "KRSG300063"
           ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
+          "price": 80000,
+          "name": "스노우 화이트 펄"
         },
         {
           "codes": [
-            "PKG_CONVENIENCE"
+            "KRSG300P02"
           ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
+          "price": 970000,
+          "name": "스타일"
         },
         {
           "codes": [
-            "PKG_COMFORT"
+            "KRSG300P03"
           ],
-          "price": 700000,
-          "name": "컴포트 패키지"
+          "price": 490000,
+          "name": "18인치 휠"
         },
         {
           "codes": [
-            "PKG_PARKING"
+            "KRSG300P04"
           ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
+          "price": 1240000,
+          "name": "프리미엄"
         },
         {
           "codes": [
-            "PKG_EXTERIOR"
+            "KRSG300P05"
           ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
+          "price": 420000,
+          "name": "드라이브 와이즈 Ⅰ"
         },
         {
           "codes": [
-            "PKG_BUILTIN_CAM"
+            "KRSG300P08"
+          ],
+          "price": 990000,
+          "name": "드라이브 와이즈 Ⅱ"
+        },
+        {
+          "codes": [
+            "KRSG300P09"
+          ],
+          "price": 590000,
+          "name": "HUD"
+        },
+        {
+          "codes": [
+            "KRSG300P10"
+          ],
+          "price": 450000,
+          "name": "빌트인 캠 2 플러스"
+        },
+        {
+          "codes": [
+            "KRSG300P12"
+          ],
+          "price": 550000,
+          "name": "컴포트"
+        },
+        {
+          "codes": [
+            "KRSG300P13"
           ],
           "price": 850000,
-          "name": "빌트인 캠 패키지"
+          "name": "스마트 커넥트"
         },
         {
           "codes": [
-            "PKG_SUNROOF"
+            "KRSG300P14"
           ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
+          "price": 590000,
+          "name": "하만카돈 프리미엄 사운드"
         },
         {
           "codes": [
-            "PKG_HUD"
+            "KRSG300P15"
           ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
+          "price": 450000,
+          "name": "선루프 + LED 실내등"
+        },
+        {
+          "codes": [
+            "KRSG300P16"
+          ],
+          "price": 100000,
+          "name": "마이 컴포트 패키지"
         }
       ]
     }

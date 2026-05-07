@@ -70,7 +70,7 @@
     ]
   },
   "trims": {
-    "스마트": {
+    "스마트 가솔린 1.6": {
       "slug": "스마트",
       "price": {},
       "basic": [],
@@ -92,7 +92,29 @@
         }
       ]
     },
-    "모던": {
+    "스마트 LPi 1.6": {
+      "slug": "스마트",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ]
+    },
+    "모던 가솔린 1.6": {
       "slug": "모던",
       "price": {},
       "basic": [],
@@ -135,7 +157,50 @@
         }
       ]
     },
-    "프리미엄": {
+    "모던 LPi 1.6": {
+      "slug": "모던",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "프리미엄 가솔린 1.6": {
       "slug": "프리미엄",
       "price": {},
       "basic": [],
@@ -178,7 +243,50 @@
         }
       ]
     },
-    "인스퍼레이션": {
+    "프리미엄 LPi 1.6": {
+      "slug": "프리미엄",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "인스퍼레이션 가솔린 1.6": {
       "slug": "인스퍼레이션",
       "price": {},
       "basic": [],
@@ -242,7 +350,114 @@
         }
       ]
     },
-    "스포츠": {
+    "인스퍼레이션 LPi 1.6": {
+      "slug": "인스퍼레이션",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ]
+    },
+    "스포츠 가솔린 1.6": {
+      "slug": "스포츠",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "스포츠 LPi 1.6": {
       "slug": "스포츠",
       "price": {},
       "basic": [],

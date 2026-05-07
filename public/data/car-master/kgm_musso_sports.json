@@ -10,21 +10,21 @@
   "options": {},
   "categories": {},
   "trims": {
-    "L5": {
+    "L5 가솔린": {
       "slug": "l5",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "V5": {
+    "V5 가솔린": {
       "slug": "v5",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "X5": {
+    "X5 가솔린": {
       "slug": "x5",
       "price": {},
       "basic": [],

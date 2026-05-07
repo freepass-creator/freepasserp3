@@ -813,7 +813,7 @@
     }
   },
   "trims": {
-    "아이오닉 5 N 에센셜": {
+    "아이오닉 5 N 에센셜 가솔린": {
       "slug": "e-value-plus",
       "name_en": null,
       "price": {
@@ -945,7 +945,7 @@
         }
       ]
     },
-    "아이오닉 5 N": {
+    "아이오닉 5 N 가솔린": {
       "slug": "exclusive",
       "name_en": null,
       "price": {

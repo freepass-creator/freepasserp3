@@ -632,7 +632,7 @@
     }
   },
   "trims": {
-    "일렉트리파이드 AWD": {
+    "일렉트리파이드 AWD 가솔린": {
       "slug": "electrified_awd",
       "price": {
         "base": 73320000,

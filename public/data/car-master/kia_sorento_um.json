@@ -10,28 +10,56 @@
   "options": {},
   "categories": {},
   "trims": {
-    "트렌디": {
+    "트렌디 디젤 2.2": {
       "slug": "트렌디",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "럭셔리": {
+    "트렌디 가솔린 2.5 T": {
+      "slug": "트렌디",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "럭셔리 디젤 2.2": {
       "slug": "럭셔리",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "프레스티지": {
+    "럭셔리 가솔린 2.5 T": {
+      "slug": "럭셔리",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지 디젤 2.2": {
       "slug": "프레스티지",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "노블레스": {
+    "프레스티지 가솔린 2.5 T": {
+      "slug": "프레스티지",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 디젤 2.2": {
+      "slug": "노블레스",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 가솔린 2.5 T": {
       "slug": "노블레스",
       "price": {},
       "basic": [],

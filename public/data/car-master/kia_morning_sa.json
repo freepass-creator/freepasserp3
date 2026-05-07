@@ -10,35 +10,70 @@
   "options": {},
   "categories": {},
   "trims": {
-    "Standard": {
+    "Standard 가솔린 1.0": {
       "slug": "standard",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "Deluxe": {
+    "Standard LPi 1.0": {
+      "slug": "standard",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Deluxe 가솔린 1.0": {
       "slug": "deluxe",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "럭셔리": {
+    "Deluxe LPi 1.0": {
+      "slug": "deluxe",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "럭셔리 가솔린 1.0": {
       "slug": "luxury",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "SLX": {
+    "럭셔리 LPi 1.0": {
+      "slug": "luxury",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "SLX 가솔린 1.0": {
       "slug": "slx",
       "price": {},
       "basic": [],
       "select": [],
       "select_groups": []
     },
-    "Picanto": {
+    "SLX LPi 1.0": {
+      "slug": "slx",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Picanto 가솔린 1.0": {
+      "slug": "picanto",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "Picanto LPi 1.0": {
       "slug": "picanto",
       "price": {},
       "basic": [],

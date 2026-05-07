@@ -1605,39 +1605,12 @@
         "KRNQ259071",
         "KRNQ259096",
         "KRNQ259150",
-        "KRNQ259065",
-        "KRNQ259088",
-        "KRNQ259089",
-        "KRNQ259059",
-        "KRNQ259060",
-        "KRNQ259061",
-        "KRNQ259062",
-        "KRNQ259063",
-        "KRNQ259083",
-        "KRNQ259084",
-        "KRNQ259085",
-        "KRNQ259086",
-        "KRNQ259087",
-        "KRNQ259102",
-        "KRNQ259103",
-        "KRNQ259104",
-        "KRNQ259172",
-        "KRNQ259105",
-        "KRNQ259106",
-        "KRNQ259107",
-        "KRNQ259108",
-        "KRNQ259135",
-        "KRNQ259136",
-        "KRNQ259137",
-        "KRNQ259138",
-        "KRNQ259139",
-        "KRNQ259140",
-        "KRNQ259002",
-        "KRNQ259004",
-        "KRNQ259011",
         "KRNQ259001",
         "KRNQ259005",
-        "KRNQ259010"
+        "KRNQ259010",
+        "KRNQ259002",
+        "KRNQ259004",
+        "KRNQ259011"
       ],
       "select": [
         "KRNQ259170",
@@ -1769,41 +1742,6 @@
           ],
           "price": 400000,
           "name": "빌트인 공기청정기"
-        },
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
         }
       ]
     },

@@ -774,7 +774,7 @@
     }
   },
   "trims": {
-    "스마트": {
+    "스마트 가솔린": {
       "slug": "smart",
       "name_en": null,
       "price": {
@@ -872,7 +872,7 @@
         }
       ]
     },
-    "프리미엄": {
+    "프리미엄 가솔린": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -977,7 +977,7 @@
         }
       ]
     },
-    "스타일": {
+    "스타일 가솔린": {
       "slug": "style",
       "name_en": null,
       "price": {

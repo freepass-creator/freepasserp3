@@ -1526,7 +1526,7 @@
     ]
   },
   "trims": {
-    "트렌디": {
+    "트렌디 가솔린": {
       "slug": "트렌디",
       "price": {},
       "basic": [
@@ -1604,7 +1604,7 @@
       "select": [],
       "select_groups": []
     },
-    "럭셔리": {
+    "럭셔리 가솔린": {
       "slug": "럭셔리",
       "price": {},
       "basic": [
@@ -1728,7 +1728,7 @@
       "select": [],
       "select_groups": []
     },
-    "프레스티지": {
+    "프레스티지 가솔린": {
       "slug": "프레스티지",
       "price": {},
       "basic": [
@@ -1852,7 +1852,7 @@
       "select": [],
       "select_groups": []
     },
-    "노블레스": {
+    "노블레스 가솔린": {
       "slug": "노블레스",
       "price": {},
       "basic": [
@@ -2019,7 +2019,7 @@
       "select": [],
       "select_groups": []
     },
-    "SX": {
+    "SX 가솔린": {
       "slug": "sx",
       "price": {},
       "basic": [

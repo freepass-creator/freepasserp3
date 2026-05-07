@@ -1254,7 +1254,7 @@
     ]
   },
   "trims": {
-    "T7": {
+    "T7 EV": {
       "slug": "t7",
       "price": {},
       "basic": [
@@ -1359,7 +1359,7 @@
       "select": [],
       "select_groups": []
     },
-    "V7": {
+    "V7 EV": {
       "slug": "v7",
       "price": {},
       "basic": [
@@ -1464,7 +1464,7 @@
       "select": [],
       "select_groups": []
     },
-    "X7": {
+    "X7 EV": {
       "slug": "x7",
       "price": {},
       "basic": [

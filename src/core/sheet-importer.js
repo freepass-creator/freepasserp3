@@ -145,6 +145,36 @@ export function extractDisplacement(text) {
   return m ? m[1] : '';
 }
 
+/** 전용계좌 텍스트에서 회사명 부분 추출.
+ *  "국민 274101-04-182593 우리캐피탈오토파크(주)" → "우리캐피탈오토파크(주)"
+ *  "신한 131-021-922538 주식회사 콘카" → "주식회사 콘카"
+ *  "농협 351-1234-5678-90 하나리스" → "하나리스"
+ *  계좌번호 (숫자+하이픈, 6자 이상) 패턴 다음의 텍스트를 회사명으로. */
+export function extractAccountCompany(account) {
+  if (!account) return '';
+  const s = String(account).trim();
+  const m = s.match(/[\d\-]{6,}\s+(.+)$/);
+  return m ? m[1].trim() : '';
+}
+
+/** 회사명 정규화 비교용 — 법인 표기 모든 변형 제거 + 공백 제거.
+ *  처리 케이스:
+ *    (주) ㈜ （주）   ← 정상 괄호
+ *    주)             ← 한쪽 괄호 만 (시트에 흔함)
+ *    주식회사 / 유한회사 등 단어형
+ *  결과: 핵심 회사명만 + 공백 제거. */
+export function normalizeCompanyName(name) {
+  if (!name) return '';
+  return String(name)
+    .replace(/㈜/g, '')
+    .replace(/[\(（]\s*주\s*[\)）]/g, '')                    // (주), （주）
+    .replace(/(^|\s|[\d\-])주\s*[\)）]/g, (_, pre) => pre)   // 우측 괄호만 — "주)아이언" → "아이언"
+    .replace(/[\(（]\s*주(\s|[가-힣])/g, (_, post) => post)  // 좌측 괄호만 — "(주아이언" → "아이언"
+    .replace(/주식회사|유한책임회사|유한회사|합자회사|합명회사|재단법인|사단법인|학교법인|의료법인/g, '')
+    .replace(/\s+/g, '')
+    .trim();
+}
+
 export function splitOptions(text) {
   if (!text) return [];
   const out = [];
@@ -264,9 +294,9 @@ const SHEET_PROFILES = {
     dataStartRowIdx: 1,
     carNumberColLetter: 'D',
     parser: parseZonghapRow,
-    // 종합시트는 모든 공급사 탭 (아이카/아이언/리더스/KH/연카/...) 이 동일 컬럼 구조.
-    // multiTab=true 면 fetchSheetWithProfile 가 모든 탭을 fetch 해서 통합.
-    multiTab: true,
+    // 사용자 정책: "종합" 탭만 import (다른 공급사별 탭은 무시).
+    // 종합 탭에 운영 매물이 모두 합산되어 있다고 가정.
+    multiTab: false,
     columnLabels: [
       'A 상태', 'B 입고일', 'C 구분', 'D 차량번호', 'E 차종분류', 'F 세부모델',
       'G 트림짧은표기', 'H 외장', 'I 내장', 'J Km', 'K 단기보증라벨',
@@ -387,8 +417,28 @@ function parseZonghapRow(row) {
   out.location = c(25);
   out.account = c(38);
   out.partner_memo = c(39);
+  // 전용계좌 컬럼에서 회사명 추출 — "은행명 계좌번호 회사명" 패턴
+  //   예: "국민 274101-04-182593 우리캐피탈오토파크(주)" → "우리캐피탈오토파크(주)"
+  out.account_company = extractAccountCompany(c(38));
   out.fuel_type = normalizeFuel(c(6) + ' ' + c(19));
   out.maker = inferMaker(c(23), c(4), c(5));
+
+  // 시트 운영 메타 (26~37) — 매물 row 에 무손실 보존, 추후 정책 매핑/분석
+  // (Z 차고지·AM 전용계좌·AN 비고 는 별도 필드, 그 외 12개 보존)
+  out.sheet_meta = {
+    driving_area:    c(26),   // AA 운행지역(범위)
+    driving_route:   c(27),   // AB 운행
+    installment:     c(28),   // AC 분납
+    age_21:          c(29),   // AD 21세
+    age_23:          c(30),   // AE 23세
+    year_1plus:      c(31),   // AF 1년+
+    insurance:       c(32),   // AG 보증
+    property_damage: c(33),   // AH 대물
+    injury:          c(34),   // AI 자손
+    collision:       c(35),   // AJ 자차
+    uninsured:       c(36),   // AK 무보험
+    accident:        c(37),   // AL 사고
+  };
 
   // 차종/세부모델/트림명에 maker prefix ("지프 체로키" / "기아 셀토스") 들어있으면 제거
   out.raw_model = stripMakerPrefix(c(4), out.maker);
@@ -397,12 +447,19 @@ function parseZonghapRow(row) {
   // 트림 풀명 + 트림 짧은표기 + 배기량컬럼 에서 displacement 추출
   out.displacement = extractDisplacement(c(6) + ' ' + c(19)) || extractDisplacement(c(24));
 
-  // 가격 매트릭스 (단기 1/6/12 + 장기 24/36/48/60)
+  // 가격 매트릭스 — K(10)=단기보증 / O(14)=장기보증 (보증금)
+  //   단기 1/6/12 보증금 = K, 장기 24/36/48/60 보증금 = O. 대여료는 별도 컬럼.
   const price = {};
-  const priceMap = { '1': 11, '6': 12, '12': 13, '24': 15, '36': 16, '48': 17, '60': 18 };
+  const shortDeposit = normalizePrice(c(10));
+  const longDeposit = normalizePrice(c(14));
+  // 6개월 (인덱스 12) 항목 제외 — 사용자 정책으로 단기는 1/12 만 운영
+  const priceMap = { '1': 11, '12': 13, '24': 15, '36': 16, '48': 17, '60': 18 };
+  const longPeriods = new Set(['24', '36', '48', '60']);
   for (const [period, idx] of Object.entries(priceMap)) {
     const rent = normalizePrice(c(idx));
-    if (rent) price[period] = { rent };
+    if (!rent) continue;
+    const dep = longPeriods.has(period) ? longDeposit : shortDeposit;
+    price[period] = dep ? { rent, deposit: dep } : { rent };
   }
   if (Object.keys(price).length) out.price = price;
 
@@ -482,6 +539,37 @@ function mapStatusLabel(sl) {
 
 /* ──────── catalog 매칭으로 표준화 ──────── */
 
+/** catalog 매칭 실패 시 raw 데이터로 채우는 fallback matched_product.
+ *  catalog_id 비우고 sub_model/trim_name 등은 시트 그대로 — 추후 매물 편집에서 매핑 가능. */
+function fallbackMatchedProduct(raw) {
+  return {
+    car_number: raw.car_number,
+    maker: raw.maker,
+    model: raw.raw_model || '',
+    sub_model: raw.sub_model_raw || raw.raw_model || '',
+    trim_name: raw.trim_name || raw.trim_keyword || '',
+    catalog_id: '',
+    fuel_type: raw.fuel_type || '',
+    ext_color: raw.ext_color || '',
+    int_color: raw.int_color || '',
+    mileage: raw.mileage,
+    year: raw.year,
+    first_registration_date: raw.first_registration_date,
+    vehicle_price: raw.vehicle_price,
+    engine_cc: raw.engine_cc || '',
+    location: raw.location || '',
+    vehicle_status: raw.vehicle_status,
+    product_type: '중고렌트',
+    options: raw.options || [],
+    partner_memo: raw.partner_memo || '',
+    price: raw.price,
+    status_label_raw: raw.status_label,
+    account_raw: raw.account || '',
+    options_raw: raw.options_raw || '',
+    sheet_meta: raw.sheet_meta || null,
+  };
+}
+
 export async function enrichWithCatalog(raw) {
   // 차량번호 invalid (미정/빈) 도 catalog 매칭은 진행 — import 시점에 임시번호 자동 발급.
   // raw.is_pending_plate 메타로 dev.js 에 알림.
@@ -489,7 +577,7 @@ export async function enrichWithCatalog(raw) {
     raw.is_pending_plate = true;
   }
   if (!raw.maker) {
-    return { ok: false, reason: 'maker 추론 실패' };
+    return { ok: false, reason: 'maker 추론 실패', matched_product: fallbackMatchedProduct(raw) };
   }
 
   // catalog 매칭에 들어가는 "sub_model 후보"는 시트별로 다름:
@@ -503,18 +591,27 @@ export async function enrichWithCatalog(raw) {
     first_registration_date: raw.first_registration_date,
   });
   if (!cat?.catalogId) {
-    return { ok: false, reason: `catalog 매칭 실패 (${raw.maker} / ${subCandidate})` };
+    // catalog 매칭 실패 — raw 데이터로 fallback 등록 (사용자 추후 매핑)
+    return {
+      ok: false,
+      reason: `catalog 미매칭 (${raw.maker} / ${subCandidate}) — raw 그대로 import`,
+      matched_product: fallbackMatchedProduct(raw),
+    };
   }
   const catalog = await loadCatalog(cat.catalogId);
-  if (!catalog) return { ok: false, reason: `catalog load 실패: ${cat.catalogId}` };
+  if (!catalog) return {
+    ok: false, reason: `catalog load 실패: ${cat.catalogId}`,
+    matched_product: fallbackMatchedProduct(raw),
+  };
 
   const standardSub = titleToSubModel(raw.maker, catalog.title || '');
   const standardModel = catalog.model_root || catalog.model || '';
 
-  const trimWrap = raw.trim_name ? findTrimInCatalog(catalog, raw.trim_name, raw) : null;
-  const standardTrim = trimWrap?.name || raw.trim_name || '';
-
-  const standardOptions = matchOptionsAgainstCatalog(raw.options, catalog);
+  // 정책: 세부트림 / 선택옵션은 시트 입력값 그대로 import (catalog 표준화 X).
+  //   사용자가 시트에 정확히 적은 형태 우선 — catalog 와 다른 트림 표기/옵션 보존.
+  //   추후 매물 편집에서 catalog 트림 드롭다운 / 옵션 chip 으로 수동 매핑 가능.
+  const standardTrim = raw.trim_name || raw.trim_keyword || '';
+  const standardOptions = raw.options || [];
 
   return {
     ok: true,
@@ -542,6 +639,7 @@ export async function enrichWithCatalog(raw) {
       status_label_raw: raw.status_label,
       account_raw: raw.account || '',
       options_raw: raw.options_raw,
+      sheet_meta: raw.sheet_meta || null,
     },
     catalogTitle: catalog.title,
     confidence: cat.confidence,

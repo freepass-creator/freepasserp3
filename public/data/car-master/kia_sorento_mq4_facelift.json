@@ -81,7 +81,7 @@
     ]
   },
   "trims": {
-    "프레스티지": {
+    "프레스티지 디젤 2.2": {
       "slug": "prestige",
       "price": {},
       "basic": [
@@ -126,7 +126,52 @@
         }
       ]
     },
-    "노블레스": {
+    "프레스티지 가솔린 2.5 T": {
+      "slug": "prestige",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1100000,
+          "name": "드라이브 와이즈 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "노블레스 디젤 2.2": {
       "slug": "noblesse",
       "price": {},
       "basic": [
@@ -171,7 +216,52 @@
         }
       ]
     },
-    "시그니처": {
+    "노블레스 가솔린 2.5 T": {
+      "slug": "noblesse",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1100000,
+          "name": "드라이브 와이즈 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "시그니처 디젤 2.2": {
       "slug": "signature",
       "price": {},
       "basic": [
@@ -237,7 +327,97 @@
         }
       ]
     },
-    "그래비티": {
+    "시그니처 가솔린 2.5 T": {
+      "slug": "signature",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1100000,
+          "name": "드라이브 와이즈 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ]
+    },
+    "그래비티 디젤 2.2": {
+      "slug": "gravity",
+      "price": {},
+      "basic": [
+        "WIRELESS_MIRROR"
+      ],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ]
+    },
+    "그래비티 가솔린 2.5 T": {
       "slug": "gravity",
       "price": {},
       "basic": [

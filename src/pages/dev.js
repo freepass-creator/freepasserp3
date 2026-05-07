@@ -1432,6 +1432,7 @@ function renderMatrixImportTab(el) {
           <input type="checkbox" id="miIncludeOut"> 출고불가 포함
         </label>
         <button class="btn btn-sm" id="miImportBtn" disabled><i class="ph ph-cloud-arrow-up"></i> 매칭된 매물 import</button>
+        <button class="btn btn-sm" id="miBackfillProviderBtn" title="이미 import 된 매물 중 provider_company_code 빈 매물에 partners 자동 매칭 (account 회사명 기반)"><i class="ph ph-link"></i> 공급사 후매핑</button>
         <button class="btn btn-sm mi-danger" id="miPurgeBtn" title="매물 row 일괄 soft-delete + JSON 백업"><i class="ph ph-warning-octagon"></i> 데이터 일괄 삭제</button>
         <span id="miStatus" class="mi-status"></span>
       </div>
@@ -1522,8 +1523,9 @@ function renderMatrixImportTab(el) {
           enriched.matched_product.photo_link = raw.photo_link;
         }
         if (isDup) {
-          reason = `중복: ${dupOf.product_code || dupOf._key} · ${dupOf.maker || ''} ${dupOf.sub_model || ''}`;
+          reason = `재사용: ${dupOf.product_code || dupOf._key} · ${dupOf.maker || ''} ${dupOf.sub_model || ''}`;
         } else if (!enriched.ok) {
+          // catalog 매칭 실패라도 matched_product (raw fallback) 는 있음 → import 가능
           reason = enriched.reason;
         } else if (!isValid) {
           reason = `신차 (임시번호 100신NNNN 자동 발급 예정)`;
@@ -1532,30 +1534,63 @@ function renderMatrixImportTab(el) {
         }
         results.push({ raw, enriched, isDup, dupOf, isValid, reason });
       }
+      // 미리보기 단계에서 partners 매칭 — matched_product 의 provider_company_code 자동 set
+      // (importBtn 의 매칭은 동일 로직 — 미리보기에서 결과 검증 가능)
+      const partnerEntries = [];
+      for (const pt of (store.partners || [])) {
+        if (pt._deleted) continue;
+        const code = pt.partner_code || pt.company_code;
+        if (!code) continue;
+        const candidates = [pt.bank_holder, pt.partner_name, pt.company_name, pt.partner_label].filter(Boolean);
+        for (const cand of candidates) {
+          const norm = SI.normalizeCompanyName(cand);
+          if (norm && norm.length >= 2) partnerEntries.push({ norm, code });
+        }
+      }
+      partnerEntries.sort((a, b) => b.norm.length - a.norm.length);
+      for (const r of results) {
+        if (!r.enriched?.matched_product) continue;
+        if (r.enriched.matched_product.provider_company_code) continue;   // 이미 채워졌으면 skip
+        const accountText = r.raw.account || '';
+        if (!accountText) continue;
+        const accountNorm = SI.normalizeCompanyName(accountText);
+        for (const { norm, code } of partnerEntries) {
+          if (accountNorm.includes(norm)) {
+            r.enriched.matched_product.provider_company_code = code;
+            r.enriched.matched_product.partner_code = code;
+            break;
+          }
+        }
+      }
+
       _matrixImportRows = results;
 
       const total = results.length;
-      const matched = results.filter(r => r.enriched?.ok).length;
+      const importable = results.filter(r => r.enriched?.matched_product).length;
+      const catalogOk = results.filter(r => r.enriched?.ok).length;
+      const catalogMiss = results.filter(r => !r.enriched?.ok && r.enriched?.matched_product).length;
       const dups = results.filter(r => r.isDup).length;
-      const invalid = results.filter(r => !r.isValid && !r.isDup).length;
-      const failed = total - matched - dups - invalid;
+      const invalid = results.filter(r => !r.isValid).length;
+      const totalFail = total - importable;
 
       summary.hidden = false;
       summary.innerHTML = `
         <b>${esc(_matrixImportProfile.label)}</b> · <code>${esc(tab)}</code> ·
         <b>전체 ${total}</b> ·
-        <span style="color:var(--alert-green-text);">매칭 ${matched}</span> ·
-        <span style="color:var(--alert-orange-text);">중복 ${dups}</span> ·
-        <span style="color:var(--alert-red-text);">잘못된 plate ${invalid}</span> ·
-        <span style="color:var(--text-weak);">매칭실패 ${failed}</span>
+        <b style="color:var(--alert-green-text);">import 가능 ${importable}</b> ·
+        <span style="color:var(--alert-green-text);">catalog 매칭 ${catalogOk}</span> ·
+        <span style="color:var(--alert-orange-text);">catalog 미매칭 ${catalogMiss} (raw 등록)</span> ·
+        <span style="color:var(--alert-blue-text);">재사용 ${dups}</span> ·
+        <span style="color:var(--alert-red-text);">번호 미정 ${invalid}</span> ·
+        <span style="color:var(--text-weak);">완전실패 ${totalFail}</span>
       `;
 
       preview.hidden = false;
       preview.innerHTML = renderMatrixImportPreview(results, _matrixImportProfile);
 
-      importBtn.disabled = matched === 0;
-      status.textContent = matched ? `${matched}대 import 가능` : '매칭 매물 없음';
-      devLog(`[matrix-import] total=${total} matched=${matched} dup=${dups} invalid=${invalid} failed=${failed}`);
+      importBtn.disabled = importable === 0;
+      status.textContent = importable ? `${importable}대 import 가능` : 'import 매물 없음';
+      devLog(`[matrix-import] total=${total} importable=${importable} catalog_ok=${catalogOk} catalog_miss=${catalogMiss} dup=${dups} invalid=${invalid}`);
       });   // close withLoading
     } catch (e) {
       console.error('[matrix-import]', e);
@@ -1568,9 +1603,10 @@ function renderMatrixImportTab(el) {
 
   importBtn.addEventListener('click', async () => {
     if (!_matrixImportRows) return;
-    // 출고불가 매물 제외 정책 — [출고불가 포함] 체크박스 토글에 따라
+    // import 가능 = matched_product 가 있는 모든 매물 (catalog 매칭 OK + 매칭 실패 raw fallback 모두)
+    // 출고불가 매물은 [출고불가 포함] 체크박스 토글로 분기
     const includeOut = !!el.querySelector('#miIncludeOut')?.checked;
-    const matchedAll = _matrixImportRows.filter(r => r.enriched?.ok);
+    const matchedAll = _matrixImportRows.filter(r => r.enriched?.matched_product);
     const matched = includeOut
       ? matchedAll
       : matchedAll.filter(r => r.enriched.matched_product?.vehicle_status !== '출고불가');
@@ -1589,6 +1625,22 @@ function renderMatrixImportTab(el) {
     // backup 노드들 fetch — 차량번호 → Storage URL 매핑 (가장 최근 backup 우선)
     setLoadingMessage('Storage 사진 백업 조회 중...');
     const photoBackupByCar = await loadStorageBackupMap();
+    // 회사명/예금주 → partner_code 매핑 — partner_name + bank_holder + company_name 모두 후보
+    //   account 의 예금주 부분과 partners 의 예금주명/회사명 매칭
+    setLoadingMessage('공급사 매칭 인덱스 빌드 중...');
+    const partnerEntries = [];
+    for (const pt of (store.partners || [])) {
+      if (pt._deleted) continue;
+      const code = pt.partner_code || pt.company_code;
+      if (!code) continue;
+      // 매칭 후보 — 예금주명 + 회사명 + 라벨 모두 등록
+      const candidates = [pt.bank_holder, pt.partner_name, pt.company_name, pt.partner_label].filter(Boolean);
+      for (const cand of candidates) {
+        const norm = SI.normalizeCompanyName(cand);
+        if (norm && norm.length >= 2) partnerEntries.push({ norm, code, source: cand });
+      }
+    }
+    partnerEntries.sort((a, b) => b.norm.length - a.norm.length);   // 긴 이름 우선 (substring 충돌 회피)
     // _deleted 매물 차량번호 → product_uid 매핑 — 같은 차량번호면 옛 product_uid 재사용
     //   (계약/채팅/정산이 product_uid 로 참조하므로 끊김 방지)
     const deletedByCar = new Map();
@@ -1602,7 +1654,7 @@ function renderMatrixImportTab(el) {
         deletedByCar.set(cn, old);
       }
     }
-    let success = 0, fail = 0, restored = 0, reused = 0;
+    let success = 0, fail = 0, restored = 0, reused = 0, providerMatched = 0, providerMissed = 0;
     for (const r of matched) {
       try {
         const me = store.currentUser || {};
@@ -1620,12 +1672,26 @@ function renderMatrixImportTab(el) {
         const oldMatch = deletedByCar.get(carNumber);
         const uid = oldMatch?.product_uid || oldMatch?._key || await allocateManualProductUid();
         if (oldMatch) reused++;
+        // 공급사 자동 매칭 — account 전체 텍스트 안에서 partners 회사명 substring 검색
+        // 옛 매물 (oldMatch) 의 provider_company_code 가 있으면 그것을 우선 (재사용)
+        let providerCode = oldMatch?.provider_company_code || '';
+        if (!providerCode) {
+          const accountText = r.raw.account || '';
+          if (accountText) {
+            const accountNorm = SI.normalizeCompanyName(accountText);
+            for (const { norm, code } of partnerEntries) {
+              if (accountNorm.includes(norm)) { providerCode = code; break; }
+            }
+          }
+          if (providerCode) providerMatched++;
+          else if (accountText) providerMissed++;
+        }
         const rec = {
           _key: uid,
           product_uid: uid,
           product_code: oldMatch?.product_code || uid,
-          provider_company_code: oldMatch?.provider_company_code || '',
-          partner_code: oldMatch?.partner_code || '',
+          provider_company_code: providerCode,
+          partner_code: oldMatch?.partner_code || providerCode || '',
           ...p,
           car_number: carNumber,                     // 임시번호 또는 시트 그대로
           is_active: true,
@@ -1657,16 +1723,89 @@ function renderMatrixImportTab(el) {
     }
     if (restored) devLog(`[matrix-import] Storage 사진 복원: ${restored}대`);
     if (reused) devLog(`[matrix-import] product_uid 재사용 (계약/채팅 연결 유지): ${reused}대`);
+    if (providerMatched) devLog(`[matrix-import] 공급사 자동 매칭: ${providerMatched}대`);
+    if (providerMissed) devLog(`[matrix-import] 공급사 매칭 실패 (partners 등록 필요): ${providerMissed}대`);
     status.textContent = `완료: ${success}대 등록${reused ? ` (재사용 ${reused})` : ''}${fail ? ` / ${fail}대 실패` : ''}`;
     showToast(
       `${success}대 import` +
-      (reused ? ` · ${reused}대 재사용 (계약/채팅 유지)` : '') +
+      (providerMatched ? ` · 공급사 매칭 ${providerMatched}대` : '') +
+      (providerMissed ? ` · 공급사 미매칭 ${providerMissed}대` : '') +
+      (reused ? ` · 재사용 ${reused}대` : '') +
       (restored ? ` · 사진 복원 ${restored}대` : '') +
       (fail ? ` (${fail}대 실패)` : ''),
       fail ? 'warn' : 'success'
     );
     importBtn.disabled = false;
     });   // close withLoading
+  });
+
+  // 공급사 후매핑 — provider_company_code 빈 매물의 account_raw 에서 회사명 추출 → partners 매칭
+  el.querySelector('#miBackfillProviderBtn')?.addEventListener('click', async () => {
+    const me = store.currentUser;
+    if (me?.role !== 'admin') { showToast('관리자 전용', 'error'); return; }
+    const live = (store.products || []).filter(p => !p._deleted && !p.provider_company_code);
+    if (!live.length) { showToast('후매핑 대상 없음 (모든 매물 공급사 매칭됨)', 'info'); return; }
+    if (!confirm(`provider_company_code 빈 매물 ${live.length}대에 공급사 자동 매칭을 시도합니다.\n계속할까요?`)) return;
+
+    el.querySelector('#miBackfillProviderBtn').disabled = true;
+    try {
+      await withLoading(`공급사 후매핑 (0/${live.length})...`, async () => {
+        const SI = await import('../core/sheet-importer.js');
+        const { updateRecord } = await import('../firebase/db.js');
+        // partners 매칭 후보 — 예금주명 (bank_holder) + 회사명 + 라벨 모두
+        const partnerEntries = [];
+        for (const pt of (store.partners || [])) {
+          if (pt._deleted) continue;
+          const code = pt.partner_code || pt.company_code;
+          if (!code) continue;
+          const candidates = [pt.bank_holder, pt.partner_name, pt.company_name, pt.partner_label].filter(Boolean);
+          for (const cand of candidates) {
+            const norm = SI.normalizeCompanyName(cand);
+            if (norm && norm.length >= 2) partnerEntries.push({ norm, code, source: cand });
+          }
+        }
+        partnerEntries.sort((a, b) => b.norm.length - a.norm.length);
+        devLog(`[backfill-provider] partners: ${partnerEntries.length}개 후보 (예금주+회사명+라벨)`);
+
+        let matched = 0, missed = 0;
+        const debugSamples = [];
+        for (let i = 0; i < live.length; i++) {
+          const p = live[i];
+          const accountText = p.account_raw || p.account || '';
+          if (!accountText) { missed++; continue; }
+          // account 전체 텍스트를 정규화 → partners 의 회사명이 그 안에 포함되는지 검색
+          //   ("국민 274101-04-182593 우리캐피탈오토파크(주)" → 정규화 후 "국민274101-04-182593우리캐피탈오토파크")
+          //   안에 정규화된 "우리캐피탈오토파크" 포함되면 매칭
+          const accountNorm = SI.normalizeCompanyName(accountText);
+          let code = '';
+          let matchedName = '';
+          for (const { norm, code: c } of partnerEntries) {
+            if (accountNorm.includes(norm)) { code = c; matchedName = norm; break; }
+          }
+          if (debugSamples.length < 5) {
+            debugSamples.push({ car: p.car_number, account: accountText, norm: accountNorm, matched: code ? `${matchedName} → ${code}` : 'X' });
+          }
+          if (code) {
+            try {
+              await updateRecord(`products/${p._key}`, { provider_company_code: code, partner_code: code }, { silent: true });
+              matched++;
+            } catch (e) { console.warn('[backfill]', p._key, e?.message); missed++; }
+          } else {
+            missed++;
+          }
+          setLoadingMessage(`공급사 후매핑 (${matched + missed}/${live.length})...`);
+        }
+        console.table(debugSamples);
+        status.textContent = `완료: 매칭 ${matched} / 미매칭 ${missed}`;
+        showToast(`공급사 매칭 ${matched}대 / 미매칭 ${missed}대`, matched ? 'success' : 'warn');
+        devLog(`[backfill-provider] matched=${matched} missed=${missed} (samples in console.table)`);
+      });
+    } catch (e) {
+      console.error('[backfill]', e);
+      showToast('후매핑 실패: ' + (e.message || e), 'error');
+    } finally {
+      el.querySelector('#miBackfillProviderBtn').disabled = false;
+    }
   });
 
   // 데이터 일괄 삭제 — 매물 row 만 soft-delete + Storage 사진 URL 백업 (Storage 객체는 안 건드림)
@@ -1815,14 +1954,15 @@ async function loadStorageBackupMap() {
  *
  * 매물 단위 분리는 std 행의 border-bottom 으로만.
  */
-/** 매트릭스 import 미리보기 — 상품찾기 (search) 페이지와 동일 컬럼 구성.
- *  적용상태(맨앞) / 차량번호 / 상태 / 구분 / 제조사 / 모델명 / 세부모델 / 세부트림 / 선택옵션 /
- *  연식 / 주행 / 연료 / 외부 / 내부 / 심사 / 1M / 12M / 24M / 36M / 48M / 60M / 회사명(코드)
- *  사용자가 import 후 검색 페이지에서 어떻게 보일지 미리 확인. */
+/** 매트릭스 import 미리보기 — 매물 1대 = 2 row (위 시트 raw / 아래 ERP 변환).
+ *  컬럼은 상품찾기와 동일 — 적용상태 / 차량번호 / 상태 / 구분 / 제조사 / 모델명 / 세부모델 / 세부트림 /
+ *  선택옵션 / 연식 / 주행 / 연료 / 외부 / 내부 / 심사 / 1M~60M / 회사명(코드).
+ *  적용상태 / 출처 라벨은 rowspan=2 / 셀별로 위(시트) → 아래(ERP) 변환 비교. */
 function renderMatrixImportPreview(results, profile) {
   const TH = (label, w, align = 'left') => `<th style="padding:5px 6px;text-align:${align};font-size:11px;font-weight:600;${w ? `width:${w};min-width:${w};` : ''}">${label}</th>`;
   const head = `<thead><tr style="position:sticky;top:0;background:var(--bg-header);z-index:1;border-bottom:1px solid var(--border);">
     ${TH('적용', '64px', 'center')}
+    ${TH('층', '38px', 'center')}
     ${TH('차량번호', '90px')}
     ${TH('상태', '70px', 'center')}
     ${TH('구분', '70px', 'center')}
@@ -1831,7 +1971,7 @@ function renderMatrixImportPreview(results, profile) {
     ${TH('세부모델', '140px')}
     ${TH('세부트림', '200px')}
     ${TH('선택옵션', '220px')}
-    ${TH('연식', '54px', 'center')}
+    ${TH('연식', '64px', 'center')}
     ${TH('주행', '64px', 'right')}
     ${TH('연료', '60px', 'center')}
     ${TH('외부', '60px', 'center')}
@@ -1862,13 +2002,13 @@ function renderMatrixImportPreview(results, profile) {
     </span>`;
   };
 
-  // 적용 상태 결정 — import 시 어떻게 처리될지 미리 표시
+  // 적용 상태 결정 — matched_product (raw fallback 포함) 가 있으면 모두 import 가능
   const decideAction = (r) => {
-    if (!r.isValid && !r.enriched?.ok) return { label: '실패', tone: 'red', icon: 'ph-x' };
-    const m = r.enriched?.matched_product || {};
-    if (r.enriched?.ok && m.vehicle_status === '출고불가') return { label: 'skip', tone: 'orange', icon: 'ph-prohibit' };
+    const m = r.enriched?.matched_product;
+    if (!m) return { label: '실패', tone: 'red', icon: 'ph-x' };
+    if (m.vehicle_status === '출고불가') return { label: 'skip', tone: 'orange', icon: 'ph-prohibit' };
     if (r.isDup) return { label: '재사용', tone: 'blue', icon: 'ph-arrows-clockwise' };
-    if (!r.enriched?.ok) return { label: '실패', tone: 'red', icon: 'ph-x' };
+    if (!r.enriched.ok) return { label: 'raw', tone: 'orange', icon: 'ph-warning' };  // catalog 미매칭, raw 등록
     if (!r.isValid) return { label: '신차', tone: 'blue', icon: 'ph-sparkle' };
     return { label: '신규', tone: 'green', icon: 'ph-plus' };
   };
@@ -1877,47 +2017,100 @@ function renderMatrixImportPreview(results, profile) {
     const raw = r.raw;
     const m = r.enriched?.matched_product || {};
     const action = decideAction(r);
-    const stdModel    = m.model     || raw.raw_model     || '';
-    const stdSub      = m.sub_model || raw.sub_model_raw || raw.raw_model || '';
-    const stdTrim     = m.trim_name || raw.trim_name     || '';
-    const stdOptions  = (m.options && m.options.length) ? m.options : (raw.options || []);
-    const optsText = stdOptions.length
-      ? `<b>${stdOptions.length}</b> · ${esc(stdOptions.slice(0, 3).join(', '))}${stdOptions.length > 3 ? ` 외 ${stdOptions.length - 3}` : ''}`
-      : '-';
-    // partner 매칭 — 매물의 provider_company_code 가 비어있으면 시트 원본의 _source_tab 사용
-    const provLabel = m.provider_company_code
-      ? `${m.provider_company_code}`
-      : (raw._source_tab ? `<span style="color:var(--text-weak);">[${esc(raw._source_tab)}]</span>` : '-');
-    const price = m.price || raw.price || {};
 
-    return `<tr style="border-bottom:1px solid var(--border-soft);">
-      <td style="padding:5px 6px;text-align:center;border-left:3px solid var(--alert-${action.tone}-text);" title="${esc(r.reason || '')}">
+    // raw 측 — 시트의 원본 (변환 전)
+    const rawStatus = raw.status_label || '';
+    const rawKind = raw.kind || raw.product_type || '';
+    const rawMaker = raw.maker_raw || raw.maker || '';
+    const rawModel = raw.raw_model || '';
+    const rawSub = raw.sub_model_raw || raw.raw_model || '';
+    const rawTrim = raw.trim_name || raw.trim_keyword || '';
+    const rawOpts = raw.options || [];
+    const rawYearStr = raw.first_registration_date || (raw.year ? String(raw.year) : '');
+    const rawPrice = raw.price || {};
+    const rawCompany = raw.account || raw._source_tab || '';
+
+    // ERP 측 — catalog 매칭 후 표준화 + raw fallback
+    const stdModel = m.model || rawModel;
+    const stdSub = m.sub_model || rawSub;
+    const stdTrim = m.trim_name || rawTrim;
+    const stdOpts = (m.options && m.options.length) ? m.options : rawOpts;
+    const stdPrice = m.price || rawPrice;
+    const stdCompany = m.provider_company_code
+      ? m.provider_company_code
+      : (raw._source_tab ? `[${raw._source_tab}]` : '');
+
+    const optsRawText = rawOpts.length
+      ? `<b>${rawOpts.length}</b> · ${esc(rawOpts.slice(0, 3).join(', '))}${rawOpts.length > 3 ? ` 외 ${rawOpts.length - 3}` : ''}`
+      : '-';
+    const optsStdText = stdOpts.length
+      ? `<b>${stdOpts.length}</b> · ${esc(stdOpts.slice(0, 3).join(', '))}${stdOpts.length > 3 ? ` 외 ${stdOpts.length - 3}` : ''}`
+      : '-';
+
+    // 시트 row (회색 배경 / 약한 색)
+    const sheetCells = `
+      <td style="padding:4px 6px;color:var(--text-weak);font-size:10px;font-weight:600;letter-spacing:0.5px;text-align:center;">시트</td>
+      <td style="padding:4px 6px;font-family:monospace;color:var(--text-sub);">${dash(raw.car_number)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;color:var(--text-sub);">${dash(rawStatus)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;color:var(--text-sub);">${dash(rawKind)}</td>
+      <td style="padding:4px 6px;color:var(--text-sub);">${dash(rawMaker)}</td>
+      <td style="padding:4px 6px;color:var(--text-sub);">${dash(rawModel)}</td>
+      <td style="padding:4px 6px;color:var(--text-sub);" title="${esc(rawSub)}">${dash(rawSub.slice(0, 30))}</td>
+      <td style="padding:4px 6px;font-size:11px;color:var(--text-sub);" title="${esc(rawTrim)}">${dash(rawTrim.slice(0, 50))}</td>
+      <td style="padding:4px 6px;font-size:10px;line-height:1.4;color:var(--text-sub);" title="${esc(rawOpts.join(', '))}">${optsRawText}</td>
+      <td style="padding:4px 6px;text-align:center;color:var(--text-sub);font-size:11px;">${dash(rawYearStr)}</td>
+      <td style="padding:4px 6px;text-align:right;color:var(--text-sub);">${fmtNum(raw.mileage)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;color:var(--text-sub);">${dash(raw.fuel_type)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;color:var(--text-sub);">${dash(raw.ext_color)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;color:var(--text-sub);">${dash(raw.int_color)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;color:var(--text-muted);">-</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(rawPrice['1'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(rawPrice['12'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(rawPrice['24'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(rawPrice['36'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(rawPrice['48'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(rawPrice['60'])}</td>
+      <td style="padding:4px 6px;font-size:11px;color:var(--text-sub);">${dash(rawCompany)}</td>
+    `;
+
+    // ERP row (강조)
+    const erpCells = `
+      <td style="padding:4px 6px;color:var(--alert-${action.tone}-text);font-size:10px;font-weight:700;letter-spacing:0.5px;text-align:center;">ERP</td>
+      <td style="padding:4px 6px;font-family:monospace;font-weight:600;">${dash(raw.car_number)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;font-weight:500;">${dash(m.vehicle_status)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;font-weight:500;">${dash(m.product_type)}</td>
+      <td style="padding:4px 6px;font-weight:600;">${dash(raw.maker)}</td>
+      <td style="padding:4px 6px;font-weight:500;">${dash(stdModel)}</td>
+      <td style="padding:4px 6px;font-weight:500;" title="${esc(stdSub)}">${dash(stdSub.slice(0, 30))}</td>
+      <td style="padding:4px 6px;font-size:11px;font-weight:500;" title="${esc(stdTrim)}">${dash(stdTrim.slice(0, 50))}</td>
+      <td style="padding:4px 6px;font-size:10px;line-height:1.4;" title="${esc(stdOpts.join(', '))}">${optsStdText}</td>
+      <td style="padding:4px 6px;text-align:center;font-weight:500;">${dash(raw.year)}</td>
+      <td style="padding:4px 6px;text-align:right;font-weight:500;">${fmtNum(m.mileage ?? raw.mileage)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;font-weight:500;">${dash(m.fuel_type || raw.fuel_type)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;">${dash(m.ext_color || raw.ext_color)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;">${dash(m.int_color || raw.int_color)}</td>
+      <td style="padding:4px 6px;text-align:center;font-size:11px;color:var(--text-muted);">-</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(stdPrice['1'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(stdPrice['12'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(stdPrice['24'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(stdPrice['36'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(stdPrice['48'])}</td>
+      <td style="padding:4px 6px;text-align:right;">${fmtPricePair(stdPrice['60'])}</td>
+      <td style="padding:4px 6px;font-size:11px;font-weight:500;">${dash(stdCompany)}</td>
+    `;
+
+    // 시트 row (위 / 회색) — 적용 상태는 rowspan=2 로 묶음
+    const sheetRow = `<tr style="background:var(--bg-stripe);">
+      <td rowspan="2" style="padding:6px;text-align:center;border-left:3px solid var(--alert-${action.tone}-text);vertical-align:middle;" title="${esc(r.reason || '')}">
         <span style="display:inline-flex;align-items:center;gap:3px;color:var(--alert-${action.tone}-text);font-size:11px;font-weight:600;">
           <i class="ph ${action.icon}" style="font-size:13px;"></i>${action.label}
         </span>
       </td>
-      <td style="padding:5px 6px;font-family:monospace;font-weight:600;">${dash(raw.car_number)}</td>
-      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.vehicle_status || raw.vehicle_status)}</td>
-      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.product_type || raw.product_type)}</td>
-      <td style="padding:5px 6px;font-weight:500;">${dash(raw.maker)}</td>
-      <td style="padding:5px 6px;">${dash(stdModel)}</td>
-      <td style="padding:5px 6px;" title="${esc(stdSub)}">${dash(stdSub.slice(0, 30))}</td>
-      <td style="padding:5px 6px;font-size:11px;" title="${esc(stdTrim)}">${dash(stdTrim.slice(0, 50))}</td>
-      <td style="padding:5px 6px;font-size:10px;line-height:1.4;white-space:normal;" title="${esc(stdOptions.join(', '))}">${optsText}</td>
-      <td style="padding:5px 6px;text-align:center;">${dash(raw.year)}</td>
-      <td style="padding:5px 6px;text-align:right;">${fmtNum(raw.mileage)}</td>
-      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.fuel_type || raw.fuel_type)}</td>
-      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.ext_color || raw.ext_color)}</td>
-      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.int_color || raw.int_color)}</td>
-      <td style="padding:5px 6px;text-align:center;font-size:11px;color:var(--text-weak);">-</td>
-      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['1'])}</td>
-      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['12'])}</td>
-      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['24'])}</td>
-      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['36'])}</td>
-      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['48'])}</td>
-      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['60'])}</td>
-      <td style="padding:5px 6px;font-size:11px;">${provLabel}</td>
+      ${sheetCells}
     </tr>`;
+    // ERP row (아래 / 강조) — 매물 단위 분리는 border-bottom 2px
+    const erpRow = `<tr style="border-bottom:2px solid var(--border);">${erpCells}</tr>`;
+    return sheetRow + erpRow;
   }).join('');
 
   return `<table style="width:100%;border-collapse:collapse;font-size:12px;">

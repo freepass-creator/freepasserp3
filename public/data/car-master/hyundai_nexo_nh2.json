@@ -893,7 +893,7 @@
     }
   },
   "trims": {
-    "익스클루시브": {
+    "익스클루시브 가솔린": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -977,7 +977,7 @@
         }
       ]
     },
-    "익스클루시브 스페셜": {
+    "익스클루시브 스페셜 가솔린": {
       "slug": "exclusive-special",
       "name_en": null,
       "price": {
@@ -1103,7 +1103,7 @@
         }
       ]
     },
-    "프레스티지": {
+    "프레스티지 가솔린": {
       "slug": "prestige",
       "name_en": null,
       "price": {

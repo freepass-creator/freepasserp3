@@ -72,7 +72,7 @@
     ]
   },
   "trims": {
-    "럭셔리 디젤 R2.0": {
+    "럭셔리 가솔린": {
       "slug": "럭셔리",
       "basic": [],
       "select": [],
@@ -96,31 +96,7 @@
         "base": 28400000
       }
     },
-    "럭셔리 디젤 R2.2": {
-      "slug": "럭셔리",
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        }
-      ],
-      "price": {
-        "base": 28950000
-      }
-    },
-    "프레스티지 디젤 R2.0": {
+    "프레스티지 가솔린": {
       "slug": "프레스티지",
       "basic": [],
       "select": [],
@@ -165,97 +141,7 @@
         "base": 30400000
       }
     },
-    "프레스티지 디젤 R2.2": {
-      "slug": "프레스티지",
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        }
-      ],
-      "price": {
-        "base": 30950000
-      }
-    },
-    "프레스티지 가솔린 2.0 T-GDI": {
-      "slug": "프레스티지",
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        }
-      ],
-      "price": {
-        "base": 28150000
-      }
-    },
-    "노블레스 디젤 R2.0": {
+    "노블레스 가솔린": {
       "slug": "노블레스",
       "basic": [],
       "select": [],
@@ -300,97 +186,7 @@
         "base": 32300000
       }
     },
-    "노블레스 디젤 R2.2": {
-      "slug": "노블레스",
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        }
-      ],
-      "price": {
-        "base": 32850000
-      }
-    },
-    "노블레스 가솔린 2.0 T-GDI": {
-      "slug": "노블레스",
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        }
-      ],
-      "price": {
-        "base": 30650000
-      }
-    },
-    "노블레스 스페셜 디젤 R2.0": {
+    "노블레스 스페셜 가솔린": {
       "slug": "노블레스_스페셜",
       "basic": [],
       "select": [],
@@ -456,73 +252,7 @@
         "base": 33800000
       }
     },
-    "노블레스 스페셜 디젤 R2.2": {
-      "slug": "노블레스_스페셜",
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ],
-      "price": {
-        "base": 34350000
-      }
-    },
-    "마스터 디젤 R2.0": {
+    "마스터 가솔린": {
       "slug": "마스터_r20",
       "basic": [],
       "select": [],
@@ -587,73 +317,6 @@
       "note": "노블레스 스페셜 기본품목 외 마스터 패키지",
       "price": {
         "base": 35800000
-      }
-    },
-    "마스터 디젤 R2.2": {
-      "slug": "마스터_r20",
-      "basic": [],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ],
-      "note": "노블레스 스페셜 기본품목 외 마스터 패키지",
-      "price": {
-        "base": 36350000
       }
     }
   },

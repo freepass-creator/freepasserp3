@@ -633,7 +633,8 @@ function renderProgressPanel(c) {
     const canEdit = canClick && !st.locked && !sub.rejected && !sub.auto
                     && (!sub.done || isAdmin);
     const cls = sub.rejected ? 'is-rejected' : sub.done ? 'is-done' : st.locked ? 'is-locked' : 'is-pending';
-    const icon = sub.rejected ? 'ph-x-square-fill' : sub.done ? 'ph-check-square-fill' : 'ph-square';
+    // 체크박스 형태 — phosphor regular weight (fill weight 미로드)
+    const icon = sub.rejected ? 'ph-x-square' : sub.done ? 'ph-check-square' : 'ph-square';
     const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
     return `
       <div class="ct-step-cell ${cls}" data-key="${sub.key}" ${canEdit && !c2 ? 'data-clickable' : ''}>

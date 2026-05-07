@@ -1374,7 +1374,7 @@
     ]
   },
   "trims": {
-    "라이트": {
+    "라이트 EV": {
       "slug": "라이트",
       "price": {},
       "basic": [
@@ -1489,7 +1489,7 @@
       "select": [],
       "select_groups": []
     },
-    "에어": {
+    "에어 EV": {
       "slug": "에어",
       "price": {},
       "basic": [
@@ -1604,7 +1604,7 @@
       "select": [],
       "select_groups": []
     },
-    "어스": {
+    "어스 EV": {
       "slug": "어스",
       "price": {},
       "basic": [
@@ -1719,7 +1719,7 @@
       "select": [],
       "select_groups": []
     },
-    "GT-Line": {
+    "GT-Line EV": {
       "slug": "gt_line",
       "price": {},
       "basic": [
@@ -1834,7 +1834,7 @@
       "select": [],
       "select_groups": []
     },
-    "GT": {
+    "GT EV": {
       "slug": "gt",
       "price": {},
       "basic": [

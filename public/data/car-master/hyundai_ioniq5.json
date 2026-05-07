@@ -1242,7 +1242,7 @@
     }
   },
   "trims": {
-    "익스클루시브": {
+    "익스클루시브 가솔린": {
       "slug": "exclusive",
       "name_en": null,
       "price": {
@@ -1441,7 +1441,7 @@
         }
       ]
     },
-    "익스클루시브 N 라인": {
+    "익스클루시브 N 라인 가솔린": {
       "slug": "n-line-exclusive",
       "name_en": "N Line Exclusive",
       "price": {
@@ -1648,7 +1648,7 @@
         }
       ]
     },
-    "프레스티지": {
+    "프레스티지 가솔린": {
       "slug": "prestige",
       "name_en": null,
       "price": {
@@ -1891,7 +1891,7 @@
         }
       ]
     },
-    "프레스티지 N 라인": {
+    "프레스티지 N 라인 가솔린": {
       "slug": "n-line-prestige",
       "name_en": "N Line Prestige",
       "price": {
@@ -2133,7 +2133,7 @@
         }
       ]
     },
-    "이-라이트": {
+    "이-라이트 가솔린": {
       "slug": "e-lite",
       "name_en": null,
       "price": {
@@ -2251,7 +2251,7 @@
         }
       ]
     },
-    "영업용": {
+    "영업용 가솔린": {
       "slug": "taxi",
       "name_en": null,
       "price": {
@@ -2385,7 +2385,7 @@
       "select": [],
       "select_groups": []
     },
-    "이-밸류 플러스": {
+    "이-밸류 플러스 가솔린": {
       "slug": "e-value-plus",
       "name_en": null,
       "price": {

@@ -51,7 +51,7 @@
   },
   "categories": {},
   "trims": {
-    "EX": {
+    "EX 가솔린 1.5 T": {
       "slug": "ex",
       "price": {},
       "basic": [],
@@ -73,7 +73,29 @@
         }
       ]
     },
-    "LX": {
+    "EX 디젤 1.6": {
+      "slug": "ex",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ]
+    },
+    "LX 가솔린 1.5 T": {
       "slug": "lx",
       "price": {},
       "basic": [],
@@ -116,7 +138,50 @@
         }
       ]
     },
-    "TX": {
+    "LX 디젤 1.6": {
+      "slug": "lx",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 800000,
+          "name": "드라이빙 어시스트 패키지 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "TX 가솔린 1.5 T": {
       "slug": "tx",
       "price": {},
       "basic": [],
@@ -180,7 +245,114 @@
         }
       ]
     },
-    "기어 에디션": {
+    "TX 디젤 1.6": {
+      "slug": "tx",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 800000,
+          "name": "드라이빙 어시스트 패키지 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ]
+    },
+    "기어 에디션 가솔린 1.5 T": {
+      "slug": "기어_에디션",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 800000,
+          "name": "드라이빙 어시스트 패키지 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "기어 에디션 디젤 1.6": {
       "slug": "기어_에디션",
       "price": {},
       "basic": [],

@@ -72,7 +72,7 @@
     ]
   },
   "trims": {
-    "트렌디": {
+    "트렌디 가솔린 1.6": {
       "slug": "트렌디",
       "price": {
         "base": 17000000
@@ -96,7 +96,31 @@
         }
       ]
     },
-    "프레스티지": {
+    "트렌디 LPi 1.6": {
+      "slug": "트렌디",
+      "price": {
+        "base": 17000000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        }
+      ]
+    },
+    "프레스티지 가솔린 1.6": {
       "slug": "프레스티지",
       "price": {
         "base": 19950000
@@ -141,7 +165,52 @@
         }
       ]
     },
-    "노블레스": {
+    "프레스티지 LPi 1.6": {
+      "slug": "프레스티지",
+      "price": {
+        "base": 19950000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1100000,
+          "name": "드라이브 와이즈 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "노블레스 가솔린 1.6": {
       "slug": "노블레스",
       "price": {
         "base": 22800000
@@ -186,7 +255,52 @@
         }
       ]
     },
-    "시그니처": {
+    "노블레스 LPi 1.6": {
+      "slug": "노블레스",
+      "price": {
+        "base": 22800000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1100000,
+          "name": "드라이브 와이즈 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "시그니처 가솔린 1.6": {
       "slug": "시그니처",
       "price": {
         "base": 24650000
@@ -252,7 +366,138 @@
         }
       ]
     },
-    "GT": {
+    "시그니처 LPi 1.6": {
+      "slug": "시그니처",
+      "price": {
+        "base": 24650000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1100000,
+          "name": "드라이브 와이즈 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ]
+    },
+    "GT 가솔린 1.6": {
+      "slug": "gt",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1100000,
+          "name": "드라이브 와이즈 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
+        }
+      ],
+      "note": "1.6 터보 GT — 가격 별도"
+    },
+    "GT LPi 1.6": {
       "slug": "gt",
       "price": {},
       "basic": [],

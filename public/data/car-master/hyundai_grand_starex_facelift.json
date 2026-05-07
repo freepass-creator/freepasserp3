@@ -69,7 +69,50 @@
     }
   },
   "trims": {
-    "기본": {
+    "기본 디젤 2.5": {
+      "slug": "기본",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        }
+      ]
+    },
+    "기본 LPi 3.0": {
       "slug": "기본",
       "price": {},
       "basic": [],

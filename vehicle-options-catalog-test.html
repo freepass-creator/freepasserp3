@@ -2728,7 +2728,6 @@ function onModelChange() {
   sel.innerHTML = '<option value="">세부모델</option>';
   if (!model) { sel.disabled = true; resetCatalog(); return; }
   const subs = state.master.filter(r => r.maker === maker && r.model === model);
-  // 정렬 규격: 1) production_start 내림차순(최신 먼저)  2) 동일 시기면 동력원 순(base → 하이브리드 → 플러그인 → EV)
   function fuelOrder(s) {
     const txt = String(s || '');
     if (/(EV|일렉트릭|electric|전기차)/i.test(txt)) return 3;
@@ -2743,23 +2742,108 @@ function onModelChange() {
     return fuelOrder(a.sub) - fuelOrder(b.sub);
   });
   const showYear = $('showYear')?.checked;
+
+  // 각 catalog 의 trim 동력원 추출 (한 catalog 가 여러 동력원 가지면 dropdown entry 분리)
+  // 동력원/배기량 + 인승 토큰 추출 (긴 패턴 우선)
+  const FUEL_PATTERNS = [
+    { re: /(하이브리드|HEV)\s*\d?\.?\d?\s*[T]?(\s*\d+인승)?/, group: m => m[0].trim() },
+    { re: /(EV|일렉트릭|전기)\b(\s*\d+인승)?/, group: m => (/(EV|일렉트릭)/.test(m[0]) ? 'EV' : m[0]).trim() + (m[2] || '') },
+    { re: /가솔린\s*\d\.\d\s*T?(\s*\d+인승)?/, group: m => m[0].trim() },
+    { re: /디젤\s*R?\d\.\d(\s*\d+인승)?/, group: m => m[0].trim() },
+    { re: /(LPi|LPG)\s*\d\.\d(\s*\d+인승)?/, group: m => m[0].trim() },
+    { re: /수소(\s*\d+인승)?/, group: m => m[0].trim() },
+  ];
+  // 모델별 알려진 동력원 set (trim 키에 동력원 명시 없을 때 fallback)
+  const MODEL_FUELS_FALLBACK = {
+    'K7': ['가솔린 2.4', '가솔린 3.0', '가솔린 3.3', 'LPi 3.0', '디젤 2.2'],
+    'K9': ['가솔린 3.3', '가솔린 3.8', '가솔린 5.0'],
+    'K8': ['가솔린 2.5', '가솔린 3.5', 'LPi 3.5'],
+    'K5': ['가솔린 2.0', 'LPi 2.0', '가솔린 1.6 T'],
+    'K3': ['가솔린 1.6', 'LPi 1.6'],
+    '카니발': ['디젤 2.2', '가솔린 3.5', 'LPi 3.5'],
+    '쏘렌토': ['디젤 2.2', '가솔린 2.5 T'],
+    '스포티지': ['가솔린 1.6 T', '디젤 2.0', '가솔린 2.0'],
+    '셀토스': ['가솔린 1.6', '가솔린 1.6 T', '디젤 1.6'],
+    '모하비': ['디젤 3.0'],
+    '스팅어': ['가솔린 2.0 T', '가솔린 3.3 T'],
+    '레이': ['가솔린 1.0', 'LPi 1.0'],
+    '모닝': ['가솔린 1.0', 'LPi 1.0'],
+    '봉고3': ['디젤 2.5', 'LPi 2.4'],
+    '아반떼': ['가솔린 1.6', 'LPi 1.6'],
+    '쏘나타': ['가솔린 2.0', 'LPi 2.0'],
+    '그랜저': ['가솔린 2.5', '가솔린 3.3', 'LPi 3.0'],
+    '캐스퍼': ['가솔린 1.0', '가솔린 1.0 터보'],
+    '코나': ['가솔린 1.6 T', '디젤 1.6'],
+    '베뉴': ['가솔린 1.6'],
+    '투싼': ['가솔린 1.6 T', '디젤 2.0'],
+    '싼타페': ['가솔린 2.5 T', '디젤 2.2'],
+    '팰리세이드': ['가솔린 3.8', '디젤 2.2'],
+    '스타리아': ['디젤 2.2', 'LPi 3.5'],
+    'G70': ['가솔린 2.0 T', '가솔린 3.3 T', '디젤 2.2'],
+    'G80': ['가솔린 2.5 T', '가솔린 3.5 T', 'LPi 3.5'],
+    'G90': ['가솔린 3.5 T', '가솔린 5.0'],
+    'GV70': ['가솔린 2.5 T', '가솔린 3.5 T', '디젤 2.2'],
+    'GV80': ['가솔린 2.5 T', '가솔린 3.5 T', '디젤 3.0'],
+  };
+  // 일반 라인업 외 특수 trim (dropdown entry 분리에서 제외)
+  const SPECIAL_TRIM_RE = /(장애인용|렌터카|영업용|택시|TAXI)/i;
+  function detectFuels(catalog, fallbackModel) {
+    if (!catalog) return new Set(['']);
+    const fuels = new Set();
+    for (const k of Object.keys(catalog.trims || {})) {
+      if (SPECIAL_TRIM_RE.test(k)) continue;  // 장애인용/렌터카/영업용 제외
+      let matched = null;
+      for (const p of FUEL_PATTERNS) {
+        const m = k.match(p.re);
+        if (m) { matched = p.group(m); break; }
+      }
+      if (matched) fuels.add(matched);
+    }
+    // trim 키에서 동력원 추출 못했고 단일 동력원 catalog (하이브리드/EV catalog) 도 아니면 모델 default 적용
+    if (fuels.size <= 1 && fallbackModel && MODEL_FUELS_FALLBACK[fallbackModel]) {
+      const isSingleSource = /하이브리드|HEV|EV|일렉트릭/i.test(catalog.title || '');
+      if (!isSingleSource) {
+        fuels.clear();
+        for (const f of MODEL_FUELS_FALLBACK[fallbackModel]) fuels.add(f);
+      }
+    }
+    return fuels;
+  }
+
   subs.forEach(r => {
     const splits = FL_SPLITS[r._key];
     if (splits) {
-      // FL split 으로 두 entry 추가 (split index encode in value)
       splits.forEach((sp, idx) => {
         const opt = document.createElement('option');
-        opt.value = `${r._key}::${idx}`;  // encar_key::split_idx
+        opt.value = `${r._key}::${idx}`;
         const yr = `${sp.from.slice(0,4)}~${sp.to ? sp.to.slice(0,4) : '현재'}`;
         opt.textContent = showYear ? `${sp.display} (${yr})` : sp.display;
         sel.appendChild(opt);
       });
-    } else {
+      return;
+    }
+    // 캐탈로그 trim 동력원 검출 — window.CAR_MASTER 에서 직접 가져오기
+    const catId = r._catalog_id || r.catalog_id || r._key;
+    const cat = (window.CAR_MASTER && window.CAR_MASTER[catId]) || null;
+    const fuels = cat ? [...detectFuels(cat, r.model)].filter(Boolean) : [];
+    const baseDisplay = normalizeSub(r);
+    const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
+
+    if (fuels.length <= 1) {
+      // 단일 동력원 또는 캐쉬 미히트 — 기존 방식
       const opt = document.createElement('option');
       opt.value = r._key;
-      const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
-      opt.textContent = showYear ? `${normalizeSub(r)} (${yr})` : normalizeSub(r);
+      opt.textContent = showYear ? `${baseDisplay} (${yr})` : baseDisplay;
       sel.appendChild(opt);
+    } else {
+      // 다중 동력원 — 동력원별로 entry 분리 (catalog title 에 이미 명시된 동력원 키워드는 중복 회피)
+      for (const f of fuels) {
+        const opt = document.createElement('option');
+        opt.value = `${r._key}::FUEL=${encodeURIComponent(f)}`;
+        const display = baseDisplay.includes(f.split(' ')[0]) ? baseDisplay : `${baseDisplay} ${f}`;
+        opt.textContent = showYear ? `${display} (${yr})` : display;
+        sel.appendChild(opt);
+      }
     }
   });
   sel.disabled = false;
@@ -2770,9 +2854,14 @@ function onModelChange() {
 async function onSubChange() {
   const rawValue = $('sub').value;
   if (!rawValue) { resetCatalog(); return; }
-  // FL split: "encar_key::idx" 형식 — split.catalogId 우선
-  const [encarKey, splitIdxStr] = rawValue.split('::');
-  const splitIdx = splitIdxStr != null ? parseInt(splitIdxStr) : null;
+  // value 형식: "encar_key" / "encar_key::idx" (FL split) / "encar_key::FUEL=가솔린 2.5"
+  const [encarKey, suffix] = rawValue.split('::');
+  let splitIdx = null, fuelFilter = null;
+  if (suffix != null) {
+    if (suffix.startsWith('FUEL=')) fuelFilter = decodeURIComponent(suffix.slice(5));
+    else splitIdx = parseInt(suffix);
+  }
+  state.activeFuel = fuelFilter;
   const split = (splitIdx != null && FL_SPLITS[encarKey]) ? FL_SPLITS[encarKey][splitIdx] : null;
   state.selected = state.master.find(r => r._key === encarKey);
   state.selectedSplit = split;
@@ -2808,7 +2897,14 @@ async function onSubChange() {
   // 트림 드롭다운 채우기 — sub_model 컨텍스트로 필터링
   const trimSel = $('trim');
   const allTrims = Object.keys(cat.trims);
-  const filteredTrims = filterTrimsBySubContext(allTrims, state.selected, state.selectedSplit);
+  let filteredTrims = filterTrimsBySubContext(allTrims, state.selected, state.selectedSplit);
+  // 동력원 필터 적용 (sub dropdown 에서 동력원 분리한 경우)
+  if (state.activeFuel) {
+    const f = state.activeFuel;
+    const matched = (filteredTrims.length ? filteredTrims : allTrims).filter(t => t.includes(f));
+    // 매칭된 trim 이 있으면 필터링, 없으면 전체 표시 (catalog 에 해당 동력원 trim 데이터 없는 경우)
+    if (matched.length) filteredTrims = matched;
+  }
   trimSel.innerHTML = '';
   (filteredTrims.length ? filteredTrims : allTrims).forEach(t => {
     const opt = document.createElement('option');
@@ -2870,6 +2966,7 @@ function resetCatalog() {
   state.selected = null;
   state.catalog = null;
   state.activeTrim = null;
+  state.activeFuel = null;
   state.selectedPkgs.clear();
   $('trim').innerHTML = '<option>트림</option>';
   $('trim').disabled = true;

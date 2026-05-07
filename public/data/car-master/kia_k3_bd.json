@@ -12,7 +12,7 @@
   "options": {},
   "categories": {},
   "trims": {
-    "트렌디": {
+    "트렌디 가솔린 1.6": {
       "slug": "트렌디",
       "price": {
         "base": 15710000
@@ -21,7 +21,16 @@
       "select": [],
       "select_groups": []
     },
-    "럭셔리": {
+    "트렌디 LPi 1.6": {
+      "slug": "트렌디",
+      "price": {
+        "base": 15710000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "럭셔리 가솔린 1.6": {
       "slug": "럭셔리",
       "price": {
         "base": 17960000
@@ -30,7 +39,16 @@
       "select": [],
       "select_groups": []
     },
-    "프레스티지": {
+    "럭셔리 LPi 1.6": {
+      "slug": "럭셔리",
+      "price": {
+        "base": 17960000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지 가솔린 1.6": {
       "slug": "프레스티지",
       "price": {
         "base": 20120000
@@ -39,7 +57,16 @@
       "select": [],
       "select_groups": []
     },
-    "노블레스": {
+    "프레스티지 LPi 1.6": {
+      "slug": "프레스티지",
+      "price": {
+        "base": 20120000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 가솔린 1.6": {
       "slug": "노블레스",
       "price": {
         "base": 21990000
@@ -48,7 +75,24 @@
       "select": [],
       "select_groups": []
     },
-    "GT 라인": {
+    "노블레스 LPi 1.6": {
+      "slug": "노블레스",
+      "price": {
+        "base": 21990000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "GT 라인 가솔린 1.6": {
+      "slug": "gt_라인",
+      "price": {},
+      "basic": [],
+      "select": [],
+      "select_groups": [],
+      "note": "1.6 터보 (T-GDI) 스포츠 트림 — 가격 별도"
+    },
+    "GT 라인 LPi 1.6": {
       "slug": "gt_라인",
       "price": {},
       "basic": [],

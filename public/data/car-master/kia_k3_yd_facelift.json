@@ -12,7 +12,7 @@
   "options": {},
   "categories": {},
   "trims": {
-    "디럭스": {
+    "디럭스 가솔린 1.6": {
       "slug": "디럭스",
       "price": {
         "base": 13950000
@@ -21,7 +21,16 @@
       "select": [],
       "select_groups": []
     },
-    "트렌디": {
+    "디럭스 LPi 1.6": {
+      "slug": "디럭스",
+      "price": {
+        "base": 13950000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "트렌디 가솔린 1.6": {
       "slug": "트렌디",
       "price": {
         "base": 17630000
@@ -30,7 +39,16 @@
       "select": [],
       "select_groups": []
     },
-    "트렌디 스타일": {
+    "트렌디 LPi 1.6": {
+      "slug": "트렌디",
+      "price": {
+        "base": 17630000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "트렌디 스타일 가솔린 1.6": {
       "slug": "트렌디_스타일",
       "price": {
         "base": 18580000
@@ -39,7 +57,16 @@
       "select": [],
       "select_groups": []
     },
-    "프레스티지 스페셜": {
+    "트렌디 스타일 LPi 1.6": {
+      "slug": "트렌디_스타일",
+      "price": {
+        "base": 18580000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "프레스티지 스페셜 가솔린 1.6": {
       "slug": "프레스티지_스페셜",
       "price": {
         "base": 21050000
@@ -48,7 +75,26 @@
       "select": [],
       "select_groups": []
     },
-    "노블레스": {
+    "프레스티지 스페셜 LPi 1.6": {
+      "slug": "프레스티지_스페셜",
+      "price": {
+        "base": 21050000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": []
+    },
+    "노블레스 가솔린 1.6": {
+      "slug": "노블레스",
+      "price": {
+        "base": 22000000
+      },
+      "basic": [],
+      "select": [],
+      "select_groups": [],
+      "note": "EURO 5도어 hatch"
+    },
+    "노블레스 LPi 1.6": {
       "slug": "노블레스",
       "price": {
         "base": 22000000

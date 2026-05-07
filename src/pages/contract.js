@@ -464,8 +464,8 @@ export function renderContractWorkV2(c) {
     const canEdit = canClick && !st.locked && !sub.rejected && !sub.auto
                     && (!sub.done || isAdmin);
     const cls = sub.rejected ? 'rejected' : sub.done ? 'done' : st.locked ? 'locked' : 'pending';
-    // 체크박스 형태 — 누르면 체크 표시 (사각). 거부는 X 사각, 잠금은 빈 사각.
-    const icon = sub.rejected ? 'ph-x-square-fill' : sub.done ? 'ph-check-square-fill' : 'ph-square';
+    // 체크박스 형태 — phosphor regular weight (fill weight 미로드)
+    const icon = sub.rejected ? 'ph-x-square' : sub.done ? 'ph-check-square' : 'ph-square';
     const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
     const adminBy = c[sub.key + '_by'] === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
     // admin 이 done 셀을 풀 수 있을 때 — 시각적으로 "취소 가능" 표시 (title 툴팁)
