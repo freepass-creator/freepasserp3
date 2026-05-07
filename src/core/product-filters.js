@@ -66,8 +66,9 @@ export const FILTERS = {
   color:     { label: '외부색상', icon: 'ph ph-palette', chips: [], dynamic: true, field: 'ext_color' },
   int_color: { label: '내부색상', icon: 'ph ph-palette', chips: [], dynamic: true, field: 'int_color' },
   vehicle_status: {
+    // vehicle_status 표준 5가지 (사용자 정책)
     label: '출고상태', icon: 'ph ph-truck',
-    chips: ['즉시출고','출고가능','상품화중','출고협의','출고불가'].map(s => ({
+    chips: ['즉시출고','출고가능','출고협의','상품화중','출고불가'].map(s => ({
       id: `vs_${s}`, label: s, match: v => v === s,
     })),
   },

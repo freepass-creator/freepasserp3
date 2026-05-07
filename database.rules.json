@@ -161,6 +161,11 @@
       }
     },
 
+    "backup": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    },
+
     "$other": {
       ".read": false,
       ".write": false

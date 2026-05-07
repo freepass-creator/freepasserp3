@@ -49,6 +49,13 @@ export async function allocateManualProductUid() {
   return `PD-${date}-${String(seq).padStart(3, '0')}`;
 }
 
+/** 임시 차량번호 — 100신NNNN 패턴 (신차/번호미정 매물용 글로벌 시퀀스).
+ *  한국 plate 형식 (3자리+한글+4자리) 통과 → isValidCarNumber 검증 OK. */
+export async function allocateTempCarNumber() {
+  const seq = await nextSequence('temp_car_number_seq');
+  return `100신${String(seq).padStart(4, '0')}`;
+}
+
 /* ── 정산 생성 (계약 완료 시) ── */
 export async function createSettlement(contract) {
   const dateStr = todayYYMMDD();

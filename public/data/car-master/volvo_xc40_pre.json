@@ -1,7 +1,7 @@
 {
   "catalog_id": "volvo_xc40_pre",
   "model_root": "XC40",
-  "title": "볼보 XC40",
+  "title": "볼보 XC40 1세대",
   "maker": "볼보",
   "source": "stub",
   "source_urls": [],
@@ -11,322 +11,516 @@
     "SUNROOF": {
       "name": "썬루프(일반)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF"
+      ]
     },
     "SUNROOF_PANO": {
       "name": "파노라마 썬루프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "HEAD_LED": {
       "name": "LED 헤드램프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "POSITION_LED": {
       "name": "LED 포지션램프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POSITION_LED"
+      ]
     },
     "DRL": {
       "name": "주간 주행등",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DRL"
+      ]
     },
     "MIRROR_FOLD": {
       "name": "전동접이 사이드미러",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "MIRROR_ADJ": {
       "name": "전동조절 사이드미러",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_ADJ"
+      ]
     },
     "ALUMINUM_WHEEL": {
       "name": "알루미늄휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "FOG_LED": {
       "name": "안개등 (LED)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FOG_LED"
+      ]
     },
     "REAR_LED_COMBI": {
       "name": "LED 리어 콤비네이션 램프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "CRUISE": {
       "name": "크루즈컨트롤",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE"
+      ]
     },
     "STR_REMOTE": {
       "name": "스티어링 휠 리모컨",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STR_REMOTE"
+      ]
     },
     "AUTO_LIGHT": {
       "name": "오토 라이트 컨트롤",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "POWER_STR": {
       "name": "파워 스티어링",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_STR"
+      ]
     },
     "HEAT_STR": {
       "name": "열선 스티어링휠",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "ECM_MIRROR": {
       "name": "ECM룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "REAR_MIRROR": {
       "name": "후방 룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REAR_MIRROR"
+      ]
     },
     "AIRBAG_DR": {
       "name": "에어백(운전석)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR"
+      ]
     },
     "AIRBAG_PS": {
       "name": "에어백(동승석)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_PS"
+      ]
     },
     "AIRBAG_SIDE": {
       "name": "에어백(사이드)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_SIDE"
+      ]
     },
     "CAM_REAR": {
       "name": "후방 카메라",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "SENSOR_REAR": {
       "name": "후방 감지센서",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "CAM_FRONT": {
       "name": "전방 카메라",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CAM_FRONT"
+      ]
     },
     "SENSOR_FRONT": {
       "name": "전방 감지센서",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_FRONT"
+      ]
     },
     "AVMS": {
       "name": "어라운드 뷰 (AVMS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "EPB": {
       "name": "전자식 파킹 브레이크",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "ABS": {
       "name": "ABS",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ABS"
+      ]
     },
     "BAS": {
       "name": "제동 도움 장치(BAS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BAS"
+      ]
     },
     "AEB": {
       "name": "자동 긴급 제동 시스템 (AEB)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "VDC": {
       "name": "차체자세제어 (VDC/VSM/ESC/ESP)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VDC"
+      ]
     },
     "TCS": {
       "name": "미끄럼방지 (TCS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TCS"
+      ]
     },
     "ESS": {
       "name": "급제동 경보 (ESS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ESS"
+      ]
     },
     "TPMS": {
       "name": "타이어 공기압감지 (TPMS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TPMS"
+      ]
     },
     "HDA": {
       "name": "고속도로 주행 지원시스템 (HDA)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "LDWS": {
       "name": "차선이탈 경보 (LDWS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "LKAS": {
       "name": "차선 유지 보조 (LKAS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "DAW": {
       "name": "운전자 주의 경고 (DAW)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DAW"
+      ]
     },
     "FCWS": {
       "name": "전방 추돌 경보 (FCWS)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FCWS"
+      ]
     },
     "HUD": {
       "name": "헤드업 디스플레이 (HUD)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "RCTA": {
       "name": "후측방 경보시스템 (RCTA)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "POWER_SEAT_DR": {
       "name": "전동시트(운전석)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "POWER_SEAT_PS": {
       "name": "전동시트(동승석)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ]
     },
     "MEMORY_SEAT_DR": {
       "name": "메모리시트(운전석)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MEMORY_SEAT_DR"
+      ]
     },
     "HEAT_SEAT_FRONT": {
       "name": "열선시트(앞좌석)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "HEAT_SEAT_REAR": {
       "name": "열선시트(뒷좌석)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "VENT_SEAT_DR": {
       "name": "통풍시트(운전석)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "VENT_SEAT_PS": {
       "name": "통풍시트(동승석)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "SEAT_LEATHER": {
       "name": "가죽시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "NAVIGATION": {
       "name": "내비게이션",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "BUTTON_START": {
       "name": "버튼 시동",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUTTON_START"
+      ]
     },
     "SMART_KEY": {
       "name": "스마트키",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "REMOTE_LOCK": {
       "name": "무선 도어 잠금장치",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REMOTE_LOCK"
+      ]
     },
     "REMOTE_START": {
       "name": "원격시동",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REMOTE_START"
+      ]
     },
     "AUTO_AC": {
       "name": "자동 에어컨",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "AUTO_AC_REAR": {
       "name": "자동 에어컨 (뒷좌석)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC",
+        "AUTO_AC_REAR"
+      ]
     },
     "SMART_TRUNK": {
       "name": "스마트 트렁크/테일게이트",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SMART_TRUNK"
+      ]
     },
     "POWER_TRUNK": {
       "name": "파워트렁크",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "POWER_WINDOW": {
       "name": "파워윈도우",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_WINDOW"
+      ]
     },
     "WPC": {
       "name": "무선충전 시스템(WPC)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "BLUETOOTH": {
       "name": "블루투스",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH"
+      ]
     },
     "USB": {
       "name": "USB 단자",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "MIRRORING": {
       "name": "유선 미러링",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "MIRRORING_WIRELESS": {
       "name": "무선 미러링",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "VOICE_RECOG": {
       "name": "음성인식 시스템",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     }
   },
   "categories": {

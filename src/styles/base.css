@@ -835,5 +835,47 @@ kbd, .kbd { font-size: 10px; padding: 0 4px; height: 18px; line-height: 16px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
+ * 전역 로딩 인디케이터 (core/loading.js) — 데스크톱·모바일 공통
+ * ═══════════════════════════════════════════════════════════════ */
+.app-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.18);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(2px);
+  animation: app-loading-fade 120ms ease-out;
+}
+@keyframes app-loading-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.app-loading-box {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px;
+  background: var(--bg-card, #fff);
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  font-size: 13px;
+  min-width: 200px;
+  max-width: 360px;
+}
+.app-loading-box .app-loading-spin {
+  font-size: 18px;
+  color: var(--alert-blue-text, #1B2A4A);
+  animation: app-loading-rotate 0.8s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes app-loading-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.app-loading-box .app-loading-msg {
+  flex: 1;
+  word-break: keep-all;
+}
+
+/* ═══════════════════════════════════════════════════════════════
  * END OF base.css
  * ═══════════════════════════════════════════════════════════════ */

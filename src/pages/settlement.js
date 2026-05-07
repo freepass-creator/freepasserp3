@@ -11,7 +11,7 @@ import { filterByRole } from '../core/roles.js';
 import {
   esc, fmtDate, fmtTime, fmtFullTime,
   listBody, emptyState, renderRoomItem, flashSaved,
-  providerNameByCode, formatMainLine, renderInfoGrid,
+  providerNameByCode, providerLabelByCode, formatMainLine, renderInfoGrid,
 } from '../core/ui-helpers.js';
 
 const SETTLE_STATUSES = ['미정산', '정산완료', '환수'];
@@ -133,7 +133,7 @@ export function renderSettlementDetail(s) {
       ['차량', carLine, true],
       ['대여료', monthlyRent],
       ['보증금', dep],
-      ['공급사', s.provider_name || s.provider_company_code, true],
+      ['공급사', providerLabelByCode(s.provider_company_code || s.partner_code, store) || s.provider_name || s.provider_company_code, true],
       ['영업', agentLine, true],
       ['원수수료', baseFee ? Math.round(baseFee/10000) + '만' : ''],
       ['정산금', fee ? Math.round(fee/10000) + '만' : ''],

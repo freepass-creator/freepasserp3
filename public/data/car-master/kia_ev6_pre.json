@@ -10,133 +10,204 @@
   "options": {
     "KRCV253001": {
       "name": "차세대 일체형 PE 시스템",
-      "category": "파워 일렉트릭",
+      "category": "편의",
       "is_package": false
     },
     "KRCV253177": {
       "name": "63.0kWh 리튬이온 배터리",
-      "category": "파워 일렉트릭",
+      "category": "편의",
       "is_package": false
     },
     "KRCV253003": {
       "name": "400V/800V 멀티 충전 시스템",
-      "category": "파워 일렉트릭",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRCV253004": {
       "name": "회생제동 브레이크 시스템",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "REGEN"
+      ]
     },
     "KRCV253005": {
       "name": "랙 구동형 전동식 파워스티어링(R-MDPS)",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "POWER_STR"
+      ]
     },
     "KRCV253006": {
       "name": "주행모드 통합제어 시스템",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "DRIVE_MODE"
+      ]
     },
     "KRCV253007": {
       "name": "히트 펌프",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_PUMP"
+      ]
     },
     "KRCV253008": {
       "name": "배터리 히팅 시스템",
-      "category": "파워 일렉트릭",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRCV253012": {
       "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "KRCV253013": {
       "name": "차로 이탈방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "KRCV253014": {
       "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "BVM",
+        "DAW"
+      ]
     },
     "KRCV253015": {
       "name": "하이빔 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "KRCV253016": {
       "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "KRCV253017": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "KRCV253018": {
       "name": "차로 유지 보조 2",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "KRCV253019": {
       "name": "지능형 속도 제한 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ISLA"
+      ]
     },
     "KRCV253020": {
       "name": "고속도로 주행 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "KRCV253021": {
       "name": "스티어링 휠 그립 감지",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "KRCV253179": {
       "name": "스티어링 휠 진동 경고",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "KRCV253032": {
       "name": "10에어백(운전석/동승석 어드밴스드, 운전석 무릎, 1열 센터 사이드, 전복감지 커튼, 1열/2열 사이드)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR"
+      ]
     },
     "KRCV253033": {
       "name": "전/후방 주차 거리 경고",
-      "category": "안전",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "KRCV253034": {
       "name": "VSM",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VDC"
+      ]
     },
     "KRCV253035": {
       "name": "다중 충돌방지 자동 제동 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "KRCV253036": {
       "name": "경사로 밀림방지장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HAC"
+      ]
     },
     "KRCV253037": {
       "name": "급제동 경보 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ESS"
+      ]
     },
     "KRCV253038": {
       "name": "개별 타이어 공기압 경보 시스템",
-      "category": "안전",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "TPMS"
+      ]
     },
     "KRCV253039": {
       "name": "1열/2열 시트벨트 리마인더",
@@ -146,12 +217,18 @@
     "KRCV253040": {
       "name": "유아용 시트 고정 장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ISOFIX"
+      ]
     },
     "KRCV253041": {
       "name": "타이어 임시수리장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TIRE_REPAIR"
+      ]
     },
     "KRCV253042": {
       "name": "소화기",
@@ -160,73 +237,106 @@
     },
     "KRCV253043": {
       "name": "가상 엔진 사운드(보행자 보호)",
-      "category": "안전",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "VESS"
+      ]
     },
     "KRCV253048": {
       "name": "235/55 R19 타이어&amp;전면가공 휠",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253049": {
       "name": "LED 헤드램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRCV253050": {
       "name": "프론트/리어 LED 턴시그널램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "KRCV253051": {
       "name": "LED 주간 주행등",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "DRL"
+      ]
     },
     "KRCV253052": {
       "name": "LED 리어 콤비네이션램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "KRCV253053": {
       "name": "LED 보조제동등",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253054": {
       "name": "LED 리피터 일체형 아웃사이드 미러(전동접이, 전동조절, 열선)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRCV253055": {
       "name": "오토 플러시 도어핸들",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "KRCV253056": {
       "name": "에어로타입 와이퍼",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AERO_WIPER"
+      ]
     },
     "KRCV253057": {
       "name": "윈드쉴드 이중접합 차음 글라스",
-      "category": "외장",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "LAMINATED_GLASS"
+      ]
     },
     "KRCV253058": {
       "name": "블랙하이그로시 서라운드 몰딩",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253059": {
       "name": "리어스포일러(바디 실루엣 램프 포함)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "REAR_SPOILER"
+      ]
     },
     "KRCV253060": {
       "name": "샤크핀 안테나",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SHARK_FIN"
+      ]
     },
     "KRCV253073": {
       "name": "블랙 또는 미디움 그레이 인테리어 선택 가능",
@@ -236,22 +346,34 @@
     "KRCV253074": {
       "name": "파노라믹 커브드 디스플레이",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRCV253075": {
       "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
-      "category": "내장",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRCV253076": {
       "name": "인조가죽 스티어링 휠",
-      "category": "내장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "KRCV253077": {
       "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_INTERIOR"
+      ]
     },
     "KRCV253078": {
       "name": "D/N 룸미러",
@@ -286,12 +408,18 @@
     "KRCV253097": {
       "name": "프리미엄 바이오 인조가죽시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "KRCV253101": {
       "name": "운전석 전동식 허리지지대",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "KRCV253102": {
       "name": "2열 6:4 폴딩시트(리클라이닝)",
@@ -315,7 +443,7 @@
     },
     "KRCV253106": {
       "name": "1열 시트벨트 높이조절장치",
-      "category": "시트",
+      "category": "안전",
       "is_package": false
     },
     "KRCV253107": {
@@ -326,86 +454,138 @@
     "KRCV253118": {
       "name": "버튼시동 스마트키 시스템(원격시동 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUTTON_START",
+        "REMOTE_START",
+        "SMART_KEY"
+      ]
     },
     "KRCV253119": {
       "name": "전자식 변속 다이얼",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "SHIFT_BY_WIRE"
+      ]
     },
     "KRCV253120": {
       "name": "회생제동 컨트롤 패들 쉬프트",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "PADDLE_SHIFT",
+        "REGEN"
+      ]
     },
     "KRCV253121": {
       "name": "전자식 파킹 브레이크(오토홀드 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "KRCV253122": {
       "name": "후방 모니터",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "KRCV253123": {
       "name": "오토 라이트 컨트롤",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "KRCV253176": {
       "name": "후석 승객 알림",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ROA"
+      ]
     },
     "KRCV253125": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
-      "category": "편의",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253126": {
       "name": "운전석 세이프티 파워윈도우",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "KRCV253127": {
       "name": "독립제어 풀오토 에어컨(운전석/동승석)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "KRCV253128": {
       "name": "고성능 에어컨 필터",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "KRCV253129": {
       "name": "공기청정 시스템(미세먼지 센서 포함)",
-      "category": "편의",
-      "is_package": false
+      "category": "내장",
+      "is_package": false,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "KRCV253130": {
       "name": "오토디포그",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "DEFOG"
+      ]
     },
     "KRCV253131": {
       "name": "2열 에어벤트",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC_REAR"
+      ]
     },
     "KRCV253132": {
       "name": "애프터 블로우",
-      "category": "편의",
-      "is_package": false
+      "category": "내장",
+      "is_package": false,
+      "fp_ids": [
+        "AFTER_BLOW"
+      ]
     },
     "KRCV253133": {
       "name": "C타입 USB 단자(충전용, 1열 1개/시트백 2개)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRCV253134": {
       "name": "파워아웃렛(1열 1개/러기지 1개)",
-      "category": "편의",
+      "category": "내장",
       "is_package": false
     },
     "KRCV253135": {
@@ -416,12 +596,21 @@
     "KRCV253136": {
       "name": "워크 어웨이 락",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WALK_AWAY_LOCK"
+      ]
     },
     "KRCV253157": {
       "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CONNECTED_CAR",
+        "DISPLAY_LCD",
+        "MIRRORING",
+        "NAVIGATION"
+      ]
     },
     "KRCV253158": {
       "name": "인포테인먼트/공조 전환 조작계",
@@ -431,7 +620,10 @@
     "KRCV253159": {
       "name": "무선 소프트웨어 업데이트",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "OTA"
+      ]
     },
     "KRCV253160": {
       "name": "6스피커",
@@ -440,33 +632,46 @@
     },
     "KRCV253161": {
       "name": "스티어링 휠 오디오 리모컨",
-      "category": "인포테인먼트",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_REMOTE"
+      ]
     },
     "KRCV253162": {
       "name": "블루투스 핸즈프리",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH",
+        "HANDS_FREE"
+      ]
     },
     "KRCV253163": {
       "name": "C타입 USB 단자(데이터/충전 전환형)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRCV253068": {
       "name": "스노우 화이트 펄",
-      "category": "선택사양",
+      "category": "편의",
       "is_package": false
     },
     "KRCV253069": {
       "name": "문스케이프 매트 그레이 / 아이보리 매트 실버",
-      "category": "선택사양",
+      "category": "내장",
       "is_package": false
     },
     "KRCV253140": {
       "name": "스마트 파워테일게이트",
-      "category": "선택사양",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "KRCV253P01": {
       "name": "드라이브 와이즈",
@@ -490,13 +695,16 @@
     },
     "KRCV253002": {
       "name": "84.0kWh 리튬이온 배터리",
-      "category": "파워 일렉트릭",
+      "category": "편의",
       "is_package": false
     },
     "KRCV253011": {
       "name": "듀얼 모터 4WD",
-      "category": "선택사양",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "KRCV253P13": {
       "name": "20인치 휠&amp;타이어",
@@ -505,28 +713,43 @@
     },
     "KRCV253009": {
       "name": "실내 V2L 콘센트",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "V2L"
+      ]
     },
     "KRCV253022": {
       "name": "후측방 충돌 경고",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRCV253023": {
       "name": "후측방 충돌방지 보조(전진 출차)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRCV253024": {
       "name": "후방 교차 충돌방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRCV253025": {
       "name": "안전 하차 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "KRCV253044": {
       "name": "전자식 차일드락",
@@ -535,38 +758,56 @@
     },
     "KRCV253061": {
       "name": "1열/2열 이중접합 차음 글라스",
-      "category": "외장",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "LAMINATED_GLASS"
+      ]
     },
     "KRCV253084": {
       "name": "전자식 룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MTS_E_MIRROR"
+      ]
     },
     "KRCV253085": {
       "name": "메탈 페달&amp;풋레스트",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "METAL_PEDAL"
+      ]
     },
     "KRCV253086": {
       "name": "프론트 트렁크",
-      "category": "내장",
+      "category": "편의",
       "is_package": false
     },
     "KRCV253098": {
       "name": "운전석 파워시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "KRCV253099": {
       "name": "1열 열선시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "KRCV253178": {
       "name": "1열 통풍시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "KRCV253109": {
       "name": "2열 리모트 폴딩 레버",
@@ -576,27 +817,42 @@
     "KRCV253137": {
       "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HIPASS"
+      ]
     },
     "KRCV253138": {
       "name": "스마트폰 무선충전 시스템",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "KRCV253139": {
       "name": "레인센서",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RAIN_SENSOR"
+      ]
     },
     "KRCV253141": {
       "name": "C타입 USB 단자(충전용, 1열 1개)",
-      "category": "편의",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRCV253124": {
       "name": "열선 스티어링 휠",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "KRCV253P02": {
       "name": "드라이브 와이즈",
@@ -635,42 +891,65 @@
     },
     "KRCV253010": {
       "name": "실외 V2L 커넥터",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "V2L"
+      ]
     },
     "KRCV253045": {
       "name": "측방 주차 거리 경고",
-      "category": "안전",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "SPAS"
+      ]
     },
     "KRCV253046": {
       "name": "후방 주차 충돌방지 보조",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "KRCV253047": {
       "name": "전/측방 주차 충돌방지 보조",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "KRCV253062": {
       "name": "프로젝션 LED 헤드램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRCV253063": {
       "name": "다이내믹 웰컴 라이트",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT",
+        "WELCOME"
+      ]
     },
     "KRCV253064": {
       "name": "순차점등 턴시그널램프(프론트/리어)",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253065": {
       "name": "블랙하이그로시(프론트/리어 범퍼 하단부, 휠아치 몰딩, 사이드 가니쉬)",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253087": {
@@ -681,7 +960,10 @@
     "KRCV253088": {
       "name": "앰비언트 라이트",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "KRCV253089": {
       "name": "지오닉 3D 패턴 원단감싸기(크래쉬패드 상단, 콘솔암레스트)",
@@ -711,7 +993,10 @@
     "KRCV253110": {
       "name": "동승석 파워시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ]
     },
     "KRCV253111": {
       "name": "1열 릴렉션 컴포트시트",
@@ -721,17 +1006,27 @@
     "KRCV253112": {
       "name": "동승석 워크인 디바이스",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WORKIN"
+      ]
     },
     "KRCV253113": {
       "name": "동승석 전동식 허리지지대",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ]
     },
     "KRCV253114": {
       "name": "2열 열선시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR"
+      ]
     },
     "KRCV253115": {
       "name": "1열 시트백 상단 인조가죽 감싸기",
@@ -740,53 +1035,84 @@
     },
     "KRCV253142": {
       "name": "헤드업 디스플레이",
-      "category": "편의",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "KRCV253143": {
       "name": "서라운드 뷰 모니터",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "KRCV253144": {
       "name": "후측방 모니터",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "KRCV253145": {
       "name": "기아 디지털 키 2",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "KRCV253146": {
       "name": "지능형 헤드램프(IFS)",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRCV253148": {
       "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
-      "category": "편의",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253149": {
       "name": "운전자세 메모리 시스템(운전석 시트, 스티어링 휠, 아웃사이드 미러)",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRCV253150": {
       "name": "운전석 이지 억세스",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "EASY_ACCESS"
+      ]
     },
     "KRCV253151": {
       "name": "후진연동 자동하향 아웃사이드 미러",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRCV253152": {
       "name": "동승석/2열 세이프티 파워윈도우",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "KRCV253153": {
       "name": "에어컨 광촉매 살균 시스템",
@@ -795,8 +1121,11 @@
     },
     "KRCV253031": {
       "name": "원격 스마트 주차 보조 2",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "SPAS"
+      ]
     },
     "KRCV253P08": {
       "name": "메리디안 프리미엄 사운드",
@@ -805,8 +1134,12 @@
     },
     "KRCV253067": {
       "name": "와이드 선루프",
-      "category": "선택사양",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "KRCV253P11": {
       "name": "스마트 커넥트",
@@ -815,22 +1148,25 @@
     },
     "KRCV253066": {
       "name": "GT-Line 전용 외장 디자인(프론트 LED 센터 포지셔닝 램프, 전용 프론트/리어 범퍼, 바디칼라 휠아치 몰딩, 전용 엠블럼)",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253094": {
       "name": "GT-Line 전용 내장 디자인(블랙&amp;화이트 인테리어, 3스포크 스티어링 휠, 전용 지오닉 3D 패턴 원단감싸기)",
-      "category": "내장",
+      "category": "외관",
       "is_package": false
     },
     "KRCV253116": {
       "name": "GT-Line 전용 프리미엄 바이오 인조가죽시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "KRCV253070": {
       "name": "요트 매트 블루",
-      "category": "선택사양",
+      "category": "내장",
       "is_package": false
     },
     "KRCV253P12": {
@@ -850,20 +1186,37 @@
     }
   },
   "categories": {
-    "파워 일렉트릭": [
-      "KRCV253001",
-      "KRCV253177",
+    "파워트레인/성능": [
       "KRCV253003",
       "KRCV253004",
       "KRCV253005",
       "KRCV253006",
-      "KRCV253007",
       "KRCV253008",
-      "KRCV253002",
+      "KRCV253038",
+      "KRCV253043",
+      "KRCV253119",
+      "KRCV253120",
+      "KRCV253011",
       "KRCV253009",
+      "KRCV253138",
       "KRCV253010"
     ],
-    "첨단 운전자 보조(ADAS)": [
+    "안전": [
+      "KRCV253032",
+      "KRCV253034",
+      "KRCV253035",
+      "KRCV253036",
+      "KRCV253037",
+      "KRCV253039",
+      "KRCV253040",
+      "KRCV253041",
+      "KRCV253042",
+      "KRCV253106",
+      "KRCV253044",
+      "KRCV253046",
+      "KRCV253047"
+    ],
+    "지능형 안전 기술": [
       "KRCV253012",
       "KRCV253013",
       "KRCV253014",
@@ -874,31 +1227,17 @@
       "KRCV253019",
       "KRCV253020",
       "KRCV253021",
-      "KRCV253179",
+      "KRCV253176",
       "KRCV253022",
       "KRCV253023",
       "KRCV253024",
-      "KRCV253025"
+      "KRCV253025",
+      "KRCV253143",
+      "KRCV253144",
+      "KRCV253031"
     ],
-    "안전": [
-      "KRCV253032",
-      "KRCV253033",
-      "KRCV253034",
-      "KRCV253035",
-      "KRCV253036",
-      "KRCV253037",
-      "KRCV253038",
-      "KRCV253039",
-      "KRCV253040",
-      "KRCV253041",
-      "KRCV253042",
-      "KRCV253043",
-      "KRCV253044",
-      "KRCV253045",
-      "KRCV253046",
-      "KRCV253047"
-    ],
-    "외장": [
+    "외관": [
+      "KRCV253179",
       "KRCV253048",
       "KRCV253049",
       "KRCV253050",
@@ -908,22 +1247,29 @@
       "KRCV253054",
       "KRCV253055",
       "KRCV253056",
-      "KRCV253057",
       "KRCV253058",
       "KRCV253059",
       "KRCV253060",
-      "KRCV253061",
+      "KRCV253076",
+      "KRCV253125",
+      "KRCV253130",
+      "KRCV253161",
+      "KRCV253124",
       "KRCV253062",
       "KRCV253063",
       "KRCV253064",
       "KRCV253065",
-      "KRCV253066"
+      "KRCV253146",
+      "KRCV253148",
+      "KRCV253149",
+      "KRCV253151",
+      "KRCV253067",
+      "KRCV253066",
+      "KRCV253094"
     ],
     "내장": [
       "KRCV253073",
       "KRCV253074",
-      "KRCV253075",
-      "KRCV253076",
       "KRCV253077",
       "KRCV253078",
       "KRCV253079",
@@ -931,9 +1277,12 @@
       "KRCV253081",
       "KRCV253082",
       "KRCV253083",
+      "KRCV253129",
+      "KRCV253132",
+      "KRCV253134",
+      "KRCV253069",
       "KRCV253084",
       "KRCV253085",
-      "KRCV253086",
       "KRCV253087",
       "KRCV253088",
       "KRCV253089",
@@ -941,7 +1290,7 @@
       "KRCV253091",
       "KRCV253092",
       "KRCV253093",
-      "KRCV253094"
+      "KRCV253070"
     ],
     "시트": [
       "KRCV253097",
@@ -950,8 +1299,11 @@
       "KRCV253103",
       "KRCV253104",
       "KRCV253105",
-      "KRCV253106",
       "KRCV253107",
+      "KRCV253127",
+      "KRCV253131",
+      "KRCV253133",
+      "KRCV253061",
       "KRCV253098",
       "KRCV253099",
       "KRCV253178",
@@ -962,64 +1314,50 @@
       "KRCV253113",
       "KRCV253114",
       "KRCV253115",
+      "KRCV253150",
+      "KRCV253152",
       "KRCV253116"
     ],
     "편의": [
+      "KRCV253001",
+      "KRCV253177",
+      "KRCV253007",
+      "KRCV253033",
+      "KRCV253057",
       "KRCV253118",
-      "KRCV253119",
-      "KRCV253120",
       "KRCV253121",
       "KRCV253122",
       "KRCV253123",
-      "KRCV253176",
-      "KRCV253125",
       "KRCV253126",
-      "KRCV253127",
       "KRCV253128",
-      "KRCV253129",
-      "KRCV253130",
-      "KRCV253131",
-      "KRCV253132",
-      "KRCV253133",
-      "KRCV253134",
       "KRCV253135",
       "KRCV253136",
+      "KRCV253068",
+      "KRCV253140",
+      "KRCV253002",
+      "KRCV253086",
       "KRCV253137",
-      "KRCV253138",
       "KRCV253139",
-      "KRCV253141",
-      "KRCV253124",
-      "KRCV253142",
-      "KRCV253143",
-      "KRCV253144",
+      "KRCV253045",
       "KRCV253145",
-      "KRCV253146",
-      "KRCV253148",
-      "KRCV253149",
-      "KRCV253150",
-      "KRCV253151",
-      "KRCV253152",
-      "KRCV253153",
-      "KRCV253031"
+      "KRCV253153"
     ],
     "인포테인먼트": [
+      "KRCV253075",
       "KRCV253157",
       "KRCV253158",
       "KRCV253159",
       "KRCV253160",
-      "KRCV253161",
       "KRCV253162",
-      "KRCV253163"
+      "KRCV253163",
+      "KRCV253141",
+      "KRCV253142"
     ],
     "선택사양": [
-      "KRCV253068",
-      "KRCV253069",
-      "KRCV253140",
       "KRCV253P01",
       "KRCV253P04",
       "KRCV253P17",
       "KRCV253P16",
-      "KRCV253011",
       "KRCV253P13",
       "KRCV253P02",
       "KRCV253P03",
@@ -1029,9 +1367,7 @@
       "KRCV253P09",
       "KRCV253P10",
       "KRCV253P08",
-      "KRCV253067",
       "KRCV253P11",
-      "KRCV253070",
       "KRCV253P12",
       "KRCV253P14",
       "KRCV253P15"

@@ -67,6 +67,7 @@ import {
   searchToggleQuickFilter, isQuickFilterActive, clearAllSearchFilters,
   searchTogglePeriod, isPeriodVisible,
   searchExportExcel, searchDownloadPhotoZip,
+  openSearchFilterSheet,
 } from './pages/search.js';
 import {
   renderRoomList, selectRoom, renderRoomDetail, renderChatMessages,
@@ -273,6 +274,14 @@ function renderFilteredRooms() {
 
 window.refreshPageActions = function(pageName) {
   const p = pageName || document.querySelector('.pt-page.active')?.dataset.page;
+  // 검색창 옆 필터 아이콘 — search 페이지가 아니면 항상 숨김 (search 분기에서 다시 켬)
+  const filterBtn = document.getElementById('ptTbFilterBtn');
+  if (filterBtn && p !== 'search') {
+    filterBtn.hidden = true;
+    filterBtn.classList.remove('is-active');
+    const dot = document.getElementById('ptTbFilterDot');
+    if (dot) dot.hidden = true;
+  }
   if (!p) { setPageActions({}); return; }
 
   const activeItem = document.querySelector(`.pt-page[data-page="${p}"] .ws4-list .room-item.active`);
@@ -547,15 +556,16 @@ window.refreshPageActions = function(pageName) {
       fn(cur);
     };
 
-    // 좌: 퀵 필터 — 맨 앞에 [전체] 토글 (모든 필터 해제 + 활성표시)
+    // 좌: 퀵 필터 — [전체] / 신차 / 중고 / 만26세
+    //   ([퀵필터] 시트는 검색창 우측 아이콘 #ptTbFilterBtn 으로 이동)
     const QUICK = [
       { v: 'new', l: '신차' },
       { v: 'used', l: '중고' },
       { v: 'age26', l: '만26세 이하' },
-      { v: 'rent', l: '대여료 구간' },
-      { v: 'deposit', l: '보증금 구간' },
     ];
-    const anyActive = QUICK.some(q => isQuickFilterActive(q.v));
+    const sheetCount = Object.values(_searchFilter.activeFilters || {})
+      .reduce((n, set) => n + (set?.size || 0), 0);
+    const anyActive = QUICK.some(q => isQuickFilterActive(q.v)) || sheetCount > 0;
     const left = [
       { chip: true, label: '전체', active: !anyActive,
         title: '모든 필터 해제',
@@ -565,6 +575,15 @@ window.refreshPageActions = function(pageName) {
         onClick: (e) => searchToggleQuickFilter(q.v, e.currentTarget),
       })),
     ];
+
+    // 검색창 우측 필터 아이콘 — search 페이지에서만 노출, dot 으로 활성 상태 표시
+    const filterBtn = document.getElementById('ptTbFilterBtn');
+    if (filterBtn) {
+      filterBtn.hidden = false;
+      filterBtn.classList.toggle('is-active', sheetCount > 0);
+      const dot = document.getElementById('ptTbFilterDot');
+      if (dot) dot.hidden = sheetCount === 0;
+    }
 
     // 중: 선택 차량 액션 (소통/계약/공유) + 출력(엑셀/사진)
     const center = [
@@ -815,6 +834,55 @@ function copyPolicy(pol) {
 }
 
 /* 정책 신규등록 — 빈 레코드 + 즉시 편집 모드 + draft tracking */
+/* 파트너 신규등록 — admin 만 가능. createNewPolicy 와 동일 패턴.
+ *  중복 신규 draft 방지 + PT-XXXX 코드 발급 + 즉시 편집 모드 진입. */
+async function createNewPartner() {
+  const me = store.currentUser;
+  const role = me?.role;
+  if (role !== 'admin') {
+    showToast('파트너 등록은 관리자 전용', 'error');
+    return;
+  }
+  // 중복 draft 방지 — 이미 입력 중인 빈 draft 활성화
+  const pendingDraft = (store.partners || []).find(p => isDraftPending('partners', p._key));
+  if (pendingDraft) {
+    const item = document.querySelector(`.pt-page[data-page="partners"] .ws4-list .room-item[data-id="${pendingDraft._key}"]`);
+    if (item) {
+      document.querySelectorAll('.pt-page[data-page="partners"] .room-item').forEach(r => r.classList.remove('active'));
+      item.classList.add('active');
+      item.scrollIntoView({ block: 'nearest' });
+    }
+    const m = await import('./pages/partner.js');
+    m.renderPartnerDetail(pendingDraft);
+    showToast('이미 입력 중인 신규 파트너가 있습니다', 'info');
+    return;
+  }
+  const { allocatePartnerCode } = await import('./firebase/collections.js');
+  const code = await allocatePartnerCode();
+  const newRec = {
+    _key: code,
+    partner_code: code,
+    partner_name: '',
+    status: 'active',
+    created_at: Date.now(),
+    created_by: me.uid,
+  };
+  store.partners = [newRec, ...(store.partners || [])];
+  const m = await import('./pages/partner.js');
+  m.renderPartnerList(store.partners);
+  const item = document.querySelector(`.pt-page[data-page="partners"] .ws4-list .room-item[data-id="${code}"]`);
+  if (item) {
+    document.querySelectorAll('.pt-page[data-page="partners"] .room-item').forEach(r => r.classList.remove('active'));
+    item.classList.add('active');
+    item.scrollIntoView({ block: 'nearest' });
+  }
+  m.renderPartnerDetail(newRec);
+  // 신규 draft 모드 — 편집모드 진입 + 필수필드 추적
+  if (typeof window.toggleEditMode === 'function') window.toggleEditMode(true);
+  trackDraft('partners', code, 'partner_name');
+  window.refreshPageActions?.();
+}
+
 async function createNewPolicy() {
   const me = store.currentUser;
   const role = me?.role;
@@ -1568,6 +1636,10 @@ function applyGlobalSearch() {
 function bindGlobalSearch() {
   const sb = document.getElementById('ptTbSearch');
   if (!sb) return;
+  // 검색창 우측 필터 아이콘 — search 페이지에서만 노출, 모바일과 동일 sheet 호출
+  document.getElementById('ptTbFilterBtn')?.addEventListener('click', () => {
+    openSearchFilterSheet();
+  });
   // 디바운스 — 키 입력 후 120ms 멈췄을 때만 필터 실행 (타이핑 중 매 키 재렌더 차단)
   let _searchTimer = null;
   sb.addEventListener('input', (e) => {
@@ -1965,10 +2037,12 @@ function hydrateUser(user) {
 
 /* ── 사이드바 카운트 자동 갱신 — "처리 필요"만 카운트. watchCollection 후 호출 ── */
 function updateSidebarCounts() {
+  // dot 모드 — 카운트 숫자 X, 미처리 항목 있으면 빨간 점만 (Slack/Discord 패턴, 트렌드)
   const setCnt = (page, n) => {
     const el = document.querySelector(`.pt-sb a[data-page="${page}"] .cnt`);
     if (!el) return;
-    el.textContent = n > 0 ? String(n) : '';
+    el.classList.toggle('has-unread', n > 0);
+    el.textContent = '';   // textContent 비움 — CSS 가 dot 그림
   };
   const role = store.currentUser?.role;
 

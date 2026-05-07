@@ -16,12 +16,18 @@
     "GN03003": {
       "name": "8단 자동변속기",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TRANS_AT"
+      ]
     },
     "GN03004": {
       "name": "랙구동형 전동식 파워 스티어링(R-MDPS)",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_STR"
+      ]
     },
     "GN03012": {
       "name": "원형봄베",
@@ -31,7 +37,10 @@
     "GN03005": {
       "name": "통합 주행 모드",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DRIVE_MODE"
+      ]
     },
     "GN03006": {
       "name": "전방 예측 변속 시스템",
@@ -46,7 +55,10 @@
     "GN03008": {
       "name": "전자식 변속 칼럼(진동 경고)",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SHIFT_BY_WIRE"
+      ]
     },
     "GN03013": {
       "name": "10 에어백 시스템(1열 어드밴스드/센터사이드, 1/2열 사이드, 운전석 무릎, 전복대응 커튼)",
@@ -56,12 +68,18 @@
     "GN03014": {
       "name": "유아용 시트 고정 장치(2열 2개)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ISOFIX"
+      ]
     },
     "GN03015": {
       "name": "다중 충돌방지 자동 제동 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "GN03016": {
       "name": "실내 소화기",
@@ -76,82 +94,134 @@
     "GN03019": {
       "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "GN03020": {
       "name": "차로 이탈방지 보조",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "GN03021": {
       "name": "차로 유지 보조 2",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "GN03022": {
       "name": "지능형 속도 제한 보조",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ISLA"
+      ]
     },
     "GN03023": {
       "name": "운전자 주의 경고",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DAW"
+      ]
     },
     "GN03024": {
       "name": "하이빔 보조",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "GN03025": {
       "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "GN03026": {
       "name": "후석 승객 알림",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ROA"
+      ]
     },
     "GN03027": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간/곡선로)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "GN03028": {
       "name": "고속도로 주행 보조",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "GN03029": {
       "name": "스티어링 휠 그립감지",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "GN03134": {
       "name": "전방 차량 출발 알림",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "GN03040": {
       "name": "18인치 알로이 휠 & 타이어",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "GN03041": {
       "name": "수평형 LED 램프(심리스 호라이즌 램프 - 주간주행등, 방향지시등, 포지셔닝 램프)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DRL"
+      ]
     },
     "GN03042": {
       "name": "Full LED 헤드램프(프로젝션 타입)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "GN03043": {
       "name": "LED 리어콤비램프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "GN03044": {
       "name": "LED 보조제동등",
@@ -161,7 +231,10 @@
     "GN03045": {
       "name": "LED 방향지시등(뒤)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "GN03046": {
       "name": "프레임리스 도어",
@@ -171,67 +244,103 @@
     "GN03047": {
       "name": "오토 플러시 도어 핸들",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "GN03048": {
       "name": "이중접합 차음유리(윈드쉴드, 1/2열 도어, 리어 쿼터)",
-      "category": "외관",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "LAMINATED_GLASS"
+      ]
     },
     "GN03049": {
       "name": "자외선 차단유리(윈드쉴드)",
-      "category": "외관",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "UV_GLASS"
+      ]
     },
     "GN03050": {
       "name": "아웃사이드미러(열선, 전동접이, 전동조절, LED 방향지시등)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN",
+        "MIRROR_FOLD"
+      ]
     },
     "GN03063": {
       "name": "클러스터(12.3인치 컬러 LCD)",
-      "category": "내장",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "GN03064": {
       "name": "원스포크 타입 가죽 스티어링 휠(열선, 인터랙티브 픽셀 라이트 포함)",
-      "category": "내장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR",
+        "STR_LEATHER"
+      ]
     },
     "GN03065": {
       "name": "베젤리스 인사이드미러",
-      "category": "내장",
+      "category": "외관",
       "is_package": false
     },
     "GN03066": {
       "name": "실내 항균 처리 소재(센터콘솔, 도어트림, 도어 암레스트, 시트 주요 부분)",
-      "category": "내장",
+      "category": "시트",
       "is_package": false
     },
     "GN03067": {
       "name": "LED 실내등(맵램프, 룸램프, 선바이저램프, 러기지램프)",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_INTERIOR"
+      ]
     },
     "GN03075": {
       "name": "인조가죽 시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "GN03077": {
       "name": "운전석 전동시트(8way, 럼버 서포트)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "GN03078": {
       "name": "동승석 전동시트(4way)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ]
     },
     "GN03079": {
       "name": "전좌석 열선시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR"
+      ]
     },
     "GN03080": {
       "name": "2열 암레스트",
@@ -241,27 +350,46 @@
     "GN03089": {
       "name": "버튼 시동 & 스마트 키",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUTTON_START",
+        "SMART_KEY"
+      ]
     },
     "GN03090": {
       "name": "패들쉬프트",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "PADDLE_SHIFT"
+      ]
     },
     "GN03091": {
       "name": "수동식 틸트 & 텔레스코픽 스티어링 휠",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "GN03118": {
       "name": "스마트 트렁크",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SMART_TRUNK"
+      ]
     },
     "GN03093": {
       "name": "듀얼 풀오토 에어컨(마이크로 에어필터/오토 디포그/미세먼지 센서/공기청정모드/애프터 블로우)",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AFTER_BLOW",
+        "AIR_PURIFY",
+        "AUTO_AC",
+        "DEFOG"
+      ]
     },
     "GN03094": {
       "name": "에어컨 광촉매 살균 시스템",
@@ -271,57 +399,95 @@
     "GN03095": {
       "name": "레인센서",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RAIN_SENSOR"
+      ]
     },
     "GN03096": {
       "name": "세이프티 파워 윈도우(전좌석)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "GN03097": {
       "name": "전동식 파킹 브레이크(오토홀드 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "GN03098": {
       "name": "하이패스",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HIPASS"
+      ]
     },
     "GN03099": {
       "name": "전방/후방 주차 거리 경고",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_FRONT",
+        "SENSOR_REAR"
+      ]
     },
     "GN03100": {
       "name": "후방 모니터",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "GN03101": {
       "name": "USB C타입 단자(1열 충전 1개/충전·데이터 스위치 타입 1개, 2열 충전 2개)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "GN03102": {
       "name": "파워아웃렛(센터콘솔)",
-      "category": "편의",
+      "category": "내장",
       "is_package": false
     },
     "GN03103": {
       "name": "워크 어웨이 락",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WALK_AWAY_LOCK"
+      ]
     },
     "GN03104": {
       "name": "2열 시트 벨트 조명",
-      "category": "편의",
+      "category": "안전",
       "is_package": false
     },
     "GN03119": {
       "name": "12.3인치 내비게이션(블루링크, 폰 프로젝션, 블루투스 핸즈프리, 인카페이먼트/e hi-pass)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH",
+        "CONNECTED_CAR",
+        "DISPLAY_LCD",
+        "HANDS_FREE",
+        "HIPASS",
+        "MIRRORING",
+        "NAVIGATION"
+      ]
     },
     "GN03120": {
       "name": "일반 오디오 시스템(8 스피커)",
@@ -331,17 +497,27 @@
     "GN03121": {
       "name": "무선 소프트웨어 업데이트(OTA Software Update)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "OTA"
+      ]
     },
     "GN03051": {
       "name": "파노라마 선루프",
-      "category": "선택사양",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "GN03105": {
       "name": "헤드업 디스플레이",
-      "category": "선택사양",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "GN03P05": {
       "name": "플래티넘",
@@ -365,63 +541,98 @@
     },
     "GN03124": {
       "name": "차량 보호 필름",
-      "category": "선택사양",
+      "category": "외관",
       "is_package": false
     },
     "GN03125": {
       "name": "빌트인 공기청정기 2.0",
-      "category": "선택사양",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "GN03030": {
       "name": "후측방 충돌 경고(주행)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "GN03031": {
       "name": "후측방 충돌방지 보조(전진 출차)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "GN03032": {
       "name": "후방 교차 충돌방지 보조",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "GN03033": {
       "name": "후방 주차 충돌방지 보조",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "GN03034": {
       "name": "안전 하차 보조",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "GN03069": {
       "name": "진동경고 스티어링 휠",
-      "category": "지능형 안전 기술",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "GN03052": {
       "name": "자외선 차단유리(1/2열 도어, 뒷면유리)",
-      "category": "외관",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "UV_GLASS"
+      ]
     },
     "GN03070": {
       "name": "뒷면 전동식 커튼",
-      "category": "내장",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "CURTAIN_E"
+      ]
     },
     "GN03074": {
       "name": "천연가죽 시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "GN03076": {
       "name": "1열 통풍시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "GN03081": {
       "name": "운전석 에르고 모션 시트(18way, 4way럼버 서포트, 쿠션 익스텐션, 릴렉션 컴포트, 자세메모리 시스템, 스트레칭 모드)",
@@ -431,57 +642,92 @@
     "GN03082": {
       "name": "동승석 전동시트(8way, 럼버 서포트, 릴렉션 컴포트, 워크인 디바이스)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS",
+        "WORKIN"
+      ]
     },
     "GN03106": {
       "name": "디지털 키 2",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "GN03092": {
       "name": "스마트 파워 트렁크",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_TRUNK",
+        "SMART_TRUNK"
+      ]
     },
     "GN03107": {
       "name": "스마트폰 무선 충전",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "GN03068": {
       "name": "전동식 틸트 & 텔레스코픽 스티어링 휠",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "GN03108": {
       "name": "실내 지문 인증 시스템(개인화, 시동, 결제 등)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FINGERPRINT"
+      ]
     },
     "GN03109": {
       "name": "서라운드 뷰 모니터",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "GN03110": {
       "name": "후측방 모니터",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "GN03111": {
       "name": "측방 주차 거리 경고",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SPAS"
+      ]
     },
     "GN03112": {
       "name": "원격 스마트 주차 보조",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "SPAS"
+      ]
     },
     "GN03113": {
       "name": "후진 가이드 램프",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REVERSE_GUIDE"
+      ]
     },
     "GN03P16": {
       "name": "현대 스마트센스Ⅱ",
@@ -495,43 +741,67 @@
     },
     "GN03126": {
       "name": "20인치 고휘도 스퍼터링 휠",
-      "category": "선택사양",
+      "category": "외관",
       "is_package": false
     },
     "GN03130": {
       "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/교차 차량/정면 대향차/추월 시 대향차/측방 접근차/회피 조향 보조)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "GN03037": {
       "name": "어드밴스드 후석 승객 알림",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ROA"
+      ]
     },
     "GN03131": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간/곡선로/진출입로)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "GN03036": {
       "name": "고속도로 주행 보조 2",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "GN03132": {
       "name": "후측방 충돌방지 보조(전진 출차/주행)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "GN03129": {
       "name": "자외선 차단유리(윈드쉴드, 1/2열 도어, 뒷면유리)",
-      "category": "외관",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "UV_GLASS"
+      ]
     },
     "GN03133": {
       "name": "전방/측방/후방 주차 거리 경고",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "GN03P09": {
       "name": "플래티넘 플러스",
@@ -550,8 +820,11 @@
     },
     "GN03009": {
       "name": "HTRAC",
-      "category": "선택사양",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "GN03P03": {
       "name": "컨비니언스",
@@ -565,13 +838,16 @@
     },
     "GN03071": {
       "name": "10.25인치 풀터치 공조 컨트롤러(햅틱 기능 포함)",
-      "category": "내장",
+      "category": "편의",
       "is_package": false
     },
     "GN03072": {
       "name": "인터랙티브 앰비언트 무드 램프(순차 점등, 주행 상황 연동 기능 등)",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "GN03P02": {
       "name": "현대 스마트센스Ⅱ 플러스",
@@ -585,23 +861,38 @@
     },
     "GN03062": {
       "name": "19인치 알로이 휠 & 타이어",
-      "category": "선택사양",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "GN03035": {
       "name": "전방 충돌방지 보조(교차 차량/추월 시 대향차/측방 접근차/회피 조향 보조)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "GN03038": {
       "name": "후측방 충돌방지 보조(주행)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "GN03039": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)",
       "category": "지능형 안전 기술",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "GN03053": {
       "name": "블랙 잉크 전용 블랙 외관 디자인(라디에이터 그릴, 범퍼 그릴, 범퍼 몰딩, 램프 몰딩, 사이드 가니시, O/S 핸들 데코, DLO 몰딩, 엠블럼)",
@@ -611,7 +902,10 @@
     "GN03054": {
       "name": "19인치 캘리그래피 전용 알로이 휠 & 타이어",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "GN03055": {
       "name": "순차 점등 방향지시등(앞/뒤)",
@@ -631,17 +925,26 @@
     "GN03114": {
       "name": "빌트인 캠 2",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "GN03115": {
       "name": "증강현실 내비게이션",
-      "category": "편의",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "GN03122": {
       "name": "BOSE 프리미엄 사운드(14 스피커, 외장앰프)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "GN03123": {
       "name": "액티브 로드 노이즈 컨트롤",
@@ -656,7 +959,10 @@
     "GN03057": {
       "name": "캘리그래피 전용 그릴 & 전용 19인치 알로이 휠 & 타이어",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "GN03061": {
       "name": "발수 적용 1열 유리",
@@ -665,13 +971,16 @@
     },
     "GN03073": {
       "name": "캘리그래피 전용 디자인 [나파 가죽 감싸기 스티어링 휠(혼커버 포함, 리얼 스티치 적용, 투톤 컬러), 인조 가죽 내장재(PU소재 크래시패드, 도어어퍼트림 적용), 인조 가죽 감싸기(3D 엠보 도어센터트림, 콘솔사이드), 리얼 우드(크래시패드 가니시, 콘솔어퍼커버) 또는 리얼 알루미늄 내장재(크래시패드 가니시), 스웨이드 내장재(헤드라이닝, 필라트림, 패키지트레이, 선바이저), 스웨이드 목베개, 고급 카매트]",
-      "category": "내장",
+      "category": "외관",
       "is_package": false
     },
     "GN03084": {
       "name": "나파 가죽 시트(퀼팅, 파이핑 적용)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "GN03085": {
       "name": "모노포스트 헤드레스트",
@@ -680,7 +989,7 @@
     },
     "GN03116": {
       "name": "자외선 살균 시스템(센터콘솔)",
-      "category": "편의",
+      "category": "내장",
       "is_package": false
     },
     "GN03P08": {
@@ -691,16 +1000,22 @@
     "GN03010": {
       "name": "프리뷰 전자제어 서스펜션",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECS"
+      ]
     },
     "GN03135": {
       "name": "20인치 블랙 잉크 전용 블랙 알로이 휠 & 피렐리 타이어",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "GN03136": {
       "name": "블랙 잉크 전용 블랙 내장 디자인(블랙 컬러 리얼 알루미늄 내장재, 블랙 컬러 인조 가죽 감싸기 및 스웨이드 내장재, 블랙 컬러 도어스텝, 스피커 그릴 등)",
-      "category": "내장",
+      "category": "외관",
       "is_package": false
     }
   },
@@ -714,7 +1029,9 @@
       "GN03006",
       "GN03007",
       "GN03008",
+      "GN03090",
       "GN03001",
+      "GN03009",
       "GN03010"
     ],
     "안전": [
@@ -722,7 +1039,8 @@
       "GN03014",
       "GN03015",
       "GN03016",
-      "GN03018"
+      "GN03018",
+      "GN03104"
     ],
     "지능형 안전 기술": [
       "GN03019",
@@ -742,7 +1060,9 @@
       "GN03032",
       "GN03033",
       "GN03034",
-      "GN03069",
+      "GN03109",
+      "GN03110",
+      "GN03112",
       "GN03130",
       "GN03037",
       "GN03131",
@@ -761,51 +1081,56 @@
       "GN03045",
       "GN03046",
       "GN03047",
-      "GN03048",
-      "GN03049",
       "GN03050",
-      "GN03052",
-      "GN03129",
+      "GN03064",
+      "GN03065",
+      "GN03091",
+      "GN03093",
+      "GN03051",
+      "GN03124",
+      "GN03069",
+      "GN03068",
+      "GN03126",
+      "GN03062",
       "GN03053",
       "GN03054",
       "GN03055",
       "GN03056",
       "GN03057",
       "GN03061",
-      "GN03135"
-    ],
-    "내장": [
-      "GN03063",
-      "GN03064",
-      "GN03065",
-      "GN03066",
-      "GN03067",
-      "GN03070",
-      "GN03071",
-      "GN03072",
       "GN03073",
+      "GN03135",
       "GN03136"
     ],
+    "내장": [
+      "GN03067",
+      "GN03102",
+      "GN03072",
+      "GN03116"
+    ],
     "시트": [
+      "GN03048",
+      "GN03066",
       "GN03075",
       "GN03077",
       "GN03078",
       "GN03079",
       "GN03080",
+      "GN03101",
+      "GN03052",
       "GN03074",
       "GN03076",
       "GN03081",
       "GN03082",
+      "GN03129",
       "GN03083",
       "GN03084",
       "GN03085"
     ],
     "편의": [
+      "GN03049",
       "GN03089",
-      "GN03090",
-      "GN03091",
       "GN03118",
-      "GN03093",
       "GN03094",
       "GN03095",
       "GN03096",
@@ -813,52 +1138,42 @@
       "GN03098",
       "GN03099",
       "GN03100",
-      "GN03101",
-      "GN03102",
       "GN03103",
-      "GN03104",
+      "GN03125",
+      "GN03070",
       "GN03106",
       "GN03092",
       "GN03107",
-      "GN03068",
       "GN03108",
-      "GN03109",
-      "GN03110",
       "GN03111",
-      "GN03112",
       "GN03113",
       "GN03133",
-      "GN03114",
-      "GN03115",
-      "GN03116"
+      "GN03071",
+      "GN03114"
     ],
     "인포테인먼트": [
+      "GN03063",
       "GN03119",
       "GN03120",
       "GN03121",
+      "GN03105",
+      "GN03115",
       "GN03122",
       "GN03123"
     ],
     "선택사양": [
-      "GN03051",
-      "GN03105",
       "GN03P05",
       "GN03P06",
       "GN03P01",
       "GN03P17",
-      "GN03124",
-      "GN03125",
       "GN03P16",
       "GN03P10",
-      "GN03126",
       "GN03P09",
       "GN03P04",
-      "GN03009",
       "GN03P03",
       "GN03P13",
       "GN03P02",
       "GN03P07",
-      "GN03062",
       "GN03P11",
       "GN03P08"
     ]

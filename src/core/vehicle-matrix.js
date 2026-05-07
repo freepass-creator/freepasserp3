@@ -342,6 +342,8 @@ function aliasNorm(s) {
 // 배기량 cc → 호환 표기 (1999 → '2.0')
 function ccToDisp(cc) {
   if (!cc) return null;
+  // 이미 "1.6" / "2.0" 같은 displacement 형태면 그대로 통과 (시트 파서가 trim_name 에서 추출한 케이스)
+  if (typeof cc === 'string' && /^\d\.\d$/.test(cc.trim())) return cc.trim();
   const n = parseInt(cc);
   if (isNaN(n)) return null;
   if (n >= 900 && n < 1100)  return '1.0';

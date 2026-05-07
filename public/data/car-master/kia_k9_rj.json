@@ -9,16 +9,36 @@
   ],
   "fetched_at": "2026-05-06",
   "categories": {
-    "파워트레인": [
+    "파워트레인/성능": [
       "KRJR296001",
       "KRJR296002",
       "KRJR296003",
       "KRJR296004",
       "KRJR296005",
       "KRJR296006",
+      "KRJR296027",
+      "KRJR296095",
+      "KRJR296097",
+      "KRJR296132",
+      "KRJR296008",
+      "KRJR296007",
       "KRJR296009"
     ],
-    "첨단 운전자 보조(ADAS)": [
+    "안전": [
+      "KRJR296022",
+      "KRJR296024",
+      "KRJR296025",
+      "KRJR296026",
+      "KRJR296028",
+      "KRJR296029",
+      "KRJR296030",
+      "KRJR296031",
+      "KRJR296139",
+      "KRJR296145",
+      "KRJR296032",
+      "KRJR296033"
+    ],
+    "지능형 안전 기술": [
       "KRJR296010",
       "KRJR296011",
       "KRJR296012",
@@ -30,24 +50,12 @@
       "KRJR296018",
       "KRJR296019",
       "KRJR296020",
-      "KRJR296021"
+      "KRJR296115",
+      "KRJR296116",
+      "KRJR296121"
     ],
-    "안전": [
-      "KRJR296022",
-      "KRJR296023",
-      "KRJR296024",
-      "KRJR296025",
-      "KRJR296026",
-      "KRJR296027",
-      "KRJR296028",
-      "KRJR296029",
-      "KRJR296030",
-      "KRJR296031",
-      "KRJR296139",
-      "KRJR296032",
-      "KRJR296033"
-    ],
-    "외장": [
+    "외관": [
+      "KRJR296021",
       "KRJR296034",
       "KRJR296035",
       "KRJR296036",
@@ -55,39 +63,52 @@
       "KRJR296038",
       "KRJR296039",
       "KRJR296040",
-      "KRJR296041",
-      "KRJR296042",
       "KRJR296043",
       "KRJR296044",
       "KRJR296045",
       "KRJR296046",
       "KRJR296047",
-      "KRJR296138",
-      "KRJR296048"
+      "KRJR296058",
+      "KRJR296101",
+      "KRJR296102",
+      "KRJR296105",
+      "KRJR296108",
+      "KRJR296133",
+      "KRJR296050",
+      "KRJR296137",
+      "KRJR296049",
+      "KRJR296048",
+      "KRJR296120"
     ],
     "내장": [
       "KRJR296052",
-      "KRJR296064",
       "KRJR296057",
-      "KRJR296058",
       "KRJR296059",
       "KRJR296060",
       "KRJR296061",
       "KRJR296062",
       "KRJR296063",
       "KRJR296071",
+      "KRJR296077",
+      "KRJR296142",
+      "KRJR296113",
       "KRJR296065",
       "KRJR296066"
     ],
     "시트": [
+      "KRJR296041",
+      "KRJR296042",
       "KRJR296072",
       "KRJR296073",
       "KRJR296074",
       "KRJR296075",
       "KRJR296076",
-      "KRJR296077",
       "KRJR296078",
-      "KRJR296145",
+      "KRJR296104",
+      "KRJR296109",
+      "KRJR296110",
+      "KRJR296P03",
+      "KRJR296136",
       "KRJR296079",
       "KRJR296080",
       "KRJR296081",
@@ -95,201 +116,251 @@
       "KRJR296087",
       "KRJR296141",
       "KRJR296089",
-      "KRJR296140"
+      "KRJR296140",
+      "KRJR296118",
+      "KRJR296144"
     ],
     "편의": [
+      "KRJR296023",
+      "KRJR296138",
       "KRJR296093",
       "KRJR296094",
-      "KRJR296095",
       "KRJR296096",
-      "KRJR296097",
       "KRJR296098",
       "KRJR296099",
       "KRJR296100",
-      "KRJR296101",
-      "KRJR296102",
       "KRJR296103",
-      "KRJR296104",
-      "KRJR296105",
-      "KRJR296142",
       "KRJR296106",
       "KRJR296107",
-      "KRJR296108",
-      "KRJR296109",
-      "KRJR296110",
       "KRJR296111",
       "KRJR296112",
-      "KRJR296113",
       "KRJR296126",
-      "KRJR296115",
-      "KRJR296116",
+      "KRJR296051",
+      "KRJR296124",
       "KRJR296117",
-      "KRJR296118",
       "KRJR296119",
-      "KRJR296120",
-      "KRJR296121",
-      "KRJR296144"
+      "KRJR296P06"
     ],
     "인포테인먼트": [
+      "KRJR296064",
       "KRJR296127",
       "KRJR296128",
       "KRJR296129",
       "KRJR296130",
-      "KRJR296132",
-      "KRJR296133",
       "KRJR296134",
       "KRJR296143",
-      "KRJR296135"
+      "KRJR296114",
+      "KRJR296131",
+      "KRJR296135",
+      "WIRELESS_MIRROR"
     ],
     "선택사양": [
-      "KRJR296051",
-      "KRJR296050",
-      "KRJR296124",
       "KRJR296P01",
       "KRJR296P02",
       "KRJR296P07",
-      "KRJR296114",
-      "KRJR296008",
-      "KRJR296137",
       "KRJR296P04",
-      "KRJR296131",
-      "KRJR296P05",
-      "KRJR296007",
-      "KRJR296136"
-    ],
-    "베스트 셀렉션Ⅰ": [
-      "KRJR296049",
-      "KRJR296P03"
-    ],
-    "베스트 셀렉션 Ⅱ": [
-      "KRJR296P06"
+      "KRJR296P05"
     ]
   },
   "options": {
     "KRJR296001": {
       "name": "V6 람다Ⅱ 개선 3.8 GDI 가솔린 엔진",
-      "category": "파워트레인",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRJR296002": {
       "name": "8단 자동변속기",
-      "category": "파워트레인",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "TRANS_AT"
+      ]
     },
     "KRJR296003": {
       "name": "랙 구동형 전동식 파워스티어링(R-MDPS)",
-      "category": "파워트레인",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "POWER_STR"
+      ]
     },
     "KRJR296004": {
       "name": "가변 기어비 스티어링(VGR)",
-      "category": "파워트레인",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRJR296005": {
       "name": "주행모드 통합제어 시스템",
-      "category": "파워트레인",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "DRIVE_MODE"
+      ]
     },
     "KRJR296006": {
       "name": "전방 예측 변속 시스템",
-      "category": "파워트레인",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRJR296010": {
       "name": "전방 충돌방지 보조(보행자/차량/자전거 탑승자, 교차로 대향차, 교차 차량, 측방 접근차, 추월시 대향차, 회피 조향 보조 기능포함)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "KRJR296011": {
       "name": "차로 이탈방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "KRJR296012": {
       "name": "후측방 충돌방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRJR296013": {
       "name": "후방 교차 충돌방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRJR296014": {
       "name": "운전자 주의 경고(전방 차량 출발 알림)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "BVM",
+        "DAW"
+      ]
     },
     "KRJR296015": {
       "name": "하이빔 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "KRJR296016": {
       "name": "스마트 크루즈 컨트롤(정차&amp;재출발, 운전스타일 연동 기능 포함)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "KRJR296017": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로/진출입로)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "KRJR296018": {
       "name": "차로 유지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "KRJR296019": {
       "name": "고속도로 주행 보조2(차로변경 보조 기능 포함)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "KRJR296020": {
       "name": "안전 하차 경고",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "KRJR296021": {
       "name": "스티어링 휠 진동경고",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "KRJR296022": {
       "name": "9에어백(운전석/동승석 어드밴스드 에어백, 운전석 무릎, 전복감지 커튼, 앞좌석/뒷좌석 사이드)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR",
+        "AIRBAG_KNEE",
+        "AIRBAG_PS",
+        "AIRBAG_SIDE"
+      ]
     },
     "KRJR296023": {
       "name": "전/후방 주차 거리 경고",
-      "category": "안전",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "KRJR296024": {
       "name": "VSM",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VDC"
+      ]
     },
     "KRJR296025": {
       "name": "경사로 밀림방지장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HAC"
+      ]
     },
     "KRJR296026": {
       "name": "급제동 경보 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ESS"
+      ]
     },
     "KRJR296027": {
       "name": "개별 타이어 공기압 경보 시스템",
-      "category": "안전",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "TPMS"
+      ]
     },
     "KRJR296028": {
       "name": "유아용 시트 고정 장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ISOFIX"
+      ]
     },
     "KRJR296029": {
       "name": "앞좌석/뒷좌석 시트벨트 리마인더",
@@ -299,12 +370,18 @@
     "KRJR296030": {
       "name": "타이어 임시수리장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TIRE_REPAIR"
+      ]
     },
     "KRJR296031": {
       "name": "다중 충돌방지 자동 제동 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "KRJR296139": {
       "name": "소화기",
@@ -313,78 +390,112 @@
     },
     "KRJR296034": {
       "name": "프로젝션 LED 헤드램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRJR296035": {
       "name": "프론트/리어 LED 턴시그널 램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "KRJR296036": {
       "name": "LED 주간 주행등",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "DRL"
+      ]
     },
     "KRJR296037": {
       "name": "LED 리어 콤비네이션 램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "KRJR296038": {
       "name": "LED 보조제동등",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJR296039": {
       "name": "245/50 R18 외산 타이어&amp;전면가공 휠",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJR296040": {
       "name": "LED 리피터 일체형 아웃사이드 미러(전동접이, 전동조절, 열선, 퍼들램프)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRJR296041": {
       "name": "윈드쉴드/앞좌석/뒷좌석/백라이트 이중접합 차음 글라스",
-      "category": "외장",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "LAMINATED_GLASS"
+      ]
     },
     "KRJR296042": {
       "name": "윈드쉴드/앞좌석/뒷좌석/백라이트 자외선 차단 글라스",
-      "category": "외장",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "UV_GLASS"
+      ]
     },
     "KRJR296043": {
       "name": "도어 손잡이 조명(프론트/리어)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "KRJR296044": {
       "name": "에어로타입 와이퍼",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AERO_WIPER"
+      ]
     },
     "KRJR296045": {
       "name": "듀얼머플러",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJR296046": {
       "name": "다이내믹 웰컴 라이트",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT",
+        "WELCOME"
+      ]
     },
     "KRJR296047": {
       "name": "터치타입 아웃사이드 도어 핸들",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJR296138": {
       "name": "후진 가이드 램프",
-      "category": "외장",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "REVERSE_GUIDE"
+      ]
     },
     "KRJR296052": {
       "name": "블랙 또는 마션 브라운 또는 베이지 인테리어 선택 가능",
@@ -393,18 +504,27 @@
     },
     "KRJR296064": {
       "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
-      "category": "내장",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRJR296057": {
       "name": "전자식 룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MTS_E_MIRROR"
+      ]
     },
     "KRJR296058": {
       "name": "가죽 스티어링 휠",
-      "category": "내장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "KRJR296059": {
       "name": "내추럴 우드그레인 내장재",
@@ -419,7 +539,10 @@
     "KRJR296061": {
       "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_INTERIOR"
+      ]
     },
     "KRJR296062": {
       "name": "양문형 콘솔암레스트",
@@ -434,12 +557,18 @@
     "KRJR296071": {
       "name": "메탈 페달",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "METAL_PEDAL"
+      ]
     },
     "KRJR296072": {
       "name": "가죽시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "KRJR296073": {
       "name": "앞좌석 파워시트",
@@ -449,21 +578,32 @@
     "KRJR296074": {
       "name": "동승석 워크인 디바이스",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WORKIN"
+      ]
     },
     "KRJR296075": {
       "name": "앞좌석/뒷좌석 열선시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR"
+      ]
     },
     "KRJR296076": {
       "name": "앞좌석 통풍시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ]
     },
     "KRJR296077": {
       "name": "운전석 에어셀타입 허리지지대",
-      "category": "시트",
+      "category": "내장",
       "is_package": false
     },
     "KRJR296078": {
@@ -473,83 +613,127 @@
     },
     "KRJR296145": {
       "name": "뒷좌석 시트벨트 버클 조명",
-      "category": "시트",
+      "category": "안전",
       "is_package": false
     },
     "KRJR296093": {
       "name": "버튼시동 스마트키 시스템",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUTTON_START",
+        "SMART_KEY"
+      ]
     },
     "KRJR296094": {
       "name": "하이패스 자동결제 시스템",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HIPASS"
+      ]
     },
     "KRJR296095": {
       "name": "전자식 변속 레버",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "SHIFT_BY_WIRE"
+      ]
     },
     "KRJR296096": {
       "name": "전자식 파킹브레이크(오토홀드 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "KRJR296097": {
       "name": "앞좌석 스마트폰 무선충전 시스템",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "KRJR296098": {
       "name": "후방 모니터",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "KRJR296099": {
       "name": "오토 라이트 컨트롤",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "KRJR296100": {
       "name": "레인센서",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RAIN_SENSOR"
+      ]
     },
     "KRJR296101": {
       "name": "열선 스티어링 휠",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "KRJR296102": {
       "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
-      "category": "편의",
+      "category": "외관",
       "is_package": false
     },
     "KRJR296103": {
       "name": "스마트 파워트렁크",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_TRUNK",
+        "SMART_TRUNK"
+      ]
     },
     "KRJR296104": {
       "name": "독립제어 풀오토 에어컨(운전석/동승석/뒷좌석)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "KRJR296105": {
       "name": "오토디포그",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "DEFOG"
+      ]
     },
     "KRJR296142": {
       "name": "애프터 블로우",
-      "category": "편의",
-      "is_package": false
+      "category": "내장",
+      "is_package": false,
+      "fp_ids": [
+        "AFTER_BLOW"
+      ]
     },
     "KRJR296106": {
       "name": "외부공기 유입방지 제어",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "KRJR296107": {
       "name": "운전석 자동쾌적 제어",
@@ -558,33 +742,51 @@
     },
     "KRJR296108": {
       "name": "운전자세 메모리 시스템(시트, 스티어링 휠, 아웃사이드 미러, 스마트 자세제어 포함)",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRJR296109": {
       "name": "운전석 이지 억세스",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "EASY_ACCESS"
+      ]
     },
     "KRJR296110": {
       "name": "앞좌석/뒷좌석 USB 단자(충전용)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRJR296111": {
       "name": "지문 인증 시스템",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FINGERPRINT"
+      ]
     },
     "KRJR296112": {
       "name": "기아 디지털 키",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "KRJR296113": {
       "name": "공기청정 시스템(미세먼지 센서)",
-      "category": "편의",
-      "is_package": false
+      "category": "내장",
+      "is_package": false,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "KRJR296126": {
       "name": "항균 처리 고성능 콤비 필터",
@@ -594,12 +796,20 @@
     "KRJR296127": {
       "name": "14.5인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CONNECTED_CAR",
+        "MIRRORING",
+        "NAVIGATION"
+      ]
     },
     "KRJR296128": {
       "name": "내비게이션/클러스터 무선 업데이트",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRJR296129": {
       "name": "필기인식 통합 컨트롤러",
@@ -609,42 +819,61 @@
     "KRJR296130": {
       "name": "KRELL 프리미엄 사운드(14스피커, 외장앰프)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRJR296132": {
       "name": "액티브 엔진 사운드",
-      "category": "인포테인먼트",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRJR296133": {
       "name": "스티어링 휠 오디오 리모컨",
-      "category": "인포테인먼트",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_REMOTE"
+      ]
     },
     "KRJR296134": {
       "name": "블루투스 핸즈프리",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH",
+        "HANDS_FREE"
+      ]
     },
     "KRJR296143": {
       "name": "USB 단자(데이터리딩용)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRJR296051": {
       "name": "스노우 화이트 펄",
-      "category": "선택사양",
+      "category": "편의",
       "is_package": false
     },
     "KRJR296050": {
       "name": "선루프",
-      "category": "선택사양",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF"
+      ]
     },
     "KRJR296124": {
       "name": "빌트인 캠",
-      "category": "선택사양",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "KRJR296P01": {
       "name": "모니터링팩",
@@ -663,27 +892,36 @@
     },
     "KRJR296114": {
       "name": "헤드업 디스플레이",
-      "category": "선택사양",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "KRJR296008": {
       "name": "AWD",
-      "category": "선택사양",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "KRJR296137": {
       "name": "차량 보호 필름",
-      "category": "선택사양",
+      "category": "외관",
       "is_package": false
     },
     "KRJR296049": {
       "name": "19인치 휠&amp;타이어",
-      "category": "베스트 셀렉션Ⅰ",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRJR296P03": {
       "name": "시트 컨비니언스 팩",
-      "category": "베스트 셀렉션Ⅰ",
+      "category": "시트",
       "is_package": false
     },
     "KRJR296P04": {
@@ -693,8 +931,11 @@
     },
     "KRJR296131": {
       "name": "Lexicon 프리미엄 사운드",
-      "category": "선택사양",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRJR296P05": {
       "name": "VIP 컬렉션",
@@ -703,12 +944,15 @@
     },
     "KRJR296007": {
       "name": "프리뷰 전자제어 서스펜션",
-      "category": "선택사양",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "ECS"
+      ]
     },
     "KRJR296136": {
       "name": "뒷좌석 듀얼 모니터",
-      "category": "선택사양",
+      "category": "시트",
       "is_package": false
     },
     "KRJR296032": {
@@ -719,11 +963,16 @@
     "KRJR296033": {
       "name": "후방 주차 충돌방지 보조",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "KRJR296048": {
       "name": "앞245/45 R19&amp;뒤275/40 R19 외산 타이어&amp;다크 스퍼터링 휠",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJR296065": {
@@ -754,7 +1003,10 @@
     "KRJR296088": {
       "name": "동승석 메모리 시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MEMORY_SEAT_DR"
+      ]
     },
     "KRJR296087": {
       "name": "앞좌석 전동식 헤드레스트",
@@ -778,13 +1030,19 @@
     },
     "KRJR296115": {
       "name": "서라운드뷰 모니터",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "KRJR296116": {
       "name": "후측방 모니터",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "KRJR296117": {
       "name": "파워도어 시스템",
@@ -793,7 +1051,7 @@
     },
     "KRJR296118": {
       "name": "뒷좌석 측면 수동 선커튼",
-      "category": "편의",
+      "category": "시트",
       "is_package": false
     },
     "KRJR296119": {
@@ -803,38 +1061,51 @@
     },
     "KRJR296120": {
       "name": "지능형 헤드램프",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRJR296121": {
       "name": "원격 스마트 주차 보조(직각 주차 및 평행 주차, 출차 기능 포함)",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "SPAS"
+      ]
     },
     "KRJR296144": {
       "name": "동승석 이지 억세스",
-      "category": "편의",
+      "category": "시트",
       "is_package": false
     },
     "KRJR296135": {
       "name": "증강현실 내비게이션",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRJR296P06": {
       "name": "VIP 컬렉션+",
-      "category": "베스트 셀렉션 Ⅱ",
+      "category": "편의",
       "is_package": false
     },
     "KRJR296009": {
       "name": "V6 람다Ⅱ 개선 3.3 T-GDI 가솔린 엔진",
-      "category": "파워트레인",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "WIRELESS_MIRROR": {
       "name": "무선 Apple CarPlay & Android Auto",
-      "category": "편의/멀티미디어",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
+      ]
     }
   },
   "trims": {

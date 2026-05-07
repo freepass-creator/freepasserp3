@@ -10,7 +10,7 @@
  *
  * 의존: store, firebase/db, firebase/storage-helper, core/* 일체
  */
-import { store } from '../core/store.js';
+import { store, findProduct } from '../core/store.js';
 import { pushRecord, updateRecord } from '../firebase/db.js';
 import { uploadImage } from '../firebase/storage-helper.js';
 import { showToast } from '../core/toast.js';
@@ -34,7 +34,7 @@ import {
 ensureCatalogSource().then(() => {
   if (document.querySelector('.pt-page.active')?.dataset.page === 'product') {
     const activeId = document.querySelector('.pt-page[data-page="product"] .room-item.is-active')?.dataset.id;
-    const target = (store.products || []).find(x => x._key === activeId) || (store.products || [])[0];
+    const target = findProduct(activeId) || (store.products || [])[0];
     if (target) renderProductDetail(target);
   }
 });
@@ -49,7 +49,7 @@ import {
 
 /* v2 product-manage 옵션 — 차량 스펙 드롭다운 */
 export const PRODUCT_OPTS = {
-  vehicle_status: ['즉시출고','출고가능','상품화중','출고협의','출고불가'],
+  vehicle_status: ['즉시출고','출고가능','출고협의','상품화중','출고불가'],
   product_type: ['중고렌트','신차렌트','중고구독','신차구독'],
   fuel_type: ['가솔린','디젤','LPG','하이브리드','전기','수소'],
   vehicle_class: ['경차','소형','준중형','중형','준대형','대형','SUV','RV','승합','화물','수입'],
@@ -753,7 +753,7 @@ export function renderProductDetail(p) {
           <option value="">-</option>
           ${providerOptions.map(o => `<option value="${esc(o.value)}" ${curProv === o.value ? 'selected' : ''}>${esc(o.label)}</option>`).join('')}
         </select></div>`
-      : `<div class="ff"><label>공급코드</label><input type="text" class="input" value="${esc(curProv ? `${curProv} ${providerNameByCode(curProv, store) || ''}`.trim() : '-')}" readonly></div>`;
+      : `<div class="ff"><label>공급코드</label><input type="text" class="input" value="${esc(providerLabelByCode(curProv, store) || curProv || '-')}" readonly></div>`;
     assetCard.querySelector('.ws4-body').innerHTML = `
       ${sect('기본정보', 'identification-card', `
         ${ffi('차량번호',  'car_number', p.car_number, dis)}

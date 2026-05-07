@@ -17,7 +17,10 @@
   body{font-family:system-ui,-apple-system,sans-serif;font-size:12px;background:#f8fafc;color:#111827;padding:20px;max-width:1200px;margin:0 auto}
   h1{font-size:14px;font-weight:600;margin-bottom:14px}
   .panel{background:#fff;border:1px solid #e5e7eb;border-radius:4px;padding:16px;margin-bottom:12px}
-  .selector-row{display:grid;grid-template-columns:120px 180px 1fr;gap:6px;margin-bottom:8px}
+  .selector-row{display:flex;gap:6px;margin-bottom:8px}
+  .selector-row #maker{width:150px}
+  .selector-row #model{width:220px}
+  .selector-row #sub{width:400px}
   select{padding:8px 10px;border:1px solid #d1d5db;border-radius:4px;font-size:12px;font-family:inherit;background:#fff;color:#111827}
   select:disabled{background:#f3f4f6;color:#9ca3af}
   .meta{font-size:11px;color:#6b7280;margin-top:4px}
@@ -251,6 +254,9 @@ const OPTIONS = {
     ['MIRROR_FOLD','전동접이 사이드미러'],
     ['ROOF_RACK','루프랙','unc'],['ALUMINUM_WHEEL','알루미늄휠'],
     ['FOG_LED','안개등 (LED)'],['REAR_LED_COMBI','LED 리어 콤비네이션 램프'],
+    ['REAR_SPOILER','리어 스포일러','unc'],['SHARK_FIN','샤크핀 안테나','unc'],
+    ['UV_GLASS','자외선 차단 유리','unc'],['LAMINATED_GLASS','이중접합 차음 유리','unc'],
+    ['AERO_WIPER','에어로 타입 와이퍼','unc'],
   ]},
   interior: { label:'내장', items: [
     ['CRUISE','크루즈컨트롤'],['STR_REMOTE','스티어링 휠 리모컨'],
@@ -265,6 +271,8 @@ const OPTIONS = {
     ['STR_LEATHER','가죽 스티어링 휠','unc'],
     ['ECM_MIRROR','ECM룸미러'],
     ['MTS_E_MIRROR','전자식 룸미러(MTS)','opt'],
+    ['METAL_PEDAL','메탈 페달','unc'],
+    ['SUSPENSION_MLT','후륜 멀티링크 서스펜션','unc'],
   ]},
   safety: { label:'안전', items: [
     ['AIRBAG_DR','에어백(운전석)'],['AIRBAG_PS','에어백(동승석)'],
@@ -314,6 +322,14 @@ const OPTIONS = {
     ['STEER_TILT','틸트 & 텔레스코픽 스티어링','unc'],
     ['TRANS_AT','자동변속기 (6/8/10단·CVT·DCT)','unc'],
     ['FINGERPRINT','실내 지문 인증 시스템','opt'],
+    ['TIRE_REPAIR','타이어 응급처치 키트/임시수리장치','unc'],
+    ['VALET_MODE','발레 모드','unc'],
+    ['ELSD','전자식 차동 제한장치 (e-LSD)','unc'],
+    ['REVERSE_GUIDE','후진 가이드 램프','unc'],
+    ['EASY_ACCESS','운전석 이지 억세스','unc'],
+    ['CONNECTED_CAR','커넥티드 카 서비스 (UVO/블루링크/Genesis Connected/카페이 등)','opt'],
+    ['HEAT_PUMP','히트 펌프 시스템 (전기차 난방 효율)','unc'],
+    ['FLUSH_HANDLE','오토 플러시 도어 핸들','unc'],
   ]},
   media: { label:'미디어', items: [
     ['MP3','MP3'],['BLUETOOTH','블루투스'],['USB','USB 단자'],
@@ -511,6 +527,110 @@ const FP_KEYWORD_RULES = [
   { kw:'도어스팟램프', ids:['AMB_LIGHT'] },
   { kw:'led도어스커프', ids:['AMB_LIGHT'] },
   { kw:'웰컴라이트', ids:['AMB_LIGHT','WELCOME'] },
+
+  // 타이어 응급/임시수리
+  { kw:'타이어응급처치키트', ids:['TIRE_REPAIR'] }, { kw:'타이어임시수리장치', ids:['TIRE_REPAIR'] },
+  { kw:'타이어응급키트', ids:['TIRE_REPAIR'] }, { kw:'타이어수리키트', ids:['TIRE_REPAIR'] },
+  { kw:'타이어모빌리티키트', ids:['TIRE_REPAIR'] }, { kw:'타이어모빌리티', ids:['TIRE_REPAIR'] },
+  { kw:'tmk', ids:['TIRE_REPAIR'] },
+
+  // 발레 모드
+  { kw:'발레모드', ids:['VALET_MODE'] }, { kw:'valetmode', ids:['VALET_MODE'] },
+
+  // 전자식 차동 제한장치
+  { kw:'전자식차동제한장치', ids:['ELSD'] }, { kw:'전자식차동제한', ids:['ELSD'] },
+  { kw:'e-lsd', ids:['ELSD'] }, { kw:'elsd', ids:['ELSD'] },
+
+  // 후진 가이드 램프
+  { kw:'후진가이드램프', ids:['REVERSE_GUIDE'] }, { kw:'후진가이드라이트', ids:['REVERSE_GUIDE'] },
+
+  // 운전석 이지 억세스
+  { kw:'운전석이지억세스', ids:['EASY_ACCESS'] }, { kw:'운전석이지액세스', ids:['EASY_ACCESS'] },
+  { kw:'easyaccess', ids:['EASY_ACCESS'] },
+
+  // 리어 스포일러
+  { kw:'리어스포일러', ids:['REAR_SPOILER'] }, { kw:'rearspoiler', ids:['REAR_SPOILER'] },
+  { kw:'트렁크스포일러', ids:['REAR_SPOILER'] },
+
+  // 샤크핀 안테나
+  { kw:'샤크핀안테나', ids:['SHARK_FIN'] }, { kw:'sharkfinantenna', ids:['SHARK_FIN'] },
+  { kw:'샤크안테나', ids:['SHARK_FIN'] }, { kw:'shark핀', ids:['SHARK_FIN'] },
+
+  // 자외선 차단 유리
+  { kw:'자외선차단유리', ids:['UV_GLASS'] }, { kw:'자외선차단글라스', ids:['UV_GLASS'] },
+  { kw:'uv차단유리', ids:['UV_GLASS'] }, { kw:'uv글라스', ids:['UV_GLASS'] },
+
+  // 이중접합 차음 유리
+  { kw:'이중접합차음유리', ids:['LAMINATED_GLASS'] }, { kw:'이중접합차음글라스', ids:['LAMINATED_GLASS'] },
+  { kw:'이중접합유리', ids:['LAMINATED_GLASS'] }, { kw:'차음유리', ids:['LAMINATED_GLASS'] },
+  { kw:'laminatedglass', ids:['LAMINATED_GLASS'] },
+
+  // 에어로 타입 와이퍼
+  { kw:'에어로타입와이퍼', ids:['AERO_WIPER'] }, { kw:'에어로와이퍼', ids:['AERO_WIPER'] },
+  { kw:'aerowiper', ids:['AERO_WIPER'] }, { kw:'aero타입와이퍼', ids:['AERO_WIPER'] },
+
+  // 주차 충돌방지 보조 패키지
+  { kw:'주차충돌방지보조전측후방', ids:['SPAS','SENSOR_FRONT','SENSOR_REAR','RCTA'] },
+  { kw:'주차충돌방지보조', ids:['SPAS','SENSOR_FRONT','SENSOR_REAR'] },
+  { kw:'주차거리경고측방', ids:['SENSOR_REAR','SPAS'] },
+
+  // 메탈 페달
+  { kw:'메탈페달', ids:['METAL_PEDAL'] }, { kw:'알로이페달', ids:['METAL_PEDAL'] },
+  { kw:'스포츠페달', ids:['METAL_PEDAL'] }, { kw:'metalpedal', ids:['METAL_PEDAL'] },
+
+  // 히트 펌프 (EV)
+  { kw:'히트펌프시스템', ids:['HEAT_PUMP'] }, { kw:'히트펌프', ids:['HEAT_PUMP'] },
+  { kw:'heatpump', ids:['HEAT_PUMP'] },
+
+  // 오토 플러시 도어 핸들
+  { kw:'오토플러시도어핸들', ids:['FLUSH_HANDLE'] }, { kw:'플러시도어핸들', ids:['FLUSH_HANDLE'] },
+  { kw:'오토플러시', ids:['FLUSH_HANDLE'] }, { kw:'flushhandle', ids:['FLUSH_HANDLE'] },
+  { kw:'flushdoorhandle', ids:['FLUSH_HANDLE'] },
+
+  // 포그램프 보강 (LED 포함)
+  { kw:'포그램프', ids:['FOG_LED'] }, { kw:'led포그램프', ids:['FOG_LED'] },
+  { kw:'foglamp', ids:['FOG_LED'] }, { kw:'fogla', ids:['FOG_LED'] },
+
+  // 외부공기 유입방지 → AIR_PURIFY
+  { kw:'외부공기유입방지제어', ids:['AIR_PURIFY'] }, { kw:'외부공기유입방지', ids:['AIR_PURIFY'] },
+  { kw:'미세먼지유입방지', ids:['AIR_PURIFY'] },
+
+  // 모니터링 팩 (다중 ADAS 모니터링)
+  { kw:'모니터링팩', ids:['BVM','RCTA','AVMS'] }, { kw:'모니터링패키지', ids:['BVM','RCTA','AVMS'] },
+
+  // 후륜 멀티링크 서스펜션
+  { kw:'후륜멀티링크서스펜션', ids:['SUSPENSION_MLT'] }, { kw:'리어멀티링크', ids:['SUSPENSION_MLT'] },
+  { kw:'멀티링크서스펜션', ids:['SUSPENSION_MLT'] }, { kw:'multilinksuspension', ids:['SUSPENSION_MLT'] },
+
+  // 커넥티드 카 서비스
+  { kw:'uvo', ids:['CONNECTED_CAR'] }, { kw:'블루링크', ids:['CONNECTED_CAR'] }, { kw:'bluelink', ids:['CONNECTED_CAR'] },
+  { kw:'genesisconnected', ids:['CONNECTED_CAR'] }, { kw:'genesisconnectedservices', ids:['CONNECTED_CAR'] },
+  { kw:'제네시스카페이', ids:['CONNECTED_CAR'] }, { kw:'카페이', ids:['CONNECTED_CAR'] },
+  { kw:'카카오i', ids:['CONNECTED_CAR'] }, { kw:'kakaoi', ids:['CONNECTED_CAR'] },
+  { kw:'connecteddrive', ids:['CONNECTED_CAR'] }, { kw:'bmwconnecteddrive', ids:['CONNECTED_CAR'] },
+  { kw:'toyotaconnect', ids:['CONNECTED_CAR'] }, { kw:'lexusconnect', ids:['CONNECTED_CAR'] },
+  { kw:'mbuxconnect', ids:['CONNECTED_CAR'] }, { kw:'mercedesme', ids:['CONNECTED_CAR'] },
+  { kw:'audiconnect', ids:['CONNECTED_CAR'] }, { kw:'volvoonconnect', ids:['CONNECTED_CAR'] },
+  { kw:'커넥티드서비스', ids:['CONNECTED_CAR'] }, { kw:'커넥티드카서비스', ids:['CONNECTED_CAR'] },
+  { kw:'텔레매틱스', ids:['CONNECTED_CAR'] }, { kw:'telematics', ids:['CONNECTED_CAR'] },
+
+  // 디스플레이 / 클러스터 (DISPLAY_LCD 룰 보강)
+  { kw:'12.3인치클러스터', ids:['DISPLAY_LCD'] }, { kw:'12.3인치컬러lcd', ids:['DISPLAY_LCD'] },
+  { kw:'12.3인치디스플레이', ids:['DISPLAY_LCD'] }, { kw:'10.25인치디스플레이', ids:['DISPLAY_LCD'] },
+  { kw:'10.25인치클러스터', ids:['DISPLAY_LCD'] }, { kw:'12인치디스플레이', ids:['DISPLAY_LCD'] },
+  { kw:'14.6인치디스플레이', ids:['DISPLAY_LCD'] }, { kw:'27인치통합디스플레이', ids:['DISPLAY_LCD'] },
+  { kw:'12.3인치내비게이션', ids:['DISPLAY_LCD','NAVIGATION'] },
+  { kw:'12.3인치터치스크린', ids:['DISPLAY_LCD'] }, { kw:'풀컬러lcd', ids:['DISPLAY_LCD'] },
+  { kw:'풀컬러클러스터', ids:['DISPLAY_LCD'] }, { kw:'디지털클러스터', ids:['DISPLAY_LCD'] },
+  { kw:'tft클러스터', ids:['DISPLAY_LCD'] }, { kw:'12.3lcd', ids:['DISPLAY_LCD'] },
+  { kw:'10.25컬러lcd', ids:['DISPLAY_LCD'] },
+
+  // 프리미엄 사운드 보강
+  { kw:'jbl사운드', ids:['SOUND_PREMIUM'] }, { kw:'jbl프리미엄', ids:['SOUND_PREMIUM'] },
+  { kw:'리얼파워사운드', ids:['SOUND_PREMIUM'] }, { kw:'realpowersound', ids:['SOUND_PREMIUM'] },
+  { kw:'바우어스앤윌킨스', ids:['SOUND_PREMIUM'] }, { kw:'무드라이브사운드', ids:['SOUND_PREMIUM'] },
+  { kw:'마크레빈슨', ids:['SOUND_PREMIUM'] }, { kw:'marklevinson', ids:['SOUND_PREMIUM'] },
+  { kw:'burmester', ids:['SOUND_PREMIUM'] }, { kw:'부메스터', ids:['SOUND_PREMIUM'] },
 
   // 자동변속기
   { kw:'8단자동변속기', ids:['TRANS_AT'] }, { kw:'6단자동변속기', ids:['TRANS_AT'] },
@@ -2201,6 +2321,12 @@ function matchFpByName(name) {
   return [...matched];
 }
 
+function fpIdsOf(info) {
+  // 옵션 사전에 사전 매핑된 fp_ids[] 우선, 없으면 옵션명 동적 매칭
+  if (!info) return [];
+  if (Array.isArray(info.fp_ids)) return info.fp_ids;
+  return matchFpByName(info.name);
+}
 function matchCatalogToFp(catalog, trimName) {
   const matched = new Set();
   const t = catalog.trims[trimName];
@@ -2208,8 +2334,7 @@ function matchCatalogToFp(catalog, trimName) {
   // 1. basic 옵션
   if (Array.isArray(t.basic)) {
     for (const optId of t.basic) {
-      const info = catalog.options[optId];
-      if (info) matchFpByName(info.name).forEach(id => matched.add(id));
+      fpIdsOf(catalog.options[optId]).forEach(id => matched.add(id));
     }
   }
   // 2. 직원이 선택한 패키지의 코드 → 옵션 → FP 매칭
@@ -2219,8 +2344,7 @@ function matchCatalogToFp(catalog, trimName) {
       if (!group) continue;
       const codes = Array.isArray(group) ? group : (group.codes || []);
       for (const optId of codes) {
-        const info = catalog.options[optId];
-        if (info) matchFpByName(info.name).forEach(id => matched.add(id));
+        fpIdsOf(catalog.options[optId]).forEach(id => matched.add(id));
       }
       // 패키지 자체에 name 이 있으면 그것도 매칭 시도 (예: "컴포트 II 패키지")
       if (!Array.isArray(group) && group.name) {
@@ -2604,7 +2728,20 @@ function onModelChange() {
   sel.innerHTML = '<option value="">세부모델</option>';
   if (!model) { sel.disabled = true; resetCatalog(); return; }
   const subs = state.master.filter(r => r.maker === maker && r.model === model);
-  subs.sort((a,b) => (b.production_start||'').localeCompare(a.production_start||''));
+  // 정렬 규격: 1) production_start 내림차순(최신 먼저)  2) 동일 시기면 동력원 순(base → 하이브리드 → 플러그인 → EV)
+  function fuelOrder(s) {
+    const txt = String(s || '');
+    if (/(EV|일렉트릭|electric|전기차)/i.test(txt)) return 3;
+    if (/(플러그인|PHEV)/i.test(txt)) return 2;
+    if (/(하이브리드|HEV|hybrid)/i.test(txt)) return 1;
+    return 0;
+  }
+  subs.sort((a, b) => {
+    const ya = a.production_start || '';
+    const yb = b.production_start || '';
+    if (ya !== yb) return yb.localeCompare(ya);
+    return fuelOrder(a.sub) - fuelOrder(b.sub);
+  });
   const showYear = $('showYear')?.checked;
   subs.forEach(r => {
     const splits = FL_SPLITS[r._key];
@@ -2761,8 +2898,8 @@ function renderCatalog() {
   wrap.innerHTML = '';
   wrap.classList.add('visible');
 
-  // 변형 패턴: 가솔린/디젤/LPG/LPi/하이브리드/일렉트릭/EV/HEV 부터 끝까지
-  const VARIANT_RE = /(가솔린|디젤|LPG|LPi|하이브리드|일렉트릭|EV|HEV).*$/;
+  // 변형 패턴: 연료/배기량(X.X·R2.0)/인승(N인승) 중 먼저 매칭되는 토큰부터 끝까지
+  const VARIANT_RE = /(가솔린|디젤|LPG|LPi|하이브리드|일렉트릭|EV|HEV|R\d\.\d|\d\.\d|\d+인승).*$/;
   const groups = new Map();
   for (const t of trims) {
     const m = t.match(VARIANT_RE);

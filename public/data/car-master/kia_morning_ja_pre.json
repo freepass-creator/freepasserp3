@@ -12,78 +12,121 @@
   "options": {
     "KRJA232003": {
       "name": "스마트스트림 G1.0 엔진",
-      "category": "파워트레인",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRJA232001": {
       "name": "4단 자동변속기",
-      "category": "파워트레인",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRJA232002": {
       "name": "속도감응형 전동식 파워스티어링(MDPS)",
-      "category": "파워트레인",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "POWER_STR"
+      ]
     },
     "KRJA232008": {
       "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "KRJA232012": {
       "name": "차로 이탈방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "KRJA232007": {
       "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "BVM",
+        "DAW"
+      ]
     },
     "KRJA232013": {
       "name": "하이빔 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "KRJA232011": {
       "name": "차로 유지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "KRJA232010": {
       "name": "지능형 속도 제한 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ISLA"
+      ]
     },
     "KRJA232016": {
       "name": "6에어백(운전석, 동승석, 커튼, 앞좌석 사이드)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR",
+        "AIRBAG_PS",
+        "AIRBAG_SIDE"
+      ]
     },
     "KRJA232030": {
       "name": "후방 주차 거리 경고",
-      "category": "안전",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "KRJA232122": {
       "name": "VSM",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VDC"
+      ]
     },
     "KRJA232017": {
       "name": "경사로 밀림방지장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HAC"
+      ]
     },
     "KRJA232018": {
       "name": "급제동 경보 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ESS"
+      ]
     },
     "KRJA232028": {
       "name": "타이어 공기압 경보 시스템(간접식)",
-      "category": "안전",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "TPMS"
+      ]
     },
     "KRJA232023": {
       "name": "앞좌석/뒷좌석 시트벨트 리마인더",
@@ -98,7 +141,10 @@
     "KRJA232026": {
       "name": "유아용 시트 고정 장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ISOFIX"
+      ]
     },
     "KRJA232027": {
       "name": "전륜 디스크 브레이크",
@@ -108,7 +154,10 @@
     "KRJA232029": {
       "name": "타이어 임시수리장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TIRE_REPAIR"
+      ]
     },
     "KRJA232125": {
       "name": "소화기",
@@ -117,38 +166,44 @@
     },
     "KRJA232032": {
       "name": "175/65 R14 타이어&amp;스틸 휠",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232046": {
       "name": "풀사이즈 휠커버",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232047": {
       "name": "프로젝션 헤드램프",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232044": {
       "name": "측면 방향지시등",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232039": {
       "name": "바디칼라 아웃사이드 미러(전동접이, 전동조절, 열선, 락폴딩)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRJA232043": {
       "name": "윈드쉴드/앞좌석/뒷좌석/백라이트 틴티드 글라스",
-      "category": "외장",
+      "category": "시트",
       "is_package": false
     },
     "KRJA232042": {
       "name": "샤크핀 안테나",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SHARK_FIN"
+      ]
     },
     "KRJA232056": {
       "name": "블랙 인테리어",
@@ -157,8 +212,11 @@
     },
     "KRJA232060": {
       "name": "슈퍼비전 클러스터(4.2인치 칼라 TFT LCD)",
-      "category": "내장",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRJA232055": {
       "name": "맵램프",
@@ -172,7 +230,7 @@
     },
     "KRJA232063": {
       "name": "운전석/동승석 선바이저",
-      "category": "내장",
+      "category": "시트",
       "is_package": false
     },
     "KRJA232066": {
@@ -183,7 +241,10 @@
     "KRJA232080": {
       "name": "직물시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_FABRIC"
+      ]
     },
     "KRJA232068": {
       "name": "뒷좌석 6:4 폴딩시트",
@@ -202,38 +263,53 @@
     },
     "KRJA232098": {
       "name": "폴딩타입 무선 도어 리모컨키",
-      "category": "편의",
+      "category": "내장",
       "is_package": false
     },
     "KRJA232101": {
       "name": "후방 모니터",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "KRJA232020": {
       "name": "크루즈 컨트롤",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE"
+      ]
     },
     "KRJA232094": {
       "name": "오토 라이트 컨트롤",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "KRJA232102": {
       "name": "후석 승객 알림",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ROA"
+      ]
     },
     "KRJA232090": {
       "name": "수동식 틸트 스티어링 휠",
-      "category": "편의",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232093": {
       "name": "앞좌석/뒷좌석 파워윈도우",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "POWER_WINDOW"
+      ]
     },
     "KRJA232096": {
       "name": "파워도어록",
@@ -248,12 +324,18 @@
     "KRJA232085": {
       "name": "매뉴얼 에어컨",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MANUAL_AC"
+      ]
     },
     "KRJA232091": {
       "name": "앞좌석 C타입 USB 단자(충전용)",
-      "category": "편의",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRJA232097": {
       "name": "파워아웃렛",
@@ -262,13 +344,17 @@
     },
     "KRJA232083": {
       "name": "뒷유리 와이퍼&amp;와셔 노즐",
-      "category": "편의",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232108": {
       "name": "8인치 디스플레이 오디오",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH",
+        "MP3"
+      ]
     },
     "KRJA232105": {
       "name": "4스피커",
@@ -277,18 +363,28 @@
     },
     "KRJA232112": {
       "name": "스티어링 휠 오디오 리모컨",
-      "category": "인포테인먼트",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_REMOTE"
+      ]
     },
     "KRJA232111": {
       "name": "블루투스 핸즈프리",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH",
+        "HANDS_FREE"
+      ]
     },
     "KRJA232109": {
       "name": "USB 단자(데이터리딩용)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRJA232P01": {
       "name": "버튼시동 PACK",
@@ -327,22 +423,28 @@
     },
     "KRJA232031": {
       "name": "14인치 알로이 휠",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRJA232035": {
       "name": "LED 리피터 일체형 아웃사이드 미러",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRJA232041": {
       "name": "블랙 하이그로시(프론트 인테이크&amp;에어커튼 가니쉬, 리어 로워 가니쉬)",
-      "category": "외장",
+      "category": "편의",
       "is_package": false
     },
     "KRJA232045": {
       "name": "크롬 벨트라인 몰딩",
-      "category": "외장",
+      "category": "시트",
       "is_package": false
     },
     "KRJA232058": {
@@ -378,21 +480,30 @@
     "KRJA232078": {
       "name": "인조가죽시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "KRJA232073": {
       "name": "앞좌석 열선시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "KRJA232077": {
       "name": "운전석 통풍시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "KRJA232069": {
       "name": "슬라이딩 센터 콘솔 암레스트",
-      "category": "시트",
+      "category": "내장",
       "is_package": false
     },
     "KRJA232075": {
@@ -402,7 +513,7 @@
     },
     "KRJA232072": {
       "name": "앞좌석 시트벨트 높이조절장치",
-      "category": "시트",
+      "category": "안전",
       "is_package": false
     },
     "KRJA232067": {
@@ -413,22 +524,36 @@
     "KRJA232086": {
       "name": "버튼시동 스마트키 시스템(원격시동 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUTTON_START",
+        "REMOTE_START",
+        "SMART_KEY"
+      ]
     },
     "KRJA232100": {
       "name": "하이패스 자동결제 시스템",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HIPASS"
+      ]
     },
     "KRJA232099": {
       "name": "풀오토 에어컨",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "KRJA232110": {
       "name": "뒷좌석 C타입 USB 단자(충전용)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRJA232P03": {
       "name": "스타일",
@@ -452,38 +577,61 @@
     },
     "KRJA232009": {
       "name": "전방 충돌방지 보조(교차로 대향차/정면 대향차)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "KRJA232015": {
       "name": "후측방 충돌 경고",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRJA232123": {
       "name": "후측방 충돌방지 보조(전진 출차)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRJA232014": {
       "name": "후방 교차 충돌방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "KRJA232019": {
       "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "KRJA232006": {
       "name": "안전 하차 경고",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "KRJA232025": {
       "name": "운전석 무릎 에어백",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_KNEE"
+      ]
     },
     "KRJA232004": {
       "name": "후륜 디스크 브레이크",
@@ -492,7 +640,7 @@
     },
     "KRJA232033": {
       "name": "195/45 R16 타이어&amp;전면가공 휠",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232057": {
@@ -502,17 +650,20 @@
     },
     "KRJA232064": {
       "name": "인조가죽 스티어링 휠",
-      "category": "내장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "KRJA232050": {
       "name": "가죽 변속기 노브",
-      "category": "내장",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRJA232052": {
       "name": "동승석 선바이저 거울",
-      "category": "내장",
+      "category": "시트",
       "is_package": false
     },
     "KRJA232062": {
@@ -528,17 +679,30 @@
     "KRJA232129": {
       "name": "전자식 파킹 브레이크(오토홀드 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "KRJA232113": {
       "name": "열선 스티어링 휠",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "KRJA232114": {
       "name": "운전석 세이프티 파워윈도우",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "KRJA232P04": {
       "name": "스타일",
@@ -552,48 +716,66 @@
     },
     "KRJA232088": {
       "name": "선루프",
-      "category": "선택사양",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF"
+      ]
     },
     "KRJA232126": {
       "name": "GT-Line 전용 외장 디자인(전용 프론트 범퍼/라디에이터 그릴, 리어 디퓨저, 사이드실 몰딩, 휠, 전용 엠블럼)",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232038": {
       "name": "LED 헤드램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRJA232048": {
       "name": "프론트 LED 턴시그널램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "KRJA232037": {
       "name": "LED 주간 주행등",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "DRL"
+      ]
     },
     "KRJA232034": {
       "name": "LED 리어 콤비네이션램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "KRJA232036": {
       "name": "프론트 LED 센터 포지셔닝 램프",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232128": {
       "name": "D컷 스티어링 휠",
-      "category": "내장",
+      "category": "외관",
       "is_package": false
     },
     "KRJA232127": {
       "name": "메탈 페달",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "METAL_PEDAL"
+      ]
     },
     "KRJA232P22": {
       "name": "8인치 내비게이션",
@@ -612,8 +794,11 @@
     },
     "KRJA232040": {
       "name": "바디칼라 아웃사이드 미러(전동조절, 열선)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRJA232070": {
       "name": "앞좌석 높이조절식 헤드레스트",
@@ -623,7 +808,10 @@
     "KRJA232092": {
       "name": "앞좌석 파워윈도우",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_WINDOW"
+      ]
     },
     "KRJA232081": {
       "name": "격벽",
@@ -662,13 +850,19 @@
     },
     "KRJA232095": {
       "name": "전동접이&amp;락폴딩 아웃사이드 미러",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRJA232084": {
       "name": "뒷좌석 파워윈도우",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "POWER_WINDOW"
+      ]
     },
     "KRJA232P16": {
       "name": "컨비니언스",
@@ -677,18 +871,38 @@
     }
   },
   "categories": {
-    "파워트레인": [
+    "파워트레인/성능": [
       "KRJA232003",
       "KRJA232001",
-      "KRJA232002"
+      "KRJA232002",
+      "KRJA232028",
+      "KRJA232050"
     ],
-    "첨단 운전자 보조(ADAS)": [
+    "안전": [
+      "KRJA232016",
+      "KRJA232122",
+      "KRJA232017",
+      "KRJA232018",
+      "KRJA232023",
+      "KRJA232024",
+      "KRJA232026",
+      "KRJA232027",
+      "KRJA232029",
+      "KRJA232125",
+      "KRJA232072",
+      "KRJA232025",
+      "KRJA232004",
+      "KRJA232021",
+      "KRJA232022"
+    ],
+    "지능형 안전 기술": [
       "KRJA232008",
       "KRJA232012",
       "KRJA232007",
       "KRJA232013",
       "KRJA232011",
       "KRJA232010",
+      "KRJA232102",
       "KRJA232009",
       "KRJA232015",
       "KRJA232123",
@@ -696,113 +910,94 @@
       "KRJA232019",
       "KRJA232006"
     ],
-    "안전": [
-      "KRJA232016",
-      "KRJA232030",
-      "KRJA232122",
-      "KRJA232017",
-      "KRJA232018",
-      "KRJA232028",
-      "KRJA232023",
-      "KRJA232024",
-      "KRJA232026",
-      "KRJA232027",
-      "KRJA232029",
-      "KRJA232125",
-      "KRJA232025",
-      "KRJA232004",
-      "KRJA232021",
-      "KRJA232022"
-    ],
-    "외장": [
+    "외관": [
       "KRJA232032",
       "KRJA232046",
       "KRJA232047",
       "KRJA232044",
       "KRJA232039",
-      "KRJA232043",
       "KRJA232042",
+      "KRJA232090",
+      "KRJA232083",
+      "KRJA232112",
       "KRJA232031",
       "KRJA232035",
-      "KRJA232041",
-      "KRJA232045",
       "KRJA232033",
+      "KRJA232064",
+      "KRJA232113",
+      "KRJA232088",
       "KRJA232126",
       "KRJA232038",
       "KRJA232048",
       "KRJA232037",
       "KRJA232034",
       "KRJA232036",
-      "KRJA232040"
+      "KRJA232128",
+      "KRJA232040",
+      "KRJA232095"
     ],
     "내장": [
       "KRJA232056",
-      "KRJA232060",
       "KRJA232055",
       "KRJA232049",
-      "KRJA232063",
       "KRJA232066",
+      "KRJA232098",
       "KRJA232058",
       "KRJA232061",
       "KRJA232059",
       "KRJA232051",
       "KRJA232065",
       "KRJA232054",
+      "KRJA232069",
       "KRJA232057",
-      "KRJA232064",
-      "KRJA232050",
-      "KRJA232052",
       "KRJA232062",
       "KRJA232053",
-      "KRJA232128",
       "KRJA232127"
     ],
     "시트": [
+      "KRJA232043",
+      "KRJA232063",
       "KRJA232080",
       "KRJA232068",
       "KRJA232074",
       "KRJA232071",
+      "KRJA232093",
+      "KRJA232045",
       "KRJA232078",
       "KRJA232073",
       "KRJA232077",
-      "KRJA232069",
       "KRJA232075",
-      "KRJA232072",
       "KRJA232067",
+      "KRJA232110",
+      "KRJA232052",
       "KRJA232070",
-      "KRJA232076"
+      "KRJA232076",
+      "KRJA232084"
     ],
     "편의": [
-      "KRJA232098",
+      "KRJA232030",
       "KRJA232101",
       "KRJA232020",
       "KRJA232094",
-      "KRJA232102",
-      "KRJA232090",
-      "KRJA232093",
       "KRJA232096",
       "KRJA232089",
       "KRJA232085",
-      "KRJA232091",
       "KRJA232097",
-      "KRJA232083",
+      "KRJA232041",
       "KRJA232086",
       "KRJA232100",
       "KRJA232099",
-      "KRJA232110",
       "KRJA232129",
-      "KRJA232113",
       "KRJA232114",
       "KRJA232092",
       "KRJA232081",
-      "KRJA232087",
-      "KRJA232095",
-      "KRJA232084"
+      "KRJA232087"
     ],
     "인포테인먼트": [
+      "KRJA232060",
+      "KRJA232091",
       "KRJA232108",
       "KRJA232105",
-      "KRJA232112",
       "KRJA232111",
       "KRJA232109",
       "KRJA232104"
@@ -821,7 +1016,6 @@
       "KRJA232P12",
       "KRJA232P04",
       "KRJA232P13",
-      "KRJA232088",
       "KRJA232P22",
       "KRJA232P14",
       "KRJA232P15",

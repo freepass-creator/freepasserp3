@@ -9,70 +9,66 @@
   ],
   "fetched_at": "2026-04-29",
   "categories": {
-    "파워트레인 및 성능": [
+    "파워트레인/성능": [
       "WK_가솔린_2_5_터보_엔진",
       "WK_8단_자동변속기",
       "WK_ISG_시스템",
-      "WK_통합_주행_모드_에코_컴포트_스포츠_스포츠__커스텀_"
-    ],
-    "외관": [
-      "WK_Full_LED_헤드램프",
-      "WK_Full_LED_리어_콤비_램프",
-      "WK_225_45R18_브리지스톤_타이어___휠",
-      "WK_이중_접합_차음_유리_앞면__앞_도어_",
-      "WK_자외선_차단_유리_앞면_",
-      "WK_브렘보_블랙도장_모노블럭_4P__브레이크",
-      "WK_듀얼_머플러",
-      "WK_리어_스포일러"
-    ],
-    "내장": [
-      "WK_8인치_TFT_LCD_클러스터",
+      "WK_통합_주행_모드_에코_컴포트_스포츠_스포츠__커스텀_",
       "WK_전자식_변속레버_SBW_",
       "WK_패들쉬프트",
-      "WK_하이패스_시스템",
-      "WK_프레임리스_룸미러_ECM_",
-      "WK_터치타입_공조_패널",
-      "WK_메탈_도어스커프"
+      "WK_AWD"
     ],
     "안전": [
       "WK_10_에어백_시스템_앞좌석_어드밴스드",
       "WK_운전석_무릎",
       "WK_앞좌석_센터_사이드",
       "WK_앞___뒤_사이드",
-      "WK_전복_대응_커튼_",
       "WK_급제동_경보_기능",
       "WK_뒷좌석_센터_3점식_시트벨트",
+      "WK_다중_충돌방지_자동_제동_시스템"
+    ],
+    "지능형 안전 기술": [
       "WK_차로_이탈방지_보조",
-      "WK_진동경고_스티어링_휠",
       "WK_하이빔_보조",
       "WK_운전자_주의_경고",
       "WK_전방_충돌방지_보조_차량__보행자__자전거_탑승자__교차로_대향차_",
       "WK_후측방_충돌방지_보조",
       "WK_후방_교차_충돌방지_보조",
       "WK_지능형_속도_제한_보조",
-      "WK_후진_가이드_램프",
       "WK_안전_하차_경고",
       "WK_후석_승객_알림",
-      "WK_다중_충돌방지_자동_제동_시스템"
-    ],
-    "편의": [
-      "WK_터치타입_아웃사이드_도어_핸들",
-      "WK_레인_센서",
-      "WK_열선_스티어링_휠",
-      "WK_듀얼_풀오토_에어컨",
-      "WK_공기_청정_시스템_미세먼지_센서__애프터_블로우_포함_",
       "WK_고속도로_주행_보조",
       "WK_스마트_크루즈_컨트롤_Stop___Go_포함_",
       "WK_내비게이션_기반_스마트_크루즈_컨트롤_안전구간__곡선로_",
-      "WK_차로_유지_보조",
-      "WK_후방_주차_거리_경고",
-      "WK_스마트_파워_테일게이트",
+      "WK_차로_유지_보조"
+    ],
+    "외관": [
+      "WK_Full_LED_헤드램프",
+      "WK_Full_LED_리어_콤비_램프",
+      "WK_225_45R18_브리지스톤_타이어___휠",
+      "WK_이중_접합_차음_유리_앞면__앞_도어_",
+      "WK_브렘보_블랙도장_모노블럭_4P__브레이크",
+      "WK_듀얼_머플러",
+      "WK_리어_스포일러",
+      "WK_진동경고_스티어링_휠",
+      "WK_터치타입_아웃사이드_도어_핸들",
+      "WK_열선_스티어링_휠",
+      "WK_225_45R18_브리지스톤_타이어___다크_하이퍼_실버_휠",
+      "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다이아몬드_컷팅_휠",
+      "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다크_그레이_매트_휠_스",
+      "WK_와이드_선루프",
+      "WK_플로팅_휠_캡"
+    ],
+    "내장": [
+      "WK_프레임리스_룸미러_ECM_",
+      "WK_터치타입_공조_패널",
+      "WK_메탈_도어스커프",
+      "WK_공기_청정_시스템_미세먼지_센서__애프터_블로우_포함_",
       "WK_러기지_커버링_쉘프",
-      "WK_전동식_파킹_브레이크_오토홀드_포함_",
-      "WK_앞좌석___뒷좌석_파워_세이프티_윈도우",
-      "WK_전방_후방_주차_거리_경고"
+      "WK_매트_컬러__무광__3종_중_선택_"
     ],
     "시트": [
+      "WK_앞좌석___뒷좌석_파워_세이프티_윈도우",
       "WK_인조_가죽_시트",
       "WK_운전석_전동시트_12방향__럼버서포트_포함_",
       "WK_동승석_전동시트_8방향__높이조절_포함_",
@@ -81,36 +77,46 @@
       "WK_뒷좌석_열선_시트",
       "WK_뒷좌석_4_2_4_폴딩"
     ],
+    "편의": [
+      "WK_자외선_차단_유리_앞면_",
+      "WK_하이패스_시스템",
+      "WK_전복_대응_커튼_",
+      "WK_후진_가이드_램프",
+      "WK_레인_센서",
+      "WK_듀얼_풀오토_에어컨",
+      "WK_후방_주차_거리_경고",
+      "WK_스마트_파워_테일게이트",
+      "WK_전동식_파킹_브레이크_오토홀드_포함_",
+      "WK_전방_후방_주차_거리_경고",
+      "WK_가솔린_2_5_터보",
+      "WK_2WD_후륜_",
+      "WK_글로시_컬러__유광__11종_중_선택_",
+      "WK_고탄성_폴리우레탄_PPF_보호필름"
+    ],
     "인포테인먼트": [
+      "WK_8인치_TFT_LCD_클러스터",
       "WK_제네시스_인포테인먼트_시스템_10_25인치_디스플레이__Genesis_Connected_S",
       "WK_내비게이션_무선_업데이트",
-      "WK_렉시콘_사운드_시스템_9스피커_"
+      "WK_렉시콘_사운드_시스템_9스피커_",
+      "WK_헤드업_디스플레이",
+      "WK_렉시콘_15스피커_시스템_퀀텀_로직_서라운드_",
+      "WIRELESS_MIRROR"
     ],
     "선택사양": [
-      "WK_가솔린_2_5_터보",
-      "WK_225_45R18_브리지스톤_타이어___다크_하이퍼_실버_휠",
-      "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다이아몬드_컷팅_휠",
       "WK_블랙_소프트_페인트_도어_가니쉬",
       "WK_블랙_하이그로시_플로어_콘솔",
       "WK_나파_가죽_시트_퀼팅_포함_",
       "WK_다이아몬드_패턴_알루미늄_도어_가니쉬_플로어_콘솔",
       "WK_스웨이드_내장재_헤드라이닝__필라_트림_등_",
       "WK_혼커버_가죽_감싸기",
-      "WK_2WD_후륜_",
-      "WK_AWD",
       "WK_전자제어_서스펜션",
       "WK_차동제한장치_LSD_",
       "WK_19인치_미쉐린_타이어___스포츠_전용_휠",
       "WK_스포츠_전용_천연_가죽_시트",
       "WK_스포츠_내장재",
-      "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다크_그레이_매트_휠_스",
       "WK_다크_스탠다드_패턴_알루미늄_도어_가니쉬_플로어_콘솔",
       "WK_메탈___포레스트",
       "WK_스포츠_전용_나파_가죽_시트_퀼팅_포함_",
-      "WK_글로시_컬러__유광__11종_중_선택_",
-      "WK_매트_컬러__무광__3종_중_선택_",
-      "WK_와이드_선루프",
-      "WK_헤드업_디스플레이",
       "WK_제네시스_디지털_키_2_터치",
       "WK_앞좌석_스마트폰_무선_충전",
       "WK_12_3인치_3D_클러스터",
@@ -120,13 +126,10 @@
       "WK_운전석_인텔리전트_시트_16방향__쿠션_익스텐션__볼스터_전동_조절_포함_",
       "WK_동승석_럼버서포트",
       "WK_전동식_조절_스티어링_휠",
-      "WK_렉시콘_15스피커_시스템_퀀텀_로직_서라운드_",
       "WK_서라운드_뷰_모니터",
       "WK_후측방_모니터",
       "WK_빌트인_캠",
       "WK_보조배터리",
-      "WK_고탄성_폴리우레탄_PPF_보호필름",
-      "WK_플로팅_휠_캡",
       "WK_알칸타라_스티어링_휠",
       "WK_알칸타라_콘솔_암레스트"
     ]
@@ -134,33 +137,48 @@
   "options": {
     "WK_가솔린_2_5_터보_엔진": {
       "name": "가솔린 2.5 터보 엔진",
-      "category": "파워트레인 및 성능",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "WK_8단_자동변속기": {
       "name": "8단 자동변속기",
-      "category": "파워트레인 및 성능",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "TRANS_AT"
+      ]
     },
     "WK_ISG_시스템": {
       "name": "ISG 시스템",
-      "category": "파워트레인 및 성능",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "ISG"
+      ]
     },
     "WK_통합_주행_모드_에코_컴포트_스포츠_스포츠__커스텀_": {
       "name": "통합 주행 모드(에코/컴포트/스포츠/스포츠+/커스텀)",
-      "category": "파워트레인 및 성능",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "DRIVE_MODE"
+      ]
     },
     "WK_Full_LED_헤드램프": {
       "name": "Full LED 헤드램프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_Full_LED_리어_콤비_램프": {
       "name": "Full LED 리어 콤비 램프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "WK_225_45R18_브리지스톤_타이어___휠": {
       "name": "225/45R18 브리지스톤 타이어 & 휠",
@@ -170,12 +188,18 @@
     "WK_이중_접합_차음_유리_앞면__앞_도어_": {
       "name": "이중 접합 차음 유리(앞면, 앞 도어)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LAMINATED_GLASS"
+      ]
     },
     "WK_자외선_차단_유리_앞면_": {
       "name": "자외선 차단 유리(앞면)",
-      "category": "외관",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "UV_GLASS"
+      ]
     },
     "WK_브렘보_블랙도장_모노블럭_4P__브레이크": {
       "name": "브렘보 블랙도장 모노블럭(4P) 브레이크",
@@ -190,27 +214,40 @@
     "WK_리어_스포일러": {
       "name": "리어 스포일러",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REAR_SPOILER"
+      ]
     },
     "WK_8인치_TFT_LCD_클러스터": {
       "name": "8인치 TFT LCD 클러스터",
-      "category": "내장",
+      "category": "인포테인먼트",
       "is_package": false
     },
     "WK_전자식_변속레버_SBW_": {
       "name": "전자식 변속레버(SBW)",
-      "category": "내장",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "SHIFT_BY_WIRE",
+        "SOUND_PREMIUM"
+      ]
     },
     "WK_패들쉬프트": {
       "name": "패들쉬프트",
-      "category": "내장",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "PADDLE_SHIFT"
+      ]
     },
     "WK_하이패스_시스템": {
       "name": "하이패스 시스템",
-      "category": "내장",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "HIPASS"
+      ]
     },
     "WK_프레임리스_룸미러_ECM_": {
       "name": "프레임리스 룸미러(ECM)",
@@ -249,13 +286,16 @@
     },
     "WK_전복_대응_커튼_": {
       "name": "전복 대응 커튼)",
-      "category": "안전",
+      "category": "편의",
       "is_package": false
     },
     "WK_급제동_경보_기능": {
       "name": "급제동 경보 기능",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ESS"
+      ]
     },
     "WK_뒷좌석_센터_3점식_시트벨트": {
       "name": "뒷좌석 센터 3점식 시트벨트",
@@ -264,168 +304,273 @@
     },
     "WK_차로_이탈방지_보조": {
       "name": "차로 이탈방지 보조",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "WK_진동경고_스티어링_휠": {
       "name": "진동경고 스티어링 휠",
-      "category": "안전",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "WK_하이빔_보조": {
       "name": "하이빔 보조",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "WK_운전자_주의_경고": {
       "name": "운전자 주의 경고",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "DAW"
+      ]
     },
     "WK_전방_충돌방지_보조_차량__보행자__자전거_탑승자__교차로_대향차_": {
       "name": "전방 충돌방지 보조(차량, 보행자, 자전거 탑승자, 교차로 대향차)",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "WK_후측방_충돌방지_보조": {
       "name": "후측방 충돌방지 보조",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_후방_교차_충돌방지_보조": {
       "name": "후방 교차 충돌방지 보조",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_지능형_속도_제한_보조": {
       "name": "지능형 속도 제한 보조",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ISLA"
+      ]
     },
     "WK_후진_가이드_램프": {
       "name": "후진 가이드 램프",
-      "category": "안전",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "REVERSE_GUIDE"
+      ]
     },
     "WK_안전_하차_경고": {
       "name": "안전 하차 경고",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "WK_후석_승객_알림": {
       "name": "후석 승객 알림",
-      "category": "안전",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ROA"
+      ]
     },
     "WK_다중_충돌방지_자동_제동_시스템": {
       "name": "다중 충돌방지 자동 제동 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "WK_터치타입_아웃사이드_도어_핸들": {
       "name": "터치타입 아웃사이드 도어 핸들",
-      "category": "편의",
+      "category": "외관",
       "is_package": false
     },
     "WK_레인_센서": {
       "name": "레인 센서",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RAIN_SENSOR"
+      ]
     },
     "WK_열선_스티어링_휠": {
       "name": "열선 스티어링 휠",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "WK_듀얼_풀오토_에어컨": {
       "name": "듀얼 풀오토 에어컨",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "WK_공기_청정_시스템_미세먼지_센서__애프터_블로우_포함_": {
       "name": "공기 청정 시스템(미세먼지 센서, 애프터 블로우 포함)",
-      "category": "편의",
-      "is_package": false
+      "category": "내장",
+      "is_package": false,
+      "fp_ids": [
+        "AFTER_BLOW",
+        "AIR_PURIFY"
+      ]
     },
     "WK_고속도로_주행_보조": {
       "name": "고속도로 주행 보조",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "WK_스마트_크루즈_컨트롤_Stop___Go_포함_": {
       "name": "스마트 크루즈 컨트롤(Stop & Go 포함)",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "WK_내비게이션_기반_스마트_크루즈_컨트롤_안전구간__곡선로_": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "WK_차로_유지_보조": {
       "name": "차로 유지 보조",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "WK_후방_주차_거리_경고": {
       "name": "후방 주차 거리 경고",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "WK_스마트_파워_테일게이트": {
       "name": "스마트 파워 테일게이트",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "WK_러기지_커버링_쉘프": {
       "name": "러기지 커버링 쉘프",
-      "category": "편의",
+      "category": "내장",
       "is_package": false
     },
     "WK_전동식_파킹_브레이크_오토홀드_포함_": {
       "name": "전동식 파킹 브레이크(오토홀드 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "WK_앞좌석___뒷좌석_파워_세이프티_윈도우": {
       "name": "앞좌석 & 뒷좌석 파워 세이프티 윈도우",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS"
+      ]
     },
     "WK_전방_후방_주차_거리_경고": {
       "name": "전방/후방 주차 거리 경고",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_FRONT",
+        "SENSOR_REAR"
+      ]
     },
     "WK_인조_가죽_시트": {
       "name": "인조 가죽 시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_운전석_전동시트_12방향__럼버서포트_포함_": {
       "name": "운전석 전동시트(12방향, 럼버서포트 포함)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "WK_동승석_전동시트_8방향__높이조절_포함_": {
       "name": "동승석 전동시트(8방향, 높이조절 포함)",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ]
     },
     "WK_동승석_워크인_디바이스": {
       "name": "동승석 워크인 디바이스",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WORKIN"
+      ]
     },
     "WK_앞좌석_통풍___열선_시트": {
       "name": "앞좌석 통풍 & 열선 시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ]
     },
     "WK_뒷좌석_열선_시트": {
       "name": "뒷좌석 열선 시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR"
+      ]
     },
     "WK_뒷좌석_4_2_4_폴딩": {
       "name": "뒷좌석 4:2:4 폴딩",
@@ -435,31 +580,42 @@
     "WK_제네시스_인포테인먼트_시스템_10_25인치_디스플레이__Genesis_Connected_S": {
       "name": "제네시스 인포테인먼트 시스템(10.25인치 디스플레이, Genesis Connected Services, 제네시스 카페이, 발레 모드)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CONNECTED_CAR",
+        "DISPLAY_LCD",
+        "VALET_MODE"
+      ]
     },
     "WK_내비게이션_무선_업데이트": {
       "name": "내비게이션 무선 업데이트",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_렉시콘_사운드_시스템_9스피커_": {
       "name": "렉시콘 사운드 시스템(9스피커)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "WK_가솔린_2_5_터보": {
       "name": "가솔린 2.5 터보",
-      "category": "선택사양",
+      "category": "편의",
       "is_package": false
     },
     "WK_225_45R18_브리지스톤_타이어___다크_하이퍼_실버_휠": {
       "name": "225/45R18 브리지스톤 타이어 & 다크 하이퍼 실버 휠",
-      "category": "선택사양",
+      "category": "외관",
       "is_package": false
     },
     "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다이아몬드_컷팅_휠": {
       "name": "225/40R19(앞), 255/35R19(뒤) 미쉐린 타이어 & 다이아몬드 컷팅 휠",
-      "category": "선택사양",
+      "category": "외관",
       "is_package": false
     },
     "WK_블랙_소프트_페인트_도어_가니쉬": {
@@ -494,13 +650,16 @@
     },
     "WK_2WD_후륜_": {
       "name": "2WD(후륜)",
-      "category": "선택사양",
+      "category": "편의",
       "is_package": false
     },
     "WK_AWD": {
       "name": "AWD",
-      "category": "선택사양",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "WK_전자제어_서스펜션": {
       "name": "전자제어 서스펜션",
@@ -529,7 +688,7 @@
     },
     "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다크_그레이_매트_휠_스": {
       "name": "225/40R19(앞), 255/35R19(뒤) 미쉐린 타이어 & 다크 그레이 매트 휠(스포츠 전용)",
-      "category": "선택사양",
+      "category": "외관",
       "is_package": false
     },
     "WK_다크_스탠다드_패턴_알루미늄_도어_가니쉬_플로어_콘솔": {
@@ -549,23 +708,30 @@
     },
     "WK_글로시_컬러__유광__11종_중_선택_": {
       "name": "글로시 컬러 (유광, 11종 중 선택)",
-      "category": "선택사양",
+      "category": "편의",
       "is_package": false
     },
     "WK_매트_컬러__무광__3종_중_선택_": {
       "name": "매트 컬러 (무광, 3종 중 선택)",
-      "category": "선택사양",
+      "category": "내장",
       "is_package": false
     },
     "WK_와이드_선루프": {
       "name": "와이드 선루프",
-      "category": "선택사양",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "WK_헤드업_디스플레이": {
       "name": "헤드업 디스플레이",
-      "category": "선택사양",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "WK_제네시스_디지털_키_2_터치": {
       "name": "제네시스 디지털 키 2 터치",
@@ -614,8 +780,11 @@
     },
     "WK_렉시콘_15스피커_시스템_퀀텀_로직_서라운드_": {
       "name": "렉시콘 15스피커 시스템(퀀텀 로직 서라운드)",
-      "category": "선택사양",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "WK_서라운드_뷰_모니터": {
       "name": "서라운드 뷰 모니터",
@@ -639,12 +808,12 @@
     },
     "WK_고탄성_폴리우레탄_PPF_보호필름": {
       "name": "고탄성 폴리우레탄 PPF 보호필름",
-      "category": "선택사양",
+      "category": "편의",
       "is_package": false
     },
     "WK_플로팅_휠_캡": {
       "name": "플로팅 휠 캡",
-      "category": "선택사양",
+      "category": "외관",
       "is_package": false
     },
     "WK_알칸타라_스티어링_휠": {
@@ -659,8 +828,12 @@
     },
     "WIRELESS_MIRROR": {
       "name": "무선 Apple CarPlay & Android Auto",
-      "category": "편의/멀티미디어",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
+      ]
     }
   },
   "trims": {

@@ -20,11 +20,81 @@
     z-index: calc(var(--z-overlay) + 1);
     background: var(--c-surface);
     border-radius: var(--m-radius-sharp) var(--m-radius-sharp) 0 0;
-    max-height: 90dvh;
+    max-height: 72dvh;            /* 90→72 — 위쪽 콘텐츠 살짝 보이게 (사용자 요청) */
     display: flex;
     flex-direction: column;
     animation: m-sheet-up var(--dur-slow) var(--ease);
     padding-bottom: env(safe-area-inset-bottom);
+  }
+  /* 데스크톱에서 시트 호출 시 — 가운데 정렬 + max-width + 하단 살짝 띄움 (모서리 둥글게) */
+  .m-sheet.is-desktop {
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, 0);
+    bottom: 24px;
+    max-width: 520px;
+    width: calc(100% - 48px);
+    border-radius: var(--m-radius-sharp);
+    max-height: 68dvh;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    animation: m-sheet-up-desktop var(--dur-slow) var(--ease);
+  }
+  @keyframes m-sheet-up-desktop {
+    from { transform: translate(-50%, 100%); }
+    to   { transform: translate(-50%, 0); }
+  }
+  .m-sheet.is-desktop .m-sheet-handle { display: none; }   /* 데스크톱은 드래그 핸들 숨김 */
+
+  /* 데스크톱 anchor dropdown — 필터 버튼 아래로 펼침 (top/left 은 JS 가 inline 으로 set) */
+  .m-sheet.is-desktop.is-anchored {
+    left: auto;
+    right: auto;
+    bottom: auto;
+    transform: none;
+    width: 460px;
+    max-width: 460px;
+    max-height: min(76dvh, 720px);
+    border-radius: var(--m-radius-sharp);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    animation: m-sheet-dropdown var(--dur) var(--ease);
+  }
+  @keyframes m-sheet-dropdown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* anchored 모드는 overlay 도 투명 (사용자 컨텍스트 유지) */
+  .m-sheet.is-anchored ~ .m-sheet-overlay,
+  body:has(.m-sheet.is-anchored) .m-sheet-overlay {
+    background: transparent;
+  }
+
+  /* 데스크톱 시트 — 모바일 대비 여유로운 spacing (사용자 요청)
+   *  body padding ↑, 섹션 간 padding ↑, chip 간 gap ↑ */
+  .m-sheet.is-desktop .m-sheet-body { padding: 0 var(--sp-5) var(--sp-4); }
+  .m-sheet.is-desktop .m-filter-section { padding-bottom: var(--sp-4); }
+  .m-sheet.is-desktop .m-filter-section-title { padding: var(--sp-3) 0 var(--sp-2); font-size: var(--fs-md); }
+  .m-sheet.is-desktop .m-filter-chips { gap: 8px; padding-top: 6px; }
+  .m-sheet.is-desktop .m-filter-chips .chip { height: 26px; padding: 0 12px; font-size: var(--fs-sm); }
+  .m-sheet.is-desktop .m-sheet-header { padding: var(--sp-3) var(--sp-5); }
+  .m-sheet.is-desktop .m-filter-actions { padding: var(--sp-3) var(--sp-5); gap: 8px; }
+  /* 데스크톱 footer 버튼 — 모바일 44px 보다 작게, 표준 데스크톱 버튼 크기로 통일.
+   *  세 버튼 (초기화/취소/적용) 모두 동일 폭 (flex:1) + 동일 height + 동일 fs.
+   *  텍스트 가운데 정렬 (base .btn 은 inline-flex + align-items:center 만 있고
+   *  justify-content 누락 → footer 에서는 명시적으로 center). */
+  .m-sheet.is-desktop .m-filter-actions .btn,
+  .m-sheet.is-desktop .m-filter-actions .btn-primary,
+  .m-sheet.is-desktop .m-filter-actions .btn-outline {
+    flex: 1 1 0;
+    height: 32px;
+    padding: 0 12px;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    border-radius: var(--m-radius-sharp);
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   @keyframes m-sheet-up {
@@ -275,12 +345,30 @@
     font-size: var(--fs-xs);
     color: var(--c-text-muted);
   }
-  /* .chip 활성 상태 — accent 솔리드 fill (필터 시트 안에서 강한 선택 피드백) */
+  /* .chip 활성 상태 — accent 솔리드 fill (필터 시트 안에서 강한 선택 피드백)
+   *  모바일/데스크톱 양쪽 시트에서 적용 (data-sheet="filter" 또는 body.is-mobile) */
   body.is-mobile .chip.is-active,
-  body.is-mobile .chip.active {
+  body.is-mobile .chip.active,
+  .m-sheet .chip.is-active,
+  .m-sheet .chip.active {
     background: var(--c-accent);
     color: var(--c-text-inv, #fff);
     border-color: var(--c-accent);
+    font-weight: var(--fw-semibold);
+  }
+  /* 클릭 피드백 — 시트 안 chip 눌릴 때 살짝 들어가는 느낌 */
+  .m-sheet .chip:active { transform: scale(0.94); }
+  /* chip 간 간격 — 시트 안에서는 gap 6px (사용자 요청) */
+  .m-sheet .m-filter-chips {
+    gap: 6px;
+    flex-wrap: wrap;
+    overflow: visible;
+    height: auto;
+    align-items: flex-start;
+    padding: 4px 0 0;
+  }
+  .m-sheet .m-filter-chips .chip {
+    transition: background 80ms ease-out, color 80ms ease-out, border-color 80ms ease-out, transform 60ms ease-out;
   }
 
   /* 활성 필터 칩 — .chip 과 완전 동일 뱃지 (소통 페이지 빠른필터 톤)
@@ -444,6 +532,31 @@
     cursor: pointer;
   }
   .m-filter-more:hover { text-decoration: underline; }
+
+  /* range 슬라이더 (대여료/보증금) — 양쪽 sheet 공유 규격 */
+  .m-filter-range {
+    display: flex; flex-direction: column;
+    gap: var(--sp-2);
+    padding: var(--sp-2) 0;
+  }
+  .m-filter-range-display {
+    display: flex; align-items: baseline; gap: 4px;
+    font-size: var(--fs-md); font-weight: var(--fw-semibold);
+    color: var(--c-text);
+  }
+  .m-filter-range-display b { color: var(--c-accent); font-variant-numeric: tabular-nums; }
+  .m-filter-range-unit { font-size: var(--fs-xs); color: var(--c-text-muted); margin-left: 4px; }
+  .m-filter-range-row {
+    display: grid; grid-template-columns: 36px 1fr;
+    align-items: center; gap: var(--sp-2);
+  }
+  .m-filter-range-row label {
+    font-size: var(--fs-xs); color: var(--c-text-muted);
+  }
+  .m-filter-range-row input[type="range"] {
+    width: 100%; cursor: pointer;
+    accent-color: var(--c-accent);
+  }
 
   /* ════════════════════════════════════════════════
      모바일 정보 섹션/리스트 규격 (설정·계약·정산 공통)

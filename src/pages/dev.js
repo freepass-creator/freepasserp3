@@ -9,6 +9,8 @@
 import { store } from '../core/store.js';
 import { watchRecord, updateRecord, softDelete, setRecord, fetchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
+import { customConfirm } from '../core/confirm.js';
+import { withLoading, setLoadingMessage } from '../core/loading.js';
 import { saveNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
 import { esc, emptyState, renderRoomItem, fmtMoneyMan } from './../core/ui-helpers.js';
 import { analyzeProduct, loadIndex, clearCache as clearMatrixCache } from '../core/vehicle-matrix.js';
@@ -1410,29 +1412,35 @@ function renderVehicleDetail(sel) {
   `;
 }
 
-/* ──────── 종합시트 매트릭스 import ────────
- *  외부 공급사 종합시트 → row 별 catalog 매칭 → 우리 형식 정규화 → 차량번호 unique 만 미리보기 → import.
- *  공급사 코드는 비워서 import (사용자가 매물 단위로 추후 매핑). */
+/* ──────── 매트릭스 import — 종합시트 / 오토플러스 전용 ────────
+ *  지원 시트 2개:
+ *    1) 종합시트   (1BcH... · gid 1422892422)
+ *    2) 오토플러스 (1TJB... · gid 284963459)
+ *  URL 만 붙이면 sheet-importer.js 의 detectProfile 이 자동 분기. */
 const MATRIX_IMPORT_DEFAULT_SHEET = '1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg';
-const MATRIX_IMPORT_DEFAULT_TAB = '종합';
 let _matrixImportRows = null;
+let _matrixImportProfile = null;
 
 function renderMatrixImportTab(el) {
   el.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:10px;height:100%;">
-      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">
-        <input type="text" class="input" id="miUrl" placeholder="구글시트 링크 통째로 붙여넣기 (https://docs.google.com/spreadsheets/d/.../edit?gid=...)"
-               value="https://docs.google.com/spreadsheets/d/${MATRIX_IMPORT_DEFAULT_SHEET}/edit"
-               style="flex:1;min-width:320px;font-family:monospace;font-size:11px;">
+    <div class="mi-wrap">
+      <div class="mi-toolbar">
+        <input type="text" class="input mi-url" id="miUrl"
+               placeholder="구글시트 URL 붙여넣기 (종합시트 / 오토플러스)">
         <button class="btn btn-sm btn-primary" id="miFetchBtn"><i class="ph ph-google-drive-logo"></i> 시트 불러오기</button>
+        <label class="mi-toggle" title="체크 시 출고불가 매물도 함께 import (default: 제외)">
+          <input type="checkbox" id="miIncludeOut"> 출고불가 포함
+        </label>
         <button class="btn btn-sm" id="miImportBtn" disabled><i class="ph ph-cloud-arrow-up"></i> 매칭된 매물 import</button>
-        <span id="miStatus" style="font-size:11px;color:var(--text-muted);margin-left:auto;"></span>
+        <button class="btn btn-sm mi-danger" id="miPurgeBtn" title="매물 row 일괄 soft-delete + JSON 백업"><i class="ph ph-warning-octagon"></i> 데이터 일괄 삭제</button>
+        <span id="miStatus" class="mi-status"></span>
       </div>
-      <div style="font-size:11px;color:var(--text-weak);">
-        URL 의 <code>/d/&lt;ID&gt;/</code> 와 <code>?gid=&lt;NUMBER&gt;</code> 자동 추출. gid 없으면 첫 탭. 종합시트 default 로 채워짐.
+      <div class="mi-hint">
+        지원 시트 2개: <b>종합시트</b> · <b>오토플러스</b>. URL 만 붙여넣으면 자동 인식.
+        <b class="mi-danger-text">[일괄 삭제]</b> 는 매물 row 만 soft-delete (Storage 사진은 보존, 차량번호로 자동 복원).
       </div>
-      <div id="miSummary" style="font-size:12px;padding:8px;background:var(--bg-stripe);border-radius:4px;display:none;"></div>
-      <div id="miPreview" style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
+      <div id="miSummary" class="mi-summary" hidden></div>
+      <div id="miPreview" class="mi-preview" hidden></div>
     </div>
   `;
   const fetchBtn = el.querySelector('#miFetchBtn');
@@ -1451,62 +1459,78 @@ function renderMatrixImportTab(el) {
     importBtn.disabled = true;
     status.textContent = 'URL 파싱 중...';
     try {
+      await withLoading('시트 불러오는 중...', async () => {
       const SI = await import('../core/sheet-importer.js');
       const { sheetId, gid } = SI.parseSheetUrl(inputUrl);
       if (!sheetId) throw new Error('URL 에서 sheet ID 추출 실패');
 
-      status.textContent = '탭 정보 조회 중...';
-      const tab = await SI.resolveTabTitle(sheetId, gid);
-      if (!tab) throw new Error('탭 정보 조회 실패');
-      devLog(`[matrix-import] sheetId=${sheetId} gid=${gid ?? '(default)'} tab="${tab}"`);
+      // 두 시트 (종합/오토플러스) 만 자동 인식 — 다른 sheetId 면 detectProfile 이 throw.
+      setLoadingMessage('시트 인식 + 탭 조회 중...');
+      status.textContent = '시트 인식 + 탭 정보 조회 중...';
+      const { profile, tab, headerRow, dataRows } = await SI.fetchSheetWithProfile(sheetId, gid);
+      _matrixImportProfile = profile;
+      devLog(`[matrix-import] profile=${profile.label} sheetId=${sheetId} gid=${gid ?? profile.defaultGid} tab="${tab}" rows=${dataRows.length}`);
 
-      status.textContent = `시트 fetch 중 ("${tab}")...`;
-      const values = await SI.fetchSheetValues(sheetId, tab);
-      if (values.length < 2) throw new Error('row 없음');
-      const headerMap = SI.buildHeaderMap(values[0]);
-      devLog(`[matrix-import] header columns: ${Object.keys(headerMap).join(', ')}`);
+      // 사진 링크 추출 (차량번호 셀의 chipRuns + hyperlink) — 단일 탭만 (multiTab 모드는 탭별 별도 fetch 필요해서 skip)
+      let photoMap = {};
+      if (!profile.multiTab) {
+        setLoadingMessage('사진 링크 추출 중...');
+        status.textContent = '사진 링크 추출 중...';
+        photoMap = await SI.fetchPhotoLinkMap(sheetId, tab, profile.carNumberColLetter);
+        devLog(`[matrix-import] photo links: ${Object.keys(photoMap).length}개 추출`);
+      }
 
-      // 차량번호 셀의 외부 링크 (chipRuns + hyperlink) → photo_link 매핑
-      status.textContent = '사진 링크 추출 중 (차량번호 셀의 hyperlink/chip)...';
-      const carColLetter = headerMap['차량번호'] != null
-        ? String.fromCharCode('A'.charCodeAt(0) + headerMap['차량번호'])
-        : 'D';
-      const photoMap = await SI.fetchPhotoLinkMap(sheetId, tab, carColLetter);
-      const photoCount = Object.keys(photoMap).length;
-      devLog(`[matrix-import] photo links: ${photoCount}개 추출`);
+      // 시스템 차량번호 → 매물 메타 map (중복 시 어느 매물과 동일한지 표시)
+      const sysByCarNum = new Map();
+      for (const p of (store.products || [])) {
+        if (p._deleted) continue;
+        const cn = (p.car_number || '').trim();
+        if (cn) sysByCarNum.set(cn, p);
+      }
 
-      // 시스템 차량번호 set (중복 제외용)
-      const sysCarNums = new Set(
-        (store.products || [])
-          .filter(p => !p._deleted)
-          .map(p => (p.car_number || '').trim())
-          .filter(Boolean)
-      );
-
-      status.textContent = `매칭 분석 중 (${values.length - 1}대)...`;
+      setLoadingMessage(`매칭 분석 중 (${dataRows.length}대)...`);
+      status.textContent = `매칭 분석 중 (${dataRows.length}대)...`;
       const results = [];
-      for (let i = 1; i < values.length; i++) {
-        const raw = SI.parseRow(values[i], headerMap);
+      // 차량번호 dedup — multiTab 모드에서 같은 차량번호가 여러 탭에 있을 수 있음 (종합 + 공급사 탭 등)
+      const seenCarNum = new Set();
+      for (let i = 0; i < dataRows.length; i++) {
+        const dataRow = dataRows[i];
+        if (!dataRow) continue;
+        // multiTab 모드면 wrapper 객체 ({ _row, _source_tab }), 단일 탭이면 raw row 배열
+        const isWrapped = !Array.isArray(dataRow) && dataRow._row;
+        const rowArr = isWrapped ? dataRow._row : dataRow;
+        const sourceTab = isWrapped ? dataRow._source_tab : null;
+        if (!rowArr || !rowArr.length) continue;
+        const raw = profile.parser(rowArr);
         if (!raw.car_number) continue;
-        // photo_link 주입 (차량번호 셀의 chipRuns / hyperlink — row index i 와 동일)
-        if (photoMap[i]) raw.photo_link = photoMap[i];
-        const isDup = sysCarNums.has(raw.car_number);
+        if (seenCarNum.has(raw.car_number)) continue;     // 중복 탭 dedup
+        seenCarNum.add(raw.car_number);
+        if (sourceTab) raw._source_tab = sourceTab;
+        // photo map index = 시트의 절대 row index (단일 탭만 — multiTab 은 photoMap 비어있음)
+        const sheetRowIdx = profile.dataStartRowIdx + i;
+        if (photoMap[sheetRowIdx]) raw.photo_link = photoMap[sheetRowIdx];
+        const dupOf = sysByCarNum.get(raw.car_number);
+        const isDup = !!dupOf;
         const isValid = SI.isValidCarNumber(raw.car_number);
+        // dup 여부와 무관하게 catalog 매칭은 항상 시도 — 미리보기에서 매칭 결과 비교 가능하게
+        // (import 단계에서만 dup 제외)
         let enriched = null;
         let reason = '';
-        if (!isValid) {
-          reason = '차량번호 형식 오류';
-        } else if (isDup) {
-          reason = '시스템에 이미 존재';
-        } else {
-          enriched = await SI.enrichWithCatalog(raw);
-          if (!enriched.ok) reason = enriched.reason;
-          // photo_link 를 enrichment 결과에도 전달
-          if (enriched.ok && raw.photo_link) {
-            enriched.matched_product.photo_link = raw.photo_link;
-          }
+        // 차량번호 invalid (미정/빈) 도 catalog 매칭은 시도 — import 시점에 임시번호 자동 발급
+        enriched = await SI.enrichWithCatalog(raw);
+        if (enriched.ok && raw.photo_link) {
+          enriched.matched_product.photo_link = raw.photo_link;
         }
-        results.push({ raw, enriched, isDup, isValid, reason });
+        if (isDup) {
+          reason = `중복: ${dupOf.product_code || dupOf._key} · ${dupOf.maker || ''} ${dupOf.sub_model || ''}`;
+        } else if (!enriched.ok) {
+          reason = enriched.reason;
+        } else if (!isValid) {
+          reason = `신차 (임시번호 100신NNNN 자동 발급 예정)`;
+        } else {
+          reason = `매칭 OK (${enriched.confidence})`;
+        }
+        results.push({ raw, enriched, isDup, dupOf, isValid, reason });
       }
       _matrixImportRows = results;
 
@@ -1516,8 +1540,9 @@ function renderMatrixImportTab(el) {
       const invalid = results.filter(r => !r.isValid && !r.isDup).length;
       const failed = total - matched - dups - invalid;
 
-      summary.style.display = 'block';
+      summary.hidden = false;
       summary.innerHTML = `
+        <b>${esc(_matrixImportProfile.label)}</b> · <code>${esc(tab)}</code> ·
         <b>전체 ${total}</b> ·
         <span style="color:var(--alert-green-text);">매칭 ${matched}</span> ·
         <span style="color:var(--alert-orange-text);">중복 ${dups}</span> ·
@@ -1525,12 +1550,13 @@ function renderMatrixImportTab(el) {
         <span style="color:var(--text-weak);">매칭실패 ${failed}</span>
       `;
 
-      preview.style.display = 'block';
-      preview.innerHTML = renderMatrixImportPreview(results);
+      preview.hidden = false;
+      preview.innerHTML = renderMatrixImportPreview(results, _matrixImportProfile);
 
       importBtn.disabled = matched === 0;
       status.textContent = matched ? `${matched}대 import 가능` : '매칭 매물 없음';
       devLog(`[matrix-import] total=${total} matched=${matched} dup=${dups} invalid=${invalid} failed=${failed}`);
+      });   // close withLoading
     } catch (e) {
       console.error('[matrix-import]', e);
       showToast('시트 fetch 실패: ' + (e.message || e), 'error');
@@ -1542,73 +1568,361 @@ function renderMatrixImportTab(el) {
 
   importBtn.addEventListener('click', async () => {
     if (!_matrixImportRows) return;
-    const matched = _matrixImportRows.filter(r => r.enriched?.ok);
+    // 출고불가 매물 제외 정책 — [출고불가 포함] 체크박스 토글에 따라
+    const includeOut = !!el.querySelector('#miIncludeOut')?.checked;
+    const matchedAll = _matrixImportRows.filter(r => r.enriched?.ok);
+    const matched = includeOut
+      ? matchedAll
+      : matchedAll.filter(r => r.enriched.matched_product?.vehicle_status !== '출고불가');
+    const skippedOut = matchedAll.length - matched.length;
     if (!matched.length) { showToast('import 대상 없음', 'warn'); return; }
-    if (!confirm(`매칭된 ${matched.length}대를 products 에 import 합니다.\n공급사 코드는 비워둠 — 추후 매물별 매핑 필요.\n계속할까요?`)) return;
+    if (!confirm(`매칭된 ${matched.length}대를 products 에 import 합니다.\n` +
+                 (skippedOut ? `(출고불가 ${skippedOut}대 제외)\n` : '') +
+                 (includeOut ? '(출고불가 포함)\n' : '') +
+                 `공급사 코드는 비워둠 — 추후 매물별 매핑 필요.\n계속할까요?`)) return;
 
     importBtn.disabled = true;
     status.textContent = `import 중 (0/${matched.length})...`;
-    const { allocateManualProductUid } = await import('../firebase/collections.js');
-    let success = 0, fail = 0;
+    await withLoading(`매물 import 준비 중 (0/${matched.length})...`, async () => {
+    const { allocateManualProductUid, allocateTempCarNumber } = await import('../firebase/collections.js');
+    const SI = await import('../core/sheet-importer.js');
+    // backup 노드들 fetch — 차량번호 → Storage URL 매핑 (가장 최근 backup 우선)
+    setLoadingMessage('Storage 사진 백업 조회 중...');
+    const photoBackupByCar = await loadStorageBackupMap();
+    // _deleted 매물 차량번호 → product_uid 매핑 — 같은 차량번호면 옛 product_uid 재사용
+    //   (계약/채팅/정산이 product_uid 로 참조하므로 끊김 방지)
+    const deletedByCar = new Map();
+    for (const old of (store.products || [])) {
+      if (!old._deleted) continue;
+      const cn = (old.car_number || '').trim();
+      if (!cn) continue;
+      // 같은 차량번호 여러 _deleted 매물 있으면 가장 최근 deleted 우선
+      const prev = deletedByCar.get(cn);
+      if (!prev || (old.deleted_at || 0) > (prev.deleted_at || 0)) {
+        deletedByCar.set(cn, old);
+      }
+    }
+    let success = 0, fail = 0, restored = 0, reused = 0;
     for (const r of matched) {
       try {
-        const uid = await allocateManualProductUid();
         const me = store.currentUser || {};
         const p = r.enriched.matched_product;
+        // 차량번호 미정 (신차) — 임시번호 100신NNNN 발급 + product_type='신차렌트'
+        let carNumber = p.car_number;
+        let isPendingPlate = false;
+        let isNewVehicle = false;
+        if (!SI.isValidCarNumber(carNumber)) {
+          carNumber = await allocateTempCarNumber();
+          isPendingPlate = true;
+          isNewVehicle = true;
+        }
+        // 차량번호로 _deleted 매물 검색 — 있으면 그 product_uid 재사용 (계약/채팅 연결 유지)
+        const oldMatch = deletedByCar.get(carNumber);
+        const uid = oldMatch?.product_uid || oldMatch?._key || await allocateManualProductUid();
+        if (oldMatch) reused++;
         const rec = {
           _key: uid,
           product_uid: uid,
-          product_code: uid,
-          provider_company_code: '',   // 추후 사용자가 매핑
-          partner_code: '',
+          product_code: oldMatch?.product_code || uid,
+          provider_company_code: oldMatch?.provider_company_code || '',
+          partner_code: oldMatch?.partner_code || '',
           ...p,
+          car_number: carNumber,                     // 임시번호 또는 시트 그대로
           is_active: true,
-          created_at: Date.now(),
-          created_by: me.uid || 'matrix-import',
+          _deleted: false,                            // 옛 매물이면 살리기
+          deleted_at: null,
+          updated_at: Date.now(),
+          updated_by: me.uid || 'matrix-import',
+          ...(oldMatch ? {} : { created_at: Date.now(), created_by: me.uid || 'matrix-import' }),
         };
+        if (isPendingPlate) rec.is_pending_plate = true;
+        if (isNewVehicle && (!rec.product_type || rec.product_type === '중고렌트')) {
+          rec.product_type = '신차렌트';
+        }
+        // Storage 사진 복원 — 차량번호 일치하는 backup 있으면 image_urls 자동 첨부
+        const backup = photoBackupByCar.get(rec.car_number);
+        if (backup?.image_urls?.length) {
+          rec.image_urls = backup.image_urls;
+          restored++;
+        }
         await setRecord(`products/${uid}`, rec);
         success++;
-        status.textContent = `import 중 (${success}/${matched.length})...`;
+        const msg = `매물 import 중 (${success}/${matched.length})...`;
+        setLoadingMessage(msg);
+        status.textContent = msg;
       } catch (e) {
         console.warn('[matrix-import push]', e);
         fail++;
       }
     }
-    status.textContent = `완료: ${success}대 등록${fail ? ` / ${fail}대 실패` : ''}`;
-    showToast(`${success}대 import 완료${fail ? ` (${fail}대 실패)` : ''}`, fail ? 'warn' : 'success');
+    if (restored) devLog(`[matrix-import] Storage 사진 복원: ${restored}대`);
+    if (reused) devLog(`[matrix-import] product_uid 재사용 (계약/채팅 연결 유지): ${reused}대`);
+    status.textContent = `완료: ${success}대 등록${reused ? ` (재사용 ${reused})` : ''}${fail ? ` / ${fail}대 실패` : ''}`;
+    showToast(
+      `${success}대 import` +
+      (reused ? ` · ${reused}대 재사용 (계약/채팅 유지)` : '') +
+      (restored ? ` · 사진 복원 ${restored}대` : '') +
+      (fail ? ` (${fail}대 실패)` : ''),
+      fail ? 'warn' : 'success'
+    );
     importBtn.disabled = false;
+    });   // close withLoading
+  });
+
+  // 데이터 일괄 삭제 — 매물 row 만 soft-delete + Storage 사진 URL 백업 (Storage 객체는 안 건드림)
+  el.querySelector('#miPurgeBtn')?.addEventListener('click', async () => {
+    const me = store.currentUser;
+    if (me?.role !== 'admin') { showToast('관리자 전용', 'error'); return; }
+    const live = (store.products || []).filter(p => !p._deleted);
+    if (!live.length) { showToast('삭제할 매물 없음', 'info'); return; }
+
+    const carWithPhotos = live.filter(p => extractStorageUrls(p).length).length;
+    const ok = await customConfirm({
+      message: `매물 ${live.length}대를 일괄 삭제합니다.\n` +
+               `· soft-delete (복구 가능)\n` +
+               `· Storage 사진 ${carWithPhotos}대분은 차량번호로 백업 → 재import 시 자동 복원\n` +
+               `· Storage 객체 자체는 건드리지 않음\n\n` +
+               `계속하시겠습니까?`,
+      danger: true, okLabel: '일괄 삭제', cancelLabel: '취소',
+    });
+    if (!ok) return;
+
+    status.textContent = '백업 + 삭제 중...';
+    el.querySelector('#miPurgeBtn').disabled = true;
+    try {
+      await withLoading(`백업 시작...`, async () => {
+      const { updateRecord } = await import('../firebase/db.js');
+      const today = new Date();
+      const stamp = `${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}`;
+      const backupAt = Date.now();
+
+      // 1) JSON 파일 다운로드 — 외부 안전장치 (브라우저 다운로드)
+      //    RTDB /backup 노드는 rules 거부 가능 → JSON 다운로드 + soft-delete 만으로 충분.
+      //    재import 시 image_urls / product_uid 매핑은 _deleted 매물 자체에서 직접 lookup
+      //    (loadStorageBackupMap 이 _deleted 매물 우선 검색).
+      setLoadingMessage('JSON 백업 파일 생성 중...');
+      const jsonPayload = JSON.stringify({
+        _backup_at: backupAt,
+        _backup_date: stamp,
+        _count: live.length,
+        products: live,
+      }, null, 2);
+      const blob = new Blob([jsonPayload], { type: 'application/json' });
+      const dlUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = dlUrl;
+      a.download = `products_backup_${stamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(dlUrl);
+      devLog(`[purge] JSON 다운로드: products_backup_${stamp}.json (${live.length}대)`);
+
+      // 2) 매물 row soft-delete — _deleted: true (RTDB 에 데이터는 그대로 남음)
+      //    재import 시 차량번호로 _deleted 매물 검색 → product_uid 재사용 + image_urls 복원
+      let deleted = 0;
+      for (const p of live) {
+        const key = p._key || p.product_uid;
+        if (!key) continue;
+        try {
+          await updateRecord(`products/${key}`, { _deleted: true, deleted_at: backupAt, deleted_by: me.uid }, { silent: true });
+          deleted++;
+        } catch (e) {
+          console.warn('[purge soft-delete] 실패', key, e?.message || e);
+        }
+        const msg = `매물 삭제 중 (${deleted}/${live.length})...`;
+        setLoadingMessage(msg);
+        status.textContent = msg;
+      }
+      status.textContent = `완료: ${deleted}대 삭제 · JSON 백업 다운로드`;
+      showToast(`${deleted}대 일괄 삭제 · JSON 백업 다운로드 완료`, 'success');
+      devLog(`[purge] ${deleted} soft-deleted | JSON: products_backup_${stamp}.json`);
+      });   // close withLoading
+    } catch (e) {
+      console.error('[purge]', e);
+      showToast('삭제 실패: ' + (e.message || e), 'error');
+      status.textContent = '실패: ' + (e.message || e);
+    } finally {
+      el.querySelector('#miPurgeBtn').disabled = false;
+    }
   });
 }
 
-function renderMatrixImportPreview(results) {
-  const head = `<tr style="position:sticky;top:0;background:var(--bg-header);">
-    <th style="padding:4px 6px;text-align:left;font-size:11px;">상태</th>
-    <th style="padding:4px 6px;text-align:left;font-size:11px;">차량번호</th>
-    <th style="padding:4px 6px;text-align:left;font-size:11px;">제조사 / 모델</th>
-    <th style="padding:4px 6px;text-align:left;font-size:11px;">세부모델 (시트 → 표준)</th>
-    <th style="padding:4px 6px;text-align:left;font-size:11px;">트림</th>
-    <th style="padding:4px 6px;text-align:left;font-size:11px;">연식 / 연료</th>
-    <th style="padding:4px 6px;text-align:left;font-size:11px;">사유</th>
-  </tr>`;
+/** Firebase RTDB set() 호환을 위한 sanitize — undefined / 함수 / 빈 키 / 잘못된 키 문자 제거.
+ *  RTDB 가 거부하는 값 (undefined, NaN, 함수) 또는 키 (. # $ [ ] /) 가 들어가면 silently 제거. */
+function sanitizeForRTDB(obj) {
+  if (obj == null || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(sanitizeForRTDB).filter(v => v !== undefined);
+  const out = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (!k || /[.#$\[\]/]/.test(k)) continue;            // 키에 RTDB 금지 문자
+    if (v === undefined) continue;                        // undefined 제거
+    if (typeof v === 'function') continue;                // 함수 제거
+    if (typeof v === 'number' && !Number.isFinite(v)) continue;  // NaN / Infinity 제거
+    if (v && typeof v === 'object') {
+      const nested = sanitizeForRTDB(v);
+      // 빈 객체/배열은 RTDB 가 무시하므로 그대로 둬도 OK
+      out[k] = nested;
+    } else {
+      out[k] = v;
+    }
+  }
+  return out;
+}
+
+/** product 의 image_urls / images / photos / image_url 에서 Firebase Storage URL 만 추출 */
+function extractStorageUrls(p) {
+  const all = [
+    ...(Array.isArray(p?.image_urls) ? p.image_urls : []),
+    ...(Array.isArray(p?.images) ? p.images : []),
+    ...(Array.isArray(p?.photos) ? p.photos : []),
+    p?.image_url,
+  ].filter(Boolean).map(String);
+  return all.filter(u => /firebasestorage\.(googleapis\.com|app)/i.test(u));
+}
+
+/** _deleted 매물에서 차량번호 → image_urls 매핑 빌드. RTDB /backup 노드 의존 X.
+ *  소스: store.products 의 _deleted=true 매물 (RTDB 에 그대로 남아있음).
+ *  여러 _deleted 매물 차량번호 동일하면 가장 최근 deleted_at 우선. */
+async function loadStorageBackupMap() {
+  const map = new Map();
+  for (const p of (store.products || [])) {
+    if (!p._deleted) continue;
+    const cn = (p.car_number || '').trim();
+    if (!cn) continue;
+    const urls = extractStorageUrls(p);
+    if (!urls.length) continue;
+    const entry = {
+      car_number: cn,
+      image_urls: urls,
+      driver_license_url: p.driver_license_url || '',
+      _backup_at: p.deleted_at || 0,
+    };
+    const prev = map.get(cn);
+    if (!prev || entry._backup_at > prev._backup_at) {
+      map.set(cn, entry);
+    }
+  }
+  return map;
+}
+
+/**
+ * 매트릭스 import 미리보기 표 — 매물 1개 = 2 row (위 시트 raw / 아래 ERP 표준).
+ * 컬럼은 ERP 기준으로 정렬 (raw 행은 비교용, std 행은 실제 import 형태).
+ *
+ * raw 행 (회색 배경, 약한 색): 시트의 원본 값 그대로
+ * std 행 (강조): catalog 매칭 후 표준화된 값
+ *
+ * 매물 단위 분리는 std 행의 border-bottom 으로만.
+ */
+/** 매트릭스 import 미리보기 — 상품찾기 (search) 페이지와 동일 컬럼 구성.
+ *  적용상태(맨앞) / 차량번호 / 상태 / 구분 / 제조사 / 모델명 / 세부모델 / 세부트림 / 선택옵션 /
+ *  연식 / 주행 / 연료 / 외부 / 내부 / 심사 / 1M / 12M / 24M / 36M / 48M / 60M / 회사명(코드)
+ *  사용자가 import 후 검색 페이지에서 어떻게 보일지 미리 확인. */
+function renderMatrixImportPreview(results, profile) {
+  const TH = (label, w, align = 'left') => `<th style="padding:5px 6px;text-align:${align};font-size:11px;font-weight:600;${w ? `width:${w};min-width:${w};` : ''}">${label}</th>`;
+  const head = `<thead><tr style="position:sticky;top:0;background:var(--bg-header);z-index:1;border-bottom:1px solid var(--border);">
+    ${TH('적용', '64px', 'center')}
+    ${TH('차량번호', '90px')}
+    ${TH('상태', '70px', 'center')}
+    ${TH('구분', '70px', 'center')}
+    ${TH('제조사', '70px')}
+    ${TH('모델명', '90px')}
+    ${TH('세부모델', '140px')}
+    ${TH('세부트림', '200px')}
+    ${TH('선택옵션', '220px')}
+    ${TH('연식', '54px', 'center')}
+    ${TH('주행', '64px', 'right')}
+    ${TH('연료', '60px', 'center')}
+    ${TH('외부', '60px', 'center')}
+    ${TH('내부', '60px', 'center')}
+    ${TH('심사', '54px', 'center')}
+    ${TH('1M', '88px', 'right')}
+    ${TH('12M', '88px', 'right')}
+    ${TH('24M', '88px', 'right')}
+    ${TH('36M', '88px', 'right')}
+    ${TH('48M', '88px', 'right')}
+    ${TH('60M', '88px', 'right')}
+    ${TH('회사명(코드)', '160px')}
+  </tr></thead>`;
+
+  const fmtNum = (n) => n != null && n !== '' ? Number(n).toLocaleString('ko-KR') : '-';
+  const dash = (v) => v ? esc(String(v)) : '<span style="color:var(--text-muted);">-</span>';
+  // 가격 셀 — search.js 의 fmtPricePair 와 동일 디자인 (월대여 / 보증금 두 줄)
+  const fmtPricePair = (v) => {
+    if (!v) return '<span style="color:var(--text-muted);">-</span>';
+    const rent = Number(v.rent || 0);
+    const dep = Number(v.deposit || 0);
+    if (!rent && !dep) return '<span style="color:var(--text-muted);">-</span>';
+    const rentStr = rent ? Math.round(rent / 10000).toLocaleString() : '-';
+    const depStr = dep ? Math.round(dep / 10000).toLocaleString() : '-';
+    return `<span style="display:flex;flex-direction:column;align-items:flex-end;line-height:1.25;">
+      <span style="font-weight:600;">${rentStr}</span>
+      <span style="color:var(--text-weak);font-size:10px;">${depStr}</span>
+    </span>`;
+  };
+
+  // 적용 상태 결정 — import 시 어떻게 처리될지 미리 표시
+  const decideAction = (r) => {
+    if (!r.isValid && !r.enriched?.ok) return { label: '실패', tone: 'red', icon: 'ph-x' };
+    const m = r.enriched?.matched_product || {};
+    if (r.enriched?.ok && m.vehicle_status === '출고불가') return { label: 'skip', tone: 'orange', icon: 'ph-prohibit' };
+    if (r.isDup) return { label: '재사용', tone: 'blue', icon: 'ph-arrows-clockwise' };
+    if (!r.enriched?.ok) return { label: '실패', tone: 'red', icon: 'ph-x' };
+    if (!r.isValid) return { label: '신차', tone: 'blue', icon: 'ph-sparkle' };
+    return { label: '신규', tone: 'green', icon: 'ph-plus' };
+  };
+
   const rows = results.map(r => {
     const raw = r.raw;
-    const e = r.enriched;
-    const sym = e?.ok ? '✓' : (r.isDup ? '⚠' : '✗');
-    const tone = e?.ok ? 'green' : (r.isDup ? 'orange' : 'red');
-    const sub = e?.ok
-      ? `${esc(raw.sub_model || raw.raw_model || '')} → <b>${esc(e.matched_product.sub_model)}</b>`
-      : esc(raw.sub_model || raw.raw_model || '-');
-    const trim = e?.ok ? esc(e.matched_product.trim_name || '-') : esc(raw.trim_name || '-');
+    const m = r.enriched?.matched_product || {};
+    const action = decideAction(r);
+    const stdModel    = m.model     || raw.raw_model     || '';
+    const stdSub      = m.sub_model || raw.sub_model_raw || raw.raw_model || '';
+    const stdTrim     = m.trim_name || raw.trim_name     || '';
+    const stdOptions  = (m.options && m.options.length) ? m.options : (raw.options || []);
+    const optsText = stdOptions.length
+      ? `<b>${stdOptions.length}</b> · ${esc(stdOptions.slice(0, 3).join(', '))}${stdOptions.length > 3 ? ` 외 ${stdOptions.length - 3}` : ''}`
+      : '-';
+    // partner 매칭 — 매물의 provider_company_code 가 비어있으면 시트 원본의 _source_tab 사용
+    const provLabel = m.provider_company_code
+      ? `${m.provider_company_code}`
+      : (raw._source_tab ? `<span style="color:var(--text-weak);">[${esc(raw._source_tab)}]</span>` : '-');
+    const price = m.price || raw.price || {};
+
     return `<tr style="border-bottom:1px solid var(--border-soft);">
-      <td style="padding:3px 6px;color:var(--alert-${tone}-text);font-weight:600;">${sym}</td>
-      <td style="padding:3px 6px;font-family:monospace;">${esc(raw.car_number)}</td>
-      <td style="padding:3px 6px;">${esc(raw.maker || '-')} / ${esc(raw.raw_model || '-')}</td>
-      <td style="padding:3px 6px;font-size:11px;">${sub}</td>
-      <td style="padding:3px 6px;font-size:11px;">${trim}</td>
-      <td style="padding:3px 6px;font-size:11px;">${esc(String(raw.year || '-'))} · ${esc(raw.fuel_type || '-')}</td>
-      <td style="padding:3px 6px;font-size:11px;color:var(--text-weak);">${esc(r.reason || (e?.ok ? `매칭 (${e.confidence})` : '-'))}</td>
+      <td style="padding:5px 6px;text-align:center;border-left:3px solid var(--alert-${action.tone}-text);" title="${esc(r.reason || '')}">
+        <span style="display:inline-flex;align-items:center;gap:3px;color:var(--alert-${action.tone}-text);font-size:11px;font-weight:600;">
+          <i class="ph ${action.icon}" style="font-size:13px;"></i>${action.label}
+        </span>
+      </td>
+      <td style="padding:5px 6px;font-family:monospace;font-weight:600;">${dash(raw.car_number)}</td>
+      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.vehicle_status || raw.vehicle_status)}</td>
+      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.product_type || raw.product_type)}</td>
+      <td style="padding:5px 6px;font-weight:500;">${dash(raw.maker)}</td>
+      <td style="padding:5px 6px;">${dash(stdModel)}</td>
+      <td style="padding:5px 6px;" title="${esc(stdSub)}">${dash(stdSub.slice(0, 30))}</td>
+      <td style="padding:5px 6px;font-size:11px;" title="${esc(stdTrim)}">${dash(stdTrim.slice(0, 50))}</td>
+      <td style="padding:5px 6px;font-size:10px;line-height:1.4;white-space:normal;" title="${esc(stdOptions.join(', '))}">${optsText}</td>
+      <td style="padding:5px 6px;text-align:center;">${dash(raw.year)}</td>
+      <td style="padding:5px 6px;text-align:right;">${fmtNum(raw.mileage)}</td>
+      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.fuel_type || raw.fuel_type)}</td>
+      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.ext_color || raw.ext_color)}</td>
+      <td style="padding:5px 6px;text-align:center;font-size:11px;">${dash(m.int_color || raw.int_color)}</td>
+      <td style="padding:5px 6px;text-align:center;font-size:11px;color:var(--text-weak);">-</td>
+      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['1'])}</td>
+      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['12'])}</td>
+      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['24'])}</td>
+      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['36'])}</td>
+      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['48'])}</td>
+      <td style="padding:5px 6px;text-align:right;">${fmtPricePair(price['60'])}</td>
+      <td style="padding:5px 6px;font-size:11px;">${provLabel}</td>
     </tr>`;
   }).join('');
-  return `<table style="width:100%;border-collapse:collapse;font-size:12px;">${head}${rows}</table>`;
+
+  return `<table style="width:100%;border-collapse:collapse;font-size:12px;">
+    ${head}
+    <tbody>${rows}</tbody>
+  </table>`;
 }
 

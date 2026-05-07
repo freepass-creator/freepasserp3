@@ -58,17 +58,17 @@
     <span class="sb-brand-text">freepass ERP</span>
     <button class="pt-sb-toggle" id="sbToggle" title="사이드바 접기/펼치기"><i class="ph ph-caret-left"></i></button>
   </div>
-  <a href="#search" data-page="search" title="상품 찾기"><i class="ph ph-magnifying-glass"></i><span class="sb-label">상품 찾기</span><span class="cnt"></span></a>
-  <a href="#workspace" data-page="workspace" title="업무 소통"><i class="ph ph-chat-circle-dots"></i><span class="sb-label">업무 소통</span><span class="cnt"></span></a>
-  <a href="#contract" data-page="contract" title="계약 관리"><i class="ph ph-file-text"></i><span class="sb-label">계약 관리</span><span class="cnt"></span></a>
-  <a href="#settle" data-page="settle" title="정산 관리"><i class="ph ph-coins"></i><span class="sb-label">정산 관리</span><span class="cnt"></span></a>
-  <a href="#product" data-page="product" title="재고 관리"><i class="ph ph-package"></i><span class="sb-label">재고 관리</span><span class="cnt"></span></a>
-  <a href="#policy" data-page="policy" title="정책 관리"><i class="ph ph-shield-check"></i><span class="sb-label">정책 관리</span><span class="cnt"></span></a>
-  <a href="#partners" data-page="partners" title="파트너 관리"><i class="ph ph-handshake"></i><span class="sb-label">파트너 관리</span><span class="cnt"></span></a>
-  <a href="#users" data-page="users" title="사용자 관리"><i class="ph ph-users-three"></i><span class="sb-label">사용자 관리</span><span class="cnt"></span></a>
+  <a href="#search" data-page="search" title="상품 찾기"><i class="ph ph-magnifying-glass"></i><span class="sb-label">상품 찾기</span><span class="cnt" data-badge="search"></span></a>
+  <a href="#workspace" data-page="workspace" title="업무 소통"><i class="ph ph-chat-circle-dots"></i><span class="sb-label">업무 소통</span><span class="cnt" data-badge="workspace"></span></a>
+  <a href="#contract" data-page="contract" title="계약 관리"><i class="ph ph-file-text"></i><span class="sb-label">계약 관리</span><span class="cnt" data-badge="contract"></span></a>
+  <a href="#settle" data-page="settle" title="정산 관리"><i class="ph ph-coins"></i><span class="sb-label">정산 관리</span><span class="cnt" data-badge="settle"></span></a>
+  <a href="#product" data-page="product" title="재고 관리"><i class="ph ph-package"></i><span class="sb-label">재고 관리</span><span class="cnt" data-badge="product"></span></a>
+  <a href="#policy" data-page="policy" title="정책 관리"><i class="ph ph-shield-check"></i><span class="sb-label">정책 관리</span><span class="cnt" data-badge="policy"></span></a>
+  <a href="#partners" data-page="partners" title="파트너 관리"><i class="ph ph-handshake"></i><span class="sb-label">파트너 관리</span><span class="cnt" data-badge="partners"></span></a>
+  <a href="#users" data-page="users" title="사용자 관리"><i class="ph ph-users-three"></i><span class="sb-label">사용자 관리</span><span class="cnt" data-badge="users"></span></a>
   <!-- 사이드바 하단 그룹 — 관리자 문의(비admin) + 개발도구(admin) + 설정 -->
   <div class="pt-sb-bottom-group">
-    <a href="#admin-chat" class="pt-sb-bottom-link pt-sb-bottom-admin-chat" id="sbAdminChat" data-page="admin-chat" title="관리자와 소통"><i class="ph ph-headset"></i><span class="sb-label">관리자 소통</span><span class="cnt"></span></a>
+    <a href="#admin-chat" class="pt-sb-bottom-link pt-sb-bottom-admin-chat" id="sbAdminChat" data-page="admin-chat" title="관리자와 소통"><i class="ph ph-headset"></i><span class="sb-label">관리자 소통</span><span class="cnt" data-badge="admin-chat"></span></a>
     <a href="#dev" class="pt-sb-bottom-link pt-sb-bottom-dev" data-page="dev" title="개발도구"><i class="ph ph-code"></i><span class="sb-label">개발도구</span></a>
     <a href="#settings" class="pt-sb-bottom-link" data-page="settings" title="설정"><i class="ph ph-gear"></i><span class="sb-label">설정</span></a>
   </div>
@@ -76,7 +76,14 @@
 
 <header class="pt-tb">
   <!-- ① 좌측: 검색창 (페이지 컨텍스트, placeholder 는 JS 가 페이지별 변경) -->
-  <input type="search" class="input pt-tb-search" id="ptTbSearch" placeholder="차량번호·차종·옵션·금액·무심사...">
+  <div class="pt-tb-search-wrap">
+    <input type="search" class="input pt-tb-search" id="ptTbSearch" placeholder="차량번호·차종·옵션·금액·무심사...">
+    <!-- 필터 버튼 — 검색창 안 우측 absolute. search 페이지에서만 표시. -->
+    <button type="button" class="pt-tb-filter-btn" id="ptTbFilterBtn" aria-label="퀵필터" title="퀵필터" hidden>
+      <i class="ph ph-sliders-horizontal"></i>
+      <span class="pt-tb-filter-dot" id="ptTbFilterDot" hidden></span>
+    </button>
+  </div>
 
   <!-- ② 가운데: 현재 페이지 제목 (작업상태) -->
   <span class="pt-tb-title" id="ptTbTitle">

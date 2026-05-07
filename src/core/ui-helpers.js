@@ -78,10 +78,8 @@ export function fmtDate(v) {
   return String(v ?? '').trim() || '';
 }
 
-export function fmtMoney(v) {
-  const n = Number(v); if (!n) return '';
-  return n >= 10000 ? Math.round(n / 10000) + '만' : n.toLocaleString();
-}
+// fmtMoney: 단일 소스는 core/format.js. 여기서는 re-export 만 (호출처 호환).
+export { fmtMoney } from './format.js';
 
 /* 항상 만원 단위 — 임대료/보증금 등 대형 금액 (천단위 절대 안 보고 만원으로 통일).
  *  v 가 0/null 이면 빈 문자열. suffix 기본 '만' (e.g., '만원' 도 가능). */

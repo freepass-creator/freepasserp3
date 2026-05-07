@@ -223,24 +223,36 @@
     line-height: 1;
     transition: opacity 0.12s ease;
   }
-  /* 사이드바 카운트 뱃지 — 빨간 라운드, 처리 필요한 항목 수.
-     단일 숫자도 또렷하게: 11px 700, 흰 텍스트, 라이트/다크 모두 동일 빨강. */
+  /* 사이드바 메뉴 dot 뱃지 — 미처리 작업 있으면 빨간 점 (Slack/Discord 패턴, 트렌드).
+     기본은 hidden, .has-unread 시만 6×6 빨간 점. 카운트 숫자 X (시각 노이즈 ↓). */
   .pt-sb a > .cnt {
     flex-shrink: 0;
-    min-width: 18px;
-    height: 16px;
-    padding: 0 5px;
-    display: inline-flex; align-items: center; justify-content: center;
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    display: none;
     background: #dc2626;
-    color: #fff !important;
-    font-family: var(--font);
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 16px;
-    text-align: center;
-    border-radius: 8px;
+    border-radius: 50%;
     box-sizing: border-box;
     transition: opacity 0.12s ease;
+    /* 라벨이 있을 때 라벨과 메뉴 우측 끝 사이에 자연스럽게 위치 */
+    margin-left: auto;
+    align-self: center;
+  }
+  .pt-sb a > .cnt.has-unread { display: inline-block; }
+  /* 사이드바 접힌 상태 — dot 을 아이콘 우상단으로 이동 (요즘 패턴) */
+  body.is-sb-collapsed .pt-sb a {
+    position: relative;
+  }
+  body.is-sb-collapsed .pt-sb a > .cnt.has-unread {
+    display: inline-block !important;
+    opacity: 1 !important;
+    pointer-events: auto;
+    max-width: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin: 0;
   }
   .pt-sb-bottom {
     transition: opacity 0.12s ease;
@@ -1065,12 +1077,54 @@
   .ws4-head { gap: 6px; }
   .table thead th { font-weight: 400; vertical-align: middle; }
   /* 토픽바 검색 input — 좌측 고정 280px (제목 absolute 중앙, 사용자 우측 고정) */
-  .pt-tb-search {
+  .pt-tb-search-wrap {
     flex: 0 0 280px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .pt-tb-search {
+    flex: 1 1 auto;
     margin: 0;
     background: var(--bg-page);
+    padding-right: 32px;       /* 우측 필터 아이콘 자리 확보 */
   }
   .pt-tb-search:focus { background: var(--bg-card); }
+  /* 검색창 안 우측 필터 아이콘 — search 페이지에서만 노출 */
+  .pt-tb-filter-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px; height: 24px;
+    border: 0;
+    background: transparent;
+    color: var(--text-sub);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 80ms ease-out, color 80ms ease-out, transform 60ms ease-out;
+  }
+  .pt-tb-filter-btn:hover { background: var(--bg-hover); color: var(--text-main); }
+  /* 클릭 피드백 — 눌릴 때 살짝 들어가는 느낌 + 진한 배경 */
+  .pt-tb-filter-btn:active {
+    transform: translateY(-50%) scale(0.88);
+    background: var(--bg-stripe);
+  }
+  .pt-tb-filter-btn.is-active {
+    color: var(--alert-blue-text);
+    background: var(--alert-blue-bg);
+  }
+  .pt-tb-filter-btn i { font-size: 15px; }
+  /* 필터 활성 dot — 우상단 작은 점 */
+  .pt-tb-filter-dot {
+    position: absolute;
+    top: 2px; right: 2px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--alert-blue-text);
+    border: 1px solid var(--bg-card);
+  }
   /* 현재 페이지 제목 — 토픽바 전체 absolute 가운데 (검색/사용자 폭에 영향 없음) */
   .pt-tb-title {
     position: absolute;
@@ -1925,11 +1979,11 @@
   }
   .ws-input input { flex: 1; }
 
-  /* 계약 진행 7단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
+  /* 계약 진행 4단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
   .ct-steps-v3 { display: flex; flex-direction: column; gap: 4px; }
-  /* 단계번호 24px | 영업셀 1fr | 화살표 24px | 공급셀 1fr */
+  /* 영업셀 1fr | 화살표 24px | 공급셀 1fr — renderContractWorkV2 가 3 자식만 출력 */
   .ct-step-row {
-    display: grid; grid-template-columns: 24px 1fr 24px 1fr;
+    display: grid; grid-template-columns: 1fr 24px 1fr;
     align-items: center; gap: 6px; font-size: var(--font-size);
   }
   /* 헤더 행 */
@@ -1940,7 +1994,7 @@
     margin-bottom: 4px;
     font-weight: 500;
   }
-  .ct-step-row.ct-step-head > div { text-align: center; font-size: 11px; }
+  .ct-step-row.ct-step-head > div { text-align: center; font-size: 11px; white-space: nowrap; }
   .ct-step-num {
     text-align: center;
     color: var(--text-muted);
@@ -2711,4 +2765,59 @@
     .login-page .login-submit { height: 48px; font-size: 15px; border-radius: 4px; }
     .login-links { font-size: 13px; gap: 12px; }
     .login-copy { text-align: center; padding: 0 24px; }
+  }
+
+  /* (전역 로딩 인디케이터 .app-loading-* 룰은 base.css 단일 소스 — 데스크톱·모바일 공통) */
+
+  /* ── dev > 매트릭스 import 탭 — 표준 컴포넌트 룰 (인라인 style 정리) ── */
+  .mi-wrap {
+    display: flex; flex-direction: column;
+    gap: var(--sp-3);
+    height: 100%;
+  }
+  .mi-toolbar {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: var(--sp-2);
+  }
+  .mi-toolbar .mi-url {
+    flex: 1 1 320px;
+    min-width: 280px;
+  }
+  .mi-toolbar .mi-status {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+  .mi-toolbar .mi-danger {
+    color: var(--alert-red-text);
+  }
+  .mi-toolbar .mi-toggle {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: var(--fs-xs);
+    color: var(--text-sub);
+    cursor: pointer;
+    padding: 0 var(--sp-2);
+    user-select: none;
+  }
+  .mi-toolbar .mi-toggle input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+  }
+  .mi-hint {
+    font-size: var(--fs-xs);
+    color: var(--text-weak);
+    line-height: 1.5;
+  }
+  .mi-hint .mi-danger-text { color: var(--alert-red-text); }
+  .mi-summary {
+    font-size: var(--fs-sm);
+    padding: var(--sp-2) var(--sp-3);
+    background: var(--bg-stripe);
+    border-radius: var(--radius-sm);
+  }
+  .mi-preview {
+    flex: 1;
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
   }

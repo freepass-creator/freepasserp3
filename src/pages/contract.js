@@ -11,7 +11,7 @@
  *
  * 분리 원칙: workspace 의존성 제거 — bindContractWorkV2 가 페이지별 재렌더 콜백을 외부 주입받음.
  */
-import { store } from '../core/store.js';
+import { store, findProduct, findProductByUid } from '../core/store.js';
 import { pushRecord, updateRecord } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { openFullscreen } from '../core/product-detail-render.js';
@@ -22,7 +22,7 @@ import { pickAgent, pickOrCreateCustomer } from '../core/dialogs.js';
 import {
   esc, fmtDate, fmtTime, fmtListDate,
   listBody, emptyState, renderRoomItem, flashSaved,
-  providerNameByCode, formatMainLine, renderInfoSections, fmtMoneyMan,
+  providerNameByCode, providerLabelByCode, formatMainLine, renderInfoSections, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
 export const CONTRACT_STATUSES = ['계약요청', '계약대기', '계약발송', '계약완료', '계약취소'];
@@ -196,10 +196,10 @@ export function renderContractDetail(c) {
       ['정책명', c.policy_name_snapshot],
     ].filter(([, v]) => v);
 
-    // 4) 관계자 정보 — 공급사는 회사명(한글), 나머지는 코드
-    const providerName = providerNameByCode(c.provider_company_code || c.partner_code, store);
+    // 4) 관계자 정보 — 공급사는 "회사명 (코드)" 같이 표시 (사용자 요청)
+    const providerLabel = providerLabelByCode(c.provider_company_code || c.partner_code, store);
     const partyRows = [
-      ['공급사', providerName || c.provider_company_code],
+      ['공급사', providerLabel || c.provider_company_code],
       ['영업채널', c.agent_channel_code],
       ['영업자', c.agent_code],
       ['정책코드', c.policy_code],
@@ -431,22 +431,47 @@ export function renderContractWorkV2(c) {
   const states = getStepStates(c);
   const prog = getProgress(c);
 
+  // 계약완료 상태에서는 모든 단계의 체크박스가 체크된 채로 보이도록 강제 (UI 표시 전용).
+  //   - 데이터상 일부 sub-check 가 비어있는 마이그레이션 케이스도 시각적 일관성 유지
+  //   - rejected 셀은 그대로 X 표시 유지
+  if (isCompleted) {
+    for (const stId of Object.keys(states)) {
+      const st = states[stId];
+      st.locked = false;
+      if (!st.rejected) {
+        st.done = true;
+        for (const ss of st.subStates) {
+          if (!ss.rejected) ss.done = true;
+        }
+      }
+    }
+  }
+
   const ACTOR_LABEL = { agent: '영업자', provider: '공급사', admin: '관리자' };
 
   // 4단계 — 한 줄 = 영업자 | → | 공급사 (7단계 시절 레이아웃, 4줄로 축소)
+  // 정책:
+  //   - 활성 단계 (locked X / done X): 본인 액터 = 편집 모드 안 들어가도 즉시 입력 가능
+  //   - 한 번 done 처리된 셀: 본인은 못 풀고 admin 만 원복/변경 가능 ("관리자에게 요청")
+  //   - rejected/auto 단계: 누구도 변경 불가 (rejected 는 admin 도 X — 실수 복구는 별도 정책)
   const renderCell = (sub, st) => {
     const c2 = sub.choices;
-    const canClick = isAdmin
-      || (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
-      || (sub.actor === 'provider' && role === 'provider')
-      || (sub.actor === 'admin'    && role === 'admin');
-    const canEdit = canClick && !st.locked && !sub.done && !sub.rejected && !sub.auto;
+    const isOwner = (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
+                 || (sub.actor === 'provider' && role === 'provider')
+                 || (sub.actor === 'admin'    && role === 'admin');
+    const canClick = isAdmin || isOwner;
+    // 본인은 done 셀 못 건드림. admin 만 원복 허용.
+    const canEdit = canClick && !st.locked && !sub.rejected && !sub.auto
+                    && (!sub.done || isAdmin);
     const cls = sub.rejected ? 'rejected' : sub.done ? 'done' : st.locked ? 'locked' : 'pending';
-    const icon = sub.rejected ? 'ph-x-circle-fill' : sub.done ? 'ph-check-circle-fill' : 'ph-circle';
+    // 체크박스 형태 — 누르면 체크 표시 (사각). 거부는 X 사각, 잠금은 빈 사각.
+    const icon = sub.rejected ? 'ph-x-square-fill' : sub.done ? 'ph-check-square-fill' : 'ph-square';
     const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
     const adminBy = c[sub.key + '_by'] === 'admin' ? '<span class="ct-step-admin">관리자</span>' : '';
+    // admin 이 done 셀을 풀 수 있을 때 — 시각적으로 "취소 가능" 표시 (title 툴팁)
+    const adminUndoTitle = (isAdmin && sub.done) ? ' title="관리자: 다시 클릭하면 원복"' : '';
     return `
-      <div class="ct-step-cell ${cls}${canEdit && !c2 ? ' clickable' : ''}" data-key="${esc(sub.key)}">
+      <div class="ct-step-cell ${cls}${canEdit && !c2 ? ' clickable' : ''}" data-key="${esc(sub.key)}"${adminUndoTitle}>
         <i class="ph ${icon}"></i>
         ${c2 && canEdit ? `<select class="ct-step-select" data-key="${esc(sub.key)}">
           <option value="">${esc(sub.label)}</option>
@@ -666,7 +691,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       if (linkedRoom) {
         await updateRecord(`rooms/${linkedRoom._key}`, { linked_contract: newCode });
       }
-      const product = (store.products || []).find(p => p._key === c.product_uid);
+      const product = findProduct(c.product_uid) || findProductByUid(c.product_uid);
       notifyProviderAndAdmin({
         template: 'contract_done',
         providerCode: c.provider_company_code,

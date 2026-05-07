@@ -6,7 +6,26 @@
   "source": "manual_stub",
   "source_urls": [],
   "fetched_at": "2026-05-05",
-  "categories": {},
+  "categories": {
+    "파워트레인/성능": [],
+    "안전": [],
+    "지능형 안전 기술": [],
+    "외관": [],
+    "내장": [],
+    "시트": [],
+    "편의": [],
+    "인포테인먼트": [],
+    "선택사양": [
+      "PKG_ADAS",
+      "PKG_CONVENIENCE",
+      "PKG_COMFORT",
+      "PKG_PARKING",
+      "PKG_EXTERIOR",
+      "PKG_BUILTIN_CAM",
+      "PKG_SUNROOF",
+      "PKG_HUD"
+    ]
+  },
   "options": {
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",

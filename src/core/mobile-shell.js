@@ -113,7 +113,7 @@ export function onMobileChange(cb) {
  * @returns {{close: ()=>void, root: HTMLElement}}
  */
 export function openBottomSheet(html, opts = {}) {
-  const { title = '', footer = '', dragToDismiss = true, onMount, onClose } = opts;
+  const { title = '', footer = '', dragToDismiss = true, onMount, onClose, anchor = null } = opts;
 
   // 기존 시트 닫기
   document.querySelectorAll('.m-sheet-overlay, .m-sheet').forEach(el => el.remove());
@@ -122,7 +122,29 @@ export function openBottomSheet(html, opts = {}) {
   overlay.className = 'm-sheet-overlay';
 
   const sheet = document.createElement('div');
-  sheet.className = 'm-sheet';
+  // 데스크톱 + anchor 있으면 dropdown (anchor 아래) — 없으면 가운데 시트
+  // 모바일은 항상 bottom-sheet
+  const desktop = !isMobile();
+  const dropdown = desktop && anchor;
+  sheet.className = 'm-sheet'
+    + (desktop ? ' is-desktop' : '')
+    + (dropdown ? ' is-anchored' : '');
+  // dropdown 일 때 anchor 위치 기준 inline style
+  //   사이드바 (펼침/접힘) 영역은 침범 X — 사이드바 우측 경계로 clamp.
+  if (dropdown) {
+    const r = anchor.getBoundingClientRect();
+    const sheetW = 460;   // CSS max-width 와 동일 (데스크톱 여유 폭)
+    // 사이드바 우측 경계 — .pt-sb 의 실제 width (collapsed 면 ~56, expanded 면 ~200)
+    const sb = document.querySelector('.pt-sb');
+    const sbRight = sb ? sb.getBoundingClientRect().right : 0;
+    let left = r.right - sheetW;     // 1순위: anchor 우측 정렬 (검색창 오른쪽 끝)
+    // 사이드바 우측 경계보다 안쪽으로 들어가면 그 경계에 +8px 여백 두고 정렬
+    if (left < sbRight + 8) left = sbRight + 8;
+    // 화면 우측 경계도 보호
+    if (left + sheetW > window.innerWidth - 8) left = window.innerWidth - sheetW - 8;
+    sheet.style.left = `${left}px`;
+    sheet.style.top  = `${Math.round(r.bottom + 6)}px`;
+  }
   sheet.innerHTML = `
     <div class="m-sheet-handle"></div>
     ${title ? `
@@ -156,15 +178,23 @@ export function openBottomSheet(html, opts = {}) {
     if (closed) return;
     closed = true;
     window.removeEventListener('popstate', onPopState);
-    sheet.style.transition = 'transform var(--dur-slow) var(--ease)';
-    sheet.style.transform = 'translateY(100%)';
+    sheet.style.transition = 'transform var(--dur) var(--ease), opacity var(--dur) var(--ease)';
+    // dropdown 은 fade-out + 살짝 위로, 데스크톱 가운데 시트는 translate(-50%, 100%), 모바일은 translateY(100%)
+    if (sheet.classList.contains('is-anchored')) {
+      sheet.style.opacity = '0';
+      sheet.style.transform = 'translateY(-4px)';
+    } else if (sheet.classList.contains('is-desktop')) {
+      sheet.style.transform = 'translate(-50%, 100%)';
+    } else {
+      sheet.style.transform = 'translateY(100%)';
+    }
     overlay.style.transition = 'opacity var(--dur) var(--ease)';
     overlay.style.opacity = '0';
     setTimeout(() => {
       sheet.remove();
       overlay.remove();
       onClose?.();
-    }, 250);
+    }, 200);
   };
   const close = () => {
     if (closed) return;

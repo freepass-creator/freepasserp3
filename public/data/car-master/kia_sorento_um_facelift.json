@@ -51,7 +51,26 @@
       "is_package": true
     }
   },
-  "categories": {},
+  "categories": {
+    "파워트레인/성능": [],
+    "안전": [],
+    "지능형 안전 기술": [],
+    "외관": [],
+    "내장": [],
+    "시트": [],
+    "편의": [],
+    "인포테인먼트": [],
+    "선택사양": [
+      "PKG_ADAS",
+      "PKG_CONVENIENCE",
+      "PKG_COMFORT",
+      "PKG_PARKING",
+      "PKG_EXTERIOR",
+      "PKG_BUILTIN_CAM",
+      "PKG_SUNROOF",
+      "PKG_HUD"
+    ]
+  },
   "trims": {
     "럭셔리 디젤 R2.0": {
       "slug": "럭셔리",

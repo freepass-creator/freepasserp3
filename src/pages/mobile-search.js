@@ -6,7 +6,7 @@
  * - FAB: 공유
  * - 무한 스크롤
  */
-import { store } from '../core/store.js';
+import { store, findProduct } from '../core/store.js';
 import { watchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtMoney, trimMinusSub, mEmpty } from '../core/format.js';
@@ -15,6 +15,7 @@ import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
 import { openBottomSheet, openFab, pushMobileView } from '../core/mobile-shell.js';
 import { FILTERS, matchFilter, buildDynamicChips } from '../core/product-filters.js';
+import { openFilterSheet } from '../core/filter-sheet.js';
 import { normalizeYear } from '../core/normalize.js';
 
 let unsub = null;
@@ -87,7 +88,7 @@ function bindUI() {
     render();
   });
 
-  document.getElementById('mSearchFilterBtn')?.addEventListener('click', openFilterSheet);
+  document.getElementById('mSearchFilterBtn')?.addEventListener('click', openMobileFilterSheet);
 
   // Active filter chip 클릭 → 해제
   document.getElementById('mSearchActive')?.addEventListener('click', (e) => {
@@ -127,7 +128,7 @@ function bindUI() {
   list?.addEventListener('click', (e) => {
     const card = e.target.closest('[data-pkey]');
     if (!card) return;
-    const p = allProducts.find(x => x._key === card.dataset.pkey);
+    const p = findProduct(card.dataset.pkey);
     if (p) openProductSheet(p);
   });
 }
@@ -150,16 +151,39 @@ function getFiltered() {
     ].some(v => v && String(v).toLowerCase().includes(query)));
   }
 
-  // 웹과 동일: 그룹 내부는 OR, 그룹 간 AND
-  for (const [g, set] of Object.entries(activeFilters)) {
-    if (!set || !set.size) continue;
-    const chips = [...set].map(cid => FILTERS[g]?.chips.find(c => c.id === cid)).filter(Boolean);
+  // 웹과 동일: 그룹 내부는 OR, 그룹 간 AND. range 타입은 별도 분기.
+  for (const [g, val] of Object.entries(activeFilters)) {
+    const f = FILTERS[g];
+    if (f?.type === 'range') {
+      const lo = val?.min ?? 0;
+      const hi = val?.max ?? Number.MAX_SAFE_INTEGER;
+      if (lo === 0 && hi === Number.MAX_SAFE_INTEGER) continue;
+      list = list.filter(p => { const v = f.field(p); return v >= lo && v <= hi; });
+      continue;
+    }
+    if (!val || !val.size) continue;
+    const chips = [...val].map(cid => FILTERS[g]?.chips.find(c => c.id === cid)).filter(Boolean);
     if (!chips.length) continue;
     list = list.filter(p => chips.some(chip => matchFilter(p, g, chip)));
   }
 
-  // exclude deleted / sold
-  list = list.filter(p => !p._deleted && p.vehicle_status !== '출고불가');
+  // 출고불가 가시성 — 역할별 정책:
+  //   agent / agent_admin: 출고불가 자동 hide (영업자는 출고가능만 봄)
+  //   provider: 본인 회사 매물은 출고불가도 표시 (차량상태 바꿔서 재사용)
+  //   admin: vehicle_status chip 으로 토글 (명시적 '출고불가' 선택 시만 표시)
+  // (me 는 위에서 이미 선언됨 — getFiltered 함수 상단)
+  const role = me.role;
+  const myCompany = me.company_code;
+  const vsActive = activeFilters.vehicle_status;
+  const explicitOut = vsActive && vsActive.has('vs_출고불가');
+  list = list.filter(p => {
+    if (p._deleted) return false;
+    if (p.vehicle_status !== '출고불가') return true;
+    // 출고불가 매물 분기
+    if (role === 'agent' || role === 'agent_admin') return false;     // 영업자 차단
+    if (role === 'provider') return p.provider_company_code === myCompany;  // 본인 회사만
+    return explicitOut;   // admin — chip 명시 선택 시만
+  });
   return list;
 }
 
@@ -169,155 +193,21 @@ function getFilterCount() {
   return n;
 }
 
-// dynamic 필터 "더보기" 펼침 상태 (섹션별)
-const mDynExpanded = {};
-const mSecCollapsed = {};  // 섹션별 접힘 상태 — 기본 펼침(false)
-
-function openFilterSheet() {
-  // dynamic 칩 집계 (전체 allProducts 기준)
-  buildDynamicChips(allProducts);
-
-  const ensureSet = (k) => (activeFilters[k] = activeFilters[k] || new Set());
-
-  const chipHtml = (key, c, set) =>
-    `<button class="chip ${set?.has(c.id) ? 'is-active' : ''}" data-c="${c.id}">${c.label}</button>`;
-
-  const renderSection = (key, f) => {
-    const set = activeFilters[key];
-    let chipsHtml = '';
-
-    if (f.dynamic) {
-      const popular = f.popular || [];
-      const others  = f.others  || [];
-      const open = !!mDynExpanded[key];
-      chipsHtml = popular.map(c => chipHtml(key, c, set)).join('');
-      if (open) chipsHtml += others.map(c => chipHtml(key, c, set)).join('');
-      if (others.length) {
-        chipsHtml += `<button class="m-filter-more" data-more="${key}">${open ? '접기' : `더보기 (${others.length})`}</button>`;
-      }
-    } else {
-      chipsHtml = f.chips.map(c => chipHtml(key, c, set)).join('');
-    }
-    if (!chipsHtml) return '';
-    const activeCount = set?.size || 0;
-    const collapsed = mSecCollapsed[key] ? 'is-collapsed' : '';
-    const toggleIcon = mSecCollapsed[key] ? 'ph-caret-right' : 'ph-caret-down';
-    return `
-      <div class="m-filter-section ${activeCount ? 'has-active' : ''} ${collapsed}" data-sec="${key}">
-        <div class="m-filter-section-title" data-sec-toggle="${key}">
-          <i class="${f.icon}"></i>
-          <span>${f.label}</span>
-          ${activeCount > 0 ? `<span class="m-filter-section-count">${activeCount}</span>` : ''}
-          <i class="ph ${toggleIcon}"></i>
-        </div>
-        <div class="m-filter-chips" data-g="${key}">${chipsHtml}</div>
-      </div>
-    `;
-  };
-
-  const sectionsHtml = Object.entries(FILTERS).map(([k, f]) => renderSection(k, f)).join('');
-
-  const html = `
-    <div class="m-filter-sheet">
-      ${sectionsHtml}
-    </div>
-  `;
-  const footerHtml = `
-    <div class="m-filter-actions">
-      <button class="btn btn-outline" id="mFilterReset">초기화</button>
-      <button class="btn btn-primary" id="mFilterApply">적용</button>
-    </div>
-  `;
-
-  const totalCount = getFilterCount();
-  const sheet = openBottomSheet(html, {
-    title: `필터${totalCount ? ` <span class="sb-badge is-visible">${totalCount}</span>` : ''}`,
-    footer: footerHtml,
-    onMount: (root) => {
-      // 섹션 접기 토글 (타이틀 클릭)
-      root.addEventListener('click', (e) => {
-        const toggleTitle = e.target.closest('[data-sec-toggle]');
-        if (!toggleTitle) return;
-        // 칩/더보기 버튼 클릭은 토글 제외 (섹션 내부에서 발생한 클릭 구분)
-        if (e.target.closest('[data-c], [data-more]')) return;
-        const key = toggleTitle.dataset.secToggle;
-        mSecCollapsed[key] = !mSecCollapsed[key];
-        const section = toggleTitle.closest('.m-filter-section');
-        section?.classList.toggle('is-collapsed');
-        // caret 아이콘 스왑 — 펼침 ∨ / 접힘 >
-        const caret = toggleTitle.querySelector('.ph-caret-down, .ph-caret-right');
-        if (caret) {
-          caret.classList.toggle('ph-caret-down');
-          caret.classList.toggle('ph-caret-right');
-        }
-      });
-
-      const bindGroups = () => {
-        root.querySelectorAll('[data-g]').forEach(group => {
-          const g = group.dataset.g;
-          ensureSet(g);
-          group.onclick = (e) => {
-            // "더보기/접기" 토글
-            const moreBtn = e.target.closest('[data-more]');
-            if (moreBtn) {
-              const k = moreBtn.dataset.more;
-              mDynExpanded[k] = !mDynExpanded[k];
-              // 해당 섹션만 리렌더
-              const section = moreBtn.closest('.m-filter-section');
-              const next = document.createElement('div');
-              next.innerHTML = renderSection(k, FILTERS[k]).trim();
-              const newEl = next.firstElementChild;
-              if (newEl && section) {
-                section.replaceWith(newEl);
-                bindGroups();
-              }
-              return;
-            }
-            // 칩 토글
-            const btn = e.target.closest('[data-c]');
-            if (!btn) return;
-            const c = btn.dataset.c;
-            const set = activeFilters[g];
-            if (set.has(c)) set.delete(c);
-            else set.add(c);
-            btn.classList.toggle('is-active');
-            // 섹션 카운트 뱃지 — 선택된 개수만 표시 (0 이면 뱃지 자체 제거)
-            const section = btn.closest('.m-filter-section');
-            const cnt = set.size;
-            const titleEl = section?.querySelector('.m-filter-section-title');
-            const countEl = section?.querySelector('.m-filter-section-count');
-            if (cnt > 0) {
-              if (countEl) countEl.textContent = cnt;
-              else {
-                const labelSpan = titleEl?.querySelector('span');
-                labelSpan?.insertAdjacentHTML('afterend', `<span class="m-filter-section-count">${cnt}</span>`);
-              }
-              section?.classList.add('has-active');
-            } else {
-              countEl?.remove();
-              section?.classList.remove('has-active');
-            }
-            // 검색창 뒤 카운트 + 시트 제목 전체 필터 개수 실시간 반영
-            updateSearchCount();
-            updateSheetTitleBadge(sheet.root);
-          };
-        });
-      };
-      bindGroups();
-      root.querySelector('#mFilterReset')?.addEventListener('click', () => {
-        activeFilters = {};
-        root.querySelectorAll('.chip.is-active').forEach(c => c.classList.remove('is-active'));
-        root.querySelectorAll('.m-filter-section.has-active').forEach(s => s.classList.remove('has-active'));
-        root.querySelectorAll('.m-filter-section-count').forEach(b => b.remove());
-        updateSearchCount();
-        updateSheetTitleBadge(sheet.root);
-      });
-      root.querySelector('#mFilterApply')?.addEventListener('click', () => {
-        renderLimit = 30;
-        updateFilterDot();
-        render();
-        sheet.close();
-      });
+/** 필터 시트 열기 — core/filter-sheet.js 의 공용 컴포넌트로 위임.
+ *  activeFilters 객체는 lib 가 mutate. chip 토글마다 즉시 결과 반영 (사용자 요청). */
+function openMobileFilterSheet() {
+  openFilterSheet({
+    products: allProducts,
+    activeFilters,
+    getFilterCount,
+    onChange: () => {
+      // chip 토글 즉시 결과 반영 — 카운트 + 매물 리스트 + dot 모두 갱신
+      renderLimit = 30;
+      updateFilterDot();
+      render();
+    },
+    onApply: () => {
+      // [적용] 버튼은 시트 닫기로만 — 결과는 이미 onChange 에서 갱신됨 (no-op)
     },
   });
 }

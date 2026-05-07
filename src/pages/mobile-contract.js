@@ -3,7 +3,7 @@
  * - 카드 목록 (진행률 표시)
  * - 탭 → 풀스크린 상세 (진행상황/상세/고객정보 탭)
  */
-import { store } from '../core/store.js';
+import { store, findProduct, findProductByUid } from '../core/store.js';
 import { watchCollection, updateRecord } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtWon, mEmpty } from '../core/format.js';
@@ -376,7 +376,7 @@ function bindContractView(view, c) {
     const m = Number(chip.dataset.ctPeriod);
     // 상품 가격 조회 (contract 의 product_uid / seed_product_key 로)
     const productKey = c.product_uid || c.seed_product_key;
-    const product = productKey ? (store.products || []).find(p => p._key === productKey || p.product_uid === productKey) : null;
+    const product = productKey ? (findProduct(productKey) || findProductByUid(productKey)) : null;
     const price = product?.price?.[m] || {};
     const rent = Number(price.rent) || 0;
     const deposit = Number(price.deposit) || 0;
@@ -565,8 +565,23 @@ function bindContractView(view, c) {
 function renderProgressPanel(c) {
   const role = store.currentUser?.role || 'agent';
   const isAdmin = role === 'admin';
+  const isCompleted = c.contract_status === '계약완료';
   const states = getStepStates(c);
   const prog = getProgress(c);
+
+  // 계약완료 상태면 모든 셀 체크 표시 강제 (UI 일관성)
+  if (isCompleted) {
+    for (const stId of Object.keys(states)) {
+      const st = states[stId];
+      st.locked = false;
+      if (!st.rejected) {
+        st.done = true;
+        for (const ss of st.subStates) {
+          if (!ss.rejected) ss.done = true;
+        }
+      }
+    }
+  }
 
   // 기본 정보 (차량번호 / 기간 선택 / 대여료 / 보증금)
   const periods = [12, 24, 36, 48, 60];
@@ -605,15 +620,20 @@ function renderProgressPanel(c) {
   `;
 
   // 4단계 — 한 줄 = 영업자 | → | 공급사 (7단계 시절 레이아웃, 4줄로)
+  // 정책 (desktop contract.js 와 동일):
+  //   - 활성 단계: 본인 액터 = 즉시 입력 가능
+  //   - done 셀: 본인은 못 풀고 admin 만 원복/변경 가능
+  //   - 체크박스 형태 아이콘 (square / check-square-fill)
   const renderCell = (sub, st) => {
     const c2 = sub.choices;
-    const canClick = isAdmin
-      || (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
-      || (sub.actor === 'provider' && role === 'provider')
-      || (sub.actor === 'admin'    && role === 'admin');
-    const canEdit = canClick && !st.locked && !sub.done && !sub.rejected && !sub.auto;
+    const isOwner = (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
+                 || (sub.actor === 'provider' && role === 'provider')
+                 || (sub.actor === 'admin'    && role === 'admin');
+    const canClick = isAdmin || isOwner;
+    const canEdit = canClick && !st.locked && !sub.rejected && !sub.auto
+                    && (!sub.done || isAdmin);
     const cls = sub.rejected ? 'is-rejected' : sub.done ? 'is-done' : st.locked ? 'is-locked' : 'is-pending';
-    const icon = sub.rejected ? 'ph-x-circle' : sub.done ? 'ph-check-circle' : 'ph-circle';
+    const icon = sub.rejected ? 'ph-x-square-fill' : sub.done ? 'ph-check-square-fill' : 'ph-square';
     const display = sub.choice && sub.choice !== 'yes' && sub.choice !== true ? sub.choice : sub.label;
     return `
       <div class="ct-step-cell ${cls}" data-key="${sub.key}" ${canEdit && !c2 ? 'data-clickable' : ''}>
@@ -692,7 +712,7 @@ function renderDetailPanel(c) {
   const contractDeposit = c.contract_deposit ? fmtWon(c.contract_deposit) : '';
   const balance = c.balance_amount ? fmtWon(c.balance_amount) : '';
   const pol = c._policy || {};
-  const prod = (store.products || []).find(p => p._key === c.product_uid || p.product_uid === c.product_uid || p._key === c.seed_product_key) || {};
+  const prod = findProduct(c.product_uid) || findProductByUid(c.product_uid) || findProduct(c.seed_product_key) || {};
 
   const signedUrl = c.signed_pdf_url || c.signed_pdf_data_url || '';
   const unsignedUrl = c.unsigned_pdf_url || '';

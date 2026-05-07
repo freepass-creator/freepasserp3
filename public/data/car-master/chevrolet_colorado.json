@@ -139,12 +139,18 @@
     "WK_하이드라매틱_GENII_8단_자동변속기": {
       "name": "하이드라매틱 GENII 8단 자동변속기",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TRANS_AT"
+      ]
     },
     "WK_Autotrac__액티브_2_speed_4WD": {
       "name": "Autotrac™ 액티브 2 speed 4WD",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "WK_디퍼렌셜_잠금_장치": {
       "name": "디퍼렌셜 잠금 장치",
@@ -164,7 +170,10 @@
     "WK_속도_감응형_전자식_파워_스티어링_R_EPS_": {
       "name": "속도 감응형 전자식 파워 스티어링(R-EPS)",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_STR"
+      ]
     },
     "WK_후드_인슐레이션": {
       "name": "후드 인슐레이션",
@@ -184,7 +193,10 @@
     "WK_드라이브_모드_오프로드__견인_운반_": {
       "name": "드라이브 모드(오프로드, 견인/운반)",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DRIVE_MODE"
+      ]
     },
     "WK_오프로드_퍼포먼스_디스플레이": {
       "name": "오프로드 퍼포먼스 디스플레이",
@@ -194,12 +206,18 @@
     "WK_원격_시동_및_원격지_제어": {
       "name": "원격 시동 및 원격지 제어",
       "category": "파워트레인/성능",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REMOTE_START"
+      ]
     },
     "WK_자동_긴급_제동": {
       "name": "자동 긴급 제동",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "WK_전방충돌_경고": {
       "name": "전방충돌 경고",
@@ -224,7 +242,10 @@
     "WK_차선이탈_경고_및_차선유지_보조": {
       "name": "차선이탈 경고 및 차선유지 보조",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "WK_IntelliBeam__스마트_하이빔": {
       "name": "IntelliBeam® 스마트 하이빔",
@@ -249,7 +270,10 @@
     "WK_StabiliTrak__차체_자세_제어_시스템_트레일러_스웨이_컨트롤_포함_": {
       "name": "StabiliTrak® 차체 자세 제어 시스템(트레일러 스웨이 컨트롤 포함)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VDC"
+      ]
     },
     "WK_힐_디센트_컨트롤": {
       "name": "힐 디센트 컨트롤",
@@ -279,7 +303,12 @@
     "WK_6_에어백_운전석___동반석__앞좌석_사이드__커튼_에어백_": {
       "name": "6 에어백(운전석 & 동반석, 앞좌석 사이드, 커튼 에어백)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR",
+        "AIRBAG_PS",
+        "AIRBAG_SIDE"
+      ]
     },
     "WK_디지털_후방주차_경고_견인봉_감지_이상_기능_포함_": {
       "name": "디지털 후방주차 경고(견인봉 감지 이상 기능 포함)",
@@ -289,7 +318,10 @@
     "WK_타이어_공기압_모니터링": {
       "name": "타이어 공기압 모니터링",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TPMS"
+      ]
     },
     "WK_전자식_뒷좌석_윈도우": {
       "name": "전자식 뒷좌석 윈도우",
@@ -304,7 +336,10 @@
     "WK_18__안드로이드_다크_글로스_알로이_휠": {
       "name": "18\" 안드로이드 다크 글로스 알로이 휠",
       "category": "외관 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "WK_올_터레인_타이어": {
       "name": "올 터레인 타이어",
@@ -319,17 +354,26 @@
     "WK_LED_프로젝션_헤드램프": {
       "name": "LED 프로젝션 헤드램프",
       "category": "외관 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_LED_주간주행등": {
       "name": "LED 주간주행등",
       "category": "외관 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DRL"
+      ]
     },
     "WK_LED_전방안개등": {
       "name": "LED 전방안개등",
       "category": "외관 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FOG_LED"
+      ]
     },
     "WK_LED_테일램프": {
       "name": "LED 테일램프",
@@ -349,7 +393,10 @@
     "WK_페인티드_블랙_아웃사이드_미러_전동조절_열선내장_": {
       "name": "페인티드 블랙 아웃사이드 미러(전동조절/열선내장)",
       "category": "외관 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "WK_페인티드_그레이_프론트_스키드플레이트": {
       "name": "페인티드 그레이 프론트 스키드플레이트",
@@ -369,7 +416,10 @@
     "WK_블랙_아웃사이드_미러_전동조절_열선내장_": {
       "name": "블랙 아웃사이드 미러(전동조절/열선내장)",
       "category": "외관 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "WK_프라이버시_글라스_뒷좌석___뒷유리_": {
       "name": "프라이버시 글라스(뒷좌석 & 뒷유리)",
@@ -399,7 +449,10 @@
     "WK_천연_가죽_시트": {
       "name": "천연 가죽 시트",
       "category": "내장 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_앞좌석_시트백_포켓": {
       "name": "앞좌석 시트백 포켓",
@@ -409,7 +462,10 @@
     "WK_인조_가죽_스티어링_휠": {
       "name": "인조 가죽 스티어링 휠",
       "category": "내장 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "WK_프리미엄_힌지_센터콘솔_박스": {
       "name": "프리미엄 힌지 센터콘솔 박스",
@@ -429,7 +485,10 @@
     "WK_운전석_8_way_전동시트": {
       "name": "운전석 8 way 전동시트",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "WK_운전석_파워_요추받침": {
       "name": "운전석 파워 요추받침",
@@ -439,32 +498,55 @@
     "WK_앞좌석_열선시트": {
       "name": "앞좌석 열선시트",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "WK_앞좌석_통풍시트": {
       "name": "앞좌석 통풍시트",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ]
     },
     "WK_운전석_메모리시트": {
       "name": "운전석 메모리시트",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MEMORY_SEAT_DR"
+      ]
     },
     "WK_틸트___텔레스코픽_스티어링_컬럼": {
       "name": "틸트 & 텔레스코픽 스티어링 컬럼",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "WK_운전석_세이프티_파워_윈도우": {
       "name": "운전석 세이프티 파워 윈도우",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "WK_동반석_뒷좌석_원터치_다운_파워_윈도우": {
       "name": "동반석/뒷좌석 원터치 다운 파워 윈도우",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_WINDOW"
+      ]
     },
     "WK_원격_윈도우_열림": {
       "name": "원격 윈도우 열림",
@@ -474,7 +556,10 @@
     "WK_듀얼존_풀오토_에어컨": {
       "name": "듀얼존 풀오토 에어컨",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "WK_리어_에어벤트": {
       "name": "리어 에어벤트",
@@ -484,7 +569,10 @@
     "WK_자동_열선_스티어링_휠": {
       "name": "자동 열선 스티어링 휠",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "WK_리어_슬라이딩_글라스": {
       "name": "리어 슬라이딩 글라스",
@@ -529,37 +617,59 @@
     "WK_버튼시동_및_스마트키": {
       "name": "버튼시동 및 스마트키",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUTTON_START",
+        "SMART_KEY"
+      ]
     },
     "WK_원격시동": {
       "name": "원격시동",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REMOTE_START"
+      ]
     },
     "WK_오토라이트_컨트롤": {
       "name": "오토라이트 컨트롤",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "WK_ECM_룸미러": {
       "name": "ECM 룸미러",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "WK_크루즈_컨트롤": {
       "name": "크루즈 컨트롤",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE"
+      ]
     },
     "WK_스마트폰_무선_충전": {
       "name": "스마트폰 무선 충전",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "WK_충전_전용_듀얼_USB_포트_2열_": {
       "name": "충전 전용 듀얼 USB 포트(2열)",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_12V_파워_아웃렛_콘솔___적재함_": {
       "name": "12V 파워 아웃렛(콘솔 & 적재함)",
@@ -579,17 +689,28 @@
     "WK_무선_폰_프로젝션": {
       "name": "무선 폰 프로젝션",
       "category": "멀티미디어",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
+      ]
     },
     "WK_블루투스_핸즈프리___오디오_스트리밍": {
       "name": "블루투스 핸즈프리 & 오디오 스트리밍",
       "category": "멀티미디어",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH",
+        "HANDS_FREE"
+      ]
     },
     "WK_듀얼_USB_포트_1열_": {
       "name": "듀얼 USB 포트(1열)",
       "category": "멀티미디어",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_6_스피커": {
       "name": "6 스피커",
@@ -659,7 +780,10 @@
     "WK_선루프": {
       "name": "선루프",
       "category": "선택사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SUNROOF"
+      ]
     }
   },
   "trims": {

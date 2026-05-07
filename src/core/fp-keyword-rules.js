@@ -94,6 +94,110 @@ export const FP_KEYWORD_RULES = [
   { kw:'led도어스커프', ids:['AMB_LIGHT'] },
   { kw:'웰컴라이트', ids:['AMB_LIGHT','WELCOME'] },
 
+  // 타이어 응급/임시수리
+  { kw:'타이어응급처치키트', ids:['TIRE_REPAIR'] }, { kw:'타이어임시수리장치', ids:['TIRE_REPAIR'] },
+  { kw:'타이어응급키트', ids:['TIRE_REPAIR'] }, { kw:'타이어수리키트', ids:['TIRE_REPAIR'] },
+  { kw:'타이어모빌리티키트', ids:['TIRE_REPAIR'] }, { kw:'타이어모빌리티', ids:['TIRE_REPAIR'] },
+  { kw:'tmk', ids:['TIRE_REPAIR'] },
+
+  // 발레 모드
+  { kw:'발레모드', ids:['VALET_MODE'] }, { kw:'valetmode', ids:['VALET_MODE'] },
+
+  // 전자식 차동 제한장치
+  { kw:'전자식차동제한장치', ids:['ELSD'] }, { kw:'전자식차동제한', ids:['ELSD'] },
+  { kw:'e-lsd', ids:['ELSD'] }, { kw:'elsd', ids:['ELSD'] },
+
+  // 후진 가이드 램프
+  { kw:'후진가이드램프', ids:['REVERSE_GUIDE'] }, { kw:'후진가이드라이트', ids:['REVERSE_GUIDE'] },
+
+  // 운전석 이지 억세스
+  { kw:'운전석이지억세스', ids:['EASY_ACCESS'] }, { kw:'운전석이지액세스', ids:['EASY_ACCESS'] },
+  { kw:'easyaccess', ids:['EASY_ACCESS'] },
+
+  // 리어 스포일러
+  { kw:'리어스포일러', ids:['REAR_SPOILER'] }, { kw:'rearspoiler', ids:['REAR_SPOILER'] },
+  { kw:'트렁크스포일러', ids:['REAR_SPOILER'] },
+
+  // 샤크핀 안테나
+  { kw:'샤크핀안테나', ids:['SHARK_FIN'] }, { kw:'sharkfinantenna', ids:['SHARK_FIN'] },
+  { kw:'샤크안테나', ids:['SHARK_FIN'] }, { kw:'shark핀', ids:['SHARK_FIN'] },
+
+  // 자외선 차단 유리
+  { kw:'자외선차단유리', ids:['UV_GLASS'] }, { kw:'자외선차단글라스', ids:['UV_GLASS'] },
+  { kw:'uv차단유리', ids:['UV_GLASS'] }, { kw:'uv글라스', ids:['UV_GLASS'] },
+
+  // 이중접합 차음 유리
+  { kw:'이중접합차음유리', ids:['LAMINATED_GLASS'] }, { kw:'이중접합차음글라스', ids:['LAMINATED_GLASS'] },
+  { kw:'이중접합유리', ids:['LAMINATED_GLASS'] }, { kw:'차음유리', ids:['LAMINATED_GLASS'] },
+  { kw:'laminatedglass', ids:['LAMINATED_GLASS'] },
+
+  // 에어로 타입 와이퍼
+  { kw:'에어로타입와이퍼', ids:['AERO_WIPER'] }, { kw:'에어로와이퍼', ids:['AERO_WIPER'] },
+  { kw:'aerowiper', ids:['AERO_WIPER'] }, { kw:'aero타입와이퍼', ids:['AERO_WIPER'] },
+
+  // 주차 충돌방지 보조 패키지
+  { kw:'주차충돌방지보조전측후방', ids:['SPAS','SENSOR_FRONT','SENSOR_REAR','RCTA'] },
+  { kw:'주차충돌방지보조', ids:['SPAS','SENSOR_FRONT','SENSOR_REAR'] },
+  { kw:'주차거리경고측방', ids:['SENSOR_REAR','SPAS'] },
+
+  // 메탈 페달
+  { kw:'메탈페달', ids:['METAL_PEDAL'] }, { kw:'알로이페달', ids:['METAL_PEDAL'] },
+  { kw:'스포츠페달', ids:['METAL_PEDAL'] }, { kw:'metalpedal', ids:['METAL_PEDAL'] },
+
+  // 히트 펌프 (EV)
+  { kw:'히트펌프시스템', ids:['HEAT_PUMP'] }, { kw:'히트펌프', ids:['HEAT_PUMP'] },
+  { kw:'heatpump', ids:['HEAT_PUMP'] },
+
+  // 오토 플러시 도어 핸들
+  { kw:'오토플러시도어핸들', ids:['FLUSH_HANDLE'] }, { kw:'플러시도어핸들', ids:['FLUSH_HANDLE'] },
+  { kw:'오토플러시', ids:['FLUSH_HANDLE'] }, { kw:'flushhandle', ids:['FLUSH_HANDLE'] },
+  { kw:'flushdoorhandle', ids:['FLUSH_HANDLE'] },
+
+  // 포그램프 보강 (LED 포함)
+  { kw:'포그램프', ids:['FOG_LED'] }, { kw:'led포그램프', ids:['FOG_LED'] },
+  { kw:'foglamp', ids:['FOG_LED'] }, { kw:'fogla', ids:['FOG_LED'] },
+
+  // 외부공기 유입방지 → AIR_PURIFY
+  { kw:'외부공기유입방지제어', ids:['AIR_PURIFY'] }, { kw:'외부공기유입방지', ids:['AIR_PURIFY'] },
+  { kw:'미세먼지유입방지', ids:['AIR_PURIFY'] },
+
+  // 모니터링 팩 (다중 ADAS 모니터링)
+  { kw:'모니터링팩', ids:['BVM','RCTA','AVMS'] }, { kw:'모니터링패키지', ids:['BVM','RCTA','AVMS'] },
+
+  // 후륜 멀티링크 서스펜션
+  { kw:'후륜멀티링크서스펜션', ids:['SUSPENSION_MLT'] }, { kw:'리어멀티링크', ids:['SUSPENSION_MLT'] },
+  { kw:'멀티링크서스펜션', ids:['SUSPENSION_MLT'] }, { kw:'multilinksuspension', ids:['SUSPENSION_MLT'] },
+
+  // 커넥티드 카 서비스
+  { kw:'uvo', ids:['CONNECTED_CAR'] }, { kw:'블루링크', ids:['CONNECTED_CAR'] }, { kw:'bluelink', ids:['CONNECTED_CAR'] },
+  { kw:'genesisconnected', ids:['CONNECTED_CAR'] }, { kw:'genesisconnectedservices', ids:['CONNECTED_CAR'] },
+  { kw:'제네시스카페이', ids:['CONNECTED_CAR'] }, { kw:'카페이', ids:['CONNECTED_CAR'] },
+  { kw:'카카오i', ids:['CONNECTED_CAR'] }, { kw:'kakaoi', ids:['CONNECTED_CAR'] },
+  { kw:'connecteddrive', ids:['CONNECTED_CAR'] }, { kw:'bmwconnecteddrive', ids:['CONNECTED_CAR'] },
+  { kw:'toyotaconnect', ids:['CONNECTED_CAR'] }, { kw:'lexusconnect', ids:['CONNECTED_CAR'] },
+  { kw:'mbuxconnect', ids:['CONNECTED_CAR'] }, { kw:'mercedesme', ids:['CONNECTED_CAR'] },
+  { kw:'audiconnect', ids:['CONNECTED_CAR'] }, { kw:'volvoonconnect', ids:['CONNECTED_CAR'] },
+  { kw:'커넥티드서비스', ids:['CONNECTED_CAR'] }, { kw:'커넥티드카서비스', ids:['CONNECTED_CAR'] },
+  { kw:'텔레매틱스', ids:['CONNECTED_CAR'] }, { kw:'telematics', ids:['CONNECTED_CAR'] },
+
+  // 디스플레이 / 클러스터 (DISPLAY_LCD 룰 보강)
+  { kw:'12.3인치클러스터', ids:['DISPLAY_LCD'] }, { kw:'12.3인치컬러lcd', ids:['DISPLAY_LCD'] },
+  { kw:'12.3인치디스플레이', ids:['DISPLAY_LCD'] }, { kw:'10.25인치디스플레이', ids:['DISPLAY_LCD'] },
+  { kw:'10.25인치클러스터', ids:['DISPLAY_LCD'] }, { kw:'12인치디스플레이', ids:['DISPLAY_LCD'] },
+  { kw:'14.6인치디스플레이', ids:['DISPLAY_LCD'] }, { kw:'27인치통합디스플레이', ids:['DISPLAY_LCD'] },
+  { kw:'12.3인치내비게이션', ids:['DISPLAY_LCD','NAVIGATION'] },
+  { kw:'12.3인치터치스크린', ids:['DISPLAY_LCD'] }, { kw:'풀컬러lcd', ids:['DISPLAY_LCD'] },
+  { kw:'풀컬러클러스터', ids:['DISPLAY_LCD'] }, { kw:'디지털클러스터', ids:['DISPLAY_LCD'] },
+  { kw:'tft클러스터', ids:['DISPLAY_LCD'] }, { kw:'12.3lcd', ids:['DISPLAY_LCD'] },
+  { kw:'10.25컬러lcd', ids:['DISPLAY_LCD'] },
+
+  // 프리미엄 사운드 보강
+  { kw:'jbl사운드', ids:['SOUND_PREMIUM'] }, { kw:'jbl프리미엄', ids:['SOUND_PREMIUM'] },
+  { kw:'리얼파워사운드', ids:['SOUND_PREMIUM'] }, { kw:'realpowersound', ids:['SOUND_PREMIUM'] },
+  { kw:'바우어스앤윌킨스', ids:['SOUND_PREMIUM'] }, { kw:'무드라이브사운드', ids:['SOUND_PREMIUM'] },
+  { kw:'마크레빈슨', ids:['SOUND_PREMIUM'] }, { kw:'marklevinson', ids:['SOUND_PREMIUM'] },
+  { kw:'burmester', ids:['SOUND_PREMIUM'] }, { kw:'부메스터', ids:['SOUND_PREMIUM'] },
+
   // 자동변속기
   { kw:'8단자동변속기', ids:['TRANS_AT'] }, { kw:'6단자동변속기', ids:['TRANS_AT'] },
   { kw:'7단자동변속기', ids:['TRANS_AT'] }, { kw:'10단자동변속기', ids:['TRANS_AT'] },

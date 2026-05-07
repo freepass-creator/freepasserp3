@@ -13,6 +13,9 @@ export const FP_OPT_MASTER = {
     ['MIRROR_FOLD','전동접이 사이드미러'],
     ['ROOF_RACK','루프랙','unc'],['ALUMINUM_WHEEL','알루미늄휠'],
     ['FOG_LED','안개등 (LED)'],['REAR_LED_COMBI','LED 리어 콤비네이션 램프'],
+    ['REAR_SPOILER','리어 스포일러','unc'],['SHARK_FIN','샤크핀 안테나','unc'],
+    ['UV_GLASS','자외선 차단 유리','unc'],['LAMINATED_GLASS','이중접합 차음 유리','unc'],
+    ['AERO_WIPER','에어로 타입 와이퍼','unc'],
   ]},
   interior: { label:'내장', items: [
     ['CRUISE','크루즈컨트롤'],['STR_REMOTE','스티어링 휠 리모컨'],
@@ -27,6 +30,8 @@ export const FP_OPT_MASTER = {
     ['STR_LEATHER','가죽 스티어링 휠','unc'],
     ['ECM_MIRROR','ECM룸미러'],
     ['MTS_E_MIRROR','전자식 룸미러(MTS)','opt'],
+    ['METAL_PEDAL','메탈 페달','unc'],
+    ['SUSPENSION_MLT','후륜 멀티링크 서스펜션','unc'],
   ]},
   safety: { label:'안전', items: [
     ['AIRBAG_DR','에어백(운전석)'],['AIRBAG_PS','에어백(동승석)'],
@@ -76,6 +81,14 @@ export const FP_OPT_MASTER = {
     ['STEER_TILT','틸트 & 텔레스코픽 스티어링','unc'],
     ['TRANS_AT','자동변속기 (6/8/10단·CVT·DCT)','unc'],
     ['FINGERPRINT','실내 지문 인증 시스템','opt'],
+    ['TIRE_REPAIR','타이어 응급처치 키트/임시수리장치','unc'],
+    ['VALET_MODE','발레 모드','unc'],
+    ['ELSD','전자식 차동 제한장치 (e-LSD)','unc'],
+    ['REVERSE_GUIDE','후진 가이드 램프','unc'],
+    ['EASY_ACCESS','운전석 이지 억세스','unc'],
+    ['CONNECTED_CAR','커넥티드 카 서비스 (UVO/블루링크/Genesis Connected/카페이 등)','opt'],
+    ['HEAT_PUMP','히트 펌프 시스템 (전기차 난방 효율)','unc'],
+    ['FLUSH_HANDLE','오토 플러시 도어 핸들','unc'],
   ]},
   media: { label:'미디어', items: [
     ['MP3','MP3'],['BLUETOOTH','블루투스'],['USB','USB 단자'],

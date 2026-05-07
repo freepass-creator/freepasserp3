@@ -1,6 +1,10 @@
 /**
  * Central Store — Proxy-based reactive state
  * Single source of truth for all data
+ *
+ * **인덱스 (O(1) lookup)**:
+ *   매물·계약·파트너 등 자주 lookup 하는 컬렉션은 자동으로 Map 인덱스를 빌드.
+ *   `.find(p => p._key === k)` (O(N)) 대신 `findProduct(k)` (O(1)) 사용.
  */
 const listeners = new Map(); // key → Set<callback>
 
@@ -29,17 +33,98 @@ const state = {
   theme: (typeof localStorage !== 'undefined' ? localStorage.getItem('fp.theme') : null) || 'light',
 };
 
+/* ──────── O(1) lookup 인덱스 ────────
+ * 컬렉션이 set 될 때마다 자동 갱신. _<key>By<Field> 형태로 보관.
+ * 같은 product 가 _key / product_uid 두 키로 둘 다 lookup 가능. */
+const indexes = {
+  productByKey: new Map(),
+  productByUid: new Map(),
+  contractByCode: new Map(),
+  contractByKey: new Map(),
+  partnerByCode: new Map(),
+  partnerByKey: new Map(),
+  settlementByCode: new Map(),
+  userByUid: new Map(),
+  policyByCode: new Map(),
+  roomByKey: new Map(),
+};
+
+const INDEX_BUILDERS = {
+  products: (arr) => {
+    indexes.productByKey.clear();
+    indexes.productByUid.clear();
+    for (const p of arr || []) {
+      if (p?._key) indexes.productByKey.set(p._key, p);
+      if (p?.product_uid) indexes.productByUid.set(p.product_uid, p);
+    }
+  },
+  contracts: (arr) => {
+    indexes.contractByCode.clear();
+    indexes.contractByKey.clear();
+    for (const c of arr || []) {
+      if (c?.contract_code) indexes.contractByCode.set(c.contract_code, c);
+      if (c?._key) indexes.contractByKey.set(c._key, c);
+    }
+  },
+  partners: (arr) => {
+    indexes.partnerByCode.clear();
+    indexes.partnerByKey.clear();
+    for (const p of arr || []) {
+      if (p?.partner_code) indexes.partnerByCode.set(p.partner_code, p);
+      if (p?._key) indexes.partnerByKey.set(p._key, p);
+    }
+  },
+  settlements: (arr) => {
+    indexes.settlementByCode.clear();
+    for (const s of arr || []) {
+      if (s?.contract_code) indexes.settlementByCode.set(s.contract_code, s);
+    }
+  },
+  users: (arr) => {
+    indexes.userByUid.clear();
+    for (const u of arr || []) {
+      if (u?.uid) indexes.userByUid.set(u.uid, u);
+    }
+  },
+  policies: (arr) => {
+    indexes.policyByCode.clear();
+    for (const p of arr || []) {
+      if (p?.policy_code) indexes.policyByCode.set(p.policy_code, p);
+    }
+  },
+  rooms: (arr) => {
+    indexes.roomByKey.clear();
+    for (const r of arr || []) {
+      if (r?._key) indexes.roomByKey.set(r._key, r);
+    }
+  },
+};
+
 export const store = new Proxy(state, {
   set(target, key, value) {
     const old = target[key];
     target[key] = value;
     if (old !== value) {
+      // 컬렉션 인덱스 자동 갱신 (listener 호출 전 — listener 가 finder 사용 가능하도록)
+      if (INDEX_BUILDERS[key]) INDEX_BUILDERS[key](value);
       const cbs = listeners.get(key);
       if (cbs) cbs.forEach(cb => cb(value, old));
     }
     return true;
   }
 });
+
+/* ──────── O(1) finder helpers ──────── */
+export const findProduct       = (key) => indexes.productByKey.get(key) || null;
+export const findProductByUid  = (uid) => indexes.productByUid.get(uid) || null;
+export const findContract      = (code) => indexes.contractByCode.get(code) || null;
+export const findContractByKey = (key) => indexes.contractByKey.get(key) || null;
+export const findPartner       = (code) => indexes.partnerByCode.get(code) || null;
+export const findPartnerByKey  = (key) => indexes.partnerByKey.get(key) || null;
+export const findSettlement    = (code) => indexes.settlementByCode.get(code) || null;
+export const findUser          = (uid) => indexes.userByUid.get(uid) || null;
+export const findPolicy        = (code) => indexes.policyByCode.get(code) || null;
+export const findRoom          = (key) => indexes.roomByKey.get(key) || null;
 
 export function subscribe(key, callback) {
   if (!listeners.has(key)) listeners.set(key, new Set());

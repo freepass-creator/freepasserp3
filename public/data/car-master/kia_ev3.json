@@ -9,19 +9,35 @@
   ],
   "fetched_at": "2026-04-29",
   "categories": {
-    "파워 일렉트릭": [
-      "KRSV292001",
-      "KRSV292002",
+    "파워트레인/성능": [
       "KRSV292003",
-      "KRSV292004",
       "KRSV292005",
       "KRSV292010",
       "KRSV292006",
       "KRSV292007",
-      "KRSV292008",
-      "KRSV292009"
+      "KRSV292037",
+      "KRSV292042",
+      "KRSV292109",
+      "KRSV292110",
+      "KRSV292166",
+      "KRSV292009",
+      "KRSV292113"
     ],
-    "첨단 운전자 보조(ADAS)": [
+    "안전": [
+      "KRSV292030",
+      "KRSV292032",
+      "KRSV292033",
+      "KRSV292034",
+      "KRSV292035",
+      "KRSV292036",
+      "KRSV292038",
+      "KRSV292039",
+      "KRSV292040",
+      "KRSV292041",
+      "KRSV292168",
+      "KRSV292099"
+    ],
+    "지능형 안전 기술": [
       "KRSV292011",
       "KRSV292012",
       "KRSV292013",
@@ -31,27 +47,11 @@
       "KRSV292017",
       "KRSV292018",
       "KRSV292019",
+      "KRSV292020",
+      "KRSV292116"
+    ],
+    "외관": [
       "KRSV292164",
-      "KRSV292020"
-    ],
-    "안전": [
-      "KRSV292030",
-      "KRSV292031",
-      "KRSV292032",
-      "KRSV292033",
-      "KRSV292034",
-      "KRSV292035",
-      "KRSV292036",
-      "KRSV292037",
-      "KRSV292038",
-      "KRSV292039",
-      "KRSV292040",
-      "KRSV292041",
-      "KRSV292042",
-      "KRSV292167",
-      "KRSV292168"
-    ],
-    "외장": [
       "KRSV292044",
       "KRSV292045",
       "KRSV292046",
@@ -62,42 +62,46 @@
       "KRSV292051",
       "KRSV292052",
       "KRSV292053",
-      "KRSV292054",
       "KRSV292055",
       "KRSV292056",
+      "KRSV292073",
+      "KRSV292117",
+      "KRSV292118",
+      "KRSV292123",
+      "KRSV292145",
       "KRSV292057",
       "KRSV292058",
       "KRSV292059",
       "KRSV292060",
       "KRSV292061",
-      "KRSV292062",
       "KRSV292063",
       "KRSV292064",
       "KRSV292065",
-      "KRSV292066",
-      "KRSV292150"
+      "KRSV292132",
+      "KRSV292134",
+      "KRSV292150",
+      "KRSV292151"
     ],
     "내장": [
+      "KRSV292167",
       "KRSV292070",
       "KRSV292071",
-      "KRSV292072",
-      "KRSV292073",
       "KRSV292074",
       "KRSV292075",
       "KRSV292076",
       "KRSV292077",
       "KRSV292078",
-      "KRSV292079",
+      "KRSV292122",
+      "KRSV292125",
+      "KRSV292068",
+      "KRSV292066",
       "KRSV292080",
       "KRSV292165",
       "KRSV292081",
-      "KRSV292082",
       "KRSV292172",
       "KRSV292085",
       "KRSV292086",
       "KRSV292087",
-      "KRSV292088",
-      "KRSV292151",
       "KRSV292083"
     ],
     "시트": [
@@ -107,8 +111,12 @@
       "KRSV292096",
       "KRSV292097",
       "KRSV292098",
-      "KRSV292099",
       "KRSV292100",
+      "KRSV292120",
+      "KRSV292124",
+      "KRSV292127",
+      "KRSV292082",
+      "KRSV292088",
       "KRSV292091",
       "KRSV292101",
       "KRSV292102",
@@ -118,51 +126,46 @@
       "KRSV292104",
       "KRSV292105",
       "KRSV292106",
+      "KRSV292133",
+      "KRSV292135",
       "KRSV292152"
     ],
     "편의": [
+      "KRSV292001",
+      "KRSV292002",
+      "KRSV292004",
+      "KRSV292031",
+      "KRSV292054",
+      "KRSV292079",
       "KRSV292107",
       "KRSV292108",
-      "KRSV292109",
-      "KRSV292110",
       "KRSV292111",
       "KRSV292112",
       "KRSV292114",
       "KRSV292115",
-      "KRSV292116",
-      "KRSV292117",
-      "KRSV292118",
       "KRSV292119",
-      "KRSV292120",
       "KRSV292121",
-      "KRSV292122",
-      "KRSV292123",
-      "KRSV292124",
-      "KRSV292125",
-      "KRSV292127",
-      "KRSV292169",
       "KRSV292128",
       "KRSV292129",
-      "KRSV292113",
+      "KRSV292067",
+      "KRSV292008",
+      "KRSV292062",
       "KRSV292130",
-      "KRSV292131",
-      "KRSV292132",
-      "KRSV292133",
-      "KRSV292134",
-      "KRSV292135"
+      "KRSV292131"
     ],
     "인포테인먼트": [
+      "KRSV292072",
+      "KRSV292169",
       "KRSV292142",
       "KRSV292143",
       "KRSV292144",
-      "KRSV292145",
       "KRSV292146",
       "KRSV292147",
-      "KRSV292148"
+      "KRSV292148",
+      "KRSV292141",
+      "WIRELESS_MIRROR"
     ],
     "선택사양": [
-      "KRSV292067",
-      "KRSV292068",
       "KRSV292P01",
       "KRSV292P02",
       "KRSV292P03",
@@ -172,147 +175,225 @@
       "KRSV292P07",
       "KRSV292P08",
       "KRSV292P10",
-      "KRSV292141",
       "KRSV292P11",
-      "KRSV292166",
       "KRSV292P09"
     ]
   },
   "options": {
     "KRSV292001": {
       "name": "차세대 일체형 PE 시스템",
-      "category": "파워 일렉트릭",
+      "category": "편의",
       "is_package": false
     },
     "KRSV292002": {
       "name": "58.3kWh 리튬이온 배터리",
-      "category": "파워 일렉트릭",
+      "category": "편의",
       "is_package": false
     },
     "KRSV292003": {
       "name": "회생제동 브레이크 시스템",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "REGEN"
+      ]
     },
     "KRSV292004": {
       "name": "히트 펌프",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_PUMP"
+      ]
     },
     "KRSV292005": {
       "name": "배터리 히팅 시스템",
-      "category": "파워 일렉트릭",
+      "category": "파워트레인/성능",
       "is_package": false
     },
     "KRSV292010": {
       "name": "실외 V2L 커넥터",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "V2L"
+      ]
     },
     "KRSV292006": {
       "name": "주행모드 통합제어 시스템",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "DRIVE_MODE"
+      ]
     },
     "KRSV292007": {
       "name": "후륜 멀티링크 서스펜션",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "SUSPENSION_MLT"
+      ]
     },
     "KRSV292011": {
       "name": "전방 충돌방지 보조(차량/보행자/자전거 탑승자/교차로 대향차/정면 대향차)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "KRSV292012": {
       "name": "차로 이탈방지 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "KRSV292013": {
       "name": "운전자 주의 경고(전방 차량 출발 알림 기능 포함)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "BVM",
+        "DAW"
+      ]
     },
     "KRSV292014": {
       "name": "하이빔 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "KRSV292015": {
       "name": "스마트 크루즈 컨트롤(정차&amp;재출발)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "KRSV292016": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(고속도로/자동차 전용도로 內 안전구간/곡선로)",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "KRSV292017": {
       "name": "차로 유지 보조 2",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "KRSV292018": {
       "name": "고속도로 주행 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "KRSV292019": {
       "name": "스티어링 휠 그립 감지",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "KRSV292164": {
       "name": "스티어링 휠 진동 경고",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HOD"
+      ]
     },
     "KRSV292020": {
       "name": "지능형 속도 제한 보조",
-      "category": "첨단 운전자 보조(ADAS)",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ISLA"
+      ]
     },
     "KRSV292030": {
       "name": "9 에어백(운전석/동승석 어드밴스드, 1열 센터 사이드, 전복감지 커튼, 1열/2열 사이드)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR",
+        "AIRBAG_KNEE",
+        "AIRBAG_PS",
+        "AIRBAG_SIDE"
+      ]
     },
     "KRSV292031": {
       "name": "전/후방 주차 거리 경고",
-      "category": "안전",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "KRSV292032": {
       "name": "VSM",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VDC"
+      ]
     },
     "KRSV292033": {
       "name": "다중 충돌방지 자동 제동 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "KRSV292034": {
       "name": "경사로 밀림방지장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HAC"
+      ]
     },
     "KRSV292035": {
       "name": "경사로 저속주행장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DBC"
+      ]
     },
     "KRSV292036": {
       "name": "급제동 경보 시스템",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ESS"
+      ]
     },
     "KRSV292037": {
       "name": "개별 타이어 공기압 경보 시스템",
-      "category": "안전",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "TPMS"
+      ]
     },
     "KRSV292038": {
       "name": "1열/2열 시트벨트 리마인더",
@@ -322,12 +403,18 @@
     "KRSV292039": {
       "name": "유아용 시트 고정 장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ISOFIX"
+      ]
     },
     "KRSV292040": {
       "name": "타이어 임시수리장치",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "TIRE_REPAIR"
+      ]
     },
     "KRSV292041": {
       "name": "소화기",
@@ -336,12 +423,15 @@
     },
     "KRSV292042": {
       "name": "가상 엔진 사운드(보행자 보호)",
-      "category": "안전",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "VESS"
+      ]
     },
     "KRSV292167": {
       "name": "페달 오조작 안전 보조",
-      "category": "안전",
+      "category": "내장",
       "is_package": false
     },
     "KRSV292168": {
@@ -351,68 +441,102 @@
     },
     "KRSV292044": {
       "name": "215/60 R17 타이어&amp;전면가공 휠",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRSV292045": {
       "name": "LED 헤드램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRSV292046": {
       "name": "프론트 LED 턴시그널램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "KRSV292047": {
       "name": "LED 주간 주행등",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "DRL"
+      ]
     },
     "KRSV292048": {
       "name": "LED 리어 콤비네이션램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "KRSV292049": {
       "name": "LED 보조제동등",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRSV292050": {
       "name": "LED 리피터 일체형 아웃사이드미러(전동접이, 전동조절, 열선)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRSV292051": {
       "name": "1열 오토 플러시 도어 핸들(워크 어웨이 락 포함)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE",
+        "WALK_AWAY_LOCK"
+      ]
     },
     "KRSV292052": {
       "name": "도어손잡이 조명(프론트)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "KRSV292053": {
       "name": "에어로타입 와이퍼",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AERO_WIPER"
+      ]
     },
     "KRSV292054": {
       "name": "윈드쉴드 이중접합 차음 글라스",
-      "category": "외장",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "LAMINATED_GLASS"
+      ]
     },
     "KRSV292055": {
       "name": "리어 스포일러",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "REAR_SPOILER"
+      ]
     },
     "KRSV292056": {
       "name": "샤크핀 안테나",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "SHARK_FIN"
+      ]
     },
     "KRSV292070": {
       "name": "미디움 그레이 또는 네이비 인테리어 선택 가능",
@@ -426,23 +550,35 @@
     },
     "KRSV292072": {
       "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
-      "category": "내장",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRSV292073": {
       "name": "인조가죽 스티어링 휠",
-      "category": "내장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "KRSV292074": {
       "name": "LED 실내등(맵램프, 룸램프, 러기지램프)",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_INTERIOR"
+      ]
     },
     "KRSV292075": {
       "name": "전자식 룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "MTS_E_MIRROR"
+      ]
     },
     "KRSV292076": {
       "name": "슬라이딩 선바이저(거울, LED조명)",
@@ -461,18 +597,24 @@
     },
     "KRSV292079": {
       "name": "프론트 트렁크",
-      "category": "내장",
+      "category": "편의",
       "is_package": false
     },
     "KRSV292090": {
       "name": "프리미엄 바이오 인조가죽시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "KRSV292092": {
       "name": "1열 열선시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "KRSV292095": {
       "name": "2열 6:4 폴딩시트(리클라이닝)",
@@ -496,7 +638,7 @@
     },
     "KRSV292099": {
       "name": "1열 시트벨트 높이조절장치",
-      "category": "시트",
+      "category": "안전",
       "is_package": false
     },
     "KRSV292100": {
@@ -507,102 +649,166 @@
     "KRSV292107": {
       "name": "버튼시동 스마트키 시스템(원격시동 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BUTTON_START",
+        "REMOTE_START",
+        "SMART_KEY"
+      ]
     },
     "KRSV292108": {
       "name": "하이패스 자동결제 시스템(e hi-pass 기능 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HIPASS"
+      ]
     },
     "KRSV292109": {
       "name": "컬럼 타입 전자식 변속 레버",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "SHIFT_BY_WIRE"
+      ]
     },
     "KRSV292110": {
       "name": "회생제동 컨트롤 패들 쉬프트",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "PADDLE_SHIFT",
+        "REGEN"
+      ]
     },
     "KRSV292111": {
       "name": "전자식 파킹 브레이크(오토홀드 포함)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "KRSV292112": {
       "name": "후방 모니터",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "KRSV292114": {
       "name": "오토 라이트 컨트롤",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "KRSV292115": {
       "name": "레인 센서",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RAIN_SENSOR"
+      ]
     },
     "KRSV292116": {
       "name": "후석 승객 알림",
-      "category": "편의",
-      "is_package": false
+      "category": "지능형 안전 기술",
+      "is_package": false,
+      "fp_ids": [
+        "ROA"
+      ]
     },
     "KRSV292117": {
       "name": "열선 스티어링 휠",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "KRSV292118": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
-      "category": "편의",
+      "category": "외관",
       "is_package": false
     },
     "KRSV292119": {
       "name": "운전석 세이프티 파워윈도우",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "KRSV292120": {
       "name": "독립제어 풀오토 에어컨(운전석/동승석)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "KRSV292121": {
       "name": "고성능 에어컨 필터",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "KRSV292122": {
       "name": "공기청정 시스템(미세먼지 센서 포함)",
-      "category": "편의",
-      "is_package": false
+      "category": "내장",
+      "is_package": false,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "KRSV292123": {
       "name": "오토디포그",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "DEFOG"
+      ]
     },
     "KRSV292124": {
       "name": "2열 에어벤트",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "AUTO_AC_REAR"
+      ]
     },
     "KRSV292125": {
       "name": "애프터 블로우",
-      "category": "편의",
-      "is_package": false
+      "category": "내장",
+      "is_package": false,
+      "fp_ids": [
+        "AFTER_BLOW"
+      ]
     },
     "KRSV292127": {
       "name": "C타입 USB 단자(충전용, 1열 시트백 2개)",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRSV292169": {
       "name": "100W C타입 USB 단자(충전용, 1열 2개/정품 충전 케이블 1개)",
-      "category": "편의",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRSV292128": {
       "name": "1열 파워아웃렛",
@@ -617,12 +823,21 @@
     "KRSV292142": {
       "name": "12.3인치 내비게이션(기아 커넥트, 폰 프로젝션, 인카페이먼트)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "CONNECTED_CAR",
+        "DISPLAY_LCD",
+        "MIRRORING",
+        "NAVIGATION"
+      ]
     },
     "KRSV292143": {
       "name": "무선 소프트웨어 업데이트",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "OTA"
+      ]
     },
     "KRSV292144": {
       "name": "6 스피커",
@@ -631,18 +846,28 @@
     },
     "KRSV292145": {
       "name": "스티어링 휠 오디오 리모컨",
-      "category": "인포테인먼트",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "STR_REMOTE"
+      ]
     },
     "KRSV292146": {
       "name": "블루투스 핸즈프리",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "BLUETOOTH",
+        "HANDS_FREE"
+      ]
     },
     "KRSV292147": {
       "name": "C타입 USB 단자(데이터/충전 겸용)",
       "category": "인포테인먼트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "KRSV292148": {
       "name": "기아 AI 어시스턴트",
@@ -651,12 +876,12 @@
     },
     "KRSV292067": {
       "name": "스노우 화이트 펄",
-      "category": "선택사양",
+      "category": "편의",
       "is_package": false
     },
     "KRSV292068": {
       "name": "아이보리 매트 실버",
-      "category": "선택사양",
+      "category": "내장",
       "is_package": false
     },
     "KRSV292P01": {
@@ -706,8 +931,11 @@
     },
     "KRSV292141": {
       "name": "헤드업 디스플레이",
-      "category": "선택사양",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "KRSV292P11": {
       "name": "애프터마켓용 컬렉션",
@@ -716,67 +944,92 @@
     },
     "KRSV292008": {
       "name": "81.4kWh 리튬이온 배터리",
-      "category": "파워 일렉트릭",
+      "category": "편의",
       "is_package": false
     },
     "KRSV292166": {
       "name": "듀얼 모터 4WD",
-      "category": "선택사양",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "KRSV292009": {
       "name": "실내 V2L 콘센트",
-      "category": "파워 일렉트릭",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "V2L"
+      ]
     },
     "KRSV292057": {
       "name": "스몰 큐브 프로젝션 LED 헤드램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "KRSV292058": {
       "name": "다이내믹 웰컴 라이트",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT",
+        "WELCOME"
+      ]
     },
     "KRSV292059": {
       "name": "고급형 LED 리어 콤비네이션 램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "KRSV292060": {
       "name": "리어 LED 턴시그널 램프",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "KRSV292061": {
       "name": "리어 LED 센터램프",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRSV292062": {
       "name": "1열 이중접합 차음 글라스",
-      "category": "외장",
-      "is_package": false
+      "category": "편의",
+      "is_package": false,
+      "fp_ids": [
+        "LAMINATED_GLASS"
+      ]
     },
     "KRSV292063": {
       "name": "블랙하이그로시 서라운드 몰딩",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRSV292064": {
       "name": "루프랙",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "ROOF_RACK"
+      ]
     },
     "KRSV292065": {
       "name": "프론트/리어 크롬 범퍼 가니쉬",
-      "category": "외장",
+      "category": "외관",
       "is_package": false
     },
     "KRSV292066": {
       "name": "도어 크롬 가니쉬",
-      "category": "외장",
+      "category": "내장",
       "is_package": false
     },
     "KRSV292080": {
@@ -792,11 +1045,14 @@
     "KRSV292081": {
       "name": "다이내믹 앰비언트 라이트",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "KRSV292082": {
       "name": "패브릭 감싸기(도어 암레스트, 크래쉬패드)",
-      "category": "내장",
+      "category": "시트",
       "is_package": false
     },
     "KRSV292172": {
@@ -807,7 +1063,10 @@
     "KRSV292085": {
       "name": "메탈 페달&amp;풋레스트",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "METAL_PEDAL"
+      ]
     },
     "KRSV292086": {
       "name": "메탈 도어 스커프",
@@ -821,18 +1080,24 @@
     },
     "KRSV292088": {
       "name": "1열 메쉬 헤드레스트",
-      "category": "내장",
+      "category": "시트",
       "is_package": false
     },
     "KRSV292091": {
       "name": "운전석 파워시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "KRSV292101": {
       "name": "동승석 파워시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ]
     },
     "KRSV292102": {
       "name": "1열 릴렉션 컴포트시트",
@@ -842,27 +1107,43 @@
     "KRSV292103": {
       "name": "동승석 워크인 디바이스",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WORKIN"
+      ]
     },
     "KRSV292093": {
       "name": "1열 통풍시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "KRSV292094": {
       "name": "운전석 전동식 허리지지대",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "KRSV292104": {
       "name": "동승석 전동식 허리지지대",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_SEAT_PS"
+      ]
     },
     "KRSV292105": {
       "name": "2열 열선시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR"
+      ]
     },
     "KRSV292106": {
       "name": "1열 시트백 상단 패브릭 감싸기",
@@ -871,38 +1152,60 @@
     },
     "KRSV292113": {
       "name": "스마트폰 무선충전 시스템(듀얼)",
-      "category": "편의",
-      "is_package": false
+      "category": "파워트레인/성능",
+      "is_package": false,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "KRSV292130": {
       "name": "기아 디지털 키 2",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "KRSV292131": {
       "name": "스마트 파워테일게이트",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "KRSV292132": {
       "name": "운전자세 메모리 시스템(운전석 시트, 아웃사이드 미러)",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRSV292133": {
       "name": "1열 이지 억세스",
-      "category": "편의",
+      "category": "시트",
       "is_package": false
     },
     "KRSV292134": {
       "name": "후진연동 자동하향 아웃사이드 미러",
-      "category": "편의",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRSV292135": {
       "name": "동승석/2열 세이프티 파워윈도우",
-      "category": "편의",
-      "is_package": false
+      "category": "시트",
+      "is_package": false,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "KRSV292P09": {
       "name": "하만카돈 프리미엄 사운드",
@@ -911,12 +1214,15 @@
     },
     "KRSV292150": {
       "name": "GT-Line 전용 외장 디자인(215/50 R19 타이어&amp;GT-Line 전용 전면가공 휠, 전용 프론트/리어 범퍼, 바디칼라 도어 가니쉬, 블랙 하이그로시 휠아치 몰딩, 블랙 아웃사이드 미러, 전용 엠블럼)",
-      "category": "외장",
-      "is_package": false
+      "category": "외관",
+      "is_package": false,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "KRSV292151": {
       "name": "GT-Line 내장 디자인(차콜&amp;화이트 인테리어, 차콜 니트 헤드라이닝, 전용 스티어링 휠, 도어 암레스트 인조가죽 감싸기)",
-      "category": "내장",
+      "category": "외관",
       "is_package": false
     },
     "KRSV292083": {
@@ -927,12 +1233,19 @@
     "KRSV292152": {
       "name": "GT-Line 전용 프리미엄 바이오 인조가죽시트",
       "category": "시트",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WIRELESS_MIRROR": {
       "name": "무선 Apple CarPlay & Android Auto",
-      "category": "편의/멀티미디어",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
+      ]
     }
   },
   "trims": {

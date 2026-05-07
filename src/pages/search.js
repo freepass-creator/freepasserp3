@@ -12,17 +12,18 @@
  *
  *   - _searchFilter (외부 모듈에서 검색 input → 필터 갱신용 export)
  */
-import { store } from '../core/store.js';
+import { store, findProduct } from '../core/store.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from '../core/product-photos.js';
 import { extractProductDetailRows } from '../core/product-detail-rows.js';
 import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichProductsWithPolicy } from '../core/excel-export.js';
 import { showToast } from '../core/toast.js';
 import {
   esc, shortStatus, mapStatusDot, fmtMileage,
-  providerNameByCode, fmtMoneyMan,
+  providerNameByCode, providerLabelByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { findCatalog } from '../core/vehicle-matrix.js';
+import { FILTERS, matchFilter } from '../core/product-filters.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
 let _onCreateRoom = null;
@@ -56,15 +57,15 @@ export function updateSearchStats() {
 // 다른 모듈에서 호출하기 쉽게 window 에도 노출 (showPage non-module 스크립트용)
 if (typeof window !== 'undefined') window.updateSearchStats = updateSearchStats;
 
-/* search 페이지 필터 상태 — bindGlobalSearch 등 외부 모듈에서 search 만 갱신 */
+/* search 페이지 필터 상태 — bindGlobalSearch 등 외부 모듈에서 search 만 갱신.
+ *  대여료/보증금 구간은 activeFilters['rent'] / ['deposit'] (range 객체) 로 통일됨. */
 export const _searchFilter = {
   chip: 'all',
   search: '',
   column: {},
   quick: new Set(),                  // 하단 퀵필터 (new/used/age26)
-  rentRange: { min: null, max: null },
-  depositRange: { min: null, max: null },
   fpOptions: new Set(),              // 표준옵션 필수 (예: VENT_SEAT_DR, HUD)
+  activeFilters: {},                 // 시트 그룹 필터 — chip(Set) / range({min,max})
 };
 let _activeFtTh = null;
 
@@ -142,7 +143,7 @@ export function renderSearchTable(products) {
   const target = restored || tbody.querySelector('tr');
   if (target) {
     target.classList.add('selected');
-    const p = products.find(x => x._key === target.dataset.id);
+    const p = findProduct(target.dataset.id);
     // detail 패널이 열려있을 때만 재렌더 (closed 상태에서 reset 방지)
     const ws4 = document.querySelector('[data-page="search"] .ws4');
     const isOpen = ws4 && !ws4.classList.contains('is-collapsed');
@@ -425,50 +426,31 @@ export async function searchActionShare(p) {
   }
 }
 
-/* 퀵 필터 토글 (신차/중고/만26세/대여료/보증금) — 하단 액션바에서 호출.
- *  rent/deposit 은 popover 가 필요한데 anchor element 가 없으므로 prompt 로 단순화.
- *  popup anchor 가 필요하면 별도 컴포넌트로 분리 필요. */
-export function searchToggleQuickFilter(key, anchorEl) {
+/* 퀵 필터 토글 (신차/중고/만26세) — 하단 액션바에서 호출.
+ *  대여료/보증금 구간은 [퀵필터] 시트의 슬라이더에서 처리 (openSearchFilterSheet). */
+export function searchToggleQuickFilter(key) {
   const set = _searchFilter.quick;
-  if (key === 'rent' || key === 'deposit') {
-    if (anchorEl) { openRangePopover(anchorEl, key); return; }
-    // 폴백 — anchor 없으면 prompt
-    const range = key === 'rent' ? _searchFilter.rentRange : _searchFilter.depositRange;
-    const cur = `${range.min ? range.min/10000 : ''}~${range.max ? range.max/10000 : ''}`;
-    const input = prompt(`${key === 'rent' ? '대여료' : '보증금'} 구간 (만원, 예: 50~100):`, cur === '~' ? '' : cur);
-    if (input == null) return;
-    if (!input.trim()) { range.min = null; range.max = null; }
-    else {
-      const [minS, maxS] = input.split('~').map(s => s.trim());
-      range.min = minS ? Number(minS) * 10000 : null;
-      range.max = maxS ? Number(maxS) * 10000 : null;
-    }
-    applySearchFilter();
-    window.refreshPageActions?.('search');
-    return;
-  }
   if (set.has(key)) set.delete(key); else set.add(key);
   if (key === 'new' && set.has('new')) set.delete('used');
   if (key === 'used' && set.has('used')) set.delete('new');
   applySearchFilter();
-  window.refreshPageActions?.('search');   // chip 활성 상태 시각 갱신
+  window.refreshPageActions?.('search');
 }
 
 /** 퀵 필터 활성 상태 — 액션바에서 chip 의 active 표시용 */
 export function isQuickFilterActive(key) {
-  if (key === 'rent') return _searchFilter.rentRange.min != null || _searchFilter.rentRange.max != null;
-  if (key === 'deposit') return _searchFilter.depositRange.min != null || _searchFilter.depositRange.max != null;
   return _searchFilter.quick.has(key);
 }
 
 /** 모든 필터 일괄 해제 — 전체 chip 클릭 시 호출 */
 export function clearAllSearchFilters() {
   _searchFilter.quick.clear();
-  _searchFilter.rentRange.min = null;
-  _searchFilter.rentRange.max = null;
-  _searchFilter.depositRange.min = null;
-  _searchFilter.depositRange.max = null;
   if (_searchFilter.fpOptions) _searchFilter.fpOptions.clear();
+  // 시트에서 토글한 그룹 필터도 모두 해제 (range 는 객체, chip 그룹은 Set)
+  const af = _searchFilter.activeFilters || {};
+  for (const k of Object.keys(af)) {
+    af[k] = (FILTERS[k]?.type === 'range') ? null : new Set();
+  }
   applySearchFilter();
   window.refreshPageActions?.('search');
 }
@@ -637,7 +619,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const specByLabel = Object.fromEntries(specRows.map(r => [r[0], r[1]]));
   const basicByLabel = Object.fromEntries(basicRows.map(r => [r[0], r[1]]));
   const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
-  const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
+  // 매물 상세의 공급사 row — "회사명 (코드)" 같이 표시 (사용자 요청 — 코드 유지 + 회사명 노출)
+  const providerName = providerLabelByCode(p.provider_company_code || p.partner_code, store) || '';
 
   const body = card.querySelector('.ws4-body');
   body.innerHTML = `
@@ -988,7 +971,7 @@ export function bindSearchInteractions() {
         tr.classList.add('selected');
         ws4.classList.remove('is-collapsed');
         // 다음 프레임에 detail 렌더 (paint 먼저 → 사용자 체감 빠름)
-        const p = (store.products || []).find(x => x._key === tr.dataset.id);
+        const p = findProduct(tr.dataset.id);
         if (p) requestAnimationFrame(() => renderSearchDetail(p));
       }
     }
@@ -1352,87 +1335,6 @@ function openPhotoZipDialog(list) {
   }, { signal: ac.signal });
 }
 
-function openRangePopover(chip, key) {
-  document.querySelector('.range-pop')?.remove();
-  const range = key === 'rent' ? _searchFilter.rentRange : _searchFilter.depositRange;
-  const pop = document.createElement('div');
-  pop.className = 'range-pop';
-  // 단위 분리 — 대여료 10만원 / 보증금 50만원
-  const step = key === 'rent' ? 10 : 50;
-  const defaultMin = key === 'rent' ? 50 : 0;
-  const defaultMax = key === 'rent' ? 100 : 500;
-  const minVal = range.min != null ? Math.round(range.min / 10000) : defaultMin;
-  const maxVal = range.max != null ? Math.round(range.max / 10000) : defaultMax;
-  pop.innerHTML = `
-    <div class="range-pop-title">${key === 'rent' ? '대여료' : '보증금'} 구간 (만원, ${step}만원 단위)</div>
-    <div class="range-pop-row">
-      <input type="number" class="input" id="rngMin" placeholder="최소" value="${minVal}" step="${step}" min="0">
-      <span>~</span>
-      <input type="number" class="input" id="rngMax" placeholder="최대" value="${maxVal}" step="${step}" min="0">
-    </div>
-    <div class="range-pop-actions">
-      <button class="btn" data-act="reset">초기화</button>
-      <button class="btn-primary" data-act="apply">적용</button>
-      <button class="btn" data-act="close">닫기</button>
-    </div>
-  `;
-  // 위치 잡기 전에 미리 fixed 로 — append 시 document flow 차지하지 않게
-  pop.style.position = 'fixed';
-  pop.style.zIndex = '200';
-  pop.style.visibility = 'hidden';   // 측정 끝나기 전엔 숨김 (깜빡임 방지)
-  document.body.appendChild(pop);
-
-  // 하단 액션바(.pt-actions) 또는 옛 .ws4-foot 어느 쪽이든 anchor 가 되는 부모 찾기
-  const foot = chip.closest('.pt-actions') || chip.closest('.ws4-foot') || chip.parentElement;
-  const fr = foot.getBoundingClientRect();
-  const cr = chip.getBoundingClientRect();
-  const popH = pop.offsetHeight;
-  const popW = pop.offsetWidth;
-
-  // 세로 — 액션바 top 에서 4px 위쪽으로 popover bottom 정렬
-  pop.style.top = (fr.top - popH - 4) + 'px';
-  pop.style.bottom = 'auto';
-  pop.style.right = 'auto';
-
-  // 가로 — chip 좌측 정렬, 화면 우측 넘으면 chip 우측 정렬
-  let left = cr.left;
-  if (left + popW > window.innerWidth - 8) left = Math.max(8, cr.right - popW);
-  pop.style.left = left + 'px';
-  pop.style.visibility = 'visible';
-
-  pop.querySelector('[data-act="apply"]').addEventListener('click', (e) => {
-    e.stopPropagation();
-    const minV = pop.querySelector('#rngMin').value;
-    const maxV = pop.querySelector('#rngMax').value;
-    range.min = minV ? Number(minV) * 10000 : null;
-    range.max = maxV ? Number(maxV) * 10000 : null;
-    pop.remove();
-    applySearchFilter();
-    window.refreshPageActions?.('search');     // chip is-active 갱신
-  });
-  pop.querySelector('[data-act="reset"]').addEventListener('click', (e) => {
-    e.stopPropagation();
-    range.min = null; range.max = null;
-    pop.remove();
-    applySearchFilter();
-    window.refreshPageActions?.('search');
-  });
-  pop.querySelector('[data-act="close"]').addEventListener('click', (e) => {
-    e.stopPropagation();
-    pop.remove();   // 현재 필터 상태 유지하고 popover 만 닫기
-  });
-  // 외부 클릭 시 닫기
-  setTimeout(() => {
-    const onDocClick = (ev) => {
-      if (!pop.contains(ev.target) && !chip.contains(ev.target)) {
-        pop.remove();
-        document.removeEventListener('click', onDocClick);
-      }
-    };
-    document.addEventListener('click', onDocClick);
-  }, 0);
-}
-
 const PERIOD_KEY = 'srch.period.hidden';
 const ALL_PERIODS = ['1m', '12m', '24m', '36m', '48m', '60m'];
 const PERIOD_COL_W = 52;  // colgroup 의 기간 컬럼 폭과 동일하게
@@ -1567,10 +1469,24 @@ function buildFtPop(th) {
 function filterProductsExcept(exceptField) {
   const all = store.products || [];
   const f = _searchFilter;
+  const me = store.currentUser || {};
+  const role = me.role;
+  const myCompany = me.company_code;
   return all.filter(p => {
     const norm = shortStatus(p.vehicle_status || '');
-    // 기본 필터 — '불가' 차량은 명시적으로 chip='불가' 선택했을 때만 표시 (출고완료/출고불가)
-    if (norm === '불가' && f.chip !== '불가') return false;
+    // 출고불가 가시성 — 역할별 정책:
+    //   agent/agent_admin: 출고불가 자동 hide (영업자는 출고가능만)
+    //   provider: 본인 회사 매물은 출고불가도 표시
+    //   admin: 액션바 chip='불가' 명시 선택 시만 표시
+    if (norm === '불가') {
+      if (role === 'agent' || role === 'agent_admin') return false;
+      if (role === 'provider') {
+        if (p.provider_company_code !== myCompany) return false;
+      } else {
+        // admin 또는 그 외 — chip='불가' 명시일 때만
+        if (f.chip !== '불가') return false;
+      }
+    }
     if (f.chip !== 'all') {
       // 정규화된 상태로 매칭 (즉시 / 가능 / 협의 / 불가)
       if (f.chip === '즉시' && norm !== '즉시') return false;
@@ -1621,18 +1537,50 @@ function filterProductsExcept(exceptField) {
         if (!has.has(id)) return false;
       }
     }
-    // 대여료 / 보증금 구간 — 24개월 기준 (영업자가 가장 많이 보는 기간 — 변경 가능)
-    if (f.rentRange.min != null || f.rentRange.max != null) {
-      const r = Number(p.price?.['24']?.rent || 0);
-      if (f.rentRange.min != null && r < f.rentRange.min) return false;
-      if (f.rentRange.max != null && r > f.rentRange.max) return false;
-    }
-    if (f.depositRange.min != null || f.depositRange.max != null) {
-      const d = Number(p.price?.['24']?.deposit || 0);
-      if (f.depositRange.min != null && d < f.depositRange.min) return false;
-      if (f.depositRange.max != null && d > f.depositRange.max) return false;
+    // (대여료/보증금 구간은 아래 activeFilters 의 range 분기에서 처리됨 — 별도 로직 X)
+    // 모바일 시트에서 토글한 그룹 필터 — 그룹 내 OR, 그룹 간 AND. range 타입은 별도.
+    if (f.activeFilters && Object.keys(f.activeFilters).length) {
+      for (const [g, val] of Object.entries(f.activeFilters)) {
+        const ff = FILTERS[g];
+        if (ff?.type === 'range') {
+          const lo = val?.min ?? 0;
+          const hi = val?.max ?? Number.MAX_SAFE_INTEGER;
+          if (lo === 0 && hi === Number.MAX_SAFE_INTEGER) continue;
+          const v = ff.field(p);
+          if (v < lo || v > hi) return false;
+          continue;
+        }
+        if (!val || !val.size) continue;
+        const chips = [...val].map(cid => FILTERS[g]?.chips.find(c => c.id === cid)).filter(Boolean);
+        if (!chips.length) continue;
+        if (!chips.some(chip => matchFilter(p, g, chip))) return false;
+      }
     }
     return true;
+  });
+}
+
+/** 모바일과 동일한 필터 시트를 데스크톱에서도 — mobile.css 가 데스크톱에 미로드라 동적 import.
+ *  chip 토글 시 즉시 결과 반영 (사용자 요청 — 모바일과 통일). [적용] 은 시트 닫기. */
+let _mobileCssLoaded = false;
+export async function openSearchFilterSheet() {
+  if (!_mobileCssLoaded) {
+    await import('../styles/mobile.css');
+    _mobileCssLoaded = true;
+  }
+  const { openFilterSheet } = await import('../core/filter-sheet.js');
+  openFilterSheet({
+    products: store.products || [],
+    activeFilters: _searchFilter.activeFilters,
+    anchor: document.getElementById('ptTbFilterBtn'),   // 데스크톱 dropdown 위치 anchor
+    onChange: () => {
+      // 즉시 반영 — 매물 리스트 + 액션바 chip 갱신
+      applySearchFilter();
+      window.refreshPageActions?.('search');
+    },
+    onApply: () => {
+      // [적용] = 시트 닫기 (이미 onChange 가 결과 반영함)
+    },
   });
 }
 

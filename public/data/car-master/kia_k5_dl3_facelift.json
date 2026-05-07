@@ -10,8 +10,12 @@
   "options": {
     "WIRELESS_MIRROR": {
       "name": "무선 Apple CarPlay & Android Auto",
-      "category": "편의/멀티미디어",
-      "is_package": false
+      "category": "인포테인먼트",
+      "is_package": false,
+      "fp_ids": [
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
+      ]
     },
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
@@ -54,7 +58,28 @@
       "is_package": true
     }
   },
-  "categories": {},
+  "categories": {
+    "파워트레인/성능": [],
+    "안전": [],
+    "지능형 안전 기술": [],
+    "외관": [],
+    "내장": [],
+    "시트": [],
+    "편의": [],
+    "인포테인먼트": [
+      "WIRELESS_MIRROR"
+    ],
+    "선택사양": [
+      "PKG_ADAS",
+      "PKG_CONVENIENCE",
+      "PKG_COMFORT",
+      "PKG_PARKING",
+      "PKG_EXTERIOR",
+      "PKG_BUILTIN_CAM",
+      "PKG_SUNROOF",
+      "PKG_HUD"
+    ]
+  },
   "trims": {
     "트렌디": {
       "slug": "trendy",
