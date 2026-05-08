@@ -261,7 +261,10 @@
     "WK_MLA_헤드램프_Micro_Lens_Array_": {
       "name": "MLA 헤드램프(Micro Lens Array)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_Full_LED_리어_콤비_램프": {
       "name": "Full LED 리어 콤비 램프",
@@ -335,7 +338,10 @@
     "WK_프레임리스_룸미러_ECM_": {
       "name": "프레임리스 룸미러(ECM)",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "WK_블랙_하이글로시_내장재": {
       "name": "블랙 하이글로시 내장재",
@@ -358,7 +364,10 @@
     "WK_앞좌석_LED_풋램프": {
       "name": "앞좌석 LED 풋램프",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_INTERIOR"
+      ]
     },
     "WK_8_에어백_시스템_앞좌석_어드밴스드": {
       "name": "8 에어백 시스템(앞좌석 어드밴스드",
@@ -389,7 +398,10 @@
     "WK_전복_대응_커튼_": {
       "name": "전복 대응 커튼)",
       "category": "편의",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_SIDE"
+      ]
     },
     "WK_급제동_경보_기능": {
       "name": "급제동 경보 기능",
@@ -515,7 +527,10 @@
     "WK_터치_타입_아웃사이드_도어_핸들": {
       "name": "터치 타입 아웃사이드 도어 핸들",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "WK_전자식_파워_차일드_락": {
       "name": "전자식 파워 차일드 락",
@@ -1090,6 +1105,46 @@
         "MIRRORING",
         "MIRRORING_WIRELESS"
       ]
+    },
+    "PKG_ADAS": {
+      "name": "드라이빙 어시스턴스 패키지 II",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_CONVENIENCE": {
+      "name": "컨비니언스 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_COMFORT": {
+      "name": "컴포트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_PARKING": {
+      "name": "파킹 어시스트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_EXTERIOR": {
+      "name": "익스테리어 디자인 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_BUILTIN_CAM": {
+      "name": "빌트인 캠 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_SUNROOF": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_HUD": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": true
     }
   },
   "trims": {
@@ -1309,6 +1364,34 @@
             "WK_파노라마_선루프"
           ],
           "price": 1500000
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 2000000,
+          "name": "드라이빙 어시스턴스 패키지 II"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
         }
       ]
     },
@@ -1528,6 +1611,34 @@
             "WK_파노라마_선루프"
           ],
           "price": 1500000
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 2000000,
+          "name": "드라이빙 어시스턴스 패키지 II"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
         }
       ]
     },
@@ -1748,6 +1859,34 @@
             "WK_파노라마_선루프"
           ],
           "price": 1500000
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 2000000,
+          "name": "드라이빙 어시스턴스 패키지 II"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
         }
       ]
     },
@@ -1968,6 +2107,34 @@
             "WK_파노라마_선루프"
           ],
           "price": 1500000
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 2000000,
+          "name": "드라이빙 어시스턴스 패키지 II"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
         }
       ]
     }

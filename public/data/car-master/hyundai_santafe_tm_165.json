@@ -263,7 +263,13 @@
     "WK_10_에어백_시스템_1열_어드밴스드_센터사이드__1_2열_사이드__전복감지_커튼_": {
       "name": "10 에어백 시스템(1열 어드밴스드/센터사이드, 1/2열 사이드, 전복감지 커튼)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR",
+        "AIRBAG_KNEE",
+        "AIRBAG_PS",
+        "AIRBAG_SIDE"
+      ]
     },
     "WK_유아용_시트_고정장치_2열_2개_": {
       "name": "유아용 시트 고정장치(2열 2개)",
@@ -1196,7 +1202,13 @@
     "WK_10_에어백_시스템_1열_어드밴스드__운전석_무릎__1열_센터_사이드__1열_2열_사이드_": {
       "name": "10 에어백 시스템(1열 어드밴스드, 운전석 무릎, 1열 센터 사이드, 1열/2열 사이드, 전복 대응 커튼)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR",
+        "AIRBAG_KNEE",
+        "AIRBAG_PS",
+        "AIRBAG_SIDE"
+      ]
     },
     "WK_스마트_크루즈_컨트롤_정차_및_재출발_기능_포함_": {
       "name": "스마트 크루즈 컨트롤(정차 및 재출발 기능 포함)",
@@ -1529,6 +1541,46 @@
       "name": "LED 테일게이트 램프",
       "category": "외관",
       "is_package": false
+    },
+    "PKG_ADAS": {
+      "name": "현대 스마트센스 II",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_CONVENIENCE": {
+      "name": "컨비니언스 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_COMFORT": {
+      "name": "컴포트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_PARKING": {
+      "name": "파킹 어시스트 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_EXTERIOR": {
+      "name": "익스테리어 디자인 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_BUILTIN_CAM": {
+      "name": "빌트인 캠 패키지",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_SUNROOF": {
+      "name": "파노라마 선루프",
+      "category": "선택사양",
+      "is_package": true
+    },
+    "PKG_HUD": {
+      "name": "헤드업 디스플레이",
+      "category": "선택사양",
+      "is_package": true
     }
   },
   "trims": {
@@ -1762,6 +1814,62 @@
           ],
           "price": 450000,
           "name": "플래티넘 I"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -1977,6 +2085,55 @@
           ],
           "price": 1290000,
           "name": "디자인 플러스 I"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
         }
       ]
     },
@@ -2184,6 +2341,62 @@
           ],
           "price": null,
           "name": "블랙잉크"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -2339,6 +2552,62 @@
           ],
           "price": 450000,
           "name": "플래티넘 I"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     },
@@ -2493,6 +2762,55 @@
           ],
           "price": 790000,
           "name": "디자인 플러스 II"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
         }
       ]
     },
@@ -2654,6 +2972,62 @@
           ],
           "price": null,
           "name": "블랙잉크(전용 디자인 휠 미포함)"
+        },
+        {
+          "codes": [
+            "PKG_ADAS"
+          ],
+          "price": 1000000,
+          "name": "현대 스마트센스 II"
+        },
+        {
+          "codes": [
+            "PKG_CONVENIENCE"
+          ],
+          "price": 600000,
+          "name": "컨비니언스 패키지"
+        },
+        {
+          "codes": [
+            "PKG_COMFORT"
+          ],
+          "price": 700000,
+          "name": "컴포트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_PARKING"
+          ],
+          "price": 800000,
+          "name": "파킹 어시스트 패키지"
+        },
+        {
+          "codes": [
+            "PKG_EXTERIOR"
+          ],
+          "price": 1200000,
+          "name": "익스테리어 디자인 패키지"
+        },
+        {
+          "codes": [
+            "PKG_BUILTIN_CAM"
+          ],
+          "price": 850000,
+          "name": "빌트인 캠 패키지"
+        },
+        {
+          "codes": [
+            "PKG_SUNROOF"
+          ],
+          "price": 1200000,
+          "name": "파노라마 선루프"
+        },
+        {
+          "codes": [
+            "PKG_HUD"
+          ],
+          "price": 1300000,
+          "name": "헤드업 디스플레이"
         }
       ]
     }

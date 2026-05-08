@@ -89,6 +89,7 @@ export const FP_OPT_MASTER = {
     ['CONNECTED_CAR','커넥티드 카 서비스 (UVO/블루링크/Genesis Connected/카페이 등)','opt'],
     ['HEAT_PUMP','히트 펌프 시스템 (전기차 난방 효율)','unc'],
     ['FLUSH_HANDLE','오토 플러시 도어 핸들','unc'],
+    ['ANC','액티브 로드 노이즈 컨트롤 (ANC)','unc'],
   ]},
   media: { label:'미디어', items: [
     ['MP3','MP3'],['BLUETOOTH','블루투스'],['USB','USB 단자'],

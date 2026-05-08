@@ -689,6 +689,7 @@
       "is_package": false,
       "fp_ids": [
         "BLUETOOTH",
+        "CONNECTED_CAR",
         "DISPLAY_LCD",
         "MIRRORING",
         "MP3"
@@ -1053,7 +1054,10 @@
     "KRNQ259063": {
       "name": "터치타입 아웃사이드 도어핸들",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "KRNQ259083": {
       "name": "블랙 또는 라운지 브라운 또는 네이비 그레이 인테리어 선택 가능",

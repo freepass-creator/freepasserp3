@@ -1014,7 +1014,10 @@
     "KRDL243052": {
       "name": "터치타입 아웃사이드 도어핸들",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "KRDL243073": {
       "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
@@ -1305,7 +1308,10 @@
     "KRDL243090": {
       "name": "D/N 룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "KRDL243150": {
       "name": "풋파킹 브레이크",
@@ -1349,6 +1355,7 @@
       "is_package": false,
       "fp_ids": [
         "BLUETOOTH",
+        "CONNECTED_CAR",
         "DISPLAY_LCD",
         "MIRRORING",
         "MP3"

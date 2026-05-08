@@ -719,6 +719,7 @@
       "category": "인포테인먼트",
       "is_package": false,
       "fp_ids": [
+        "CONNECTED_CAR",
         "DISPLAY_LCD",
         "MIRRORING",
         "NAVIGATION"

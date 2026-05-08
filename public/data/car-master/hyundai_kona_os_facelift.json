@@ -163,7 +163,10 @@
     "SX04043": {
       "name": "LED 테일램프",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "SX04041": {
       "name": "LED 제동등",
@@ -642,7 +645,10 @@
     "SX04109": {
       "name": "터치타입 아웃사이드 도어 핸들(1열)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "SX04115": {
       "name": "12.3인치 내비게이션(인카페이먼트/e hi-pass)",

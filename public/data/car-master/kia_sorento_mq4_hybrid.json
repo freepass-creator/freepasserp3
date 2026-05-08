@@ -715,7 +715,10 @@
     "KRMQ255062": {
       "name": "터치타입 아웃사이드 도어핸들",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "KRMQ255053": {
       "name": "새틴 크롬 프론트/리어 스키드 플레이트",

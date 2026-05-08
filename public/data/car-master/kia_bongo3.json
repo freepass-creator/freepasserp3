@@ -320,7 +320,10 @@
     "KRB1267052": {
       "name": "D/N 룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "KRB1267045": {
       "name": "도어 맵포켓",
@@ -407,7 +410,10 @@
     "KRB1267073": {
       "name": "원터치 트리플 턴 시그널",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "KRB1267069": {
       "name": "파워 윈도우(운전석 오토다운)",

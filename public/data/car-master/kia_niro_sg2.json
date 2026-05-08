@@ -457,7 +457,10 @@
     "KRSG300067": {
       "name": "D/N 룸미러",
       "category": "내장",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "KRSG300068": {
       "name": "선바이저 거울",
@@ -647,6 +650,7 @@
       "is_package": false,
       "fp_ids": [
         "BLUETOOTH",
+        "CONNECTED_CAR",
         "DISPLAY_LCD",
         "MIRRORING",
         "MP3"

@@ -148,6 +148,12 @@ export const FP_KEYWORD_RULES = [
   { kw:'히트펌프시스템', ids:['HEAT_PUMP'] }, { kw:'히트펌프', ids:['HEAT_PUMP'] },
   { kw:'heatpump', ids:['HEAT_PUMP'] },
 
+  // 액티브 로드 노이즈 컨트롤 (ANC)
+  { kw:'액티브로드노이즈컨트롤', ids:['ANC'] }, { kw:'액티브로드노이즈', ids:['ANC'] },
+  { kw:'activenoisecontrol', ids:['ANC'] }, { kw:'activeroadnoise', ids:['ANC'] },
+  { kw:'arnc', ids:['ANC'] }, { kw:'액티브노이즈컨트롤', ids:['ANC'] },
+  { kw:'노이즈캔슬링', ids:['ANC'] }, { kw:'noisecancelling', ids:['ANC'] },
+
   // 오토 플러시 도어 핸들
   { kw:'오토플러시도어핸들', ids:['FLUSH_HANDLE'] }, { kw:'플러시도어핸들', ids:['FLUSH_HANDLE'] },
   { kw:'오토플러시', ids:['FLUSH_HANDLE'] }, { kw:'flushhandle', ids:['FLUSH_HANDLE'] },
@@ -163,6 +169,123 @@ export const FP_KEYWORD_RULES = [
 
   // 모니터링 팩 (다중 ADAS 모니터링)
   { kw:'모니터링팩', ids:['BVM','RCTA','AVMS'] }, { kw:'모니터링패키지', ids:['BVM','RCTA','AVMS'] },
+
+  // ECM 룸미러 보강 (프레임리스)
+  { kw:'프레임리스룸미러', ids:['ECM_MIRROR'] }, { kw:'프레임리스ecm', ids:['ECM_MIRROR'] },
+  { kw:'프레임리스인사이드미러', ids:['ECM_MIRROR'] },
+  { kw:'day&night룸미러', ids:['ECM_MIRROR'] }, { kw:'daynight룸미러', ids:['ECM_MIRROR'] },
+  { kw:'d/n룸미러', ids:['ECM_MIRROR'] }, { kw:'dn룸미러', ids:['ECM_MIRROR'] },
+
+  // KGM ADAS 약어 보강
+  { kw:'스마트하이빔', ids:['HBA'] }, { kw:'shb', ids:['HBA'] },
+  { kw:'후측방경고', ids:['RCTA'] }, { kw:'bsw', ids:['RCTA'] },
+  { kw:'후측방접근경고', ids:['RCTA'] }, { kw:'rctw', ids:['RCTA'] },
+  { kw:'차선변경경고', ids:['LDWS'] }, { kw:'lcw', ids:['LDWS'] },
+  { kw:'안전거리경고', ids:['FCWS'] }, { kw:'sdw', ids:['FCWS'] },
+  { kw:'앞차출발경고', ids:['FCWS'] }, { kw:'fvsw', ids:['FCWS'] },
+  { kw:'긴급제동보조', ids:['AEB'] },
+  { kw:'전방주차보조경고', ids:['SENSOR_FRONT'] }, { kw:'후방주차보조경고', ids:['SENSOR_REAR'] },
+  { kw:'전방주차보조', ids:['SENSOR_FRONT'] }, { kw:'후방주차보조', ids:['SENSOR_REAR'] },
+
+  // 우적감지 와이퍼 (레인센서)
+  { kw:'우적감지와이퍼', ids:['RAIN_SENSOR'] }, { kw:'우적감지', ids:['RAIN_SENSOR'] },
+
+  // 가죽 스티어링 보강 (KGM 표기)
+  { kw:'가죽커버스티어링휠', ids:['STR_LEATHER'] }, { kw:'가죽커버스티어링', ids:['STR_LEATHER'] },
+
+  // 운전석 & 동승석 히팅시트
+  { kw:'운전석동승석히팅시트', ids:['HEAT_SEAT_FRONT'] },
+  { kw:'운전석히팅시트', ids:['HEAT_SEAT_FRONT'] },
+  { kw:'동승석히팅시트', ids:['HEAT_SEAT_FRONT'] },
+  { kw:'히팅시트', ids:['HEAT_SEAT_FRONT'] },
+
+  // 스피드센싱 오토 도어록 (워크어웨이 락 류)
+  { kw:'스피드센싱오토도어록', ids:['WALK_AWAY_LOCK'] },
+  { kw:'오토도어록', ids:['WALK_AWAY_LOCK'] },
+
+  // KGM 커넥티드 서비스
+  { kw:'올인원서비스', ids:['CONNECTED_CAR'] },
+  { kw:'안전제일서비스', ids:['CONNECTED_CAR'] },
+  { kw:'프리미엄서비스지니뮤직', ids:['CONNECTED_CAR'] },
+  { kw:'지니뮤직', ids:['CONNECTED_CAR'] },
+
+  // 원터치 턴 시그널
+  { kw:'원터치트리플턴시그널', ids:['LED_TURN'] },
+  { kw:'원터치턴시그널', ids:['LED_TURN'] },
+
+  // 시트벨트 리마인더 (전좌석)
+  { kw:'시트벨트리마인더전좌석', ids:[] },  // FP 없음 — 무시
+
+  // 쉐보레 / 르노 보강
+  { kw:'led테일램프', ids:['REAR_LED_COMBI'] }, { kw:'테일램프led', ids:['REAR_LED_COMBI'] },
+  { kw:'풀오토파킹보조', ids:['SPAS'] }, { kw:'fullautoparking', ids:['SPAS'] },
+  { kw:'어시스트팩', ids:['HDA','LKAS','LDWS','FCWS','RCTA'] },
+  { kw:'드라이버컨피던스패키지', ids:['HDA','LKAS','LDWS','FCWS','RCTA','HBA'] },
+  { kw:'드라이버컨피던스', ids:['LDWS','FCWS','RCTA'] },
+  { kw:'스마트커넥트', ids:['CONNECTED_CAR'] }, { kw:'기아커넥트', ids:['CONNECTED_CAR'] },
+  { kw:'kiaconnect', ids:['CONNECTED_CAR'] },
+
+  // 외제차 ADAS 패키지 (BMW/벤츠/아우디/볼보/포르쉐 등)
+  { kw:'drivingassistant', ids:['HDA','LKAS','LDWS','FCWS','RCTA'] },
+  { kw:'drivingassistantplus', ids:['HDA','LKAS','LDWS','FCWS','RCTA','HBA','SEW'] },
+  { kw:'drivingassistantprofessional', ids:['HDA','LKAS','LDWS','FCWS','RCTA','HBA','SEW','AVMS'] },
+  { kw:'driverassistancepro', ids:['HDA','LKAS','LDWS','FCWS','RCTA'] },
+  { kw:'driverassistance', ids:['LDWS','FCWS','DAW'] },
+  { kw:'audiprese', ids:['AEB','FCWS'] }, { kw:'audisidesist', ids:['RCTA'] },
+  { kw:'pre-collisionassist', ids:['AEB','FCWS'] },
+  { kw:'preowncollisionassist', ids:['AEB','FCWS'] },
+  { kw:'pilotassist', ids:['HDA','LKAS'] },
+  { kw:'travelassist', ids:['HDA','LKAS'] },
+  { kw:'distronic', ids:['HDA'] }, { kw:'distronicplus', ids:['HDA','LKAS'] },
+  { kw:'innodrive', ids:['HDA','LKAS'] },
+  { kw:'parkassist', ids:['SPAS','SENSOR_REAR'] }, { kw:'parkingassistant', ids:['SPAS','SENSOR_REAR'] },
+  { kw:'lanedeparturewarning', ids:['LDWS'] }, { kw:'lanedeparture', ids:['LDWS'] },
+  { kw:'lanekeepingsupport', ids:['LKAS'] }, { kw:'lanekeeping', ids:['LKAS'] },
+  { kw:'forwardcollision', ids:['FCWS'] }, { kw:'forwardcollisionwarning', ids:['FCWS'] },
+  { kw:'blindspotmonitor', ids:['RCTA'] }, { kw:'blindspot', ids:['RCTA'] },
+  { kw:'crosstrafficalert', ids:['RCTA'] }, { kw:'rearcrosstrafficalert', ids:['RCTA'] },
+  { kw:'crosstraffic', ids:['RCTA'] },
+  { kw:'autonomousemergencybraking', ids:['AEB'] }, { kw:'aebs', ids:['AEB'] },
+  { kw:'driverattention', ids:['DAW'] }, { kw:'driverattentionwarning', ids:['DAW'] },
+  { kw:'highbeamassist', ids:['HBA'] }, { kw:'autohighbeam', ids:['HBA'] },
+  { kw:'adaptivehighbeam', ids:['HBA'] },
+
+  // 외제차 사운드/오디오
+  { kw:'harmonkardon', ids:['SOUND_PREMIUM'] }, { kw:'harmankardonpremium', ids:['SOUND_PREMIUM'] },
+  { kw:'bowerswilkins', ids:['SOUND_PREMIUM'] }, { kw:'b&wpremiumsound', ids:['SOUND_PREMIUM'] },
+  { kw:'bangolufsen', ids:['SOUND_PREMIUM'] }, { kw:'bangolufsenpremium', ids:['SOUND_PREMIUM'] },
+  { kw:'sennheiser', ids:['SOUND_PREMIUM'] }, { kw:'naimstereo', ids:['SOUND_PREMIUM'] },
+
+  // 외제차 인터페이스
+  { kw:'idrive', ids:['DISPLAY_LCD'] }, { kw:'mbux', ids:['DISPLAY_LCD'] },
+  { kw:'virtualcockpit', ids:['DISPLAY_LCD'] }, { kw:'virtualinstrumentcluster', ids:['DISPLAY_LCD'] },
+  { kw:'sensus', ids:['DISPLAY_LCD','NAVIGATION'] },
+
+
+  // FLUSH_HANDLE 보강
+  { kw:'터치타입아웃사이드도어핸들', ids:['FLUSH_HANDLE'] }, { kw:'터치타입도어핸들', ids:['FLUSH_HANDLE'] },
+  { kw:'터치타입도어', ids:['FLUSH_HANDLE'] }, { kw:'스마트도어핸들', ids:['FLUSH_HANDLE'] },
+
+  // LED_INTERIOR 보강
+  { kw:'led풋램프', ids:['LED_INTERIOR'] }, { kw:'앞좌석led풋램프', ids:['LED_INTERIOR'] },
+  { kw:'풋웰램프', ids:['LED_INTERIOR'] }, { kw:'2열풋램프', ids:['LED_INTERIOR'] },
+
+  // HEAD_LED 보강 (MLA / 매트릭스 / 레이저)
+  { kw:'mla헤드램프', ids:['HEAD_LED'] }, { kw:'microlensarray', ids:['HEAD_LED'] },
+  { kw:'matrixled헤드램프', ids:['HEAD_LED'] }, { kw:'레이저헤드램프', ids:['HEAD_LED'] },
+  { kw:'어댑티브헤드램프', ids:['HEAD_LED'] },
+
+  // 액티브 노이즈 컨트롤
+  { kw:'액티브로드노이즈컨트롤', ids:['ANC'] }, { kw:'액티브노이즈컨트롤', ids:['ANC'] },
+  { kw:'activenoisecontrol', ids:['ANC'] }, { kw:'activeroadnoise', ids:['ANC'] },
+  { kw:'rancactive', ids:['ANC'] },
+
+  // 10 / 9 에어백 시스템 다중 매핑
+  { kw:'10에어백시스템', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE','AIRBAG_KNEE'] },
+  { kw:'9에어백시스템', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE','AIRBAG_KNEE'] },
+  { kw:'7에어백시스템', ids:['AIRBAG_DR','AIRBAG_PS','AIRBAG_SIDE','AIRBAG_KNEE'] },
+  { kw:'전복대응커튼', ids:['AIRBAG_SIDE'] },
+  { kw:'운전석무릎에어백', ids:['AIRBAG_KNEE'] },
 
   // 후륜 멀티링크 서스펜션
   { kw:'후륜멀티링크서스펜션', ids:['SUSPENSION_MLT'] }, { kw:'리어멀티링크', ids:['SUSPENSION_MLT'] },

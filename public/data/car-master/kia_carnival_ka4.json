@@ -865,7 +865,10 @@
     "KRKP256063": {
       "name": "터치타입 아웃사이드 도어핸들(1열)",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "KRKP256050": {
       "name": "1열/2열 도어 이중접합 차음 글라스",

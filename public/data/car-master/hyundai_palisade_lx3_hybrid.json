@@ -61,7 +61,13 @@
     "FX01035": {
       "name": "10에어백 시스템(1열 어드밴스드/센터사이드, 1/2열 사이드,운전석 무릎, 전복대응커튼)",
       "category": "안전",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "AIRBAG_DR",
+        "AIRBAG_KNEE",
+        "AIRBAG_PS",
+        "AIRBAG_SIDE"
+      ]
     },
     "FX01036": {
       "name": "다중 충돌방지 자동 제동 시스템",

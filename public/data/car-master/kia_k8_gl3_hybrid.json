@@ -898,7 +898,10 @@
     "KRGL301076": {
       "name": "터치타입 아웃사이드 도어핸들",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "KRGL301112": {
       "name": "앞좌석 에르고 모션 시트(볼스터 전동조절, 컴포트 스트레칭 포함)",

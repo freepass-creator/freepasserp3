@@ -216,7 +216,10 @@
     "WK_후측방_경고_시스템": {
       "name": "후측방 경고 시스템",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_스피드_리미터": {
       "name": "스피드 리미터",
@@ -257,7 +260,10 @@
     "WK_LED_테일램프": {
       "name": "LED 테일램프",
       "category": "외관 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "WK_LED_보조_제동등": {
       "name": "LED 보조 제동등",
@@ -465,7 +471,10 @@
     "WK_후방주차_보조_시스템": {
       "name": "후방주차 보조 시스템",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "WK_17__브라이트_실버_알로이_휠": {
       "name": "17\" 브라이트 실버 알로이 휠",
@@ -553,7 +562,10 @@
     "WK_IntelliBeam___스마트_하이빔_": {
       "name": "IntelliBeam® (스마트 하이빔)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "WK_18__블랙_알로이_휠_및_블랙_휠_캡": {
       "name": "18\" 블랙 알로이 휠 및 블랙 휠 캡",

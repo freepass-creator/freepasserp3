@@ -440,7 +440,10 @@
     "WK_Day___Night_룸미러": {
       "name": "Day & Night 룸미러",
       "category": "내장 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "WK_스마트키_시스템_오토_클로징_기능_포함_": {
       "name": "스마트키 시스템(오토 클로징 기능 포함)",
@@ -485,12 +488,18 @@
     "WK_운전석___동승석_히팅시트": {
       "name": "운전석 & 동승석 히팅시트",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "WK_원터치_트리플_턴시그널": {
       "name": "원터치 트리플 턴시그널",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "WK_운전석_원터치_오토다운_파워윈도우": {
       "name": "운전석 원터치 오토다운 파워윈도우",
@@ -583,7 +592,10 @@
     "WK_스피드센싱_오토도어록_이머전시_언락포함_": {
       "name": "스피드센싱 오토도어록(이머전시 언락포함)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "WALK_AWAY_LOCK"
+      ]
     },
     "WK_이동식_비상삼각대": {
       "name": "이동식 비상삼각대",
@@ -608,7 +620,10 @@
     "WK_후방_주차보조_경고": {
       "name": "후방 주차보조 경고",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "WK_플로팅_타입_MP3_오디오": {
       "name": "플로팅 타입 MP3 오디오",
@@ -827,7 +842,10 @@
     "WK_가죽_커버_스티어링_휠": {
       "name": "가죽 커버 스티어링 휠",
       "category": "내장 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "WK_SUS_도어스커프_1열_": {
       "name": "SUS 도어스커프(1열)",
@@ -887,7 +905,10 @@
     "WK_2열_히팅시트": {
       "name": "2열 히팅시트",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "WK_12_3인치_인포콘_내비게이션_패키지": {
       "name": "12.3인치 인포콘 내비게이션 패키지",
@@ -1042,12 +1063,18 @@
     "WK_안전_거리_경고_SDW_": {
       "name": "안전 거리 경고(SDW)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FCWS"
+      ]
     },
     "WK_앞차_출발_경고_FVSA_": {
       "name": "앞차 출발 경고(FVSA)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FCWS"
+      ]
     },
     "WK_휴대폰_무선충전기_15W_": {
       "name": "휴대폰 무선충전기(15W)",
@@ -1361,7 +1388,10 @@
     "WK_가죽커버_스티어링_휠": {
       "name": "가죽커버 스티어링 휠",
       "category": "내장 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "WK_핸드파킹_브레이크": {
       "name": "핸드파킹 브레이크",
@@ -1384,7 +1414,10 @@
     "WK_원터치_트리플_턴_시그널": {
       "name": "원터치 트리플 턴 시그널",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "LED_TURN"
+      ]
     },
     "WK_USB_C타입_단자_1열__충전_1개__데이터___충전_1개_": {
       "name": "USB C타입 단자(1열: 충전 1개, 데이터 & 충전 1개)",
@@ -1410,7 +1443,10 @@
     "WK_1열___2열_히팅시트": {
       "name": "1열 & 2열 히팅시트",
       "category": "편의 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "WK_테일게이트_이지_오픈_클로즈": {
       "name": "테일게이트 이지 오픈 클로즈",
@@ -1428,17 +1464,26 @@
     "WK_앞차_출발_경고_FVSW_": {
       "name": "앞차 출발 경고(FVSW)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "FCWS"
+      ]
     },
     "WK_후방_경고_BSW_": {
       "name": "후방 경고(BSW)",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_후방_주차_보조_경고": {
       "name": "후방 주차 보조 경고",
       "category": "안전 사양",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "SENSOR_REAR"
+      ]
     },
     "WK_어드밴스_패키지": {
       "name": "어드밴스 패키지",
