@@ -1,6 +1,6 @@
 {
   "catalog_id": "genesis_gv70_e",
-  "model_root": "GV70",
+  "model_root": "일렉트리파이드 GV70",
   "title": "제네시스 일렉트리파이드 GV70",
   "maker": "제네시스",
   "source": "wikicar_ocr",
@@ -615,7 +615,10 @@
     "WK_프라임_나파_가죽_시트_퀼팅__파이핑_적용_": {
       "name": "프라임 나파 가죽 시트(퀼팅, 파이핑 적용)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_인조_가죽_내장재_크래쉬패드__도어_트림_상단__콘솔_가니쉬_등_": {
       "name": "인조 가죽 내장재(크래쉬패드, 도어 트림 상단, 콘솔 가니쉬 등)",
@@ -645,50 +648,92 @@
     "PKG_ADAS": {
       "name": "드라이빙 어시스턴스 패키지 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
-    "일렉트리파이드 AWD 가솔린": {
-      "slug": "electrified_awd",
+    "AWD EV": {
       "price": {
-        "base": 73320000,
-        "before_tax": 77230000
+        "base": 78090000
       },
       "basic": [
         "WK_77_4kWh_리튬_이온_배터리",
@@ -742,32 +787,6 @@
         "WK_8스피커",
         "WK_기본사양",
         "WK_마운틴_그라넷_무드라이팅"
-      ],
-      "select": [
-        "WK_320kW_구동_모터_전륜_160kW___후륜_160kW_듀얼모터_사륜구동_AWD__시스템",
-        "WK_전륜_모노블럭_4P__브레이크_스틸_스타일링_커버_포함_",
-        "WK_Full_LED_헤드램프",
-        "WK_Full_LED_리어_콤비램프",
-        "WK_235_55R19_미쉐린_타이어___휠",
-        "WK_앞좌석_LED_풋램프",
-        "WK_진동경고_스티어링_휠",
-        "WK_운전석___전동식_조절_스티어링_휠",
-        "WK_독립제어_풀오토_에어컨_운전석___동승석_듀얼_온도_제어__후석_공조_전석_제어__오토디포",
-        "WK_스마트_크루즈_컨트롤_Stop___Go_포함_",
-        "WK_전동식_파킹_브레이크_오토홀드_포함_",
-        "WK_천연_가죽_시트_울_원단_포함_",
-        "WK_운전석_전동시트_12방향__럼버서포트_포함_",
-        "WK_동승석_전동시트_8방향__높이조절_포함_",
-        "WK_운전석_자세_메모리_시스템_스마트_자세제어_시스템_포함_",
-        "WK_앞좌석_통풍___열선_시트",
-        "WK_뒷좌석_열선_시트",
-        "WK_제네시스_인포테인먼트_시스템_14_5인치_디스플레이__Genesis_Connected_Se",
-        "WK_265_45R20_미쉐린_타이어___휠",
-        "WK_프라임_나파_가죽_시트_퀼팅__파이핑_적용_",
-        "WK_인조_가죽_내장재_크래쉬패드__도어_트림_상단__콘솔_가니쉬_등_",
-        "WK_럭셔리_스웨이드_내장재_헤드라이닝__필라_트림_등_",
-        "WK_235_55R19_미쉐린_타이어___다이아몬드_컷팅_휠",
-        "WK_265_45R20_미쉐린_타이어___다크_스퍼터링_휠"
       ],
       "select_groups": [
         {

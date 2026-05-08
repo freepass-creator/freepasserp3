@@ -67,14 +67,25 @@ export function renderPolicyList(policies) {
     );
   }
   if (!visible.length) { body.innerHTML = emptyState('정책이 없습니다'); renderPolicyDetail(null); return; }
-  const sorted = [...visible].sort((a, b) => String(a.policy_name || '').localeCompare(String(b.policy_name || ''), 'ko'));
+
+  // 정책 → 연결 차량 수 (O(N) 1패스). 정책 식별자는 policy_code → term_code → _key 순.
+  const linkCount = new Map();
+  for (const p of (store.products || [])) {
+    if (p._deleted) continue;
+    const codes = [p.policy_code, p.term_code].filter(Boolean);
+    for (const c of codes) linkCount.set(c, (linkCount.get(c) || 0) + 1);
+  }
+  const policyDisplayName = (pol) => pol.policy_name || pol.term_name || '정책명미정';
+  const sorted = [...visible].sort((a, b) =>
+    policyDisplayName(a).localeCompare(policyDisplayName(b), 'ko')
+  );
   body.innerHTML = sorted.map((pol, i) => {
     const providerLabel = providerNameByCode(pol.provider_company_code || pol.provider_name, store) || pol.provider_company_code || '';
     const isActive = pol.is_active !== false && pol.status !== '중단';
-    // 메인: 정책명 회사명 (공백 구분, 문단처럼) / 우측: 수정일
-    const mainLine = [pol.policy_name || '정책명미정', providerLabel].filter(Boolean).join(' ');
-    // 보조: 정책설명
+    const mainLine = [policyDisplayName(pol), providerLabel].filter(Boolean).join(' ');
     const sub = pol.term_description || pol.description || '-';
+    const code = pol.policy_code || pol.term_code || pol._key;
+    const cnt = code ? (linkCount.get(code) || 0) : 0;
     return renderRoomItem({
       id: pol._key,
       icon: 'scroll',
@@ -83,7 +94,7 @@ export function renderPolicyList(policies) {
       name: mainLine,
       time: fmtDate(pol.updated_at || pol.created_at),
       msg: sub,
-      meta: '',
+      meta: `${cnt}대`,
       active: i === 0,
     });
   }).join('');
@@ -199,7 +210,15 @@ export function renderPolicyDetail(pol) {
 
   // 3. 연결 상품 (read-only)
   if (linkedCard) {
-    const linked = (store.products || []).filter(p => p.policy_code === pol.policy_code);
+    // 정책 식별자 — 정책 doc 의 policy_code 또는 term_code 또는 _key.
+    // 빈값이면 절대 매칭 X (예전 `undefined === undefined` 로 모든 상품이 연결돼 보이던 버그 회피)
+    const polCode = pol.policy_code || pol.term_code || pol._key;
+    const linked = polCode
+      ? (store.products || []).filter(p => !p._deleted && !!p.policy_code && (p.policy_code === polCode || p.term_code === polCode))
+      : [];
+    // 카드 헤더에 연결 대수 표시
+    const headSpan = linkedCard.querySelector('.ws4-head span');
+    if (headSpan) headSpan.textContent = `연결 상품 · ${linked.length}대`;
     const body = linkedCard.querySelector('.ws4-body');
     if (!linked.length) {
       body.innerHTML = emptyState('연결된 상품이 없습니다');

@@ -684,42 +684,82 @@
     "PKG_ADAS": {
       "name": "드라이버 컨피던스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -805,14 +845,12 @@
         "WK_고급형_쉐보레_인포테인먼트_시스템_10_2__",
         "WK_고해상도_컬러_터치_스크린",
         "WK_듀얼_커넥션_블루투스",
-        "WK_무선_폰_프로젝션",
         "WK_리어_시트_리마인더_12_6__",
         "WK_듀얼_컬러_디스플레이_HDMI_포트_2개_블루투스_헤드셋_2개_",
         "WK_A_C_타입_USB_포트_IP___콘솔_내부_",
         "WK_BOSE__프리미엄_사운드_앰프_서브우퍼_포함_10_스피커_",
         "WK_스마트폰_무선_충전_시스템",
-        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_",
-        "WIRELESS_MIRROR"
+        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_"
       ],
       "select": [
         "WK___주차보조_기능_미작동"
@@ -970,14 +1008,12 @@
         "WK_고급형_쉐보레_인포테인먼트_시스템_10_2__",
         "WK_고해상도_컬러_터치_스크린",
         "WK_듀얼_커넥션_블루투스",
-        "WK_무선_폰_프로젝션",
         "WK_리어_시트_리마인더_12_6__",
         "WK_듀얼_컬러_디스플레이_HDMI_포트_2개_블루투스_헤드셋_2개_",
         "WK_A_C_타입_USB_포트_IP___콘솔_내부_",
         "WK_BOSE__프리미엄_사운드_앰프_서브우퍼_포함_10_스피커_",
         "WK_스마트폰_무선_충전_시스템",
-        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_",
-        "WIRELESS_MIRROR"
+        "WK_C_타입_USB_충전_포트_2열_2개___3열_2개_"
       ],
       "select": [
         "WK___주차보조_기능_미작동"

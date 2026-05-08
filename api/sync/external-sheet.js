@@ -1,22 +1,78 @@
 /**
- * 외부 구글시트 → products 동기화 (오토플러스 = RP023)
- * POST /api/sync/external-sheet
+ * 외부 구글시트 → products 동기화 (다업체)
+ * POST /api/sync/external-sheet  body: { source }
+ *   source: 'autoplus' (오토플러스 RP023) | 'general' (종합시트, 행마다 partner_code)
  *
  * v1 freepasserp app.py 의 /api/sync/external-sheet 를 Node.js Vercel Serverless 로 포팅.
- * 시트: https://docs.google.com/spreadsheets/d/1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U/
- *   탭: 판매차량리스트(수수료100)
- *   파트너코드: RP023 (오토플러스)
  *
- * 응답: { ok, synced, skipped, products: { [product_uid]: product } }
+ * 응답: { ok, synced, skipped, products: { [product_uid]: product }, source }
  *  Firebase write 는 클라이언트(dev.js)가 처리.
  */
 
 import crypto from 'crypto';
 
 const SHEETS_API_KEY = process.env.GOOGLE_SHEETS_API_KEY || 'AIzaSyBSPo1kZOefX-6NuHoQdUF1htqQDSxXsCs';
-const SHEET_ID = '1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U';
-const TAB_NAME = '판매차량리스트(수수료100)';
-const PROVIDER_CODE = 'RP023';
+
+const SHEET_CONFIGS = {
+  autoplus: {
+    sheet_id: '1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U',
+    tab_name: '판매차량리스트',           // 26-05-08 기준 새 탭 (구 '판매차량리스트(수수료 100)' 폐기)
+    provider_code: 'RP023',
+    label: '오토플러스 (RP023)',
+    schema: 'autoplus',
+  },
+  general: {
+    sheet_id: '1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg',
+    tab_name: '종합',
+    label: '프리패스 종합시트 (다업체)',
+    schema: 'general',                    // 차고지 컬럼에서 회사명 → partner_code 추출
+  },
+  supply: {
+    /* 공급시트 자동탐지 — 위 종합시트의 모든 탭 중 헤더에
+     * '공급코드' + '정책코드' 둘 다 있는 탭만 동기화 대상.
+     * 사용자가 새 탭에 두 컬럼 추가 → 다음 sync 부터 자동 포함. */
+    sheet_id: '1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg',
+    tab_name: null,                       // 자동 탐지
+    label: '공급시트 자동탐지 (공급/정책 컬럼 있는 탭)',
+    schema: 'auto-supply',
+  },
+};
+
+/* 종합시트 차고지 컬럼 회사명 → partner_code 매핑.
+   '용인/우리캐피탈렌터카' 형태에서 마지막 토큰을 회사명으로 보고 매칭. */
+const PARTNER_NAME_TO_CODE = {
+  '아이카': 'RP004',
+  '스타스카이': 'RP005',
+  '아이언렌트카': 'RP006', '아이언': 'RP006',
+  '리더스렌터카': 'RP008', '리더스렌트카': 'RP008', '리더스': 'RP008',
+  'KH': 'RP010',
+  '연카': 'RP011',
+  '손오공': 'RP012',
+  '웰릭스모빌리티': 'RP013', '웰릭스': 'RP013',
+  '스위치플랜': 'RP014', '스위치': 'RP014',
+  '경진렌트카': 'RP015',
+  '경진카': 'RP016',
+  '센트로': 'RP017',
+  '에이스': 'RP019',
+  '우리캐피탈렌터카': 'RP020',
+  '빌린카': 'RP021',
+  '퍼시픽': 'RP022',
+  '오토플러스': 'RP023',
+  '퍼스트': 'RP009',
+  '스타': 'RP018',
+};
+const findPartnerCode = (carYard) => {
+  if (!carYard) return '';
+  const parts = String(carYard).split(/[\/／]/).map(s => s.trim()).filter(Boolean);
+  for (const p of parts.reverse()) {
+    if (PARTNER_NAME_TO_CODE[p]) return PARTNER_NAME_TO_CODE[p];
+    // 부분 일치
+    for (const [n, c] of Object.entries(PARTNER_NAME_TO_CODE)) {
+      if (p.includes(n)) return c;
+    }
+  }
+  return '';
+};
 
 const MAKER_MAP = {
   // 현대
@@ -52,18 +108,18 @@ const IMPORT_BRAND_KEYWORDS = ['bmw','benz','mercedes','벤츠','audi','아우�
   '푸조','maserati','마세라티','bentley','벤틀리','rolls','롤스','ferrari','페라리','lamborghini','람보르기니',
   'tesla','테슬라','lincoln','링컨'];
 
-const STATUS_MAP = {
-  '판매중': 'available', '할인판매': 'available',
-  '계약중': 'unavailable', '계약요청': 'unavailable',
-  '보류': 'unavailable', '매각진행중': 'unavailable', '판매완료': 'unavailable',
-  '판매보류': 'unavailable', '수리중': 'unavailable',
-};
-const VEHICLE_STATUS_MAP = {
-  '판매중': '출고가능', '할인판매': '출고가능',
-  '계약중': '계약완료', '계약요청': '계약대기',
-  '보류': '출고불가', '매각진행중': '출고불가', '판매완료': '출고불가',
-  '판매보류': '출고불가', '수리중': '출고불가',
-};
+/* v3 양식 — vehicle_status 5종만: 즉시출고/출고가능/상품화중/출고협의/출고불가
+ * 룰: 시트값이 5종 중 하나면 그대로, '판매중'·'할인판매' → 출고가능, 그 외 모두 → 출고불가 */
+const ALLOWED_VEHICLE_STATUS = new Set(['즉시출고', '출고가능', '상품화중', '출고협의', '출고불가']);
+function normalizeVehicleStatus(raw) {
+  const s = String(raw || '').trim();
+  if (ALLOWED_VEHICLE_STATUS.has(s)) return s;
+  if (s === '판매중' || s === '할인판매') return '출고가능';
+  return '출고불가';
+}
+function statusFlag(vehicleStatus) {
+  return vehicleStatus === '출고가능' || vehicleStatus === '즉시출고' ? 'available' : 'unavailable';
+}
 
 const isImport = (name) => {
   const nl = String(name || '').toLowerCase();
@@ -79,6 +135,217 @@ async function fetchJson(url) {
   return resp.json();
 }
 
+/* chipRuns 추출 — 시트 셀의 스마트칩(drive 폴더 URL) */
+async function loadChipRuns(sheetId, tabName) {
+  const map = {};
+  try {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${encodeURIComponent(tabName)}&fields=sheets.data.rowData.values.chipRuns&key=${SHEETS_API_KEY}`;
+    const data = await fetchJson(url);
+    const chipRows = data.sheets?.[0]?.data?.[0]?.rowData || [];
+    chipRows.forEach((rd, ri) => {
+      for (const cell of (rd.values || [])) {
+        for (const chip of (cell.chipRuns || [])) {
+          const uri = chip?.chip?.richLinkProperties?.uri || '';
+          if (uri && uri.includes('drive.google.com')) { map[ri] = uri.split('?')[0]; break; }
+        }
+        if (map[ri]) break;
+      }
+    });
+  } catch (e) { console.warn('[external-sheet] chipRuns 실패:', e.message); }
+  return map;
+}
+
+async function loadSheetValues(sheetId, tabName) {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(tabName)}?key=${SHEETS_API_KEY}`;
+  const data = await fetchJson(url);
+  return data.values || [];
+}
+
+/* 한국 차량번호 검증 — 12가1234 / 서울12가3456 형식 */
+const VALID_CAR_NO = /^(?:[가-힣]{2})?\d{2,3}\s?[가-힣]\s?\d{4}$/;
+
+/* 오토플러스 시트 — 단일 공급사 (RP023) 행 → product.
+ * 시트에 '정책코드' / '공급코드' 컬럼 있으면 우선 사용. 없으면 기본값(공급=RP023, 정책=빈값). */
+function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode, sheetId, nowMs }) {
+  const colIdx = (n) => headers.indexOf(n);
+  const colPartial = (kw) => headers.findIndex(h => h.includes(kw));
+  const idxCar = colIdx('차량번호');
+  const carNumber = safeGet(row, idxCar);
+  if (!carNumber || !VALID_CAR_NO.test(carNumber)) return null;
+
+  // 시트 정책/공급 컬럼 (옵션)
+  const idxPolicy   = colPartial('정책코드');
+  const idxProvider = colPartial('공급코드');
+  const sheetPolicy   = idxPolicy   >= 0 ? safeGet(row, idxPolicy)   : '';
+  const sheetProvider = idxProvider >= 0 ? safeGet(row, idxProvider) : '';
+  const finalProvider = sheetProvider || providerCode;
+
+  let idxModelShort = headers.includes('차종') ? colIdx('차종') : colIdx('모델명');
+  let idxModelFull = -1;
+  for (let i = 0; i < headers.length; i++) {
+    if (i !== idxModelShort && i > idxModelShort && (headers[i].includes('모델') || headers[i].includes('차명') || headers[i].includes('세부'))) {
+      idxModelFull = i; break;
+    }
+  }
+  if (idxModelFull < 0 && idxModelShort >= 0 && idxModelShort + 1 < headers.length) {
+    const nextH = headers[idxModelShort + 1];
+    if (nextH && !['색상', '연료', '주행거리(예상)'].includes(nextH)) idxModelFull = idxModelShort + 1;
+  }
+  const idxColor = colPartial('색상');
+  const idxFuel = colPartial('연료');
+  const idxMileage = colPartial('주행');
+  const idxRegDate = colPartial('최초등록');
+  const idxLocation = colPartial('현위치');
+  const idxStatus = colPartial('판매상태');
+  const idxOptions = colPartial('옵션');
+  const idxNotes = colPartial('비고');
+  let idxRent12 = -1, idxRent24 = -1, idxRent36 = -1;
+  headers.forEach((h, i) => {
+    const hl = h.replace(/\s/g, '');
+    if (hl.includes('12개월') && hl.includes('3만')) idxRent12 = i;
+    else if (hl.includes('24개월') && hl.includes('3만')) idxRent24 = i;
+    else if (hl.includes('36개월') && hl.includes('3만')) idxRent36 = i;
+  });
+  if (idxRent12 < 0) idxRent12 = headers.findIndex(h => h.replace(/\s/g, '').includes('12개월'));
+
+  const statusRaw = safeGet(row, idxStatus);
+  const vehicleStatus = normalizeVehicleStatus(statusRaw);
+  const status = statusFlag(vehicleStatus);
+
+  const modelShort = safeGet(row, idxModelShort);
+  const modelFull = idxModelFull >= 0 ? safeGet(row, idxModelFull) : '';
+  const rent12 = idxRent12 >= 0 ? parsePrice(safeGet(row, idxRent12)) : 0;
+  const rent24 = idxRent24 >= 0 ? parsePrice(safeGet(row, idxRent24)) : 0;
+  const rent36 = idxRent36 >= 0 ? parsePrice(safeGet(row, idxRent36)) : 0;
+  const imp = isImport(modelFull) || isImport(modelShort);
+  const depMult = imp ? 3 : 2;
+  const uidSeed = `${finalProvider}_${carNumber}`;
+  const productUid = `EXT_${crypto.createHash('md5').update(uidSeed).digest('hex').slice(0, 12)}`;
+  const mileage = parseInt(String(safeGet(row, idxMileage)).replace(/[^\d]/g, '') || '0', 10);
+  const regDate = safeGet(row, idxRegDate);
+  let yearModel = '';
+  if (regDate) {
+    const m = /^(\d{4})/.exec(regDate);
+    if (m) yearModel = `${String(m[1]).slice(2)}년식`;
+  }
+  const product = {
+    _key: productUid,
+    product_uid: productUid,
+    product_code: `${finalProvider}_${carNumber}`,
+    provider_company_code: finalProvider,
+    partner_code: finalProvider,
+    policy_code: sheetPolicy || '',
+    car_number: carNumber,
+    raw_model_short: modelShort,
+    raw_model_full: modelFull,
+    maker: '', sub_model: '', trim_name: '',
+    ext_color: safeGet(row, idxColor),
+    fuel_type: safeGet(row, idxFuel),
+    mileage, year: yearModel,
+    first_registration_date: regDate,
+    location: safeGet(row, idxLocation),
+    status, vehicle_status: vehicleStatus,
+    product_type: '중고구독',
+    status_label: statusRaw,
+    is_active: true,
+    options: idxOptions >= 0 ? safeGet(row, idxOptions) : '',
+    partner_memo: idxNotes >= 0 ? safeGet(row, idxNotes) : '',
+    photo_link: photoLinkMap[absRow] || '',
+    source: 'external_sheet',
+    source_sheet_id: sheetId,
+    source_schema: 'autoplus',
+    price: {},
+    created_at: nowMs, updated_at: nowMs,
+    created_by: 'sync_external_sheet',
+  };
+  if (rent12) product.price['12'] = { rent: rent12, deposit: rent12 * depMult };
+  if (rent24) product.price['24'] = { rent: rent24, deposit: rent24 * depMult };
+  if (rent36) product.price['36'] = { rent: rent36, deposit: rent36 * depMult };
+  return product;
+}
+
+/* 종합시트 — 다업체. 우선순위: 공급코드 컬럼 > 차고지 추출.
+ * 정책코드 컬럼 있으면 product.policy_code 로 적용. */
+function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs }) {
+  const colIdx = (n) => headers.indexOf(n);
+  const colPartial = (kw) => headers.findIndex(h => h.includes(kw));
+  const idxCar = colIdx('차량번호');
+  const carNumber = safeGet(row, idxCar);
+  if (!carNumber || !VALID_CAR_NO.test(carNumber)) return null;
+
+  const idxStatus = colIdx('상태');
+  const statusRaw = safeGet(row, idxStatus);
+  const vehicleStatus = normalizeVehicleStatus(statusRaw);
+  const status = statusFlag(vehicleStatus);
+
+  // 공급코드 명시 컬럼 우선, 없으면 차고지에서 회사명 추출
+  const idxProvider = colPartial('공급코드');
+  const idxPolicy   = colPartial('정책코드');
+  const sheetProvider = idxProvider >= 0 ? safeGet(row, idxProvider) : '';
+  const sheetPolicy   = idxPolicy   >= 0 ? safeGet(row, idxPolicy)   : '';
+
+  const idxYard = colIdx('차고지');
+  const yard = safeGet(row, idxYard);
+  const partnerCode = sheetProvider || findPartnerCode(yard);
+  if (!partnerCode) return null;        // 매칭 실패 시 skip (보존적)
+
+  const product = {
+    car_number: carNumber,
+    maker:        safeGet(row, colIdx('제조사')),
+    model:        safeGet(row, colIdx('차종분류')),
+    sub_model:    safeGet(row, colIdx('세부모델')),
+    trim_name:    safeGet(row, colIdx('트림')),
+    fuel_type:    safeGet(row, colIdx('연료')),
+    ext_color:    safeGet(row, colIdx('외장')),
+    int_color:    safeGet(row, colIdx('내장')),
+    mileage:      parseInt(String(safeGet(row, colIdx('Km'))).replace(/[^\d]/g, '') || '0', 10),
+    options:      safeGet(row, colIdx('옵션')),
+    first_registration_date: safeGet(row, colIdx('최초등록')),
+    vehicle_price: parsePrice(safeGet(row, colIdx('소비자가격'))),
+    engine_cc:    parsePrice(safeGet(row, colIdx('배기량'))),
+    location:     yard,
+    partner_memo: safeGet(row, colIdx('비고')),
+    product_type: safeGet(row, colIdx('구분')) === '신차' ? '신차렌트' : '중고렌트',
+    status,
+    vehicle_status: vehicleStatus,
+    status_label: statusRaw,
+    is_active: true,
+    photo_link: photoLinkMap[absRow] || '',
+    source: 'external_sheet',
+    source_sheet_id: sheetId,
+    source_schema: 'general',
+    provider_company_code: partnerCode,
+    partner_code: partnerCode,
+    policy_code: sheetPolicy || '',     // 시트 정책코드 명시 시 사용
+    created_at: nowMs, updated_at: nowMs,
+    created_by: 'sync_external_sheet',
+  };
+
+  // year — '26-04-14' 또는 '2026-04-14' 형태 → 'YY년식'
+  const m = /^(\d{2,4})/.exec(product.first_registration_date);
+  if (m) product.year = m[1].length === 4 ? `${m[1].slice(2)}년식` : `${m[1]}년식`;
+
+  // 가격 — 단기보증/장기보증 + 1/6/12/24/36/48/60개월 임대료
+  const shortDep = parsePrice(safeGet(row, colIdx('단기보증')));
+  const longDep  = parsePrice(safeGet(row, colIdx('장기보증')));
+  const rentCols = { '1': '1개월', '6': '6개월', '12': '12개월', '24': '24개월', '36': '36개월', '48': '48개월', '60': '60개월' };
+  product.price = {};
+  for (const [m, col] of Object.entries(rentCols)) {
+    const r = parsePrice(safeGet(row, colIdx(col)));
+    if (!r) continue;
+    const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
+    product.price[m] = { rent: r, deposit: dep };
+  }
+
+  // uid — partner_code + 차량번호 기반 (멱등)
+  const uidSeed = `${partnerCode}_${carNumber}`;
+  product._key = `EXT_${crypto.createHash('md5').update(uidSeed).digest('hex').slice(0, 12)}`;
+  product.product_uid = product._key;
+  product.product_code = `${partnerCode}_${carNumber}`;
+
+  return product;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.statusCode = 405;
@@ -87,45 +354,108 @@ export default async function handler(req, res) {
   }
 
   try {
-    const encodedTab = encodeURIComponent(TAB_NAME);
-
-    // 1) chipRuns — 차량번호 셀의 스마트칩 → drive folder URL
-    const photoLinkMap = {};
-    try {
-      const chipUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?ranges=${encodedTab}&fields=sheets.data.rowData.values.chipRuns&key=${SHEETS_API_KEY}`;
-      const chipData = await fetchJson(chipUrl);
-      const chipSheets = chipData.sheets || [];
-      if (chipSheets.length) {
-        const chipRows = chipSheets[0]?.data?.[0]?.rowData || [];
-        chipRows.forEach((rd, ri) => {
-          for (const cell of (rd.values || [])) {
-            for (const chip of (cell.chipRuns || [])) {
-              const uri = chip?.chip?.richLinkProperties?.uri || '';
-              if (uri && uri.includes('drive.google.com')) {
-                photoLinkMap[ri] = uri.split('?')[0];
-                break;
-              }
-            }
-            if (photoLinkMap[ri]) break;
-          }
-        });
-      }
-    } catch (e) {
-      // chipRuns 가 부족해도 동기화는 계속
-      console.warn('[external-sheet] chipRuns 실패:', e.message);
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    await new Promise(resolve => req.on('end', resolve));
+    let parsed = {};
+    try { parsed = JSON.parse(body || '{}'); } catch {}
+    const source = parsed.source || 'autoplus';
+    const config = SHEET_CONFIGS[source];
+    if (!config) {
+      res.statusCode = 400;
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(JSON.stringify({ ok: false, message: `미지원 source: ${source}` }));
+    }
+    if (!config.sheet_id) {
+      res.statusCode = 501;
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(JSON.stringify({ ok: false, message: `${config.label} URL 미설정` }));
     }
 
-    // 2) 셀 값
-    const sheetsUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodedTab}?key=${SHEETS_API_KEY}`;
-    const sheetData = await fetchJson(sheetsUrl);
-    const rows = sheetData.values || [];
+    const products = {};
+    const nowMs = Date.now();
+    let synced = 0, skipped = 0;
+    const tabsScanned = [];
+
+    if (config.schema === 'auto-supply') {
+      // 1) 시트 메타데이터 — 모든 탭 이름 + 헤더 row 1 batchGet
+      const metaUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}?fields=sheets.properties.title&key=${SHEETS_API_KEY}`;
+      const meta = await fetchJson(metaUrl);
+      const allTabNames = (meta.sheets || [])
+        .map(s => s.properties.title)
+        .filter(t => t && !/^종합|^공지|^★|구\s|^안내/.test(t));   // 시스템/구버전 탭 제외
+
+      // 2) 각 탭의 첫 5행 batchGet → 공급코드 + 정책코드 + 차량번호 헤더 보유한 탭만 골라냄
+      const ranges = allTabNames.map(t => `'${t.replace(/'/g, "\\'")}'!A1:BZ5`);
+      const batchUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}/values:batchGet?${ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&')}&key=${SHEETS_API_KEY}`;
+      const batch = await fetchJson(batchUrl);
+      const eligibleTabs = [];
+      (batch.valueRanges || []).forEach((vr, i) => {
+        const rows = vr.values || [];
+        for (const row of rows) {
+          const rowStr = row.map(c => String(c ?? '').trim());
+          if (rowStr.includes('차량번호') && rowStr.includes('공급코드') && rowStr.includes('정책코드')) {
+            eligibleTabs.push({ name: allTabNames[i], headers: rowStr });
+            break;
+          }
+        }
+      });
+
+      if (!eligibleTabs.length) {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        return res.end(JSON.stringify({
+          ok: true, synced: 0, skipped: 0, products: {},
+          source, sheet_id: config.sheet_id, tab_name: null, schema: config.schema,
+          tabs_scanned: allTabNames, eligible_tabs: [],
+          message: '공급코드 + 정책코드 헤더 가진 탭이 없습니다',
+        }));
+      }
+
+      // 3) 자격 있는 탭 일괄 처리
+      for (const tab of eligibleTabs) {
+        const photoLinkMap = await loadChipRuns(config.sheet_id, tab.name);
+        const rows = await loadSheetValues(config.sheet_id, tab.name);
+        let headerIdx = -1, headers = [];
+        for (let i = 0; i < rows.length; i++) {
+          const rowStr = rows[i].map(c => String(c ?? '').trim());
+          if (rowStr.includes('차량번호') && rowStr.includes('공급코드') && rowStr.includes('정책코드')) {
+            headerIdx = i; headers = rowStr; break;
+          }
+        }
+        if (headerIdx < 0) continue;
+        let tabSynced = 0, tabSkipped = 0;
+        for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
+          const absRow = headerIdx + 1 + off;
+          const row = rows[absRow] || [];
+          const p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
+          if (!p) { tabSkipped++; continue; }
+          products[p._key] = p;
+          tabSynced++;
+        }
+        synced += tabSynced;
+        skipped += tabSkipped;
+        tabsScanned.push({ tab: tab.name, synced: tabSynced, skipped: tabSkipped });
+      }
+
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      return res.end(JSON.stringify({
+        ok: true, synced, skipped, products,
+        source, sheet_id: config.sheet_id, tab_name: null, schema: config.schema,
+        tabs_scanned: tabsScanned,
+      }));
+    }
+
+    // ── 단일 탭 동기화 (autoplus / general) ──
+    const photoLinkMap = await loadChipRuns(config.sheet_id, config.tab_name);
+    const rows = await loadSheetValues(config.sheet_id, config.tab_name);
     if (!rows.length) {
       res.statusCode = 400;
       res.setHeader('Content-Type', 'application/json');
       return res.end(JSON.stringify({ ok: false, message: '시트 데이터 없음' }));
     }
 
-    // 헤더 찾기 (차량번호 컬럼이 있는 행)
     let headerIdx = -1, headers = [];
     for (let i = 0; i < rows.length; i++) {
       const rowStr = rows[i].map(c => String(c ?? '').trim());
@@ -137,118 +467,17 @@ export default async function handler(req, res) {
       return res.end(JSON.stringify({ ok: false, message: '헤더 행을 찾을 수 없음' }));
     }
 
-    const colIdx = (name) => headers.indexOf(name);
-    const colPartial = (kw) => headers.findIndex(h => h.includes(kw));
-
-    const idxCar = colIdx('차량번호');
-    let idxModelShort = headers.includes('차종') ? colIdx('차종') : colIdx('모델명');
-    let idxModelFull = -1;
-    for (let i = 0; i < headers.length; i++) {
-      if (i !== idxModelShort && i > idxModelShort && (headers[i].includes('모델') || headers[i].includes('차명') || headers[i].includes('세부'))) {
-        idxModelFull = i; break;
-      }
-    }
-    if (idxModelFull < 0 && idxModelShort >= 0 && idxModelShort + 1 < headers.length) {
-      const nextH = headers[idxModelShort + 1];
-      if (nextH && !['색상', '연료', '주행거리(예상)'].includes(nextH)) idxModelFull = idxModelShort + 1;
-    }
-
-    const idxColor = colPartial('색상');
-    const idxFuel = colPartial('연료');
-    const idxMileage = colPartial('주행');
-    const idxRegDate = colPartial('최초등록');
-    const idxLocation = colPartial('현위치');
-    const idxStatus = colPartial('판매상태');
-    const idxOptions = colPartial('옵션');
-    const idxNotes = colPartial('비고');
-
-    let idxRent12 = -1, idxRent24 = -1, idxRent36 = -1;
-    headers.forEach((h, i) => {
-      const hl = h.replace(/\s/g, '');
-      if (hl.includes('12개월') && hl.includes('3만')) idxRent12 = i;
-      else if (hl.includes('24개월') && hl.includes('3만')) idxRent24 = i;
-      else if (hl.includes('36개월') && hl.includes('3만')) idxRent36 = i;
-    });
-    if (idxRent12 < 0) {
-      idxRent12 = headers.findIndex(h => h.replace(/\s/g, '').includes('12개월'));
-    }
-
-    const products = {};
-    const nowMs = Date.now();
-    let synced = 0, skipped = 0;
-
     for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
       const absRow = headerIdx + 1 + off;
       const row = rows[absRow] || [];
-      const carNumber = safeGet(row, idxCar);
-      if (!carNumber || !/[가-힣]/.test(carNumber)) { skipped++; continue; }
-
-      const statusRaw = safeGet(row, idxStatus);
-      const status = STATUS_MAP[statusRaw];
-      if (!status) { skipped++; continue; }
-      const vehicleStatus = VEHICLE_STATUS_MAP[statusRaw] || '출고가능';
-
-      const modelShort = safeGet(row, idxModelShort);
-      const modelFull = idxModelFull >= 0 ? safeGet(row, idxModelFull) : '';
-      const rent12 = idxRent12 >= 0 ? parsePrice(safeGet(row, idxRent12)) : 0;
-      const rent24 = idxRent24 >= 0 ? parsePrice(safeGet(row, idxRent24)) : 0;
-      const rent36 = idxRent36 >= 0 ? parsePrice(safeGet(row, idxRent36)) : 0;
-
-      const imp = isImport(modelFull) || isImport(modelShort);
-      const depMult = imp ? 3 : 2;
-
-      const uidSeed = `${PROVIDER_CODE}_${carNumber}`;
-      const productUid = `EXT_${crypto.createHash('md5').update(uidSeed).digest('hex').slice(0, 12)}`;
-
-      const mileage = parseInt(String(safeGet(row, idxMileage)).replace(/[^\d]/g, '') || '0', 10);
-
-      const regDate = safeGet(row, idxRegDate);
-      let yearModel = '';
-      if (regDate) {
-        const m = /^(\d{4})/.exec(regDate);
-        if (m) yearModel = `${String(m[1]).slice(2)}년식`;
+      let p = null;
+      if (config.schema === 'autoplus') {
+        p = parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
+      } else if (config.schema === 'general') {
+        p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
       }
-
-      const product = {
-        // 표준 product 스키마 — createNewProduct() 와 동일 키 + 외부소스 메타
-        _key: productUid,
-        product_uid: productUid,
-        product_code: `${PROVIDER_CODE}_${carNumber}`,
-        provider_company_code: PROVIDER_CODE,
-        partner_code: PROVIDER_CODE,
-        car_number: carNumber,
-        raw_model_short: modelShort,
-        raw_model_full: modelFull,
-        maker: '',
-        model_name: '',
-        sub_model: '',
-        trim_name: '',
-        ext_color: safeGet(row, idxColor),
-        fuel_type: safeGet(row, idxFuel),
-        mileage,
-        year: yearModel,
-        first_registration_date: regDate,
-        location: safeGet(row, idxLocation),
-        status,
-        vehicle_status: vehicleStatus,
-        product_type: '중고구독',
-        status_label: statusRaw,
-        is_active: true,
-        options: idxOptions >= 0 ? safeGet(row, idxOptions) : '',
-        partner_memo: idxNotes >= 0 ? safeGet(row, idxNotes) : '',
-        photo_link: photoLinkMap[absRow] || '',
-        source: 'external_sheet',
-        source_sheet_id: SHEET_ID,
-        price: {},
-        created_at: nowMs,
-        updated_at: nowMs,
-        created_by: 'sync_external_sheet',
-      };
-      if (rent12) product.price['12'] = { rent: rent12, deposit: rent12 * depMult };
-      if (rent24) product.price['24'] = { rent: rent24, deposit: rent24 * depMult };
-      if (rent36) product.price['36'] = { rent: rent36, deposit: rent36 * depMult };
-
-      products[productUid] = product;
+      if (!p) { skipped++; continue; }
+      products[p._key] = p;
       synced++;
     }
 
@@ -256,7 +485,9 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
     return res.end(JSON.stringify({
       ok: true, synced, skipped, products,
-      sheet_id: SHEET_ID, tab_name: TAB_NAME, provider_code: PROVIDER_CODE,
+      source, sheet_id: config.sheet_id, tab_name: config.tab_name,
+      provider_code: config.provider_code || null,
+      schema: config.schema,
     }));
   } catch (e) {
     console.error('[external-sheet] 실패:', e);

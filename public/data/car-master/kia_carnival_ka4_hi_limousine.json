@@ -1,6 +1,6 @@
 {
   "catalog_id": "kia_carnival_ka4_hi_limousine",
-  "model_root": "카니발",
+  "model_root": "카니발 하이리무진",
   "title": "기아 카니발 하이리무진 KA4",
   "maker": "기아",
   "source": "kia_official",
@@ -601,7 +601,10 @@
     "KRKP256103": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRKP256121": {
       "name": "스마트 파워 테일게이트",
@@ -810,17 +813,34 @@
     "KRKP256P14": {
       "name": "12.3인치 클러스터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRKP256P15": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRKP256P19": {
       "name": "모니터링 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA"
+      ]
     },
     "KRKP256020": {
       "name": "후측방 충돌 경고",
@@ -1004,27 +1024,52 @@
     "KRKP256P13": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRKP256P16": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRKP256P20": {
       "name": "모니터링 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA"
+      ]
     },
     "KRKP256P23": {
       "name": "HUD + 빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "HUD"
+      ]
     },
     "KRKP256061": {
       "name": "듀얼 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "KRKP256P26": {
       "name": "후석 스마트 엔터테인먼트 시스템",
@@ -1034,7 +1079,11 @@
     "KRKP256P27": {
       "name": "마이컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "KRKP256185": {
       "name": "리어 LED 턴시그널램프",
@@ -1130,17 +1179,34 @@
     "KRKP256P17": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRKP256P21": {
       "name": "모니터링 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA"
+      ]
     },
     "KRKP256P24": {
       "name": "BOSE 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRKP256188": {
       "name": "X-Line 전용 외장 디자인(235/55 R19 외산 타이어 &amp; 블랙 휠, 블랙 라디에이터 그릴, 블랙 엠블럼, X-Line 전용 엠블럼)",
@@ -1188,12 +1254,26 @@
     "KRKP256P18": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRKP256P22": {
       "name": "모니터링 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA"
+      ]
     },
     "KRKP256P31": {
       "name": "X-Line 전용 사이드 스텝 / LED 테일게이트 램프",
@@ -1279,7 +1359,11 @@
     "KRKP256P28": {
       "name": "마이컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "KRKP256095": {
       "name": "2열 통풍시트(쿠션)",
@@ -1315,289 +1399,92 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
-    "노블레스 가솔린": {
-      "slug": "노블레스 디젤 2.2 9인승",
+    "시그니처 디젤 2.2 9인승": {
       "price": {
-        "base": 68040000
-      },
-      "basic": [
-        "KRKP256010",
-        "KRKP256011",
-        "KRKP256012",
-        "KRKP256013",
-        "KRKP256184",
-        "KRKP256015",
-        "KRKP256028",
-        "KRKP256029",
-        "KRKP256030",
-        "KRKP256031",
-        "KRKP256032",
-        "KRKP256033",
-        "KRKP256034",
-        "KRKP256035",
-        "KRKP256036",
-        "KRKP256037",
-        "KRKP256040",
-        "KRKP256041",
-        "KRKP256042",
-        "KRKP256043",
-        "KRKP256044",
-        "KRKP256045",
-        "KRKP256046",
-        "KRKP256047",
-        "KRKP256048",
-        "KRKP256049",
-        "KRKP256161",
-        "KRKP256064",
-        "KRKP256065",
-        "KRKP256067",
-        "KRKP256077",
-        "KRKP256078",
-        "KRKP256079",
-        "KRKP256080",
-        "KRKP256096",
-        "KRKP256097",
-        "KRKP256098",
-        "KRKP256099",
-        "KRKP256100",
-        "KRKP256101",
-        "KRKP256102",
-        "KRKP256103",
-        "KRKP256121",
-        "KRKP256104",
-        "KRKP256105",
-        "KRKP256106",
-        "KRKP256148",
-        "KRKP256149",
-        "KRKP256P01",
-        "KRKP256P03",
-        "KRKP256054",
-        "KRKP256020",
-        "KRKP256172"
-      ],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ]
-    },
-    "노블레스 하이브리드 9인승": {
-      "slug": "노블레스 하이브리드 9인승",
-      "price": {
-        "base": 66990000
-      },
-      "basic": [
-        "KRKP256010",
-        "KRKP256011",
-        "KRKP256012",
-        "KRKP256013",
-        "KRKP256184",
-        "KRKP256015",
-        "KRKP256028",
-        "KRKP256029",
-        "KRKP256030",
-        "KRKP256031",
-        "KRKP256032",
-        "KRKP256033",
-        "KRKP256034",
-        "KRKP256035",
-        "KRKP256036",
-        "KRKP256037",
-        "KRKP256040",
-        "KRKP256041",
-        "KRKP256042",
-        "KRKP256043",
-        "KRKP256044",
-        "KRKP256045",
-        "KRKP256046",
-        "KRKP256047",
-        "KRKP256048",
-        "KRKP256049",
-        "KRKP256161",
-        "KRKP256064",
-        "KRKP256065",
-        "KRKP256067",
-        "KRKP256077",
-        "KRKP256078",
-        "KRKP256079",
-        "KRKP256080",
-        "KRKP256096",
-        "KRKP256097",
-        "KRKP256098",
-        "KRKP256099",
-        "KRKP256100",
-        "KRKP256101",
-        "KRKP256102",
-        "KRKP256103",
-        "KRKP256121",
-        "KRKP256104",
-        "KRKP256105",
-        "KRKP256106",
-        "KRKP256148",
-        "KRKP256149",
-        "KRKP256P01",
-        "KRKP256P03",
-        "KRKP256054",
-        "KRKP256020",
-        "KRKP256172"
-      ],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ]
-    },
-    "시그니처 하이브리드 7인승": {
-      "slug": "시그니처 하이브리드 7인승",
-      "price": {
-        "base": 73890000
+        "base": 66850000
       },
       "basic": [
         "KRKP256010",
@@ -1741,214 +1628,6 @@
         "KRKP256021",
         "KRKP256022"
       ],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1100000,
-          "name": "드라이브 와이즈 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ]
-    },
-    "시그니처 하이브리드 9인승": {
-      "slug": "시그니처 하이브리드 7인승",
-      "price": {
-        "base": 70640000
-      },
-      "basic": [
-        "KRKP256010",
-        "KRKP256011",
-        "KRKP256012",
-        "KRKP256013",
-        "KRKP256184",
-        "KRKP256015",
-        "KRKP256016",
-        "KRKP256017",
-        "KRKP256018",
-        "KRKP256183",
-        "KRKP256028",
-        "KRKP256029",
-        "KRKP256030",
-        "KRKP256031",
-        "KRKP256032",
-        "KRKP256033",
-        "KRKP256034",
-        "KRKP256035",
-        "KRKP256036",
-        "KRKP256037",
-        "KRKP256038",
-        "KRKP256039",
-        "KRKP256040",
-        "KRKP256041",
-        "KRKP256042",
-        "KRKP256043",
-        "KRKP256044",
-        "KRKP256045",
-        "KRKP256046",
-        "KRKP256047",
-        "KRKP256048",
-        "KRKP256049",
-        "KRKP256063",
-        "KRKP256050",
-        "KRKP256051",
-        "KRKP256052",
-        "KRKP256053",
-        "KRKP256185",
-        "KRKP256060",
-        "KRKP256188",
-        "KRKP256187",
-        "KRKP256057",
-        "KRKP256058",
-        "KRKP256189",
-        "KRKP256062",
-        "KRKP256163",
-        "KRKP256161",
-        "KRKP256064",
-        "KRKP256065",
-        "KRKP256067",
-        "KRKP256068",
-        "KRKP256071",
-        "KRKP256162",
-        "KRKP256070",
-        "KRKP256072",
-        "KRKP256073",
-        "KRKP256074",
-        "KRKP256075",
-        "KRKP256077",
-        "KRKP256078",
-        "KRKP256079",
-        "KRKP256080",
-        "KRKP256081",
-        "KRKP256082",
-        "KRKP256083",
-        "KRKP256084",
-        "KRKP256085",
-        "KRKP256086",
-        "KRKP256087",
-        "KRKP256088",
-        "KRKP256089",
-        "KRKP256164",
-        "KRKP256169",
-        "KRKP256165",
-        "KRKP256095",
-        "KRKP256096",
-        "KRKP256097",
-        "KRKP256098",
-        "KRKP256099",
-        "KRKP256100",
-        "KRKP256101",
-        "KRKP256102",
-        "KRKP256103",
-        "KRKP256121",
-        "KRKP256104",
-        "KRKP256105",
-        "KRKP256106",
-        "KRKP256107",
-        "KRKP256108",
-        "KRKP256109",
-        "KRKP256110",
-        "KRKP256111",
-        "KRKP256112",
-        "KRKP256113",
-        "KRKP256114",
-        "KRKP256115",
-        "KRKP256116",
-        "KRKP256117",
-        "KRKP256118",
-        "KRKP256182",
-        "KRKP256120",
-        "KRKP256122",
-        "KRKP256123",
-        "KRKP256124",
-        "KRKP256125",
-        "KRKP256126",
-        "KRKP256127",
-        "KRKP256128",
-        "KRKP256129",
-        "KRKP256166",
-        "KRKP256167",
-        "KRKP256148",
-        "KRKP256149",
-        "KRKP256150",
-        "KRKP256151",
-        "KRKP256152",
-        "KRKP256153",
-        "KRKP256154",
-        "KRKP256P01",
-        "KRKP256P03",
-        "KRKP256054",
-        "KRKP256P04",
-        "KRKP256P05",
-        "KRKP256P15",
-        "KRKP256P19",
-        "KRKP256P06",
-        "KRKP256P09",
-        "KRKP256P13",
-        "KRKP256P16",
-        "KRKP256P20",
-        "KRKP256P23",
-        "KRKP256061",
-        "KRKP256P26",
-        "KRKP256P27",
-        "KRKP256P07",
-        "KRKP256P10",
-        "KRKP256020",
-        "KRKP256172",
-        "KRKP256021",
-        "KRKP256022"
-      ],
-      "select": [],
       "select_groups": [
         {
           "codes": [
@@ -2014,6 +1693,6 @@
     "카니발하이리무진4세대",
     "카니발하이리무진ka4"
   ],
-  "year_start": "2020-08",
-  "year_end": "현재"
+  "year_start": "2021-07",
+  "year_end": "2023-10"
 }

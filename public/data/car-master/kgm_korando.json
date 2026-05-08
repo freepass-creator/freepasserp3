@@ -1008,46 +1008,76 @@
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
     "E3 가솔린": {
       "slug": "E3",
       "price": {
-        "tax_5_before": 42450000,
-        "tax_5_after": 40310000,
-        "tax_3_5_before": 41810000
+        "base": 23600000
       },
       "basic": [
         "WK_152_2kW_모터",
@@ -1248,9 +1278,7 @@
     "E5 가솔린": {
       "slug": "E5",
       "price": {
-        "tax_5_before": 47880000,
-        "tax_5_after": 45470000,
-        "tax_3_5_before": 47160000
+        "base": 27400000
       },
       "basic": [
         "WK_Full_LED_헤드램프_상향등__하향등__턴시그널_램프_",
@@ -1439,7 +1467,9 @@
     },
     "EV": {
       "slug": "EV",
-      "price": {},
+      "price": {
+        "base": 44900000
+      },
       "basic": [
         "WK_Full_LED_헤드램프_상향등__하향등__턴시그널_램프_",
         "WK_인피니티_무드램프",

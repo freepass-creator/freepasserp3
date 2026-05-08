@@ -12,56 +12,72 @@
   "trims": {
     "스마트 가솔린 1.6 T": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 22950000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "스마트 디젤 2.0": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 24750000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "모던 가솔린 1.6 T": {
       "slug": "모던",
-      "price": {},
+      "price": {
+        "base": 24950000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "모던 디젤 2.0": {
       "slug": "모던",
-      "price": {},
+      "price": {
+        "base": 26750000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 가솔린 1.6 T": {
       "slug": "프리미엄",
-      "price": {},
+      "price": {
+        "base": 27550000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 디젤 2.0": {
       "slug": "프리미엄",
-      "price": {},
+      "price": {
+        "base": 29350000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "인스퍼레이션 가솔린 1.6 T": {
       "slug": "인스퍼레이션",
-      "price": {},
+      "price": {
+        "base": 30450000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "인스퍼레이션 디젤 2.0": {
       "slug": "인스퍼레이션",
-      "price": {},
+      "price": {
+        "base": 32250000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

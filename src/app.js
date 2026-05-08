@@ -1863,6 +1863,34 @@ function buildContextMenuItems(page, id, item) {
     const p = (store.products || []).find(x => x._key === id);
     if (!p) return [];
     const STATUS_OPTS = ['즉시출고', '출고가능', '상품화중', '출고협의', '출고불가'];
+    // 정책 후보 — 차량 공급사의 정책만 (회사 일치). 빈 공급사면 disabled
+    const productProvider = p.provider_company_code || p.partner_code || '';
+    const policyCandidates = (store.policies || [])
+      .filter(t => !t._deleted)
+      .filter(t => productProvider && t.provider_company_code === productProvider)
+      .map(t => ({
+        code: t.policy_code || t._key,
+        name: t.policy_name || t.term_name || '',
+      }));
+    const curPol = p.policy_code || '';
+    const policyLabel = curPol
+      ? `정책: ${(policyCandidates.find(o => o.code === curPol)?.name) || curPol}`
+      : '정책: (미배정)';
+    const policySubmenu = [
+      { label: '(미배정)', active: !curPol, action: async () => {
+        await updateRecord(`products/${p._key}`, { policy_code: '', updated_at: Date.now() });
+        showToast('정책 미배정');
+      }},
+      ...(policyCandidates.length ? [{ divider: true }] : []),
+      ...policyCandidates.map(o => ({
+        label: o.name ? `${o.name} (${o.code})` : o.code,
+        active: o.code === curPol,
+        action: async () => {
+          await updateRecord(`products/${p._key}`, { policy_code: o.code, updated_at: Date.now() });
+          showToast(`정책 → ${o.name || o.code}`);
+        },
+      })),
+    ];
     return [
       { icon: 'ph ph-flag', label: `상태: ${p.vehicle_status || '-'}`,
         submenu: STATUS_OPTS.map(s => ({
@@ -1872,6 +1900,10 @@ function buildContextMenuItems(page, id, item) {
             showToast(`상태 → ${s}`);
           },
         })),
+      },
+      { icon: 'ph ph-scroll', label: policyLabel,
+        disabled: !productProvider,
+        submenu: policySubmenu,
       },
       { divider: true },
       { icon: 'ph ph-share-network', label: '카탈로그 링크 복사', action: () => {

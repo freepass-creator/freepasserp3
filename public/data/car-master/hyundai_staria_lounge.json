@@ -742,7 +742,11 @@
     "US04P29": {
       "name": "빌트인 캠 2 PLUS, 증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "NAVIGATION"
+      ]
     },
     "US04P13": {
       "name": "컴포트",
@@ -785,42 +789,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -828,8 +876,7 @@
       "slug": "n",
       "name_en": null,
       "price": {
-        "tax_5": 47780000,
-        "tax_3_5": 47050000
+        "base": 45850000
       },
       "basic": [
         "US04001",
@@ -1059,8 +1106,7 @@
       "slug": "n",
       "name_en": null,
       "price": {
-        "tax_5": 47780000,
-        "tax_3_5": 47050000
+        "base": 43290000
       },
       "basic": [
         "US04001",

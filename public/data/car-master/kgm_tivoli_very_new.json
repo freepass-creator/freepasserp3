@@ -401,67 +401,106 @@
     "WK_후측방_경고_BSW_": {
       "name": "후측방 경고(BSW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_차선_변경_경고_LCW_": {
       "name": "차선 변경 경고(LCW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "WK_후측방_접근_경고_RCTW_": {
       "name": "후측방 접근 경고(RCTW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_후측방_접근_충돌_보조_RCTA_": {
       "name": "후측방 접근 충돌 보조(RCTA)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_안전_하차_경고_SEW_": {
       "name": "안전 하차 경고(SEW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "WK_듀얼존_풀오토_에어컨": {
       "name": "듀얼존 풀오토 에어컨",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AUTO_AC"
+      ]
     },
     "WK_안전제일_서비스_에어백_전개_알림_": {
       "name": "안전제일 서비스(에어백 전개 알림)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_올인원_서비스_차량_원격_제어_등_": {
       "name": "올인원 서비스(차량 원격 제어 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_프리미엄_서비스_지니_뮤직__팟캐스트_등_": {
       "name": "프리미엄 서비스(지니 뮤직, 팟캐스트 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_9인치_터치_스크린_내비게이션": {
       "name": "9인치 터치 스크린 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_양방향_풀_미러링_안드로이드_운영체제_기반_적용_": {
       "name": "양방향 풀 미러링(안드로이드 운영체제 기반 적용)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_안드로이드_오토": {
       "name": "안드로이드 오토",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_애플_카플레이": {
       "name": "애플 카플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_라디오_주파수_자동변경_기능": {
       "name": "라디오 주파수 자동변경 기능",
@@ -471,7 +510,10 @@
     "WK_음성인식_기능": {
       "name": "음성인식 기능",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     },
     "WK_실시간_라디오_음원저장": {
       "name": "실시간 라디오 음원저장",
@@ -481,7 +523,10 @@
     "WK_후방_카메라": {
       "name": "후방 카메라",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "WK_AM_FM_라디오": {
       "name": "AM/FM 라디오",
@@ -496,7 +541,10 @@
     "WK_USB_단자": {
       "name": "USB 단자",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_TPEG": {
       "name": "TPEG",
@@ -526,7 +574,10 @@
     "WK_Full_LED_헤드램프_상향등__하향등__턴시그널_램프_": {
       "name": "Full LED 헤드램프(상향등, 하향등, 턴시그널 램프)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_18인치_블랙_다이아몬드_컷팅_휠___215_50R18_타이어": {
       "name": "18인치 블랙 다이아몬드 컷팅 휠 & 215/50R18 타이어",
@@ -536,42 +587,66 @@
     "WK_스마트_키_시스템": {
       "name": "스마트 키 시스템",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "WK_인조_가죽시트": {
       "name": "인조 가죽시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_운전석_8way_전동시트___전동식_2way_럼버서포트": {
       "name": "운전석 8way 전동시트 & 전동식 2way 럼버서포트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "WK_운전석___동승석_히팅시트": {
       "name": "운전석 & 동승석 히팅시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT"
+      ]
     },
     "WK_가죽커버_스티어링_휠": {
       "name": "가죽커버 스티어링 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "WK_열선_스티어링_휠": {
       "name": "열선 스티어링 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "WK_유틸리티_루프랙": {
       "name": "유틸리티 루프랙",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ROOF_RACK"
+      ]
     },
     "WK_리어_스포일러": {
       "name": "리어 스포일러",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "REAR_SPOILER"
+      ]
     },
     "WK_2열_센터_암레스트___컵홀더": {
       "name": "2열 센터 암레스트 & 컵홀더",
@@ -581,7 +656,10 @@
     "WK_10_25인치_풀_디지털_클러스터": {
       "name": "10.25인치 풀 디지털 클러스터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "WK_커스터마이징_사양___플로팅_무드_스피커": {
       "name": "커스터마이징 사양 : 플로팅 무드 스피커",
@@ -604,22 +682,35 @@
     "WK_하이패스_시스템_ETCS_": {
       "name": "하이패스 시스템(ETCS)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HIPASS",
+        "TCS"
+      ]
     },
     "WK_ECM_룸미러": {
       "name": "ECM 룸미러",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "WK_오토_라이트_컨트롤": {
       "name": "오토 라이트 컨트롤",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "WK_우적감지_와이퍼": {
       "name": "우적감지 와이퍼",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RAIN_SENSOR"
+      ]
     },
     "WK_오렌지_포인트_스티어링_휠_블랙_하이그로시_베젤___오렌지_포인트_더블_다이아몬드_스티치_": {
       "name": "오렌지 포인트 스티어링 휠(블랙 하이그로시 베젤 & 오렌지 포인트 더블 다이아몬드 스티치)",
@@ -878,12 +969,18 @@
     "WK_4WD_시스템_AWD_": {
       "name": "4WD 시스템(AWD)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "WK_후륜_독립현가_멀티링크_서스펜션": {
       "name": "후륜 독립현가 멀티링크 서스펜션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUSPENSION_MLT"
+      ]
     },
     "WK_인포콘_커넥티비티_패키지_I": {
       "name": "인포콘 커넥티비티 패키지 I",
@@ -1043,37 +1140,69 @@
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "categories": {
@@ -1266,7 +1395,9 @@
   "trims": {
     "MX 가솔린 1.5 T": {
       "slug": "mx",
-      "price": {},
+      "price": {
+        "base": 17590000
+      },
       "basic": [
         "WK_가솔린_1_6_엔진",
         "WK_AISIN_6단_자동_변속기",
@@ -1392,7 +1523,9 @@
     },
     "MX 디젤 1.6": {
       "slug": "mx",
-      "price": {},
+      "price": {
+        "base": 19640000
+      },
       "basic": [
         "WK_가솔린_1_6_엔진",
         "WK_AISIN_6단_자동_변속기",
@@ -1518,7 +1651,9 @@
     },
     "EX 가솔린 1.5 T": {
       "slug": "ex",
-      "price": {},
+      "price": {
+        "base": 19450000
+      },
       "basic": [
         "WK_가솔린_1_6_엔진",
         "WK_AISIN_6단_자동_변속기",
@@ -1644,7 +1779,9 @@
     },
     "EX 디젤 1.6": {
       "slug": "ex",
-      "price": {},
+      "price": {
+        "base": 21500000
+      },
       "basic": [
         "WK_가솔린_1_6_엔진",
         "WK_AISIN_6단_자동_변속기",
@@ -1770,7 +1907,9 @@
     },
     "LX 가솔린 1.5 T": {
       "slug": "lx",
-      "price": {},
+      "price": {
+        "base": 21500000
+      },
       "basic": [
         "WK_가솔린_1_6_엔진",
         "WK_AISIN_6단_자동_변속기",
@@ -1922,7 +2061,9 @@
     },
     "LX 디젤 1.6": {
       "slug": "lx",
-      "price": {},
+      "price": {
+        "base": 23550000
+      },
       "basic": [
         "WK_가솔린_1_6_엔진",
         "WK_AISIN_6단_자동_변속기",

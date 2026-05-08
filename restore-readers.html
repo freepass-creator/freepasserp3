@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>리더스렌터카(RP008) 일괄 복원</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, sans-serif;
+    margin: 0; padding: 24px;
+    background: #f6f7f9; color: #111;
+    font-size: 13px; line-height: 1.55;
+  }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .sub { color: #666; font-size: 12px; margin-bottom: 20px; }
+  .card {
+    background: #fff; border: 1px solid #e3e6eb; border-radius: 4px;
+    padding: 16px; margin-bottom: 16px;
+  }
+  .card h2 { font-size: 14px; margin: 0 0 10px; color: #2a3242; }
+  label { display:inline-block; min-width: 80px; color:#444; }
+  input[type=email], input[type=password], input[type=file] {
+    padding: 6px 8px; border: 1px solid #d2d5db; border-radius: 3px;
+    font-family: inherit; font-size: 12px; min-width: 240px;
+  }
+  button {
+    padding: 7px 14px; border: 1px solid #1f3a5f; background: #fff;
+    color: #1f3a5f; font-family: inherit; font-size: 12px; font-weight: 600;
+    border-radius: 3px; cursor: pointer;
+  }
+  button.primary { background: #1f3a5f; color: #fff; }
+  button.danger  { background: #b22; color: #fff; border-color: #b22; }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 6px 8px; text-align: left; vertical-align: top; }
+  thead th { background: #eef0f3; font-weight: 600; border-bottom: 1px solid #d2d5db; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #eef0f3; }
+  tbody tr:last-child { border-bottom: none; }
+  .mono { font-family: 'Consolas', 'D2Coding', monospace; font-size: 11px; }
+  .diff-old { color: #b22; text-decoration: line-through; }
+  .diff-new { color: #2a7; font-weight: 600; }
+  .scroll-x { overflow-x: auto; }
+  .scroll-x table { min-width: 1700px; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .center { text-align: center; }
+  .price-cell { font-family: 'Consolas', monospace; font-size: 11px; }
+  .price-cell .rent { color: #1f3a5f; font-weight: 600; }
+  .price-cell .dep  { color: #888; }
+  .status-chip { display:inline-block; padding:1px 6px; border-radius:2px; font-size:11px; font-weight:600; }
+  .status-chip.즉시 { background:#dcfce7; color:#166534; }
+  .status-chip.가능 { background:#dbeafe; color:#1d4ed8; }
+  .status-chip.협의 { background:#fef3c7; color:#92400e; }
+  .status-chip.불가 { background:#fee2e2; color:#991b1b; }
+  .status-chip.대기 { background:#f3f4f6; color:#4b5563; }
+  .chip-changes { display: inline-block; padding: 1px 6px; border-radius: 2px; background: #fff8e1; color: #8a6100; font-size: 10px; margin-left:4px; }
+  .badge { display:inline-block; padding: 1px 6px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .badge.ok    { background:#e6f5ec; color:#187c41; }
+  .badge.warn  { background:#fff3cd; color:#8a6100; }
+  .badge.err   { background:#fbe4e4; color:#a32; }
+  .badge.info  { background:#e6eef7; color:#1f3a5f; }
+  pre.log {
+    background: #1a1d23; color: #d8dde3; padding: 10px;
+    font-family: 'Consolas', monospace; font-size: 11px;
+    border-radius: 3px; max-height: 240px; overflow: auto; margin: 0;
+  }
+  .step-disabled { opacity: 0.4; pointer-events: none; }
+  details { margin-top: 6px; }
+  details summary { cursor: pointer; color: #1f3a5f; font-size: 11px; }
+  .small { font-size: 11px; color: #666; }
+</style>
+</head>
+<body>
+
+<h1>전 차량 일괄 복원 (백업 372건)</h1>
+<div class="sub">products_backup_20260507 (2).json → 18개 업체 372대 + 4개 정책 스냅샷. soft-delete 해제 + 양식 정리. policy_code 원본 보존 (_TERM = placeholder, _P## = 실제 정책).</div>
+
+<!-- 1. 로그인 -->
+<div class="card" id="step-auth">
+  <h2>1. 관리자 로그인</h2>
+  <div class="row">
+    <label>이메일</label>
+    <input type="email" id="email" autocomplete="email" />
+  </div>
+  <div class="row">
+    <label>비밀번호</label>
+    <input type="password" id="password" autocomplete="current-password" />
+  </div>
+  <div class="row">
+    <button class="primary" id="loginBtn">로그인</button>
+    <span id="authStatus" class="small"></span>
+  </div>
+</div>
+
+<!-- 2. 백업 파일 -->
+<div class="card step-disabled" id="step-file">
+  <h2>2. 백업 JSON 파일</h2>
+  <div class="row">
+    <input type="file" id="fileInput" accept="application/json" />
+    <span id="fileStatus" class="small">기본: 같은 폴더의 products_backup_20260507 (2).json</span>
+  </div>
+  <div class="row">
+    <button id="loadDefaultBtn">기본 파일 로드</button>
+  </div>
+</div>
+
+<!-- 3. 정책 검증 -->
+<div class="card step-disabled" id="step-policy">
+  <h2>3. 정책 매핑 검증</h2>
+  <div id="policyTable" class="small">파일 로드 후 표시.</div>
+  <div class="row" style="margin-top:10px;">
+    <button id="restorePolicyBtn" class="primary" disabled>정책 복원 실행</button>
+    <span id="policyStatus" class="small"></span>
+  </div>
+</div>
+
+<!-- 4. 상품 미리보기 -->
+<div class="card step-disabled" id="step-products">
+  <h2>4. 상품 복원 미리보기 — 상품찾기 양식</h2>
+  <div class="row">
+    <label>업체 필터</label>
+    <select id="partnerFilter" style="padding:5px 8px;border:1px solid #d2d5db;border-radius:3px;font-family:inherit;">
+      <option value="">전체</option>
+    </select>
+    <label style="margin-left:12px;"><input type="checkbox" id="onlyDeleted" checked> 삭제된 것만 표시</label>
+    <span id="productSummary" class="small" style="margin-left:12px;"></span>
+  </div>
+  <div id="productTable" class="small scroll-x" style="margin-top:8px;">파일 로드 후 표시.</div>
+  <div class="row" style="margin-top:10px;">
+    <button id="restoreProductBtn" class="primary" disabled>상품 복원 실행</button>
+    <span class="small">— 현재 필터에 표시된 것 중 "복원예정" 만 적용</span>
+    <span id="productStatus" class="small"></span>
+  </div>
+</div>
+
+<!-- 5. 로그 -->
+<div class="card">
+  <h2>5. 실행 로그</h2>
+  <pre class="log" id="log"></pre>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js';
+import {
+  getAuth, signInWithEmailAndPassword, onAuthStateChanged,
+} from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js';
+import {
+  getDatabase, ref, get, update, push,
+} from 'https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY',
+  authDomain: 'freepasserp3.firebaseapp.com',
+  databaseURL: 'https://freepasserp3-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'freepasserp3',
+  storageBucket: 'freepasserp3.firebasestorage.app',
+  messagingSenderId: '172664197996',
+  appId: '1:172664197996:web:91b7219f22eb68b5005949',
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+const logEl = document.getElementById('log');
+const log = (...a) => { logEl.textContent += a.join(' ') + '\n'; logEl.scrollTop = logEl.scrollHeight; };
+
+let currentUser = null;
+let userRole = null;
+let backupProducts = [];   // 백업 전체
+let dbProductsByKey = {};  // 현재 DB 의 모든 products (key → record)
+let policyAudit = null;    // { code: { dbState, backupSnapshot, action } }
+let partnersById = {};     // partner_code → partner_name
+
+/* 상품찾기 페이지의 shortStatus 와 동일 */
+function shortStatus(s) {
+  if (!s) return '대기';
+  if (s.includes('즉시')) return '즉시';
+  if (s.includes('협의')) return '협의';
+  if (s.includes('불가')) return '불가';
+  if (s.includes('가능')) return '가능';
+  if (s.includes('계약')) return '계약';
+  if (s.includes('상품화')) return '상품화';
+  return '대기';
+}
+
+/* 가격 셀 — 상품찾기와 동일 (rent/dep 만 단위) */
+function fmtPriceCell(v) {
+  if (!v || !Number(v.rent)) return '<span style="color:#999;">-</span>';
+  const r = Math.round(Number(v.rent) / 10000);
+  const d = Math.round(Number(v.deposit || 0) / 10000);
+  return `<span class="price-cell"><span class="rent">${r}만</span>/<span class="dep">${d}만</span></span>`;
+}
+
+function fmtMileage(m) {
+  if (!m) return '-';
+  return Number(m).toLocaleString() + 'km';
+}
+
+// ───────── 1. 로그인 ─────────
+const authStatus = document.getElementById('authStatus');
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  const pw = document.getElementById('password').value;
+  if (!email || !pw) { alert('이메일/비밀번호 입력'); return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, pw);
+  } catch (e) {
+    log('[로그인 실패]', e.code || e.message);
+    authStatus.innerHTML = '<span class="badge err">실패: ' + (e.code || e.message) + '</span>';
+  }
+});
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { currentUser = null; userRole = null; authStatus.innerHTML = ''; return; }
+  currentUser = user;
+  // role 조회
+  try {
+    const snap = await get(ref(db, `users/${user.uid}/role`));
+    userRole = snap.val();
+  } catch (e) { userRole = null; }
+  authStatus.innerHTML =
+    '<span class="badge ' + (userRole === 'admin' ? 'ok' : 'warn') + '">' +
+    user.email + ' / role=' + (userRole || '?') + '</span>';
+  log('[auth] 로그인:', user.email, 'role=' + userRole);
+  if (userRole !== 'admin') {
+    log('  ⚠ admin 아님 — 일부 정책/감사로그 쓰기 거부 가능');
+  }
+  // partners 미리 로드 (공급사명 표시용)
+  try {
+    const snap = await get(ref(db, 'partners'));
+    const all = snap.val() || {};
+    for (const [k, v] of Object.entries(all)) {
+      partnersById[k] = v.partner_name || v.company_name || v.name || k;
+      if (v.partner_code) partnersById[v.partner_code] = v.partner_name || v.company_name || v.name || k;
+    }
+    log('[partners]', Object.keys(partnersById).length, '개 로드');
+  } catch (e) { log('[partners] 로드 실패', e.code || e.message); }
+  document.getElementById('step-file').classList.remove('step-disabled');
+});
+
+// ───────── 2. 파일 로드 ─────────
+document.getElementById('fileInput').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  if (f) await loadJsonFile(f);
+});
+
+document.getElementById('loadDefaultBtn').addEventListener('click', async () => {
+  try {
+    const res = await fetch('./products_backup_20260507%20(2).json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    processJson(data);
+  } catch (e) {
+    log('[파일 로드 실패]', e.message);
+    alert('기본 파일 로드 실패. 위 input 으로 직접 선택: ' + e.message);
+  }
+});
+
+async function loadJsonFile(f) {
+  try {
+    const text = await f.text();
+    const data = JSON.parse(text);
+    processJson(data);
+  } catch (e) {
+    log('[JSON 파싱 실패]', e.message);
+  }
+}
+
+async function processJson(data) {
+  const all = data.products || [];
+  backupProducts = all;
+  document.getElementById('fileStatus').textContent =
+    `로드 완료: ${all.length}건 (백업시각 ${new Date(data._backup_at || 0).toLocaleString('ko-KR')})`;
+  log('[file] 백업', all.length, '건 로드');
+
+  // 현재 DB 의 products 전체를 한 번 fetch — 각 백업 product 의 현재 상태 비교용
+  log('[db] /products 전체 조회 중...');
+  try {
+    const snap = await get(ref(db, 'products'));
+    dbProductsByKey = snap.val() || {};
+    const total = Object.keys(dbProductsByKey).length;
+    let alive = 0, deleted = 0;
+    for (const v of Object.values(dbProductsByKey)) {
+      if (v && v._deleted) deleted++;
+      else if (v) alive++;
+    }
+    log('[db]', total, '건 (살아있음', alive, '/ 삭제됨', deleted, ')');
+  } catch (e) {
+    log('[db] 조회 실패', e.code || e.message);
+    return;
+  }
+
+  // 업체 필터 채우기
+  const partnerSel = document.getElementById('partnerFilter');
+  const partnerCounts = {};
+  for (const p of backupProducts) {
+    const pc = p.partner_code || p.provider_company_code || '(없음)';
+    partnerCounts[pc] = (partnerCounts[pc] || 0) + 1;
+  }
+  partnerSel.innerHTML = '<option value="">전체 (' + backupProducts.length + ')</option>'
+    + Object.entries(partnerCounts).sort((a,b) => b[1]-a[1]).map(([k,v]) =>
+      `<option value="${k}">${k} ${partnersById[k] ? '· '+partnersById[k] : ''} (${v}건)</option>`
+    ).join('');
+  partnerSel.addEventListener('change', renderProductPreview);
+  document.getElementById('onlyDeleted').addEventListener('change', renderProductPreview);
+
+  document.getElementById('step-policy').classList.remove('step-disabled');
+  document.getElementById('step-products').classList.remove('step-disabled');
+  auditPolicies();
+  renderProductPreview();
+}
+
+// ───────── 3. 정책 검증 ─────────
+async function auditPolicies() {
+  const codeSet = new Set();
+  const embeddedByCode = {};
+  const refCount = {};
+  for (const p of backupProducts) {
+    if (p.policy_code) {
+      codeSet.add(p.policy_code);
+      refCount[p.policy_code] = (refCount[p.policy_code] || 0) + 1;
+    }
+    if (p.term_code) codeSet.add(p.term_code);
+    if (p._policy) {
+      const k = p._policy._key || p._policy.term_code || p._policy.policy_code;
+      if (k) embeddedByCode[k] = p._policy;
+    }
+  }
+  const codes = Array.from(codeSet);
+  policyAudit = {};
+  for (const code of codes) {
+    let dbVal = null;
+    try {
+      const snap = await get(ref(db, `policies/${code}`));
+      dbVal = snap.val();
+    } catch (e) {
+      dbVal = { __error: e.code || e.message };
+    }
+    const dbFieldCount = dbVal && !dbVal.__error ? Object.keys(dbVal).filter(k => k !== '_deleted').length : 0;
+    const isEmpty = !dbVal || dbFieldCount === 0;
+    const hasBackup = !!embeddedByCode[code];
+    let action;
+    if (dbVal && !isEmpty && !dbVal._deleted) action = 'skip';
+    else if (hasBackup) action = 'restore';
+    else action = 'no-backup';
+    policyAudit[code] = {
+      dbVal, isEmpty, hasBackup, snapshot: embeddedByCode[code], action,
+      refCount: refCount[code] || 0,
+    };
+  }
+  renderPolicyTable();
+}
+
+function renderPolicyTable() {
+  const tbl = document.getElementById('policyTable');
+  let html = '<table><thead><tr><th>policy_code</th><th>참조 차량</th><th>현재 DB 상태</th><th>백업 스냅샷</th><th>처리</th></tr></thead><tbody>';
+  let restorable = 0;
+  const sorted = Object.entries(policyAudit).sort((a, b) => (b[1].refCount || 0) - (a[1].refCount || 0));
+  for (const [code, a] of sorted) {
+    let dbState;
+    if (a.dbVal && a.dbVal.__error) dbState = `<span class="badge err">${a.dbVal.__error}</span>`;
+    else if (!a.dbVal) dbState = '<span class="badge err">없음</span>';
+    else if (a.dbVal._deleted) dbState = '<span class="badge warn">soft-deleted</span>';
+    else if (a.isEmpty) dbState = '<span class="badge warn">빈 노드</span>';
+    else dbState = `<span class="badge ok">정상 (${Object.keys(a.dbVal).length}필드)</span>`;
+    const backup = a.hasBackup
+      ? `<span class="badge info">${Object.keys(a.snapshot).length}필드</span>`
+      : '<span class="small">없음</span>';
+    let act;
+    if (a.action === 'skip') act = '<span class="small">건너뜀 (DB 정상)</span>';
+    else if (a.action === 'restore') { act = '<span class="badge ok">복원 예정</span>'; restorable++; }
+    else act = '<span class="small">스킵 (스냅샷 없음 — placeholder _TERM 등)</span>';
+    const isTerm = /_TERM$/.test(code);
+    const codeBadge = isTerm
+      ? `<span class="mono">${code}</span> <span class="badge warn">_TERM</span>`
+      : `<span class="mono">${code}</span> <span class="badge ok">_P##</span>`;
+    html += `<tr><td>${codeBadge}</td><td class="num">${a.refCount || 0}대</td><td>${dbState}</td><td>${backup}</td><td>${act}</td></tr>`;
+  }
+  html += '</tbody></table>';
+  tbl.innerHTML = html;
+  const btn = document.getElementById('restorePolicyBtn');
+  btn.disabled = restorable === 0;
+  btn.textContent = restorable > 0 ? `정책 복원 실행 (${restorable}건)` : '정책 복원 실행 (해당 없음)';
+}
+
+document.getElementById('restorePolicyBtn').addEventListener('click', async () => {
+  if (!confirm('정책 복원 진행?')) return;
+  const status = document.getElementById('policyStatus');
+  status.textContent = '실행 중...';
+  let ok = 0, fail = 0;
+  for (const [code, a] of Object.entries(policyAudit)) {
+    if (a.action !== 'restore') continue;
+    try {
+      const patch = { ...a.snapshot };
+      delete patch._key;
+      patch._deleted = false;
+      patch.restored_at = Date.now();
+      patch.restored_by = currentUser.uid;
+      patch.updated_at = Date.now();
+      await update(ref(db, `policies/${code}`), patch);
+      // audit log
+      try {
+        await push(ref(db, 'audit_logs'), {
+          action: 'restore',
+          collection: 'policies',
+          record_key: code,
+          actor_uid: currentUser.uid,
+          actor_role: userRole || '',
+          actor_name: currentUser.email || '',
+          fields: Object.keys(patch),
+          ts: Date.now(),
+        });
+      } catch (auditErr) { log('  [audit fail]', code, auditErr.code); }
+      log('[정책복원]', code, '✓');
+      ok++;
+    } catch (e) {
+      log('[정책복원]', code, '✗', e.code || e.message);
+      fail++;
+    }
+  }
+  status.innerHTML = `<span class="badge ${fail ? 'warn' : 'ok'}">완료: 성공 ${ok} / 실패 ${fail}</span>`;
+  await auditPolicies();   // refresh
+});
+
+// ───────── 4. 상품 정규화 + action 분류 ─────────
+function normalizeProduct(p) {
+  const out = { ...p };
+  // legacy 필드 제거
+  delete out.model_name;
+  delete out.sub_model_legacy;
+  delete out._policy;          // runtime hydrate 결과 (저장 X)
+  // created_by_uid / created_by_role → created_by 통합
+  if (out.created_by_uid && !out.created_by) out.created_by = out.created_by_uid;
+  delete out.created_by_uid;
+  delete out.created_by_role;
+  // sub_model 괄호 제거
+  if (out.sub_model && /\((.+)\)$/.test(out.sub_model)) {
+    const m = out.sub_model.match(/^(.+?)\s*\((.+)\)\s*$/);
+    if (m) out.sub_model = (m[1] + ' ' + m[2]).trim();
+  }
+  // restore 플래그
+  out._deleted = false;
+  out.restored_at = Date.now();
+  out.updated_at = Date.now();
+  return out;
+}
+
+/* 백업 product 의 현재 DB 상태 vs 백업 → 처리 액션 결정 */
+function classifyProduct(p) {
+  const dbVal = dbProductsByKey[p._key];
+  if (!dbVal) return { action: 'create',  label: '신규생성',  badge: 'info' };
+  if (dbVal._deleted) return { action: 'restore', label: '복원예정',  badge: 'ok'   };
+  return { action: 'skip', label: '건너뜀(살아있음)', badge: 'warn' };
+}
+
+function diffPair(orig, normd) {
+  const keys = new Set([...Object.keys(orig), ...Object.keys(normd)]);
+  const changes = [];
+  for (const k of keys) {
+    const a = orig[k], b = normd[k];
+    if (a === b) continue;
+    if (typeof a === 'object' || typeof b === 'object') continue;   // 객체 diff 생략 (price 등)
+    if (a === undefined) changes.push(`+${k}=${JSON.stringify(b)}`);
+    else if (b === undefined) changes.push(`-${k}`);
+    else changes.push(`~${k}: ${JSON.stringify(a)}→${JSON.stringify(b)}`);
+  }
+  return changes;
+}
+
+function renderProductPreview() {
+  const tbl = document.getElementById('productTable');
+  const summary = document.getElementById('productSummary');
+  const partnerFilter = document.getElementById('partnerFilter').value;
+  const onlyDeleted = document.getElementById('onlyDeleted').checked;
+
+  // 필터 적용
+  let visible = backupProducts;
+  if (partnerFilter) {
+    visible = visible.filter(p =>
+      (p.partner_code === partnerFilter) || (p.provider_company_code === partnerFilter)
+    );
+  }
+  // action 분류 + onlyDeleted 필터
+  const classified = visible.map(p => ({ p, c: classifyProduct(p) }));
+  if (onlyDeleted) {
+    visible = classified.filter(x => x.c.action === 'restore').map(x => x.p);
+  } else {
+    visible = classified.map(x => x.p);
+  }
+
+  // 요약
+  const counts = { restore: 0, create: 0, skip: 0 };
+  for (const p of (partnerFilter
+    ? backupProducts.filter(p => (p.partner_code === partnerFilter) || (p.provider_company_code === partnerFilter))
+    : backupProducts)) {
+    const c = classifyProduct(p);
+    counts[c.action]++;
+  }
+  summary.innerHTML = `<span class="badge ok">복원예정 ${counts.restore}</span> <span class="badge info">신규생성 ${counts.create}</span> <span class="badge warn">건너뜀 ${counts.skip}</span> · 표시 ${visible.length}건`;
+
+  if (!visible.length) {
+    tbl.innerHTML = '<div style="padding:24px;color:#888;text-align:center;">표시할 상품이 없습니다 (필터 확인)</div>';
+    document.getElementById('restoreProductBtn').disabled = false;
+    document.getElementById('restoreProductBtn').textContent = '상품 복원 실행 (0건)';
+    return;
+  }
+
+  // 상품찾기 컬럼:
+  //  처리 / 차번 / 상태 / 종류 / 메이커 / 모델 / 세부모델 / 트림 / 옵션 / 연식 / 주행 / 연료 / 외장 / 내장 / 신용 / 1m / 12 / 24 / 36 / 48 / 60 / 공급사 / 사진 / policy_code / 변경
+  const headers = [
+    '처리', '_key', '차번', '상태', '종류', '메이커', '모델', '세부모델', '트림', '옵션',
+    '연식', '주행', '연료', '외장', '내장', '신용',
+    '1m', '12m', '24m', '36m', '48m', '60m',
+    '공급사', '사진', 'policy_code', '변경',
+  ];
+  let html = '<table><thead><tr>';
+  for (const h of headers) html += `<th>${h}</th>`;
+  html += '</tr></thead><tbody>';
+
+  for (const p of visible) {
+    const cls = classifyProduct(p);
+    const normd = normalizeProduct(p);
+    const changes = diffPair(p, normd);
+    const visibleChanges = changes.filter(c => !/restored_at|updated_at|_deleted/.test(c));
+    let policyBadge;
+    if (!normd.policy_code) {
+      policyBadge = '<span class="badge warn">없음</span>';
+    } else if (/_TERM$/.test(normd.policy_code)) {
+      policyBadge = `<span class="mono">${normd.policy_code}</span> <span class="badge warn" title="placeholder — 실제 정책 데이터 없음">placeholder</span>`;
+    } else if (/_P\d+$/.test(normd.policy_code)) {
+      policyBadge = `<span class="mono">${normd.policy_code}</span> <span class="badge ok" title="실제 정책 (basic_driver_age 등 채워짐)">실정책</span>`;
+    } else {
+      policyBadge = `<span class="mono">${normd.policy_code}</span>`;
+    }
+
+    const stShort = shortStatus(normd.vehicle_status || '');
+    const optsArr = Array.isArray(normd.options)
+      ? normd.options
+      : (normd.options ? String(normd.options).split(/[\s·,/]+/).filter(Boolean) : []);
+    const optsHtml = optsArr.length
+      ? optsArr.slice(0, 3).map(o => `<span class="badge info" style="margin-right:2px;">${o}</span>`).join('') + (optsArr.length > 3 ? `<span class="small"> +${optsArr.length-3}</span>` : '')
+      : '<span class="small">-</span>';
+    const credit = (normd._policy && (normd._policy.credit_grade || normd._policy.screening_criteria))
+      || normd.credit_grade || '-';
+    const providerName = partnersById[normd.provider_company_code || normd.partner_code]
+      || normd.provider_name || (normd.provider_company_code || '-');
+    const changesBadge = visibleChanges.length
+      ? `<details><summary>${visibleChanges.length}개</summary><div class="mono small" style="white-space:nowrap;">${visibleChanges.join('<br>')}</div></details>`
+      : '<span class="small">없음</span>';
+
+    html += `<tr>
+      <td class="center"><span class="badge ${cls.badge}">${cls.label}</span></td>
+      <td class="mono">${p._key}</td>
+      <td>${normd.car_number || '<span class="small">(빈값)</span>'}</td>
+      <td class="center"><span class="status-chip ${stShort}">${stShort}</span></td>
+      <td class="center">${normd.product_type || '-'}</td>
+      <td>${normd.maker || '-'}</td>
+      <td>${normd.model || '-'}</td>
+      <td>${normd.sub_model || '-'}</td>
+      <td>${normd.trim_name || normd.trim || '-'}</td>
+      <td>${optsHtml}</td>
+      <td class="center">${normd.year || '-'}</td>
+      <td class="num">${fmtMileage(normd.mileage)}</td>
+      <td class="center">${normd.fuel_type || '-'}</td>
+      <td class="center">${normd.ext_color || '-'}</td>
+      <td class="center">${normd.int_color || '-'}</td>
+      <td class="center">${credit}</td>
+      <td class="num">${fmtPriceCell(normd.price?.['1'])}</td>
+      <td class="num">${fmtPriceCell(normd.price?.['12'])}</td>
+      <td class="num">${fmtPriceCell(normd.price?.['24'])}</td>
+      <td class="num">${fmtPriceCell(normd.price?.['36'])}</td>
+      <td class="num">${fmtPriceCell(normd.price?.['48'])}</td>
+      <td class="num">${fmtPriceCell(normd.price?.['60'])}</td>
+      <td>${providerName}</td>
+      <td class="center">${(() => {
+        const n = (normd.image_urls || []).length;
+        const thumb = normd.image_urls?.[0];
+        if (!n) return '<span class="small">-</span>';
+        return `<a href="${thumb}" target="_blank" title="첫 사진 새창에서 열기"><img src="${thumb}" style="width:36px;height:24px;object-fit:cover;border-radius:2px;border:1px solid #ccc;" loading="lazy" /></a> <span class="badge ok">${n}장</span>`;
+      })()}</td>
+      <td>${policyBadge}</td>
+      <td>${changesBadge}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  tbl.innerHTML = html;
+
+  // 버튼 라벨 — 표시된 것 중 처리(restore + create) 가능한 갯수
+  const actionable = visible.filter(p => classifyProduct(p).action !== 'skip');
+  document.getElementById('restoreProductBtn').disabled = actionable.length === 0;
+  document.getElementById('restoreProductBtn').textContent = `상품 복원 실행 (${actionable.length}건)`;
+}
+
+document.getElementById('restoreProductBtn').addEventListener('click', async () => {
+  // 현재 표시된 것 중 actionable 만 처리
+  const partnerFilter = document.getElementById('partnerFilter').value;
+  const onlyDeleted = document.getElementById('onlyDeleted').checked;
+  let pool = backupProducts;
+  if (partnerFilter) pool = pool.filter(p => (p.partner_code === partnerFilter) || (p.provider_company_code === partnerFilter));
+  const targets = pool.filter(p => {
+    const c = classifyProduct(p);
+    if (onlyDeleted && c.action !== 'restore') return false;
+    return c.action !== 'skip';
+  });
+  if (!targets.length) { alert('처리할 대상 없음'); return; }
+  if (!confirm(`상품 ${targets.length}건 복원/생성 진행?\n각 product 에 set/update + audit log 기록.`)) return;
+
+  const status = document.getElementById('productStatus');
+  status.textContent = '실행 중...';
+  let ok = 0, fail = 0;
+  for (const p of targets) {
+    const cls = classifyProduct(p);
+    const normd = normalizeProduct(p);
+    const key = p._key;
+    delete normd._key;
+    normd.restored_by = currentUser.uid;
+    try {
+      if (cls.action === 'create') {
+        // 신규 생성 — set
+        await update(ref(db, `products/${key}`), normd);
+      } else {
+        // 복원 — update
+        await update(ref(db, `products/${key}`), normd);
+      }
+      try {
+        await push(ref(db, 'audit_logs'), {
+          action: cls.action === 'create' ? 'create' : 'restore',
+          collection: 'products',
+          record_key: key,
+          actor_uid: currentUser.uid,
+          actor_role: userRole || '',
+          actor_name: currentUser.email || '',
+          fields: Object.keys(normd),
+          values: {
+            car_number: normd.car_number || '',
+            maker: normd.maker || '',
+            model: normd.model || '',
+          },
+          ts: Date.now(),
+        });
+      } catch (auditErr) { log('  [audit fail]', key, auditErr.code); }
+      // 메모리상 dbProductsByKey 업데이트 → 재렌더 시 'skip' 으로 표시
+      dbProductsByKey[key] = { ...normd, _key: key };
+      log(`[${cls.action}]`, key, '(', p.car_number || '신규', ')', '✓');
+      ok++;
+    } catch (e) {
+      log(`[${cls.action}]`, key, '✗', e.code || e.message);
+      fail++;
+    }
+  }
+  status.innerHTML = `<span class="badge ${fail ? 'warn' : 'ok'}">완료: 성공 ${ok} / 실패 ${fail}</span>`;
+  renderProductPreview();
+});
+</script>
+
+</body>
+</html>

@@ -12,70 +12,90 @@
   "trims": {
     "스마트 가솔린 1.6": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 15350000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "스마트 LPi 1.6": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 16200000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "모던 가솔린 1.6": {
       "slug": "모던",
-      "price": {},
+      "price": {
+        "base": 17400000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "모던 LPi 1.6": {
       "slug": "모던",
-      "price": {},
+      "price": {
+        "base": 18200000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 가솔린 1.6": {
       "slug": "프리미엄",
-      "price": {},
+      "price": {
+        "base": 19900000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 LPi 1.6": {
       "slug": "프리미엄",
-      "price": {},
+      "price": {
+        "base": 20700000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "익스트림 가솔린 1.6": {
       "slug": "익스트림",
-      "price": {},
+      "price": {
+        "base": 21550000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "익스트림 LPi 1.6": {
       "slug": "익스트림",
-      "price": {},
+      "price": {
+        "base": 22300000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "스포츠 가솔린 1.6": {
       "slug": "스포츠",
-      "price": {},
+      "price": {
+        "base": 23400000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "스포츠 LPi 1.6": {
       "slug": "스포츠",
-      "price": {},
+      "price": {
+        "base": 24200000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

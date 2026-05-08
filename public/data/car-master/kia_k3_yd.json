@@ -12,70 +12,90 @@
   "trims": {
     "디럭스 가솔린 1.6": {
       "slug": "deluxe",
-      "price": {},
+      "price": {
+        "base": 13700000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "디럭스 LPi 1.6": {
       "slug": "deluxe",
-      "price": {},
+      "price": {
+        "base": 13700000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "트렌디 가솔린 1.6": {
       "slug": "trendy",
-      "price": {},
+      "price": {
+        "base": 15000000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "트렌디 LPi 1.6": {
       "slug": "trendy",
-      "price": {},
+      "price": {
+        "base": 15000000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "럭셔리 가솔린 1.6": {
       "slug": "luxury",
-      "price": {},
+      "price": {
+        "base": 16900000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "럭셔리 LPi 1.6": {
       "slug": "luxury",
-      "price": {},
+      "price": {
+        "base": 16900000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프레스티지 가솔린 1.6": {
       "slug": "prestige",
-      "price": {},
+      "price": {
+        "base": 18800000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프레스티지 LPi 1.6": {
       "slug": "prestige",
-      "price": {},
+      "price": {
+        "base": 18800000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "노블레스 가솔린 1.6": {
       "slug": "noblesse",
-      "price": {},
+      "price": {
+        "base": 20800000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "노블레스 LPi 1.6": {
       "slug": "noblesse",
-      "price": {},
+      "price": {
+        "base": 20800000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

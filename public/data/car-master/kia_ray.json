@@ -528,7 +528,11 @@
     "KRTM257P01": {
       "name": "버튼시동 스마트키",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "SMART_KEY"
+      ]
     },
     "KRTM257P02": {
       "name": "스타일",
@@ -543,17 +547,33 @@
     "KRTM257P08": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRTM257P21": {
       "name": "8인치 디스플레이 오디오",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH",
+        "MP3"
+      ]
     },
     "KRTM257P09": {
       "name": "8인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRTM257033": {
       "name": "14인치 알로이 휠",
@@ -725,7 +745,10 @@
     "KRTM257P10": {
       "name": "8인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRTM257121": {
       "name": "그레이 투톤 패키지",
@@ -855,7 +878,10 @@
     "KRTM257P11": {
       "name": "8인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRTM257113": {
       "name": "X-Line 전용 외장 디자인",
@@ -870,7 +896,10 @@
     "KRTM257P16": {
       "name": "8인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRTM257115": {
       "name": "4에어백(운전석, 전복감지 커튼, 운전석 사이드)",
@@ -921,7 +950,10 @@
     "KRTM257P17": {
       "name": "8인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRTM257P18": {
       "name": "컴포트",
@@ -931,7 +963,10 @@
     "KRTM257P13": {
       "name": "8인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRTM257068": {
       "name": "운전석 열선시트",
@@ -949,7 +984,10 @@
     "KRTM257P14": {
       "name": "8인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRTM257026": {
       "name": "앞좌석 시트벨트 리마인더",
@@ -973,42 +1011,86 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -1064,7 +1146,6 @@
         "KRTM257101",
         "KRTM257102",
         "KRTM257106",
-        "WIRELESS_MIRROR",
         "KRTM257118",
         "KRTM257100",
         "KRTM257006"
@@ -1206,7 +1287,6 @@
         "KRTM257101",
         "KRTM257102",
         "KRTM257106",
-        "WIRELESS_MIRROR",
         "KRTM257118",
         "KRTM257100",
         "KRTM257006"
@@ -1356,7 +1436,6 @@
         "KRTM257101",
         "KRTM257102",
         "KRTM257106",
-        "WIRELESS_MIRROR",
         "KRTM257118",
         "KRTM257100",
         "KRTM257006"
@@ -1514,7 +1593,6 @@
         "KRTM257101",
         "KRTM257102",
         "KRTM257106",
-        "WIRELESS_MIRROR",
         "KRTM257118",
         "KRTM257100",
         "KRTM257006"
@@ -2430,7 +2508,6 @@
         "KRTM257105",
         "KRTM257104",
         "KRTM257060",
-        "WIRELESS_MIRROR",
         "KRTM257118",
         "KRTM257100",
         "KRTM257006"
@@ -2592,7 +2669,6 @@
         "KRTM257105",
         "KRTM257104",
         "KRTM257060",
-        "WIRELESS_MIRROR",
         "KRTM257118",
         "KRTM257100",
         "KRTM257006"

@@ -435,7 +435,10 @@
     "KRDL243118": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRDL243119": {
       "name": "전좌석 세이프티 파워 윈도우",
@@ -593,27 +596,49 @@
     "KRDL243P10": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRDL243P13": {
       "name": "12.3인치 클러스터 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRDL243P14": {
       "name": "HUD + 빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "HUD"
+      ]
     },
     "KRDL243P15": {
       "name": "KRELL 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRDL243P17": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRDL243062": {
       "name": "파노라마 선루프",
@@ -765,7 +790,10 @@
     "KRDL243P26": {
       "name": "빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "KRDL243024": {
       "name": "원격 스마트 주차 보조",
@@ -948,12 +976,24 @@
     "KRDL243P11": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRDL243P18": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRDL243163": {
       "name": "215/55 R17 피렐리 타이어&amp;하이브리드 전용 전면가공 휠",
@@ -1151,12 +1191,24 @@
     "KRDL243P24": {
       "name": "12.3인치 클러스터 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRDL243P23": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRDL243002": {
       "name": "6단 자동변속기",
@@ -1174,7 +1226,10 @@
     "KRDL243P12": {
       "name": "12.3인치 클러스터 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRDL243053": {
       "name": "235/45 R18 피렐리 타이어&amp;전면가공 휠",
@@ -1228,7 +1283,10 @@
     "KRDL243P16": {
       "name": "KRELL 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRDL243P25": {
       "name": "스타일",
@@ -1263,7 +1321,10 @@
     "KRDL243P22": {
       "name": "12.3인치 클러스터 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRDL243175": {
       "name": "앞좌석 이지 억세스",
@@ -1283,42 +1344,86 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "categories": {
@@ -1535,7 +1640,9 @@
   "trims": {
     "트렌디 가솔린": {
       "slug": "트렌디",
-      "price": {},
+      "price": {
+        "base": 23420000
+      },
       "basic": [
         "KRDL243009",
         "KRDL243010",
@@ -1613,7 +1720,9 @@
     },
     "럭셔리 가솔린": {
       "slug": "럭셔리",
-      "price": {},
+      "price": {
+        "base": 25470000
+      },
       "basic": [
         "KRDL243009",
         "KRDL243010",
@@ -1737,7 +1846,9 @@
     },
     "프레스티지 가솔린": {
       "slug": "프레스티지",
-      "price": {},
+      "price": {
+        "base": 27660000
+      },
       "basic": [
         "KRDL243009",
         "KRDL243010",
@@ -1861,7 +1972,9 @@
     },
     "노블레스 가솔린": {
       "slug": "노블레스",
-      "price": {},
+      "price": {
+        "base": 30680000
+      },
       "basic": [
         "KRDL243009",
         "KRDL243010",
@@ -2028,7 +2141,9 @@
     },
     "SX 가솔린": {
       "slug": "sx",
-      "price": {},
+      "price": {
+        "base": 32470000
+      },
       "basic": [
         "KRDL243009",
         "KRDL243010",

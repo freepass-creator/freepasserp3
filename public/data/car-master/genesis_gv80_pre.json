@@ -874,7 +874,10 @@
     "WK_메탈_페달_기본_적용": {
       "name": "메탈 페달 기본 적용",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "METAL_PEDAL"
+      ]
     },
     "WK_5인승": {
       "name": "5인승",
@@ -899,7 +902,10 @@
     "WK_천연_가죽_시트_테크니컬_펀칭__파이핑_적용_": {
       "name": "천연 가죽 시트(테크니컬 펀칭, 파이핑 적용)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_스핀_패턴_알루미늄_내장재": {
       "name": "스핀 패턴 알루미늄 내장재",
@@ -914,17 +920,26 @@
     "WK_프라임_나파_가죽_내장재_스티어링_휠_혼_커버_": {
       "name": "프라임 나파 가죽 내장재(스티어링 휠 혼 커버)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_투톤_가죽_스티어링_휠": {
       "name": "투톤 가죽 스티어링 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "STR_LEATHER"
+      ]
     },
     "WK_프라임_나파_가죽_시트_퀼팅__파이핑_적용_": {
       "name": "프라임 나파 가죽 시트(퀼팅, 파이핑 적용)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_오픈_포어_리얼_우드_또는_카본_내장재": {
       "name": "오픈 포어 리얼 우드 또는 카본 내장재",
@@ -949,17 +964,42 @@
     "WK_헤드업_디스플레이": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "WK_드라이빙_어시스턴스_패키지_I": {
       "name": "드라이빙 어시스턴스 패키지 I",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "WK_드라이빙_어시스턴스_패키지_II": {
       "name": "드라이빙 어시스턴스 패키지 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "WK_파노라마_선루프": {
       "name": "파노라마 선루프",
@@ -988,47 +1028,82 @@
     "WK_서라운드_뷰_모니터": {
       "name": "서라운드 뷰 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_후측방_모니터": {
       "name": "후측방 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "WK_원격_스마트_주차_보조_2_주차_구획인식_및_사선_주차_포함_": {
       "name": "원격 스마트 주차 보조 2(주차 구획인식 및 사선 주차 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SPAS"
+      ]
     },
     "WK_주차_충돌방지_보조_전_측_후방_": {
       "name": "주차 충돌방지 보조(전/측/후방)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA",
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "WK_주차_거리_경고_측방_": {
       "name": "주차 거리 경고(측방)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "WK_고속도로_주행_보조_2_차로_변경_보조_기능_포함_": {
       "name": "고속도로 주행 보조 2(차로 변경 보조 기능 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "WK_운전_스타일_연동_스마트_크루즈_컨트롤": {
       "name": "운전 스타일 연동 스마트 크루즈 컨트롤",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "WK_내비게이션_기반_스마트_크루즈_컨트롤_진출입로_": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "WK_전방_충돌방지_보조_교차로_교차_측방_접근차__추월_시_대향차__회피_조향_보조_기능_포함": {
       "name": "전방 충돌방지 보조(교차로 교차/측방 접근차, 추월 시 대향차, 회피 조향 보조 기능 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "WK_앞좌석_프리액티브_시트벨트": {
       "name": "앞좌석 프리액티브 시트벨트",
@@ -1038,7 +1113,10 @@
     "WK_지능형_헤드램프": {
       "name": "지능형 헤드램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_운전자_전방_주시_카메라": {
       "name": "운전자 전방 주시 카메라",
@@ -1053,12 +1131,18 @@
     "WK_전자식_차동제한장치_e_LSD_": {
       "name": "전자식 차동제한장치(e-LSD)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ELSD"
+      ]
     },
     "WK_2열_전동_리클라이닝__슬라이딩__틸팅__및_통풍_시트": {
       "name": "2열 전동(리클라이닝, 슬라이딩, 틸팅) 및 통풍 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "WK_3존__공조_2열_LCD_공조_조절_장치__풍량_독립제어_포함_": {
       "name": "3존+ 공조(2열 LCD 공조 조절 장치, 풍량 독립제어 포함)",
@@ -1083,17 +1167,26 @@
     "WK_뱅앤올룹슨_고해상도_사운드_시스템_18스피커_": {
       "name": "뱅앤올룹슨 고해상도 사운드 시스템(18스피커)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "WK_액티브_노이즈_컨트롤_로드_ANC_R_": {
       "name": "액티브 노이즈 컨트롤-로드(ANC-R)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ANC"
+      ]
     },
     "WK_빌트인_캠_2": {
       "name": "빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "WK_보조배터리": {
       "name": "보조배터리",
@@ -1103,7 +1196,10 @@
     "WK_증강현실_내비게이션": {
       "name": "증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_14_6인치_스마트_듀얼_모니터": {
       "name": "14.6인치 스마트 듀얼 모니터",
@@ -1161,22 +1257,45 @@
     "WK_파퓰러_패키지": {
       "name": "파퓰러 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR",
+        "REMOTE_LOCK",
+        "SMART_KEY",
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ]
     },
     "WK_빌트인_캠_패키지": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "WK_뱅앤올룹슨_사운드_패키지": {
       "name": "뱅앤올룹슨 사운드 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH",
+        "SOUND_PREMIUM",
+        "USB"
+      ]
     },
     "WK_컨비니언스_패키지": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "WK_265_40R22_미쉐린_타이어___다이아몬드_컷팅_휠__GV80_Coupe_Black_전": {
       "name": "265/40R22 미쉐린 타이어 & 다이아몬드 컷팅 휠 (GV80 Coupe Black 전용)",
@@ -1283,51 +1402,98 @@
     "WK_메탈_페달": {
       "name": "메탈 페달",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "METAL_PEDAL"
+      ]
     },
     "PKG_ADAS": {
       "name": "드라이빙 어시스턴스 패키지 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
-    "가솔린 2.5T AWD": {
+    "가솔린 2.5 T AWD": {
       "slug": "g25t_awd",
       "price": {
         "base": 69000000,
@@ -1601,7 +1767,7 @@
         }
       ]
     },
-    "가솔린 3.5T AWD": {
+    "가솔린 3.5 T AWD": {
       "slug": "g35t_awd",
       "price": {
         "base": 73500000
@@ -1875,7 +2041,7 @@
         }
       ]
     },
-    "가솔린 3.5T 슈퍼차저 AWD": {
+    "가솔린 3.5 T 슈퍼차저 AWD": {
       "slug": "g35t_sc_awd",
       "price": {
         "base": 79500000

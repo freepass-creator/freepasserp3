@@ -522,12 +522,24 @@
     "SX04P06": {
       "name": "내비게이션 패키지Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "SX04P02": {
       "name": "현대 스마트센스Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "SX04P05": {
       "name": "컴포트 초이스",
@@ -652,7 +664,16 @@
     "SX04P03": {
       "name": "현대 스마트센스Ⅲ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "SX04071": {
       "name": "클러스터(12.3인치 컬러 LCD)",
@@ -665,7 +686,13 @@
     "SX04P09": {
       "name": "파킹어시스트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "SX04P10": {
       "name": "컨비니언스",
@@ -675,7 +702,11 @@
     "SX04P01": {
       "name": "빌트인 캠 2, 증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "NAVIGATION"
+      ]
     },
     "SX04005": {
       "name": "스마트스트림 가솔린 1.6 터보 엔진",
@@ -997,46 +1028,90 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
-    "모던 2.0": {
+    "모던 가솔린 2.0": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -1137,8 +1212,7 @@
         "SX04049",
         "SX04052",
         "SX04036",
-        "SX04085",
-        "WIRELESS_MIRROR"
+        "SX04085"
       ],
       "select": [
         "SX04112",
@@ -1177,7 +1251,7 @@
         }
       ]
     },
-    "H-Pick 2.0": {
+    "H-Pick 가솔린 2.0": {
       "slug": "H-Pick",
       "name_en": null,
       "price": {
@@ -1278,8 +1352,7 @@
         "SX04046",
         "SX04049",
         "SX04052",
-        "SX04036",
-        "WIRELESS_MIRROR"
+        "SX04036"
       ],
       "select": [
         "SX04112",
@@ -1350,7 +1423,7 @@
         }
       ]
     },
-    "모던 1.6T": {
+    "모던 가솔린 1.6 T": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -1451,8 +1524,7 @@
         "SX04049",
         "SX04052",
         "SX04036",
-        "SX04085",
-        "WIRELESS_MIRROR"
+        "SX04085"
       ],
       "select": [
         "SX04112",
@@ -1491,7 +1563,7 @@
         }
       ]
     },
-    "H-Pick 1.6T": {
+    "H-Pick 가솔린 1.6 T": {
       "slug": "H-Pick",
       "name_en": null,
       "price": {
@@ -1592,8 +1664,7 @@
         "SX04046",
         "SX04049",
         "SX04052",
-        "SX04036",
-        "WIRELESS_MIRROR"
+        "SX04036"
       ],
       "select": [
         "SX04112",
@@ -1664,7 +1735,7 @@
         }
       ]
     },
-    "프리미엄 1.6T": {
+    "프리미엄 가솔린 1.6 T": {
       "slug": "premium",
       "name_en": null,
       "price": {
@@ -1765,8 +1836,7 @@
         "SX04084",
         "SX04080",
         "SX04079",
-        "SX04087",
-        "WIRELESS_MIRROR"
+        "SX04087"
       ],
       "select": [
         "SX04001",
@@ -1853,7 +1923,7 @@
         }
       ]
     },
-    "인스퍼레이션 1.6T": {
+    "인스퍼레이션 가솔린 1.6 T": {
       "slug": "inspiration",
       "name_en": null,
       "price": {
@@ -2026,10 +2096,12 @@
         }
       ]
     },
-    "블랙 익스테리어 1.6T": {
+    "블랙 익스테리어 가솔린 1.6 T": {
       "slug": "black-exterior",
       "name_en": null,
-      "price": {},
+      "price": {
+        "base": 33060000
+      },
       "basic": [
         "SX04005",
         "SX04003",
@@ -2192,10 +2264,12 @@
         }
       ]
     },
-    "N 라인 1.6T": {
+    "N 라인 가솔린 1.6 T": {
       "slug": "n-line",
       "name_en": null,
-      "price": {},
+      "price": {
+        "base": 31050000
+      },
       "basic": [
         "SX04005",
         "SX04003",
@@ -2452,8 +2526,7 @@
         "SX04004",
         "SX04002",
         "SX04045",
-        "SX04061",
-        "WIRELESS_MIRROR"
+        "SX04061"
       ],
       "select": [
         "SX04001",
@@ -2640,8 +2713,7 @@
         "SX04004",
         "SX04002",
         "SX04045",
-        "SX04061",
-        "WIRELESS_MIRROR"
+        "SX04061"
       ],
       "select": [
         "SX04001",
@@ -2728,7 +2800,7 @@
         }
       ]
     },
-    "프리미엄 2.0": {
+    "프리미엄 가솔린 2.0": {
       "slug": "프리미엄 2.0",
       "price": {
         "base": 27530000
@@ -2828,8 +2900,7 @@
         "SX04046",
         "SX04049",
         "SX04052",
-        "SX04036",
-        "WIRELESS_MIRROR"
+        "SX04036"
       ],
       "select": [
         "SX04112",
@@ -2868,7 +2939,7 @@
         }
       ]
     },
-    "인스퍼레이션 2.0": {
+    "인스퍼레이션 가솔린 2.0": {
       "slug": "인스퍼레이션 2.0",
       "price": {
         "base": 30340000

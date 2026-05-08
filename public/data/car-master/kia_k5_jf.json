@@ -12,35 +12,45 @@
   "trims": {
     "트렌디 가솔린": {
       "slug": "트렌디",
-      "price": {},
+      "price": {
+        "base": 22450000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "럭셔리 가솔린": {
       "slug": "럭셔리",
-      "price": {},
+      "price": {
+        "base": 24350000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프레스티지 가솔린": {
       "slug": "프레스티지",
-      "price": {},
+      "price": {
+        "base": 26400000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "노블레스 가솔린": {
       "slug": "노블레스",
-      "price": {},
+      "price": {
+        "base": 29350000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "GT 라인 가솔린": {
       "slug": "gt_라인",
-      "price": {},
+      "price": {
+        "base": 31050000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

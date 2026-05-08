@@ -12,35 +12,45 @@
   "trims": {
     "모던 가솔린": {
       "slug": "modern",
-      "price": {},
+      "price": {
+        "base": 31320000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 가솔린": {
       "slug": "premium",
-      "price": {},
+      "price": {
+        "base": 34470000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "럭셔리 가솔린": {
       "slug": "luxury",
-      "price": {},
+      "price": {
+        "base": 36520000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "Le Blanc 가솔린": {
       "slug": "le_blanc",
-      "price": {},
+      "price": {
+        "base": 38590000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "캘리그래피 가솔린": {
       "slug": "calligraphy",
-      "price": {},
+      "price": {
+        "base": 41350000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

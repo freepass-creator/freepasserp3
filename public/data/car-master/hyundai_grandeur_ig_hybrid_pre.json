@@ -533,12 +533,27 @@
     "GN03P06": {
       "name": "파킹 어시스트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "GN03P01": {
       "name": "현대 스마트센스Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "GN03P17": {
       "name": "프리미엄 초이스",
@@ -738,12 +753,24 @@
     "GN03P16": {
       "name": "현대 스마트센스Ⅱ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "GN03P10": {
       "name": "프리뷰 전자제어 서스펜션Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECS"
+      ]
     },
     "GN03126": {
       "name": "20인치 고휘도 스퍼터링 휠",
@@ -817,7 +844,12 @@
     "GN03P04": {
       "name": "BOSE 프리미엄 사운드 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH",
+        "SOUND_PREMIUM",
+        "USB"
+      ]
     },
     "GN03001": {
       "name": "스마트스트림 가솔린 2.5 엔진",
@@ -858,12 +890,27 @@
     "GN03P02": {
       "name": "현대 스마트센스Ⅱ 플러스",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "GN03P07": {
       "name": "2열 컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR",
+        "HEAT_STR",
+        "POWER_SEAT_PS"
+      ]
     },
     "GN03062": {
       "name": "19인치 알로이 휠 & 타이어",
@@ -963,7 +1010,10 @@
     "GN03P11": {
       "name": "프리뷰 전자제어 서스펜션Ⅱ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECS"
+      ]
     },
     "GN03057": {
       "name": "캘리그래피 전용 그릴 & 전용 19인치 알로이 휠 & 타이어",
@@ -1030,42 +1080,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "WIRELESS_MIRROR": {
       "name": "무선 Apple CarPlay & Android Auto",

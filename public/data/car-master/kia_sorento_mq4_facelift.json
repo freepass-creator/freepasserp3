@@ -434,7 +434,10 @@
     "KRMQ255108": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRMQ255109": {
       "name": "독립제어 풀오토 에어컨(운전석/동승석)",
@@ -630,7 +633,10 @@
     "KRMQ255P01": {
       "name": "전자식 4WD",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "KRMQ255P02": {
       "name": "6인승",
@@ -650,17 +656,33 @@
     "KRMQ255P10": {
       "name": "12.3인치 클러스터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "KRMQ255P11": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRMQ255P12": {
       "name": "HUD + 빌트인 캠2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "HUD"
+      ]
     },
     "KRMQ255063": {
       "name": "파노라마 선루프",
@@ -861,12 +883,18 @@
     "KRMQ255P14": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRMQ255P15": {
       "name": "KRELL 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRMQ255P20": {
       "name": "러기지 패키지",
@@ -947,7 +975,10 @@
     "KRMQ255133": {
       "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRMQ255126": {
       "name": "220V 인버터",
@@ -962,7 +993,10 @@
     "KRMQ255P22": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRMQ255172": {
       "name": "X-Line 전용 외장 디자인",
@@ -990,7 +1024,10 @@
     "KRMQ255P23": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRMQ255009": {
       "name": "스마트스트림 터보 하이브리드",
@@ -1033,7 +1070,10 @@
     "KRMQ255P16": {
       "name": "KRELL 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRMQ255061": {
       "name": "235/60 R18 컨티넨탈 타이어&amp;블랙알로이 휠",
@@ -1046,12 +1086,18 @@
     "KRMQ255P24": {
       "name": "19인치 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRMQ255P25": {
       "name": "19인치 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRMQ255007": {
       "name": "터레인 모드(오토/스노우/머드/샌드)",
@@ -1061,42 +1107,94 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
+    },
+    "KIA_WIRELESS_MIRRORING": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "인포테인먼트",
+      "fp_ids": [
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
+      ]
     }
   },
   "categories": {
@@ -1241,7 +1339,8 @@
       "KRMQ255143",
       "KRMQ255145",
       "KRMQ255146",
-      "KRMQ255070"
+      "KRMQ255070",
+      "KIA_WIRELESS_MIRRORING"
     ],
     "선택사양": [
       "KRMQ255P21",
@@ -1280,7 +1379,9 @@
   "trims": {
     "프레스티지 디젤 2.2": {
       "slug": "prestige",
-      "price": {},
+      "price": {
+        "base": 35060000
+      },
       "basic": [
         "KRMQ255009",
         "KRMQ255010",
@@ -1459,7 +1560,9 @@
     },
     "프레스티지 가솔린 2.5 T": {
       "slug": "prestige",
-      "price": {},
+      "price": {
+        "base": 34150000
+      },
       "basic": [
         "KRMQ255009",
         "KRMQ255010",
@@ -1638,7 +1741,9 @@
     },
     "노블레스 디젤 2.2": {
       "slug": "noblesse",
-      "price": {},
+      "price": {
+        "base": 38520000
+      },
       "basic": [
         "KRMQ255041",
         "KRMQ255020",
@@ -1852,7 +1957,9 @@
     },
     "노블레스 가솔린 2.5 T": {
       "slug": "noblesse",
-      "price": {},
+      "price": {
+        "base": 37600000
+      },
       "basic": [
         "KRMQ255041",
         "KRMQ255020",
@@ -2066,7 +2173,9 @@
     },
     "시그니처 디젤 2.2": {
       "slug": "signature",
-      "price": {},
+      "price": {
+        "base": 42220000
+      },
       "basic": [
         "KRMQ255042",
         "KRMQ255061",
@@ -2179,7 +2288,8 @@
         "KRMQ255064",
         "KRMQ255065",
         "KRMQ255067",
-        "KRMQ255080"
+        "KRMQ255080",
+        "KIA_WIRELESS_MIRRORING"
       ],
       "select": [
         "KRMQ255159",
@@ -2300,7 +2410,9 @@
     },
     "시그니처 가솔린 2.5 T": {
       "slug": "signature",
-      "price": {},
+      "price": {
+        "base": 41310000
+      },
       "basic": [
         "KRMQ255042",
         "KRMQ255061",
@@ -2413,7 +2525,8 @@
         "KRMQ255064",
         "KRMQ255065",
         "KRMQ255067",
-        "KRMQ255080"
+        "KRMQ255080",
+        "KIA_WIRELESS_MIRRORING"
       ],
       "select": [
         "KRMQ255159",
@@ -2534,7 +2647,9 @@
     },
     "그래비티 디젤 2.2": {
       "slug": "gravity",
-      "price": {},
+      "price": {
+        "base": 43220000
+      },
       "basic": [
         "KRMQ255042",
         "KRMQ255061",
@@ -2647,7 +2762,8 @@
         "KRMQ255064",
         "KRMQ255065",
         "KRMQ255067",
-        "KRMQ255080"
+        "KRMQ255080",
+        "KIA_WIRELESS_MIRRORING"
       ],
       "select": [
         "KRMQ255159",
@@ -2768,7 +2884,9 @@
     },
     "그래비티 가솔린 2.5 T": {
       "slug": "gravity",
-      "price": {},
+      "price": {
+        "base": 42310000
+      },
       "basic": [
         "KRMQ255042",
         "KRMQ255061",
@@ -2881,7 +2999,8 @@
         "KRMQ255064",
         "KRMQ255065",
         "KRMQ255067",
-        "KRMQ255080"
+        "KRMQ255080",
+        "KIA_WIRELESS_MIRRORING"
       ],
       "select": [
         "KRMQ255159",

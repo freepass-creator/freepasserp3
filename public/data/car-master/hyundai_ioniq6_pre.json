@@ -598,7 +598,16 @@
     "CE03P02": {
       "name": "현대 스마트센스Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "CE03136": {
       "name": "차량 보호 필름 Ⅰ",
@@ -702,12 +711,27 @@
     "CE03P03": {
       "name": "현대 스마트센스Ⅱ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "CE03P08": {
       "name": "파킹 어시스트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "CE03P05": {
       "name": "컴포트 플러스",
@@ -1060,42 +1084,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "categories": {
@@ -1262,7 +1330,9 @@
   "trims": {
     "스탠다드 익스클루시브 가솔린": {
       "slug": "스탠다드_익스클루시브",
-      "price": {},
+      "price": {
+        "base": 48560000
+      },
       "basic": [
         "CE03001",
         "CE03002",
@@ -1318,7 +1388,6 @@
         "CE03096",
         "CE03113",
         "CE03114",
-        "WIRELESS_MIRROR",
         "CE03032",
         "CE03035",
         "CE03036"
@@ -1385,7 +1454,9 @@
     },
     "롱레인지 익스클루시브 가솔린": {
       "slug": "롱레인지_익스클루시브",
-      "price": {},
+      "price": {
+        "base": 53260000
+      },
       "basic": [
         "CE03001",
         "CE03002",
@@ -1480,8 +1551,7 @@
         "CE03116",
         "CE03117",
         "CE03118",
-        "CE03119",
-        "WIRELESS_MIRROR"
+        "CE03119"
       ],
       "select": [],
       "select_groups": [
@@ -1545,7 +1615,9 @@
     },
     "롱레인지 프레스티지 가솔린": {
       "slug": "롱레인지_프레스티지",
-      "price": {},
+      "price": {
+        "base": 57360000
+      },
       "basic": [
         "CE03001",
         "CE03002",
@@ -1675,8 +1747,7 @@
         "CE03119",
         "CE03120",
         "CE03121",
-        "CE03122",
-        "WIRELESS_MIRROR"
+        "CE03122"
       ],
       "select": [],
       "select_groups": [

@@ -1,6 +1,6 @@
 {
   "catalog_id": "kgm_torres_evx",
-  "model_root": "토레스",
+  "model_root": "토레스 EVX",
   "title": "KGM 토레스 EVX",
   "maker": "KGM",
   "source": "stub",
@@ -789,12 +789,18 @@
     "WK_천연_가죽시트": {
       "name": "천연 가죽시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_파워_테일게이트": {
       "name": "파워 테일게이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "WK_20인치_다이아몬드_컷팅_휠___타이어": {
       "name": "20인치 다이아몬드 컷팅 휠 & 타이어",
@@ -804,7 +810,10 @@
     "WK_전방_주차_보조_경고": {
       "name": "전방 주차 보조 경고",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SENSOR_FRONT"
+      ]
     },
     "WK_18인치_다이아몬드_컷팅_휠___235_55R18타이어": {
       "name": "18인치 다이아몬드 컷팅 휠 & 235/55R18타이어",
@@ -814,12 +823,18 @@
     "WK_운전석_8way_전동시트___전동식_2way_럼버_서포트": {
       "name": "운전석 8way 전동시트 & 전동식 2way 럼버 서포트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "WK_그레이_투톤_매쉬타입_인조_가죽시트": {
       "name": "그레이 투톤 매쉬타입 인조 가죽시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_그레이_투톤_인테리어": {
       "name": "그레이 투톤 인테리어",
@@ -829,7 +844,10 @@
     "WK_브라운_매쉬타입_인조_가죽시트": {
       "name": "브라운 매쉬타입 인조 가죽시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_브라운_인테리어": {
       "name": "브라운 인테리어",
@@ -839,7 +857,10 @@
     "WK_스마트_파워_테일게이트": {
       "name": "스마트 파워 테일게이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "WK_테일게이트_실내_문열림_버튼": {
       "name": "테일게이트 실내 문열림 버튼",
@@ -862,27 +883,42 @@
     "WK_후측방_접근_충돌_보조_RCTA_": {
       "name": "후측방 접근 충돌 보조(RCTA)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_후측방_경고_BSW_": {
       "name": "후측방 경고(BSW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_후측방_접근_경고_RCTW_": {
       "name": "후측방 접근 경고(RCTW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_차선_변경_경고_LCW_": {
       "name": "차선 변경 경고(LCW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "WK_안전_하차_경고_SEW_": {
       "name": "안전 하차 경고(SEW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "WK_블랙_루프": {
       "name": "블랙 루프",
@@ -897,32 +933,51 @@
     "WK_12_3인치_터치_스크린_내비게이션": {
       "name": "12.3인치 터치 스크린 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD",
+        "NAVIGATION"
+      ]
     },
     "WK_내비게이션_무선_업데이트": {
       "name": "내비게이션 무선 업데이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_안드로이드_오토": {
       "name": "안드로이드 오토",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_애플_카플레이": {
       "name": "애플 카플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_음성인식_기능": {
       "name": "음성인식 기능",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     },
     "WK_후방_카메라_조향연동_다이내믹_주차_가이드_": {
       "name": "후방 카메라(조향연동 다이내믹 주차 가이드)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "WK_AM_FM라디오": {
       "name": "AM/FM라디오",
@@ -932,12 +987,18 @@
     "WK_USB_미디어": {
       "name": "USB 미디어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_블루투스_뮤직": {
       "name": "블루투스 뮤직",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH"
+      ]
     },
     "WK_양방향_공조제어": {
       "name": "양방향 공조제어",
@@ -947,7 +1008,10 @@
     "WK_프리미엄_서비스_지니_뮤직__팟캐스트_등_": {
       "name": "프리미엄 서비스(지니 뮤직, 팟캐스트 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_후석_취침모드": {
       "name": "후석 취침모드",
@@ -962,12 +1026,18 @@
     "WK_안전제일_서비스_에어백_전개_알림_": {
       "name": "안전제일 서비스(에어백 전개 알림)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_올인원_서비스_차량_원격_제어_등_": {
       "name": "올인원 서비스(차량 원격 제어 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_사이드_스토리지_박스_원톤_투톤_": {
       "name": "사이드 스토리지 박스(원톤/투톤)",
@@ -1085,12 +1155,18 @@
     "WK_도어_스팟램프": {
       "name": "도어 스팟램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "WK_LED_도어_스커프": {
       "name": "LED 도어 스커프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "WK_255_55R18_All_Terrain_타이어": {
       "name": "255/55R18 All Terrain 타이어",
@@ -1110,37 +1186,69 @@
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "categories": {
@@ -1333,9 +1441,10 @@
     ]
   },
   "trims": {
-    "T7 EV": {
-      "slug": "t7",
-      "price": {},
+    "E5 EV": {
+      "price": {
+        "base": 45500000
+      },
       "basic": [
         "WK_가솔린_1_5_T_GDi_엔진",
         "WK_듀얼_테크_하이브리드_시스템_e_DHT_하이브리드_변속기__듀얼모터__1_83kWh_배터리",
@@ -1435,7 +1544,6 @@
         "WK_안전_하차_경고_SEW_",
         "WK_이머전시_이스케이프_키트"
       ],
-      "select": [],
       "select_groups": [
         {
           "codes": [
@@ -1495,9 +1603,10 @@
         }
       ]
     },
-    "V7 EV": {
-      "slug": "v7",
-      "price": {},
+    "E7 EV": {
+      "price": {
+        "base": 47600000
+      },
       "basic": [
         "WK_가솔린_1_5_T_GDi_엔진",
         "WK_듀얼_테크_하이브리드_시스템_e_DHT_하이브리드_변속기__듀얼모터__1_83kWh_배터리",
@@ -1570,169 +1679,6 @@
         "WK_18인치_다이아몬드_컷팅_휠___235_55R18타이어",
         "WK_이머전시_이스케이프_키트"
       ],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 800000,
-          "name": "드라이빙 어시스트 패키지 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ]
-    },
-    "X7 EV": {
-      "slug": "x7",
-      "price": {},
-      "basic": [
-        "WK_가솔린_1_5_T_GDi_엔진",
-        "WK_듀얼_테크_하이브리드_시스템_e_DHT_하이브리드_변속기__듀얼모터__1_83kWh_배터리",
-        "WK_토글스위치_타입_전자식_변속시스템",
-        "WK_전동식_파워_스티어링_EPS_",
-        "WK_드라이브_모드_시스템",
-        "WK_전륜_맥퍼슨_스트럿___후륜_멀티링크_서스펜션",
-        "WK_전륜_벤틸레이티드_디스크___후륜_디스크_브레이크",
-        "WK_17인치_알로이_휠___225_60R17_타이어",
-        "WK_Full_LED_프로젝션_헤드램프_상향등__하향등__턴시그널_램프_",
-        "WK_LED_주간_주행등",
-        "WK_LED_안개등",
-        "WK_LED_리어_콤비램프",
-        "WK_리어_스포일러_LED_후방_보조_제동등_",
-        "WK_아웃사이드_미러_LED_턴시그널_램프__오토폴딩__열선__전동조절_",
-        "WK_이중접합_차음_글래스_윈드실드_",
-        "WK_에어로_블레이드_와이퍼",
-        "WK_전후방_스키드_플레이트",
-        "WK_샤크핀_통합_안테나",
-        "WK_12_3인치_디지털_클러스터",
-        "WK_인조_가죽시트",
-        "WK_1열_시트백_포켓",
-        "WK_가죽커버_스티어링_휠",
-        "WK_LED_룸램프",
-        "WK_Day___Night_룸미러",
-        "WK_2열_에어벤트",
-        "WK_펌핑식_높이_조절장치_운전석_",
-        "WK_1열_슬라이딩_헤드레스트",
-        "WK_시트벨트_높이_조절장치",
-        "WK_시트벨트_리마인더_전좌석_",
-        "WK_2열_6_4_분할_시트",
-        "WK_2열_센터_암레스트",
-        "WK_앰비언트_라이트",
-        "WK_운전석_8way_전동시트___전동식_2way_럼버서포트",
-        "WK_전자식_파킹_브레이크_오토_홀드_기능_포함_",
-        "WK_스마트키_시스템_오토_클로징__버튼시동_기능_포함_",
-        "WK_듀얼존_풀오토_에어컨_마이크로_에어컨_필터__오토_디포그__애프터_블로우_",
-        "WK_운전석___동승석_히팅시트",
-        "WK_열선_스티어링_휠",
-        "WK_오토_라이트_컨트롤",
-        "WK_우적감지_와이퍼",
-        "WK_패들_쉬프트",
-        "WK_USB_C_타입_단자_1열_충전_1개__데이터___충전_1개__2열_충전_2개_",
-        "WK_운전석_원터치_오토다운_파워_윈도우",
-        "WK_원터치_트리플_턴시그널_램프",
-        "WK_수동식_틸트___텔레스코픽_스티어링_휠",
-        "WK_크루즈_컨트롤",
-        "WK_12V_파워_소켓_1열_1개__러기지_1개_",
-        "WK_가스식_후드_리프터",
-        "WK_리어_와이퍼",
-        "WK_인텔리전트_어댑티브_크루즈_컨트롤_IACC_",
-        "WK_휴대폰_무선충전기",
-        "WK_소화기",
-        "WK_7에어백_운전석__동승석__1열_사이드__1열_파사이드__커튼_",
-        "WK_긴급_제동_보조_AEB_",
-        "WK_차선_유지_보조_LKA_",
-        "WK_중앙_차선_유지_보조_CLKA_",
-        "WK_스마트_하이빔_SHB_",
-        "WK_전방_추돌_경고_FCW_",
-        "WK_안전_거리_경고_SDW_",
-        "WK_앞차_출발_경고_FVSAW_",
-        "WK_차선_이탈_경고_LDW_",
-        "WK_부주의_운전_경고_DAW_",
-        "WK_운전자_졸음주의_경고_DDAW_",
-        "WK_후방_주차_보조_경고",
-        "WK_다중_충돌_방지_시스템",
-        "WK_ESP_가변형_HDC__BAS__ARP__HSA__ESS__트레일러_스웨이_컨트롤_",
-        "WK_타이어_공기압_경보_시스템_TPMS_",
-        "WK_12_3인치_스마트_미러링_패키지",
-        "WK_6스피커",
-        "WK_스티어링_휠_오디오_리모컨",
-        "WK_블루투스_핸즈프리",
-        "WK_운전석_무릎에어백",
-        "WK_사이드_스텝_좌_우_",
-        "WK_알파인_오디오_시스템",
-        "WK_12_3인치_KGM_링크_내비게이션_패키지",
-        "WK_파노라마_선루프",
-        "WK_투톤_익스테리어_패키지",
-        "WK_3D_어라운드뷰_모니터링_시스템",
-        "WK_하이컴포트_패키지",
-        "WK_그레이투톤_브라운_인테리어_패키지",
-        "WK_20인치_다이아몬드_컷팅_휠___흡음형_타이어",
-        "WK_스마트_파워_테일게이트_패키지",
-        "WK_천연가죽시트",
-        "WK_딥_컨트롤_패키지_II",
-        "WK_천연_가죽시트",
-        "WK_파워_테일게이트",
-        "WK_20인치_다이아몬드_컷팅_휠___타이어",
-        "WK_전방_주차_보조_경고",
-        "WK_18인치_다이아몬드_컷팅_휠___235_55R18타이어",
-        "WK_운전석_8way_전동시트___전동식_2way_럼버_서포트",
-        "WK_그레이_투톤_매쉬타입_인조_가죽시트",
-        "WK_그레이_투톤_인테리어",
-        "WK_브라운_매쉬타입_인조_가죽시트",
-        "WK_브라운_인테리어",
-        "WK_후측방_접근_충돌_보조_RCTA_",
-        "WK_안전_하차_경고_SEW_",
-        "WK_이머전시_이스케이프_키트"
-      ],
-      "select": [],
       "select_groups": [
         {
           "codes": [

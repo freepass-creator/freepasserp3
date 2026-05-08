@@ -434,6 +434,8 @@ function renderFpOptions() {
 /* 카탈로그(제조사 실데이터) ↔ 프리패스 표준 옵션 매칭 */
 function _normName(s) {
   return (s || '').toLowerCase()
+    .replace(/&amp;/g, '')
+    .replace(/&quot;/g, '')
     .replace(/[\(\)\[\]_\-\/\.,&\+°]/g, '')
     .replace(/\s+/g, '');
 }
@@ -2794,19 +2796,45 @@ function fillMakers() {
   sel.disabled = false;
 }
 
+// 변형 모델은 부모 모델 바로 아래 배치 (model_root 별도 분리되어 있음)
+const VARIANT_PARENT = {
+  '아반떼 N': '아반떼',
+  '아이오닉5 N': '아이오닉5',
+  '카니발 하이리무진': '카니발',
+  'G70 슈팅브레이크': 'G70',
+  '일렉트리파이드 G80': 'G80',
+  '일렉트리파이드 GV70': 'GV70',
+  'GV80 쿠페': 'GV80',
+  '무쏘 EV': '무쏘',
+  '토레스 EVX': '토레스',
+  '레이 EV': '레이',
+};
+
 function onMakerChange() {
   const m = $('maker').value;
   const sel = $('model');
   sel.innerHTML = '<option value="">모델</option>';
   if (!m) { sel.disabled = true; resetCatalog(); return; }
-  // 모델 정렬: 같은 maker 내 sub_model 수 desc → 가나다
+  // 모델 정렬: 그룹(부모) sub_model 합계 desc → 그룹내 부모 먼저 변형 뒤
   const modelCounts = {};
   state.master.filter(r => r.maker === m).forEach(r => {
     if (r.model) modelCounts[r.model] = (modelCounts[r.model]||0) + 1;
   });
+  const groupKey = mod => VARIANT_PARENT[mod] || mod;
+  const isVariant = mod => !!VARIANT_PARENT[mod];
+  const groupCount = {};
+  Object.keys(modelCounts).forEach(mod => {
+    const g = groupKey(mod);
+    groupCount[g] = (groupCount[g] || 0) + modelCounts[mod];
+  });
   const models = Object.keys(modelCounts).sort((a,b) => {
-    const cd = modelCounts[b] - modelCounts[a];
-    return cd !== 0 ? cd : a.localeCompare(b,'ko');
+    const ga = groupKey(a), gb = groupKey(b);
+    if (ga !== gb) {
+      const cd = (groupCount[gb] || 0) - (groupCount[ga] || 0);
+      return cd !== 0 ? cd : ga.localeCompare(gb,'ko');
+    }
+    if (isVariant(a) !== isVariant(b)) return isVariant(a) ? 1 : -1;
+    return a.localeCompare(b,'ko');
   });
   models.forEach(mod => {
     const opt = document.createElement('option');
@@ -2869,13 +2897,14 @@ function onModelChange() {
 
   // 각 catalog 의 trim 동력원 추출 (한 catalog 가 여러 동력원 가지면 dropdown entry 분리)
   // 동력원/배기량 + 인승 토큰 추출 (긴 패턴 우선)
+  // \d\.\d 또는 \d+인승 별도 그룹 — \d? greedy 가 인승 첫 자리 먹는 문제 회피
   const FUEL_PATTERNS = [
-    { re: /(하이브리드|HEV)\s*\d?\.?\d?\s*[T]?(\s*\d+인승)?/, group: m => m[0].trim() },
-    { re: /(EV|일렉트릭|전기)\b(\s*\d+인승)?/, group: m => (/(EV|일렉트릭)/.test(m[0]) ? 'EV' : m[0]).trim() + (m[2] || '') },
-    { re: /가솔린\s*\d\.\d\s*T?(\s*\d+인승)?/, group: m => m[0].trim() },
-    { re: /디젤\s*R?\d\.\d(\s*\d+인승)?/, group: m => m[0].trim() },
-    { re: /(LPi|LPG)\s*\d\.\d(\s*\d+인승)?/, group: m => m[0].trim() },
-    { re: /수소(\s*\d+인승)?/, group: m => m[0].trim() },
+    { re: /(하이브리드|HEV)(?:\s+\d\.\d\s*T?)?(?:\s+\d+인승)?/, group: m => m[0].trim() },
+    { re: /(EV|일렉트릭|전기)\b(?:\s+\d+인승)?/, group: m => m[0].replace(/(일렉트릭|전기)/, 'EV').trim() },
+    { re: /가솔린\s+\d\.\d\s*T?(?:\s+\d+인승)?/, group: m => m[0].trim() },
+    { re: /디젤\s+R?\d\.\d(?:\s+\d+인승)?/, group: m => m[0].trim() },
+    { re: /(LPi|LPG)\s+\d\.\d(?:\s+\d+인승)?/, group: m => m[0].trim() },
+    { re: /수소(?:\s+\d+인승)?/, group: m => m[0].trim() },
   ];
   // 모델별 알려진 동력원 set (trim 키에 동력원 명시 없을 때 fallback)
   const MODEL_FUELS_FALLBACK = {
@@ -2934,6 +2963,7 @@ function onModelChange() {
     return fuels;
   }
 
+  // 세부모델 dropdown — catalog 1개 = entry 1개 (동력원 분리는 별도 부가 dropdown 에서)
   subs.forEach(r => {
     const splits = FL_SPLITS[r._key];
     if (splits) {
@@ -2946,32 +2976,15 @@ function onModelChange() {
       });
       return;
     }
-    // 캐탈로그 trim 동력원 검출 — window.CAR_MASTER 에서 직접 가져오기
-    const catId = r._catalog_id || r.catalog_id || r._key;
-    const cat = (window.CAR_MASTER && window.CAR_MASTER[catId]) || null;
-    const fuels = cat ? [...detectFuels(cat, r.model)].filter(Boolean) : [];
-    const baseDisplay = normalizeSub(r);
+    const opt = document.createElement('option');
+    opt.value = r._key;
     const yr = (r.production_start||'').slice(0,4) + '~' + ((r.production_end||'').slice(0,4) || '현재');
-
-    if (fuels.length <= 1) {
-      // 단일 동력원 또는 캐쉬 미히트 — 기존 방식
-      const opt = document.createElement('option');
-      opt.value = r._key;
-      opt.textContent = showYear ? `${baseDisplay} (${yr})` : baseDisplay;
-      sel.appendChild(opt);
-    } else {
-      // 다중 동력원 — 동력원별로 entry 분리 (catalog title 에 이미 명시된 동력원 키워드는 중복 회피)
-      for (const f of fuels) {
-        const opt = document.createElement('option');
-        opt.value = `${r._key}::FUEL=${encodeURIComponent(f)}`;
-        const display = baseDisplay.includes(f.split(' ')[0]) ? baseDisplay : `${baseDisplay} ${f}`;
-        opt.textContent = showYear ? `${display} (${yr})` : display;
-        sel.appendChild(opt);
-      }
-    }
+    opt.textContent = showYear ? `${normalizeSub(r)} (${yr})` : normalizeSub(r);
+    sel.appendChild(opt);
   });
   sel.disabled = false;
   $('trim').innerHTML = '<option>트림</option>'; $('trim').disabled = true;
+  $('fuelvar').innerHTML = '<option>유종/배기량</option>'; $('fuelvar').disabled = true;
   resetCatalog();
 }
 

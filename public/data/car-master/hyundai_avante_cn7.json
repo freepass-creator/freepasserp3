@@ -482,7 +482,10 @@
     "CN06P02": {
       "name": "인포테인먼트 내비",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "CN06101": {
       "name": "하이패스",
@@ -495,12 +498,24 @@
     "CN06P04": {
       "name": "현대 스마트센스",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "CN06P07": {
       "name": "17인치 알로이 휠 & 타이어 Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "CN06037": {
       "name": "16인치 알로이 휠 & 타이어",
@@ -627,12 +642,23 @@
     "CN06P03": {
       "name": "파킹 어시스트 플러스",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "CN06P06": {
       "name": "익스테리어 디자인",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "CN06P10": {
       "name": "컴포트 Ⅱ",
@@ -642,7 +668,10 @@
     "CN06P08": {
       "name": "17인치 알로이 휠 & 타이어 Ⅱ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "CN06064": {
       "name": "세이지 그린 인테리어 컬러",
@@ -931,7 +960,10 @@
     "CN06P09": {
       "name": "빌트인 캠(보조배터리 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "CN06007": {
       "name": "후륜 멀티링크 서스펜션",
@@ -997,42 +1029,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -1084,10 +1160,8 @@
         "CN06089",
         "CN06090",
         "CN06091",
-        "CN06108",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR",
         "CN06016",
         "CN06022"
       ],
@@ -1193,7 +1267,6 @@
         "CN06109",
         "CN06110",
         "CN06034",
-        "CN06108",
         "CN06036",
         "CN06093",
         "CN06094",
@@ -1201,7 +1274,6 @@
         "CN06096",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR",
         "CN06016",
         "CN06022"
       ],
@@ -1460,8 +1532,6 @@
         "CN06004",
         "CN06098",
         "CN06034",
-        "CN06108",
-        "WIRELESS_MIRROR",
         "CN06016",
         "CN06022"
       ],
@@ -1516,10 +1586,8 @@
         "CN06089",
         "CN06090",
         "CN06091",
-        "CN06108",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR",
         "CN06016",
         "CN06022"
       ],
@@ -1625,7 +1693,6 @@
         "CN06109",
         "CN06110",
         "CN06034",
-        "CN06108",
         "CN06036",
         "CN06093",
         "CN06094",
@@ -1633,7 +1700,6 @@
         "CN06096",
         "CN06001",
         "CN06004",
-        "WIRELESS_MIRROR",
         "CN06016",
         "CN06022"
       ],
@@ -1690,7 +1756,7 @@
         }
       ]
     },
-    "스마트 1.6": {
+    "스마트 가솔린 1.6": {
       "slug": "smart",
       "name_en": null,
       "price": {
@@ -1738,8 +1804,6 @@
         "CN06089",
         "CN06090",
         "CN06091",
-        "CN06108",
-        "WIRELESS_MIRROR",
         "CN06016",
         "CN06022"
       ],
@@ -1782,7 +1846,7 @@
         }
       ]
     },
-    "모던 1.6": {
+    "모던 가솔린 1.6": {
       "slug": "modern",
       "name_en": null,
       "price": {
@@ -1845,10 +1909,8 @@
         "CN06109",
         "CN06110",
         "CN06034",
-        "CN06108",
         "CN06002",
         "CN06003",
-        "WIRELESS_MIRROR",
         "CN06016",
         "CN06022"
       ],
@@ -1913,7 +1975,7 @@
         }
       ]
     },
-    "인스퍼레이션 1.6": {
+    "인스퍼레이션 가솔린 1.6": {
       "slug": "inspiration",
       "name_en": null,
       "price": {
@@ -2044,12 +2106,11 @@
         }
       ]
     },
-    "N 라인 1.6": {
+    "N 라인 가솔린 1.6": {
       "slug": "n-line",
       "name_en": null,
       "price": {
-        "tax_5": 28490000,
-        "tax_3_5": 28060000
+        "base": 26540000
       },
       "basic": [
         "CN06001",

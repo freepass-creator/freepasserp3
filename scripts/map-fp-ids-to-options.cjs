@@ -26,7 +26,11 @@ for (const m of rulesSrc.matchAll(/\{\s*kw:\s*['"]([^'"]+)['"]\s*,\s*ids:\s*\[([
 RULES.sort((a, b) => b.kw.length - a.kw.length);
 
 function normName(s) {
-  return (s || '').toLowerCase().replace(/[\(\)\[\]_\-\/\.,&\+°]/g, '').replace(/\s+/g, '');
+  return (s || '').toLowerCase()
+    .replace(/&amp;/g, '')      // HTML escape 제거
+    .replace(/&quot;/g, '')
+    .replace(/[\(\)\[\]_\-\/\.,&\+°]/g, '')
+    .replace(/\s+/g, '');
 }
 function matchFpIds(text) {
   const n = normName(text);
@@ -48,10 +52,7 @@ for (const f of files) {
 
   let changed = false;
   for (const [code, info] of Object.entries(opts)) {
-    if (code.startsWith('PKG_') || info.is_package) {
-      // 패키지는 별도 매핑 (codes 안의 FP ID 들이 select_groups 에 직접 들어감)
-      continue;
-    }
+    // PKG_* / is_package 도 매핑 (패키지 이름 기반 — "헤드업 디스플레이" → HUD 등)
     const name = info.name || '';
     const fpIds = matchFpIds(name);
     const old = JSON.stringify(info.fp_ids || []);

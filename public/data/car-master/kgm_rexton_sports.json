@@ -689,22 +689,34 @@
     "WK_12_3인치_인포콘_내비게이션": {
       "name": "12.3인치 인포콘 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_스마트_미러링": {
       "name": "스마트 미러링",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_음성인식": {
       "name": "음성인식",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     },
     "WK_폰_프로젝션": {
       "name": "폰 프로젝션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_Wi_Fi": {
       "name": "Wi-Fi",
@@ -739,7 +751,10 @@
     "WK_운전석_파워시트": {
       "name": "운전석 파워시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "WK_운전석_럼버서포트": {
       "name": "운전석 럼버서포트",
@@ -749,37 +764,61 @@
     "WK_운전석_통풍시트": {
       "name": "운전석 통풍시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "WK_동승석_통풍시트": {
       "name": "동승석 통풍시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ]
     },
     "WK_2열_열선시트": {
       "name": "2열 열선시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR"
+      ]
     },
     "WK_하이패스_시스템_ETCS_": {
       "name": "하이패스 시스템(ETCS)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HIPASS",
+        "TCS"
+      ]
     },
     "WK_ECM_룸미러": {
       "name": "ECM 룸미러",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECM_MIRROR"
+      ]
     },
     "WK_오토라이트_컨트롤": {
       "name": "오토라이트 컨트롤",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AUTO_LIGHT"
+      ]
     },
     "WK_우적감지_와이퍼": {
       "name": "우적감지 와이퍼",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RAIN_SENSOR"
+      ]
     },
     "WK_LED_주간_주행등___LED_시그널_램프": {
       "name": "LED 주간 주행등 & LED 시그널 램프",
@@ -939,57 +978,90 @@
     "WK_차선_이탈_경고_LDW_": {
       "name": "차선 이탈 경고(LDW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "WK_차선_유지_보조_LKA_": {
       "name": "차선 유지 보조(LKA)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "WK_전방_추돌_경고_FCW_": {
       "name": "전방 추돌 경고(FCW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "FCWS"
+      ]
     },
     "WK_긴급_제동_보조_AEB_": {
       "name": "긴급 제동 보조(AEB)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AEB"
+      ]
     },
     "WK_스마트_하이빔_SHB_": {
       "name": "스마트 하이빔(SHB)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HBA"
+      ]
     },
     "WK_후측방_경고_BSW_": {
       "name": "후측방 경고(BSW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_차선_변경_경고_LCW_": {
       "name": "차선 변경 경고(LCW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "WK_후방_접근_경고_RCTW_": {
       "name": "후방 접근 경고(RCTW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_안전_하차_경고_SEW_": {
       "name": "안전 하차 경고(SEW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "WK_전방_주차_보조_경고": {
       "name": "전방 주차 보조 경고",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SENSOR_FRONT"
+      ]
     },
     "WK_어라운드_뷰_모니터링_시스템_AVM_": {
       "name": "어라운드 뷰 모니터링 시스템(AVM)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_어드밴처_패키지": {
       "name": "어드밴처 패키지",
@@ -1092,27 +1164,42 @@
     "WK_앞차_출발_경고_FVSAW_": {
       "name": "앞차 출발 경고(FVSAW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "FCWS"
+      ]
     },
     "WK_중앙_차선_유지_보조_CLKA_": {
       "name": "중앙 차선 유지 보조(CLKA)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LKAS"
+      ]
     },
     "WK_차선_변경_경보_LCW_": {
       "name": "차선 변경 경보(LCW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "WK_후측방_접근_경고_RCTW_": {
       "name": "후측방 접근 경고(RCTW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_블랙_휠_18인치_휠_18인치_블랙_휠__20인치_스퍼터링_휠_20인치_다크_스퍼터링_휠_": {
       "name": "블랙 휠(18인치 휠\b18인치 블랙 휠, 20인치 스퍼터링 휠\b20인치 다크 스퍼터링 휠)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "WK_다이내믹_서스펜션": {
       "name": "다이내믹 서스펜션",
@@ -1152,12 +1239,19 @@
     "WK_LED_주간_주행등___LED_턴시그널_램프": {
       "name": "LED 주간 주행등 & LED 턴시그널 램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DRL",
+        "LED_TURN"
+      ]
     },
     "WK_LED_안개등": {
       "name": "LED 안개등",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "FOG_LED"
+      ]
     },
     "WK_프로젝션_헤드램프": {
       "name": "프로젝션 헤드램프",
@@ -1172,7 +1266,10 @@
     "WK_ISG_시스템_공회전_제한_장치_": {
       "name": "ISG 시스템(공회전 제한 장치)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ISG"
+      ]
     },
     "WK_블랙라디에이터_그릴": {
       "name": "블랙라디에이터 그릴",
@@ -1192,7 +1289,10 @@
     "WK_후측방_접근_충돌_보조_RCTA_": {
       "name": "후측방 접근 충돌 보조(RCTA)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_커스터마이징_사양___프런트_넛지바": {
       "name": "커스터마이징 사양 : 프런트 넛지바",
@@ -1212,7 +1312,10 @@
     "WK_빌트인_공기청정기": {
       "name": "빌트인 공기청정기",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AIR_PURIFY"
+      ]
     },
     "WK_리어_스텝": {
       "name": "리어 스텝",
@@ -1242,22 +1345,35 @@
     "WK_12_3인치_터치스크린_내비게이션": {
       "name": "12.3인치 터치스크린 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD",
+        "NAVIGATION"
+      ]
     },
     "WK_내비게이션_무선_업데이트": {
       "name": "내비게이션 무선 업데이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_음성인식_기능": {
       "name": "음성인식 기능",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     },
     "WK_후방_카메라_조향연동_다이내믹_주차_가이드_": {
       "name": "후방 카메라(조향연동 다이내믹 주차 가이드)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "WK_AM_FM_라디오": {
       "name": "AM/FM 라디오",
@@ -1267,12 +1383,18 @@
     "WK_USB_미디어": {
       "name": "USB 미디어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_블루투스_뮤직": {
       "name": "블루투스 뮤직",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH"
+      ]
     },
     "WK_양방향_공조제어": {
       "name": "양방향 공조제어",
@@ -1292,22 +1414,34 @@
     "WK_안전제일_서비스_에어백_전개_알림_": {
       "name": "안전제일 서비스(에어백 전개 알림)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_올인원_서비스_차량_원격_제어_등_": {
       "name": "올인원 서비스(차량 원격 제어 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_프리미엄_서비스_지니뮤직__팟캐스트_등_": {
       "name": "프리미엄 서비스(지니뮤직, 팟캐스트 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_매뉴얼_에어컨_기본_적용_시_자동_내기_순환_기능은_미작동함": {
       "name": "매뉴얼 에어컨 기본 적용 시 자동 내기 순환 기능은 미작동함",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MANUAL_AC"
+      ]
     },
     "WK_D2_2_LET_엔진": {
       "name": "D2.2 LET 엔진",
@@ -1529,7 +1663,10 @@
     "WK_나파_가죽_퀼팅_시트": {
       "name": "나파 가죽 퀼팅 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_인스트루먼트_패널_퀼팅_블랙_스웨이드_적용_부위___시트_숄더부__인스트루먼트_패널_": {
       "name": "인스트루먼트 패널 퀼팅(블랙 스웨이드 적용 부위 : 시트 숄더부, 인스트루먼트 패널)",
@@ -1539,12 +1676,18 @@
     "WK_나파_가죽_시트": {
       "name": "나파 가죽 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_실내_무드_램프": {
       "name": "실내 무드 램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "WK_고화질_DMB": {
       "name": "고화질 DMB",

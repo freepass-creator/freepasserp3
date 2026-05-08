@@ -646,7 +646,10 @@
     "WK_나파_가죽_시트_퀼팅_포함_": {
       "name": "나파 가죽 시트(퀼팅 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_다이아몬드_패턴_알루미늄_도어_가니쉬_플로어_콘솔": {
       "name": "다이아몬드 패턴 알루미늄 도어 가니쉬/플로어 콘솔",
@@ -679,7 +682,10 @@
     "WK_전자제어_서스펜션": {
       "name": "전자제어 서스펜션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECS"
+      ]
     },
     "WK_차동제한장치_LSD_": {
       "name": "차동제한장치(LSD)",
@@ -694,7 +700,10 @@
     "WK_스포츠_전용_천연_가죽_시트": {
       "name": "스포츠 전용 천연 가죽 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_스포츠_내장재": {
       "name": "스포츠 내장재",
@@ -719,7 +728,10 @@
     "WK_스포츠_전용_나파_가죽_시트_퀼팅_포함_": {
       "name": "스포츠 전용 나파 가죽 시트(퀼팅 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_글로시_컬러__유광__11종_중_선택_": {
       "name": "글로시 컬러 (유광, 11종 중 선택)",
@@ -751,12 +763,18 @@
     "WK_제네시스_디지털_키_2_터치": {
       "name": "제네시스 디지털 키 2 터치",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "WK_앞좌석_스마트폰_무선_충전": {
       "name": "앞좌석 스마트폰 무선 충전",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "WK_12_3인치_3D_클러스터": {
       "name": "12.3인치 3D 클러스터",
@@ -766,17 +784,32 @@
     "WK_지능형_헤드램프": {
       "name": "지능형 헤드램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_드라이빙_어시스턴스_패키지": {
       "name": "드라이빙 어시스턴스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA"
+      ]
     },
     "WK_운전석_자세_메모리_시스템": {
       "name": "운전석 자세 메모리 시스템",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MEMORY_SEAT_DR"
+      ]
     },
     "WK_운전석_인텔리전트_시트_16방향__쿠션_익스텐션__볼스터_전동_조절_포함_": {
       "name": "운전석 인텔리전트 시트(16방향, 쿠션 익스텐션, 볼스터 전동 조절 포함)",
@@ -804,17 +837,26 @@
     "WK_서라운드_뷰_모니터": {
       "name": "서라운드 뷰 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_후측방_모니터": {
       "name": "후측방 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "WK_빌트인_캠": {
       "name": "빌트인 캠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "WK_보조배터리": {
       "name": "보조배터리",
@@ -853,46 +895,90 @@
     "PKG_ADAS": {
       "name": "드라이빙 어시스턴스 패키지 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
-    "가솔린 2.5T": {
+    "가솔린 2.5 T": {
       "slug": "g25t",
       "price": {
         "base": 45950000
@@ -972,8 +1058,7 @@
         "WK_고탄성_폴리우레탄_PPF_보호필름",
         "WK_알칸타라_콘솔_암레스트",
         "WK_가솔린_2_5_터보_엔진",
-        "WK_2WD_후륜_",
-        "WIRELESS_MIRROR"
+        "WK_2WD_후륜_"
       ],
       "select": [
         "WK_Full_LED_헤드램프",
@@ -1079,7 +1164,7 @@
         }
       ]
     },
-    "가솔린 2.5T AWD": {
+    "가솔린 2.5 T AWD": {
       "slug": "g25t_awd",
       "price": {
         "base": 48450000
@@ -1160,8 +1245,7 @@
         "WK_알칸타라_콘솔_암레스트",
         "WK_가솔린_2_5_터보_엔진",
         "WK_AWD",
-        "WK_2WD_후륜_",
-        "WIRELESS_MIRROR"
+        "WK_2WD_후륜_"
       ],
       "select": [
         "WK_Full_LED_헤드램프",

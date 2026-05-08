@@ -707,7 +707,10 @@
     "KRCV253125": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRCV253126": {
       "name": "운전석 세이프티 파워윈도우",
@@ -870,7 +873,16 @@
     "KRCV253P01": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRCV253P04": {
       "name": "컨비니언스 I",
@@ -903,7 +915,10 @@
     "KRCV253P13": {
       "name": "20인치 휠&amp;타이어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRCV253009": {
       "name": "실내 V2L 콘센트",
@@ -1051,7 +1066,16 @@
     "KRCV253P02": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRCV253P03": {
       "name": "컴포트",
@@ -1076,12 +1100,18 @@
     "KRCV253P09": {
       "name": "빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "KRCV253P10": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRCV253010": {
       "name": "실외 V2L 커넥터",
@@ -1270,7 +1300,10 @@
     "KRCV253148": {
       "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRCV253149": {
       "name": "운전자세 메모리 시스템(운전석 시트, 스티어링 휠, 아웃사이드 미러)",
@@ -1324,7 +1357,10 @@
     "KRCV253P08": {
       "name": "메리디안 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRCV253067": {
       "name": "와이드 선루프",
@@ -1338,7 +1374,10 @@
     "KRCV253P11": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRCV253066": {
       "name": "GT-Line 전용 외장 디자인(프론트 LED 센터 포지셔닝 램프, 전용 프론트/리어 범퍼, 바디칼라 휠아치 몰딩, 전용 엠블럼)",
@@ -1366,12 +1405,18 @@
     "KRCV253P12": {
       "name": "스마트 커넥트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "KRCV253P14": {
       "name": "20인치 휠&amp;타이어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRCV253P15": {
       "name": "스웨이드 컬렉션",
@@ -1390,42 +1435,86 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -1524,7 +1613,6 @@
         "KRCV253161",
         "KRCV253162",
         "KRCV253163",
-        "WIRELESS_MIRROR",
         "KRCV253023",
         "KRCV253025"
       ],
@@ -1760,8 +1848,7 @@
         "KRCV253162",
         "KRCV253163",
         "KRCV253002",
-        "KRCV253078",
-        "WIRELESS_MIRROR"
+        "KRCV253078"
       ],
       "select": [
         "KRCV253068",
@@ -2044,8 +2131,7 @@
         "KRCV253049",
         "KRCV253073",
         "KRCV253125",
-        "KRCV253078",
-        "WIRELESS_MIRROR"
+        "KRCV253078"
       ],
       "select": [
         "KRCV253068",
@@ -2260,7 +2346,6 @@
         "KRCV253162",
         "KRCV253163",
         "KRCV253177",
-        "WIRELESS_MIRROR",
         "KRCV253023",
         "KRCV253025"
       ],
@@ -2512,8 +2597,7 @@
         "KRCV253162",
         "KRCV253163",
         "KRCV253177",
-        "KRCV253078",
-        "WIRELESS_MIRROR"
+        "KRCV253078"
       ],
       "select": [
         "KRCV253068",
@@ -2820,8 +2904,7 @@
         "KRCV253049",
         "KRCV253073",
         "KRCV253125",
-        "KRCV253078",
-        "WIRELESS_MIRROR"
+        "KRCV253078"
       ],
       "select": [
         "KRCV253068",
@@ -3382,8 +3465,7 @@
         "KRCV253139",
         "KRCV253140",
         "KRCV253141",
-        "KRCV253124",
-        "WIRELESS_MIRROR"
+        "KRCV253124"
       ],
       "select": [
         "KRCV253068",
@@ -3666,8 +3748,7 @@
         "KRCV253151",
         "KRCV253152",
         "KRCV253153",
-        "KRCV253031",
-        "WIRELESS_MIRROR"
+        "KRCV253031"
       ],
       "select": [
         "KRCV253068",
@@ -3977,8 +4058,7 @@
         "KRCV253078",
         "KRCV253066",
         "KRCV253094",
-        "KRCV253116",
-        "WIRELESS_MIRROR"
+        "KRCV253116"
       ],
       "select": [
         "KRCV253068",

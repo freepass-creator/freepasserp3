@@ -773,12 +773,18 @@
     "WK_8단_자동변속기": {
       "name": "8단 자동변속기",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "TRANS_AT"
+      ]
     },
     "WK_랙_구동형_전동식_파워_스티어링_R_MDPS_": {
       "name": "랙 구동형 전동식 파워 스티어링(R-MDPS)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_STR"
+      ]
     },
     "WK_싱글팁_머플러": {
       "name": "싱글팁 머플러",
@@ -1413,27 +1419,47 @@
     "WK_10_25인치_내비게이션_블루링크__폰_프로젝션__현대_카페이_": {
       "name": "10.25인치 내비게이션(블루링크, 폰 프로젝션, 현대 카페이)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR",
+        "MIRRORING",
+        "NAVIGATION"
+      ]
     },
     "WK_내비게이션_무선_업데이트": {
       "name": "내비게이션 무선 업데이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_듀얼_풀오토_에어컨_공기청정모드_오토_디포그_클러스터_이오나이저_포함_": {
       "name": "듀얼 풀오토 에어컨(공기청정모드/오토 디포그/클러스터 이오나이저 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AIR_PURIFY",
+        "AUTO_AC",
+        "DEFOG"
+      ]
     },
     "WK_하프_크롬___터치타입_아웃사이드_도어핸들": {
       "name": "하프 크롬 & 터치타입 아웃사이드 도어핸들",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "WK_전방_충돌방지_보조_자전거탑승자_교차로_대향차_": {
       "name": "전방 충돌방지 보조(자전거탑승자/교차로 대향차)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "WK_하이패스_시스템_ECM룸미러": {
       "name": "하이패스 시스템+ECM룸미러",
@@ -1470,7 +1496,10 @@
     "WK_가죽_시트": {
       "name": "가죽 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_동승석_릴렉션_컴포트_시트": {
       "name": "동승석 릴렉션 컴포트 시트",
@@ -1803,17 +1832,26 @@
     "WK_10_25인치_내비게이션": {
       "name": "10.25인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_블루링크": {
       "name": "블루링크",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_스마트폰_무선_충전": {
       "name": "스마트폰 무선 충전",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "WK_앰비언트_무드_램프": {
       "name": "앰비언트 무드 램프",
@@ -2340,52 +2378,93 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
     "모던 하이브리드 2.0": {
       "slug": "모던",
       "price": {
-        "tax_5_before": 30680000,
-        "tax_5_after": 29250000,
-        "tax_3_5_before": 30120000,
-        "tax_3_5_after": 28810000
+        "base": 28100000
       },
       "basic": [
         "WK_스마트스트림_가솔린_2_0_엔진",
@@ -2636,10 +2715,7 @@
     "프리미엄 플러스 하이브리드 2.0": {
       "slug": "프리미엄_플러스",
       "price": {
-        "tax_5_before": 33100000,
-        "tax_5_after": 31670000,
-        "tax_3_5_before": 32490000,
-        "tax_3_5_after": 31080000
+        "base": 31970000
       },
       "basic": [
         "WK_후측방_충돌방지_보조",
@@ -2956,10 +3032,7 @@
     "인스퍼레이션 하이브리드 2.0": {
       "slug": "Inspiration",
       "price": {
-        "tax_5_before": 38480000,
-        "tax_5_after": 37050000,
-        "tax_3_5_before": 37780000,
-        "tax_3_5_after": 36350000
+        "base": 35920000
       },
       "basic": [
         "WK_전방_충돌방지_보조_자전거_탑승자_교차로_대향차_",

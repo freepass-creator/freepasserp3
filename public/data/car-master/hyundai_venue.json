@@ -556,42 +556,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -599,8 +643,7 @@
       "slug": "smart",
       "name_en": null,
       "price": {
-        "tax_5": 18490000,
-        "tax_3_5": 18210000
+        "base": 15730000
       },
       "basic": [
         "QX05001",
@@ -723,8 +766,7 @@
       "slug": "smart",
       "name_en": null,
       "price": {
-        "tax_5": 16420000,
-        "tax_3_5": 16170000
+        "base": 16450000
       },
       "basic": [
         "QX05002",
@@ -824,8 +866,7 @@
       "slug": "Smart",
       "name_en": null,
       "price": {
-        "tax_5": 19560000,
-        "tax_3_5": 19260000
+        "base": 16810000
       },
       "basic": [
         "QX05001",
@@ -956,8 +997,7 @@
       "slug": "Premium",
       "name_en": null,
       "price": {
-        "tax_5": 22460000,
-        "tax_3_5": 22120000
+        "base": 19390000
       },
       "basic": [
         "QX05001",
@@ -1139,8 +1179,7 @@
       "slug": "flux",
       "name_en": null,
       "price": {
-        "tax_5": 24230000,
-        "tax_3_5": 23860000
+        "base": 21470000
       },
       "basic": [
         "QX05001",

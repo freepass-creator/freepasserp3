@@ -430,7 +430,11 @@
     "WK_전방_충돌방지_보조_교차로_대향차_정면_대향차_": {
       "name": "전방 충돌방지 보조(교차로 대향차/정면 대향차)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "WK_후방_충돌_경고_주행_": {
       "name": "후방 충돌 경고(주행)",
@@ -445,27 +449,45 @@
     "WK_후방_교차_충돌방지_보조": {
       "name": "후방 교차 충돌방지 보조",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_안전_하차_경고": {
       "name": "안전 하차 경고",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "WK_스마트_크루즈_컨트롤_스탑앤고_기능_포함_": {
       "name": "스마트 크루즈 컨트롤(스탑앤고 기능 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "WK_내비게이션_기반_스마트_크루즈_컨트롤_안전구간__곡선로_": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(안전구간, 곡선로)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "WK_고속도로_주행_보조": {
       "name": "고속도로 주행 보조",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "WK_격벽": {
       "name": "격벽",
@@ -511,22 +533,34 @@
     "WK_스마트폰_무선_충전": {
       "name": "스마트폰 무선 충전",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "WK_디지털_키_2_터치": {
       "name": "디지털 키 2 터치",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "WK_실외_V2L_커넥터": {
       "name": "실외 V2L 커넥터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "V2L"
+      ]
     },
     "WK_LED_실내등_선바이저_램프__러기지_램프_": {
       "name": "LED 실내등(선바이저 램프, 러기지 램프)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LED_INTERIOR"
+      ]
     },
     "WK_인터랙티브_픽셀라이트": {
       "name": "인터랙티브 픽셀라이트",
@@ -536,7 +570,10 @@
     "WK_1열_터치타입_아웃사이드_도어_핸들": {
       "name": "1열 터치타입 아웃사이드 도어 핸들",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "FLUSH_HANDLE"
+      ]
     },
     "WK_1열_풀폴딩_시트": {
       "name": "1열 풀폴딩 시트",
@@ -551,17 +588,31 @@
     "WK_USB_C_타입_단자_2열_충전_1개_": {
       "name": "USB C 타입 단자(2열 충전 1개)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_동승석_통풍시트": {
       "name": "동승석 통풍시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VENT_SEAT_DR",
+        "VENT_SEAT_PS"
+      ]
     },
     "WK_세이프티_파워_윈도우_동승석_": {
       "name": "세이프티 파워 윈도우(동승석)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "LKAS",
+        "POWER_WINDOW"
+      ]
     },
     "WK_러기지_보드": {
       "name": "러기지 보드",
@@ -576,32 +627,52 @@
     "WK_Full_LED_헤드램프_프로젝션_타입_": {
       "name": "Full LED 헤드램프(프로젝션 타입)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_LED_리어콤비램프": {
       "name": "LED 리어콤비램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "REAR_LED_COMBI"
+      ]
     },
     "WK_17인치_알로이_휠___타이어": {
       "name": "17인치 알로이 휠 & 타이어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "WK_후방_주차_충돌방지_보조": {
       "name": "후방 주차 충돌방지 보조",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "WK_서라운드_뷰_모니터": {
       "name": "서라운드 뷰 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_후측방_모니터": {
       "name": "후측방 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "WK_베이지_내장_시트_스티어링_휠_크래쉬패드_센터_콘솔_도어_트림_도어_암레스트_헤드라이닝_플": {
       "name": "베이지 내장(시트/스티어링 휠/크래쉬패드/센터 콘솔/도어 트림/도어 암레스트/헤드라이닝/플로어 카페트)",
@@ -701,42 +772,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "categories": {
@@ -868,7 +983,9 @@
   "trims": {
     "스마트 가솔린 1.0": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 13850000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -967,9 +1084,11 @@
         }
       ]
     },
-    "스마트 가솔린 1.0 터보": {
+    "스마트 가솔린 1.0 T": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 16100000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -1070,7 +1189,9 @@
     },
     "모던 가솔린 1.0": {
       "slug": "모던",
-      "price": {},
+      "price": {
+        "base": 15900000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -1224,9 +1345,11 @@
         }
       ]
     },
-    "모던 가솔린 1.0 터보": {
+    "모던 가솔린 1.0 T": {
       "slug": "모던",
-      "price": {},
+      "price": {
+        "base": 18150000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -1382,7 +1505,9 @@
     },
     "인스퍼레이션 가솔린 1.0": {
       "slug": "인스퍼레이션",
-      "price": {},
+      "price": {
+        "base": 18550000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -1536,9 +1661,11 @@
         }
       ]
     },
-    "인스퍼레이션 가솔린 1.0 터보": {
+    "인스퍼레이션 가솔린 1.0 T": {
       "slug": "인스퍼레이션",
-      "price": {},
+      "price": {
+        "base": 20800000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -1694,7 +1821,9 @@
     },
     "액티브 2 가솔린 1.0": {
       "slug": "액티브_2",
-      "price": {},
+      "price": {
+        "base": 17200000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -1848,9 +1977,11 @@
         }
       ]
     },
-    "액티브 2 가솔린 1.0 터보": {
+    "액티브 2 가솔린 1.0 T": {
       "slug": "액티브_2",
-      "price": {},
+      "price": {
+        "base": 19450000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -2006,7 +2137,9 @@
     },
     "크로스 가솔린 1.0": {
       "slug": "크로스",
-      "price": {},
+      "price": {
+        "base": 19100000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",
@@ -2160,9 +2293,11 @@
         }
       ]
     },
-    "크로스 가솔린 1.0 터보": {
+    "크로스 가솔린 1.0 T": {
       "slug": "크로스",
-      "price": {},
+      "price": {
+        "base": 21000000
+      },
       "basic": [
         "WK_42kWh_리튬_이온_배터리",
         "WK_회생제동_시스템",

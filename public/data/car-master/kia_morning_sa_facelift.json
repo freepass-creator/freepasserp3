@@ -12,56 +12,72 @@
   "trims": {
     "Standard 가솔린 1.0": {
       "slug": "standard",
-      "price": {},
+      "price": {
+        "base": 9400000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "Standard LPi 1.0": {
       "slug": "standard",
-      "price": {},
+      "price": {
+        "base": 10100000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "Deluxe 가솔린 1.0": {
       "slug": "deluxe",
-      "price": {},
+      "price": {
+        "base": 10750000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "Deluxe LPi 1.0": {
       "slug": "deluxe",
-      "price": {},
+      "price": {
+        "base": 11450000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "럭셔리 가솔린 1.0": {
       "slug": "luxury",
-      "price": {},
+      "price": {
+        "base": 12300000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "럭셔리 LPi 1.0": {
       "slug": "luxury",
-      "price": {},
+      "price": {
+        "base": 13000000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "SLX 가솔린 1.0": {
       "slug": "slx",
-      "price": {},
+      "price": {
+        "base": 13700000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "SLX LPi 1.0": {
       "slug": "slx",
-      "price": {},
+      "price": {
+        "base": 14400000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

@@ -773,7 +773,10 @@
     "WK_2열_통풍시트": {
       "name": "2열 통풍시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "WK_3열_5_5_폴딩시트": {
       "name": "3열 5:5 폴딩시트",
@@ -783,12 +786,18 @@
     "WK_3열_USB_단자_충전용_": {
       "name": "3열 USB 단자(충전용)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_후석_매뉴얼_에어컨": {
       "name": "후석 매뉴얼 에어컨",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MANUAL_AC"
+      ]
     },
     "WK_센터콘솔_2열_컵홀더": {
       "name": "센터콘솔 2열 컵홀더",
@@ -803,32 +812,54 @@
     "WK_전방_충돌방지_보조_교차_차량__측방_접근차__추월시_대향차__회피_조향_보조_기능_포함_": {
       "name": "전방 충돌방지 보조(교차 차량, 측방 접근차, 추월시 대향차, 회피 조향 보조 기능 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "WK_스마트_크루즈_컨트롤_운전_스타일_연동_": {
       "name": "스마트 크루즈 컨트롤(운전 스타일 연동)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "WK_내비게이션_기반_스마트_크루즈_컨트롤_진출입로_": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "WK_고속도로_주행_보조_2_차로변경_보조_기능_포함_": {
       "name": "고속도로 주행 보조 2(차로변경 보조 기능 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "WK_슈퍼비전_클러스터_12_3인치_풀사이즈_칼라_TFT_LCD_": {
       "name": "슈퍼비전 클러스터(12.3인치 풀사이즈 칼라 TFT LCD)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD"
+      ]
     },
     "WK_Lexicon_프리미엄_사운드_15_스피커__외장앰프_": {
       "name": "Lexicon 프리미엄 사운드(15 스피커, 외장앰프)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "WK_액티브_엔진_사운드": {
       "name": "액티브 엔진 사운드",

@@ -530,7 +530,10 @@
     "KRB1267P01": {
       "name": "10.25인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRB1267085": {
       "name": "하이패스 자동결제 시스템",
@@ -610,7 +613,11 @@
     "KRB1267P04": {
       "name": "10.25인치 내비게이션+하이패스 자동결제 시스템",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HIPASS",
+        "NAVIGATION"
+      ]
     },
     "KRB1267038": {
       "name": "LED 리피터 일체형 아웃사이드 미러",
@@ -682,7 +689,10 @@
     "KRB1267P02": {
       "name": "10.25인치 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "KRB1267P03": {
       "name": "플러스 패키지",

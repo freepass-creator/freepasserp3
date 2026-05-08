@@ -1,6 +1,6 @@
 {
   "catalog_id": "genesis_g80_e",
-  "model_root": "G80",
+  "model_root": "일렉트리파이드 G80",
   "title": "제네시스 일렉트리파이드 G80",
   "maker": "제네시스",
   "source": "wikicar_ocr",
@@ -77,22 +77,50 @@
     "WK_헤드업_디스플레이": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "WK_드라이빙_어시스턴스_패키지_I": {
       "name": "드라이빙 어시스턴스 패키지 I",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "WK_드라이빙_어시스턴스_패키지_II": {
       "name": "드라이빙 어시스턴스 패키지 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "WK_빌트인_캠_패키지": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "WK_후륜_조향_시스템": {
       "name": "후륜 조향 시스템",
@@ -117,47 +145,82 @@
     "WK_서라운드_뷰_모니터": {
       "name": "서라운드 뷰 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_후측방_모니터": {
       "name": "후측방 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "WK_주차_거리_경고_측방_": {
       "name": "주차 거리 경고(측방)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "WK_주차_충돌방지_보조_전_측_후방_": {
       "name": "주차 충돌방지 보조(전/측/후방)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA",
+        "SENSOR_FRONT",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "WK_원격_스마트_주차_보조_2_주차_구획인식_및_사선_주차_포함_": {
       "name": "원격 스마트 주차 보조 2(주차 구획인식 및 사선 주차 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SPAS"
+      ]
     },
     "WK_전방_충돌방지_보조_2_교차로_교차_차량__추월_시_대향차__측방_접근차__회피_조향_보조": {
       "name": "전방 충돌방지 보조 2(교차로 교차 차량, 추월 시 대향차, 측방 접근차, 회피 조향 보조 기능 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AEB",
+        "FCWS"
+      ]
     },
     "WK_스마트_크루즈_컨트롤_운전_스타일_연동_": {
       "name": "스마트 크루즈 컨트롤(운전 스타일 연동)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA"
+      ]
     },
     "WK_내비게이션_기반_스마트_크루즈_컨트롤_진출입로_": {
       "name": "내비게이션 기반 스마트 크루즈 컨트롤(진출입로)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CRUISE",
+        "HDA",
+        "NAVIGATION"
+      ]
     },
     "WK_고속도로_주행_보조_2_차로_변경_보조_제어_기능_포함_": {
       "name": "고속도로 주행 보조 2(차로 변경 보조 제어 기능 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HDA"
+      ]
     },
     "WK_앞좌석_프리액티브_시트벨트": {
       "name": "앞좌석 프리액티브 시트벨트",
@@ -167,12 +230,18 @@
     "WK_후측방_충돌방지_보조_주행_": {
       "name": "후측방 충돌방지 보조(주행)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_지능형_헤드램프": {
       "name": "지능형 헤드램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_운전자_전방_주시_카메라": {
       "name": "운전자 전방 주시 카메라",
@@ -202,7 +271,10 @@
     "WK_뒷좌석_통풍_시트": {
       "name": "뒷좌석 통풍 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VENT_SEAT_DR"
+      ]
     },
     "WK_뒷좌석_이지_클로즈_시스템": {
       "name": "뒷좌석 이지 클로즈 시스템",
@@ -222,7 +294,10 @@
     "WK_뒷좌석_스마트폰_무선_충전": {
       "name": "뒷좌석 스마트폰 무선 충전",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "WK_뒷좌석_화장거울": {
       "name": "뒷좌석 화장거울",
@@ -237,7 +312,10 @@
     "WK_빌트인_캠_2": {
       "name": "빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "WK_보조배터리": {
       "name": "보조배터리",
@@ -247,7 +325,10 @@
     "WK_증강현실_내비게이션": {
       "name": "증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_14_6인치_스마트_듀얼_모니터": {
       "name": "14.6인치 스마트 듀얼 모니터",
@@ -321,12 +402,24 @@
     "WK_컨비니언스_패키지": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "WK_2열_컴포트_패키지": {
       "name": "2열 컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_SEAT_REAR",
+        "HEAT_STR",
+        "POWER_SEAT_PS"
+      ]
     },
     "WK_시그니쳐_디자인_셀렉션": {
       "name": "시그니쳐 디자인 셀렉션",
@@ -341,50 +434,92 @@
     "PKG_ADAS": {
       "name": "드라이빙 어시스턴스 패키지 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
-    "일렉트리파이드 AWD 가솔린": {
-      "slug": "electrified_awd",
+    "AWD EV": {
       "price": {
-        "base": 81081818,
-        "before_tax": 89190000
+        "base": 89190000
       },
       "basic": [
         "WK_후륜_조향_시스템",
@@ -416,30 +551,6 @@
         "WK_도어_스텝",
         "WK_스탠다드_디자인",
         "WK_후석_스마트_엔터테인먼트_시스템"
-      ],
-      "select": [
-        "WK_헤드업_디스플레이",
-        "WK_드라이빙_어시스턴스_패키지_I",
-        "WK_드라이빙_어시스턴스_패키지_II",
-        "WK_빌트인_캠_패키지",
-        "WK_운전석_에르고_모션_시트_18방향__볼스터_전동_조절__스트레칭_모드__쿠션_익스텐션_포함",
-        "WK_동승석_에르고_모션_시트_16방향__볼스터_전동_조절__스트레칭_모드_포함_",
-        "WK_원격_스마트_주차_보조_2_주차_구획인식_및_사선_주차_포함_",
-        "WK_전방_충돌방지_보조_2_교차로_교차_차량__추월_시_대향차__측방_접근차__회피_조향_보조",
-        "WK_고속도로_주행_보조_2_차로_변경_보조_제어_기능_포함_",
-        "WK_앞좌석_프리액티브_시트벨트",
-        "WK_뒷좌석_전동_시트_14방향_",
-        "WK_뒷좌석_에르고_모션_시트",
-        "WK_뒷좌석_통풍_시트",
-        "WK_3존__공조_2열_LCD_공조_조절_장치__2열_풍량_독립_제어_포함_",
-        "WK_빌트인_캠_2",
-        "WK_스트리밍_서비스_제공_좌_우_독립_제어__별도_리모컨_포함_",
-        "WK_주행_시_엠블럼을_수평_상태로_유지시켜주는_휠_캡",
-        "WK_245_45R19_앞___275_40R19_뒤__미쉐린_타이어___휠",
-        "WK_파퓰러_패키지",
-        "WK_컨비니언스_패키지",
-        "WK_2열_컴포트_패키지",
-        "WK_시그니쳐_디자인_셀렉션"
       ],
       "select_groups": [
         {

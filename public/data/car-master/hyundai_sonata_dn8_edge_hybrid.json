@@ -757,22 +757,44 @@
     "DN07P19": {
       "name": "빌트인 캠 2, 증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "NAVIGATION"
+      ]
     },
     "DN07P01": {
       "name": "인포테인먼트 내비 Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "DN07P02": {
       "name": "파킹 어시스트Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "DN07P08": {
       "name": "현대 스마트센스Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "DN07P09": {
       "name": "컴포트Ⅰ(1열 편의)",
@@ -787,7 +809,12 @@
     "DN07P06": {
       "name": "익스테리어 디자인 Ⅰ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "DN07120": {
       "name": "하이패스",
@@ -1120,7 +1147,13 @@
     "DN07P03": {
       "name": "파킹 어시스트 Ⅱ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "DN07P11": {
       "name": "컴포트 Ⅲ(2열 편의)",
@@ -1130,7 +1163,12 @@
     "DN07P07": {
       "name": "익스테리어 디자인 Ⅱ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "DN07035": {
       "name": "후방 주차 충돌방지 보조",
@@ -1388,22 +1426,43 @@
     "DN07P22": {
       "name": "현대 스마트센스 Ⅱ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "DN07P23": {
       "name": "인포테인먼트 내비 Ⅲ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "DN07P20": {
       "name": "익스테리어 디자인 Ⅲ",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "DN07P14": {
       "name": "하이패스 + ECM 룸미러",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECM_MIRROR",
+        "HIPASS"
+      ]
     },
     "DN07P05": {
       "name": "플래티넘 Ⅱ",
@@ -1910,12 +1969,18 @@
     "WK_빌트인_캠_2": {
       "name": "빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "WK_증강현실_내비게이션": {
       "name": "증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_인포테인먼트_II": {
       "name": "인포테인먼트 II",
@@ -2380,42 +2445,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -2494,7 +2603,6 @@
         "DN07060",
         "DN07083",
         "DN07151",
-        "WIRELESS_MIRROR",
         "DN07029",
         "DN07020",
         "DN07032",
@@ -2744,8 +2852,7 @@
         "DN07058",
         "DN07151",
         "DN07067",
-        "DN07083",
-        "WIRELESS_MIRROR"
+        "DN07083"
       ],
       "select": [
         "DN07P19",

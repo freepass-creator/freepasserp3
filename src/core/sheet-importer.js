@@ -239,14 +239,17 @@ const VALID_MAKERS = new Set([
 
 export function inferMaker(makerRaw, modelRaw, subModelRaw) {
   const m = String(makerRaw || '').trim();
-  if (m && VALID_MAKERS.has(m)) return m;
-  // 시트 제조사 칸이 비었거나 모델명 들어있을 때 — 모델명 키워드로 추론
-  const candidates = [m, modelRaw, subModelRaw].filter(Boolean).map(s => String(s).toLowerCase());
+  // 모델명 우선 매칭 — 시트 maker 잘못 입력된 경우 (예: G90을 현대로) 보정
+  // 긴 모델명 우선 (예: '그랑 콜레오스' 가 '콜레오스' 보다 앞)
+  const candidates = [modelRaw, subModelRaw].filter(Boolean).map(s => String(s).toLowerCase());
+  const sortedModels = Object.keys(MODEL_TO_MAKER).sort((a, b) => b.length - a.length);
   for (const c of candidates) {
-    for (const [model, maker] of Object.entries(MODEL_TO_MAKER)) {
-      if (c.includes(model.toLowerCase())) return maker;
+    for (const model of sortedModels) {
+      if (c.includes(model.toLowerCase())) return MODEL_TO_MAKER[model];
     }
   }
+  // 모델 매칭 없으면 makerRaw 신뢰
+  if (m && VALID_MAKERS.has(m)) return m;
   return m;
 }
 
@@ -317,6 +320,8 @@ const SHEET_PROFILES = {
     dataStartRowIdx: 10,
     carNumberColLetter: 'B',
     parser: parseAutoplusRow,
+    partnerCode: 'RP023',   // 오플 시트 모든 매물 → provider_company_code = RP023 자동 적용
+
     columnLabels: [
       'A No.', 'B 차량번호', 'C 차종', 'D 모델명(트림풀명)', 'E 색상', 'F 변속',
       'G 최초등록일', 'H 누적주행', 'I 판매시작일', 'J 판매일수', 'K 판매상태',
@@ -559,7 +564,7 @@ function fallbackMatchedProduct(raw) {
     engine_cc: raw.engine_cc || '',
     location: raw.location || '',
     vehicle_status: raw.vehicle_status,
-    product_type: '중고렌트',
+    product_type: (raw.kind && /신차/.test(raw.kind)) ? '신차렌트' : '중고렌트',
     options: raw.options || [],
     partner_memo: raw.partner_memo || '',
     price: raw.price,
@@ -585,8 +590,27 @@ export async function enrichWithCatalog(raw) {
   //   autoplus → C 컬럼 (raw_model = sub_model_raw 와 같음)
   const subCandidate = raw.sub_model_raw || raw.raw_model || '';
 
+  // 시트 fuel_type 비어있을 때 — sub_model / trim 텍스트에서 동력원 추출 보정
+  let inferredFuel = raw.fuel_type || '';
+  if (!inferredFuel) {
+    const all = `${subCandidate} ${raw.trim_name || ''} ${raw.raw_model || ''}`;
+    if (/하이브리드|hybrid|hev/i.test(all)) inferredFuel = '하이브리드';
+    else if (/(전기|EV|일렉트릭|electric)\b/i.test(all)) inferredFuel = '전기';
+    else if (/디젤|diesel|d\d\.\d/i.test(all)) inferredFuel = '디젤';
+    else if (/LPG|LPi|LPI/i.test(all)) inferredFuel = 'LPG';
+    else inferredFuel = '가솔린';   // default
+  }
+  raw.fuel_type = inferredFuel;   // import 시 product 필드에 정확 반영
+
+  // 시트 trim 텍스트에서 인승/배기량 추출 (catalog 매칭 정확도 보강)
+  const trimText = `${raw.trim_name || ''} ${subCandidate}`;
+  if (!raw.seats) {
+    const seatM = trimText.match(/(\d+)\s*인승/);
+    if (seatM) raw.seats = parseInt(seatM[1], 10);
+  }
+
   const cat = await findCatalog(raw.maker, subCandidate, raw.raw_model || raw.sub_model_raw, {
-    fuel_type: raw.fuel_type,
+    fuel_type: inferredFuel,
     year: raw.year,
     first_registration_date: raw.first_registration_date,
   });
@@ -632,7 +656,7 @@ export async function enrichWithCatalog(raw) {
       engine_cc: raw.engine_cc,
       location: raw.location,
       vehicle_status: raw.vehicle_status,
-      product_type: '중고렌트',
+      product_type: (raw.kind && /신차/.test(raw.kind)) ? '신차렌트' : '중고렌트',
       options: standardOptions.length ? standardOptions : raw.options,
       partner_memo: raw.partner_memo || '',
       price: raw.price,

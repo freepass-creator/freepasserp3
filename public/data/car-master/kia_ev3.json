@@ -732,7 +732,10 @@
     "KRSV292118": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRSV292119": {
       "name": "운전석 세이프티 파워윈도우",
@@ -907,7 +910,10 @@
     "KRSV292P05": {
       "name": "19인치 휠 &amp; 타이어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRSV292P06": {
       "name": "모니터링",
@@ -917,17 +923,33 @@
     "KRSV292P07": {
       "name": "드라이브 와이즈",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "KRSV292P08": {
       "name": "와이드 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "KRSV292P10": {
       "name": "빌트인 캠 2 플러스",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "KRSV292141": {
       "name": "헤드업 디스플레이",
@@ -1210,7 +1232,10 @@
     "KRSV292P09": {
       "name": "하만카돈 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRSV292150": {
       "name": "GT-Line 전용 외장 디자인(215/50 R19 타이어&amp;GT-Line 전용 전면가공 휠, 전용 프론트/리어 범퍼, 바디칼라 도어 가니쉬, 블랙 하이그로시 휠아치 몰딩, 블랙 아웃사이드 미러, 전용 엠블럼)",
@@ -1250,42 +1275,86 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -1389,8 +1458,7 @@
         "KRSV292145",
         "KRSV292146",
         "KRSV292147",
-        "KRSV292148",
-        "WIRELESS_MIRROR"
+        "KRSV292148"
       ],
       "select": [
         "KRSV292067",
@@ -1687,8 +1755,7 @@
         "KRSV292132",
         "KRSV292133",
         "KRSV292134",
-        "KRSV292135",
-        "WIRELESS_MIRROR"
+        "KRSV292135"
       ],
       "select": [
         "KRSV292067",
@@ -1993,8 +2060,7 @@
         "KRSV292008",
         "KRSV292045",
         "KRSV292048",
-        "KRSV292070",
-        "WIRELESS_MIRROR"
+        "KRSV292070"
       ],
       "select": [
         "KRSV292067",
@@ -2271,8 +2337,7 @@
         "KRSV292150",
         "KRSV292151",
         "KRSV292083",
-        "KRSV292152",
-        "WIRELESS_MIRROR"
+        "KRSV292152"
       ],
       "select": [
         "KRSV292067",

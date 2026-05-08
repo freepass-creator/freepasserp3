@@ -615,7 +615,11 @@
     "NE05P01": {
       "name": "빌트인 캠 2,증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "NAVIGATION"
+      ]
     },
     "NE05054": {
       "name": "20인치 알로이 휠 & 미쉐린 타이어",
@@ -633,7 +637,16 @@
     "NE05P06": {
       "name": "현대 스마트센스",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "NE05P05": {
       "name": "스타일",
@@ -643,12 +656,24 @@
     "NE05P08": {
       "name": "파킹 어시스트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "NE05P13": {
       "name": "파킹 어시스트 Lite",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "NE05P11": {
       "name": "러기지 패키지",
@@ -781,7 +806,10 @@
     "NE05P10": {
       "name": "알칸타라/천연가죽 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "NE05019": {
       "name": "에코 프로세스 천연가죽 시트(리사이클 PET 원단 콤비)",
@@ -1064,42 +1092,86 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "categories": {
@@ -1271,7 +1343,9 @@
   "trims": {
     "스탠다드 익스클루시브 가솔린": {
       "slug": "스탠다드_익스클루시브",
-      "price": {},
+      "price": {
+        "base": 48550000
+      },
       "basic": [
         "NE05001",
         "NE05002",
@@ -1391,7 +1465,9 @@
     },
     "스탠다드 프레스티지 가솔린": {
       "slug": "스탠다드_프레스티지",
-      "price": {},
+      "price": {
+        "base": 52750000
+      },
       "basic": [
         "NE05001",
         "NE05002",
@@ -1511,7 +1587,9 @@
     },
     "롱레인지 익스클루시브 가솔린": {
       "slug": "롱레인지_익스클루시브",
-      "price": {},
+      "price": {
+        "base": 55050000
+      },
       "basic": [
         "NE05001",
         "NE05002",
@@ -1674,7 +1752,9 @@
     },
     "롱레인지 프레스티지 가솔린": {
       "slug": "롱레인지_프레스티지",
-      "price": {},
+      "price": {
+        "base": 58000000
+      },
       "basic": [
         "NE05001",
         "NE05002",

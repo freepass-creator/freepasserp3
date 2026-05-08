@@ -86,7 +86,9 @@
     },
     "GT 라인 가솔린 1.6": {
       "slug": "gt_라인",
-      "price": {},
+      "price": {
+        "base": 23800000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],
@@ -94,7 +96,9 @@
     },
     "GT 라인 LPi 1.6": {
       "slug": "gt_라인",
-      "price": {},
+      "price": {
+        "base": 23800000
+      },
       "basic": [],
       "select": [],
       "select_groups": [],

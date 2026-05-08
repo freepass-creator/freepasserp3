@@ -979,12 +979,18 @@
     "WK_천연_가죽시트": {
       "name": "천연 가죽시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_파워_테일게이트": {
       "name": "파워 테일게이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "WK_20인치_다이아몬드_컷팅_휠___타이어": {
       "name": "20인치 다이아몬드 컷팅 휠 & 타이어",
@@ -994,7 +1000,10 @@
     "WK_전방_주차_보조_경고": {
       "name": "전방 주차 보조 경고",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SENSOR_FRONT"
+      ]
     },
     "WK_18인치_다이아몬드_컷팅_휠___235_55R18타이어": {
       "name": "18인치 다이아몬드 컷팅 휠 & 235/55R18타이어",
@@ -1004,12 +1013,18 @@
     "WK_운전석_8way_전동시트___전동식_2way_럼버_서포트": {
       "name": "운전석 8way 전동시트 & 전동식 2way 럼버 서포트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "WK_그레이_투톤_매쉬타입_인조_가죽시트": {
       "name": "그레이 투톤 매쉬타입 인조 가죽시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_그레이_투톤_인테리어": {
       "name": "그레이 투톤 인테리어",
@@ -1019,7 +1034,10 @@
     "WK_브라운_매쉬타입_인조_가죽시트": {
       "name": "브라운 매쉬타입 인조 가죽시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_브라운_인테리어": {
       "name": "브라운 인테리어",
@@ -1029,7 +1047,10 @@
     "WK_스마트_파워_테일게이트": {
       "name": "스마트 파워 테일게이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_TRUNK"
+      ]
     },
     "WK_테일게이트_실내_문열림_버튼": {
       "name": "테일게이트 실내 문열림 버튼",
@@ -1052,27 +1073,42 @@
     "WK_후측방_접근_충돌_보조_RCTA_": {
       "name": "후측방 접근 충돌 보조(RCTA)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_후측방_경고_BSW_": {
       "name": "후측방 경고(BSW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_후측방_접근_경고_RCTW_": {
       "name": "후측방 접근 경고(RCTW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "RCTA"
+      ]
     },
     "WK_차선_변경_경고_LCW_": {
       "name": "차선 변경 경고(LCW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "LDWS"
+      ]
     },
     "WK_안전_하차_경고_SEW_": {
       "name": "안전 하차 경고(SEW)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEW"
+      ]
     },
     "WK_블랙_루프": {
       "name": "블랙 루프",
@@ -1087,32 +1123,51 @@
     "WK_12_3인치_터치_스크린_내비게이션": {
       "name": "12.3인치 터치 스크린 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD",
+        "NAVIGATION"
+      ]
     },
     "WK_내비게이션_무선_업데이트": {
       "name": "내비게이션 무선 업데이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_안드로이드_오토": {
       "name": "안드로이드 오토",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_애플_카플레이": {
       "name": "애플 카플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_음성인식_기능": {
       "name": "음성인식 기능",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     },
     "WK_후방_카메라_조향연동_다이내믹_주차_가이드_": {
       "name": "후방 카메라(조향연동 다이내믹 주차 가이드)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "WK_AM_FM라디오": {
       "name": "AM/FM라디오",
@@ -1122,12 +1177,18 @@
     "WK_USB_미디어": {
       "name": "USB 미디어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_블루투스_뮤직": {
       "name": "블루투스 뮤직",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH"
+      ]
     },
     "WK_양방향_공조제어": {
       "name": "양방향 공조제어",
@@ -1137,7 +1198,10 @@
     "WK_프리미엄_서비스_지니_뮤직__팟캐스트_등_": {
       "name": "프리미엄 서비스(지니 뮤직, 팟캐스트 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_후석_취침모드": {
       "name": "후석 취침모드",
@@ -1152,12 +1216,18 @@
     "WK_안전제일_서비스_에어백_전개_알림_": {
       "name": "안전제일 서비스(에어백 전개 알림)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_올인원_서비스_차량_원격_제어_등_": {
       "name": "올인원 서비스(차량 원격 제어 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_사이드_스토리지_박스_원톤_투톤_": {
       "name": "사이드 스토리지 박스(원톤/투톤)",
@@ -1275,12 +1345,18 @@
     "WK_도어_스팟램프": {
       "name": "도어 스팟램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "WK_LED_도어_스커프": {
       "name": "LED 도어 스커프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AMB_LIGHT"
+      ]
     },
     "WK_255_55R18_All_Terrain_타이어": {
       "name": "255/55R18 All Terrain 타이어",
@@ -1300,37 +1376,69 @@
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -1743,9 +1851,11 @@
         }
       ]
     },
-    " 가솔린": {
+    "가솔린": {
       "slug": "",
-      "price": {},
+      "price": {
+        "base": 32350000
+      },
       "basic": [
         "WK_가솔린_1_5_T_GDi_엔진",
         "WK_듀얼_테크_하이브리드_시스템_e_DHT_하이브리드_변속기__듀얼모터__1_83kWh_배터리",

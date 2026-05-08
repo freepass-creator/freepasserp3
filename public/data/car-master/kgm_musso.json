@@ -835,7 +835,10 @@
     "WK_4WD_시스템_AWD_": {
       "name": "4WD 시스템(AWD)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AWD"
+      ]
     },
     "WK_셀프_레벨라이저": {
       "name": "셀프 레벨라이저",
@@ -963,7 +966,10 @@
     "WK_동반석_8way_전동시트___전동식_2way_럼버서포트": {
       "name": "동반석 8way 전동시트 & 전동식 2way 럼버서포트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "POWER_SEAT_DR"
+      ]
     },
     "WK_블랙_그레이_브라운_컬러_중_택1": {
       "name": "블랙/그레이/브라운 컬러 중 택1",
@@ -973,32 +979,51 @@
     "WK_12_3인치_터치_스크린_내비게이션": {
       "name": "12.3인치 터치 스크린 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD",
+        "NAVIGATION"
+      ]
     },
     "WK_내비게이션_무선_업데이트": {
       "name": "내비게이션 무선 업데이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_안드로이드_오토": {
       "name": "안드로이드 오토",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_애플_카플레이": {
       "name": "애플 카플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_음성인식_기능": {
       "name": "음성인식 기능",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     },
     "WK_후방_카메라_조향연동_다이내믹_주차_가이드_": {
       "name": "후방 카메라(조향연동 다이내믹 주차 가이드)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "WK_AM_FM라디오": {
       "name": "AM/FM라디오",
@@ -1013,12 +1038,18 @@
     "WK_USB_미디어": {
       "name": "USB 미디어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_블루투스_뮤직": {
       "name": "블루투스 뮤직",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH"
+      ]
     },
     "WK_양방향_공조제어": {
       "name": "양방향 공조제어",
@@ -1038,17 +1069,26 @@
     "WK_안전제일_서비스_에어백_전개_알림_": {
       "name": "안전제일 서비스(에어백 전개 알림)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_올인원_서비스_차량_원격_제어_등_": {
       "name": "올인원 서비스(차량 원격 제어 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_프리미엄_서비스_지니_뮤직__팟캐스트_등_": {
       "name": "프리미엄 서비스(지니 뮤직, 팟캐스트 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_루프_플랫_캐리어": {
       "name": "루프 플랫 캐리어",
@@ -1101,7 +1141,10 @@
     "WK_유틸리티_루프랙_옵션": {
       "name": "유틸리티 루프랙 옵션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ROOF_RACK"
+      ]
     },
     "WK_아웃도어_패키지_커스터마이징_": {
       "name": "아웃도어 패키지(커스터마이징)",
@@ -1121,7 +1164,10 @@
     "WK_유틸리티_루프랙_기본": {
       "name": "유틸리티 루프랙 기본",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ROOF_RACK"
+      ]
     }
   },
   "trims": {
@@ -1486,7 +1532,9 @@
     },
     "블랙엣지 가솔린": {
       "slug": "블랙엣지",
-      "price": {},
+      "price": {
+        "base": 51500000
+      },
       "basic": [
         "WK_152_2kWh_모터",
         "WK_80_6kWh_리튬인산철_배터리",

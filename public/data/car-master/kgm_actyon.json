@@ -162,6 +162,9 @@
       "WK_안전제일_서비스_에어백_전개_알림_",
       "WK_올인원_서비스_차량_원격제어_",
       "WK_프리미엄_서비스_지니_뮤직__팟캐스트_등_"
+    ],
+    "인포테인먼트": [
+      "KGM_WIRELESS_MIRRORING"
     ]
   },
   "options": {
@@ -1008,32 +1011,51 @@
     "WK_12_3인치_터치_스크린_내비게이션": {
       "name": "12.3인치 터치 스크린 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DISPLAY_LCD",
+        "NAVIGATION"
+      ]
     },
     "WK_내비게이션_무선_맵_업데이트": {
       "name": "내비게이션 무선 맵 업데이트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "NAVIGATION"
+      ]
     },
     "WK_안드로이드_오토": {
       "name": "안드로이드 오토",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_애플_카플레이": {
       "name": "애플 카플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRRORING"
+      ]
     },
     "WK_음성인식_기능": {
       "name": "음성인식 기능",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "VOICE_RECOG"
+      ]
     },
     "WK_후방_카메라_조향연동_다이내믹_주차_가이드_": {
       "name": "후방 카메라(조향연동 다이내믹 주차 가이드)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CAM_REAR"
+      ]
     },
     "WK_AM_FM라디오": {
       "name": "AM/FM라디오",
@@ -1043,12 +1065,18 @@
     "WK_USB_미디어": {
       "name": "USB 미디어",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "USB"
+      ]
     },
     "WK_블루투스_뮤직": {
       "name": "블루투스 뮤직",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BLUETOOTH"
+      ]
     },
     "WK_양방향_공조제어": {
       "name": "양방향 공조제어",
@@ -1068,17 +1096,26 @@
     "WK_안전제일_서비스_에어백_전개_알림_": {
       "name": "안전제일 서비스(에어백 전개 알림)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_올인원_서비스_차량_원격제어_": {
       "name": "올인원 서비스(차량 원격제어)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "WK_프리미엄_서비스_지니_뮤직__팟캐스트_등_": {
       "name": "프리미엄 서비스(지니 뮤직, 팟캐스트 등)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "CONNECTED_CAR"
+      ]
     },
     "PKG_ADAS": {
       "name": "드라이빙 어시스트 패키지 II",
@@ -1088,37 +1125,77 @@
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
+    },
+    "KGM_WIRELESS_MIRRORING": {
+      "name": "무선 Apple CarPlay & Android Auto",
+      "category": "인포테인먼트",
+      "fp_ids": [
+        "MIRRORING",
+        "MIRRORING_WIRELESS"
+      ]
     }
   },
   "trims": {
@@ -1501,9 +1578,11 @@
         }
       ]
     },
-    " 가솔린": {
+    "가솔린": {
       "slug": "",
-      "price": {},
+      "price": {
+        "base": 34600000
+      },
       "basic": [
         "WK_차선_유지_보조_LKA_",
         "WK_다중_충돌_방지_시스템",

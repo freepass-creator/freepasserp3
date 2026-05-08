@@ -621,32 +621,51 @@
     "WK_18__투톤_알로이_휠": {
       "name": "18\" 투톤 알로이 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "WK_하이패스_시스템_ETCS_": {
       "name": "하이패스 시스템(ETCS)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HIPASS",
+        "TCS"
+      ]
     },
     "WK_전자식_룸미러_ECM_": {
       "name": "전자식 룸미러(ECM)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MTS_E_MIRROR"
+      ]
     },
     "WK_전자식_파킹_브레이크_E_PKB_": {
       "name": "전자식 파킹 브레이크(E-PKB)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "EPB"
+      ]
     },
     "WK_열선_스티어링_휠": {
       "name": "열선 스티어링 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_STR"
+      ]
     },
     "WK_그레이_가죽_시트": {
       "name": "그레이 가죽 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_앞좌석_틸트_헤드레스트": {
       "name": "앞좌석 틸트 헤드레스트",
@@ -795,12 +814,19 @@
     "WK_가죽_시트": {
       "name": "가죽 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_프레임리스_룸미러_하이패스_심카드_전용_": {
       "name": "프레임리스 룸미러(하이패스 심카드 전용)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECM_MIRROR",
+        "HIPASS"
+      ]
     },
     "WK_주행_보조_시스템_팩": {
       "name": "주행 보조 시스템 팩",
@@ -836,7 +862,10 @@
     "WK_BOSE_서라운드_시스템__12스피커_": {
       "name": "BOSE 서라운드 시스템 (12스피커)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "WK_가죽_시트__모던_브라운_또는_블랙_중_선택_": {
       "name": "가죽 시트 (모던 브라운 또는 블랙 중 선택)",
@@ -1009,42 +1038,81 @@
     "PKG_ADAS": {
       "name": "어시스트 팩",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "FCWS",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {

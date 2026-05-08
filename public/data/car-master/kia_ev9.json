@@ -912,7 +912,10 @@
     "KRMV297148": {
       "name": "수동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRMV297149": {
       "name": "1열/2열 세이프티 파워윈도우",
@@ -1095,7 +1098,10 @@
     "KRMV297P05": {
       "name": "빌트인 캠 2",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "KRMV297P24": {
       "name": "모니터링 플러스",
@@ -1130,7 +1136,10 @@
     "KRMV297P04": {
       "name": "20인치 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRMV297241": {
       "name": "측방 주차거리 경고",
@@ -1236,7 +1245,10 @@
     "KRMV297P09": {
       "name": "메리디안 프리미엄 사운드",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "KRMV297177": {
       "name": "듀얼 선루프",
@@ -1352,7 +1364,10 @@
     "KRMV297169": {
       "name": "전동식 틸트&amp;텔레스코픽 스티어링 휠",
       "category": "외관",
-      "is_package": false
+      "is_package": false,
+      "fp_ids": [
+        "STEER_TILT"
+      ]
     },
     "KRMV297170": {
       "name": "스마트 파워테일게이트",
@@ -1427,17 +1442,26 @@
     "KRMV297P14": {
       "name": "21인치 휠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRMV297P22": {
       "name": "트레일러 패키지(19인치 휠)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRMV297P23": {
       "name": "트레일러 패키지(21인치 휠)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL"
+      ]
     },
     "KRMV297211": {
       "name": "후석 스마트 엔터테인먼트 시스템",
@@ -1538,42 +1562,86 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
@@ -1700,8 +1768,7 @@
         "KRMV297188",
         "KRMV297189",
         "KRMV297190",
-        "KRMV297191",
-        "WIRELESS_MIRROR"
+        "KRMV297191"
       ],
       "select": [
         "KRMV297083",
@@ -1984,8 +2051,7 @@
         "KRMV297165",
         "KRMV297166",
         "KRMV297167",
-        "KRMV297243",
-        "WIRELESS_MIRROR"
+        "KRMV297243"
       ],
       "select": [
         "KRMV297083",
@@ -2308,8 +2374,7 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159",
-        "WIRELESS_MIRROR"
+        "KRMV297159"
       ],
       "select": [
         "KRMV297083",
@@ -2616,8 +2681,7 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159",
-        "WIRELESS_MIRROR"
+        "KRMV297159"
       ],
       "select": [
         "KRMV297083",
@@ -2991,8 +3055,7 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159",
-        "WIRELESS_MIRROR"
+        "KRMV297159"
       ],
       "select": [
         "KRMV297083",
@@ -3309,8 +3372,7 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159",
-        "WIRELESS_MIRROR"
+        "KRMV297159"
       ],
       "select": [
         "KRMV297083",
@@ -4035,8 +4097,7 @@
         "KRMV297244",
         "KRMV297245",
         "KRMV297208",
-        "KRMV297159",
-        "WIRELESS_MIRROR"
+        "KRMV297159"
       ],
       "select": [
         "KRMV297083",

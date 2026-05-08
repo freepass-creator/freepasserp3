@@ -840,8 +840,10 @@ export function renderProductDetail(p) {
     const lockSelAttr = canEdit ? ' data-edit-lock="1"' : '';
     const me = store.currentUser || {};
     const productProvider = p.provider_company_code || me.company_code || '';
+    // 차량 회사의 정책만 노출 (admin 도 동일 — 다른 회사 정책 섞이지 않게).
+    // 차량에 공급코드가 아직 없으면 전체 노출 (등록 직후 case)
     const policyOpts = (store.policies || []).filter(t => !t._deleted)
-      .filter(t => me.role === 'admin' || !productProvider || t.provider_company_code === productProvider)
+      .filter(t => !productProvider || t.provider_company_code === productProvider)
       .map(t => ({ code: t.policy_code || t._key, name: t.policy_name || t.term_name || '' }));
     const curPol = p.policy_code || '';
     const policySelectHtml = `

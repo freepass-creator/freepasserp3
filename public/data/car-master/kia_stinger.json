@@ -1035,12 +1035,18 @@
     "WK_아웃사이드_미러": {
       "name": "아웃사이드 미러",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "WK_스마트_자세제어_시스템_운전석_시트__스티어링_휠__아웃사이드_미러__스마트_자세제어_포함": {
       "name": "스마트 자세제어 시스템(운전석 시트, 스티어링 휠, 아웃사이드 미러, 스마트 자세제어 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MIRROR_FOLD"
+      ]
     },
     "WK_스타일_적용_시_선택_가능": {
       "name": "스타일 적용 시 선택 가능",
@@ -1050,7 +1056,10 @@
     "WK_전자제어_서스펜션": {
       "name": "전자제어 서스펜션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECS"
+      ]
     },
     "WK_레드_캘리퍼_브렘보_브레이크": {
       "name": "레드 캘리퍼 브렘보 브레이크",
@@ -1060,27 +1069,42 @@
     "WK_헤드업_디스플레이": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     },
     "WK_서라운드_뷰_모니터": {
       "name": "서라운드 뷰 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_후측방_모니터": {
       "name": "후측방 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "WK_리모트_360도_뷰_내_차_주변_영상_": {
       "name": "리모트 360도 뷰(내 차 주변 영상)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_Lexicon_프리미엄_사운드_15스피커__외장앰프_": {
       "name": "Lexicon 프리미엄 사운드(15스피커, 외장앰프)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SOUND_PREMIUM"
+      ]
     },
     "WK_액티브_엔진_사운드": {
       "name": "액티브 엔진 사운드",
@@ -1090,50 +1114,93 @@
     "PKG_ADAS": {
       "name": "드라이브 와이즈 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
     "플래티넘 2.5 가솔린 터보": {
       "slug": "플래티넘_(2.5_가솔린_터보)",
       "price": {
-        "tax_5_before": 39500000,
-        "tax_5_after": 38780000
+        "base": 41400000
       },
       "basic": [
         "WK_스마트스트림_G2_5_T_GDI_엔진",
@@ -1347,8 +1414,7 @@
     "마스터즈 2.5 가솔린 터보": {
       "slug": "마스터즈_(2.5_가솔린_터보)",
       "price": {
-        "tax_5_before": 43550000,
-        "tax_5_after": 42750000
+        "base": 46900000
       },
       "basic": [
         "WK_외장__225_40_R19___255_35_R19_미쉐린_올시즌_타이어___전면가공_휠",
@@ -1588,7 +1654,9 @@
     },
     "플래티넘 가솔린": {
       "slug": "플래티넘",
-      "price": {},
+      "price": {
+        "base": 49600000
+      },
       "basic": [
         "WK_스마트스트림_G2_5_T_GDI_엔진",
         "WK_8단_자동변속기",
@@ -1800,7 +1868,9 @@
     },
     "마스터즈 가솔린": {
       "slug": "마스터즈",
-      "price": {},
+      "price": {
+        "base": 53000000
+      },
       "basic": [
         "WK_스마트스트림_G2_5_T_GDI_엔진",
         "WK_8단_자동변속기",
@@ -2012,7 +2082,9 @@
     },
     "GT 가솔린": {
       "slug": "GT",
-      "price": {},
+      "price": {
+        "base": 57100000
+      },
       "basic": [
         "WK_스마트스트림_G2_5_T_GDI_엔진",
         "WK_8단_자동변속기",
@@ -2224,7 +2296,9 @@
     },
     "트리뷰트 에디션 가솔린": {
       "slug": "트리뷰트_에디션",
-      "price": {},
+      "price": {
+        "base": 60800000
+      },
       "basic": [
         "WK_스마트스트림_G2_5_T_GDI_엔진",
         "WK_8단_자동변속기",

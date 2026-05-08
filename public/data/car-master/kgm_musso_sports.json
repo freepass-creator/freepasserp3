@@ -12,21 +12,27 @@
   "trims": {
     "L5 가솔린": {
       "slug": "l5",
-      "price": {},
+      "price": {
+        "base": 24000000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "V5 가솔린": {
       "slug": "v5",
-      "price": {},
+      "price": {
+        "base": 28000000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "X5 가솔린": {
       "slug": "x5",
-      "price": {},
+      "price": {
+        "base": 32000000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

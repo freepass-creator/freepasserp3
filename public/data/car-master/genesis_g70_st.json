@@ -1,6 +1,6 @@
 {
   "catalog_id": "genesis_g70_st",
-  "model_root": "G70",
+  "model_root": "G70 슈팅브레이크",
   "title": "제네시스 G70 슈팅브레이크",
   "maker": "제네시스",
   "source": "stub",
@@ -519,7 +519,10 @@
     "WK_나파_가죽_시트_퀼팅_포함_": {
       "name": "나파 가죽 시트(퀼팅 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_다이아몬드_패턴_알루미늄_도어_가니쉬_플로어_콘솔": {
       "name": "다이아몬드 패턴 알루미늄 도어 가니쉬/플로어 콘솔",
@@ -552,7 +555,10 @@
     "WK_전자제어_서스펜션": {
       "name": "전자제어 서스펜션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ECS"
+      ]
     },
     "WK_차동제한장치_LSD_": {
       "name": "차동제한장치(LSD)",
@@ -567,7 +573,10 @@
     "WK_스포츠_전용_천연_가죽_시트": {
       "name": "스포츠 전용 천연 가죽 시트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_스포츠_내장재": {
       "name": "스포츠 내장재",
@@ -592,7 +601,10 @@
     "WK_스포츠_전용_나파_가죽_시트_퀼팅_포함_": {
       "name": "스포츠 전용 나파 가죽 시트(퀼팅 포함)",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SEAT_LEATHER"
+      ]
     },
     "WK_글로시_컬러__유광__11종_중_선택_": {
       "name": "글로시 컬러 (유광, 11종 중 선택)",
@@ -624,12 +636,18 @@
     "WK_제네시스_디지털_키_2_터치": {
       "name": "제네시스 디지털 키 2 터치",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SMART_KEY"
+      ]
     },
     "WK_앞좌석_스마트폰_무선_충전": {
       "name": "앞좌석 스마트폰 무선 충전",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "WPC"
+      ]
     },
     "WK_12_3인치_3D_클러스터": {
       "name": "12.3인치 3D 클러스터",
@@ -639,17 +657,32 @@
     "WK_지능형_헤드램프": {
       "name": "지능형 헤드램프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAD_LED"
+      ]
     },
     "WK_드라이빙_어시스턴스_패키지": {
       "name": "드라이빙 어시스턴스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA"
+      ]
     },
     "WK_운전석_자세_메모리_시스템": {
       "name": "운전석 자세 메모리 시스템",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "MEMORY_SEAT_DR"
+      ]
     },
     "WK_운전석_인텔리전트_시트_16방향__쿠션_익스텐션__볼스터_전동_조절_포함_": {
       "name": "운전석 인텔리전트 시트(16방향, 쿠션 익스텐션, 볼스터 전동 조절 포함)",
@@ -677,17 +710,26 @@
     "WK_서라운드_뷰_모니터": {
       "name": "서라운드 뷰 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS"
+      ]
     },
     "WK_후측방_모니터": {
       "name": "후측방 모니터",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BVM"
+      ]
     },
     "WK_빌트인_캠": {
       "name": "빌트인 캠",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "WK_보조배터리": {
       "name": "보조배터리",
@@ -726,42 +768,86 @@
     "PKG_ADAS": {
       "name": "드라이빙 어시스턴스 패키지 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "categories": {
@@ -891,9 +977,10 @@
     ]
   },
   "trims": {
-    "스탠다드 가솔린": {
-      "slug": "스탠다드",
-      "price": {},
+    "프리미엄 가솔린 2.0 T": {
+      "price": {
+        "base": 43100000
+      },
       "basic": [
         "WK_가솔린_2_5_터보_엔진",
         "WK_8단_자동변속기",
@@ -929,13 +1016,11 @@
         "WK_225_45R18_브리지스톤_타이어___다크_하이퍼_실버_휠",
         "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다이아몬드_컷팅_휠",
         "WK_블랙_소프트_페인트_도어_가니쉬",
-        "WIRELESS_MIRROR",
         "WK_고속도로_주행_보조",
         "WK_차로_유지_보조",
         "WK_후석_승객_알림",
         "WK_안전_하차_경고"
       ],
-      "select": [],
       "select_groups": [
         {
           "codes": [
@@ -995,9 +1080,10 @@
         }
       ]
     },
-    "스포츠 가솔린": {
-      "slug": "스포츠",
-      "price": {},
+    "스포츠 패키지 가솔린 2.0 T": {
+      "price": {
+        "base": 47030000
+      },
       "basic": [
         "WK_가솔린_2_5_터보_엔진",
         "WK_8단_자동변속기",
@@ -1059,163 +1145,8 @@
         "WK_2WD_후륜_",
         "WK_AWD",
         "WK_전자제어_서스펜션",
-        "WK_차동제한장치_LSD_",
-        "WIRELESS_MIRROR"
+        "WK_차동제한장치_LSD_"
       ],
-      "select": [],
-      "select_groups": [
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 2000000,
-          "name": "드라이빙 어시스턴스 패키지 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ]
-    },
-    "스포츠 프레스티지 가솔린": {
-      "slug": "스포츠_프레스티지",
-      "price": {},
-      "basic": [
-        "WK_가솔린_2_5_터보_엔진",
-        "WK_8단_자동변속기",
-        "WK_ISG_시스템",
-        "WK_통합_주행_모드_에코_컴포트_스포츠_스포츠__커스텀_",
-        "WK_Full_LED_헤드램프",
-        "WK_Full_LED_리어_콤비_램프",
-        "WK_225_45R18_브리지스톤_타이어___휠",
-        "WK_이중_접합_차음_유리_앞면__앞_도어_",
-        "WK_자외선_차단_유리_앞면_",
-        "WK_브렘보_블랙도장_모노블럭_4P__브레이크",
-        "WK_듀얼_머플러",
-        "WK_리어_스포일러",
-        "WK_8인치_TFT_LCD_클러스터",
-        "WK_전자식_변속레버_SBW_",
-        "WK_패들쉬프트",
-        "WK_하이패스_시스템",
-        "WK_프레임리스_룸미러_ECM_",
-        "WK_터치타입_공조_패널",
-        "WK_메탈_도어스커프",
-        "WK_10_에어백_시스템_앞좌석_어드밴스드",
-        "WK_운전석_무릎",
-        "WK_앞좌석_센터_사이드",
-        "WK_앞___뒤_사이드",
-        "WK_전복_대응_커튼_",
-        "WK_급제동_경보_기능",
-        "WK_뒷좌석_센터_3점식_시트벨트",
-        "WK_차로_이탈방지_보조",
-        "WK_진동경고_스티어링_휠",
-        "WK_하이빔_보조",
-        "WK_운전자_주의_경고",
-        "WK_전방_충돌방지_보조_차량__보행자__자전거_탑승자__교차로_대향차_",
-        "WK_후측방_충돌방지_보조",
-        "WK_후방_교차_충돌방지_보조",
-        "WK_지능형_속도_제한_보조",
-        "WK_후진_가이드_램프",
-        "WK_안전_하차_경고",
-        "WK_후석_승객_알림",
-        "WK_다중_충돌방지_자동_제동_시스템",
-        "WK_터치타입_아웃사이드_도어_핸들",
-        "WK_레인_센서",
-        "WK_열선_스티어링_휠",
-        "WK_듀얼_풀오토_에어컨",
-        "WK_공기_청정_시스템_미세먼지_센서__애프터_블로우_포함_",
-        "WK_고속도로_주행_보조",
-        "WK_스마트_크루즈_컨트롤_Stop___Go_포함_",
-        "WK_내비게이션_기반_스마트_크루즈_컨트롤_안전구간__곡선로_",
-        "WK_차로_유지_보조",
-        "WK_후방_주차_거리_경고",
-        "WK_스마트_파워_테일게이트",
-        "WK_러기지_커버링_쉘프",
-        "WK_전동식_파킹_브레이크_오토홀드_포함_",
-        "WK_앞좌석___뒷좌석_파워_세이프티_윈도우",
-        "WK_인조_가죽_시트",
-        "WK_운전석_전동시트_12방향__럼버서포트_포함_",
-        "WK_동승석_전동시트_8방향__높이조절_포함_",
-        "WK_동승석_워크인_디바이스",
-        "WK_앞좌석_통풍___열선_시트",
-        "WK_뒷좌석_열선_시트",
-        "WK_뒷좌석_4_2_4_폴딩",
-        "WK_제네시스_인포테인먼트_시스템_10_25인치_디스플레이__Genesis_Connected_S",
-        "WK_내비게이션_무선_업데이트",
-        "WK_렉시콘_사운드_시스템_9스피커_",
-        "WK_가솔린_2_5_터보",
-        "WK_225_45R18_브리지스톤_타이어___다크_하이퍼_실버_휠",
-        "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다이아몬드_컷팅_휠",
-        "WK_블랙_소프트_페인트_도어_가니쉬",
-        "WK_블랙_하이그로시_플로어_콘솔",
-        "WK_나파_가죽_시트_퀼팅_포함_",
-        "WK_다이아몬드_패턴_알루미늄_도어_가니쉬_플로어_콘솔",
-        "WK_스웨이드_내장재_헤드라이닝__필라_트림_등_",
-        "WK_혼커버_가죽_감싸기",
-        "WK_2WD_후륜_",
-        "WK_AWD",
-        "WK_전자제어_서스펜션",
-        "WK_차동제한장치_LSD_",
-        "WK_19인치_미쉐린_타이어___스포츠_전용_휠",
-        "WK_스포츠_전용_천연_가죽_시트",
-        "WK_스포츠_내장재",
-        "WK_225_40R19_앞___255_35R19_뒤__미쉐린_타이어___다크_그레이_매트_휠_스",
-        "WK_다크_스탠다드_패턴_알루미늄_도어_가니쉬_플로어_콘솔",
-        "WK_메탈___포레스트",
-        "WK_스포츠_전용_나파_가죽_시트_퀼팅_포함_",
-        "WK_글로시_컬러__유광__11종_중_선택_",
-        "WK_매트_컬러__무광__3종_중_선택_",
-        "WK_와이드_선루프",
-        "WK_헤드업_디스플레이",
-        "WK_제네시스_디지털_키_2_터치",
-        "WIRELESS_MIRROR"
-      ],
-      "select": [],
       "select_groups": [
         {
           "codes": [

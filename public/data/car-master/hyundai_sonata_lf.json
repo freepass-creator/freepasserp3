@@ -12,56 +12,72 @@
   "trims": {
     "스마트 가솔린 2.0": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 22250000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "스마트 LPi 2.0": {
       "slug": "스마트",
-      "price": {},
+      "price": {
+        "base": 21500000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "스타일 가솔린 2.0": {
       "slug": "스타일",
-      "price": {},
+      "price": {
+        "base": 24750000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "스타일 LPi 2.0": {
       "slug": "스타일",
-      "price": {},
+      "price": {
+        "base": 23950000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 가솔린 2.0": {
       "slug": "프리미엄",
-      "price": {},
+      "price": {
+        "base": 27250000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 LPi 2.0": {
       "slug": "프리미엄",
-      "price": {},
+      "price": {
+        "base": 26400000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 스페셜 가솔린 2.0": {
       "slug": "프리미엄_스페셜",
-      "price": {},
+      "price": {
+        "base": 28950000
+      },
       "basic": [],
       "select": [],
       "select_groups": []
     },
     "프리미엄 스페셜 LPi 2.0": {
       "slug": "프리미엄_스페셜",
-      "price": {},
+      "price": {
+        "base": 28100000
+      },
       "basic": [],
       "select": [],
       "select_groups": []

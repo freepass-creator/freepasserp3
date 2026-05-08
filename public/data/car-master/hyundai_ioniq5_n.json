@@ -1,6 +1,6 @@
 {
   "catalog_id": "hyundai_ioniq5_n",
-  "model_root": "아이오닉5",
+  "model_root": "아이오닉5 N",
   "title": "현대 아이오닉5 N NE",
   "maker": "현대",
   "source": "hyundai_official",
@@ -656,7 +656,13 @@
     "NEN6P06": {
       "name": "파킹 어시스트 Lite",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "NEN6113": {
       "name": "차량 보호 필름 Ⅰ",
@@ -785,12 +791,22 @@
     "NEN6P04": {
       "name": "파킹 어시스트",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "NEN6P05": {
       "name": "빌트인 캠 2, 증강현실 내비게이션",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM",
+        "NAVIGATION"
+      ]
     },
     "NEN6103": {
       "name": "디지털 센터 미러",
@@ -814,239 +830,92 @@
     "PKG_ADAS": {
       "name": "현대 스마트센스 II",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "DAW",
+        "FCWS",
+        "HBA",
+        "HDA",
+        "LDWS",
+        "LKAS",
+        "RCTA",
+        "SEW"
+      ]
     },
     "PKG_CONVENIENCE": {
       "name": "컨비니언스 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUTTON_START",
+        "MIRROR_FOLD",
+        "RAIN_SENSOR",
+        "SMART_KEY"
+      ]
     },
     "PKG_COMFORT": {
       "name": "컴포트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HEAT_SEAT_FRONT",
+        "HEAT_STR"
+      ]
     },
     "PKG_PARKING": {
       "name": "파킹 어시스트 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "AVMS",
+        "BVM",
+        "RCTA",
+        "SENSOR_REAR",
+        "SPAS"
+      ]
     },
     "PKG_EXTERIOR": {
       "name": "익스테리어 디자인 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "ALUMINUM_WHEEL",
+        "HEAD_LED",
+        "LED_TURN"
+      ]
     },
     "PKG_BUILTIN_CAM": {
       "name": "빌트인 캠 패키지",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "BUILTIN_CAM"
+      ]
     },
     "PKG_SUNROOF": {
       "name": "파노라마 선루프",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "SUNROOF",
+        "SUNROOF_PANO"
+      ]
     },
     "PKG_HUD": {
       "name": "헤드업 디스플레이",
       "category": "선택사양",
-      "is_package": true
+      "is_package": true,
+      "fp_ids": [
+        "HUD"
+      ]
     }
   },
   "trims": {
-    "아이오닉 5 N 에센셜 가솔린": {
-      "slug": "e-value-plus",
-      "name_en": null,
+    "N AWD EV": {
       "price": {
-        "base": 77000000,
-        "before_tax": 81104100
-      },
-      "basic": [
-        "NEN6019",
-        "NEN6020",
-        "NEN6021",
-        "NEN6022",
-        "NEN6023",
-        "NEN6024",
-        "NEN6025",
-        "NEN6026",
-        "NEN6029",
-        "NEN6030",
-        "NEN6031",
-        "NEN6032",
-        "NEN6048",
-        "NEN6049",
-        "NEN6050",
-        "NEN6051",
-        "NEN6052",
-        "NEN6053",
-        "NEN6054",
-        "NEN6055",
-        "NEN6056",
-        "NEN6115",
-        "NEN6034",
-        "NEN6035",
-        "NEN6116",
-        "NEN6117",
-        "NEN6037",
-        "NEN6038",
-        "NEN6118",
-        "NEN6040",
-        "NEN6119",
-        "NEN6042",
-        "NEN6120",
-        "NEN6044",
-        "NEN6045",
-        "NEN6058",
-        "NEN6059",
-        "NEN6060",
-        "NEN6061",
-        "NEN6063",
-        "NEN6064",
-        "NEN6065",
-        "NEN6066",
-        "NEN6069",
-        "NEN6070",
-        "NEN6071",
-        "NEN6072",
-        "NEN6073",
-        "NEN6075",
-        "NEN6076",
-        "NEN6078",
-        "NEN6079",
-        "NEN6126",
-        "NEN6081",
-        "NEN6082",
-        "NEN6083",
-        "NEN6084",
-        "NEN6085",
-        "NEN6086",
-        "NEN6087",
-        "NEN6088",
-        "NEN6089",
-        "NEN6090",
-        "NEN6091",
-        "NEN6092",
-        "NEN6104",
-        "NEN6106",
-        "NEN6108",
-        "NEN6109",
-        "WIRELESS_MIRROR"
-      ],
-      "select": [
-        "NEN6P03",
-        "NEN6P06",
-        "NEN6113",
-        "NEN6114",
-        "NEN6P01",
-        "NEN6P02"
-      ],
-      "select_groups": [
-        {
-          "codes": [
-            "NEN6P03"
-          ],
-          "price": 590000,
-          "name": "컴포트 플러스"
-        },
-        {
-          "codes": [
-            "NEN6P06"
-          ],
-          "price": 900000,
-          "name": "파킹 어시스트 Lite"
-        },
-        {
-          "codes": [
-            "NEN6113"
-          ],
-          "price": 380000,
-          "name": "차량 보호 필름 Ⅰ"
-        },
-        {
-          "codes": [
-            "NEN6114"
-          ],
-          "price": 400000,
-          "name": "차량 보호 필름 Ⅱ"
-        },
-        {
-          "codes": [
-            "NEN6P01"
-          ],
-          "price": 550000,
-          "name": "[N 퍼포먼스 파츠]알칸타라 인테리어 패키지"
-        },
-        {
-          "codes": [
-            "NEN6P02"
-          ],
-          "price": 300000,
-          "name": "[N 퍼포먼스 파츠]워크인 인테리어 패키지"
-        },
-        {
-          "codes": [
-            "PKG_ADAS"
-          ],
-          "price": 1000000,
-          "name": "현대 스마트센스 II"
-        },
-        {
-          "codes": [
-            "PKG_CONVENIENCE"
-          ],
-          "price": 600000,
-          "name": "컨비니언스 패키지"
-        },
-        {
-          "codes": [
-            "PKG_COMFORT"
-          ],
-          "price": 700000,
-          "name": "컴포트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_PARKING"
-          ],
-          "price": 800000,
-          "name": "파킹 어시스트 패키지"
-        },
-        {
-          "codes": [
-            "PKG_EXTERIOR"
-          ],
-          "price": 1200000,
-          "name": "익스테리어 디자인 패키지"
-        },
-        {
-          "codes": [
-            "PKG_BUILTIN_CAM"
-          ],
-          "price": 850000,
-          "name": "빌트인 캠 패키지"
-        },
-        {
-          "codes": [
-            "PKG_SUNROOF"
-          ],
-          "price": 1200000,
-          "name": "파노라마 선루프"
-        },
-        {
-          "codes": [
-            "PKG_HUD"
-          ],
-          "price": 1300000,
-          "name": "헤드업 디스플레이"
-        }
-      ]
-    },
-    "아이오닉 5 N 가솔린": {
-      "slug": "exclusive",
-      "name_en": null,
-      "price": {
-        "base": 77000000,
-        "before_tax": 81104100
+        "base": 85000000
       },
       "basic": [
         "NEN6019",
@@ -1129,19 +998,7 @@
         "NEN6108",
         "NEN6109",
         "NEN6042",
-        "NEN6120",
-        "WIRELESS_MIRROR"
-      ],
-      "select": [
-        "NEN6P03",
-        "NEN6P04",
-        "NEN6P05",
-        "NEN6103",
-        "NEN6067",
-        "NEN6113",
-        "NEN6114",
-        "NEN6P01",
-        "NEN6P02"
+        "NEN6120"
       ],
       "select_groups": [
         {
