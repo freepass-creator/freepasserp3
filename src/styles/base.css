@@ -362,14 +362,14 @@ input[type="radio"] {
 .status-dot.예약 { background: var(--state-예약); }
 
 /* 차량상태 색칩 — 영업자 세로 스캔용. 4상태 (즉시/가능/협의/불가) */
-/* 상태칩 — color-badge 와 동일 톤 (솔리드 fill, 굴림 12px 2자 fit) */
+/* 상태칩 — 솔리드 fill, 12px. 2자/4자(풀 라벨) 둘 다 지원 (폭 자동 + min-width 30px) */
 .status-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
+  min-width: 30px;
   height: 18px;
-  padding: 0;
+  padding: 0 5px;
   border-radius: 2px;
   font-family: var(--font);
   font-size: 12px;
@@ -378,10 +378,17 @@ input[type="radio"] {
   letter-spacing: -0.05em;
   white-space: nowrap;
 }
-.status-chip.즉시 { background: var(--alert-green-bg);  color: var(--alert-green-text); }
-.status-chip.가능 { background: var(--alert-blue-bg);   color: var(--alert-blue-text); }
-.status-chip.협의 { background: var(--alert-orange-bg); color: var(--alert-orange-text); }
-.status-chip.불가 { background: var(--bg-stripe);       color: var(--text-weak); }
+/* 짧은 라벨 (shortStatus 호환) + 풀 라벨 5종 (normalizeVehicleStatus) 둘 다 지원 */
+.status-chip.즉시,
+.status-chip.즉시출고 { background: var(--alert-green-bg);  color: var(--alert-green-text); }
+.status-chip.가능,
+.status-chip.출고가능 { background: var(--alert-blue-bg);   color: var(--alert-blue-text); }
+.status-chip.협의,
+.status-chip.출고협의 { background: var(--alert-orange-bg); color: var(--alert-orange-text); }
+.status-chip.상품화,
+.status-chip.상품화중 { background: var(--alert-yellow-bg, #fef3c7); color: var(--alert-yellow-text, #92400e); }
+.status-chip.불가,
+.status-chip.출고불가 { background: var(--bg-stripe);       color: var(--text-weak); }
 
 /* 외부/내부 색상 뱃지 — fuel-badge 동일 규격 (18x18 라운드 사각, 안에 한글 약어 1자)
    box 크기 절대 불변. mono 폰트로 글리프 폭 통일 (Latin/Korean 모두) */
@@ -460,10 +467,11 @@ input[type="radio"] {
   color: var(--text-weak);
   font-size: var(--font-size);
   position: sticky;
-  top: 0;
+  top: -1px;                  /* 1px subpixel gap 방지 (스크롤 시 컨텐츠가 위로 비침) */
   white-space: nowrap;
   z-index: var(--z-table-sticky-header);
   height: var(--row-height);
+  background-clip: padding-box;
 }
 .table thead th.num { text-align: right; }
 .table thead th.center { text-align: center; }

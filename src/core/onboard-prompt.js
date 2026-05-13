@@ -130,10 +130,16 @@ export function showOnboardSheet() {
       const notifBtn = document.getElementById('onbNotif');
       notifBtn?.addEventListener('click', async () => {
         notifBtn.disabled = true;
-        const { requestNotificationPermission } = await import('../firebase/messaging.js');
-        const token = await requestNotificationPermission();
+        // 브라우저 네이티브 Notification 권한 (FCM X) — Chrome/Edge/Firefox 표준
+        let ok = false;
+        if ('Notification' in window) {
+          try {
+            const p = await Notification.requestPermission();
+            ok = (p === 'granted');
+          } catch {}
+        }
         notifBtn.disabled = false;
-        if (token) {
+        if (ok) {
           showToast('알림이 허용되었습니다', 'success');
           close();
         } else if (Notification.permission === 'denied') {

@@ -26,7 +26,23 @@ export function shortStatus(s) {
   if (/즉시/.test(t)) return '즉시';
   if (/완료|불가/.test(t)) return '불가';
   if (/가능/.test(t)) return '가능';
+  if (/상품화/.test(t)) return '상품화';
   return '협의';
+}
+
+/* 5종 풀 라벨 정규화 — 상품찾기 등 풀 표기 페이지용.
+ * API `normalizeVehicleStatus` (external-sheet) 와 동일 룰. */
+const VEHICLE_STATUS_ALLOWED = new Set(['즉시출고', '출고가능', '상품화중', '출고협의', '출고불가']);
+export function normalizeVehicleStatus(s) {
+  const t = String(s || '').trim();
+  if (VEHICLE_STATUS_ALLOWED.has(t)) return t;
+  if (t === '판매중' || t === '할인판매') return '출고가능';
+  if (/즉시/.test(t)) return '즉시출고';
+  if (/상품화/.test(t)) return '상품화중';
+  if (/협의/.test(t)) return '출고협의';
+  if (/가능/.test(t)) return '출고가능';
+  if (/완료|불가/.test(t)) return '출고불가';
+  return '출고불가';
 }
 
 /* 차량 status → CSS dot class 매핑 — .status-dot.{운행/대기/정비/예약/사고} 와 매칭 */

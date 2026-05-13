@@ -19,6 +19,50 @@ import {
   providerNameByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
+/* 신규 정책 등록 시 자동으로 박히는 기본값 — 한국 렌트카 업계 흔한 표준값.
+ *  사용자는 편집만 하면 됨. POLICY_OPTS 의 첫 옵션과 일치시키지 말고 실무 기본값 우선. */
+export const POLICY_DEFAULTS = {
+  // 식별·심사
+  screening_criteria: '신용무관',
+  credit_grade: '7등급 이상',
+  // 운전자
+  basic_driver_age: '만 26세 이상',
+  license_period: '1년 이상',
+  driver_age_upper_limit: '제한없음',
+  driver_age_lowering: '협의',
+  age_lowering_cost: '대여료의 10%',
+  personal_driver_scope: '계약자 본인+직계가족',
+  business_driver_scope: '계약사업자 임직원 및 관계자',
+  additional_driver_allowance_count: '1인',
+  additional_driver_cost: '월 3만원',
+  // 주행·결제·계약
+  annual_mileage: '연간 2만Km',
+  mileage_upcharge_per_10000km: '3만원',
+  deposit_installment: '협의',
+  deposit_card_payment: '협의',
+  payment_method: '선불',
+  rental_region: '전국',
+  delivery_fee: '협의',
+  penalty_condition: '잔여기간 기준 차등적용',
+  commission_clawback_condition: '출고 전 취소시 전액 환수',
+  // 보험
+  injury_compensation_limit: '무한',
+  injury_deductible: '30만원',
+  property_compensation_limit: '1억원',
+  property_deductible: '30만원',
+  self_body_accident: '1억원',
+  self_body_deductible: '30만원',
+  uninsured_damage: '2억원',
+  uninsured_deductible: '없음',
+  own_damage_compensation: '차량가액',
+  own_damage_repair_ratio: '20%',
+  own_damage_min_deductible: '50만원',
+  own_damage_max_deductible: '100만원',
+  maintenance_service: '협의',
+  annual_roadside_assistance: '연간 5회',
+  insurance_included: '보험료 포함',
+};
+
 /* v2 정책 OPTS — 드롭다운 옵션 */
 export const POLICY_OPTS = {
   screening_criteria: ['신용무관','신용필요'],
@@ -151,7 +195,6 @@ export function renderPolicyDetail(pol) {
           ${providers.map(p => `<option value="${esc(p.code)}" ${p.code === pol.provider_company_code ? 'selected' : ''}>${esc(p.name)} (${esc(p.code)})</option>`).join('')}
           ${pol.provider_company_code && !providers.find(p => p.code === pol.provider_company_code) ? `<option value="${esc(pol.provider_company_code)}" selected>${esc(pol.provider_company_code)}</option>` : ''}
         </select></div>
-        ${ffi('정책유형',   'policy_type',                    pol.policy_type,                    dis)}
         ${ffi('정책설명',   'term_description',               pol.term_description,               dis)}
         ${ffs('심사기준',   'screening_criteria',             pol.screening_criteria,             O.screening_criteria, dis)}
         ${ffs('신용등급',   'credit_grade',                   pol.credit_grade,                   O.credit_grade, dis)}

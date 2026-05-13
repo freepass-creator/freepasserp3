@@ -1015,13 +1015,44 @@ function renderSyncTab(el) {
       const data = await res.json();
       if (!data.ok) throw new Error(data.message || '시트 읽기 실패');
 
-      // autoplus 만 vehicle_master 자동 분류 (raw_model_short/full 컬럼 있음).
+      // autoplus 만 catalog 기반 자동 분류 (raw_model_short/full 컬럼 있음).
+      //   v3 source of truth = public/data/car-master/_index.json (catalog).
+      //   vehicle_master Firebase 컬렉션은 더 이상 단독 사용 X — catalog 우선 + vehicle_master 보조.
       // general 은 시트 자체에 maker/model/sub_model/trim 컬럼 그대로 담고 있어 매칭 불필요.
       let matched = 0;
       const items = Object.values(data.products || {});
       if (data.schema === 'autoplus') {
         const { buildVehicleIndex, matchVehicle } = await import('../core/vehicle-matcher.js');
-        const vmIndex = buildVehicleIndex(store.carModels || []);
+        const { loadIndex } = await import('../core/vehicle-matrix.js');
+        const catalogIdx = await loadIndex();
+        // catalog → carModel 호환 (maker / model=model_root / sub_model=title-maker접두사).
+        //   title="현대 쏘나타 DN8" → sub_model="쏘나타 DN8" (raw_model_full 매칭 성공률 위함).
+        //   "더 뉴 / 올 뉴" 같은 페리 접두사는 유지 (페리/pre 구분에 필요).
+        // catalog title → sub_model 변환:
+        //   1) maker 접두사 제거 ("현대 쏘나타 DN8" → "쏘나타 DN8")
+        //   2) 일반 marketing 접두사 제거 ("더 뉴 / 올 뉴 / 디 올 뉴 / 신형 / 뉴")
+        //      → "더 뉴 스포티지 NQ5" → "스포티지 NQ5" (raw_model_full 매칭률 향상)
+        //   "더 볼드", "디 엣지" 같은 특수 facelift designation 은 유지
+        const MARKETING_PREFIX = /^(?:디\s*올\s*뉴|올\s*뉴|더\s*뉴|신형|뉴|올뉴|더뉴|디올뉴)\s+/;
+        const stripTitle = (title, maker) => {
+          let t = String(title || '').trim();
+          if (maker && t.startsWith(maker + ' ')) t = t.slice(maker.length + 1).trim();
+          t = t.replace(MARKETING_PREFIX, '');
+          return t;
+        };
+        const catalogModels = Object.values(catalogIdx || {}).map(c => ({
+          maker: c.maker,
+          model: c.model_root,
+          sub_model: stripTitle(c.title, c.maker),
+          year_start: c.year_start || '',
+          year_end: c.year_end || '',
+          title: c.title || '',
+          status: c.status === 'archived' ? 'deleted' : 'active',
+        })).filter(m => m.maker && m.model);
+        // 안전 fallback — vehicle_master 도 있으면 합침
+        const merged = [...catalogModels, ...((store.carModels || []).filter(m => m.maker && m.model))];
+        const vmIndex = buildVehicleIndex(merged);
+        devLog(`[sync] catalog 인덱스: ${catalogModels.length}개 + vehicle_master ${(store.carModels || []).length}개`);
         for (const p of items) {
           const m = matchVehicle(p.raw_model_short || '', p.raw_model_full || '', p.first_registration_date || '', vmIndex);
           if (m.maker)     p.maker = m.maker;

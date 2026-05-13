@@ -11,9 +11,10 @@
 import { isMobile as isMobileUA, bindGlobalHaptic } from './core/mobile-shell.js';
 
 // 환경별 CSS 분리 — tokens.css 와 base.css 는 index.html <link> 로 항상 로드.
-// 모바일일 때만 mobile.css (mobile partials) 추가 로드.
+// 모바일일 때만 mobile.css (mobile partials) 비동기 로드 — fire-and-forget (부팅 차단 X)
+//  base.css 가 우선 적용되므로 mobile.css 늦게 와도 시각적 깨짐 없음
 if (isMobileUA()) {
-  await import('./styles/mobile.css');
+  import('./styles/mobile.css');   // await 제거 — 부팅 차단 방지
 }
 
 import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';
@@ -253,7 +254,14 @@ function renderFilteredPolicies() {
 function renderFilteredPartners() {
   let list = (store.partners || []).filter(p => !p._deleted);
   const f = _pageFilters.partners;
-  if (f.type !== 'all') list = list.filter(p => p.partner_type === f.type);
+  if (f.type === 'inactive') {
+    // 비활성 탭 — type 무관, is_active === false 만
+    list = list.filter(p => p.is_active === false);
+  } else {
+    // 그 외 (전체/공급사/영업채널/운영사) — 활성만
+    list = list.filter(p => p.is_active !== false);
+    if (f.type !== 'all') list = list.filter(p => p.partner_type === f.type);
+  }
   renderPartnerList(list);
 }
 function renderFilteredRooms() {
@@ -410,6 +418,8 @@ window.refreshPageActions = function(pageName) {
         { chip: true, label: '공급사',   active: f.type === '공급사',   onClick: () => setT('공급사') },
         { chip: true, label: '영업채널', active: f.type === '영업채널', onClick: () => setT('영업채널') },
         { chip: true, label: '운영사',   active: f.type === '운영사',   onClick: () => setT('운영사') },
+        { divider: true },
+        { chip: true, label: '비활성',   active: f.type === 'inactive', onClick: () => setT('inactive') },
       ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPartner() },
@@ -713,6 +723,8 @@ async function createNewProduct() {
     showToast('차량 등록은 공급사·관리자 전용', 'error');
     return;
   }
+  // 신규 등록 진입 직전 — 다른 미입력 draft 자동 폐기
+  await discardIncompleteDrafts();
   // 이미 입력 중인 빈 draft 있으면 그쪽으로 이동 (중복 신규등록 방지)
   const pendingDraft = (store.products || []).find(p => isDraftPending('products', p._key));
   if (pendingDraft) {
@@ -843,6 +855,8 @@ async function createNewPartner() {
     showToast('파트너 등록은 관리자 전용', 'error');
     return;
   }
+  // 신규 등록 진입 직전 — 다른 미입력 draft 자동 폐기
+  await discardIncompleteDrafts();
   // 중복 draft 방지 — 이미 입력 중인 빈 draft 활성화
   const pendingDraft = (store.partners || []).find(p => isDraftPending('partners', p._key));
   if (pendingDraft) {
@@ -890,6 +904,8 @@ async function createNewPolicy() {
     showToast('정책 등록은 관리자·공급사 전용', 'error');
     return;
   }
+  // 신규 등록 진입 직전 — 다른 미입력 draft 자동 폐기
+  await discardIncompleteDrafts();
   // 중복 신규등록 방지 — 이미 입력 중인 빈 draft 있으면 그쪽 활성화
   const pendingDraft = (store.policies || []).find(p => isDraftPending('policies', p._key));
   if (pendingDraft) {
@@ -910,11 +926,14 @@ async function createNewPolicy() {
     if (!providerCode) { showToast('소속 공급사 정보가 없습니다 — 관리자 문의', 'error'); return; }
   }
   const { allocatePolicyCode } = await import('./firebase/collections.js');
+  const { POLICY_DEFAULTS } = await import('./pages/policy.js');
   const code = await allocatePolicyCode();
   const newRec = {
+    ...POLICY_DEFAULTS,                      // 표준 기본값 미리 박음 (사용자는 편집만)
     _key: code,
     policy_code: code,
     policy_name: '',
+    term_description: '',
     provider_company_code: providerCode,
     status: 'active',
     created_at: Date.now(),
@@ -1662,6 +1681,8 @@ function bindGenericListInteractions() {
   document.body.addEventListener('click', (e) => {
     const item = e.target.closest('.ws4-list .room-item');
     if (!item) return;
+    // 다른 record 활성화 직전 — 미입력 draft 있으면 자동 폐기 (필수 필드 모두 빈값일 때만)
+    discardIncompleteDrafts();
     const list = item.parentElement;
     list.querySelectorAll('.room-item').forEach(r => r.classList.remove('active'));
     item.classList.add('active');
@@ -2136,6 +2157,29 @@ function updateSidebarCounts() {
 }
 
 /* ── 로그인 / 가입 / 재설정 폼 — v2 패턴 그대로 ── */
+// Firebase Auth 에러 코드 → 한글 메시지 (로그인/가입/재설정 공용)
+const KOREAN_AUTH_MSG = {
+  'auth/invalid-credential':         '이메일 또는 비밀번호가 올바르지 않습니다',
+  'auth/wrong-password':             '비밀번호가 올바르지 않습니다',
+  'auth/user-not-found':             '등록되지 않은 이메일입니다',
+  'auth/invalid-email':              '이메일 형식이 올바르지 않습니다',
+  'auth/user-disabled':              '비활성화된 계정입니다 — 관리자에게 문의해주세요',
+  'auth/too-many-requests':          '시도가 너무 많아 일시적으로 차단됐습니다. 잠시 후 다시 시도해주세요',
+  'auth/network-request-failed':     '네트워크 연결을 확인 후 다시 시도해주세요',
+  'auth/internal-error':             '인증 시스템 일시 오류 — 잠시 후 다시 시도해주세요',
+  'auth/operation-not-allowed':      '해당 로그인 방식이 비활성화되어 있습니다',
+  'auth/email-already-in-use':       '이미 사용 중인 이메일입니다',
+  'auth/weak-password':              '비밀번호는 6자 이상이어야 합니다',
+  'auth/missing-email':              '이메일을 입력해주세요',
+  'auth/missing-password':           '비밀번호를 입력해주세요',
+};
+function koreanAuthMsg(err, fallbackPrefix) {
+  const code = err?.code || '';
+  const message = err?.message || String(err);
+  return KOREAN_AUTH_MSG[code]
+    || (code ? `${fallbackPrefix} — ${code}` : `${fallbackPrefix} — ${message.slice(0, 100)}`);
+}
+
 function bindLoginForm() {
   const loginForm  = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
@@ -2147,6 +2191,63 @@ function bindLoginForm() {
     const target = { login: loginForm, signup: signupForm, reset: resetForm }[which];
     if (target) target.hidden = false;
   };
+
+  // 사업자번호 자동 포맷팅 + 실시간 partners 매칭
+  const bizNoInput = document.getElementById('suBizNo');
+  const bizNoMatch = document.getElementById('suBizNoMatch');
+  if (bizNoInput) {
+    let _partnersCache = null;
+    let _matchTimer = null;
+
+    const loadPartners = async () => {
+      if (_partnersCache) return _partnersCache;
+      try {
+        const { ref, get } = await import('firebase/database');
+        const { db } = await import('./firebase/config.js');
+        const snap = await get(ref(db, 'partners'));
+        _partnersCache = snap.val() || {};
+      } catch (e) {
+        console.warn('[bizNo match] partners 로드 실패', e?.code || e?.message || e);
+        _partnersCache = {};
+      }
+      return _partnersCache;
+    };
+
+    const setMatch = (text, cls) => {
+      if (!bizNoMatch) return;
+      bizNoMatch.textContent = text;
+      bizNoMatch.classList.remove('is-ok', 'is-miss');
+      if (cls) bizNoMatch.classList.add(cls);
+    };
+
+    const ROLE_LABEL = { provider: '공급사', sales_channel: '영업채널', operator: '운영사' };
+
+    const matchBizNo = async (digits) => {
+      if (digits.length < 10) { setMatch('', ''); return; }
+      const partners = await loadPartners();
+      let found = null;
+      for (const [k, p] of Object.entries(partners)) {
+        if (!p || p._deleted) continue;
+        const pn = String(p.business_number || '').replace(/\D/g, '');
+        if (pn && pn === digits) { found = { ...p, partner_code: p.partner_code || k }; break; }
+      }
+      if (!found) { setMatch('일치하는 회사 없음 — 임시소속(SP999)으로 등록됩니다', 'is-miss'); return; }
+      const name = found.partner_name || found.company_name || found.partner_code;
+      const typeLabel = ROLE_LABEL[found.partner_type] || found.partner_type || '';
+      setMatch(`✓ 매칭: ${name} (${found.partner_code})${typeLabel ? ` — ${typeLabel}` : ''}`, 'is-ok');
+    };
+
+    bizNoInput.addEventListener('input', (e) => {
+      const d = e.target.value.replace(/\D/g, '').slice(0, 10);
+      let f = d;
+      if (d.length > 5) f = `${d.slice(0,3)}-${d.slice(3,5)}-${d.slice(5)}`;
+      else if (d.length > 3) f = `${d.slice(0,3)}-${d.slice(3)}`;
+      if (f !== e.target.value) e.target.value = f;
+      // 매칭 — 10자리 도달 시 디바운스 후 조회
+      if (_matchTimer) clearTimeout(_matchTimer);
+      _matchTimer = setTimeout(() => matchBizNo(d), 200);
+    });
+  }
 
   // 로그인
   loginForm?.addEventListener('submit', async (e) => {
@@ -2163,25 +2264,8 @@ function bindLoginForm() {
       location.hash = 'search';
       location.reload();
     } catch (err) {
-      const code = err?.code || '';
-      const message = err?.message || String(err);
-      const KOREAN_AUTH_MSG = {
-        'auth/invalid-credential':         '이메일 또는 비밀번호가 올바르지 않습니다',
-        'auth/wrong-password':             '비밀번호가 올바르지 않습니다',
-        'auth/user-not-found':             '등록되지 않은 이메일입니다',
-        'auth/invalid-email':              '이메일 형식이 올바르지 않습니다',
-        'auth/user-disabled':              '비활성화된 계정입니다 — 관리자에게 문의해주세요',
-        'auth/too-many-requests':          '로그인 시도가 너무 많아 일시적으로 차단됐습니다. 잠시 후 다시 시도해주세요',
-        'auth/network-request-failed':     '네트워크 연결을 확인 후 다시 시도해주세요',
-        'auth/internal-error':             '인증 시스템 일시 오류 — 잠시 후 다시 시도해주세요',
-        'auth/operation-not-allowed':      '해당 로그인 방식이 비활성화되어 있습니다',
-        'auth/email-already-in-use':       '이미 사용 중인 이메일입니다',
-        'auth/weak-password':              '비밀번호는 6자 이상이어야 합니다',
-      };
-      const userMsg = KOREAN_AUTH_MSG[code]
-        || (code ? `로그인 실패 — ${code}` : `로그인 실패 — ${message.slice(0, 100)}`);
       console.error('[login fail]', err);
-      if (msg) msg.textContent = userMsg;
+      if (msg) msg.textContent = koreanAuthMsg(err, '로그인 실패');
       if (submitBtn) submitBtn.disabled = false;
     }
   });
@@ -2194,46 +2278,57 @@ function bindLoginForm() {
   // 가입
   signupForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitBtn = signupForm.querySelector('button[type="submit"]');
+    if (submitBtn?.disabled) return;
     const email = document.getElementById('suEmail').value.trim();
     const pw = document.getElementById('suPw').value;
     const msg = document.getElementById('signupMsg');
-    if (msg) msg.textContent = '';
+    if (msg) { msg.style.color = ''; msg.textContent = ''; }
     if (!email || !pw || pw.length < 6) { if (msg) msg.textContent = '이메일·비밀번호(6자 이상) 필수'; return; }
+    if (submitBtn) submitBtn.disabled = true;
     try {
       const { signup } = await import('./firebase/auth.js');
       const { saveUserProfile } = await import('./firebase/collections.js');
       const user = await signup(email, pw);
+      // role / company_code 는 가입 시 안 받음 — saveUserProfile 이 SP999/agent 로 강제 (admin 승인 시 재지정)
+      // 사업자번호(business_no)는 admin 이 승인 시 partner 매칭 참고용
       await saveUserProfile(user.uid, {
         email,
         name: document.getElementById('suName').value.trim(),
         phone: document.getElementById('suPhone').value.trim(),
         company_name: document.getElementById('suCompany').value.trim(),
-        role: document.getElementById('suRole').value,
+        business_no: document.getElementById('suBizNo').value.trim().replace(/[^\d]/g, ''),
       });
-      showToast('가입 완료. 관리자 승인 후 이용 가능합니다.', 'success');
-      // 로그아웃 후 로그인 화면으로 (대기 상태라 ERP 진입 차단)
-      const { logout } = await import('./firebase/auth.js');
-      await logout();
-      showCard('login');
+      // 즉시 로그인 진입 (login 핸들러와 동일 패턴)
+      showToast('가입 완료', 'success');
+      location.hash = 'search';
+      location.reload();
     } catch (err) {
       console.error('[signup]', err);
-      if (msg) msg.textContent = '가입 실패 — ' + (err.code || err.message || err);
+      if (msg) msg.textContent = koreanAuthMsg(err, '가입 실패');
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 
   // 비밀번호 재설정
   resetForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const submitBtn = resetForm.querySelector('button[type="submit"]');
+    if (submitBtn?.disabled) return;
     const email = document.getElementById('rpEmail').value.trim();
     const msg = document.getElementById('resetMsg');
-    if (msg) msg.textContent = '';
-    if (!email) return;
+    if (msg) { msg.style.color = ''; msg.textContent = ''; }
+    if (!email) { if (msg) msg.textContent = '이메일을 입력해주세요'; return; }
+    if (submitBtn) submitBtn.disabled = true;
     try {
       const { resetPassword } = await import('./firebase/auth.js');
       await resetPassword(email);
       if (msg) { msg.style.color = 'var(--accent-green)'; msg.textContent = '재설정 메일 전송됨. 이메일을 확인하세요.'; }
+      // 성공 시 버튼 그대로 disable 유지 (같은 메일 여러번 보내지 않도록)
     } catch (err) {
-      if (msg) msg.textContent = '전송 실패 — ' + (err.code || err.message || err);
+      console.error('[reset]', err);
+      if (msg) msg.textContent = koreanAuthMsg(err, '전송 실패');
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 }

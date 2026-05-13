@@ -36,12 +36,13 @@
 <link rel="stylesheet" href="/src/styles/base.css">
 <link rel="stylesheet" href="/phosphor/style.css">
 <style>
-  /* Phosphor 아이콘 — light 가중치 (얇고 깔끔) 사용 위해 폰트 override */
+  /* Phosphor 아이콘 — light 가중치 (얇고 깔끔) 사용 위해 폰트 override
+   *  font-display: swap — 폰트 받기 전 fallback 으로 즉시 텍스트 표시 (모바일 부팅 시간 ↓) */
   @font-face {
     font-family: 'PhosphorLight';
     src: url('/phosphor/light/Phosphor-Light.woff2') format('woff2'),
          url('/phosphor/light/Phosphor-Light.woff') format('woff');
-    font-display: block;
+    font-display: swap;
   }
   .ph, .ph::before { font-family: 'PhosphorLight' !important; }
 </style>
@@ -1197,16 +1198,17 @@
           <input id="suPhone" type="tel" placeholder="010-0000-0000">
         </div>
         <div class="login-field">
-          <label for="suCompany">소속 회사명</label>
+          <label for="suCompany">소속 회사명 (참고)</label>
           <input id="suCompany" placeholder="회사명">
         </div>
         <div class="login-field">
-          <label for="suRole">역할</label>
-          <select id="suRole">
-            <option value="agent">영업자</option>
-            <option value="provider">공급사</option>
-          </select>
+          <label for="suBizNo">소속 사업자번호</label>
+          <input id="suBizNo" inputmode="numeric" placeholder="000-00-00000" autocomplete="off">
+          <p id="suBizNoMatch" class="biz-no-match" aria-live="polite"></p>
         </div>
+        <p class="login-msg" style="margin:4px 0 8px;color:var(--text-muted);font-size:12px;line-height:1.4;">
+          가입 후 관리자 승인 시 회사·역할이 부여됩니다.
+        </p>
         <button type="submit" class="login-submit">가입하기</button>
       </div>
       <div class="login-links">
@@ -1233,6 +1235,27 @@
       </div>
       <p class="login-msg" id="resetMsg" aria-live="polite"></p>
     </form>
+
+    <!-- 가입 완료 안내 카드 -->
+    <div class="login-card" id="pendingCard" hidden>
+      <header class="login-head">
+        <h2 class="login-title">계정 생성 완료</h2>
+        <p class="login-sub">관리자 승인을 대기 중입니다.</p>
+      </header>
+      <div class="login-form" style="text-align:center;padding:20px 0;">
+        <div style="font-size:48px;color:var(--accent-green,#16a34a);line-height:1;margin-bottom:12px;">
+          <i class="ph ph-check-circle"></i>
+        </div>
+        <p style="color:var(--text-main);font-size:14px;line-height:1.6;margin:0 0 8px;">
+          가입 신청이 정상적으로 접수되었습니다.<br>
+          관리자가 회사·역할 정보를 확인한 후 승인 처리합니다.
+        </p>
+        <p style="color:var(--text-muted);font-size:12px;line-height:1.5;margin:8px 0 16px;">
+          승인 알림은 가입하신 이메일로 발송됩니다.
+        </p>
+        <button type="button" class="login-submit" id="pendingBackBtn">로그인 화면으로</button>
+      </div>
+    </div>
 
     <div class="login-copy">&copy; 2026 freepassmobility. All Rights Reserved.</div>
   </div>

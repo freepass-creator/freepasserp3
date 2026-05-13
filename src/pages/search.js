@@ -18,7 +18,7 @@ import { extractProductDetailRows } from '../core/product-detail-rows.js';
 import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichProductsWithPolicy } from '../core/excel-export.js';
 import { showToast } from '../core/toast.js';
 import {
-  esc, shortStatus, mapStatusDot, fmtMileage,
+  esc, shortStatus, mapStatusDot, fmtMileage, normalizeVehicleStatus,
   providerNameByCode, providerLabelByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
@@ -32,8 +32,10 @@ export function setSearchCallbacks({ onCreateRoom }) {
 }
 
 /* 토픽바 — 상품찾기 페이지 제목 옆 상태별 카운트 (총/즉시/가능/협의/불가).
- *  app.js 의 products watcher 에서 호출. showPage('search') 진입 시도 호출. */
-export function updateSearchStats() {
+ *  filteredList 인자 주면 그 카운트를 "검색결과 N대" 로 추가 표시.
+ *  app.js 의 products watcher 에서 호출. showPage('search') 진입 시도 호출.
+ *  renderSearchTable 에서 필터된 list 길이와 함께 호출. */
+export function updateSearchStats(filteredList) {
   const el = document.getElementById('ptTbSearchStats');
   if (!el) return;
   // 출고불가 제외 — 즉시·가능·협의 만 카운트 (불가는 상품찾기 페이지에서 숨김)
@@ -47,7 +49,13 @@ export function updateSearchStats() {
     const s = shortStatus(p.vehicle_status || '');
     if (counts[s] !== undefined) counts[s]++;
   }
+  // 필터 / 검색어 적용된 결과 카운트 (filteredList 가 store.products 와 다를 때만 표시)
+  const isFilteredView = Array.isArray(filteredList) && filteredList.length !== total;
+  const filteredHtml = isFilteredView
+    ? `<span class="stat-filtered">검색 ${filteredList.length}대</span>`
+    : '';
   el.innerHTML = `
+    ${filteredHtml}
     <span class="stat-total">총 ${total}대</span>
     <span class="stat-즉시">즉시 ${counts['즉시']}</span>
     <span class="stat-가능">가능 ${counts['가능']}</span>
@@ -85,7 +93,7 @@ export function calibrateSearchCols(products) {
 
   const getters = [
     p => p.car_number,
-    p => shortStatus(p.vehicle_status || ''),
+    p => normalizeVehicleStatus(p.vehicle_status || ''),
     p => p.product_type,
     p => p.maker,
     p => p.model,
@@ -102,7 +110,7 @@ export function calibrateSearchCols(products) {
   const HAS_FILTER = [false, true, true, true, true, true, true, true, true, true, true, true, true];
   const STATUS_DOT = 10;
   // 차량번호(idx 0): max 포맷 "000가0000" (7 ASCII + 1 한글) bold = ~64px + padding 16 → 80px 면 충분
-  const MIN_WIDTHS = [80, 48, 44, 44, 56, 60, 56, 80, 40, 48, 48, 40, 44];
+  const MIN_WIDTHS = [80, 72, 44, 44, 56, 60, 56, 80, 40, 48, 48, 40, 44];
   // 공급사 컬럼은 마지막에 100px 고정 (한글 회사명 4-7자 fit)
 
   const widths = getters.map((get, idx) => {
@@ -131,6 +139,8 @@ export function calibrateSearchCols(products) {
 export function renderSearchTable(products) {
   const tbody = document.querySelector('[data-page="search"] .table tbody');
   if (!tbody) return;
+  // 토픽바 카운트 — 필터된 결과 길이 반영
+  updateSearchStats(products || []);
   if (!products || !products.length) {
     tbody.innerHTML = '<tr><td colspan="21" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
     return;
@@ -155,7 +165,7 @@ export function renderSearchTable(products) {
 
 function renderSearchRow(p) {
   const status = p.vehicle_status || '대기';
-  const stShort = shortStatus(status);
+  const stFull = normalizeVehicleStatus(status);   // 5종 풀 라벨
   const credit = (p._policy && (p._policy.credit_grade || p._policy.screening_criteria)) || p.credit_grade || '-';
   const optsArr = Array.isArray(p.options)
     ? p.options
@@ -173,7 +183,7 @@ function renderSearchRow(p) {
   return `
     <tr data-id="${p._key}">
       <td class="sticky-col" title="${esc(p.car_number || '')}">${p.car_number || '-'}</td>
-      <td class="center" title="${esc(status)}"><span class="status-chip ${esc(stShort)}">${esc(stShort)}</span></td>
+      <td class="center" title="${esc(status)}"><span class="status-chip ${esc(stFull)}">${esc(stFull)}</span></td>
       <td class="center" title="${esc(p.product_type || '')}">${p.product_type || '-'}</td>
       <td title="${esc(maker)}">${makerBadge(maker)}</td>
       <td title="${esc(model)}">${model}</td>
@@ -537,10 +547,11 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <button class="pt-sb-toggle" id="detailClose" title="상세 패널 접기"><i class="ph ph-caret-right"></i></button>
         <span style="color: var(--text-main);">${esc(p.car_number || '-')}</span>
         <span class="text-sub">${esc([p.maker, p.model, p.sub_model].filter(Boolean).join(' '))}</span>
+        <button class="ws4-head-close" id="detailCloseX" title="상세 패널 닫기" aria-label="닫기"><i class="ph ph-x"></i></button>
       `;
-      head.querySelector('#detailClose')?.addEventListener('click', () => {
-        document.querySelector('[data-page="search"] .ws4')?.classList.toggle('is-collapsed');
-      });
+      const toggleCollapse = () => document.querySelector('[data-page="search"] .ws4')?.classList.toggle('is-collapsed');
+      head.querySelector('#detailClose')?.addEventListener('click', toggleCollapse);
+      head.querySelector('#detailCloseX')?.addEventListener('click', toggleCollapse);
       // 하단바 액션 — 더 이상 패널 footer 에 박지 않음. 전역 하단 액션바(setPageActions) 사용.
       const foot = card.querySelector('.ws4-foot[data-foot="search-detail"]');
       if (foot) foot.innerHTML = '';

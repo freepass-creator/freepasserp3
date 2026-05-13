@@ -110,7 +110,7 @@ function renderCarPicker(p, dis = '') {
   return `${pickerSelect('제조사',   'maker',     curMk,   makerOpts, { ctx: 'maker', mk: curMk }, dis)}
           ${pickerSelect('모델',     'model',     curMd,   modelOpts, { ctx: 'model', mk: curMk }, dis)}
           ${pickerSelect('세부모델', 'sub_model', curSub,  subOpts,   { ctx: 'sub_model', mk: curMk, md: curMd }, dis)}
-          ${pickerSelect('트림',     'trim_name', curTrim, trimOpts,  { ctx: 'trim' }, dis)}
+          ${ffi('세부트림', 'trim_name', curTrim, dis)}
           <input type="hidden" data-f="catalog_id" value="${esc(curCid)}">`;
 }
 
@@ -762,17 +762,11 @@ export function renderProductDetail(p) {
       `)}
       ${sect('제조사스펙', 'car-simple', `
         ${renderCarPicker(p, dis)}
-        <div class="ff" style="grid-column:1/-1;" id="trimOptionsArea">
-          <label>선택옵션</label>
-          <div id="trimOptionsChips" class="trim-options-chips" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:2px;"></div>
-          <div id="trimOptionsHint" class="text-weak" style="font-size:11px;margin-top:4px;">트림 선택 시 옵션 칩이 자동 채워집니다.</div>
-        </div>
         <div class="ff" style="grid-column:1/-1;" id="optionsManualArea">
-          <label>옵션 직접 입력</label>
-          <input type="text" class="input" id="optionsManualInput" placeholder="풀에 없는 옵션 직접 입력 — 콤마(,) 또는 슬래시(/) 로 구분"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>
+          <label>선택옵션</label>
+          <input type="text" class="input" id="optionsManualInput" value="${esc(optsValue)}" placeholder="직접 입력 — 콤마(,) 또는 슬래시(/) 로 구분"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>
           <input type="hidden" data-f="options" value="${esc(optsValue)}">
         </div>
-        <div class="ff" id="mtxBanner" style="display:none;border-left:3px solid var(--alert-blue-text);padding:8px 12px;background:var(--alert-blue-bg);font-size:11px;line-height:1.5;border-radius:4px;margin:4px 0;"></div>
         ${ffi('외장색',    'ext_color',     p.ext_color, dis)}
         ${ffi('내장색',    'int_color',     p.int_color, dis)}
         ${ffs('구동방식',  'drive_type',    p.drive_type, O.drive_type, dis)}

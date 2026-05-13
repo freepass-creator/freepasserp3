@@ -6,7 +6,17 @@
 import { store } from '../core/store.js';
 import { showToast } from '../core/toast.js';
 import { toggleSound } from '../core/chat-notif.js';
-import { requestNotificationPermission } from '../firebase/messaging.js';
+/* 브라우저 네이티브 Notification 권한 요청 — FCM 토큰 발급 X.
+ *  단순 wrapper: 'granted' 면 true, 그 외 false */
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) return false;
+  if (Notification.permission === 'granted') return true;
+  if (Notification.permission === 'denied') return false;
+  try {
+    const p = await Notification.requestPermission();
+    return p === 'granted';
+  } catch { return false; }
+}
 import { navigate } from '../core/router.js';
 import { updateRecord } from '../firebase/db.js';
 import { uploadImage, uploadFile } from '../firebase/storage-helper.js';
@@ -441,8 +451,8 @@ function bindAll(main, u) {
     render();
   });
   document.getElementById('mstPush')?.addEventListener('click', async () => {
-    const token = await requestNotificationPermission();
-    showToast(token ? '알림 허용됨' : '알림 거부됨');
+    const ok = await requestNotificationPermission();
+    showToast(ok ? '알림 허용됨' : '알림 거부됨');
     render();
   });
   document.getElementById('mstOnlyMine')?.addEventListener('click', () => {

@@ -49,7 +49,7 @@ const PARTNER_NAME_TO_CODE = {
   '연카': 'RP011',
   '손오공': 'RP012',
   '웰릭스모빌리티': 'RP013', '웰릭스': 'RP013',
-  '스위치플랜': 'RP014', '스위치': 'RP014',
+  '스위치플랜': 'RP014', '스위치': 'RP014', '셀렉션': 'RP014', '제이피케이오토셀렉션': 'RP014',
   '경진렌트카': 'RP015',
   '경진카': 'RP016',
   '센트로': 'RP017',
@@ -166,6 +166,23 @@ const VALID_CAR_NO = /^(?:[가-힣]{2})?\d{2,3}\s?[가-힣]\s?\d{4}$/;
 
 /* 오토플러스 시트 — 단일 공급사 (RP023) 행 → product.
  * 시트에 '정책코드' / '공급코드' 컬럼 있으면 우선 사용. 없으면 기본값(공급=RP023, 정책=빈값). */
+/* modelFull 에서 modelShort 와 maker prefix 제거 → 트림 후보 추출.
+ *  예: "기아 카니발 4세대 노블레스 9인승 디젤 2.2 DCT" - modelShort "카니발"
+ *     → "4세대 노블레스 9인승 디젤 2.2 DCT" → 세대명 정리 → "노블레스 9인승 디젤 2.2 DCT" */
+function extractTrimFromModel(modelFull, modelShort) {
+  if (!modelFull) return '';
+  let t = String(modelFull).trim();
+  // maker prefix 제거 (한국 OEM)
+  t = t.replace(/^(현대|기아|제네시스|KGM|쌍용)\s+/, '');
+  // modelShort 토큰 제거 (예: "카니발")
+  if (modelShort) {
+    t = t.replace(new RegExp('\\b' + modelShort.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'g'), '');
+  }
+  // 세대명 / 페리 prefix 제거
+  t = t.replace(/(\d세대|올 뉴|디 올 뉴|더 뉴|뉴)\b/g, '');
+  return t.replace(/\s+/g, ' ').trim();
+}
+
 function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode, sheetId, nowMs }) {
   const colIdx = (n) => headers.indexOf(n);
   const colPartial = (kw) => headers.findIndex(h => h.includes(kw));
@@ -197,7 +214,13 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
   const idxRegDate = colPartial('최초등록');
   const idxLocation = colPartial('현위치');
   const idxStatus = colPartial('판매상태');
-  const idxOptions = colPartial('옵션');
+  // 세부트림 / 선택옵션 — 시트 헤더 부분일치 (세부트림/트림 / 선택옵션/옵션)
+  const idxTrim = headers.findIndex(h => h.includes('세부트림')) >= 0
+    ? headers.findIndex(h => h.includes('세부트림'))
+    : colPartial('트림');
+  const idxOptions = headers.findIndex(h => h.includes('선택옵션')) >= 0
+    ? headers.findIndex(h => h.includes('선택옵션'))
+    : colPartial('옵션');
   const idxNotes = colPartial('비고');
   let idxRent12 = -1, idxRent24 = -1, idxRent36 = -1;
   headers.forEach((h, i) => {
@@ -238,7 +261,9 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
     car_number: carNumber,
     raw_model_short: modelShort,
     raw_model_full: modelFull,
-    maker: '', sub_model: '', trim_name: '',
+    maker: '', sub_model: '',
+    // 트림 컬럼 있으면 그것 / 없으면 차종명에서 자동 추출 (modelShort 제거 후 나머지)
+    trim_name: idxTrim >= 0 ? safeGet(row, idxTrim) : extractTrimFromModel(modelFull, modelShort),
     ext_color: safeGet(row, idxColor),
     fuel_type: safeGet(row, idxFuel),
     mileage, year: yearModel,

@@ -166,23 +166,62 @@ export async function markRoomRead(roomId, role, uid, room) {
 /* ── 사용자 프로필 저장 (회원가입 시) ──
  * 규칙:
  *  - user_code 는 소속과 무관하게 전역 시퀀스(U0001…)
- *  - company_code 미지정 → 임시소속 'SP999' + role 'agent' 강제 (가입 양식 값 덮어씀)
- *    (정식 소속·역할은 관리자 승인 시 재지정)
+ *  - business_no(사업자번호) 입력 시 partners 의 business_number 와 매칭:
+ *    · sales_channel 매칭 → role='agent' + 해당 partner_code
+ *    · provider 매칭     → role='provider' + 해당 partner_code
+ *    · operator 매칭     → SP999 + agent (운영사 가입은 비정상)
+ *    · 매칭 실패         → SP999 + agent (임시소속, admin 재지정)
+ *  - status='active' — 가입 즉시 로그인 가능. admin 검토는 필요시 수동으로
  */
 export async function saveUserProfile(uid, profile) {
   const user_code = await allocateUserCode();
-  const hasCompany = !!profile.company_code;
-  const finalRole = hasCompany ? (profile.role || 'agent') : 'agent';
-  const finalCompanyCode = hasCompany ? profile.company_code : 'SP999';
+  const bizNo = String(profile.business_no || '').replace(/\D/g, '');
+  const matched = bizNo ? await matchPartnerByBizNo(bizNo) : null;
+
+  let role = 'agent';
+  let company_code = 'SP999';
+  let matched_partner_code = null;
+  if (matched) {
+    matched_partner_code = matched.partner_code;
+    if (matched.partner_type === 'sales_channel')      { role = 'agent';    company_code = matched.partner_code; }
+    else if (matched.partner_type === 'provider')      { role = 'provider'; company_code = matched.partner_code; }
+    // operator 는 그대로 SP999 유지 (운영사 가입은 비정상 — admin 이 수동 부여)
+  }
+
   await setRecord(`users/${uid}`, {
     uid,
     ...profile,
+    business_no: bizNo,
     user_code,
-    role: finalRole,
-    company_code: finalCompanyCode,
-    status: 'pending',
+    role,
+    company_code,
+    matched_partner_code,    // 매칭 추적용 (감사 / admin 검토)
+    status: 'active',
     created_at: Date.now(),
   });
+}
+
+/* business_no (숫자만) 로 partners 의 business_number 찾기.
+ *  partners 는 read public 이라 가입 전 호출 가능. */
+async function matchPartnerByBizNo(bizNoDigits) {
+  try {
+    const snap = await get(ref(db, 'partners'));
+    const all = snap.val() || {};
+    for (const [k, p] of Object.entries(all)) {
+      if (!p || p._deleted) continue;
+      const pn = String(p.business_number || '').replace(/\D/g, '');
+      if (pn && pn === bizNoDigits) {
+        return {
+          partner_code: p.partner_code || k,
+          partner_type: p.partner_type || '',
+          partner_name: p.partner_name || p.company_name || '',
+        };
+      }
+    }
+  } catch (e) {
+    console.warn('[matchPartnerByBizNo]', e?.code || e?.message || e);
+  }
+  return null;
 }
 
 /** 가입 순 전역 시퀀스 — 'U0001' 포맷 (4자리), runTransaction 으로 원자적 증가
