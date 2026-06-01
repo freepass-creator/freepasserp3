@@ -42,7 +42,7 @@ export function extractProductDetailRows(p, options = {}) {
     ['차량상태', p.vehicle_status],
   ];
 
-  // 2. 제조사 스펙
+  // 2. 제조사 스펙 (손님 노출 안전 항목만 — 관리자 전용은 isAdmin 게이팅)
   const spec = [
     ['트림',       p.trim_name || p.trim],
     ['연식',       p.year],
@@ -57,10 +57,13 @@ export function extractProductDetailRows(p, options = {}) {
     ['상품구분',   p.product_type],
     ['용도',       p.usage],
     ['최초등록일', fmtDate(p.first_registration_date)],
-    ['차령만료일', fmtDate(p.vehicle_age_expiry_date)],
-    ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
-    ['차대번호',   p.vin],
-    ['위치',       p.location],
+    // 관리자/내부 전용 — 손님 노출 X (차령만료일/차량가격/차대번호/위치)
+    ...(isAdmin ? [
+      ['차령만료일', fmtDate(p.vehicle_age_expiry_date)],
+      ['차량가격',   p.vehicle_price ? fmtMoney(p.vehicle_price) : ''],
+      ['차대번호',   p.vin],
+      ['위치',       p.location],
+    ] : []),
   ];
 
   // 3. 보험 정보 — 3-tuple [구분, 한도, 면책금]

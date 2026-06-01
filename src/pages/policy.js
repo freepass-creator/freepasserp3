@@ -19,12 +19,22 @@ import {
   providerNameByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
+/* 심사기준 정규화 — 레거시 값(`무심사` / `신용필요` / credit_grade) → 표준 2종 */
+export function normalizeScreening(raw) {
+  const s = String(raw || '').trim();
+  if (!s) return '';
+  // 신용 조회 안 함 계열
+  if (/무심사|신용무관|신용 *무관/.test(s)) return '신용무관';
+  // 신용 조회 / 등급 체크 계열
+  if (/신용 *필요|신용 *조회|등급/.test(s)) return '신용조회';
+  return s;   // 5종 외 값은 원본 유지 (편집 시 사용자가 수정)
+}
+
 /* 신규 정책 등록 시 자동으로 박히는 기본값 — 한국 렌트카 업계 흔한 표준값.
  *  사용자는 편집만 하면 됨. POLICY_OPTS 의 첫 옵션과 일치시키지 말고 실무 기본값 우선. */
 export const POLICY_DEFAULTS = {
-  // 식별·심사
+  // 식별·심사 — credit_grade 폐기, screening_criteria 만 유지 (신용무관 / 신용조회)
   screening_criteria: '신용무관',
-  credit_grade: '7등급 이상',
   // 운전자
   basic_driver_age: '만 26세 이상',
   license_period: '1년 이상',
@@ -65,8 +75,8 @@ export const POLICY_DEFAULTS = {
 
 /* v2 정책 OPTS — 드롭다운 옵션 */
 export const POLICY_OPTS = {
-  screening_criteria: ['신용무관','신용필요'],
-  credit_grade: ['7등급 이상','7등급 미만'],
+  screening_criteria: ['신용무관','신용조회'],
+  // credit_grade: 폐기 (screening_criteria 로 통합)
   basic_driver_age: ['만 21세 이상','만 22세 이상','만 23세 이상','만 24세 이상','만 25세 이상','만 26세 이상','만 27세 이상','만 28세 이상','만 29세 이상','만 30세 이상'],
   license_period: ['제한없음','3개월 이상','6개월 이상','1년 이상','2년 이상','3년 이상'],
   driver_age_upper_limit: ['제한없음','만 60세 이하','만 65세 이하','만 70세 이하','만 75세 이하','만 80세 이하','협의'],
@@ -196,8 +206,7 @@ export function renderPolicyDetail(pol) {
           ${pol.provider_company_code && !providers.find(p => p.code === pol.provider_company_code) ? `<option value="${esc(pol.provider_company_code)}" selected>${esc(pol.provider_company_code)}</option>` : ''}
         </select></div>
         ${ffi('정책설명',   'term_description',               pol.term_description,               dis)}
-        ${ffs('심사기준',   'screening_criteria',             pol.screening_criteria,             O.screening_criteria, dis)}
-        ${ffs('신용등급',   'credit_grade',                   pol.credit_grade,                   O.credit_grade, dis)}
+        ${ffs('심사기준',   'screening_criteria',             normalizeScreening(pol.screening_criteria || pol.credit_grade), O.screening_criteria, dis)}
       </div>
       ${sec('file-text', '조건')}
       <div class="form-grid">

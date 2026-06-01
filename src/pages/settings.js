@@ -490,12 +490,47 @@ function bindSystemSection(body) {
 }
 
 /* ──────── 카탈로그 공유 ──────── */
+function buildCatalogUrl(userCode, partnerCode) {
+  const qs = new URLSearchParams();
+  if (userCode) qs.set('a', userCode);
+  if (partnerCode) qs.set('p', partnerCode);
+  const s = qs.toString();
+  return `${location.origin}/catalog.html${s ? '?' + s : ''}`;
+}
+
 function renderCatalogSection(user) {
-  const url = `${location.origin}/catalog.html${user.user_code ? '?a=' + encodeURIComponent(user.user_code) : ''}`;
+  const isAdmin = user?.role === 'admin';
+  const url = buildCatalogUrl(user.user_code, '');
+  // 관리자 전용 — 렌트사(파트너) 지정 드롭다운. 선택 시 ?p=partner_code 로 필터된 카탈로그
+  const partners = isAdmin
+    ? (store.partners || []).filter(p => !p._deleted && p.is_active !== false)
+    : [];
+  const partnerOptions = partners
+    .map(p => {
+      const code = p.partner_code || p.company_code || p._key;
+      const name = p.partner_name || p.company_name || code;
+      return `<option value="${esc(code)}">${esc(name)}</option>`;
+    })
+    .join('');
+  const adminPartnerRow = isAdmin ? `
+    <div class="settings-row" style="flex-direction: column; align-items: stretch; gap: var(--sp-2);">
+      <label for="stCatalogPartner" style="font-size: var(--font-size); color: var(--text-weak);">
+        렌트사 지정 <span style="color: var(--text-muted);">(관리자 전용)</span>
+      </label>
+      <select class="input" id="stCatalogPartner" style="flex: 1;">
+        <option value="">전체 (지정 안 함)</option>
+        ${partnerOptions}
+      </select>
+      <div style="font-size: var(--font-size); color: var(--text-weak);">
+        선택한 렌트사의 차량만 보여주는 카탈로그 링크가 생성됩니다.
+      </div>
+    </div>
+  ` : '';
   return `
     <section class="settings-section">
       <div class="settings-section-title">내 카탈로그 링크</div>
       <div class="settings-rows">
+        ${adminPartnerRow}
         <div class="settings-row" style="flex-direction: column; align-items: stretch; gap: var(--sp-2);">
           <div style="display: flex; gap: var(--sp-2);">
             <input class="input" id="stCatalogUrl" readonly value="${esc(url)}" style="flex: 1;">
@@ -511,8 +546,14 @@ function renderCatalogSection(user) {
 }
 
 function bindCatalogSection(body) {
+  const me = store.currentUser || {};
+  const $url = body.querySelector('#stCatalogUrl');
+  const $partner = body.querySelector('#stCatalogPartner');
+  $partner?.addEventListener('change', () => {
+    if ($url) $url.value = buildCatalogUrl(me.user_code, $partner.value);
+  });
   body.querySelector('#stCatalogCopy')?.addEventListener('click', () => {
-    const url = body.querySelector('#stCatalogUrl')?.value;
+    const url = $url?.value;
     navigator.clipboard?.writeText(url).then(() => showToast('링크 복사됨'));
   });
 }

@@ -24,6 +24,7 @@ import {
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { findCatalog } from '../core/vehicle-matrix.js';
 import { FILTERS, matchFilter } from '../core/product-filters.js';
+import { creditGradeBadge } from '../core/product-badges.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
 let _onCreateRoom = null;
@@ -166,7 +167,8 @@ export function renderSearchTable(products) {
 function renderSearchRow(p) {
   const status = p.vehicle_status || '대기';
   const stFull = normalizeVehicleStatus(status);   // 5종 풀 라벨
-  const credit = (p._policy && (p._policy.credit_grade || p._policy.screening_criteria)) || p.credit_grade || '-';
+  const credit = (p._policy && (p._policy.screening_criteria || p._policy.credit_grade)) || p.screening_criteria || p.credit_grade || '-';
+  const creditBadge = creditGradeBadge(p) || '<span class="dim">-</span>';
   const optsArr = Array.isArray(p.options)
     ? p.options
     : (p.options ? String(p.options).split(/[\s·,/]+/).filter(Boolean) : []);
@@ -195,7 +197,7 @@ function renderSearchRow(p) {
       <td class="center col-tight" title="${esc(p.fuel_type || '')}">${fuelB}</td>
       <td class="center col-tight" title="${esc(p.ext_color || '')}">${colorBadge(p.ext_color)}</td>
       <td class="center col-tight" title="${esc(p.int_color || '')}">${colorBadge(p.int_color)}</td>
-      <td class="center" title="${esc(credit)}">${credit}</td>
+      <td class="center" title="${esc(credit)}">${creditBadge}</td>
       <td class="num" data-period="1m">${fmtPricePair(p.price?.['1'])}</td>
       <td class="num" data-period="12m">${fmtPricePair(p.price?.['12'])}</td>
       <td class="num" data-period="24m">${fmtPricePair(p.price?.['24'])}</td>
@@ -419,15 +421,21 @@ export async function searchActionContract(p) {
   }
 }
 
-/* 공유(카탈로그 링크 클립보드 복사) — 하단 액션바에서 호출 */
+/* 공유(카탈로그 링크 클립보드 복사) — 하단 액션바에서 호출
+ * Vercel serverless(api/catalog-share)가 t/img 로 OG 메타 동적 주입 → 카톡 미리보기에 차량명+사진 */
 export async function searchActionShare(p) {
   if (!p) return;
   const me = store.currentUser || {};
-  const agentQS = me.user_code ? `&a=${encodeURIComponent(me.user_code)}` : '';
   const car = p.car_number || '';
-  const url = car
-    ? `${location.origin}/catalog.html?car=${encodeURIComponent(car)}${agentQS}`
-    : `${location.origin}/catalog.html?pid=${encodeURIComponent(p._key)}${agentQS.replace(/^&/, '?')}`;
+  const title = `${car} ${p.sub_model || p.model || ''}`.trim() || '차량';
+  const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
+  const qs = new URLSearchParams();
+  if (me.user_code) qs.set('a', me.user_code);
+  if (p._key) qs.set('id', p._key);
+  else if (car) qs.set('car', car);
+  if (title) qs.set('t', title);
+  if (firstImg) qs.set('img', firstImg);
+  const url = `${location.origin}/catalog.html?${qs.toString()}`;
   try {
     await navigator.clipboard.writeText(url);
     showToast(`상품 카탈로그 링크 복사됨 — ${car || p._key}`, 'success');

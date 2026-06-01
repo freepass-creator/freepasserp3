@@ -1928,8 +1928,16 @@ function buildContextMenuItems(page, id, item) {
       },
       { divider: true },
       { icon: 'ph ph-share-network', label: '카탈로그 링크 복사', action: () => {
+        // Vercel serverless(api/catalog-share)가 t/img 로 OG 메타 동적 주입
         const car = p.car_number || '';
-        const url = `${location.origin}/catalog.html?car=${encodeURIComponent(car)}`;
+        const title = `${car} ${p.sub_model || p.model || ''}`.trim() || '차량';
+        const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
+        const qs = new URLSearchParams();
+        if (p._key) qs.set('id', p._key);
+        else if (car) qs.set('car', car);
+        if (title) qs.set('t', title);
+        if (firstImg) qs.set('img', firstImg);
+        const url = `${location.origin}/catalog.html?${qs.toString()}`;
         navigator.clipboard?.writeText(url).then(() => {
           import('./core/toast.js').then(m => m.showToast(`상품 카탈로그 링크 복사됨 — ${car}`));
         });

@@ -131,14 +131,6 @@ function shortStatus(s) {
   })[s] || s;
 }
 
-/* 공급사 코드 → 회사명 lookup (코드는 노출 X) */
-function providerNameOf(code) {
-  if (!code) return '';
-  const found = (_partners || []).find(p =>
-    p.partner_code === code || p.company_code === code || p._key === code
-  );
-  return found?.partner_name || found?.company_name || code;
-}
 
 function applyFilter() {
   const q = _filter.search.toLowerCase();
@@ -341,9 +333,7 @@ function openDetail(key) {
 
   const renderRows = (rows) => rows.filter(([, v]) => v != null && v !== '' && v !== '-').map(([l, v, full]) => `<div class="lab">${esc(l)}</div><div class="val${full ? ' full' : ''}">${esc(v)}</div>`).join('');
 
-  // 공급사 정보 (이름만, 코드 X) + 메모
-  const providerName = providerNameOf(p.provider_company_code);
-  const memo = p.partner_memo || p.note || '';
+  // 공급사 섹션 — 손님에게 노출 안 함 (도매·내부정보)
 
   // 메인 이미지 + (2장 이상이면) 썸네일 strip. 사진 없는 케이스 별도 시각화
   const driveSrc = supportedDriveSource(p);
@@ -408,15 +398,6 @@ function openDetail(key) {
         <div class="cat-section">
           <div class="cat-section-title"><i class="ph ph-list-checks"></i> 기타 계약 조건</div>
           <div class="cat-info-grid">${renderRows(condRows)}</div>
-        </div>` : ''}
-
-        ${(providerName || memo) ? `
-        <div class="cat-section">
-          <div class="cat-section-title"><i class="ph ph-buildings"></i> 공급사</div>
-          <div class="cat-info-grid">
-            ${providerName ? `<div class="lab">공급사</div><div class="val full">${esc(providerName)}</div>` : ''}
-            ${memo ? `<div class="lab">특이사항</div><div class="val full">${esc(memo)}</div>` : ''}
-          </div>
         </div>` : ''}
 
       </div>

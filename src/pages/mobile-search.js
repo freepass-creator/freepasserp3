@@ -333,13 +333,14 @@ function renderCard(p) {
     color,
   ].filter(Boolean).join(' · ');
 
-  // 썸네일 심사기준 오버레이
-  const creditGrade = p._policy?.credit_grade || p._policy?.screening_criteria || p.credit_grade || '';
-  const creditTone = !creditGrade ? 'ok'
-                   : /무관|없음|전체/.test(creditGrade) ? 'ok'
-                   : /소득|심사/.test(creditGrade) ? 'warn'
+  // 썸네일 심사기준 오버레이 — '신용무관' / '신용조회' 2종 정규화
+  const creditRaw = p._policy?.screening_criteria || p._policy?.credit_grade || p.screening_criteria || p.credit_grade || '';
+  const creditLabel = /저신용|무심사|신용 *무관/.test(creditRaw) ? '신용무관'
+                    : /신용 *필요|신용 *조회|등급/.test(creditRaw) ? '신용조회'
+                    : (creditRaw || '신용무관');
+  const creditTone = /무관|없음|전체/.test(creditLabel) ? 'ok'
+                   : /조회|필요|등급|심사|소득/.test(creditLabel) ? 'warn'
                    : 'info';
-  const creditLabel = creditGrade || '무심사';
 
   return `
     <article class="m-card-product" data-pkey="${p._key}">
@@ -438,8 +439,17 @@ async function inquireProduct(p) {
 
 function shareProduct(p) {
   const me = store.currentUser || {};
-  const url = `${location.origin}/catalog.html?a=${me.user_code || ''}&car=${encodeURIComponent(p.car_number || '')}`;
+  // OG 메타에 쓸 차량명 + 대표사진 — Vercel serverless(api/catalog-share)가 동적 주입
   const title = `${p.car_number || ''} ${p.sub_model || p.model || ''}`.trim() || '차량';
+  const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
+  const pid = p._key || p.product_uid || '';
+  const qs = new URLSearchParams();
+  if (me.user_code) qs.set('a', me.user_code);
+  if (pid) qs.set('id', pid);
+  else if (p.car_number) qs.set('car', p.car_number);
+  if (title) qs.set('t', title);
+  if (firstImg) qs.set('img', firstImg);
+  const url = `${location.origin}/catalog.html?${qs.toString()}`;
   if (navigator.share) {
     navigator.share({ title, url }).catch(() => {});
   } else {

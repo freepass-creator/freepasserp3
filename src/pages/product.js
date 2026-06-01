@@ -475,13 +475,16 @@ async function refreshMatrixBanner(card, p) {
     const savedFp = Array.isArray(p.fp_options) ? p.fp_options : [];
     const fpDiffers = fpCnt > 0 && (savedFp.length !== fpCnt || !savedFp.every(id => r.fpAll.includes(id)));
 
+    // 표준옵션(fp_options) UI 일단 숨김 — 차종/트림 정정만 노출.
+    // 자동 적용은 원래 X. UI 권유만 끄는 것. 다시 켜려면 SHOW_FP_HINT=true.
+    const SHOW_FP_HINT = false;
     banner.innerHTML = `
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span><b style="color:${confColor};">✓ 매트릭스 ${confLabel}</b> · ${esc(r.catalogTitle)} · ${trimNote} · 표준옵션 <b>${fpCnt}개</b></span>
+        <span><b style="color:${confColor};">✓ 매트릭스 ${confLabel}</b> · ${esc(r.catalogTitle)} · ${trimNote}${SHOW_FP_HINT ? ` · 표준옵션 <b>${fpCnt}개</b>` : ''}</span>
         ${anyDiff ? `<button class="btn btn-sm" id="mtxApplyOne" style="font-size:10px;padding:2px 8px;">차종/트림 정정</button>` : ''}
-        ${fpDiffers ? `<button class="btn btn-sm btn-success" id="mtxApplyFp" style="font-size:10px;padding:2px 8px;">표준옵션 ${fpCnt}개 저장</button>` : (savedFp.length === fpCnt && fpCnt > 0 ? `<span style="font-size:10px;color:#16a34a;">✓ 저장됨</span>` : '')}
+        ${SHOW_FP_HINT && fpDiffers ? `<button class="btn btn-sm btn-success" id="mtxApplyFp" style="font-size:10px;padding:2px 8px;">표준옵션 ${fpCnt}개 저장</button>` : (SHOW_FP_HINT && savedFp.length === fpCnt && fpCnt > 0 ? `<span style="font-size:10px;color:#16a34a;">✓ 저장됨</span>` : '')}
       </div>
-      ${fpSample ? `<div style="color:var(--text-sub);font-size:10px;margin-top:2px;" title="${esc(fpIdsToNames(r.fpAll || []).join(', '))}">${esc(fpSample)}</div>` : ''}
+      ${SHOW_FP_HINT && fpSample ? `<div style="color:var(--text-sub);font-size:10px;margin-top:2px;" title="${esc(fpIdsToNames(r.fpAll || []).join(', '))}">${esc(fpSample)}</div>` : ''}
       ${modelDiffers ? `<div style="color:#0c4a6e;font-size:10px;margin-top:2px;">→ model: <s>${esc(live.model || '')}</s> → <b>${esc(standardModel)}</b></div>` : ''}
       ${subDiffers ? `<div style="color:#0c4a6e;font-size:10px;">→ sub_model: <s>${esc(live.sub_model || '')}</s> → <b>${esc(standardSub)}</b></div>` : ''}
       ${trimDiffers ? `<div style="color:#0c4a6e;font-size:10px;">→ trim_name: <s>${esc(live.trim_name || '')}</s> → <b>${esc(r.trimName)}</b></div>` : ''}
@@ -794,9 +797,10 @@ export function renderProductDetail(p) {
     if (canEdit) {
       bindFormSave(page, 'products', p._key, p);
       bindCarPicker(assetCard, p);
-      bindFpChips(assetCard, p);   // FP 인기옵션 chip 토글 (자동저장)
       bindCarNumberDupCheck(assetCard, p);   // 차량번호 중복 검증
     }
+    // FP 인기옵션 chip — canEdit 와 무관하게 listener 박음 (chip 자체 disabled 가 권한 검사)
+    bindFpChips(assetCard, p);
     // 차종 매트릭스 매칭 미리보기 — 비동기로 banner 채우기 + 필드 변경 시 자동 갱신
     refreshMatrixBanner(assetCard, p);
     refreshTrimDatalist(assetCard, p);  // 트림 자동완성 옵션 채우기
