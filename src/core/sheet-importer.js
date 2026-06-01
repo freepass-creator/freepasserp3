@@ -15,8 +15,47 @@
  *   4. enrichWithCatalog(raw) → 표준화 (catalog_id / sub_model / trim_name / options)
  *   5. dev.js 에서 차량번호 unique 필터링 후 RTDB push
  */
-import { findCatalog, loadCatalog, findTrimInCatalog } from './vehicle-matrix.js';
+import { findCatalog, loadCatalog, findTrimInCatalog, loadIndex } from './vehicle-matrix.js';
 import { titleToSubModel } from './catalog-source.js';
+
+/* findCatalog 실패 시 fallback — maker + model_root + year 만으로 catalog 검색 */
+async function fallbackFindByModelYear(maker, rawModel, year, fuelType) {
+  if (!maker || !rawModel) return null;
+  const idx = await loadIndex();
+  if (!idx) return null;
+  const modelN = String(rawModel).trim();
+  const yr = Number(String(year || '').slice(0, 4));
+  const fuel = String(fuelType || '').toLowerCase();
+  const isHybrid = /하이브리드|hev|hybrid/.test(fuel);
+  const isEV = /전기|ev|electric/.test(fuel);
+  // maker + model_root 일치 catalog 후보
+  let candidates = Object.values(idx).filter(c => c.maker === maker && c.model_root === modelN);
+  if (!candidates.length) return null;
+  // year 범위 필터
+  if (yr) {
+    const inRange = candidates.filter(c => {
+      const ys = Number(String(c.year_start || '').slice(0, 4));
+      const ye = c.year_end === '현재' ? 9999 : Number(String(c.year_end || '').slice(0, 4));
+      if (!ys) return false;
+      return yr >= ys && yr <= (ye || 9999);
+    });
+    if (inRange.length) candidates = inRange;
+  }
+  // 동력원 매칭: 하이브리드 / EV catalog 우선
+  let fuelFiltered = candidates;
+  if (isHybrid) {
+    fuelFiltered = candidates.filter(c => /하이브리드|HEV/.test(c.title || ''));
+  } else if (isEV) {
+    fuelFiltered = candidates.filter(c => /EV|일렉트릭|일렉트리파이드/.test(c.title || ''));
+  } else {
+    // 가솔린/디젤 — 하이브리드/EV catalog 제외
+    fuelFiltered = candidates.filter(c => !/하이브리드|HEV|일렉트릭|일렉트리파이드|\bEV\b/.test(c.title || ''));
+  }
+  if (fuelFiltered.length) candidates = fuelFiltered;
+  // 최신 출시 우선
+  candidates.sort((a, b) => (b.year_start || '').localeCompare(a.year_start || ''));
+  return { catalogId: candidates[0].id, confidence: 'low' };
+}
 
 export const SHEETS_API_KEY = 'AIzaSyBSPo1kZOefX-6NuHoQdUF1htqQDSxXsCs';
 
@@ -609,13 +648,16 @@ export async function enrichWithCatalog(raw) {
     if (seatM) raw.seats = parseInt(seatM[1], 10);
   }
 
-  const cat = await findCatalog(raw.maker, subCandidate, raw.raw_model || raw.sub_model_raw, {
+  let cat = await findCatalog(raw.maker, subCandidate, raw.raw_model || raw.sub_model_raw, {
     fuel_type: inferredFuel,
     year: raw.year,
     first_registration_date: raw.first_registration_date,
   });
+  // findCatalog 점수 매칭 실패 → maker + model_root + year fallback
   if (!cat?.catalogId) {
-    // catalog 매칭 실패 — raw 데이터로 fallback 등록 (사용자 추후 매핑)
+    cat = await fallbackFindByModelYear(raw.maker, raw.raw_model || subCandidate, raw.year, inferredFuel);
+  }
+  if (!cat?.catalogId) {
     return {
       ok: false,
       reason: `catalog 미매칭 (${raw.maker} / ${subCandidate}) — raw 그대로 import`,

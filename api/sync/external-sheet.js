@@ -13,7 +13,7 @@ import crypto from 'crypto';
 
 const SHEETS_API_KEY = process.env.GOOGLE_SHEETS_API_KEY || 'AIzaSyBSPo1kZOefX-6NuHoQdUF1htqQDSxXsCs';
 
-const SHEET_CONFIGS = {
+export const SHEET_CONFIGS = {
   autoplus: {
     sheet_id: '1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U',
     tab_name: '판매차량리스트',           // 26-05-08 기준 새 탭 (구 '판매차량리스트(수수료 100)' 폐기)
@@ -371,6 +371,129 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs })
   return product;
 }
 
+/* 시트 1종(source) 을 가져와서 products 객체 + 메타 반환.
+ * Firebase write 없음. /api/sync/auto 에서도 재사용.
+ * 반환: { ok, synced, skipped, products, source, sheet_id, tab_name, schema, tabs_scanned? } */
+export async function syncFromSheet(source) {
+  const config = SHEET_CONFIGS[source];
+  if (!config) {
+    return { ok: false, status: 400, message: `미지원 source: ${source}` };
+  }
+  if (!config.sheet_id) {
+    return { ok: false, status: 501, message: `${config.label} URL 미설정` };
+  }
+
+  const products = {};
+  const nowMs = Date.now();
+  let synced = 0, skipped = 0;
+  const tabsScanned = [];
+
+  if (config.schema === 'auto-supply') {
+    // 1) 시트 메타데이터 — 모든 탭 이름 + 헤더 row 1 batchGet
+    const metaUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}?fields=sheets.properties.title&key=${SHEETS_API_KEY}`;
+    const meta = await fetchJson(metaUrl);
+    const allTabNames = (meta.sheets || [])
+      .map(s => s.properties.title)
+      .filter(t => t && !/^종합|^공지|^★|구\s|^안내/.test(t));   // 시스템/구버전 탭 제외
+
+    // 2) 각 탭의 첫 5행 batchGet → 공급코드 + 정책코드 + 차량번호 헤더 보유한 탭만 골라냄
+    const ranges = allTabNames.map(t => `'${t.replace(/'/g, "\\'")}'!A1:BZ5`);
+    const batchUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}/values:batchGet?${ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&')}&key=${SHEETS_API_KEY}`;
+    const batch = await fetchJson(batchUrl);
+    const eligibleTabs = [];
+    (batch.valueRanges || []).forEach((vr, i) => {
+      const rows = vr.values || [];
+      for (const row of rows) {
+        const rowStr = row.map(c => String(c ?? '').trim());
+        if (rowStr.includes('차량번호') && rowStr.includes('공급코드') && rowStr.includes('정책코드')) {
+          eligibleTabs.push({ name: allTabNames[i], headers: rowStr });
+          break;
+        }
+      }
+    });
+
+    if (!eligibleTabs.length) {
+      return {
+        ok: true, synced: 0, skipped: 0, products: {},
+        source, sheet_id: config.sheet_id, tab_name: null, schema: config.schema,
+        tabs_scanned: allTabNames, eligible_tabs: [],
+        message: '공급코드 + 정책코드 헤더 가진 탭이 없습니다',
+      };
+    }
+
+    // 3) 자격 있는 탭 일괄 처리
+    for (const tab of eligibleTabs) {
+      const photoLinkMap = await loadChipRuns(config.sheet_id, tab.name);
+      const rows = await loadSheetValues(config.sheet_id, tab.name);
+      let headerIdx = -1, headers = [];
+      for (let i = 0; i < rows.length; i++) {
+        const rowStr = rows[i].map(c => String(c ?? '').trim());
+        if (rowStr.includes('차량번호') && rowStr.includes('공급코드') && rowStr.includes('정책코드')) {
+          headerIdx = i; headers = rowStr; break;
+        }
+      }
+      if (headerIdx < 0) continue;
+      let tabSynced = 0, tabSkipped = 0;
+      for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
+        const absRow = headerIdx + 1 + off;
+        const row = rows[absRow] || [];
+        const p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
+        if (!p) { tabSkipped++; continue; }
+        products[p._key] = p;
+        tabSynced++;
+      }
+      synced += tabSynced;
+      skipped += tabSkipped;
+      tabsScanned.push({ tab: tab.name, synced: tabSynced, skipped: tabSkipped });
+    }
+
+    return {
+      ok: true, synced, skipped, products,
+      source, sheet_id: config.sheet_id, tab_name: null, schema: config.schema,
+      tabs_scanned: tabsScanned,
+    };
+  }
+
+  // ── 단일 탭 동기화 (autoplus / general) ──
+  const photoLinkMap = await loadChipRuns(config.sheet_id, config.tab_name);
+  const rows = await loadSheetValues(config.sheet_id, config.tab_name);
+  if (!rows.length) {
+    return { ok: false, status: 400, message: '시트 데이터 없음' };
+  }
+
+  let headerIdx = -1, headers = [];
+  for (let i = 0; i < rows.length; i++) {
+    const rowStr = rows[i].map(c => String(c ?? '').trim());
+    if (rowStr.includes('차량번호')) { headerIdx = i; headers = rowStr; break; }
+  }
+  if (headerIdx < 0) {
+    return { ok: false, status: 400, message: '헤더 행을 찾을 수 없음' };
+  }
+
+  for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
+    const absRow = headerIdx + 1 + off;
+    const row = rows[absRow] || [];
+    let p = null;
+    if (config.schema === 'autoplus') {
+      p = parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
+    } else if (config.schema === 'general') {
+      p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
+    }
+    if (!p) { skipped++; continue; }
+    products[p._key] = p;
+    synced++;
+  }
+
+  return {
+    ok: true, synced, skipped, products,
+    source, sheet_id: config.sheet_id, tab_name: config.tab_name,
+    provider_code: config.provider_code || null,
+    schema: config.schema,
+  };
+}
+
+/* HTTP handler — 클라이언트(dev.js)가 POST 로 호출.
+ * /api/sync/auto 도 동일 로직(syncFromSheet) 재사용. */
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.statusCode = 405;
@@ -385,135 +508,11 @@ export default async function handler(req, res) {
     let parsed = {};
     try { parsed = JSON.parse(body || '{}'); } catch {}
     const source = parsed.source || 'autoplus';
-    const config = SHEET_CONFIGS[source];
-    if (!config) {
-      res.statusCode = 400;
-      res.setHeader('Content-Type', 'application/json');
-      return res.end(JSON.stringify({ ok: false, message: `미지원 source: ${source}` }));
-    }
-    if (!config.sheet_id) {
-      res.statusCode = 501;
-      res.setHeader('Content-Type', 'application/json');
-      return res.end(JSON.stringify({ ok: false, message: `${config.label} URL 미설정` }));
-    }
-
-    const products = {};
-    const nowMs = Date.now();
-    let synced = 0, skipped = 0;
-    const tabsScanned = [];
-
-    if (config.schema === 'auto-supply') {
-      // 1) 시트 메타데이터 — 모든 탭 이름 + 헤더 row 1 batchGet
-      const metaUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}?fields=sheets.properties.title&key=${SHEETS_API_KEY}`;
-      const meta = await fetchJson(metaUrl);
-      const allTabNames = (meta.sheets || [])
-        .map(s => s.properties.title)
-        .filter(t => t && !/^종합|^공지|^★|구\s|^안내/.test(t));   // 시스템/구버전 탭 제외
-
-      // 2) 각 탭의 첫 5행 batchGet → 공급코드 + 정책코드 + 차량번호 헤더 보유한 탭만 골라냄
-      const ranges = allTabNames.map(t => `'${t.replace(/'/g, "\\'")}'!A1:BZ5`);
-      const batchUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}/values:batchGet?${ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&')}&key=${SHEETS_API_KEY}`;
-      const batch = await fetchJson(batchUrl);
-      const eligibleTabs = [];
-      (batch.valueRanges || []).forEach((vr, i) => {
-        const rows = vr.values || [];
-        for (const row of rows) {
-          const rowStr = row.map(c => String(c ?? '').trim());
-          if (rowStr.includes('차량번호') && rowStr.includes('공급코드') && rowStr.includes('정책코드')) {
-            eligibleTabs.push({ name: allTabNames[i], headers: rowStr });
-            break;
-          }
-        }
-      });
-
-      if (!eligibleTabs.length) {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        return res.end(JSON.stringify({
-          ok: true, synced: 0, skipped: 0, products: {},
-          source, sheet_id: config.sheet_id, tab_name: null, schema: config.schema,
-          tabs_scanned: allTabNames, eligible_tabs: [],
-          message: '공급코드 + 정책코드 헤더 가진 탭이 없습니다',
-        }));
-      }
-
-      // 3) 자격 있는 탭 일괄 처리
-      for (const tab of eligibleTabs) {
-        const photoLinkMap = await loadChipRuns(config.sheet_id, tab.name);
-        const rows = await loadSheetValues(config.sheet_id, tab.name);
-        let headerIdx = -1, headers = [];
-        for (let i = 0; i < rows.length; i++) {
-          const rowStr = rows[i].map(c => String(c ?? '').trim());
-          if (rowStr.includes('차량번호') && rowStr.includes('공급코드') && rowStr.includes('정책코드')) {
-            headerIdx = i; headers = rowStr; break;
-          }
-        }
-        if (headerIdx < 0) continue;
-        let tabSynced = 0, tabSkipped = 0;
-        for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
-          const absRow = headerIdx + 1 + off;
-          const row = rows[absRow] || [];
-          const p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
-          if (!p) { tabSkipped++; continue; }
-          products[p._key] = p;
-          tabSynced++;
-        }
-        synced += tabSynced;
-        skipped += tabSkipped;
-        tabsScanned.push({ tab: tab.name, synced: tabSynced, skipped: tabSkipped });
-      }
-
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      return res.end(JSON.stringify({
-        ok: true, synced, skipped, products,
-        source, sheet_id: config.sheet_id, tab_name: null, schema: config.schema,
-        tabs_scanned: tabsScanned,
-      }));
-    }
-
-    // ── 단일 탭 동기화 (autoplus / general) ──
-    const photoLinkMap = await loadChipRuns(config.sheet_id, config.tab_name);
-    const rows = await loadSheetValues(config.sheet_id, config.tab_name);
-    if (!rows.length) {
-      res.statusCode = 400;
-      res.setHeader('Content-Type', 'application/json');
-      return res.end(JSON.stringify({ ok: false, message: '시트 데이터 없음' }));
-    }
-
-    let headerIdx = -1, headers = [];
-    for (let i = 0; i < rows.length; i++) {
-      const rowStr = rows[i].map(c => String(c ?? '').trim());
-      if (rowStr.includes('차량번호')) { headerIdx = i; headers = rowStr; break; }
-    }
-    if (headerIdx < 0) {
-      res.statusCode = 400;
-      res.setHeader('Content-Type', 'application/json');
-      return res.end(JSON.stringify({ ok: false, message: '헤더 행을 찾을 수 없음' }));
-    }
-
-    for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
-      const absRow = headerIdx + 1 + off;
-      const row = rows[absRow] || [];
-      let p = null;
-      if (config.schema === 'autoplus') {
-        p = parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
-      } else if (config.schema === 'general') {
-        p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
-      }
-      if (!p) { skipped++; continue; }
-      products[p._key] = p;
-      synced++;
-    }
-
-    res.statusCode = 200;
+    const out = await syncFromSheet(source);
+    res.statusCode = out.ok ? 200 : (out.status || 400);
     res.setHeader('Content-Type', 'application/json');
-    return res.end(JSON.stringify({
-      ok: true, synced, skipped, products,
-      source, sheet_id: config.sheet_id, tab_name: config.tab_name,
-      provider_code: config.provider_code || null,
-      schema: config.schema,
-    }));
+    delete out.status;
+    return res.end(JSON.stringify(out));
   } catch (e) {
     console.error('[external-sheet] 실패:', e);
     res.statusCode = 500;
