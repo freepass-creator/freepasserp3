@@ -1,0 +1,116 @@
+{
+  "hyundai_grandeur_hg.json": {
+    "한국출시": ["가솔린 2.4", "가솔린 3.0", "가솔린 3.0 하이브리드", "가솔린 3.3", "LPG 3.0"]
+  },
+  "hyundai_grandeur_ig_pre.json": {
+    "한국출시": ["가솔린 2.4", "가솔린 3.0", "가솔린 3.3", "디젤 2.2", "LPG 3.0"]
+  },
+  "hyundai_grandeur_ig.json": {
+    "한국출시": ["가솔린 2.5", "가솔린 3.3", "LPG 3.0"]
+  },
+  "hyundai_grandeur_ig_163.json": {
+    "한국출시": ["하이브리드 2.4"]
+  },
+  "hyundai_grandeur_gn7_lpg.json": {
+    "한국출시": ["LPG 3.5"]
+  },
+  "hyundai_sonata_dn8.json": {
+    "한국출시": ["가솔린 1.6 T", "가솔린 2.0", "가솔린 2.0 T", "하이브리드 2.0", "LPG 2.0"]
+  },
+  "hyundai_sonata_dn8_edge.json": {
+    "한국출시": ["가솔린 1.6 T", "가솔린 2.0", "하이브리드 2.0", "LPG 2.0"]
+  },
+  "hyundai_avante_n.json": {
+    "한국출시": ["가솔린 2.0 T"]
+  },
+  "hyundai_kona_os.json": {
+    "한국출시": ["가솔린 1.6 T", "가솔린 2.0", "디젤 1.6", "하이브리드 1.6"]
+  },
+  "hyundai_kona_os_facelift.json": {
+    "한국출시": ["가솔린 1.6 T", "가솔린 2.0", "하이브리드 1.6"]
+  },
+  "hyundai_kona_os_ev.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_kona_sx2.json": {
+    "한국출시": ["가솔린 1.6 T", "가솔린 2.0", "하이브리드 1.6"]
+  },
+  "hyundai_kona_sx2_ev.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_santafe_tm_165.json": {
+    "한국출시": ["가솔린 2.5 T", "디젤 2.2"]
+  },
+  "hyundai_santafe_tm_165_hybrid.json": {
+    "한국출시": ["하이브리드 1.6 T"]
+  },
+  "hyundai_palisade_lx3.json": {
+    "한국출시": ["가솔린 2.5 T", "가솔린 3.5", "LPG 3.5"]
+  },
+  "hyundai_palisade_lx3_hybrid.json": {
+    "한국출시": ["하이브리드 2.5 T"]
+  },
+  "hyundai_tucson_nx4.json": {
+    "한국출시": ["가솔린 1.6 T", "디젤 2.0", "하이브리드 1.6 T", "플러그인하이브리드 1.6 T"]
+  },
+  "hyundai_ioniq5.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_ioniq5_pre.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_ioniq5_n.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_ioniq6.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_ioniq6_pre.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_ioniq9.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_casper.json": {
+    "한국출시": ["가솔린 1.0", "가솔린 1.0 T"]
+  },
+  "hyundai_casper_pre.json": {
+    "한국출시": ["가솔린 1.0", "가솔린 1.0 T"]
+  },
+  "hyundai_st1.json": {
+    "한국출시": ["EV"]
+  },
+  "hyundai_starex_us4.json": {
+    "한국출시": ["가솔린 3.5", "디젤 2.2", "LPG 3.5"]
+  },
+  "hyundai_starex_pre_us4.json": {
+    "한국출시": ["가솔린 3.5", "디젤 2.2", "LPG 3.5"]
+  },
+  "hyundai_nexo_nh2.json": {
+    "한국출시": ["수소"]
+  },
+  "hyundai_venue.json": {
+    "한국출시": ["가솔린 1.6"]
+  },
+  "genesis_g80_rg3.json": {
+    "한국출시": ["가솔린 2.5 T", "가솔린 3.5 T", "LPG 3.5"]
+  },
+  "genesis_g80_rg3_pre.json": {
+    "한국출시": ["가솔린 2.5 T", "가솔린 3.5 T", "디젤 2.2"]
+  },
+  "genesis_g80_e.json": {
+    "한국출시": ["EV"]
+  },
+  "genesis_gv60.json": {
+    "한국출시": ["EV"]
+  },
+  "genesis_gv70.json": {
+    "한국출시": ["가솔린 2.5 T", "가솔린 3.5 T"]
+  },
+  "genesis_gv70_pre.json": {
+    "한국출시": ["가솔린 2.5 T", "가솔린 3.5 T", "디젤 2.2"]
+  },
+  "genesis_gv70_e.json": {
+    "한국출시": ["EV"]
+  }
+}

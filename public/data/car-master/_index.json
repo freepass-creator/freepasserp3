@@ -3874,7 +3874,7 @@
   },
   "hyundai_avante_ad_facelift_hybrid": {
     "id": "hyundai_avante_ad_facelift_hybrid",
-    "title": "현대 더 뉴 아반떼 하이브리드 AD",
+    "title": "현대 더 뉴 아반떼 HEV AD",
     "maker": "현대",
     "model_root": "아반떼",
     "year_start": "2018-09",
@@ -3948,7 +3948,7 @@
   },
   "hyundai_avante_cn7_hybrid": {
     "id": "hyundai_avante_cn7_hybrid",
-    "title": "현대 더 뉴 아반떼 하이브리드 CN7",
+    "title": "현대 더 뉴 아반떼 HEV CN7",
     "maker": "현대",
     "model_root": "아반떼",
     "year_start": "2023-03",
@@ -4195,7 +4195,7 @@
   },
   "hyundai_grandeur_gn7_hybrid": {
     "id": "hyundai_grandeur_gn7_hybrid",
-    "title": "현대 그랜저 하이브리드 GN7",
+    "title": "현대 그랜저 HEV GN7",
     "maker": "현대",
     "model_root": "그랜저",
     "year_start": "2023-03",
@@ -4292,7 +4292,7 @@
   },
   "hyundai_grandeur_ig_163": {
     "id": "hyundai_grandeur_ig_163",
-    "title": "현대 더 뉴 그랜저 하이브리드 IG",
+    "title": "현대 더 뉴 그랜저 HEV IG",
     "maker": "현대",
     "model_root": "그랜저",
     "year_start": "2019-11",
@@ -4321,7 +4321,7 @@
   },
   "hyundai_grandeur_ig_hybrid_pre": {
     "id": "hyundai_grandeur_ig_hybrid_pre",
-    "title": "현대 그랜저 하이브리드 IG",
+    "title": "현대 그랜저 HEV IG",
     "maker": "현대",
     "model_root": "그랜저",
     "year_start": "2017-03",
@@ -4653,7 +4653,7 @@
   },
   "hyundai_kona_os_facelift_hybrid": {
     "id": "hyundai_kona_os_facelift_hybrid",
-    "title": "현대 더 뉴 코나 하이브리드 OS",
+    "title": "현대 더 뉴 코나 HEV OS",
     "maker": "현대",
     "model_root": "코나",
     "year_start": "2020-08",
@@ -4684,7 +4684,7 @@
   },
   "hyundai_kona_os_hybrid": {
     "id": "hyundai_kona_os_hybrid",
-    "title": "현대 코나 하이브리드 OS",
+    "title": "현대 코나 HEV OS",
     "maker": "현대",
     "model_root": "코나",
     "year_start": "2019-07",
@@ -4762,7 +4762,7 @@
   },
   "hyundai_kona_sx2_hybrid": {
     "id": "hyundai_kona_sx2_hybrid",
-    "title": "현대 코나 하이브리드 SX2",
+    "title": "현대 코나 HEV SX2",
     "maker": "현대",
     "model_root": "코나",
     "year_start": "2023-04",
@@ -4935,7 +4935,7 @@
   },
   "hyundai_palisade_lx3_hybrid": {
     "id": "hyundai_palisade_lx3_hybrid",
-    "title": "현대 디 올 뉴 팰리세이드 하이브리드 LX3",
+    "title": "현대 디 올 뉴 팰리세이드 HEV LX3",
     "maker": "현대",
     "model_root": "팰리세이드",
     "year_start": "2025-01",
@@ -5005,7 +5005,7 @@
   },
   "hyundai_santafe_mx5_hybrid": {
     "id": "hyundai_santafe_mx5_hybrid",
-    "title": "현대 디 올 뉴 싼타페 하이브리드 MX5",
+    "title": "현대 디 올 뉴 싼타페 HEV MX5",
     "maker": "현대",
     "model_root": "싼타페",
     "year_start": "2023-08",
@@ -5151,7 +5151,7 @@
   },
   "hyundai_sonata_dn8_edge_hybrid": {
     "id": "hyundai_sonata_dn8_edge_hybrid",
-    "title": "현대 쏘나타 디 엣지 하이브리드 DN8",
+    "title": "현대 쏘나타 디 엣지 HEV DN8",
     "maker": "현대",
     "model_root": "쏘나타",
     "year_start": "2023-04",
@@ -5180,7 +5180,7 @@
   },
   "hyundai_sonata_dn8_hybrid": {
     "id": "hyundai_sonata_dn8_hybrid",
-    "title": "현대 쏘나타 하이브리드 DN8",
+    "title": "현대 쏘나타 HEV DN8",
     "maker": "현대",
     "model_root": "쏘나타",
     "year_start": "2019-07",
@@ -5444,7 +5444,7 @@
   },
   "hyundai_tucson_nx4_hybrid": {
     "id": "hyundai_tucson_nx4_hybrid",
-    "title": "현대 더 뉴 투싼 하이브리드 NX4",
+    "title": "현대 더 뉴 투싼 HEV NX4",
     "maker": "현대",
     "model_root": "투싼",
     "year_start": "2020-09",
@@ -6474,7 +6474,7 @@
   },
   "kia_carnival_ka4_facelift_hybrid": {
     "id": "kia_carnival_ka4_facelift_hybrid",
-    "title": "기아 더 뉴 카니발 하이브리드 KA4",
+    "title": "기아 더 뉴 카니발 HEV KA4",
     "maker": "기아",
     "model_root": "카니발",
     "year_start": "2024-12",
@@ -6653,10 +6653,10 @@
   },
   "kia_carnival_yp_hi_limousine": {
     "id": "kia_carnival_yp_hi_limousine",
-    "title": "기아 올 뉴 카니발 하이리무진 YP",
+    "title": "기아 더 뉴 카니발 하이리무진 YP",
     "maker": "기아",
     "model_root": "카니발 하이리무진",
-    "year_start": "2014-06",
+    "year_start": "2017-11",
     "year_end": "2021-06",
     "source": {
       "manufacturer": "https://auto.danawa.com/auto/?Work=model&Model=3152",
@@ -6678,6 +6678,31 @@
       "프레스티지 디젤 2.2 9인승": 51630000,
       "노블레스 디젤 2.2 9인승": 55440000
     },
+    "fetched_at": "2026-05-05"
+  },
+  "kia_carnival_yp_hi_limousine_pre": {
+    "id": "kia_carnival_yp_hi_limousine_pre",
+    "title": "기아 올 뉴 카니발 하이리무진 YP",
+    "maker": "기아",
+    "model_root": "카니발 하이리무진",
+    "year_start": "2014-06",
+    "year_end": "2017-10",
+    "source": {
+      "manufacturer": "https://auto.danawa.com/auto/?Work=model&Model=3152",
+      "wikicar": null,
+      "encar": []
+    },
+    "verified": {
+      "manufacturer": false,
+      "wikicar": false,
+      "encar": false
+    },
+    "trims": [
+      "럭셔리 디젤 2.2 9인승",
+      "프레스티지 디젤 2.2 9인승",
+      "노블레스 디젤 2.2 9인승"
+    ],
+    "trims_meta": {},
     "fetched_at": "2026-05-05"
   },
   "kia_ev3": {
@@ -7154,7 +7179,7 @@
   },
   "kia_k5_dl3_facelift_hybrid": {
     "id": "kia_k5_dl3_facelift_hybrid",
-    "title": "기아 더 뉴 K5 하이브리드 DL3",
+    "title": "기아 더 뉴 K5 HEV DL3",
     "maker": "기아",
     "model_root": "K5",
     "year_start": "2023-01",
@@ -7185,7 +7210,7 @@
   },
   "kia_k5_dl3_hybrid": {
     "id": "kia_k5_dl3_hybrid",
-    "title": "기아 올 뉴 K5 하이브리드 DL3",
+    "title": "기아 올 뉴 K5 HEV DL3",
     "maker": "기아",
     "model_root": "K5",
     "year_start": "2020-08",
@@ -7280,7 +7305,7 @@
   },
   "kia_k5_jf_facelift_hybrid": {
     "id": "kia_k5_jf_facelift_hybrid",
-    "title": "기아 더 뉴 K5 하이브리드 JF",
+    "title": "기아 더 뉴 K5 HEV JF",
     "maker": "기아",
     "model_root": "K5",
     "year_start": "2018-12",
@@ -7309,7 +7334,7 @@
   },
   "kia_k5_jf_hybrid": {
     "id": "kia_k5_jf_hybrid",
-    "title": "기아 K5 하이브리드 JF",
+    "title": "기아 K5 HEV JF",
     "maker": "기아",
     "model_root": "K5",
     "year_start": "2015-07",
@@ -7439,7 +7464,7 @@
   },
   "kia_k8_gl3_hybrid": {
     "id": "kia_k8_gl3_hybrid",
-    "title": "기아 더 뉴 K8 하이브리드 GL3",
+    "title": "기아 더 뉴 K8 HEV GL3",
     "maker": "기아",
     "model_root": "K8",
     "year_start": "2024-09",
@@ -7513,7 +7538,7 @@
   },
   "kia_k8_gl3_pre_hybrid": {
     "id": "kia_k8_gl3_pre_hybrid",
-    "title": "기아 K8 하이브리드 GL3",
+    "title": "기아 K8 HEV GL3",
     "maker": "기아",
     "model_root": "K8",
     "year_start": "2021-04",
@@ -7883,7 +7908,7 @@
   },
   "kia_niro_sg2_hybrid": {
     "id": "kia_niro_sg2_hybrid",
-    "title": "기아 디 올 뉴 니로 하이브리드 SG2",
+    "title": "기아 디 올 뉴 니로 HEV SG2",
     "maker": "기아",
     "model_root": "니로",
     "year_start": "2022-07",
@@ -8223,7 +8248,7 @@
   },
   "kia_sorento_mq4_facelift_hybrid": {
     "id": "kia_sorento_mq4_facelift_hybrid",
-    "title": "기아 더 뉴 쏘렌토 하이브리드 MQ4",
+    "title": "기아 더 뉴 쏘렌토 HEV MQ4",
     "maker": "기아",
     "model_root": "쏘렌토",
     "year_start": "2023-08",
@@ -8254,7 +8279,7 @@
   },
   "kia_sorento_mq4_hybrid": {
     "id": "kia_sorento_mq4_hybrid",
-    "title": "기아 쏘렌토 하이브리드 MQ4",
+    "title": "기아 쏘렌토 HEV MQ4",
     "maker": "기아",
     "model_root": "쏘렌토",
     "year_start": "2020-08",
@@ -8396,7 +8421,7 @@
   },
   "kia_sportage_nq5_hybrid": {
     "id": "kia_sportage_nq5_hybrid",
-    "title": "기아 더 뉴 스포티지 하이브리드 NQ5",
+    "title": "기아 더 뉴 스포티지 HEV NQ5",
     "maker": "기아",
     "model_root": "스포티지",
     "year_start": "2021-08",

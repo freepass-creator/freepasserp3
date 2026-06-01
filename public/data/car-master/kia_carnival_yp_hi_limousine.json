@@ -1,7 +1,7 @@
 {
   "catalog_id": "kia_carnival_yp_hi_limousine",
   "model_root": "카니발 하이리무진",
-  "title": "기아 올 뉴 카니발 하이리무진 YP",
+  "title": "기아 더 뉴 카니발 하이리무진 YP",
   "maker": "기아",
   "source": "kia_official",
   "source_urls": [
@@ -1998,6 +1998,6 @@
     "카니발하이리무진4세대",
     "카니발하이리무진ka4"
   ],
-  "year_start": "2014-06",
+  "year_start": "2017-11",
   "year_end": "2021-06"
 }

@@ -692,7 +692,7 @@
     "end": "현재"
   },
   "hyundai_grandeur_gn7_hybrid": {
-    "start": "2022-11",
+    "start": "2023-03",
     "end": "현재"
   },
   "hyundai_grandeur_hg": {
@@ -781,10 +781,6 @@
   },
   "hyundai_palisade_lx3_hybrid": {
     "start": "2025-01",
-    "end": "현재"
-  },
-  "hyundai_santa_fe_mx5": {
-    "start": "2023-08",
     "end": "현재"
   },
   "hyundai_santafe_mx5": {
@@ -968,20 +964,20 @@
     "end": "현재"
   },
   "kia_carnival_ka4": {
-    "start": "2020-08",
-    "end": "2024-12"
+    "start": "2024-12",
+    "end": "현재"
   },
   "kia_carnival_ka4_facelift_hybrid": {
     "start": "2024-12",
     "end": "현재"
   },
   "kia_carnival_ka4_hi_limousine": {
-    "start": "2020-08",
-    "end": "현재"
+    "start": "2021-07",
+    "end": "2023-10"
   },
-  "kia_carnival_ka4_hybrid": {
-    "start": "2020-08",
-    "end": "2024-12"
+  "kia_carnival_ka4_hi_limousine_facelift": {
+    "start": "2023-11",
+    "end": "현재"
   },
   "kia_carnival_yp": {
     "start": "2014-06",
@@ -990,6 +986,14 @@
   "kia_carnival_yp_facelift": {
     "start": "2018-08",
     "end": "2020-07"
+  },
+  "kia_carnival_yp_hi_limousine": {
+    "start": "2017-11",
+    "end": "2021-06"
+  },
+  "kia_carnival_yp_hi_limousine_pre": {
+    "start": "2014-06",
+    "end": "2017-10"
   },
   "kia_ev3": {
     "start": "2024-01",
@@ -1044,7 +1048,7 @@
     "end": "현재"
   },
   "kia_k5_dl3_hybrid": {
-    "start": "2019-12",
+    "start": "2020-08",
     "end": "2022-12"
   },
   "kia_k5_jf": {
@@ -1102,10 +1106,6 @@
   "kia_morning_ja": {
     "start": "2020-08",
     "end": "현재"
-  },
-  "kia_morning_ja_facelift1": {
-    "start": "2020-08",
-    "end": "2022-12"
   },
   "kia_morning_ja_pre": {
     "start": "2017-01",
@@ -1172,8 +1172,8 @@
     "end": "현재"
   },
   "kia_sorento_mq4_hybrid": {
-    "start": "2020-03",
-    "end": "현재"
+    "start": "2020-08",
+    "end": "2023-07"
   },
   "kia_sorento_um": {
     "start": "2014-09",

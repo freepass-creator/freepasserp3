@@ -6,6 +6,8 @@
 <!-- catalog 단일 진실원 — bundle.js 가 window.CAR_MASTER_INDEX / window.CAR_MASTER 노출 -->
 <script src="./public/data/car-master/_bundle.js" onerror="this.dataset.failed=1"></script>
 <script src="./data/car-master/_bundle.js" onerror="this.dataset.failed=1"></script>
+<script src="./public/data/car-master/_encar-master-bundle.js" onerror="this.dataset.failed=1"></script>
+<script src="./data/car-master/_encar-master-bundle.js" onerror="this.dataset.failed=1"></script>
 <script src="./public/data/trim-options-seed.js" onerror="this.dataset.failed=1"></script>
 <script src="./data/trim-options-seed.js" onerror="this.dataset.failed=1"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -151,7 +153,35 @@
 </head>
 <body>
 
-<h1>프리패스 차종 매트릭스 <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:6px">트림 × 옵션 × 패키지</span></h1>
+<h1>프리패스 차종 매트릭스 <span style="font-size:11px;font-weight:400;color:#9ca3af;margin-left:6px">트림 × 옵션 × 패키지</span>
+  <span style="margin-left:16px;font-size:12px;font-weight:400">
+    <button id="modeMatrix" style="padding:4px 10px;border:1px solid #2c3e50;background:#2c3e50;color:#fff;border-radius:4px;cursor:pointer">매트릭스</button>
+    <button id="modeManage" style="padding:4px 10px;border:1px solid #ccc;background:#fff;color:#333;border-radius:4px;cursor:pointer;margin-left:-1px">차종 관리</button>
+  </span>
+</h1>
+
+<!-- 차종 관리 패널 (관리 모드 시 표시) -->
+<div id="managePanel" style="display:none;background:#fff;padding:12px;border-radius:6px;margin-bottom:12px;max-height:calc(100vh - 120px);overflow:auto">
+  <div style="margin-bottom:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <input type="text" id="manageSearch" placeholder="제조사/모델/세부모델 검색" style="padding:4px 8px;width:240px">
+    <select id="manageMaker" style="padding:4px"><option value="">전체 제조사</option></select>
+    <label style="font-size:11px;color:#666;cursor:pointer"><input type="checkbox" id="manageRecent" checked> 10년 안쪽만</label>
+    <span id="manageStats" style="margin-left:auto;font-size:11px;color:#888"></span>
+  </div>
+  <table id="manageTable" style="border-collapse:collapse;width:100%;font-size:11px">
+    <thead style="position:sticky;top:0;background:#2c3e50;color:#fff">
+      <tr>
+        <th style="padding:4px 8px;text-align:left;width:80px">제조사</th>
+        <th style="padding:4px 8px;text-align:left;width:140px">모델</th>
+        <th style="padding:4px 8px;text-align:left;width:340px">세부모델 (catalog title)</th>
+        <th style="padding:4px 8px;text-align:left;width:140px">생산기간</th>
+        <th style="padding:4px 8px;text-align:left;width:200px">catalog id</th>
+        <th style="padding:4px 8px;text-align:right;width:60px">트림</th>
+      </tr>
+    </thead>
+    <tbody id="manageTbody"></tbody>
+  </table>
+</div>
 
 <!-- 가격표 오버레이 모달 (자체 표 — 외부 iframe X) -->
 <div id="priceModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;padding:20px">
@@ -2882,16 +2912,47 @@ function onModelChange() {
   const subs = state.master.filter(r => r.maker === maker && r.model === model);
   function fuelOrder(s) {
     const txt = String(s || '');
-    if (/(EV|일렉트릭|electric|전기차)/i.test(txt)) return 3;
-    if (/(플러그인|PHEV)/i.test(txt)) return 2;
-    if (/(하이브리드|HEV|hybrid)/i.test(txt)) return 1;
-    return 0;
+    if (/(EV|일렉트릭|electric|전기차)/i.test(txt)) return 4;
+    if (/(플러그인|PHEV)/i.test(txt)) return 3;
+    if (/(하이브리드|HEV|hybrid)/i.test(txt)) return 2;
+    if (/LPG|LPi/i.test(txt)) return 1;
+    return 0;   // 가솔린/디젤 등 기본 동력원
   }
+  // 같은 세대 (chassis 코드) + 페리 prefix 그룹화
+  function chassisCode(r) {
+    const t = String(r.title || r.sub || '');
+    const m = t.match(/\b([A-Z]{2,4}\d{0,2})\b(?=\s*$|\s+(하이브리드|HEV|LPG|EV|페리|페이스리프트))/);
+    return m ? m[1] : t;
+  }
+  // 페리 prefix 추출 (페리 후 = 1, 페리 전 = 0)
+  function facelift(r) {
+    const t = String(r.title || r.sub || '');
+    if (/(디\s*올\s*뉴|더\s*뉴|페리|페이스리프트)/.test(t)) return 1;   // 페리 후
+    return 0;   // 페리 전 (또는 단일)
+  }
+  // 세부 그룹 = chassis + 페리 (예: "DL3-1" = DL3 페리 후, "DL3-0" = DL3 페리 전)
+  function subGroup(r) {
+    return chassisCode(r) + '-' + facelift(r);
+  }
+  // 그룹별 최신 출시일 (그룹 간 정렬)
+  const groupOrder = {};
+  subs.forEach(r => {
+    const g = subGroup(r);
+    const y = r.production_start || '';
+    if (!groupOrder[g] || y > groupOrder[g]) groupOrder[g] = y;
+  });
   subs.sort((a, b) => {
-    const ya = a.production_start || '';
-    const yb = b.production_start || '';
-    if (ya !== yb) return yb.localeCompare(ya);
-    return fuelOrder(a.sub) - fuelOrder(b.sub);
+    const ga = subGroup(a), gb = subGroup(b);
+    if (ga !== gb) {
+      // 그룹 간: 최신 그룹 위
+      const ya = groupOrder[ga] || '', yb = groupOrder[gb] || '';
+      if (ya !== yb) return yb.localeCompare(ya);
+      return ga.localeCompare(gb);
+    }
+    // 같은 그룹 안: 가솔린/디젤(0) → LPG(1) → 하이브리드(2) → PHEV(3) → EV(4)
+    const fa = fuelOrder(a.title || a.sub), fb = fuelOrder(b.title || b.sub);
+    if (fa !== fb) return fa - fb;
+    return (b.production_start || '').localeCompare(a.production_start || '');
   });
   const showYear = $('showYear')?.checked;
 
@@ -3465,5 +3526,194 @@ async function init() {
 init();
 </script>
 
+<script>
+// === 차종 관리 모드 ===
+(function() {
+  const btnMatrix = document.getElementById('modeMatrix');
+  const btnManage = document.getElementById('modeManage');
+  const managePanel = document.getElementById('managePanel');
+  const stickyZone = document.getElementById('stickyZone');
+  const catalogPanel = document.getElementById('catalogPanel');
+  const emptyPanel = document.getElementById('emptyPanel');
+  if (!btnMatrix || !btnManage || !managePanel) return;
+
+  function showMatrix() {
+    btnMatrix.style.background = '#2c3e50';
+    btnMatrix.style.color = '#fff';
+    btnManage.style.background = '#fff';
+    btnManage.style.color = '#333';
+    managePanel.style.display = 'none';
+    if (stickyZone) stickyZone.style.display = '';
+    if (catalogPanel) catalogPanel.style.display = '';
+    if (emptyPanel) emptyPanel.style.display = '';
+  }
+  function showManage() {
+    btnManage.style.background = '#2c3e50';
+    btnManage.style.color = '#fff';
+    btnMatrix.style.background = '#fff';
+    btnMatrix.style.color = '#333';
+    managePanel.style.display = 'block';
+    if (stickyZone) stickyZone.style.display = 'none';
+    if (catalogPanel) catalogPanel.style.display = 'none';
+    if (emptyPanel) emptyPanel.style.display = 'none';
+    renderManage();
+  }
+  btnMatrix.addEventListener('click', showMatrix);
+  btnManage.addEventListener('click', showManage);
+
+  // === 관리 표 렌더 ===
+  const MAKER_ORDER = ['현대','기아','제네시스','KGM','BMW','벤츠','아우디','폭스바겐','볼보','미니','포르쉐','테슬라','렉서스','토요타','혼다','포드','쉐보레','마세라티','르노','랜드로버','지프'];
+  function norm(s) { return String(s||'').replace(/하이브리드/g,'HEV').replace(/[()\[\]]/g,'').replace(/\s+/g,' ').trim().toLowerCase(); }
+  function makerKo(k) { return k === 'KG모빌리티' ? 'KGM' : k; }
+  function makerEncar(k) { return k === 'KGM' ? 'KG모빌리티' : k; }
+
+  // 엔카 세대명/페리명 → 우리 chassis 코드 매핑 (catalog 매칭용)
+  const GEN_TO_CHASSIS = {
+    '카니발 4세대': 'KA4', '카니발 3세대': 'VQ', '카니발 R': 'VQ', '올 뉴 카니발': 'YP', '더 뉴 카니발': 'YP', '더 뉴 카니발 4세대': 'KA4', '그랜드 카니발': 'VQ',
+    '쏘렌토 4세대': 'MQ4', '더 뉴 쏘렌토 4세대': 'MQ4', '올 뉴 쏘렌토': 'UM', '더 뉴 쏘렌토': 'UM', '쏘렌토 R': 'XM', '뉴 쏘렌토 R': 'XM',
+    'K5 3세대': 'DL3', 'K5 2세대': 'JF', 'K5 1세대': 'TF', 'K5': 'TF', '더 뉴 K5 3세대': 'DL3', '더 뉴 K5 2세대': 'JF', '더 뉴 K5': 'JF',
+    'K5 HEV 3세대': 'DL3', 'K5 HEV 2세대': 'JF', 'K5 HEV': 'JF', '더 뉴 K5 HEV 3세대': 'DL3', '더 뉴 K5 HEV 2세대': 'JF',
+    '스포티지 5세대': 'NQ5', '스포티지 4세대': 'QL', '스포티지 더 볼드': 'QL', '더 뉴 스포티지 R': 'SL', '스포티지 R': 'SL', '더 뉴 스포티지 5세대': 'NQ5', '더 뉴 스포티지 5세대 HEV': 'NQ5', '스포티지 5세대 HEV': 'NQ5',
+    'K3 1세대': 'YD', 'K3 2세대': 'BD', '더 뉴 K3 2세대': 'BD', '올 뉴 K3': 'BD', 'K3': 'YD', '더 뉴 K3': 'YD',
+    'K9 1세대': 'KH', 'K9': 'KH', '더 뉴 K9 2세대': 'RJ', '더 뉴 K9': 'KH', '더 K9': 'RJ',
+    'K8': 'GL3', '더 뉴 K8': 'GL3', 'K8 HEV': 'GL3', '더 뉴 K8 HEV': 'GL3',
+    '셀토스': 'SP2', '더 뉴 셀토스': 'SP2', '셀토스 2세대': 'SP3',
+    '디 올 뉴 니로': 'SG2', '디 올 뉴 니로 EV': 'SG2', '더 뉴 니로': 'DE', '니로 EV': 'DE', '니로': 'DE', '니로 플러스': 'DE',
+  };
+  function chassisFor(encarValue) {
+    return GEN_TO_CHASSIS[encarValue] || null;
+  }
+
+  // catalog ↔ 엔카 매핑: ModelGroup 우선 매칭 후 그 안에서만 세부모델 매칭
+  function matchEncarSub(catalog) {
+    const enc = window.ENCAR_MASTER;
+    if (!enc) return null;
+    const em = makerEncar(catalog.maker);
+    const data = enc[em];
+    if (!data) return null;
+    // 1) catalog.model_root ↔ ModelGroup 정확 매칭
+    const modelRoot = norm(catalog.model_root);
+    if (!modelRoot) return null;
+    let matchedMg = (data.ModelGroups || []).find(mg => norm(mg.value) === modelRoot);
+    if (!matchedMg) {
+      // fallback: 부분 매칭 (한 쪽이 다른 쪽 포함)
+      matchedMg = (data.ModelGroups || []).find(mg => {
+        const mgN = norm(mg.value);
+        return modelRoot === mgN || (mgN.length >= 2 && modelRoot.includes(mgN)) || (modelRoot.length >= 2 && mgN.includes(modelRoot));
+      });
+    }
+    if (!matchedMg) return null;
+    // 2) 매칭된 ModelGroup 안에서만 세부모델 토큰 매칭
+    const models = (data.Models && data.Models[matchedMg.value]) || [];
+    if (models.length === 0) {
+      return { mg: matchedMg.value, sm: '(세부모델 미수신)', count: matchedMg.count };
+    }
+    const titleN = norm(catalog.title);
+    let best = null, bestScore = 0;
+    for (const sm of models) {
+      const subN = norm(sm.value);
+      const subTokens = subN.replace(norm(matchedMg.value), '').split(' ').filter(Boolean);
+      const titleTokens = titleN.split(' ').filter(Boolean);
+      let score = 0;
+      for (const t of subTokens) if (titleTokens.includes(t)) score++;
+      // chassis 매핑: 엔카 세대명 → chassis 코드 → catalog title 에 chassis 포함되면 보너스
+      const chassis = chassisFor(sm.value);
+      if (chassis && titleN.includes(chassis.toLowerCase())) score += 10;
+      // 페리 prefix 매칭 (더 뉴 / 디 올 뉴 / 올 뉴)
+      const subHasFacelift = /(디 올 뉴|더 뉴|올 뉴)/.test(sm.value);
+      const titleHasFacelift = /(디 올 뉴|더 뉴|올 뉴)/.test(catalog.title);
+      if (subHasFacelift && titleHasFacelift) score += 2;
+      if (!subHasFacelift && !titleHasFacelift) score += 1;
+      // HEV 매칭
+      const subIsHev = /HEV/.test(subN);
+      const titleIsHev = /HEV/.test(titleN);
+      if (subIsHev === titleIsHev) score += 2;
+      // 정확 일치 보너스
+      if (subN === titleN.replace(em.toLowerCase() + ' ', '')) score += 100;
+      if (score > bestScore) {
+        best = { mg: matchedMg.value, sm: sm.value, count: sm.count };
+        bestScore = score;
+      }
+    }
+    return best || { mg: matchedMg.value, sm: '(세부모델 매칭 없음)', count: matchedMg.count };
+  }
+
+  function renderManage() {
+    const idx = window.CAR_MASTER_INDEX;
+    if (!idx) {
+      document.getElementById('manageTbody').innerHTML = '<tr><td colspan="7" style="padding:20px;text-align:center;color:#999">CAR_MASTER_INDEX 로딩 안 됨</td></tr>';
+      return;
+    }
+    const recentOnly = document.getElementById('manageRecent').checked;
+    const makerFilter = document.getElementById('manageMaker').value;
+    const q = (document.getElementById('manageSearch').value || '').toLowerCase();
+
+    const catalogs = Object.values(idx);
+    // 제조사 dropdown 채우기
+    const makerSel = document.getElementById('manageMaker');
+    if (makerSel.options.length <= 1) {
+      const makers = [...new Set(catalogs.map(c => c.maker).filter(Boolean))]
+        .sort((a,b) => {
+          const ai = MAKER_ORDER.indexOf(a), bi = MAKER_ORDER.indexOf(b);
+          return (ai<0?999:ai) - (bi<0?999:bi);
+        });
+      makers.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m; opt.textContent = m;
+        makerSel.appendChild(opt);
+      });
+    }
+
+    const rows = catalogs.filter(c => {
+      if (!c.maker) return false;
+      if (makerFilter && c.maker !== makerFilter) return false;
+      if (recentOnly) {
+        const ys = c.year_start || '';
+        const ye = c.year_end || '';
+        if (!ys) return false;
+        if (ys < '2016-01' && ye !== '현재' && (ye || '') < '2016-01') return false;
+      }
+      if (q) {
+        const txt = (c.maker + ' ' + (c.model_root||'') + ' ' + (c.title||'')).toLowerCase();
+        if (!txt.includes(q)) return false;
+      }
+      return true;
+    });
+
+    rows.sort((a, b) => {
+      const ma = MAKER_ORDER.indexOf(a.maker), mb = MAKER_ORDER.indexOf(b.maker);
+      const mai = ma < 0 ? 999 : ma, mbi = mb < 0 ? 999 : mb;
+      if (mai !== mbi) return mai - mbi;
+      if ((a.model_root||'') !== (b.model_root||'')) return (a.model_root||'').localeCompare(b.model_root||'', 'ko');
+      return (b.year_start||'').localeCompare(a.year_start||'');
+    });
+
+    const tbody = document.getElementById('manageTbody');
+    tbody.innerHTML = '';
+    let prevMaker = '';
+    for (const c of rows) {
+      const tr = document.createElement('tr');
+      if (c.maker !== prevMaker) tr.style.borderTop = '2px solid #2c3e50';
+      prevMaker = c.maker;
+      tr.innerHTML = `
+        <td style="padding:3px 8px;background:#eef;font-weight:600">${c.maker}</td>
+        <td style="padding:3px 8px;background:#f8f0e8">${c.model_root||''}</td>
+        <td style="padding:3px 8px">${c.title||''}</td>
+        <td style="padding:3px 8px;font-family:Consolas,monospace;color:#555">${c.year_start||'?'} ~ ${c.year_end||'?'}</td>
+        <td style="padding:3px 8px;font-family:Consolas,monospace;font-size:10px;color:#888">${c.id}</td>
+        <td style="padding:3px 8px;text-align:right;color:#666">${(c.trims||[]).length}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+    document.getElementById('manageStats').textContent = `총 ${rows.length}개 catalog`;
+  }
+
+  // 필터 이벤트
+  document.getElementById('manageSearch').addEventListener('input', renderManage);
+  document.getElementById('manageMaker').addEventListener('change', renderManage);
+  document.getElementById('manageRecent').addEventListener('change', renderManage);
+  document.getElementById('manageEncarOnly').addEventListener('change', renderManage);
+})();
+</script>
 </body>
 </html>
