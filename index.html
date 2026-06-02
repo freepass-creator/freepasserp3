@@ -67,9 +67,10 @@
   <a href="#policy" data-page="policy" title="정책 관리"><i class="ph ph-shield-check"></i><span class="sb-label">정책 관리</span><span class="cnt" data-badge="policy"></span></a>
   <a href="#partners" data-page="partners" title="파트너 관리"><i class="ph ph-handshake"></i><span class="sb-label">파트너 관리</span><span class="cnt" data-badge="partners"></span></a>
   <a href="#users" data-page="users" title="사용자 관리"><i class="ph ph-users-three"></i><span class="sb-label">사용자 관리</span><span class="cnt" data-badge="users"></span></a>
-  <!-- 사이드바 하단 그룹 — 관리자 문의(비admin) + 개발도구(admin) + 설정 -->
+  <!-- 사이드바 하단 그룹 — 관리자 문의(비admin) + 관리자 페이지(admin) + 개발도구(시스템관리자) + 설정 -->
   <div class="pt-sb-bottom-group">
     <a href="#admin-chat" class="pt-sb-bottom-link pt-sb-bottom-admin-chat" id="sbAdminChat" data-page="admin-chat" title="관리자와 소통"><i class="ph ph-headset"></i><span class="sb-label">관리자 소통</span><span class="cnt" data-badge="admin-chat"></span></a>
+    <a href="#admin" class="pt-sb-bottom-link pt-sb-bottom-admin" data-page="admin" title="관리자"><i class="ph ph-shield-star"></i><span class="sb-label">관리자</span></a>
     <a href="#dev" class="pt-sb-bottom-link pt-sb-bottom-dev" data-page="dev" title="개발도구"><i class="ph ph-code"></i><span class="sb-label">개발도구</span></a>
     <a href="#settings" class="pt-sb-bottom-link" data-page="settings" title="설정"><i class="ph ph-gear"></i><span class="sb-label">설정</span></a>
   </div>
@@ -1097,8 +1098,11 @@
 <!-- 설정 (계정 + 시스템 + 카탈로그 통합) -->
 <div class="pt-page" data-page="settings"></div>
 
-<!-- 개발도구 (admin 전용) -->
+<!-- 개발도구 (시스템관리자 전용) -->
 <div class="pt-page" data-page="dev"></div>
+
+<!-- 관리자 페이지 (admin 전용) — 외부상품 동기화 / 공지 -->
+<div class="pt-page" data-page="admin"></div>
 
 <!-- 관리자 소통 — workspace 와 분리, 채팅 전용. 4패널 ws4 구조 (목록 / 채팅 / 빈 / 빈) -->
 <div class="pt-page" data-page="admin-chat">
@@ -1273,7 +1277,7 @@
     partners:  '파트너명·코드·담당자...',
     users:     '이름·이메일·회사·연락처...',
   };
-  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users','settings','dev','admin-chat'];
+  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users','admin','settings','dev','admin-chat'];
   // 페이지 표시명 + 아이콘 — 토픽바 가운데 작업상태 표시
   const PAGE_TITLES = {
     search:    { icon: 'magnifying-glass', label: '상품 찾기' },
@@ -1284,6 +1288,7 @@
     policy:    { icon: 'shield-check',     label: '정책 관리' },
     partners:  { icon: 'handshake',        label: '파트너 관리' },
     users:     { icon: 'users-three',      label: '사용자 관리' },
+    admin:     { icon: 'shield-star',      label: '관리자' },
     settings:  { icon: 'gear',             label: '설정' },
     dev:       { icon: 'code',             label: '개발도구' },
     'admin-chat': { icon: 'headset',       label: '관리자 소통' },
@@ -1316,6 +1321,8 @@
       window.renderSettings?.();
     } else if (name === 'dev') {
       window.renderDev?.();
+    } else if (name === 'admin') {
+      window.renderAdminOps?.();
     } else if (name === 'admin-chat') {
       window.renderAdminChat?.();
     }

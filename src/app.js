@@ -88,10 +88,13 @@ import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/c
 // findCarModel/inferCarModel 은 호출처(product.js, vehicle-ocr.js) 에서 직접 import
 import { renderSettings } from './pages/settings.js';
 import { renderDev } from './pages/dev.js';
+import { renderAdminOps } from './pages/admin-ops.js';
+import { isSystemAdmin } from './core/admin-access.js';
 import { setPageActions } from './core/page-actions.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
 window.renderDev = renderDev;
+window.renderAdminOps = renderAdminOps;
 
 /* ── 페이지별 하단 액션바 — index.html showPage() 에서 호출 ── */
 let _productClipboard = null;
@@ -1210,7 +1213,7 @@ function startHydration() {
     store.policies = list || [];
     if (store.products?.length) {
       store.products = enrichProductsWithPolicy(store.products, store.policies);
-      renderSearchTable(store.products);
+      applySearchFilter();   // 필터 경유 — 출고불가/삭제 매물 기본 숨김 (raw 렌더 X)
       renderFilteredProducts();
     }
     renderFilteredPolicies();
@@ -1223,7 +1226,7 @@ function startHydration() {
   watchCollection('products', (list) => {
     store.products = enrichProductsWithPolicy(list || [], store.policies || []);
     calibrateSearchCols(store.products);
-    renderSearchTable(store.products);
+    applySearchFilter();   // 필터 경유 — 출고불가/삭제 매물 기본 숨김 (raw 렌더 X)
     renderFilteredProducts();
     updateSidebarCounts();
     window.updateSearchStats?.();   // 토픽바 상품찾기 카운트 갱신
@@ -2094,6 +2097,8 @@ function hydrateUser(user) {
   // body 에 role 클래스 — CSS 가 권한별 메뉴 가시성 처리
   document.body.classList.remove('role-admin', 'role-provider', 'role-agent', 'role-agent_admin');
   if (user.role) document.body.classList.add(`role-${user.role}`);
+  // 시스템 관리자(이메일 화이트리스트) — 개발도구(#dev) 가시성 게이팅
+  document.body.classList.toggle('is-sysadmin', isSystemAdmin(user));
 }
 
 /* ── 사이드바 카운트 자동 갱신 — "처리 필요"만 카운트. watchCollection 후 호출 ── */

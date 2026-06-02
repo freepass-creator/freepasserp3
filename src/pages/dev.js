@@ -11,10 +11,11 @@ import { watchRecord, updateRecord, softDelete, setRecord, fetchCollection } fro
 import { showToast } from '../core/toast.js';
 import { customConfirm } from '../core/confirm.js';
 import { withLoading, setLoadingMessage } from '../core/loading.js';
-import { saveNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
-import { esc, emptyState, renderRoomItem, fmtMoneyMan } from './../core/ui-helpers.js';
+import { esc, emptyState, renderRoomItem } from './../core/ui-helpers.js';
 import { analyzeProduct, loadIndex, clearCache as clearMatrixCache } from '../core/vehicle-matrix.js';
 import { fpIdsToNames } from '../core/fp-options-master.js';
+import { isSystemAdmin } from '../core/admin-access.js';
+import { parseTrim } from '../core/vehicle-master-tree.js';
 
 let devUnsubs = [];
 let _activeDev = 'tools';
@@ -22,11 +23,9 @@ let _activeDev = 'tools';
 const DEV_TABS = [
   { id: 'matrix',  icon: 'list-magnifying-glass', label: '차종 매트릭스', sub: '카탈로그 ↔ 매물 매핑' },
   { id: 'vehicle', icon: 'car-profile',     label: '차종 마스터', sub: '제조사·모델·세부모델' },
-  { id: 'notice',  icon: 'megaphone',       label: '공지',        sub: '대시보드 공지 CRUD' },
   { id: 'color',   icon: 'palette',         label: '색상 옵션',   sub: '외장·내장 색상' },
   { id: 'data',    icon: 'database',        label: 'RTDB 현황',   sub: '컬렉션 viewer' },
   { id: 'upload',  icon: 'upload-simple',   label: '일괄 업로드', sub: 'CSV / Excel' },
-  { id: 'sync',    icon: 'google-drive-logo', label: '외부 상품 동기화', sub: '오플시트 / 공급시트 자동탐지 / 종합' },
   { id: 'stock',   icon: 'trash',           label: '데이터 삭제', sub: '재고 일괄 삭제' },
   { id: 'tools',   icon: 'wrench',          label: '시스템 도구', sub: '캐시·마이그레이션' },
 ];
@@ -49,8 +48,8 @@ export function renderDev() {
   const page = document.querySelector('.pt-page[data-page="dev"]');
   if (!page) return;
   const me = store.currentUser || {};
-  if (me.role !== 'admin') {
-    page.innerHTML = `<div style="padding: var(--sp-6); color: var(--text-muted); text-align: center;">관리자만 접근 가능합니다.</div>`;
+  if (!isSystemAdmin(me)) {
+    page.innerHTML = `<div style="padding: var(--sp-6); color: var(--text-muted); text-align: center;">시스템 관리자만 접근 가능합니다.</div>`;
     return;
   }
   const active = DEV_TABS.find(t => t.id === _activeDev);
@@ -117,11 +116,9 @@ function renderDevTab(id) {
   if (id === 'matrix')  return renderMatrixTab(el);
   if (id === 'tools')   return renderToolsTab(el);
   if (id === 'stock')   return renderStockTab(el);
-  if (id === 'notice')  return renderNoticeTab(el);
   if (id === 'vehicle') return renderVehicleTab(el);
   if (id === 'color')   return renderColorTab(el);
   if (id === 'upload')  return renderUploadTab(el);
-  if (id === 'sync')    return renderSyncTab(el);
   if (id === 'data')    return renderDataTab(el);
 }
 
@@ -676,7 +673,8 @@ function renderStockTab(el) {
         <span id="stkCount" style="font-size:11px;color:var(--text-muted);">0대</span>
         <button class="btn btn-sm" id="stkAll">전체 선택</button>
         <button class="btn btn-sm" id="stkNone">해제</button>
-        <button class="btn btn-sm is-danger" style="margin-left:auto;" id="stkDel"><i class="ph ph-trash"></i> 선택 삭제</button>
+        <button class="btn btn-sm" style="margin-left:auto;" id="stkBlock" title="선택 매물을 출고불가로 변경 (삭제 X, 상태만)"><i class="ph ph-prohibit"></i> 선택 → 출고불가</button>
+        <button class="btn btn-sm is-danger" id="stkDel"><i class="ph ph-trash"></i> 선택 삭제</button>
       </div>
       <div id="stkList" style="flex:1;overflow-y:auto;border:1px solid var(--border);border-radius:4px;"></div>
     </div>
@@ -723,9 +721,34 @@ function renderStockTab(el) {
   });
   el.querySelector('#stkAll').addEventListener('click', () => { filter().forEach(p => checked.add(p._key || p.product_uid || p.product_code)); render(); });
   el.querySelector('#stkNone').addEventListener('click', () => { checked.clear(); render(); });
+  // 선택 → 출고불가 (삭제 X, 상태값만 변경). 청크 multi-update.
+  el.querySelector('#stkBlock').addEventListener('click', async () => {
+    if (!checked.size) return showToast('선택 없음', 'error');
+    if (!await customConfirm({ message: `${checked.size}대를 출고불가로 변경하시겠습니까? (삭제 아님, 상태만)`, danger: true, okLabel: '출고불가 변경' })) return;
+    const { ref, update } = await import('firebase/database');
+    const { db } = await import('../firebase/config.js');
+    const keys = [...checked];
+    const CHUNK = 400;
+    let n = 0;
+    for (let i = 0; i < keys.length; i += CHUNK) {
+      const slice = {};
+      for (const k of keys.slice(i, i + CHUNK)) {
+        slice[`products/${k}/vehicle_status`] = '출고불가';
+        slice[`products/${k}/status`] = 'unavailable';
+        slice[`products/${k}/status_label`] = '일괄 출고불가';
+        slice[`products/${k}/updated_at`] = Date.now();
+        n++;
+      }
+      await update(ref(db), slice);
+      devLog(`[stock] 출고불가 ${Math.min(i + CHUNK, keys.length)}/${keys.length}`);
+    }
+    showToast(`${n}대 출고불가 처리`);
+    checked.clear();
+    render();
+  });
   el.querySelector('#stkDel').addEventListener('click', async () => {
     if (!checked.size) return showToast('선택 없음', 'error');
-    if (!confirm(`${checked.size}대 삭제 (soft delete)?`)) return;
+    if (!await customConfirm({ message: `${checked.size}대를 삭제하시겠습니까? (soft delete)`, danger: true, okLabel: '삭제' })) return;
     let n = 0;
     for (const k of checked) { try { await softDelete(`products/${k}`); n++; } catch(e) {} }
     devLog(`✓ ${n}대 삭제`);
@@ -734,63 +757,6 @@ function renderStockTab(el) {
     render();
   });
   render();
-}
-
-/* ──────── 3. 공지 CRUD ──────── */
-function renderNoticeTab(el) {
-  el.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <div>
-        <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">새 공지 등록</div>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <input class="input" id="ncTitle" placeholder="제목">
-          <textarea class="input" id="ncContent" rows="3" placeholder="내용" style="height:auto;"></textarea>
-          <input type="file" id="ncImg" accept="image/*" style="font-size:11px;">
-          <button class="btn btn-sm btn-primary" id="ncSave"><i class="ph ph-megaphone"></i> 등록</button>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">공지 목록</div>
-        <div id="ncList"></div>
-      </div>
-    </div>
-  `;
-  const renderList = async () => {
-    const notices = await fetchCollection('home_notices');
-    const list = notices.filter(n => n.status !== 'deleted').sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
-    el.querySelector('#ncList').innerHTML = list.length ? list.map(n => `
-      <div style="padding:8px;border-bottom:1px solid var(--border);">
-        <div style="display:flex;justify-content:space-between;gap:8px;">
-          <div style="flex:1;min-width:0;">
-            <div style="font-weight:500;font-size:12px;">${esc(n.title || '')}</div>
-            <div style="font-size:11px;color:var(--text-muted);white-space:pre-wrap;">${esc(n.content || '')}</div>
-            <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">${new Date(n.created_at || 0).toLocaleString('ko')}</div>
-          </div>
-          <button class="btn btn-xs is-danger" data-del="${esc(n._key)}"><i class="ph ph-x"></i></button>
-        </div>
-      </div>
-    `).join('') : emptyState('공지 없음');
-    el.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
-      if (!confirm('삭제?')) return;
-      await deleteNotice(b.dataset.del);
-      showToast('삭제 완료'); renderList();
-    }));
-  };
-  el.querySelector('#ncSave').addEventListener('click', async () => {
-    const title = el.querySelector('#ncTitle').value.trim();
-    const content = el.querySelector('#ncContent').value.trim();
-    if (!title) return showToast('제목 필수', 'error');
-    let image_url = '';
-    const f = el.querySelector('#ncImg').files[0];
-    if (f) image_url = await uploadNoticeImage(f);
-    await saveNotice({ title, content, image_url, created_by: store.currentUser?.user_code || '' });
-    showToast('등록 완료'); devLog(`✓ 공지: ${title}`);
-    el.querySelector('#ncTitle').value = '';
-    el.querySelector('#ncContent').value = '';
-    el.querySelector('#ncImg').value = '';
-    renderList();
-  });
-  renderList();
 }
 
 /* ──────── 4. 색상 마스터 ──────── */
@@ -905,381 +871,6 @@ function renderUploadTab(el) {
     }
     devLog(`✓ ${saved}대 저장`);
     showToast(`${saved}대 업로드 완료`);
-  });
-}
-
-/* ──────── 6. 시트 동기화 ────────
- *  오토플러스(파트너코드 RP023) 구글시트 → products 일괄 동기화.
- *  v1 freepasserp 의 /api/sync/external-sheet 를 v3 Vercel Serverless 로 포팅 (api/sync/external-sheet.js).
- *  플로우: [가져오기] 서버에서 시트 읽고 products 객체 반환 → 미리보기 → [적용] 클라이언트가 Firebase 일괄 write.
- */
-let _syncFetched = null;
-
-function renderSyncTab(el) {
-  el.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:12px;height:100%;">
-      <div>
-        <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">매물 동기화 — 시트 → Firebase</div>
-        <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">
-          <a href="https://docs.google.com/spreadsheets/d/1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U/edit?gid=284963459" target="_blank" style="color:var(--alert-blue-text);">오플시트 ↗</a>
-          ·
-          <a href="https://docs.google.com/spreadsheets/d/1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg/edit?gid=1422892422" target="_blank" style="color:var(--alert-blue-text);">종합시트 ↗</a>
-          · 상태 5종(즉시출고/출고가능/상품화중/출고협의/출고불가) — 시트값 그 외는 출고불가 자동 처리
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
-          <span style="font-size:11px;color:var(--text-muted);">📄 가져오기:</span>
-          <button class="btn btn-sm btn-primary" id="syncFetchAutoplusBtn" data-source="autoplus"><i class="ph ph-google-drive-logo"></i> 오플시트 (RP023)</button>
-          <button class="btn btn-sm btn-primary" id="syncFetchSupplyBtn" data-source="supply" title="공급코드+정책코드 헤더 있는 탭 자동 탐지"><i class="ph ph-google-drive-logo"></i> 공급시트 (자동탐지)</button>
-          <button class="btn btn-sm" id="syncFetchGeneralBtn" data-source="general" title="종합 탭 — 차고지에서 회사명 자동 추출"><i class="ph ph-google-drive-logo"></i> 종합 탭 (fallback)</button>
-          <span style="margin:0 6px;color:var(--border-strong);">|</span>
-          <button class="btn btn-sm" id="syncApplyBtn" disabled><i class="ph ph-cloud-arrow-up"></i> Firebase 적용</button>
-          <button class="btn btn-sm" id="syncShowRules" title="시트 컬럼 → products 변환 규칙 펼치기"><i class="ph ph-info"></i> 변환 규칙</button>
-          <span id="syncStatusMsg" style="font-size:11px;color:var(--text-muted);align-self:center;margin-left:auto;"></span>
-        </div>
-      </div>
-      <div id="syncRulesBox" style="display:none;border:1px solid var(--border);border-radius:4px;padding:10px;background:var(--bg-stripe);font-size:11px;line-height:1.6;"></div>
-      <div id="syncPreview" style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
-    </div>
-  `;
-  const fetchAutoplusBtn = el.querySelector('#syncFetchAutoplusBtn');
-  const fetchGeneralBtn  = el.querySelector('#syncFetchGeneralBtn');
-  const fetchSupplyBtn   = el.querySelector('#syncFetchSupplyBtn');
-  const fetchBtns = [fetchAutoplusBtn, fetchGeneralBtn, fetchSupplyBtn];
-  const applyBtn = el.querySelector('#syncApplyBtn');
-  const statusMsg = el.querySelector('#syncStatusMsg');
-  const preview = el.querySelector('#syncPreview');
-  const rulesBox = el.querySelector('#syncRulesBox');
-  const rulesBtn = el.querySelector('#syncShowRules');
-
-  rulesBtn.addEventListener('click', () => {
-    if (rulesBox.style.display === 'block') { rulesBox.style.display = 'none'; return; }
-    rulesBox.style.display = 'block';
-    rulesBox.innerHTML = `
-      <div style="font-weight:600;margin-bottom:6px;">📋 시트 → products 변환 규칙</div>
-      <table style="width:100%;border-collapse:collapse;font-size:11px;">
-        <thead><tr style="border-bottom:1px solid var(--border);color:var(--text-sub);">
-          <th style="text-align:left;padding:4px 6px;width:140px;">시트 컬럼</th>
-          <th style="text-align:left;padding:4px 6px;width:160px;">products 필드</th>
-          <th style="text-align:left;padding:4px 6px;">변환</th>
-        </tr></thead>
-        <tbody>
-          <tr><td style="padding:3px 6px;">차량번호</td><td style="padding:3px 6px;font-family:monospace;">car_number</td><td style="padding:3px 6px;color:var(--text-sub);">한글 포함된 값만 통과 (헤더·빈 행 제외)</td></tr>
-          <tr><td style="padding:3px 6px;">(차량번호 셀의 스마트칩)</td><td style="padding:3px 6px;font-family:monospace;">photo_link</td><td style="padding:3px 6px;color:var(--text-sub);">셀의 chipRuns → drive.google.com URL 추출</td></tr>
-          <tr><td style="padding:3px 6px;">차종 (또는 모델명)</td><td style="padding:3px 6px;font-family:monospace;">raw_model_short</td><td style="padding:3px 6px;color:var(--text-sub);">원본 그대로 — 차종 매트릭스에서 maker/model 매핑</td></tr>
-          <tr><td style="padding:3px 6px;">풀네임 / 차명</td><td style="padding:3px 6px;font-family:monospace;">raw_model_full</td><td style="padding:3px 6px;color:var(--text-sub);">원본 그대로</td></tr>
-          <tr><td style="padding:3px 6px;">색상</td><td style="padding:3px 6px;font-family:monospace;">ext_color</td><td style="padding:3px 6px;color:var(--text-sub);">원본 그대로</td></tr>
-          <tr><td style="padding:3px 6px;">연료</td><td style="padding:3px 6px;font-family:monospace;">fuel_type</td><td style="padding:3px 6px;color:var(--text-sub);">원본 그대로</td></tr>
-          <tr><td style="padding:3px 6px;">주행거리</td><td style="padding:3px 6px;font-family:monospace;">mileage</td><td style="padding:3px 6px;color:var(--text-sub);">숫자만 추출 (콤마/단위 제거)</td></tr>
-          <tr><td style="padding:3px 6px;">최초등록일</td><td style="padding:3px 6px;font-family:monospace;">first_registration_date<br>year</td><td style="padding:3px 6px;color:var(--text-sub);">날짜 그대로 + 앞 4자리 → "YY년식"</td></tr>
-          <tr><td style="padding:3px 6px;">현위치</td><td style="padding:3px 6px;font-family:monospace;">location</td><td style="padding:3px 6px;color:var(--text-sub);">원본 그대로</td></tr>
-          <tr><td style="padding:3px 6px;" rowspan="3">판매상태</td><td style="padding:3px 6px;font-family:monospace;">status</td><td style="padding:3px 6px;color:var(--text-sub);">판매중·할인판매 → <code>available</code> / 그 외 → <code>unavailable</code></td></tr>
-          <tr><td style="padding:3px 6px;font-family:monospace;">vehicle_status</td><td style="padding:3px 6px;color:var(--text-sub);">판매중→<code>출고가능</code>, 계약중→<code>계약완료</code>, 계약요청→<code>계약대기</code>, 보류·매각·완료·수리→<code>출고불가</code></td></tr>
-          <tr><td style="padding:3px 6px;font-family:monospace;">status_label</td><td style="padding:3px 6px;color:var(--text-sub);">시트 원문 상태 그대로 보존</td></tr>
-          <tr><td style="padding:3px 6px;">옵션</td><td style="padding:3px 6px;font-family:monospace;">options</td><td style="padding:3px 6px;color:var(--text-sub);">원본 그대로 (텍스트)</td></tr>
-          <tr><td style="padding:3px 6px;">비고</td><td style="padding:3px 6px;font-family:monospace;">partner_memo</td><td style="padding:3px 6px;color:var(--text-sub);">원본 그대로</td></tr>
-          <tr><td style="padding:3px 6px;" rowspan="3">12·24·36개월 임대료 (3만km)</td><td style="padding:3px 6px;font-family:monospace;">price.12.rent<br>price.24.rent<br>price.36.rent</td><td style="padding:3px 6px;color:var(--text-sub);">숫자만 추출 (월 임대료)</td></tr>
-          <tr><td style="padding:3px 6px;font-family:monospace;">price.{N}.deposit</td><td style="padding:3px 6px;color:var(--text-sub);">국산 → rent × <b>2</b><br>수입 → rent × <b>3</b><br>(차종에 BMW·벤츠·아우디 등 키워드 있으면 수입 판정)</td></tr>
-          <tr><td style="padding:3px 6px;font-family:monospace;">product_type</td><td style="padding:3px 6px;color:var(--text-sub);">고정값 <code>중고구독</code></td></tr>
-        </tbody>
-      </table>
-      <div style="margin-top:8px;font-weight:600;">🆔 식별자</div>
-      <div style="color:var(--text-sub);margin-top:2px;">
-        <code>product_uid</code> = <code>EXT_</code> + md5(<code>RP023_차량번호</code>) 의 첫 12자리 — 차량번호 기준 고정. 차량번호 같으면 매번 같은 uid 생성 → 멱등 동기화.<br>
-        <code>product_code</code> = <code>RP023_차량번호</code><br>
-        <code>provider_company_code</code> = <code>RP023</code> · <code>partner_code</code> = <code>RP023</code> · <code>source</code> = <code>external_sheet</code> · <code>is_active</code> = <code>true</code>
-      </div>
-      <div style="margin-top:8px;font-weight:600;">🔄 적용 규칙</div>
-      <div style="color:var(--text-sub);margin-top:2px;">
-        <b>신규 차량</b> → 풀세트로 등록 (위 모든 필드 + 빈 maker/model/sub_model/trim_name)<br>
-        <b>기존 차량</b> → 가격·상태·주행·메모·위치·사진만 갱신 (수기 보정한 maker/model 등은 보존)<br>
-        <b>시트에서 빠진 차량</b> → <code>_deleted: true</code> soft-delete (RP023 + external_sheet 인 것만 대상)
-      </div>
-    `;
-  });
-
-  const onFetchClick = async (e) => {
-    const source = e.currentTarget.dataset.source;
-    fetchBtns.forEach(b => b.disabled = true);
-    applyBtn.disabled = true;
-    _syncFetched = null;
-    preview.style.display = 'none';
-    const sourceLabel = source === 'autoplus' ? '오플시트' : source === 'supply' ? '공급시트' : '종합 탭';
-    statusMsg.textContent = `${sourceLabel} 읽는 중...`;
-    devLog(`[sync] ${source} 시트 fetch 시작`);
-    try {
-      const res = await fetch('/api/sync/external-sheet', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source }),
-      });
-      const data = await res.json();
-      if (!data.ok) throw new Error(data.message || '시트 읽기 실패');
-
-      // autoplus 만 catalog 기반 자동 분류 (raw_model_short/full 컬럼 있음).
-      //   v3 source of truth = public/data/car-master/_index.json (catalog).
-      //   vehicle_master Firebase 컬렉션은 더 이상 단독 사용 X — catalog 우선 + vehicle_master 보조.
-      // general 은 시트 자체에 maker/model/sub_model/trim 컬럼 그대로 담고 있어 매칭 불필요.
-      let matched = 0;
-      const items = Object.values(data.products || {});
-      if (data.schema === 'autoplus') {
-        const { buildVehicleIndex, matchVehicle } = await import('../core/vehicle-matcher.js');
-        const { loadIndex } = await import('../core/vehicle-matrix.js');
-        const catalogIdx = await loadIndex();
-        // catalog → carModel 호환 (maker / model=model_root / sub_model=title-maker접두사).
-        //   title="현대 쏘나타 DN8" → sub_model="쏘나타 DN8" (raw_model_full 매칭 성공률 위함).
-        //   "더 뉴 / 올 뉴" 같은 페리 접두사는 유지 (페리/pre 구분에 필요).
-        // catalog title → sub_model 변환:
-        //   1) maker 접두사 제거 ("현대 쏘나타 DN8" → "쏘나타 DN8")
-        //   2) 일반 marketing 접두사 제거 ("더 뉴 / 올 뉴 / 디 올 뉴 / 신형 / 뉴")
-        //      → "더 뉴 스포티지 NQ5" → "스포티지 NQ5" (raw_model_full 매칭률 향상)
-        //   "더 볼드", "디 엣지" 같은 특수 facelift designation 은 유지
-        const MARKETING_PREFIX = /^(?:디\s*올\s*뉴|올\s*뉴|더\s*뉴|신형|뉴|올뉴|더뉴|디올뉴)\s+/;
-        const stripTitle = (title, maker) => {
-          let t = String(title || '').trim();
-          if (maker && t.startsWith(maker + ' ')) t = t.slice(maker.length + 1).trim();
-          t = t.replace(MARKETING_PREFIX, '');
-          return t;
-        };
-        const catalogModels = Object.values(catalogIdx || {}).map(c => ({
-          maker: c.maker,
-          model: c.model_root,
-          sub_model: stripTitle(c.title, c.maker),
-          year_start: c.year_start || '',
-          year_end: c.year_end || '',
-          title: c.title || '',
-          status: c.status === 'archived' ? 'deleted' : 'active',
-        })).filter(m => m.maker && m.model);
-        // 안전 fallback — vehicle_master 도 있으면 합침
-        const merged = [...catalogModels, ...((store.carModels || []).filter(m => m.maker && m.model))];
-        const vmIndex = buildVehicleIndex(merged);
-        devLog(`[sync] catalog 인덱스: ${catalogModels.length}개 + vehicle_master ${(store.carModels || []).length}개`);
-        for (const p of items) {
-          const m = matchVehicle(p.raw_model_short || '', p.raw_model_full || '', p.first_registration_date || '', vmIndex);
-          if (m.maker)     p.maker = m.maker;
-          if (m.model)     p.model = m.model;
-          if (m.sub_model) p.sub_model = m.sub_model;
-          if (m.trim_name) p.trim_name = m.trim_name;
-          if (m.maker && m.model) matched++;
-        }
-      } else {
-        for (const p of items) if (p.maker && p.model) matched++;
-      }
-      _syncFetched = data;
-      const unmatched = items.length - matched;
-      devLog(`[sync] ✓ ${data.synced}건 · 스킵 ${data.skipped}건 · 자동분류 ${matched}/${items.length}`);
-      // 공급시트 자동탐지 — 처리한 탭 목록 표시
-      if (data.schema === 'auto-supply' && Array.isArray(data.tabs_scanned)) {
-        const tabSummary = data.tabs_scanned.map(t => `${t.tab}(${t.synced})`).join(', ');
-        devLog(`[sync] 탐지 탭: ${tabSummary}`);
-      }
-      const schemaLabel = data.schema === 'auto-supply' ? '공급시트' : data.schema === 'general' ? '종합 탭' : '오플시트';
-      statusMsg.textContent = `${schemaLabel} — ${items.length}건 · 자동분류 ${matched} · 미매칭 ${unmatched} — 확인 후 [Firebase 적용]`;
-
-      // 미리보기 — 좌(시트 추출 raw) ↔ 우(상품찾기에 들어갈 컬럼 그대로) 가로스크롤
-      //  우측은 search 페이지의 PRODUCT_COLS 순서 그대로 — 빈 셀(차종 매트릭스 매핑 필요)은 회색 ❓ 표시
-      preview.style.display = 'block';
-      const fmt = n => n ? Number(n).toLocaleString('ko-KR') : '';
-      const fmtMan = fmtMoneyMan;   // 공용 헬퍼 alias (지역 호환)
-      const td = (html, opts = {}) => `<td style="padding:4px 6px;${opts.r ? 'text-align:right;font-variant-numeric:tabular-nums;' : ''}${opts.bg ? `background:${opts.bg};` : ''}${opts.bold ? 'font-weight:500;' : ''}${opts.mono ? 'font-family:monospace;font-size:10px;' : ''}${opts.nowrap ? 'white-space:nowrap;' : ''}">${html}</td>`;
-      const empty = '<span style="color:var(--text-muted);">❓</span>';
-      const e = v => v == null || v === '' ? empty : esc(String(v));
-      // 검색 페이지에 들어갈 값 (변환 후) 셀 — 파란 배경
-      const map = (v) => td(e(v), { bg: 'var(--alert-blue-bg)', bold: !!v });
-      // 시트원본 셀 — 주황 배경
-      const raw = (v) => td(e(v), { bg: 'var(--alert-orange-bg)' });
-      // 차종 매트릭스에서 매핑할 칸 — 회색 placeholder (값 없을 때)
-      const todoMap = '<td style="padding:4px 6px;background:var(--bg-stripe);color:var(--text-muted);font-style:italic;font-size:10px;">차종 매트릭스</td>';
-      // 자동 분류된 칸 — 초록 배경 (vehicle_master 매칭 성공) / 빈값이면 todoMap
-      const autoMap = (v) => v ? `<td style="padding:4px 6px;background:var(--alert-green-bg);color:var(--alert-green-text);font-weight:500;">${esc(String(v))}</td>` : todoMap;
-
-      preview.innerHTML = `
-        <table style="font-size:11px;border-collapse:collapse;white-space:nowrap;">
-          <thead style="position:sticky;top:0;z-index:2;">
-            <!-- 그룹 헤더 -->
-            <tr>
-              <th colspan="7" style="padding:6px;background:var(--alert-orange-bg);color:var(--alert-orange-text);border-right:3px solid var(--border-strong);">📄 시트 추출 (오토플러스 원본)</th>
-              <th colspan="22" style="padding:6px;background:var(--alert-blue-bg);color:var(--alert-blue-text);">🗂 상품찾기 컬럼 (반영 후)</th>
-            </tr>
-            <!-- 컬럼 헤더 -->
-            <tr style="background:var(--bg-header);font-weight:500;color:var(--text-sub);">
-              <!-- 시트 원본 -->
-              <th style="padding:4px 6px;text-align:left;">차량번호</th>
-              <th style="padding:4px 6px;text-align:left;">차종</th>
-              <th style="padding:4px 6px;text-align:left;">풀네임</th>
-              <th style="padding:4px 6px;text-align:left;">상태원문</th>
-              <th style="padding:4px 6px;text-align:left;">색상</th>
-              <th style="padding:4px 6px;text-align:left;">연료</th>
-              <th style="padding:4px 6px;text-align:left;border-right:3px solid var(--border-strong);">12·24·36개월</th>
-              <!-- 우: 상품찾기 PRODUCT_COLS 순서 그대로 -->
-              <th style="padding:4px 6px;text-align:left;">차량상태</th>
-              <th style="padding:4px 6px;text-align:left;">신차/중고</th>
-              <th style="padding:4px 6px;text-align:left;">렌트/구독</th>
-              <th style="padding:4px 6px;text-align:left;">차량번호</th>
-              <th style="padding:4px 6px;text-align:left;">제조사</th>
-              <th style="padding:4px 6px;text-align:left;">모델</th>
-              <th style="padding:4px 6px;text-align:left;">세부모델</th>
-              <th style="padding:4px 6px;text-align:left;">연식</th>
-              <th style="padding:4px 6px;text-align:right;">주행거리</th>
-              <th style="padding:4px 6px;text-align:left;">연료</th>
-              <th style="padding:4px 6px;text-align:left;">외장색</th>
-              <th style="padding:4px 6px;text-align:left;">내장색</th>
-              <th style="padding:4px 6px;text-align:center;">사진</th>
-              <th style="padding:4px 6px;text-align:right;">12개월</th>
-              <th style="padding:4px 6px;text-align:right;">12보증</th>
-              <th style="padding:4px 6px;text-align:right;">24개월</th>
-              <th style="padding:4px 6px;text-align:right;">24보증</th>
-              <th style="padding:4px 6px;text-align:right;">36개월</th>
-              <th style="padding:4px 6px;text-align:right;">36보증</th>
-              <th style="padding:4px 6px;text-align:left;">세부트림</th>
-              <th style="padding:4px 6px;text-align:left;">옵션</th>
-              <th style="padding:4px 6px;text-align:left;">공급사</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${items.map(p => {
-              const r12 = p.price?.['12']?.rent, r24 = p.price?.['24']?.rent, r36 = p.price?.['36']?.rent;
-              const d12 = p.price?.['12']?.deposit, d24 = p.price?.['24']?.deposit, d36 = p.price?.['36']?.deposit;
-              const origin = /^신차/.test(p.product_type || '') ? '신차' : (/^중고/.test(p.product_type || '') ? '중고' : '');
-              const way = /구독$/.test(p.product_type || '') ? '구독' : (/렌트$/.test(p.product_type || '') ? '렌트' : '');
-              return `<tr style="border-bottom:1px solid var(--border);">
-                <!-- 시트 원본 7칸 -->
-                ${raw(p.car_number)}
-                ${raw(p.raw_model_short)}
-                <td style="padding:4px 6px;background:var(--alert-orange-bg);max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.raw_model_full)}">${e(p.raw_model_full)}</td>
-                ${raw(p.status_label)}
-                ${raw(p.ext_color)}
-                ${raw(p.fuel_type)}
-                <td style="padding:4px 6px;background:var(--alert-orange-bg);text-align:right;font-variant-numeric:tabular-nums;border-right:3px solid var(--border-strong);">${[r12, r24, r36].map(fmt).filter(Boolean).join(' / ') || '-'}</td>
-                <!-- 상품찾기 컬럼 22칸 -->
-                ${map(p.vehicle_status)}
-                ${map(origin)}
-                ${map(way)}
-                ${map(p.car_number)}
-                ${autoMap(p.maker)}
-                ${autoMap(p.model)}
-                ${autoMap(p.sub_model)}
-                ${map(p.year)}
-                ${td(p.mileage ? p.mileage.toLocaleString('ko-KR') : empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${map(p.fuel_type)}
-                ${map(p.ext_color)}
-                ${todoMap}<!-- 내장색은 시트에 없음 — 항상 매트릭스 매핑 필요 -->
-                <td style="padding:4px 6px;text-align:center;background:var(--alert-blue-bg);">${p.photo_link ? `<a href="${esc(p.photo_link)}" target="_blank">📷</a>` : empty}</td>
-                ${td(fmtMan(r12) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(d12) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(r24) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(d24) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(r36) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(d36) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${autoMap(p.trim_name)}
-                <td style="padding:4px 6px;background:var(--alert-blue-bg);max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.options)}">${e(p.options)}</td>
-                ${map(p.partner_code)}
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-      `;
-      applyBtn.disabled = false;
-    } catch (e) {
-      devLog(`[sync] ✗ ${e.message}`);
-      statusMsg.textContent = `오류: ${e.message}`;
-      showToast(e.message || '시트 읽기 실패', 'error');
-    } finally {
-      fetchBtns.forEach(b => b.disabled = false);
-    }
-  };
-  fetchAutoplusBtn.addEventListener('click', onFetchClick);
-  fetchGeneralBtn.addEventListener('click', onFetchClick);
-  fetchSupplyBtn.addEventListener('click', onFetchClick);
-
-  applyBtn.addEventListener('click', async () => {
-    if (!_syncFetched) return;
-    applyBtn.disabled = true;
-    fetchBtns.forEach(b => b.disabled = true);
-    statusMsg.textContent = 'Firebase 동기화 중...';
-    try {
-      const products = _syncFetched.products || {};
-      const incomingUids = new Set(Object.keys(products));
-      // 기존 external_sheet 매물 조회 — autoplus 면 RP023 단일, general 이면 schema 일치 전체
-      const schema = _syncFetched.schema || 'autoplus';
-      const existing = (store.products || []).filter(p => {
-        if (p.source !== 'external_sheet' || p._deleted) return false;
-        if (schema === 'autoplus') return p.provider_company_code === _syncFetched.provider_code;
-        if (schema === 'general')  return p.source_schema === 'general';
-        if (schema === 'auto-supply') {
-          // 공급시트 동기화 — 같은 schema 의 기존 매물 + 시트에 등장한 partner_code 들에 한함
-          if (p.source_schema !== 'general') return false;
-          const tabPartners = new Set(Object.values(_syncFetched.products || {}).map(x => x.partner_code).filter(Boolean));
-          return tabPartners.has(p.partner_code);
-        }
-        return false;
-      });
-      const { ref, update } = await import('firebase/database');
-      const { db } = await import('../firebase/config.js');
-      const updates = {};
-      let added = 0, updated = 0;
-      for (const [uid, p] of Object.entries(products)) {
-        const found = existing.find(x => x.product_uid === uid || x._key === uid);
-        if (found) {
-          // 기존 — 가격·상태·메모는 항상 업데이트
-          updates[`products/${found._key}/price`] = p.price;
-          updates[`products/${found._key}/vehicle_status`] = p.vehicle_status;
-          updates[`products/${found._key}/status`] = p.status;
-          updates[`products/${found._key}/status_label`] = p.status_label;
-          updates[`products/${found._key}/mileage`] = p.mileage;
-          updates[`products/${found._key}/options`] = p.options;
-          updates[`products/${found._key}/partner_memo`] = p.partner_memo;
-          updates[`products/${found._key}/location`] = p.location;
-          updates[`products/${found._key}/photo_link`] = p.photo_link;
-          updates[`products/${found._key}/updated_at`] = p.updated_at;
-          // 차종 분류 (maker/model/sub_model/trim) — 비어있을 때만 자동 채움 (수기 보정 보존)
-          if (!found.maker     && p.maker)     updates[`products/${found._key}/maker`]     = p.maker;
-          if (!found.model     && p.model)     updates[`products/${found._key}/model`]     = p.model;
-          if (!found.sub_model && p.sub_model) updates[`products/${found._key}/sub_model`] = p.sub_model;
-          if (!found.trim_name && p.trim_name) updates[`products/${found._key}/trim_name`] = p.trim_name;
-          // 시트의 정책코드/공급코드 — 시트값 명시되면 항상 우선 (사용자 마스터 데이터)
-          if (p.policy_code)            updates[`products/${found._key}/policy_code`]            = p.policy_code;
-          if (p.provider_company_code)  updates[`products/${found._key}/provider_company_code`]  = p.provider_company_code;
-          if (p.partner_code)           updates[`products/${found._key}/partner_code`]           = p.partner_code;
-          updated++;
-        } else {
-          updates[`products/${uid}`] = p;
-          added++;
-        }
-      }
-      // 시트에서 빠진 — 삭제 X, '출고불가' 로 마킹 (재등장 시 시트값 따라 자동 복원).
-      // status_label 에 사유 남겨서 사용자가 사유 인지 가능.
-      let droppedToBlocked = 0;
-      for (const x of existing) {
-        if (!incomingUids.has(x.product_uid) && !incomingUids.has(x._key)) {
-          updates[`products/${x._key}/vehicle_status`] = '출고불가';
-          updates[`products/${x._key}/status`] = 'unavailable';
-          updates[`products/${x._key}/status_label`] = '시트에서 제거됨';
-          updates[`products/${x._key}/updated_at`] = Date.now();
-          droppedToBlocked++;
-        }
-      }
-      const dropped = droppedToBlocked;
-      // 청크 단위 multi-update (Firebase 한 번에 너무 많은 키 쏘면 거부)
-      const keys = Object.keys(updates);
-      const CHUNK = 400;
-      for (let i = 0; i < keys.length; i += CHUNK) {
-        const slice = {};
-        for (const k of keys.slice(i, i + CHUNK)) slice[k] = updates[k];
-        await update(ref(db), slice);
-        devLog(`[sync] 배치 ${Math.min(i + CHUNK, keys.length)}/${keys.length}`);
-      }
-      devLog(`[sync] ✓ 적용 완료 — 신규 ${added} · 업데이트 ${updated} · 출고불가 ${dropped}`);
-      statusMsg.textContent = `완료 — 신규 ${added}, 업데이트 ${updated}, 출고불가 ${dropped}`;
-      showToast(`동기화 완료 (신규 ${added} · 업데이트 ${updated} · 출고불가 ${dropped})`);
-      _syncFetched = null;
-    } catch (e) {
-      devLog(`[sync] ✗ ${e.message}`);
-      statusMsg.textContent = `오류: ${e.message}`;
-      showToast(`동기화 실패: ${e.message}`, 'error');
-      applyBtn.disabled = false;
-    } finally {
-      fetchBtns.forEach(b => b.disabled = false);
-    }
   });
 }
 
@@ -1460,28 +1051,49 @@ function renderVehicleDetail(sel) {
   const trims = Array.isArray(sel.trims) ? sel.trims : [];
   const cnt = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted' && p.catalog_id === sel.id).length;
   const yr = _vmYearLabel(sel);
+  const subModel = sel.maker && (sel.title || '').startsWith(sel.maker + ' ')
+    ? sel.title.slice(sel.maker.length + 1).trim() : (sel.title || sel.id);
+
+  // 5단계 분해 — 모델구분(연료·배기량·구동·인승) → 트림. parseTrim 표준 순서 적용.
+  const variantMap = new Map();
+  for (const raw of trims) {
+    const { variant, trim } = parseTrim(raw);
+    const k = variant || '(미상)';
+    if (!variantMap.has(k)) variantMap.set(k, []);
+    if (!variantMap.get(k).includes(trim)) variantMap.get(k).push(trim);
+  }
+  const variants = [...variantMap];
 
   const rowKV = (label, val) => val ? `<div style="display:flex;gap:8px;margin-bottom:4px;font-size:12px;">
-    <span style="width:90px;color:var(--text-muted);">${esc(label)}</span>
-    <span>${esc(val)}</span>
+    <span style="width:64px;color:var(--text-muted);flex-shrink:0;">${esc(label)}</span>
+    <span style="font-weight:500;">${esc(val)}</span>
   </div>` : '';
 
   return `
     <div style="margin-bottom:10px;font-weight:600;font-size:13px;">${esc(sel.title || sel.id)}</div>
-    <div>
-      ${rowKV('catalog_id', sel.id)}
-      ${rowKV('제조사', sel.maker)}
-      ${rowKV('모델 (root)', sel.model_root)}
-      ${rowKV('생산', yr || (sel.year_start ? `${sel.year_start} ~ ${sel.year_end || '-'}` : ''))}
-      ${rowKV('source', sel.source?.manufacturer || '')}
-      ${cnt ? `<div style="margin-top:10px;padding:6px 10px;background:var(--bg-stripe);border-radius:4px;font-size:11px;color:var(--text-sub);">📦 등록 매물 ${cnt}대</div>` : ''}
-      ${trims.length ? `
-        <div style="margin-top:12px;font-size:11px;font-weight:600;color:var(--text-sub);">트림 (${trims.length})</div>
-        <div style="margin-top:4px;font-size:11px;">${trims.map(t => `<span style="display:inline-block;padding:1px 6px;margin:2px;background:var(--bg-stripe);border-radius:3px;">${esc(t)}</span>`).join('')}</div>
-      ` : '<div style="margin-top:12px;color:var(--text-muted);font-size:11px;">트림 데이터 없음</div>'}
-      <div style="margin-top:14px;padding:8px;background:var(--bg-stripe);border-radius:4px;font-size:10px;color:var(--text-muted);font-family:monospace;">
-        편집: <code>public/data/car-master/${esc(sel.id)}.json</code>
+    <!-- 5단계 -->
+    <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;background-color:var(--alert-blue-bg);border:1px solid var(--alert-blue-border);border-radius:4px;margin-bottom:10px;">
+      ${rowKV('① 제조사', sel.maker)}
+      ${rowKV('② 모델', sel.model_root)}
+      ${rowKV('③ 세부모델', subModel)}
+      <div style="font-size:11px;color:var(--text-weak);margin-top:2px;">④ 모델구분 · ⑤ 트림 ↓</div>
+    </div>
+    ${cnt ? `<div style="margin-bottom:10px;padding:6px 10px;background-color:var(--bg-stripe);border-radius:4px;font-size:11px;color:var(--text-sub);">📦 등록 매물 ${cnt}대</div>` : ''}
+    ${variants.length ? `
+      <div style="font-size:11px;font-weight:600;color:var(--text-sub);margin-bottom:4px;">모델구분 ${variants.length} · 트림 ${trims.length}</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        ${variants.map(([variant, ts]) => `
+          <div style="border:1px solid var(--border);border-radius:4px;overflow:hidden;">
+            <div style="padding:4px 8px;background-color:var(--bg-header);font-size:12px;font-weight:600;color:var(--text-main);">④ ${esc(variant)}</div>
+            <div style="padding:5px 8px;font-size:11px;">
+              ${ts.map(t => `<span style="display:inline-block;padding:1px 7px;margin:2px;background-color:var(--bg-stripe);border:1px solid var(--border-soft);border-radius:3px;">${esc(t)}</span>`).join('')}
+            </div>
+          </div>
+        `).join('')}
       </div>
+    ` : '<div style="color:var(--text-muted);font-size:11px;">트림 데이터 없음</div>'}
+    <div style="margin-top:14px;padding:8px;background-color:var(--bg-stripe);border-radius:4px;font-size:10px;color:var(--text-muted);font-family:monospace;">
+      편집: <code>public/data/car-master/${esc(sel.id)}.json</code>
     </div>
   `;
 }

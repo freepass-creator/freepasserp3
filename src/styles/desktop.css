@@ -912,8 +912,35 @@
   body.role-provider    .pt-sb a[data-page="settle"],
   body.role-provider    .pt-sb a[data-page="partners"],
   body.role-provider    .pt-sb a[data-page="users"] { display: none; }
-  /* 개발도구는 admin 만 */
-  body:not(.role-admin) .pt-sb-bottom-dev { display: none; }
+  /* 관리자 페이지(외부상품 동기화 / 공지)는 admin 만 */
+  body:not(.role-admin) .pt-sb a[data-page="admin"] { display: none; }
+  /* 개발도구는 시스템관리자(이메일 화이트리스트)만 — is-sysadmin 클래스는 app.js hydrateUser 가 토글 */
+  body:not(.is-sysadmin) .pt-sb-bottom-dev { display: none; }
+
+  /* ── 관리자 페이지 · 외부 상품 동기화 (정형화 레이아웃) ── */
+  #aoContent .ao-banner { display: flex; align-items: flex-start; gap: 8px; padding: 10px 12px;
+    border: 1px solid var(--alert-blue-border); border-radius: 4px; background-color: var(--alert-blue-bg);
+    font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+  #aoContent .ao-banner i { font-size: 16px; color: var(--alert-blue-text); margin-top: 1px; }
+  #aoContent .ao-banner b { color: var(--text-main); }
+  #aoContent .ao-banner-sub { color: var(--text-weak); }
+  #aoContent .ao-step { display: flex; flex-direction: column; gap: 8px; }
+  #aoContent .ao-step-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-main); }
+  #aoContent .ao-step-no { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px;
+    border-radius: 999px; background-color: var(--text-main); color: var(--text-inverse); font-size: 11px; font-weight: 700; }
+  #aoContent .ao-sources { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  #aoContent .ao-source { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; text-align: left;
+    padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; background-color: #fff; cursor: pointer;
+    transition: border-color .12s, background-color .12s; }
+  #aoContent .ao-source:hover:not(:disabled) { border-color: var(--alert-blue-text); background-color: var(--alert-blue-bg); }
+  #aoContent .ao-source:disabled { opacity: .5; cursor: default; }
+  #aoContent .ao-source-name { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-main); }
+  #aoContent .ao-source-desc { font-size: 11px; color: var(--text-muted); }
+  #aoContent .ao-links { font-size: 11px; color: var(--text-muted); }
+  #aoContent .ao-links a { color: var(--text-link); }
+  #aoContent .ao-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  #aoContent .ao-status { font-size: 11px; color: var(--text-sub); margin-left: auto; }
+  #aoContent .ao-hint { font-size: 11px; color: var(--text-weak); line-height: 1.5; }
   /* 관리자 문의 — 모든 역할 노출. admin 은 받은 문의 목록 보기 / 비admin 은 새 문의 시작 */
 
   /* 관리자 소통 — 전체 화면 페이지 (workspace 와 분리, 채팅 전용).
