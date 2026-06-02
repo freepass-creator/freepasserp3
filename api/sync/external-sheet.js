@@ -17,6 +17,8 @@ export const SHEET_CONFIGS = {
   autoplus: {
     sheet_id: '1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U',
     tab_name: '판매차량리스트',           // 26-05-08 기준 새 탭 (구 '판매차량리스트(수수료 100)' 폐기)
+    // 추가 탭 — 특가 프로모션(전기차 등). 같은 양식. 같은 차량번호면 특가 가격이 본 리스트를 덮어씀(뒤에 처리)
+    extra_tabs: ['★★★  전기차(EV6,니로EV) 특가 프로모션 ★★★'],
     provider_code: 'RP023',
     label: '오토플러스 (RP023)',
     schema: 'autoplus',
@@ -122,7 +124,7 @@ function normalizeVehicleStatus(raw) {
   if (s === '즉시출고') return '즉시출고';
   if (s === '상품화중') return '상품화중';
   if (s === '출고협의') return '출고협의';
-  if (s === '출고가능' || s === '판매중' || s === '할인판매') return '출고가능';
+  if (s === '출고가능' || /판매중|할인판매/.test(s)) return '출고가능';   // '추가 할인판매' 등 포함
   // 3) 그 외 (출고가능(정비중) 등 조건부·비표준·빈값) → 협의
   return '출고협의';
 }
@@ -535,37 +537,38 @@ export async function syncFromSheet(source) {
     };
   }
 
-  // ── 단일 탭 동기화 (autoplus / general) ── 셀값+사진칩+숨김 1회 호출
-  const { rows, photoLinkMap, hiddenRows } = await loadSheetGrid(config.sheet_id, config.tab_name);
-  if (!rows.length) {
-    return { ok: false, status: 400, message: '시트 데이터 없음' };
-  }
-
-  let headerIdx = -1, headers = [];
-  for (let i = 0; i < rows.length; i++) {
-    const rowStr = rows[i].map(c => String(c ?? '').trim());
-    if (rowStr.includes('차량번호')) { headerIdx = i; headers = rowStr; break; }
-  }
-  if (headerIdx < 0) {
-    return { ok: false, status: 400, message: '헤더 행을 찾을 수 없음' };
-  }
-
-  for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
-    const absRow = headerIdx + 1 + off;
-    const row = rows[absRow] || [];
-    let p = null;
-    if (config.schema === 'autoplus') {
-      p = parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
-    } else if (config.schema === 'general') {
-      p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
+  // ── 단일/멀티 탭 동기화 (autoplus / general) ── 본 탭 + extra_tabs(특가 등). 탭당 1회 호출.
+  //  뒤 탭(특가)이 같은 차량번호(uid)면 앞 탭을 덮어씀 → 특가 가격 우선.
+  const tabList = [config.tab_name, ...(config.extra_tabs || [])];
+  let anyRows = false;
+  for (const tabName of tabList) {
+    const { rows, photoLinkMap, hiddenRows } = await loadSheetGrid(config.sheet_id, tabName);
+    if (!rows.length) continue;
+    let headerIdx = -1, headers = [];
+    for (let i = 0; i < rows.length; i++) {
+      const rowStr = rows[i].map(c => String(c ?? '').trim());
+      if (rowStr.includes('차량번호')) { headerIdx = i; headers = rowStr; break; }
     }
-    if (!p) { skipped++; continue; }
-    // 숨긴 행 → 출고불가
-    if (hiddenRows.has(absRow)) { p.vehicle_status = '출고불가'; p.status = 'unavailable'; p.status_label = '시트 숨김'; }
-    // 출고불가(+숨김)는 import 안 함 — 출고가능만 가져옴 (기존 출고불가는 적용 시 dropped 로직이 처리)
-    if (p.vehicle_status === '출고불가') { skipped++; continue; }
-    products[p._key] = p;
-    synced++;
+    if (headerIdx < 0) continue;
+    anyRows = true;
+    for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
+      const absRow = headerIdx + 1 + off;
+      const row = rows[absRow] || [];
+      let p = null;
+      if (config.schema === 'autoplus') {
+        p = parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
+      } else if (config.schema === 'general') {
+        p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
+      }
+      if (!p) { skipped++; continue; }
+      if (hiddenRows.has(absRow)) { p.vehicle_status = '출고불가'; p.status = 'unavailable'; p.status_label = '시트 숨김'; }
+      if (p.vehicle_status === '출고불가') { skipped++; continue; }   // 출고가능만 import
+      products[p._key] = p;
+      synced++;
+    }
+  }
+  if (!anyRows) {
+    return { ok: false, status: 400, message: '시트 데이터/헤더 없음' };
   }
 
   return {
