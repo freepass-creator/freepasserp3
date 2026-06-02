@@ -557,7 +557,7 @@ function renderSyncTab(el) {
           updates[`products/${found._key}/options`] = p.options;
           updates[`products/${found._key}/partner_memo`] = p.partner_memo;
           updates[`products/${found._key}/location`] = p.location;
-          updates[`products/${found._key}/photo_link`] = p.photo_link;
+          if (p.photo_link) updates[`products/${found._key}/photo_link`] = p.photo_link;   // 시트에 사진 링크 있을 때만 (빈값으로 기존 사진 덮어쓰기 방지)
           updates[`products/${found._key}/updated_at`] = p.updated_at;
           // 차종 분류 (maker/model/sub_model/trim) — 비어있을 때만 자동 채움 (수기 보정 보존)
           if (!found.maker     && p.maker)     updates[`products/${found._key}/maker`]     = p.maker;

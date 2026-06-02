@@ -184,29 +184,41 @@ async function loadHiddenRows(sheetId, tabName) {
   return hidden;
 }
 
-/* 탭 그리드 로더 — 셀값(/values/) + 사진칩+숨김행(grid 1회) = 탭당 2호출.
+/* 사진 호스트 — 서버 스크래핑/프록시가 처리 가능한 곳 (drive 폴더 / moderentcar / autoplus) */
+const PHOTO_HOST_RE = /drive\.google\.com|moderentcar\.co\.kr|autoplus\.co\.kr/;
+/* 셀에서 사진 링크 추출 — 차량번호 셀의 하이퍼링크(아이카=moderentcar) 또는 스마트칩(오플=drive 폴더).
+ *  drive 는 ?query 제거, moderentcar 등은 query 유지(?v= 차량 식별자). 없으면 ''. */
+function extractCellPhotoUrl(cell) {
+  if (!cell) return '';
+  const hl = cell.hyperlink || '';
+  if (hl && PHOTO_HOST_RE.test(hl)) return hl.includes('drive.google.com') ? hl.split('?')[0] : hl;
+  for (const chip of (cell.chipRuns || [])) {
+    const uri = chip?.chip?.richLinkProperties?.uri || '';
+    if (uri && PHOTO_HOST_RE.test(uri)) return uri.includes('drive.google.com') ? uri.split('?')[0] : uri;
+  }
+  return '';
+}
+
+/* 탭 그리드 로더 — 셀값(/values/) + 사진(칩/하이퍼링크)+숨김행(grid 1회) = 탭당 2호출.
  *  (구버전 3호출 → 2호출. grid 에서 formattedValue 를 빼야 rowData 가 전 행 반환됨 — API 특성)
  * 반환: { rows: string[][], photoLinkMap: {rowIdx:url}, hiddenRows: Set<rowIdx> } */
 async function loadSheetGrid(sheetId, tabName) {
   // 1) 셀값 — /values/ 가 전 행을 신뢰성 있게 반환 (grid+formattedValue 는 1행으로 잘림)
   const rows = await loadSheetValues(sheetId, tabName);
-  // 2) 사진칩 + 숨김행 — spreadsheets.get 1회 (chipRuns + rowMetadata, formattedValue 제외)
+  // 2) 사진(칩+하이퍼링크) + 숨김행 — spreadsheets.get 1회
   const photoLinkMap = {};
   const hiddenRows = new Set();
   try {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}`
       + `?ranges=${encodeURIComponent(tabName)}`
-      + `&fields=${encodeURIComponent('sheets.data.rowData.values.chipRuns,sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}`
+      + `&fields=${encodeURIComponent('sheets.data.rowData.values(chipRuns,hyperlink),sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}`
       + `&key=${SHEETS_API_KEY}`;
     const data = await fetchJson(url);
     const grid = data.sheets?.[0]?.data?.[0] || {};
     (grid.rowData || []).forEach((rd, ri) => {
       for (const cell of (rd.values || [])) {
-        for (const chip of (cell.chipRuns || [])) {
-          const uri = chip?.chip?.richLinkProperties?.uri || '';
-          if (uri && uri.includes('drive.google.com')) { photoLinkMap[ri] = uri.split('?')[0]; break; }
-        }
-        if (photoLinkMap[ri]) break;
+        const u = extractCellPhotoUrl(cell);
+        if (u) { photoLinkMap[ri] = u; break; }
       }
     });
     (grid.rowMetadata || []).forEach((m, i) => { if (m && (m.hiddenByUser || m.hiddenByFilter)) hiddenRows.add(i); });
@@ -468,7 +480,7 @@ export async function syncFromSheet(source) {
     const photoByTab = {}, hiddenByTab = {};
     try {
       const gRanges = tabNames.map(t => `ranges=${encodeURIComponent(t)}`).join('&');
-      const gUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}?${gRanges}&fields=${encodeURIComponent('sheets.properties.title,sheets.data.rowData.values.chipRuns,sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}&key=${SHEETS_API_KEY}`;
+      const gUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}?${gRanges}&fields=${encodeURIComponent('sheets.properties.title,sheets.data.rowData.values(chipRuns,hyperlink),sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}&key=${SHEETS_API_KEY}`;
       const g = await fetchJson(gUrl);
       for (const sh of (g.sheets || [])) {
         const title = sh.properties?.title;
@@ -477,11 +489,8 @@ export async function syncFromSheet(source) {
         const pm = {};
         (grid.rowData || []).forEach((rd, ri) => {
           for (const cell of (rd.values || [])) {
-            for (const chip of (cell.chipRuns || [])) {
-              const uri = chip?.chip?.richLinkProperties?.uri || '';
-              if (uri && uri.includes('drive.google.com')) { pm[ri] = uri.split('?')[0]; break; }
-            }
-            if (pm[ri]) break;
+            const u = extractCellPhotoUrl(cell);
+            if (u) { pm[ri] = u; break; }
           }
         });
         const hs = new Set();

@@ -73,7 +73,7 @@ async function applyToFirebase(sheetResult, db) {
       updates[`${k}/options`]        = p.options;
       updates[`${k}/partner_memo`]   = p.partner_memo;
       updates[`${k}/location`]       = p.location;
-      updates[`${k}/photo_link`]     = p.photo_link;
+      if (p.photo_link) updates[`${k}/photo_link`] = p.photo_link;   // 빈값으로 기존 사진 덮어쓰기 방지
       updates[`${k}/updated_at`]     = p.updated_at;
       if (!found.maker     && p.maker)     updates[`${k}/maker`]     = p.maker;
       if (!found.model     && p.model)     updates[`${k}/model`]     = p.model;
