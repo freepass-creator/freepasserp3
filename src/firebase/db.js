@@ -5,6 +5,23 @@ import { ref, onValue, off, get, set, update, push, query, limitToLast } from 'f
 import { db } from './config.js';
 import { trackSave } from '../core/save-status.js';
 
+/** RTDB 는 undefined 값을 통째로 거부("set failed: value argument contains undefined") →
+ *  쓰기 전 undefined 프로퍼티 제거 (중첩 객체/배열까지 재귀).
+ *  계약 생성 등에서 product?.x / customer._key 같은 optional 필드가 undefined 로 섞여
+ *  set 전체가 실패하던 문제 방지. null(=삭제) 은 그대로 둠. */
+function stripUndefined(value) {
+  if (Array.isArray(value)) return value.map(stripUndefined);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(value)) {
+      if (v === undefined) continue;
+      out[k] = stripUndefined(v);
+    }
+    return out;
+  }
+  return value;
+}
+
 /* ── Shared Watcher Cache ── */
 const _watchers = new Map(); // cacheKey → { ref, callbacks, unsubscribe }
 
@@ -85,11 +102,12 @@ export async function fetchRecord(path) {
  * Write operations
  */
 export async function setRecord(path, data, opts = {}) {
-  const promise = set(ref(db, path), { ...data, updated_at: Date.now() });
+  const clean = stripUndefined({ ...data, updated_at: Date.now() });
+  const promise = set(ref(db, path), clean);
   const result = await (opts.silent ? promise : trackSave(promise));
   if (!opts.skipAudit) {
     const { logAudit } = await import('./audit-log.js');
-    logAudit({ action: 'create', path, fields: Object.keys(data), data });
+    logAudit({ action: 'create', path, fields: Object.keys(clean), data: clean });
   }
   return result;
 }
@@ -113,7 +131,8 @@ export async function incrementAtomic(path, delta = 1) {
 }
 
 export async function updateRecord(path, data, opts = {}) {
-  const promise = update(ref(db, path), { ...data, updated_at: Date.now() });
+  const clean = stripUndefined({ ...data, updated_at: Date.now() });
+  const promise = update(ref(db, path), clean);
   const result = await (opts.silent ? promise : trackSave(promise));
   if (!opts.skipAudit) {
     const { logAudit } = await import('./audit-log.js');
@@ -121,18 +140,19 @@ export async function updateRecord(path, data, opts = {}) {
     const action = data._deleted === true ? 'delete'
                  : data._deleted === false ? 'restore'
                  : 'update';
-    logAudit({ action, path, fields: Object.keys(data), data });
+    logAudit({ action, path, fields: Object.keys(clean), data: clean });
   }
   return result;
 }
 
 export async function pushRecord(path, data, opts = {}) {
   const newRef = push(ref(db, path));
-  const promise = set(newRef, { ...data, created_at: Date.now() });
+  const clean = stripUndefined({ ...data, created_at: Date.now() });
+  const promise = set(newRef, clean);
   await (opts.silent ? promise : trackSave(promise));
   if (!opts.skipAudit) {
     const { logAudit } = await import('./audit-log.js');
-    logAudit({ action: 'create', path: `${path}/${newRef.key}`, fields: Object.keys(data), data });
+    logAudit({ action: 'create', path: `${path}/${newRef.key}`, fields: Object.keys(clean), data: clean });
   }
   return newRef.key;
 }

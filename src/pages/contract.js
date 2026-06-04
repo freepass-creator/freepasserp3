@@ -734,6 +734,19 @@ export async function createContractFromRoomLocal(room) {
   const product = (store.products || []).find(p => p._key === room.product_uid || p.car_number === (room.vehicle_number || room.car_number));
   const code = await makeTempContractCode();
   try {
+    // 신규 고객이면 customers 에 먼저 저장해 key 확보 (search.js 와 동일 — 없으면 customer_uid undefined 로 set 실패)
+    let customerKey = customer._key;
+    if (!customer._existing) {
+      customerKey = await pushRecord('customers', {
+        name: customer.name,
+        phone: customer.phone,
+        birth: customer.birth || '',
+        is_business: !!customer.is_business,
+        business_number: customer.business_number || '',
+        company_name: customer.company_name || '',
+        created_by: me.uid,
+      });
+    }
     await pushRecord('contracts', {
       contract_code: code,
       is_draft: true,
@@ -749,9 +762,10 @@ export async function createContractFromRoomLocal(room) {
       fuel_type_snapshot: product?.fuel_type,
       ext_color_snapshot: product?.ext_color,
       // 계약자 참조 + snapshot
-      customer_uid: customer._key,
+      customer_uid: customerKey,
       customer_name: customer.name,
       customer_phone: customer.phone,
+      customer_birth: customer.birth || '',
       customer_is_business: !!customer.is_business,
       // 관계자
       agent_uid: agent.uid || agent._key,
