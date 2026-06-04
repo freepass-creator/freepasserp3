@@ -10,6 +10,7 @@ import { productImages, productExternalImages, supportedDriveSource, toProxiedIm
 import { normalizeYear } from './normalize.js';
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from './fp-options-master.js';
 import { findCatalog } from './vehicle-matrix.js';
+import { stripLegalEntity } from './ui-helpers.js';
 
 const COLOR_MAP = {
   '흰':'#f0f0f0','백':'#f0f0f0','화이트':'#f0f0f0','white':'#f0f0f0','아이보리':'#fffff0',
@@ -340,7 +341,7 @@ function _renderProductDetail(container, product, options = {}) {
   // ── 7. 기타 정보 ── (차량 스펙 + 공급사·정책 + admin 코드)
   const providerName = (() => {
     const pr = (store.partners || []).find(pa => (pa.partner_code || pa.company_code || pa._key) === p.provider_company_code);
-    return pr?.partner_name || pr?.company_name || '';
+    return stripLegalEntity(pr?.partner_name || pr?.company_name || '');
   })();
   const otherInfoRows = [
     ...(providerName ? [['공급사', providerName]] : []),

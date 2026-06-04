@@ -14,6 +14,7 @@ import { db } from './firebase/config.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from './core/product-photos.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
 import { extractProductDetailRows } from './core/product-detail-rows.js';
+import { stripLegalEntity } from './core/ui-helpers.js';
 
 // 익명 인증 — policies 읽기 위해 필요 (auth != null 룰 통과)
 signInAnonymously(auth).catch(e => console.warn('[catalog] 익명 인증 실패:', e?.message || e));
@@ -676,7 +677,7 @@ watchCollection('partners', (list) => {
   if (providerCode) {
     const partner = _partners.find(p => (p.partner_code || p.company_code || p._key) === providerCode);
     if (partner) {
-      const name = partner.partner_name || partner.company_name || providerCode;
+      const name = stripLegalEntity(partner.partner_name || partner.company_name || providerCode);
       const brandText = document.getElementById('catBrandText');
       if (brandText) brandText.textContent = name;
       document.title = name;
