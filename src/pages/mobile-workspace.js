@@ -13,6 +13,7 @@ import { pushMobileView, openBottomSheet } from '../core/mobile-shell.js';
 import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { mEmpty, mLoading } from '../core/format.js';
 import { fmtDate, chatCodeOf, providerNameByCode } from '../core/ui-helpers.js';
+import { isAgentSide } from '../core/roles.js';
 
 let unsubRooms = null;
 let unsubMessages = null;
@@ -367,10 +368,10 @@ function openContractSheet(room) {
 }
 
 /** 계약 시작 시트 — 채팅·상품 공통 (데스크톱 pickOrCreateCustomer 와 기능 동일, UI 만 모바일)
- *  권한: admin, agent 만 (agent_admin / provider 는 view-only) */
+ *  권한: admin, agent, agent_admin (웹 search.js / contract.js 와 동일). provider 는 view-only */
 export function openContractStartSheet({ room, product, onCreated } = {}) {
   const me = store.currentUser;
-  if (!me || !(me.role === 'agent' || me.role === 'admin')) {
+  if (!me || !(me.role === 'admin' || isAgentSide(me.role))) {
     showToast('계약 생성 권한 없음 (관리자/영업자만 가능)', 'error');
     return;
   }
