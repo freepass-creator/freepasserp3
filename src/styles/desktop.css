@@ -1424,7 +1424,7 @@
     cursor: default;
     margin: 1px;
     padding: 1px 5px;
-    font-size: var(--fs-2xs);
+    font-size: var(--fs-2xs);   /* 옵션 칩은 작게 유지 */
     height: auto;
     line-height: 1.4;
   }
