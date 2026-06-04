@@ -369,7 +369,7 @@ input[type="radio"] {
   justify-content: center;
   min-width: 30px;
   height: 18px;
-  padding: 0 5px;
+  padding: 0 8px;
   border-radius: 2px;
   font-family: var(--font);
   font-size: 12px;
@@ -397,7 +397,7 @@ input[type="radio"] {
   justify-content: center;
   min-width: 30px;
   height: 18px;
-  padding: 0 5px;
+  padding: 0 8px;
   border-radius: 2px;   /* status-chip(출고가능) 규격 통일 */
   font-family: var(--font);
   font-size: 12px;

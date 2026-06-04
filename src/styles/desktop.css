@@ -658,9 +658,14 @@
   }
   /* 본문 셀 안 badge — block-level flex + margin auto 로 픽셀 정확 가운데 정렬.
      fuel-letter 는 inline text 라 flex 적용 X (cell text-align: center 가 자체 가운데 정렬) */
-  [data-page="search"] table.table-fixed tbody td.col-tight > .fuel-badge,
-  [data-page="search"] table.table-fixed tbody td.col-tight > .color-badge {
+  [data-page="search"] table.table-fixed tbody td.col-tight > .fuel-badge {
     display: flex;
+    margin: 0 auto;
+  }
+  /* 색상 뱃지는 status-chip(출고가능) 과 동일하게 inline-flex 컴팩트 유지
+     — 칸 전체로 늘어나지 않게. 셀(.center) text-align 으로 가운데 정렬 */
+  [data-page="search"] table.table-fixed tbody td.col-tight > .color-badge {
+    display: inline-flex;
     margin: 0 auto;
   }
   /* 대여료 / 보증금 — 12px 통일, 대여료는 살짝 두껍게(500) */
