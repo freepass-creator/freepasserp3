@@ -184,6 +184,13 @@ async function scrapePageImages(pageUrl) {
 }
 
 export default async function handler(req, res) {
+  // 외부 홈피(하허호무심사 등)가 cross-origin 으로 사진 해석을 호출할 수 있게 CORS 허용.
+  // 반환값은 (이미 폴더 링크를 가진) 이미지 URL 목록뿐이라 공개해도 무방.
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  if (req.method === 'OPTIONS') { res.status(204).end(); return; }
+
   if (req.method !== 'GET') {
     res.status(405).json({ ok: false, message: '허용되지 않은 메서드입니다' });
     return;

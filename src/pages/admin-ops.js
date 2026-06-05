@@ -25,6 +25,7 @@ const TABS = [
   { id: 'jonghap', icon: 'table',            label: '종합표 만들기',   sub: '매물 → 종합탭 붙여넣기' },
   { id: 'sync',    icon: 'google-drive-logo', label: '외부 상품 동기화', sub: '오플시트 / 공급시트 자동탐지 / 종합' },
   { id: 'notice',  icon: 'megaphone',         label: '공지',           sub: '대시보드 공지 CRUD' },
+  { id: 'apikeys', icon: 'key',              label: 'API 키',         sub: '외부 홈피 매물 연동 키 발급/폐기' },
 ];
 
 /* 로그 패널(#aoLog) 출력 — dev.js 의 devLog 와 동일 역할 */
@@ -94,6 +95,124 @@ function renderTab(id) {
   if (id === 'jonghap') return renderJonghapTab(el);
   if (id === 'sync')    return renderSyncTab(el);
   if (id === 'notice')  return renderNoticeTab(el);
+  if (id === 'apikeys') return renderApiKeysTab(el);
+}
+
+/* ──────── API 키 (외부 홈피 매물 연동) ────────
+ *  외부 사이트가 /api/inventory 로 출고가능 매물을 가져갈 때 쓰는 퍼블리시 키 발급/관리.
+ *  - 키는 RTDB api_keys/{key} 에 저장 (admin 전용 read/write, rules 로 보호).
+ *  - 정적 사이트의 키는 소스에 노출되므로 "비밀"이 아님 → 보안은 허용 Origin 제한 + 즉시 폐기로.
+ *  - origins 비우면 모든 출처 허용(데모용). 운영 키엔 허용 도메인 지정 권장. */
+function genApiKey() {
+  const arr = new Uint8Array(18);
+  (window.crypto || window.msCrypto).getRandomValues(arr);
+  return 'fpk_' + [...arr].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function renderApiKeysTab(el) {
+  const { ref, get, update, remove } = await import('firebase/database');
+  const { db } = await import('../firebase/config.js');
+  const apiOrigin = window.location.origin;   // 현재 배포 도메인 = API base
+
+  const load = async () => {
+    el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> 키 불러오는 중...</div>`;
+    const snap = await get(ref(db, 'api_keys'));
+    const keys = Object.entries(snap.val() || {}).map(([k, v]) => ({ key: k, ...v }))
+      .sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+    render(keys);
+  };
+
+  const render = (keys) => {
+    el.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:16px;height:100%;overflow:auto;">
+        <div class="ao-banner">
+          <i class="ph ph-key"></i>
+          <div>
+            <b>외부 홈피 매물 연동 키</b> · 다른 사이트가 이 키로 출고가능 매물을 가져갑니다.<br>
+            <span class="ao-banner-sub">엔드포인트: <code>${esc(apiOrigin)}/api/inventory?key=발급키</code> · 키는 페이지 소스에 노출되니 <b>허용 도메인</b>을 꼭 지정하세요.</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--border);border-radius:6px;padding:12px;">
+          <div style="font-size:12px;color:var(--text-sub);margin-bottom:8px;font-weight:600;">새 키 발급</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <input class="input" id="akName" placeholder="용도/사이트 이름 (예: 하허호무심사 홈페이지)">
+            <textarea class="input" id="akOrigins" rows="2" placeholder="허용 도메인 (한 줄에 하나, 비우면 모든 출처 허용)&#10;예: https://freepass-creator.github.io&#10;https://xn--v92b23hm1b606a9pa6u.com" style="height:auto;font-size:12px;"></textarea>
+            <button class="btn btn-sm btn-primary" id="akCreate" style="align-self:flex-start;"><i class="ph ph-plus"></i> 키 발급</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;font-weight:600;">발급된 키 (${keys.length})</div>
+          <div id="akList"></div>
+        </div>
+      </div>
+    `;
+
+    const listEl = el.querySelector('#akList');
+    listEl.innerHTML = keys.length ? keys.map(k => {
+      const origins = Array.isArray(k.origins) ? k.origins : [];
+      const used = k.last_used_at ? new Date(k.last_used_at).toLocaleString('ko') : '미사용';
+      return `
+      <div style="padding:10px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;${k.active === false ? 'opacity:.55;' : ''}">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:600;font-size:13px;">${esc(k.name || '(이름 없음)')} ${k.active === false ? '<span style="color:var(--alert-red-text);font-size:11px;">· 폐기됨</span>' : '<span style="color:var(--alert-green-text);font-size:11px;">· 활성</span>'}</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+              <code style="font-size:11px;background:var(--bg-stripe);padding:2px 6px;border-radius:3px;user-select:all;">${esc(k.key)}</code>
+              <button class="btn btn-xs" data-copy="${esc(k.key)}"><i class="ph ph-copy"></i></button>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">허용 도메인: ${origins.length ? origins.map(esc).join(', ') : '<b style="color:var(--alert-orange-text);">모든 출처(미설정)</b>'}</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">마지막 사용: ${esc(used)}${k.last_origin ? ` (${esc(k.last_origin)})` : ''}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;flex:none;">
+            <button class="btn btn-xs" data-toggle="${esc(k.key)}" data-active="${k.active === false ? '0' : '1'}">${k.active === false ? '활성화' : '폐기'}</button>
+            <button class="btn btn-xs is-danger" data-del="${esc(k.key)}"><i class="ph ph-trash"></i></button>
+          </div>
+        </div>
+      </div>`;
+    }).join('') : emptyState('발급된 키 없음');
+
+    // 복사
+    listEl.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
+      const url = `${apiOrigin}/api/inventory?key=${b.dataset.copy}`;
+      navigator.clipboard?.writeText(url).then(
+        () => showToast('연동 URL 복사됨'),
+        () => showToast('복사 실패', 'error'),
+      );
+    }));
+    // 활성/폐기 토글
+    listEl.querySelectorAll('[data-toggle]').forEach(b => b.addEventListener('click', async () => {
+      const makeActive = b.dataset.active === '0';
+      await update(ref(db, `api_keys/${b.dataset.toggle}`), { active: makeActive });
+      showToast(makeActive ? '활성화됨' : '폐기됨'); devLog(`[apikey] ${b.dataset.toggle} → ${makeActive ? 'active' : 'revoked'}`);
+      load();
+    }));
+    // 삭제
+    listEl.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+      if (!await customConfirm({ message: '이 키를 완전히 삭제하시겠습니까? (사용 중인 사이트는 즉시 차단됩니다)', danger: true, okLabel: '삭제' })) return;
+      await remove(ref(db, `api_keys/${b.dataset.del}`));
+      showToast('삭제됨'); devLog(`[apikey] ${b.dataset.del} 삭제`);
+      load();
+    }));
+
+    // 발급
+    el.querySelector('#akCreate').addEventListener('click', async () => {
+      const name = el.querySelector('#akName').value.trim();
+      if (!name) return showToast('용도/이름을 입력하세요', 'error');
+      const origins = el.querySelector('#akOrigins').value.split(/[\n,]+/).map(s => s.trim().replace(/\/$/, '')).filter(Boolean);
+      const key = genApiKey();
+      await update(ref(db, `api_keys/${key}`), {
+        name, origins, active: true,
+        created_at: Date.now(),
+        created_by: store.currentUser?.user_code || store.currentUser?.email || '',
+      });
+      showToast('키 발급 완료'); devLog(`[apikey] 발급: ${name} (${key})`);
+      load();
+    });
+  };
+
+  load();
 }
 
 /* ──────── 종합표 만들기 ────────
