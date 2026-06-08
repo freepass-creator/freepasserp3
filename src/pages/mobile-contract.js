@@ -342,7 +342,7 @@ function bindContractView(view, c) {
     if (!key) return;
     const cur = c[key] === true || c[key] === 'yes';
     try {
-      await updateRecord(`contracts/${c.contract_code}`, { [key]: !cur });
+      await updateRecord(`contracts/${c._key}`, { [key]: !cur });
       c[key] = !cur;
       showToast(cur ? '해제' : '완료');
       const panel = view.querySelector('[data-panel="progress"]');
@@ -358,7 +358,7 @@ function bindContractView(view, c) {
     const sel = e.target.closest('.ct-step-select');
     if (!sel) return;
     try {
-      await updateRecord(`contracts/${c.contract_code}`, { [sel.dataset.key]: sel.value });
+      await updateRecord(`contracts/${c._key}`, { [sel.dataset.key]: sel.value });
       c[sel.dataset.key] = sel.value;
       showToast(sel.value || '해제');
       const panel = view.querySelector('[data-panel="progress"]');
@@ -384,7 +384,7 @@ function bindContractView(view, c) {
     if (rent) updates.rent_amount = rent;
     if (deposit) updates.deposit_amount = deposit;
     try {
-      await updateRecord(`contracts/${c.contract_code}`, updates);
+      await updateRecord(`contracts/${c._key}`, updates);
       Object.assign(c, updates);
       showToast(`${m}M${rent ? ` · ${rent.toLocaleString()}원` : ''}`);
       const panel = view.querySelector('[data-panel="progress"]');
@@ -409,7 +409,7 @@ function bindContractView(view, c) {
     const stateEl = view.querySelector(`[data-state="${field}"]`);
     inp.dataset.saving = '1';
     try {
-      await updateRecord(`contracts/${c.contract_code}`, { [field]: num });
+      await updateRecord(`contracts/${c._key}`, { [field]: num });
       c[field] = num;
       // 저장 완료 시점에 사용자가 다시 포커스 잡고 있으면 값 덮어쓰지 않음 (경합 방지)
       if (document.activeElement !== inp) {
@@ -433,7 +433,7 @@ function bindContractView(view, c) {
     if (val === String(c[field] || '').trim()) return;
     inp.dataset.saving = '1';
     try {
-      await updateRecord(`contracts/${c.contract_code}`, { [field]: val });
+      await updateRecord(`contracts/${c._key}`, { [field]: val });
       c[field] = val;
     } catch (err) {
       showToast('저장 실패', 'error');
@@ -466,7 +466,7 @@ function bindContractView(view, c) {
     if (e.target.closest('#ctLicenseDel')) {
       if (!confirm('운전면허증을 삭제하시겠습니까?')) return;
       try {
-        await updateRecord(`contracts/${c.contract_code}`, { customer_license_url: '', customer_license_at: 0 });
+        await updateRecord(`contracts/${c._key}`, { customer_license_url: '', customer_license_at: 0 });
         c.customer_license_url = '';
         c.customer_license_at = 0;
         refreshCustomer();
@@ -488,7 +488,7 @@ function bindContractView(view, c) {
       if (!confirm('첨부 파일을 삭제하시겠습니까?')) return;
       const key = delBtn.dataset.docDel;
       try {
-        await updateRecord(`contracts/${c.contract_code}/customer_docs/${key}`, { _deleted: true });
+        await updateRecord(`contracts/${c._key}/customer_docs/${key}`, { _deleted: true });
         c.customer_docs = c.customer_docs || {};
         if (c.customer_docs[key]) c.customer_docs[key]._deleted = true;
         refreshCustomer();
@@ -514,7 +514,7 @@ function bindContractView(view, c) {
         const isImage = (file.type || '').startsWith('image/');
         const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
         const now = Date.now();
-        await updateRecord(`contracts/${c.contract_code}`, { customer_license_url: url, customer_license_at: now });
+        await updateRecord(`contracts/${c._key}`, { customer_license_url: url, customer_license_at: now });
         c.customer_license_url = url;
         c.customer_license_at = now;
         refreshCustomer();
@@ -548,7 +548,7 @@ function bindContractView(view, c) {
     if (val === prev) return;
     const stateEl = customerPanel.querySelector(`[data-state="${field}"]`);
     try {
-      await updateRecord(`contracts/${c.contract_code}`, { [field]: val });
+      await updateRecord(`contracts/${c._key}`, { [field]: val });
       c[field] = val;
       if (stateEl) {
         stateEl.className = 'm-state is-saved';
@@ -869,7 +869,7 @@ async function uploadCustomerDocs(c, files) {
       const path = `chat-files/contract-${c.contract_code}/${Date.now()}_${safe}`;
       const isImage = (file.type || '').startsWith('image/');
       const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
-      await pushRecord(`contracts/${c.contract_code}/customer_docs`, {
+      await pushRecord(`contracts/${c._key}/customer_docs`, {
         name: file.name,
         url,
         size: file.size,

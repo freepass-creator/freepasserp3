@@ -559,7 +559,7 @@ const STEP_NOTIFY = {
 /* renderContractWorkV2 의 클릭/드롭다운/메모/취소·완료 이벤트 바인딩
  *  options.reRender — 호출자가 자기 페이지 재렌더 함수 주입 (workspace / contract 양쪽 호환) */
 export function bindContractWorkV2(stepCard, c, options = {}) {
-  if (!c?.contract_code) return;
+  if (!c?._key || !c?.contract_code) return;   // _key=Firebase 자동키(저장 경로), contract_code=찾기용 코드
   const role = store.currentUser?.role || 'agent';
   const isAdmin = role === 'admin';
   const reRender = options.reRender || (() => renderContractDetail(c));
@@ -574,7 +574,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       const update = { [key]: next };
       if (isAdmin) update[`${key}_by`] = next ? 'admin' : '';
       try {
-        await updateRecord(`contracts/${c.contract_code}`, update);
+        await updateRecord(`contracts/${c._key}`, update);
         c[key] = next;
         reRender();
         // 영업 측 단계 활성화(true) 시 공급사·관리자에 알림톡
@@ -601,7 +601,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       const update = { [key]: val };
       if (isAdmin) update[`${key}_by`] = val ? 'admin' : '';
       try {
-        await updateRecord(`contracts/${c.contract_code}`, update);
+        await updateRecord(`contracts/${c._key}`, update);
         c[key] = val;
         reRender();
       } catch (e) { alert('저장 실패: ' + (e.message || e)); }
@@ -629,7 +629,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       if (!Object.keys(patch).length) return 0;
       try {
         patch.updated_at = Date.now();
-        await updateRecord(`contracts/${c.contract_code}`, patch);
+        await updateRecord(`contracts/${c._key}`, patch);
         for (const m of memoTracked) { c[m.field] = m.ta.value; m.setOriginal(m.ta.value); }
         flashSaved(flashEls);
         return 1;
