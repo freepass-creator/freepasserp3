@@ -2366,10 +2366,6 @@ function bindLogout() {
     location.hash = 'settings';
   });
 
-  // 알림 버튼 — 좌측 하단 사이드바 (향후 알림 패널 연결, 현재는 placeholder)
-  document.getElementById('sbAlert')?.addEventListener('click', () => {
-    showToast('알림 — 추후 지원 예정', 'info');
-  });
 }
 
 boot();
