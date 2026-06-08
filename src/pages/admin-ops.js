@@ -701,6 +701,7 @@ function renderSyncTab(el) {
               <th style="padding:4px 6px;text-align:left;">모델</th>
               <th style="padding:4px 6px;text-align:left;">세부모델</th>
               <th style="padding:4px 6px;text-align:left;">파워트레인</th>
+              <th style="padding:4px 6px;text-align:left;">세부트림</th>
               <th style="padding:4px 6px;text-align:left;">연식</th>
               <th style="padding:4px 6px;text-align:right;">주행거리</th>
               <th style="padding:4px 6px;text-align:left;">연료</th>
@@ -742,6 +743,7 @@ function renderSyncTab(el) {
                 ${autoMap(p.model)}
                 ${autoMap(p.sub_model)}
                 ${autoMap(p.variant)}
+                ${autoMap(p.trim_name)}
                 ${map(p.year)}
                 ${td(p.mileage ? p.mileage.toLocaleString('ko-KR') : empty, { r: true, bg: 'var(--alert-blue-bg)' })}
                 ${map(p.fuel_type)}
