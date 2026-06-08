@@ -695,7 +695,7 @@ function renderSyncTab(el) {
             <!-- 그룹 헤더 -->
             <tr>
               <th colspan="7" style="padding:6px;background:var(--alert-orange-bg);color:var(--alert-orange-text);border-right:3px solid var(--border-strong);">📄 시트 추출 (오토플러스 원본)</th>
-              <th colspan="22" style="padding:6px;background:var(--alert-blue-bg);color:var(--alert-blue-text);">🗂 상품찾기 컬럼 (반영 후)</th>
+              <th colspan="23" style="padding:6px;background:var(--alert-blue-bg);color:var(--alert-blue-text);">🗂 상품찾기 컬럼 (반영 후) + 정책코드</th>
             </tr>
             <!-- 컬럼 헤더 -->
             <tr style="background:var(--bg-header);font-weight:500;color:var(--text-sub);">
@@ -730,6 +730,7 @@ function renderSyncTab(el) {
               <th style="padding:4px 6px;text-align:right;">48개월</th>
               <th style="padding:4px 6px;text-align:right;">60개월</th>
               <th style="padding:4px 6px;text-align:left;">공급사</th>
+              <th style="padding:4px 6px;text-align:left;">정책코드</th>
             </tr>
           </thead>
           <tbody>
@@ -767,6 +768,7 @@ function renderSyncTab(el) {
                 ${priceCell(p.price?.['48'])}
                 ${priceCell(p.price?.['60'])}
                 ${map(p.partner_code)}
+                ${map(p.policy_code)}
               </tr>`;
             }).join('')}
           </tbody>
