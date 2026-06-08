@@ -47,18 +47,28 @@ export function powertrainFromProduct(p) {
 
   const variant = [fuel, disp, turbo, drive, seats].filter(Boolean).join(' ');
 
-  // 트림 = 원본에서 모델명·파워트레인·세대접두 토큰 제거한 나머지
+  // 트림 = 세부모델·파워트레인에 안 들어간 "나머지". 모델·섀시·파워트레인·노이즈 토큰을 빼고 남은 것.
+  //  (공급사 입력패턴 1,753건 학습 기반 — 등록구분/연식MY/엔진테크/마케팅/괄호코드 등 노이즈 제거)
   let trim = String(p.trim_name || '');
-  for (const w of [p.maker, p.model, p.sub_model].filter(Boolean)) {
-    trim = trim.replace(new RegExp(esc(w), 'g'), ' ');
-  }
+  // ① 제조사·모델·세부모델 단어 단위 제거 (세부모델 "쏘렌토 MQ4" → "쏘렌토","MQ4" 각각 — 섀시코드 중복 방지)
+  const modelTokens = [p.maker, p.model, p.sub_model].filter(Boolean)
+    .flatMap(s => String(s).split(/[\s/]+/)).filter(w => w.length >= 2);
+  for (const w of modelTokens) trim = trim.replace(new RegExp(esc(w), 'gi'), ' ');
   trim = trim
-    .replace(/플러그인\s*하이브리드|하이브리드|PHEV|HEV|디젤|가솔린|LPG|LPi|전기|일렉트릭|E-?Tech|electric|수소|FCEV/gi, ' ')
-    .replace(/\d\.\d\s*T?|\d{3,4}\s*cc|\d+\s*인승|터보|T-?GDI|e-VGT|TDI/gi, ' ')
-    .replace(/\b(AWD|4WD|RWD|FWD|2WD|4MATIC|xDrive|e-4WD|2륜|4륜)\b/gi, ' ')
-    .replace(/\b(DCT|CVT|IVT|DSG|A\/T|M\/T|AT|MT)\b|자동변속|수동변속/gi, ' ')   // 변속기 토큰
-    .replace(/신형|디\s*올\s*뉴|올\s*뉴|더\s*뉴|뉴|the\s*new|all\s*new/gi, ' ')
-    .replace(/\s+/g, ' ').trim();
+    .replace(/\([^)]*\)/g, ' ')                                 // ② 괄호 내용 전부 (코드 (MQ4)·(7세대)·(A/T 26MY)·(P1))
+    .replace(/\d\s*세대/g, ' ')                                 // 세대 표기
+    .replace(/\b\d{2,4}\s*MY\b/gi, ' ')                         // 연식코드 25MY / 2026 MY
+    .replace(/자가용|영업용|렌터카|렌트카|리스|법인|개인용?|런칭/g, ' ')   // 등록구분·마케팅
+    .replace(/플러그인\s*하이브리드|하이브리드|PHEV|HEV|디젤|가솔린|LPG|LPi|LPI|전기|일렉트릭|E-?Tech|electric|수소|FCEV/gi, ' ')  // 연료
+    .replace(/스마트\s*스트림|T-?GDI|GDI|MPI|IVT|DCT|CVT|DSG|e-?VGT|TDI/gi, ' ')   // 엔진테크·변속기
+    .replace(/\d\.\d\s*T?|\d{3,4}\s*cc|\d+\s*인승?|터보/gi, ' ')   // 배기량·인승·터보
+    .replace(/\b(AWD|4WD|RWD|FWD|2WD|4MATIC|xDrive|e-4WD|2륜|4륜|A\/T|M\/T|AT|MT)\b/gi, ' ')   // 구동·변속
+    .replace(/\b[A-Z]{2,3}\d{1,2}\b/g, ' ')                     // 섀시코드(숫자) CN7/DL3/MQ4/GN7
+    .replace(/\b(IG|HG|OS|JF|AD|YP|QX|TF|TM|UM)\b/g, ' ')        // 섀시코드(2글자, 큐레이트)
+    .replace(/\bF\/?L\b|페이스리프트|풀체인지/gi, ' ')             // 페이스리프트 표기
+    .replace(/Model\s*[3SXY]|모델\s*[3SXY와이쓰리]|\b테슬라\b/gi, ' ')   // 테슬라 모델명(트림 아님)
+    .replace(/신형|디\s*올\s*뉴|올\s*뉴|더\s*뉴|the\s*new|all\s*new|\bthe\b|\b뉴\b|\b디\b/gi, ' ')   // 세대접두·마케팅
+    .replace(/\s{2,}/g, ' ').replace(/^[\s.,+·\-]+|[\s.,+·\-]+$/g, '').trim();   // 양끝 문장부호·공백
 
   return { variant, trim };
 }
