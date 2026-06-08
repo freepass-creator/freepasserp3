@@ -99,6 +99,7 @@ export function calibrateSearchCols(products) {
     p => p.maker,
     p => p.model,
     p => p.sub_model,
+    p => p.variant,
     p => p.trim_name || p.trim,
     p => Array.isArray(p.options) ? p.options.join('·') : p.options,
     p => String(p.year || ''),
@@ -107,11 +108,11 @@ export function calibrateSearchCols(products) {
     p => p.ext_color,
     p => (p._policy && (p._policy.credit_grade || p._policy.screening_criteria)) || p.credit_grade,
   ];
-  const HEADER_LABELS = ['차량번호','상태','구분','제조사','모델명','세부모델','세부트림','선택옵션','연식','주행','연료','색상','심사'];
-  const HAS_FILTER = [false, true, true, true, true, true, true, true, true, true, true, true, true];
+  const HEADER_LABELS = ['차량번호','상태','구분','제조사','모델명','세부모델','파워트레인','세부트림','선택옵션','연식','주행','연료','색상','심사'];
+  const HAS_FILTER = [false, true, true, true, true, true, true, true, true, true, true, true, true, true];
   const STATUS_DOT = 10;
   // 차량번호(idx 0): max 포맷 "000가0000" (7 ASCII + 1 한글) bold = ~64px + padding 16 → 80px 면 충분
-  const MIN_WIDTHS = [80, 72, 44, 44, 56, 60, 56, 80, 40, 48, 48, 40, 44];
+  const MIN_WIDTHS = [80, 72, 44, 44, 56, 60, 70, 56, 80, 40, 48, 48, 40, 44];
   // 공급사 컬럼은 마지막에 100px 고정 (한글 회사명 4-7자 fit)
 
   const widths = getters.map((get, idx) => {
@@ -130,8 +131,8 @@ export function calibrateSearchCols(products) {
     const extra = 16 + (HAS_FILTER[idx] ? 14 : 0) + (idx === 1 ? STATUS_DOT : 0);
     return Math.max(MIN_WIDTHS[idx], Math.ceil(baseW * boldFactor + extra));
   });
-  // 옵션 (idx 7) — outlier 영향 줄이려고 세부트림(6) × 1.3 강제
-  widths[7] = Math.round(widths[6] * 1.3);
+  // 옵션 (idx 8) — outlier 영향 줄이려고 세부트림(7) × 1.3 강제 (파워트레인 추가로 인덱스 +1)
+  widths[8] = Math.round(widths[7] * 1.3);
   // 차량번호 (idx 0) — 최대 포맷 "000가0000" 고정. 데이터가 짧아도 길어도 80 고정
   widths[0] = 80;
   widths.forEach((w, idx) => cols[idx]?.style.setProperty('width', w + 'px'));
@@ -143,7 +144,7 @@ export function renderSearchTable(products) {
   // 토픽바 카운트 — 필터된 결과 길이 반영
   updateSearchStats(products || []);
   if (!products || !products.length) {
-    tbody.innerHTML = '<tr><td colspan="21" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="22" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
     return;
   }
   // 재렌더 전 현재 선택 row 의 product key 보존 — partners 갱신 등으로 재렌더 시 선택 유지
@@ -179,6 +180,7 @@ function renderSearchRow(p) {
   const maker = p.maker || '-';
   const model = p.model || '-';
   const subModel = p.sub_model || '-';
+  const variant = p.variant || '-';   // 파워트레인
   const trim = p.trim_name || p.trim || '-';
   const fuelB = fuelBadge(p.fuel_type);
   const providerName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '-';
@@ -190,6 +192,7 @@ function renderSearchRow(p) {
       <td title="${esc(maker)}">${makerBadge(maker)}</td>
       <td title="${esc(model)}">${model}</td>
       <td title="${esc(subModel)}">${subModel}</td>
+      <td title="${esc(variant)}">${variant}</td>
       <td title="${esc(trim)}">${trim}</td>
       <td class="col-options" title="${esc(opts)}">${optsHtml}</td>
       <td class="center">${p.year || '-'}</td>
@@ -495,7 +498,7 @@ export function searchTogglePeriod(period) {
     const idxOf = (p) => ['1m','12m','24m','36m','48m','60m'].indexOf(p);
     const colIdx = idxOf(period);
     if (colIdx >= 0) {
-      const PERIOD_OFFSET = 14;   // 기간 컬럼 시작 위치 (콘텐츠 컬럼 다음)
+      const PERIOD_OFFSET = 15;   // 기간 컬럼 시작 위치 (콘텐츠 컬럼 다음 — 파워트레인 추가로 14→15)
       const realIdx = PERIOD_OFFSET + colIdx;
       const cols = table.querySelectorAll('colgroup col');
       const ths = table.querySelectorAll('thead th');
@@ -904,6 +907,7 @@ const SEARCH_COL_FIELD = [
   'maker',
   'model',
   'sub_model',
+  'variant',
   'trim_name',
   'options',
   'year',
