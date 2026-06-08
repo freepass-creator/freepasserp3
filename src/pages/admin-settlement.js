@@ -77,22 +77,25 @@ const BLOCKS = [
   },
 ];
 
-const FIELD_BY_K = {};
-for (const b of BLOCKS) for (const f of b.fields) FIELD_BY_K[f.k] = f;
-
 /* ──────── 유틸 ──────── */
 const num = (v) => Number(String(v == null ? '' : v).replace(/[^\d.-]/g, '')) || 0;
 const won = (v) => num(v).toLocaleString('ko-KR');
 const man = (v) => { const n = num(v); return n ? Math.round(n / 10000).toLocaleString('ko-KR') + '만' : '-'; };
 
-/** 자동계산 — 부가세 10%, 합계, 청구/지급, 당월수익 */
+/** 자동계산 — 부가세 10%, 합계, 청구/지급, 당월수익.
+ *  인라인 등록에서 provider_bill / agency_pay 직접 입력 시 그 값이 우선.
+ *  (sale_fee/incentive 같은 base 필드가 없을 때 직접 입력값 사용)
+ */
 function compute(d) {
   const providerFeeSum = num(d.sale_fee) + num(d.provider_incentive);
   const providerVat = Math.round(providerFeeSum * 0.1);
-  const providerBill = providerFeeSum + providerVat;
+  const providerBillCalc = providerFeeSum + providerVat;
   const agencyFeeSum = num(d.delivery_fee) + num(d.agency_incentive) + num(d.doc_agency_fee);
   const agencyVat = Math.round(agencyFeeSum * 0.1);
-  const agencyPay = agencyFeeSum + agencyVat;
+  const agencyPayCalc = agencyFeeSum + agencyVat;
+  // 직접 입력값 우선 (인라인 입력)
+  const providerBill = d.provider_bill != null && d.provider_bill !== '' ? num(d.provider_bill) : providerBillCalc;
+  const agencyPay = d.agency_pay != null && d.agency_pay !== '' ? num(d.agency_pay) : agencyPayCalc;
   return {
     provider_fee_sum: providerFeeSum,
     provider_vat: providerVat,
@@ -188,33 +191,121 @@ function drawRows() {
     return;
   }
 
-  let billSum = 0, paySum = 0, profitSum = 0;
-  tbody.innerHTML = all.map(s => {
-    const c = compute(s);
-    billSum += c.provider_bill; paySum += c.agency_pay; profitSum += c.monthly_profit;
-    return `<tr data-key="${esc(s._key)}" style="cursor:pointer;">
-      <td>${esc(s.settle_month || '-')}</td>
-      <td>${esc(s.contract_code || '-')}</td>
-      <td>${esc(s.settle_status || '-')}</td>
-      <td>${esc(s.car_number || '-')}</td>
-      <td>${esc(s.model_name || '-')}</td>
-      <td>${esc(s.customer_name || '-')}</td>
-      <td>${esc(s.provider_name || '-')}</td>
-      <td>${esc(s.agent_name || '-')}</td>
-      <td style="text-align:right;">${man(c.provider_bill)}</td>
-      <td style="text-align:right;">${man(c.agency_pay)}</td>
-      <td style="text-align:right;font-weight:var(--fw-semibold);color:${c.monthly_profit >= 0 ? 'var(--text-main)' : '#dc2626'};">${man(c.monthly_profit)}</td>
-      <td style="text-align:center;"><button class="btn btn-sm btn-ghost" data-del="${esc(s._key)}" title="삭제"><i class="ph ph-trash"></i></button></td>
-    </tr>`;
-  }).join('');
+  tbody.innerHTML = all.map(s => rowHtml(s)).join('');
+  bindRowEvents(tbody);
+}
 
-  tbody.querySelectorAll('tr[data-key]').forEach(tr => {
+/** 행 1개 HTML — 인라인 편집 가능 */
+function rowHtml(s) {
+  const c = compute(s);
+  const editing = s._editing;
+  const month = s.settle_month || defaultMonth();
+  const statusOptionsHtml = STATUS_OPTS.map(o =>
+    `<option value="${esc(o)}" ${o === (s.settle_status || '계약완료') ? 'selected' : ''}>${esc(o)}</option>`
+  ).join('');
+
+  if (editing) {
+    return `<tr data-key="${esc(s._key)}" data-edit="1">
+      <td><input type="month" class="input input-sm" data-f="settle_month" value="${esc(month)}"></td>
+      <td><input class="input input-sm" data-f="contract_code" value="${esc(s.contract_code || '')}"></td>
+      <td><select class="input input-sm" data-f="settle_status">${statusOptionsHtml}</select></td>
+      <td><input class="input input-sm" data-f="car_number" value="${esc(s.car_number || '')}"></td>
+      <td><input class="input input-sm" data-f="model_name" value="${esc(s.model_name || '')}"></td>
+      <td><input class="input input-sm" data-f="customer_name" value="${esc(s.customer_name || '')}"></td>
+      <td><input class="input input-sm" data-f="provider_name" value="${esc(s.provider_name || '')}"></td>
+      <td><input class="input input-sm" data-f="agent_name" value="${esc(s.agent_name || '')}"></td>
+      <td style="text-align:right;"><input class="input input-sm" data-f="provider_bill" data-num="1" value="${esc(s.provider_bill != null ? won(s.provider_bill) : '')}" style="text-align:right;"></td>
+      <td style="text-align:right;"><input class="input input-sm" data-f="agency_pay" data-num="1" value="${esc(s.agency_pay != null ? won(s.agency_pay) : '')}" style="text-align:right;"></td>
+      <td style="text-align:right;color:var(--text-muted);" data-calc="monthly_profit">${man(c.monthly_profit)}</td>
+      <td style="text-align:center;white-space:nowrap;">
+        <button class="btn btn-sm btn-primary" data-save="${esc(s._key)}" title="저장"><i class="ph ph-check"></i></button>
+        <button class="btn btn-sm btn-ghost" data-cancel="${esc(s._key)}" title="취소"><i class="ph ph-x"></i></button>
+      </td>
+    </tr>`;
+  }
+
+  return `<tr data-key="${esc(s._key)}" style="cursor:pointer;">
+    <td>${esc(s.settle_month || '-')}</td>
+    <td>${esc(s.contract_code || '-')}</td>
+    <td>${esc(s.settle_status || '-')}</td>
+    <td>${esc(s.car_number || '-')}</td>
+    <td>${esc(s.model_name || '-')}</td>
+    <td>${esc(s.customer_name || '-')}</td>
+    <td>${esc(s.provider_name || '-')}</td>
+    <td>${esc(s.agent_name || '-')}</td>
+    <td style="text-align:right;">${man(c.provider_bill)}</td>
+    <td style="text-align:right;">${man(c.agency_pay)}</td>
+    <td style="text-align:right;font-weight:var(--fw-semibold);color:${c.monthly_profit >= 0 ? 'var(--text-main)' : '#dc2626'};">${man(c.monthly_profit)}</td>
+    <td style="text-align:center;"><button class="btn btn-sm btn-ghost" data-del="${esc(s._key)}" title="삭제"><i class="ph ph-trash"></i></button></td>
+  </tr>`;
+}
+
+function bindRowEvents(tbody) {
+  // 보기 모드 클릭 → 편집 모드
+  tbody.querySelectorAll('tr[data-key]:not([data-edit])').forEach(tr => {
     tr.addEventListener('click', (e) => {
-      if (e.target.closest('[data-del]')) return;
-      const rec = (store.adminSettlements || []).find(x => x._key === tr.dataset.key);
-      if (rec) openSettleDialog(rec);
+      if (e.target.closest('[data-del]') || e.target.closest('button')) return;
+      const key = tr.dataset.key;
+      const rec = (store.adminSettlements || []).find(x => x._key === key);
+      if (rec) { rec._editing = true; drawRows(); }
     });
   });
+  // 편집 모드 — 숫자 실시간 자동계산 (monthly_profit)
+  tbody.querySelectorAll('tr[data-edit] input[data-num]').forEach(inp => {
+    inp.addEventListener('input', (e) => {
+      const tr = e.target.closest('tr');
+      const bill = num(tr.querySelector('input[data-f="provider_bill"]').value);
+      const pay = num(tr.querySelector('input[data-f="agency_pay"]').value);
+      const profitEl = tr.querySelector('[data-calc="monthly_profit"]');
+      const p = bill - pay;
+      profitEl.textContent = man(p);
+      profitEl.style.color = p >= 0 ? 'var(--text-main)' : '#dc2626';
+    });
+  });
+  // 저장
+  tbody.querySelectorAll('[data-save]').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.save;
+      const tr = btn.closest('tr');
+      const patch = {};
+      tr.querySelectorAll('[data-f]').forEach(inp => {
+        const f = inp.dataset.f;
+        if (f.startsWith('_')) return;  // 메타 필드 제외
+        patch[f] = inp.dataset.num ? num(inp.value) : inp.value.trim();
+      });
+      patch.updated_at = Date.now();
+      try {
+        const rec = (store.adminSettlements || []).find(x => x._key === key);
+        const isNew = rec && rec._new;
+        if (isNew) {
+          // 새 행 — RTDB create
+          await createAdminSettlement(patch);
+          // 로컬 placeholder 제거 (RTDB watch 가 새로 push)
+          store.adminSettlements = (store.adminSettlements || []).filter(x => x._key !== key);
+        } else {
+          await updateRecord(`admin_settlements/${key}`, patch);
+          if (rec) { rec._editing = false; }
+        }
+        showToast('저장됨');
+        drawRows();
+      } catch (err) { showToast('저장 실패 — ' + (err.message || err), 'error'); }
+    });
+  });
+  // 취소
+  tbody.querySelectorAll('[data-cancel]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.dataset.cancel;
+      const rec = (store.adminSettlements || []).find(x => x._key === key);
+      if (rec) {
+        if (rec._new) store.adminSettlements = store.adminSettlements.filter(x => x._key !== key);
+        else rec._editing = false;
+        drawRows();
+      }
+    });
+  });
+  // 삭제
   tbody.querySelectorAll('[data-del]').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
@@ -227,6 +318,25 @@ function drawRows() {
   });
 }
 
+/** 정산 등록 버튼 — 테이블 상단에 빈 행 추가 + 인라인 입력 */
+function addInlineRow() {
+  if (!isAdmin()) return;
+  // placeholder 한 건 — _new + _editing
+  const placeholder = {
+    _key: '_new_' + Date.now(),
+    _new: true,
+    _editing: true,
+    settle_month: defaultMonth(),
+    settle_status: '계약완료',
+  };
+  store.adminSettlements = [placeholder, ...(store.adminSettlements || [])];
+  drawRows();
+  // 첫 입력 셀에 포커스
+  setTimeout(() => {
+    document.querySelector(`tr[data-key="${placeholder._key}"] input[data-f="contract_code"]`)?.focus();
+  }, 0);
+}
+
 /* ──────── 하단 액션바 — 기간 네비 + 정산 등록 ──────── */
 function buildActions() {
   if (!isAdmin()) { setPageActions({}); return; }
@@ -234,6 +344,8 @@ function buildActions() {
   const setMode = (m) => { _pMode = m; reRender(); };
   setPageActions({
     left: [
+      { label: '정산 등록', icon: 'ph-plus', primary: true, onClick: () => addInlineRow() },
+      { divider: true },
       { chip: true, label: '월',   active: _pMode === 'month',   onClick: () => setMode('month') },
       { chip: true, label: '분기', active: _pMode === 'quarter', onClick: () => setMode('quarter') },
       { chip: true, label: '연',   active: _pMode === 'year',    onClick: () => setMode('year') },
@@ -243,168 +355,7 @@ function buildActions() {
       { icon: 'ph-caret-right', title: '다음', onClick: () => { shiftPeriod(1); reRender(); } },
       { label: '당월', icon: 'ph-calendar-dot', title: '현재 월로', onClick: () => { resetPeriodNow(); reRender(); } },
     ],
-    right: [
-      { label: '정산 등록', icon: 'ph-plus', primary: true, onClick: () => openSettleDialog(null) },
-    ],
   });
 }
 // index.html showPage() → refreshPageActions('admin-settle') 가 호출 (app.js 분기)
 if (typeof window !== 'undefined') window.buildAdminSettleActions = buildActions;
-
-/* ──────── 등록/수정 다이얼로그 ──────── */
-function fieldInputHtml(f, val) {
-  const v = val == null ? '' : val;
-  if (f.calc) {
-    return `<input class="input" data-k="${f.k}" data-calc="1" readonly value="${esc(v ? won(v) : '')}" style="text-align:right;background:var(--alert-blue-bg);font-weight:var(--fw-semibold);">`;
-  }
-  if (f.type === 'select') {
-    return `<select class="input" data-k="${f.k}">
-      ${f.opts.map(o => `<option value="${esc(o)}" ${o === v ? 'selected' : ''}>${esc(o)}</option>`).join('')}
-    </select>`;
-  }
-  if (f.type === 'date') {
-    return `<input type="date" class="input" data-k="${f.k}" value="${esc(v)}">`;
-  }
-  const align = f.type === 'num' ? ' style="text-align:right;"' : '';
-  const dv = f.type === 'num' ? (v ? won(v) : '') : v;
-  return `<input type="text" class="input" data-k="${f.k}" data-type="${f.type}" value="${esc(dv)}"${align}>`;
-}
-
-function blockHtml(block, rec) {
-  return `
-    <fieldset style="border:1px solid var(--border);border-radius:4px;padding:var(--sp-3);margin-bottom:var(--sp-3);">
-      <legend style="font-size:var(--fs-xs);font-weight:var(--fw-semibold);color:var(--text-sub);padding:0 6px;">${esc(block.title)}</legend>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2) var(--sp-3);">
-        ${block.fields.map(f => `
-          <label style="display:flex;flex-direction:column;gap:2px;">
-            <span style="font-size:var(--fs-2xs);color:var(--text-muted);">${esc(f.label)}${f.calc ? ' (자동)' : ''}</span>
-            ${fieldInputHtml(f, rec ? rec[f.k] : '')}
-          </label>`).join('')}
-      </div>
-    </fieldset>`;
-}
-
-function openSettleDialog(rec) {
-  const isEdit = !!rec;
-  const month = (rec && rec.settle_month) || defaultMonth();
-
-  const doneSettlements = (store.settlements || []).filter(s =>
-    !s._deleted && (s.settlement_status || s.status) === '정산완료');
-
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:var(--c-overlay-dark,rgba(0,0,0,0.4));z-index:9999;display:flex;align-items:center;justify-content:center;padding:var(--sp-4);';
-  overlay.innerHTML = `
-    <div style="background:var(--bg-card,#fff);border-radius:6px;width:100%;max-width:880px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;">
-      <header style="display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--border);">
-        <span style="font-size:var(--fs-md);font-weight:var(--fw-semibold);flex:1;">${isEdit ? '정산 수정' : '정산 등록'}${isEdit ? ` · ${esc(rec.admin_settlement_code || '')}` : ''}</span>
-        <button class="btn btn-sm btn-ghost" id="asClose"><i class="ph ph-x"></i></button>
-      </header>
-      <div style="flex:1;overflow-y:auto;padding:var(--sp-4);">
-        <div style="display:flex;gap:var(--sp-3);align-items:flex-end;margin-bottom:var(--sp-3);flex-wrap:wrap;">
-          <label style="display:flex;flex-direction:column;gap:2px;">
-            <span style="font-size:var(--fs-2xs);color:var(--text-muted);">정산월 *</span>
-            <input type="month" class="input" id="asDlgMonth" value="${esc(month)}" style="width:150px;">
-          </label>
-          ${!isEdit ? `
-          <label style="display:flex;flex-direction:column;gap:2px;flex:1;min-width:220px;">
-            <span style="font-size:var(--fs-2xs);color:var(--text-muted);">정산완료 건 불러오기 (A블록 자동채움)</span>
-            <select class="input" id="asPrefill">
-              <option value="">— 직접 입력 —</option>
-              ${doneSettlements.map(s => `<option value="${esc(s._key)}">${esc((s.car_number || s.car_number_snapshot || '') + ' · ' + (s.customer_name || '') + ' · ' + (s.contract_code || ''))}</option>`).join('')}
-            </select>
-          </label>` : ''}
-        </div>
-        ${BLOCKS.map(b => blockHtml(b, rec)).join('')}
-        <label style="display:flex;flex-direction:column;gap:2px;margin-bottom:var(--sp-3);">
-          <span style="font-size:var(--fs-2xs);color:var(--text-muted);">비고</span>
-          <textarea class="input" data-k="note" style="height:48px;">${esc(rec ? (rec.note || '') : '')}</textarea>
-        </label>
-      </div>
-      <footer style="display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-3) var(--sp-4);border-top:1px solid var(--border);">
-        <span style="font-size:var(--fs-xs);color:var(--text-sub);">
-          공급사 청구 <b id="asSumBill">0</b> · 에이전시 지급 <b id="asSumPay">0</b> ·
-          <span style="color:var(--text-link);">당월 수익 <b id="asSumProfit">0</b></span>
-        </span>
-        <button class="btn btn-sm btn-primary" id="asSave" style="margin-left:auto;">${isEdit ? '저장' : '등록'}</button>
-      </footer>
-    </div>`;
-  document.body.appendChild(overlay);
-
-  const close = () => overlay.remove();
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-  overlay.querySelector('#asClose').addEventListener('click', close);
-
-  const gather = () => {
-    const d = {};
-    overlay.querySelectorAll('[data-k]').forEach(el => {
-      if (el.dataset.calc) return;
-      const f = FIELD_BY_K[el.dataset.k];
-      let v = el.value;
-      if (f && f.type === 'num') v = num(v);
-      d[el.dataset.k] = v;
-    });
-    return d;
-  };
-  const refreshCalc = () => {
-    const c = compute(gather());
-    overlay.querySelectorAll('[data-calc]').forEach(el => {
-      if (c[el.dataset.k] != null) el.value = won(c[el.dataset.k]);
-    });
-    overlay.querySelector('#asSumBill').textContent = won(c.provider_bill) + '원';
-    overlay.querySelector('#asSumPay').textContent = won(c.agency_pay) + '원';
-    overlay.querySelector('#asSumProfit').textContent = won(c.monthly_profit) + '원';
-  };
-
-  overlay.querySelectorAll('input[data-type="num"], select[data-k], input[data-type="text"], input[type="date"]').forEach(el => {
-    el.addEventListener('input', () => {
-      if (el.dataset.type === 'num') el.value = el.value ? won(el.value) : '';
-      refreshCalc();
-    });
-  });
-
-  overlay.querySelector('#asPrefill')?.addEventListener('change', (e) => {
-    const s = (store.settlements || []).find(x => x._key === e.target.value);
-    if (!s) return;
-    const set = (k, v) => { const el = overlay.querySelector(`[data-k="${k}"]`); if (el && v != null && v !== '') el.value = (FIELD_BY_K[k]?.type === 'num') ? won(v) : v; };
-    set('contract_code', s.contract_code);
-    set('car_number', s.car_number || s.car_number_snapshot);
-    set('model_name', s.sub_model_snapshot || s.model_snapshot || s.vehicle_name_snapshot);
-    set('customer_name', s.customer_name);
-    set('provider_name', providerLabelByCode(s.provider_company_code || s.partner_code, store) || s.provider_name || s.provider_company_code);
-    set('agent_name', s.agent_code);
-    set('contract_term', s.term ? s.term + '개월' : (s.rent_month ? s.rent_month + '개월' : ''));
-    set('deposit', s.deposit_amount);
-    set('contract_rent', s.rent_amount);
-    set('sale_fee', s.fee_amount);
-    const stEl = overlay.querySelector('[data-k="settle_status"]');
-    if (stEl) stEl.value = '정산완료';
-    refreshCalc();
-  });
-
-  overlay.querySelector('#asSave').addEventListener('click', async () => {
-    const d = gather();
-    d.settle_month = overlay.querySelector('#asDlgMonth').value || defaultMonth();
-    if (!d.settle_month) { showToast('정산월을 선택하세요', 'error'); return; }
-    const calc = compute(d);
-    const payload = { ...d, ...calc, completed: d.settle_status === '정산완료', updated_by: store.currentUser?.email || '', updated_at: Date.now() };
-
-    const btn = overlay.querySelector('#asSave');
-    btn.disabled = true;
-    try {
-      if (isEdit) await updateRecord(`admin_settlements/${rec._key}`, payload);
-      else await createAdminSettlement(payload);
-      // 등록한 건이 보이도록 기간을 그 월로 이동
-      const [yy, mm] = d.settle_month.split('-').map(Number);
-      if (yy && mm) { _pY = yy; _pM = mm; }
-      showToast(isEdit ? '정산 저장됨' : '정산 등록됨');
-      close();
-    } catch (err) {
-      console.error('[admin-settle] save', err);
-      showToast('저장 실패 — ' + (err.message || err), 'error');
-      btn.disabled = false;
-    }
-  });
-
-  refreshCalc();
-}
