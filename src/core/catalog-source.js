@@ -151,6 +151,50 @@ export function getCatalogById(catalog_id) {
   return _index[catalog_id] || null;
 }
 
+/** 모델명 → 제조사 (catalog model_root 매칭). 제조사 미입력 시 1차 추론용. */
+export function catalogMakerByModel(model) {
+  if (!_index || !model) return '';
+  const norm = (s) => String(s || '').toLowerCase().replace(/\s+/g, '');
+  const n = norm(model);
+  if (n.length < 2) return '';
+  for (const c of Object.values(_index)) {
+    if (!c.model_root) continue;
+    const nm = norm(c.model_root);
+    if (nm === n || n.includes(nm) || nm.includes(n)) return c.maker;
+  }
+  return '';
+}
+
+/* 수입/국산 브랜드 패턴 — 제조사 미입력 시 모델·트림 문자열로 추론 (catalog 매칭 실패 후 fallback). */
+const MAKER_PATTERNS = [
+  [/\bBMW\b|[1-8]시리즈|\bX[1-7]\b|\bM[1-8]\b|\b[1-8]\d{2}[id]\b|xDrive|그란\s?쿠페|미니쿠퍼/i, 'BMW'],
+  [/벤츠|benz|mercedes|[ESCGAV]\s?클래스|\bGL[CESAB]\b|\b[ESCG]\d{3}[de]?\b|AMG|4MATIC|마이바흐|EQ[ABCES]/i, '벤츠'],
+  [/아우디|audi|\b[AQ][1-8]\b|\bRS\s?[1-8]\b|\bSQ[1-8]\b|TFSI|quattro|콰트로|e-?트론|e-?tron/i, '아우디'],
+  [/폭스바겐|volkswagen|골프|티구안|아테온|파사트|제타|투아렉/i, '폭스바겐'],
+  [/볼보|volvo|\bXC[1-9]0\b|\b[SV][6-9]0\b/i, '볼보'],
+  [/테슬라|tesla|model\s?[3sxy]|모델\s?[3sxy와이쓰리]/i, '테슬라'],
+  [/포르쉐|porsche|카이엔|마칸|파나메라|\b911\b|타이칸|박스터|카이맨/i, '포르쉐'],
+  [/렉서스|lexus|\b[EINRU]X\d{3}\b|\bES\d{3}\b|\bLS\d{3}\b/i, '렉서스'],
+  [/\bMINI\b|미니쿠퍼|쿠퍼|countryman|클럽맨/i, 'MINI'],
+  [/지프|jeep|랭글러|체로키|컴패스|레니게이드|그랜드체로키/i, '지프'],
+  [/랜드로버|land\s?rover|레인지로버|디스커버리|디펜더|이보크/i, '랜드로버'],
+  [/포드|ford|머스탱|익스플로러|토러스|썬더버드/i, '포드'],
+  [/혼다|honda|어코드|시빅|CR-?V|파일럿|오딧세이/i, '혼다'],
+  [/마세라티|maserati|기블리|르반떼|콰트로포르테|그레칼레/i, '마세라티'],
+  [/그랑\s?콜레오스|아르카나|QM6|SM6|XM3|마스터|르노|콜레오스/i, '르노'],
+  [/쉐보레|chevrolet|말리부|트래버스|트랙스|이쿼녹스|콜로라도|트레일블레이저|볼트/i, '쉐보레'],
+  [/KGM|KG모빌리티|쌍용|토레스|렉스턴|티볼리|코란도|액티언/i, 'KGM'],
+];
+
+/** 모델·트림 문자열 → 제조사 추론 (catalog 매칭 우선, 실패 시 브랜드 패턴). 제조사 미입력 매물용. */
+export function inferMaker(model, text = '') {
+  const byCat = catalogMakerByModel(model);
+  if (byCat) return byCat;
+  const blob = `${model || ''} ${text || ''}`;
+  for (const [re, mk] of MAKER_PATTERNS) if (re.test(blob)) return mk;
+  return '';
+}
+
 /**
  * maker + model + 연식(최초등록일/연식) → catalog 세대(세부모델). "어떤 공급사가 어떻게 입력해도" 강건하게:
  *  - maker/model 정규화 fuzzy 매칭 (공백·대소문자·the/신형/더뉴 제거, 부분일치)

@@ -21,7 +21,7 @@ import { loadIndex } from '../core/vehicle-matrix.js';
 import { renderMasterCascade } from '../core/master-cascade.js';
 import { buildMasterTree, masterTreeStats, parseTrim } from '../core/vehicle-master-tree.js';
 import { powertrainFromProduct } from '../core/powertrain-from-product.js';
-import { ensureCatalogSource, catalogSubModelByYear } from '../core/catalog-source.js';
+import { ensureCatalogSource, catalogSubModelByYear, inferMaker } from '../core/catalog-source.js';
 
 let _activeTab = 'jonghap';
 let _syncFetched = null;
@@ -644,6 +644,8 @@ function renderSyncTab(el) {
       // ── 5단계 자동분류 (어떤 공급사가 어떻게 입력해도 웬만큼 찾아넣게) ──
       await ensureCatalogSource();   // catalog _index 로드 (세부모델 연식매칭용)
       for (const p of items) {
+        // ⓪ 제조사 미입력 → 추론 (catalog 모델매칭 → 수입 브랜드 패턴). 예: "320I"→BMW, "E200"→벤츠
+        if (!p.maker) p.maker = inferMaker(p.model, `${p.sub_model || ''} ${p.trim_name || ''} ${p.raw_model_full || ''}`);
         // ① 세부모델(세대) — 연식+모델로 catalog 세대 배정 (시트 세부모델이 모델레벨이라 보강)
         const sm = catalogSubModelByYear(p.maker, p.model, p.first_registration_date || p.year);
         if (sm) { p.sub_model = sm.sub_model; p.catalog_id = sm.catalog_id; }
