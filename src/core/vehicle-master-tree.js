@@ -15,10 +15,15 @@
  */
 
 /* 스펙 토큰 판별 — 모델구분에 속하는 토큰인가 */
-const FUEL = new Set(['가솔린', '디젤', 'LPG', 'LPi', 'LPI', '하이브리드', 'HEV', '전기', 'EV', '수소', 'PHEV', 'FCEV']);
+const FUEL = new Set(['가솔린', '휘발유', '디젤', '경유', 'LPG', 'LPi', 'LPI', '하이브리드', 'HEV', '전기', 'EV', '수소', 'PHEV', 'FCEV']);
+// 연료 표기 통일 — 국어(경유/휘발유) → 표준(디젤/가솔린)
+const FUEL_NORM = { '경유': '디젤', '휘발유': '가솔린' };
+const normFuel = (t) => FUEL_NORM[t] || t;
 const BATTERY = new Set(['스탠다드', '스탠더드', '롱레인지', '롱 레인지']);
 const DRIVE = new Set(['AWD', '4WD', '2WD', 'RWD', 'FWD', 'e-4WD', '2륜', '4륜', '4MATIC', 'xDrive']);
 const TURBO = new Set(['T', '터보', 'T-GDI', 'GDI', 'e-VGT', 'TDI', 'T8', 'T6', 'T5']);
+// 트림에 섞이면 안 되는 노이즈 토큰 — 등록구분·세대마커·마케팅 (트림에서 제거)
+const NOISE_TRIM = new Set(['더', '올', '디', '뉴', '신형', '렌터카', '렌트', '렌트카', '자가용', '영업용', '리스', '법인', '런칭', 'the', 'The']);
 
 function isSpecToken(tok) {
   if (!tok) return false;
@@ -55,12 +60,22 @@ export function parseTrim(raw) {
     if (isSpecToken(toks[i])) cut = i;
     else break;
   }
-  const trimToks = toks.slice(0, cut);
+  const trimToksRaw = toks.slice(0, cut);
   const specToks = toks.slice(cut);
+
+  // 연료 토큰은 트림 앞/중간에 있어도 파워트레인으로 이동, 노이즈 토큰(렌터카/더/뉴/연식MY 등)은 제거.
+  //  예: "경유 프레스티지 2.2 2WD" → 트림 "프레스티지" / 파워트레인 "디젤 2.2 2WD"
+  const frontFuel = [];
+  const trimToks = [];
+  for (const t of trimToksRaw) {
+    if (FUEL.has(t)) frontFuel.push(t);
+    else if (!NOISE_TRIM.has(t) && !/^\d{2,4}\s*MY$/i.test(t)) trimToks.push(t);
+  }
 
   // 스펙 토큰을 슬롯별 분류 후 표준 순서로 재조립
   const slots = { fuel: [], disp: [], battery: [], turbo: [], drive: [], seats: [], etc: [] };
   for (const t of specToks) slots[classifySpec(t)].push(t);
+  slots.fuel = [...frontFuel, ...slots.fuel].map(normFuel);   // 경유→디젤, 휘발유→가솔린
   const ordered = [
     ...slots.fuel,
     ...slots.disp,

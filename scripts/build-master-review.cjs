@@ -15,10 +15,13 @@ const path = require('path');
 const DIR = path.join(__dirname, '..', 'public', 'data', 'car-master');
 
 /* ── parseTrim — vehicle-master-tree.js 와 동일 로직 (파워트레인/트림 분해) ── */
-const FUEL = new Set(['가솔린', '디젤', 'LPG', 'LPi', 'LPI', '하이브리드', 'HEV', '전기', 'EV', '수소', 'PHEV', 'FCEV']);
+const FUEL = new Set(['가솔린', '휘발유', '디젤', '경유', 'LPG', 'LPi', 'LPI', '하이브리드', 'HEV', '전기', 'EV', '수소', 'PHEV', 'FCEV']);
+const FUEL_NORM = { '경유': '디젤', '휘발유': '가솔린' };
+const normFuel = (t) => FUEL_NORM[t] || t;
 const BATTERY = new Set(['스탠다드', '스탠더드', '롱레인지', '롱 레인지']);
 const DRIVE = new Set(['AWD', '4WD', '2WD', 'RWD', 'FWD', 'e-4WD', '2륜', '4륜', '4MATIC', 'xDrive']);
 const TURBO = new Set(['T', '터보', 'T-GDI', 'GDI', 'e-VGT', 'TDI', 'T8', 'T6', 'T5']);
+const NOISE_TRIM = new Set(['더', '올', '디', '뉴', '신형', '렌터카', '렌트', '렌트카', '자가용', '영업용', '리스', '법인', '런칭', 'the', 'The']);
 function isSpecToken(t) {
   if (!t) return false;
   if (FUEL.has(t) || BATTERY.has(t) || DRIVE.has(t) || TURBO.has(t)) return true;
@@ -44,9 +47,16 @@ function parseTrim(raw) {
   const toks = s.split(' ');
   let cut = toks.length;
   for (let i = toks.length - 1; i >= 0; i--) { if (isSpecToken(toks[i])) cut = i; else break; }
-  const trimToks = toks.slice(0, cut), specToks = toks.slice(cut);
+  const trimToksRaw = toks.slice(0, cut), specToks = toks.slice(cut);
+  // 연료 토큰은 트림 앞/중간에 있어도 파워트레인으로, 노이즈(렌터카/더/뉴/연식MY)는 제거
+  const frontFuel = [], trimToks = [];
+  for (const t of trimToksRaw) {
+    if (FUEL.has(t)) frontFuel.push(t);
+    else if (!NOISE_TRIM.has(t) && !/^\d{2,4}\s*MY$/i.test(t)) trimToks.push(t);
+  }
   const slots = { fuel: [], disp: [], battery: [], turbo: [], drive: [], seats: [], etc: [] };
   for (const t of specToks) slots[classifySpec(t)].push(t);
+  slots.fuel = [...frontFuel, ...slots.fuel].map(normFuel);   // 경유→디젤, 휘발유→가솔린
   const variant = [...slots.fuel, ...slots.disp, ...slots.battery, ...slots.turbo, ...slots.drive, ...slots.seats, ...slots.etc].join(' ');
   return { variant, trim: trimToks.length ? trimToks.join(' ') : '(기본)' };
 }
