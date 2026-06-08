@@ -21,6 +21,7 @@ import { loadIndex } from '../core/vehicle-matrix.js';
 import { renderMasterCascade } from '../core/master-cascade.js';
 import { buildMasterTree, masterTreeStats, parseTrim } from '../core/vehicle-master-tree.js';
 import { powertrainFromProduct } from '../core/powertrain-from-product.js';
+import { ensureCatalogSource, catalogSubModelByYear } from '../core/catalog-source.js';
 
 let _activeTab = 'jonghap';
 let _syncFetched = null;
@@ -640,12 +641,16 @@ function renderSyncTab(el) {
       } else {
         for (const p of items) if (p.maker && p.model) matched++;
       }
-      // 파워트레인(5단계) 분류 — 연료·배기량·구동/인승 구조화 필드로 variant 구성 + 트림 클린.
-      //  (시트 트림이 지저분해 parseTrim 대신 powertrainFromProduct 휴리스틱. "얼추" 맞춤 — 틀린건 재고관리 개별수정)
+      // ── 5단계 자동분류 (어떤 공급사가 어떻게 입력해도 웬만큼 찾아넣게) ──
+      await ensureCatalogSource();   // catalog _index 로드 (세부모델 연식매칭용)
       for (const p of items) {
+        // ① 세부모델(세대) — 연식+모델로 catalog 세대 배정 (시트 세부모델이 모델레벨이라 보강)
+        const sm = catalogSubModelByYear(p.maker, p.model, p.first_registration_date || p.year);
+        if (sm) { p.sub_model = sm.sub_model; p.catalog_id = sm.catalog_id; }
+        // ② 파워트레인 + 세부트림 — 연료·배기량·구동/인승 구조화 필드로 variant, 트림은 나머지(노이즈 제거)
         const { variant, trim } = powertrainFromProduct(p);
         if (variant) p.variant = variant;
-        if (trim) p.trim_name = trim;     // 모델·파워트레인 토큰 제거한 클린 트림 (있을 때만)
+        if (trim) p.trim_name = trim;
       }
       _syncFetched = data;
       const unmatched = items.length - matched;
@@ -816,11 +821,13 @@ function renderSyncTab(el) {
           updates[`products/${found._key}/location`] = p.location;
           if (p.photo_link) updates[`products/${found._key}/photo_link`] = p.photo_link;   // 시트에 사진 링크 있을 때만 (빈값으로 기존 사진 덮어쓰기 방지)
           updates[`products/${found._key}/updated_at`] = p.updated_at;
-          // 차종 분류 (maker/model/sub_model) — 비어있을 때만 자동 채움 (수기 보정 보존)
-          if (!found.maker     && p.maker)     updates[`products/${found._key}/maker`]     = p.maker;
-          if (!found.model     && p.model)     updates[`products/${found._key}/model`]     = p.model;
-          if (!found.sub_model && p.sub_model) updates[`products/${found._key}/sub_model`] = p.sub_model;
-          // 파워트레인(5단계) — 기존 매물도 분류되게 항상 갱신 (powertrainFromProduct 결과). 트림은 클린값 있을 때만.
+          // 차종 분류 (maker/model) — 비어있을 때만 자동 채움
+          if (!found.maker && p.maker) updates[`products/${found._key}/maker`] = p.maker;
+          if (!found.model && p.model) updates[`products/${found._key}/model`] = p.model;
+          // 세부모델(세대)·catalog_id — 연식매칭 결과로 항상 갱신 (시트는 모델레벨 → 정확한 세대로)
+          if (p.sub_model)  updates[`products/${found._key}/sub_model`]  = p.sub_model;
+          if (p.catalog_id) updates[`products/${found._key}/catalog_id`] = p.catalog_id;
+          // 파워트레인(5단계) — 항상 갱신 (powertrainFromProduct 결과). 트림은 클린값 있을 때만.
           if (p.variant)             updates[`products/${found._key}/variant`]   = p.variant;
           if (p.trim_name)           updates[`products/${found._key}/trim_name`] = p.trim_name;
           else if (!found.trim_name) updates[`products/${found._key}/trim_name`] = '';

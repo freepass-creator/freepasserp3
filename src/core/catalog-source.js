@@ -150,3 +150,47 @@ export function getCatalogById(catalog_id) {
   if (!catalog_id || !_index) return null;
   return _index[catalog_id] || null;
 }
+
+/**
+ * maker + model + 연식(최초등록일/연식) → catalog 세대(세부모델). "어떤 공급사가 어떻게 입력해도" 강건하게:
+ *  - maker/model 정규화 fuzzy 매칭 (공백·대소문자·the/신형/더뉴 제거, 부분일치)
+ *  - 하이브리드 title 제외 (하이브리드=파워트레인 → 세부모델은 기본세대)
+ *  - 연식(YYYY-MM)이 속한 세대, 없으면 가장 최근 세대 fallback
+ * 반환: { sub_model, catalog_id } | null
+ */
+export function catalogSubModelByYear(maker, model, regDate) {
+  if (!_index) return null;
+  const norm = (s) => String(s || '').toLowerCase().replace(/\s+/g, '').replace(/the|신형|올뉴|디올뉴|더뉴|뉴/g, '');
+  const nMk = norm(maker), nMd = norm(model);
+  if (!nMd) return null;
+  let cands = Object.values(_index).filter((c) => {
+    if (!c.model_root) return false;
+    const mk = !nMk || norm(c.maker) === nMk || norm(c.maker).includes(nMk) || nMk.includes(norm(c.maker));
+    const md = norm(c.model_root) === nMd || nMd.includes(norm(c.model_root)) || norm(c.model_root).includes(nMd);
+    return mk && md;
+  });
+  if (!cands.length) return null;
+  const base = cands.filter((c) => !/HEV|하이브리드/.test(c.title || ''));
+  if (base.length) cands = base;
+  // 연식 파싱 — "2023-05", "23-5-7"(YY-M-D), "23년식" 등 다양한 공급사 표기 흡수 → YYYY-MM
+  const parseYM = (s) => {
+    s = String(s || '').trim();
+    let m = s.match(/(\d{4})[-.\/]?\s*(\d{1,2})?/);                    // YYYY[-MM]
+    if (m) return m[1] + '-' + String(m[2] || '1').padStart(2, '0');
+    m = s.match(/^(\d{2})[-.\/](\d{1,2})/) || s.match(/^(\d{2})\s*년/); // YY-MM / YY년식
+    if (m) return (2000 + Number(m[1])) + '-' + String(m[2] || '1').padStart(2, '0');
+    return '';
+  };
+  const ym = parseYM(regDate);
+  if (ym) {
+    const hit = cands.find((c) => {
+      const ys = (c.year_start || '').slice(0, 7) || '0000-00';
+      const ye = c.year_end === '현재' ? '9999-99' : ((c.year_end || '').slice(0, 7) || '9999-99');
+      return ym >= ys && ym <= ye;
+    });
+    if (hit) return { sub_model: titleToSubModel(hit.maker, hit.title), catalog_id: hit.id };
+  }
+  // 연식 매칭 실패 → 가장 최근 세대
+  cands.sort((a, b) => (b.year_start || '').localeCompare(a.year_start || ''));
+  return { sub_model: titleToSubModel(cands[0].maker, cands[0].title), catalog_id: cands[0].id };
+}
