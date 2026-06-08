@@ -20,6 +20,7 @@ import { rowsToTsv } from '../core/jonghap-export.js';
 import { loadIndex } from '../core/vehicle-matrix.js';
 import { renderMasterCascade } from '../core/master-cascade.js';
 import { buildMasterTree, masterTreeStats, parseTrim } from '../core/vehicle-master-tree.js';
+import { powertrainFromProduct } from '../core/powertrain-from-product.js';
 
 let _activeTab = 'jonghap';
 let _syncFetched = null;
@@ -639,8 +640,13 @@ function renderSyncTab(el) {
       } else {
         for (const p of items) if (p.maker && p.model) matched++;
       }
-      // ※ 파워트레인(variant) 자동분리는 단순 parseTrim 으로 불가 — 시트 트림이 지저분함
-      //   (예 "그랑 콜레오스 하이브리드 E-Tech 1.5 터보 아이코닉 2WD"). 매물→catalog 표준 매칭 필요(별도).
+      // 파워트레인(5단계) 분류 — 연료·배기량·구동/인승 구조화 필드로 variant 구성 + 트림 클린.
+      //  (시트 트림이 지저분해 parseTrim 대신 powertrainFromProduct 휴리스틱. "얼추" 맞춤 — 틀린건 재고관리 개별수정)
+      for (const p of items) {
+        const { variant, trim } = powertrainFromProduct(p);
+        if (variant) p.variant = variant;
+        if (trim) p.trim_name = trim;     // 모델·파워트레인 토큰 제거한 클린 트림 (있을 때만)
+      }
       _syncFetched = data;
       const unmatched = items.length - matched;
       devLog(`[sync] ✓ ${data.synced}건 · 스킵 ${data.skipped}건 · 자동분류 ${matched}/${items.length}`);
@@ -694,6 +700,7 @@ function renderSyncTab(el) {
               <th style="padding:4px 6px;text-align:left;">제조사</th>
               <th style="padding:4px 6px;text-align:left;">모델</th>
               <th style="padding:4px 6px;text-align:left;">세부모델</th>
+              <th style="padding:4px 6px;text-align:left;">파워트레인</th>
               <th style="padding:4px 6px;text-align:left;">연식</th>
               <th style="padding:4px 6px;text-align:right;">주행거리</th>
               <th style="padding:4px 6px;text-align:left;">연료</th>
@@ -734,6 +741,7 @@ function renderSyncTab(el) {
                 ${autoMap(p.maker)}
                 ${autoMap(p.model)}
                 ${autoMap(p.sub_model)}
+                ${autoMap(p.variant)}
                 ${map(p.year)}
                 ${td(p.mileage ? p.mileage.toLocaleString('ko-KR') : empty, { r: true, bg: 'var(--alert-blue-bg)' })}
                 ${map(p.fuel_type)}
@@ -806,11 +814,14 @@ function renderSyncTab(el) {
           updates[`products/${found._key}/location`] = p.location;
           if (p.photo_link) updates[`products/${found._key}/photo_link`] = p.photo_link;   // 시트에 사진 링크 있을 때만 (빈값으로 기존 사진 덮어쓰기 방지)
           updates[`products/${found._key}/updated_at`] = p.updated_at;
-          // 차종 분류 (maker/model/sub_model/trim) — 비어있을 때만 자동 채움 (수기 보정 보존)
+          // 차종 분류 (maker/model/sub_model) — 비어있을 때만 자동 채움 (수기 보정 보존)
           if (!found.maker     && p.maker)     updates[`products/${found._key}/maker`]     = p.maker;
           if (!found.model     && p.model)     updates[`products/${found._key}/model`]     = p.model;
           if (!found.sub_model && p.sub_model) updates[`products/${found._key}/sub_model`] = p.sub_model;
-          if (!found.trim_name && p.trim_name) updates[`products/${found._key}/trim_name`] = p.trim_name;
+          // 파워트레인(5단계) — 기존 매물도 분류되게 항상 갱신 (powertrainFromProduct 결과). 트림은 클린값 있을 때만.
+          if (p.variant)             updates[`products/${found._key}/variant`]   = p.variant;
+          if (p.trim_name)           updates[`products/${found._key}/trim_name`] = p.trim_name;
+          else if (!found.trim_name) updates[`products/${found._key}/trim_name`] = '';
           // 시트의 정책코드/공급코드 — 시트값 명시되면 항상 우선 (사용자 마스터 데이터)
           if (p.policy_code)            updates[`products/${found._key}/policy_code`]            = p.policy_code;
           if (p.provider_company_code)  updates[`products/${found._key}/provider_company_code`]  = p.provider_company_code;
