@@ -89,12 +89,14 @@ import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/c
 import { renderSettings } from './pages/settings.js';
 import { renderDev } from './pages/dev.js';
 import { renderAdminOps } from './pages/admin-ops.js';
+import { renderAdminSettlement } from './pages/admin-settlement.js';
 import { isSystemAdmin } from './core/admin-access.js';
 import { setPageActions } from './core/page-actions.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
 window.renderDev = renderDev;
 window.renderAdminOps = renderAdminOps;
+window.renderAdminSettlement = renderAdminSettlement;
 
 /* ── 페이지별 하단 액션바 — index.html showPage() 에서 호출 ── */
 let _productClipboard = null;
@@ -499,6 +501,8 @@ window.refreshPageActions = function(pageName) {
           onClick: () => deleteSettlement(activeId) },
       ],
     });
+  } else if (p === 'admin-settle') {
+    window.buildAdminSettleActions?.();
   } else if (p === 'users') {
     const hasSelection = !!activeId;
     // 좌측 빠른필터 — 전체/승인/대기 (userFilter.status) + 소속코드 dropdown
@@ -1263,6 +1267,8 @@ function startHydration() {
   watchCollection('settlements', (list) => { store.settlements = list || []; renderFilteredSettlements();    updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage); });
+  watchCollection('admin_settlements', (list) => { store.adminSettlements = list || [];
+    if (document.querySelector('.pt-page[data-page="admin-settle"]')?.classList.contains('active')) window.renderAdminSettlement?.(); });
   // partners 갱신 시 dependent list 재렌더는 디바운스 (연속 변경 시 1번만)
   let _partnersRefreshT;
   const refreshPartnersDependents = () => {
@@ -2360,21 +2366,11 @@ function bindLogout() {
     location.hash = 'settings';
   });
 
-  // 토픽바 우측 사용자 메뉴 — 설정 / 계정정보 / 로그아웃 진입점
-  document.getElementById('ptTbUserMenu')?.addEventListener('click', async (e) => {
+  // 토픽바 우측 사용자 영역 — 계정정보·로그아웃은 설정 페이지로 일원화. 클릭 시 설정 직행.
+  document.getElementById('ptTbUserMenu')?.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const { openContextMenu } = await import('./core/context-menu.js');
-    openContextMenu(e, [
-      { icon: 'ph ph-user-circle', label: '내 정보',     action: () => { location.hash = 'settings'; } },
-      { icon: 'ph ph-gear',        label: '설정',        action: () => { location.hash = 'settings'; } },
-      { icon: 'ph ph-key',         label: '비밀번호 변경', action: () => showToast('비밀번호 변경은 설정 페이지에서', 'info') },
-      { divider: true },
-      { icon: 'ph ph-sign-out', label: '로그아웃', danger: true, action: async () => {
-        await fbLogout();
-        location.reload();
-      }},
-    ]);
+    location.hash = 'settings';
   });
 
   // 알림 버튼 — 향후 알림 패널 연결 (현재는 placeholder)

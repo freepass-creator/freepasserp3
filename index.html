@@ -71,6 +71,7 @@
   <div class="pt-sb-bottom-group">
     <a href="#admin-chat" class="pt-sb-bottom-link pt-sb-bottom-admin-chat" id="sbAdminChat" data-page="admin-chat" title="관리자와 소통"><i class="ph ph-headset"></i><span class="sb-label">관리자 소통</span><span class="cnt" data-badge="admin-chat"></span></a>
     <a href="#admin" class="pt-sb-bottom-link pt-sb-bottom-admin" data-page="admin" title="관리자"><i class="ph ph-shield-star"></i><span class="sb-label">관리자</span></a>
+    <a href="#admin-settle" class="pt-sb-bottom-link pt-sb-bottom-admin-settle" data-page="admin-settle" title="관리자 정산 — 월별 수수료 정산"><i class="ph ph-calculator"></i><span class="sb-label">관리자 정산</span></a>
     <a href="#dev" class="pt-sb-bottom-link pt-sb-bottom-dev" data-page="dev" title="개발도구"><i class="ph ph-code"></i><span class="sb-label">개발도구</span></a>
     <a href="#settings" class="pt-sb-bottom-link" data-page="settings" title="설정"><i class="ph ph-gear"></i><span class="sb-label">설정</span></a>
   </div>
@@ -103,14 +104,12 @@
   <div class="pt-tb-inner" data-tb="partners" hidden></div>
   <div class="pt-tb-inner" data-tb="users" hidden></div>
 
-  <!-- ③ 우측: 알림 + 이름·직급 (사용자 메뉴 진입점) -->
+  <!-- ③ 우측: [전역 버튼 자리] + 알림 + 설정(계정·로그아웃은 설정 페이지로 일원화) -->
   <span class="pt-tb-global">
+    <!-- 전역 버튼 자리 — 향후 전역 액션 버튼을 여기에 추가 (#ptTbGlobalActions) -->
+    <span id="ptTbGlobalActions" class="pt-tb-global-actions"></span>
     <button class="pt-tb-icon" id="ptTbAlert" title="알림"><i class="ph ph-bell"></i></button>
-    <button class="pt-tb-user" id="ptTbUserMenu" title="계정 메뉴">
-      <span class="pt-tb-user-name">홍길동</span>
-      <span class="pt-tb-user-role">영업자</span>
-      <i class="ph ph-caret-down" style="font-size:10px;"></i>
-    </button>
+    <button class="pt-tb-icon" id="ptTbUserMenu" title="설정 · 계정"><i class="ph ph-gear"></i></button>
   </span>
 </header>
 
@@ -1104,6 +1103,8 @@
 <!-- 관리자 페이지 (admin 전용) — 외부상품 동기화 / 공지 -->
 <div class="pt-page" data-page="admin"></div>
 
+<div class="pt-page" data-page="admin-settle"></div>
+
 <!-- 관리자 소통 — workspace 와 분리, 채팅 전용. 4패널 ws4 구조 (목록 / 채팅 / 빈 / 빈) -->
 <div class="pt-page" data-page="admin-chat">
   <div class="ws4">
@@ -1276,8 +1277,9 @@
     policy:    '정책명·공급사·심사기준...',
     partners:  '파트너명·코드·담당자...',
     users:     '이름·이메일·회사·연락처...',
+    'admin-settle': '정산월·계약번호·차량번호·공급사·영업자...',
   };
-  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users','admin','settings','dev','admin-chat'];
+  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users','admin','admin-settle','settings','dev','admin-chat'];
   // 페이지 표시명 + 아이콘 — 토픽바 가운데 작업상태 표시
   const PAGE_TITLES = {
     search:    { icon: 'magnifying-glass', label: '상품 찾기' },
@@ -1289,6 +1291,7 @@
     partners:  { icon: 'handshake',        label: '파트너 관리' },
     users:     { icon: 'users-three',      label: '사용자 관리' },
     admin:     { icon: 'shield-star',      label: '관리자' },
+    'admin-settle': { icon: 'calculator',  label: '관리자 정산' },
     settings:  { icon: 'gear',             label: '설정' },
     dev:       { icon: 'code',             label: '개발도구' },
     'admin-chat': { icon: 'headset',       label: '관리자 소통' },
@@ -1323,6 +1326,8 @@
       window.renderDev?.();
     } else if (name === 'admin') {
       window.renderAdminOps?.();
+    } else if (name === 'admin-settle') {
+      window.renderAdminSettlement?.();
     } else if (name === 'admin-chat') {
       window.renderAdminChat?.();
     }

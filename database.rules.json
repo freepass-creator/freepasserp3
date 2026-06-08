@@ -66,6 +66,12 @@
       ".indexOn": ["contract_code", "settlement_status", "provider_company_code"]
     },
 
+    "admin_settlements": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      ".indexOn": ["settle_month", "settle_status", "contract_code"]
+    },
+
     "customers": {
       ".read": "auth != null",
       ".write": "auth != null",

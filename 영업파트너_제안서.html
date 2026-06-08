@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>freepass — 영업 파트너 모집 제안서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --brand:#fd7015; --brand2:#d95d09; --brand50:#fff2e8;
+    --navy:#16314d; --navy50:#eef3f8;
+    --safe:#15916b; --safe50:#e6f5ef;
+    --warn:#b9821a; --warn50:#fbf3e2;
+    --danger:#c0392b; --danger50:#fbeae8;
+    --ink:#1b2733; --ink2:#445466; --ink3:#7c8a98;
+    --line:#e2e8ef;
+  }
+  body{ background:#e9edf2; font-family:"Pretendard",-apple-system,system-ui,sans-serif; color:var(--ink); line-height:1.7; font-size:10.5pt; padding:24px 0; -webkit-font-smoothing:antialiased; }
+  .document{ width:210mm; min-height:297mm; margin:0 auto; background:#fff; padding:22mm 20mm; box-shadow:0 2px 24px rgba(22,49,77,.14); position:relative; }
+  .document + .document{ margin-top:24px; }
+
+  h1.cover-title{ font-size:27pt; font-weight:800; letter-spacing:-.5px; line-height:1.25; color:var(--navy); }
+  .cover-sub{ font-size:12pt; color:var(--ink3); margin-top:12px; font-weight:500; }
+  .cover-meta{ margin-top:28px; font-size:9.5pt; color:var(--ink3); border-top:2px solid var(--brand); padding-top:14px; }
+  .logo{ display:inline-flex; align-items:center; gap:10px; font-size:15pt; font-weight:800; color:var(--navy); margin-bottom:34px; }
+  .logo .mk{ width:32px; height:32px; border-radius:9px; background:var(--brand); color:#fff; display:grid; place-items:center; font-weight:900; }
+  .hero-tag{ display:inline-block; background:var(--brand50); color:var(--brand2); font-weight:800; font-size:10pt; padding:5px 13px; border-radius:999px; margin-bottom:18px; }
+
+  h2{ font-size:15pt; font-weight:800; color:var(--navy); margin:26px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--brand); display:flex; align-items:center; gap:9px; }
+  h2 .no{ background:var(--brand); color:#fff; width:24px; height:24px; border-radius:6px; display:grid; place-items:center; font-size:11pt; flex-shrink:0; }
+  h3{ font-size:11.5pt; font-weight:800; color:var(--brand2); margin:18px 0 7px; }
+  p{ margin:7px 0; }
+  ul,ol{ margin:7px 0 7px 20px; }
+  li{ margin:4px 0; }
+  strong{ font-weight:700; color:var(--navy); }
+  .lead{ font-size:11pt; color:var(--ink2); }
+
+  .box{ border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:12px 0; background:#fcfdfe; break-inside:avoid; }
+  .box.brand{ border-color:#f5cba8; background:var(--brand50); }
+  .box.safe{ border-color:#bfe3d3; background:var(--safe50); }
+  .box.warn{ border-color:#f0dcae; background:var(--warn50); }
+  .box.navy{ border-color:#c3d4e6; background:var(--navy50); }
+  .box-title{ font-weight:800; margin-bottom:6px; color:var(--navy); }
+
+  table{ width:100%; border-collapse:collapse; margin:12px 0; font-size:9.5pt; break-inside:avoid; }
+  th{ background:var(--navy); color:#fff; text-align:left; padding:8px 10px; font-weight:700; }
+  td{ border:1px solid var(--line); padding:8px 10px; vertical-align:top; }
+  tr:nth-child(even) td{ background:#f7f9fb; }
+  .c-red{ color:var(--danger); font-weight:700; }
+  .c-amber{ color:var(--warn); font-weight:700; }
+  .c-green{ color:var(--safe); font-weight:700; }
+  .c-brand{ color:var(--brand2); font-weight:700; }
+
+  .pill{ display:inline-block; padding:2px 9px; border-radius:999px; font-size:8.5pt; font-weight:700; }
+  .pill.brand{ background:var(--brand50); color:var(--brand2); }
+  .pill.green{ background:var(--safe50); color:var(--safe); }
+  .pill.amber{ background:var(--warn50); color:var(--warn); }
+
+  .lever{ display:flex; gap:12px; margin:11px 0; break-inside:avoid; }
+  .lever .n{ width:27px; height:27px; border-radius:8px; background:var(--brand); color:#fff; font-weight:800; display:grid; place-items:center; flex-shrink:0; font-size:11pt; }
+  .lever .b strong{ display:block; color:var(--navy); }
+
+  .flow{ background:var(--navy); color:#dfeaf3; border-radius:10px; padding:16px 18px; font-family:Consolas,Menlo,monospace; font-size:9pt; line-height:1.85; white-space:pre-wrap; margin:12px 0; }
+  .flow b{ color:#ffd0ab; }
+
+  .stat-row{ display:flex; gap:12px; margin:14px 0; break-inside:avoid; }
+  .stat{ flex:1; border:1px solid var(--line); border-radius:10px; padding:14px; text-align:center; background:#fcfdfe; }
+  .stat .v{ font-size:17pt; font-weight:800; color:var(--brand2); line-height:1.15; }
+  .stat .l{ font-size:9pt; color:var(--ink3); margin-top:6px; }
+
+  .quote{ border-left:3px solid var(--brand); padding:9px 14px; background:var(--brand50); border-radius:0 8px 8px 0; margin:11px 0; font-size:10.5pt; font-weight:600; color:var(--navy); }
+  .pagefoot{ position:absolute; bottom:10mm; left:20mm; right:20mm; border-top:1px solid var(--line); padding-top:6px; font-size:8pt; color:var(--ink3); display:flex; justify-content:space-between; }
+
+  .cta-band{ background:var(--navy); color:#fff; border-radius:12px; padding:22px 24px; margin-top:16px; }
+  .cta-band .big{ font-size:16pt; font-weight:800; }
+  .cta-band .sub{ color:#bcd0e2; margin-top:6px; font-size:10pt; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .document{ box-shadow:none; margin:0; width:auto; min-height:auto; page-break-after:always; }
+    @page{ size:A4; margin:0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 표지 ===== -->
+<div class="document">
+  <div class="logo"><span class="mk">F</span> freepass</div>
+  <div class="hero-tag">영업 파트너 모집</div>
+  <h1 class="cover-title">영업에만 집중하세요.<br>나머지는 freepass가 합니다.</h1>
+  <div class="cover-sub">렌트사 모으기 · 매물 · 홈페이지 · 매물 자동 연동 · 견적 · 정산까지<br>— 영업에 필요한 모든 도구를 갖춰 드립니다.</div>
+  <div class="cover-meta">
+    freepass · 손님 모집 영업 파트너 모집 제안서<br>
+    작성일 2026-06-05 · 본 제안서는 영업 파트너 모집용입니다.
+  </div>
+
+  <h2 style="margin-top:42px"><span class="no">!</span> 한 장 요약</h2>
+  <div class="box brand">
+    <div class="box-title">freepass가 하는 일</div>
+    <p>우리는 <strong>여러 렌트사를 한곳에 모으고, 그 중간에서 조율</strong>합니다. 흩어진 렌트사 매물을 통합하고, 가격·계약·정산을 표준화해, <strong>영업자가 어느 렌트사와도 따로 협상할 필요 없이</strong> 한 시스템으로 영업하게 합니다.</p>
+  </div>
+  <div class="box brand">
+    <div class="box-title">핵심 한 줄</div>
+    <p class="quote" style="margin:0">"매물도, 홈페이지도, 시스템도, 렌트사 조율도 우리가. <strong>당신은 손님만 모으면 됩니다.</strong>"</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="v">여러 렌트사</div><div class="l">통합 매물 한곳에</div></div>
+    <div class="stat"><div class="v">내 홈페이지</div><div class="l">제작 + 매물 자동연동</div></div>
+    <div class="stat"><div class="v">0원</div><div class="l">차량·재고·개발 부담</div></div>
+  </div>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>1</span></div>
+</div>
+
+<!-- ===== 1. 시장 기회 ===== -->
+<div class="document">
+  <h2><span class="no">1</span> 왜 지금, 이 시장인가</h2>
+
+  <h3>거절당한 사람들 — 가장 큰 미충족 시장</h3>
+  <p>일반 캐피탈·렌트사는 <strong>신용 1~5등급</strong>만 받습니다. 신용점수가 낮거나 소득 증빙이 어려운 사람은 <strong>차가 필요해도 빌릴 수 없습니다.</strong> 개인회생·저신용·프리랜서·자영업 초기 — 이 손님은 줄지 않습니다.</p>
+
+  <h3>그런데 영업자 혼자서는 받기 어렵다</h3>
+  <p>이 손님을 받으려면 <strong>다양한 매물</strong>(원하는 차가 제각각), <strong>여러 렌트사와의 거래</strong>, <strong>무보증·무심사 상품 설계</strong>, <strong>견적·계약·홈페이지</strong>가 다 필요합니다. 영업자 개인이 이걸 다 갖추긴 어렵습니다.</p>
+
+  <div class="box navy">
+    <p><strong>그래서 freepass:</strong> 흩어진 렌트사와 매물·상품·시스템을 <strong>우리가 모아 표준화</strong>합니다. 영업자는 갖춰진 판 위에서 <strong>영업만</strong> 하면 됩니다.</p>
+  </div>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>2</span></div>
+</div>
+
+<!-- ===== 2. 사업 모델 ===== -->
+<div class="document">
+  <h2><span class="no">2</span> 사업 모델 — freepass는 "중간"이다</h2>
+
+  <p class="lead">freepass는 차를 소유하지 않습니다. <strong>여러 렌트사를 모아 중간에서 조율하는 플랫폼</strong>입니다.</p>
+
+  <div class="flow">여러 렌트사 (A · B · C …)        ← 차량 보유 · 매물 공급
+        │   매물 / 가격
+        ▼
+   <b>freepass</b>  (통합 · 표준 견적 · 가격·계약·정산 조율)
+        │   매물·홈페이지·견적기·시스템 제공
+        ▼
+   <b>영업 파트너 (당신)</b>           ← 영업에만 집중
+        │   계약 메이드
+        ▼
+      손님 (월 대여료 + 본인 보험)</div>
+
+  <h3>중간에서 우리가 조율하는 것</h3>
+  <table>
+    <tr><th style="width:30%">조율 항목</th><th>영업자가 얻는 것</th></tr>
+    <tr><td><strong>매물 통합·중개</strong></td><td>여러 렌트사 매물을 한곳에서 — 손님이 원하는 차를 골라 견적</td></tr>
+    <tr><td><strong>가격·견적 표준화</strong></td><td>렌트사마다 다른 가격을 표준 룰로 통일 → 어디서 빌리든 같은 견적기</td></tr>
+    <tr><td><strong>상품·심사 표준화</strong></td><td>무보증·일반·무심사 상품과 심사 기준을 통일 제공</td></tr>
+    <tr><td><strong>계약·정산 조율</strong></td><td>렌트사별 계약·수수료·정산을 freepass가 중간에서 정리</td></tr>
+  </table>
+  <div class="box brand"><p>덕분에 영업자는 <strong>렌트사마다 따로 거래·협상·정산할 필요가 없습니다.</strong> 창구는 freepass 하나입니다.</p></div>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>3</span></div>
+</div>
+
+<!-- ===== 3. freepass가 영업자에게 주는 것 ===== -->
+<div class="document">
+  <h2><span class="no">3</span> freepass가 영업자에게 드리는 것 <span style="font-size:9pt;font-weight:500;color:var(--ink3)">— 이 제안의 핵심</span></h2>
+
+  <div class="lever"><div class="n">1</div><div class="b"><strong>여러 렌트사 통합 매물 풀</strong> 한 렌트사가 아니라 여러 곳의 매물을 한곳에서. 손님이 원하는 차를 "이건 없어요"가 아니라 "찾아드릴게요".</div></div>
+  <div class="lever"><div class="n">2</div><div class="b"><strong>영업자 전용 홈페이지 제작</strong> 당신 이름·브랜드의 홈페이지를 우리가 만들어 드립니다. 손님에게 보낼 "내 사이트"가 생깁니다.</div></div>
+  <div class="lever"><div class="n">3</div><div class="b"><strong>매물 자동 연동 (API)</strong> freepass의 출고 가능 매물이 <strong>당신 홈페이지에 실시간으로 자동 노출</strong>됩니다. 매물 등록·관리를 직접 안 해도 항상 최신 상태.</div></div>
+  <div class="lever"><div class="n">4</div><div class="b"><strong>신차 견적기</strong> 차종·옵션·약정을 고르면 월 대여료가 즉시 나오는 견적기. 손님 앞에서 바로 견적·상담.</div></div>
+  <div class="lever"><div class="n">5</div><div class="b"><strong>무보증·무심사 등 표준 상품</strong> 진입 장벽 낮춘 3종 상품을 그대로 제공 → 영업할 때 "이건 됩니다"가 많아집니다.</div></div>
+  <div class="lever"><div class="n">6</div><div class="b"><strong>계약·정산·관리 시스템</strong> 계약·고객·정산·문의를 한 시스템에서. 행정은 줄이고 영업 시간을 늘립니다.</div></div>
+
+  <div class="box safe">
+    <p><strong>한마디로:</strong> 매물·홈페이지·매물연동·견적·상품·정산 — 영업에 필요한 판을 freepass가 다 깔아 드립니다. <strong>당신은 영업에만 집중하세요.</strong></p>
+  </div>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>4</span></div>
+</div>
+
+<!-- ===== 4. 상품 라인업 ===== -->
+<div class="document">
+  <h2><span class="no">4</span> 상품 라인업 — 3종</h2>
+
+  <p class="lead">통일 산식: <strong>보증금 = 월 대여료 × N개월.</strong> 손님 상황에 따라 셋 중 하나로 매칭합니다.</p>
+
+  <table>
+    <tr><th style="width:22%">구분</th><th>무보증</th><th>일반 (유보증)</th><th>무심사</th></tr>
+    <tr><td><strong>소득 심사</strong></td><td class="c-green">있음</td><td class="c-green">있음</td><td class="c-brand">없음(점수 무관)</td></tr>
+    <tr><td><strong>보증금</strong></td><td>0</td><td>월 × 3~6</td><td>월 × 6~12</td></tr>
+    <tr><td><strong>보험</strong></td><td>본인 1년 선납</td><td>본인 가입</td><td>본인 가입</td></tr>
+    <tr><td><strong>타겟 손님</strong></td><td>소득O · 목돈X</td><td>안정 직장 · 여유O</td><td>소득입증X · 목돈O</td></tr>
+  </table>
+
+  <h3>손님 ↔ 상품 매칭</h3>
+  <table>
+    <tr><th style="width:20%"></th><th>목돈 있음</th><th>목돈 없음</th></tr>
+    <tr><td><strong>소득 가능</strong></td><td>일반 (유보증)</td><td>무보증</td></tr>
+    <tr><td><strong>소득 입증 X</strong></td><td>무심사 (고액 보증)</td><td>가입 불가 (자연 거름)</td></tr>
+  </table>
+  <div class="box brand"><p>4사분면 중 <strong>3개를 커버</strong> → 시장에서 거절당한 손님 대부분을 흡수합니다. 나머지 1칸은 우리도 안 받습니다 = 깔끔한 리스크 컷.</p></div>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>5</span></div>
+</div>
+
+<!-- ===== 5. 수익 구조 ===== -->
+<div class="document">
+  <h2><span class="no">5</span> 파트너 수익 구조</h2>
+
+  <h3>후불제 + 유지 기반 정산</h3>
+  <p>영업 수수료는 <strong>계약 성사 후 후불</strong>로 지급되며, 계약이 일정 기간 유지될수록 수익이 확정됩니다. 무리한 영업이 아니라 <strong>오래 가는 계약</strong>에 보상이 쏠리는 구조입니다.</p>
+
+  <table>
+    <tr><th style="width:22%">상품</th><th>환수(클로백) 조건</th><th style="width:26%">파트너에게 의미</th></tr>
+    <tr><td><strong>무보증</strong></td><td>3개월 내 해지 <span class="c-red">100% 환수</span> · 6개월 내 <span class="c-amber">50% 환수</span> · 6개월+ <span class="c-green">100% 확정</span></td><td>6개월만 유지시키면 안전</td></tr>
+    <tr><td><strong>무심사</strong></td><td><span class="c-green">환수 없음</span> (손님 보증금이 위험을 대체)</td><td>유지 부담 적음</td></tr>
+    <tr><td><strong>일반</strong></td><td>협의 (안정 고객 위주)</td><td>장기 유지 기대</td></tr>
+  </table>
+
+  <div class="box navy">
+    <div class="box-title">핵심 KPI = 6개월 유지율</div>
+    <p>파트너와 freepass의 이해가 <strong>같은 방향</strong>입니다. 손님을 오래 유지시키면 파트너 수익이 확정되고 우리도 안정됩니다. "좋은 손님을 제대로 매칭"하는 것이 곧 수익입니다.</p>
+  </div>
+  <p class="lead">※ 구체적 수수료율·인센티브(6개월 유지 보너스 등)는 지역·상품·파트너 등급에 따라 <strong>개별 협의</strong>로 확정합니다.</p>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>6</span></div>
+</div>
+
+<!-- ===== 6. 안전장치 ===== -->
+<div class="document">
+  <h2><span class="no">6</span> 무보증·무심사인데 왜 되는가</h2>
+
+  <p class="lead">진입 장벽은 낮추되, <strong>3중 안전장치</strong>로 리스크를 관리합니다. "아무나 다 받는" 위험한 모델과 다릅니다.</p>
+  <div class="lever"><div class="n">1</div><div class="b"><strong>3자 위험 공유</strong> 손님(보험 1년 선납 = 1년 락인) · 영업/우리(수수료 후불·환수) · 렌트사(차량 소유·소득/보험 심사). 누구도 혼자 위험을 다 지지 않습니다.</div></div>
+  <div class="lever"><div class="n">2</div><div class="b"><strong>차종 선정</strong> 생활·생계 필수 차량(경차·카니발·포터 등) 위주, 사치재 회피 → 손님이 끝까지 타는 차 = 유지율↑.</div></div>
+  <div class="lever"><div class="n">3</div><div class="b"><strong>자동 필터</strong> 소득 심사 + 보험사 심사가 무심사 시장에서 그나마 안전한 손님을 걸러냅니다.</div></div>
+
+  <div class="box safe"><p><strong>보험료의 숨은 락인:</strong> 손님이 자동차보험 1년치를 본인 명의로 선납 → 큰 돈이 묶여 중도 포기 시 손해 의식 → <strong>자연스러운 6개월+ 유지 동기</strong>가 됩니다.</p></div>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>7</span></div>
+</div>
+
+<!-- ===== 7. 온보딩 + CTA ===== -->
+<div class="document">
+  <h2><span class="no">7</span> 함께하는 절차</h2>
+  <table>
+    <tr><th style="width:14%">단계</th><th>내용</th></tr>
+    <tr><td><strong>1. 상담</strong></td><td>지역·경력·목표 확인, 상품/수수료 안내</td></tr>
+    <tr><td><strong>2. 등록</strong></td><td>파트너 계약 + 영업 코드 발급</td></tr>
+    <tr><td><strong>3. 셋업</strong></td><td><strong>전용 홈페이지 제작 + 매물 API 연동 + 견적기·시스템 지급</strong></td></tr>
+    <tr><td><strong>4. 영업</strong></td><td>손님 모집 → 견적 → 계약 메이드 (freepass가 렌트사 조율)</td></tr>
+    <tr><td><strong>5. 정산</strong></td><td>유지 기반 수수료 정산 + 인센티브</td></tr>
+  </table>
+
+  <h2><span class="no">8</span> 왜 freepass와 함께해야 하는가</h2>
+  <ul>
+    <li><strong>판이 다 깔려 있다</strong> — 여러 렌트사 통합 매물 + 홈페이지 + 매물 자동연동 + 견적기 + 시스템.</li>
+    <li><strong>창구가 하나다</strong> — 렌트사마다 따로 거래·정산할 필요 없이 freepass가 중간 조율.</li>
+    <li><strong>받을 손님이 많다</strong> — 무보증·무심사·후불 + 3종 상품으로 거절 최소화.</li>
+    <li><strong>이해가 일치한다</strong> — 6개월 유지율 한 점으로 파트너·회사 모두 정렬.</li>
+  </ul>
+
+  <div class="cta-band">
+    <div class="big">영업에만 집중하세요. 나머지는 freepass가 합니다.</div>
+    <div class="sub">파트너 상담 문의 — 담당자 / 연락처 / 카카오톡 채널 (※ 실제 연락처로 교체)</div>
+  </div>
+
+  <div class="box warn" style="margin-top:16px">
+    <p><strong>안내:</strong> 본 제안서의 상품 조건·보증금·수수료·환수 조건은 표준 정책 기준이며, 차종·지역·렌트사·파트너 등급에 따라 <strong>개별 협의로 최종 확정</strong>됩니다. 무심사 상품은 신용점수를 평가하지 않는다는 의미이며, 신용조회 자체가 면제됨을 보장하지 않습니다.</p>
+  </div>
+
+  <div class="pagefoot"><span>freepass 영업 파트너 모집 제안서</span><span>8</span></div>
+</div>
+
+</body>
+</html>

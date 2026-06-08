@@ -17,6 +17,7 @@ const state = {
   products: [],
   contracts: [],
   settlements: [],
+  adminSettlements: [],   // 관리자 월별 수수료 정산 (RTDB admin_settlements)
   rooms: [],
   users: [],
   partners: [],

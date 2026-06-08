@@ -919,6 +919,8 @@
   body.role-provider    .pt-sb a[data-page="users"] { display: none; }
   /* 관리자 페이지(외부상품 동기화 / 공지)는 admin 만 */
   body:not(.role-admin) .pt-sb a[data-page="admin"] { display: none; }
+  /* 관리자 정산(월별 수수료 정산)도 admin 만 */
+  body:not(.role-admin) .pt-sb a[data-page="admin-settle"] { display: none; }
   /* 개발도구는 시스템관리자(이메일 화이트리스트)만 — is-sysadmin 클래스는 app.js hydrateUser 가 토글 */
   body:not(.is-sysadmin) .pt-sb-bottom-dev { display: none; }
 

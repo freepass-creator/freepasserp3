@@ -96,6 +96,26 @@ export async function createSettlement(contract) {
   return code;
 }
 
+/* ── 관리자 월별 수수료 정산 (수기 등록) ──
+ *  정산관리(건별)에서 정산완료된 건을 관리자가 실제 수수료 정산으로 옮겨 만지는 별도 레코드.
+ *  data = { settle_month, ...A/B/C 블록 입력 + 자동계산 결과 } (계산은 페이지에서 수행) */
+export async function allocateAdminSettlementCode() {
+  const dateStr = todayYYMMDD();
+  const seq = await nextSequence(`admin_settlement_${dateStr}`);
+  return `AS-${dateStr}-${String(seq).padStart(3, '0')}`;
+}
+
+export async function createAdminSettlement(data) {
+  const code = await allocateAdminSettlementCode();
+  await setRecord(`admin_settlements/${code}`, {
+    admin_settlement_code: code,
+    ...data,
+    created_at: Date.now(),
+    updated_at: Date.now(),
+  });
+  return code;
+}
+
 /* ── 대화방 생성/열기 ── */
 export async function ensureRoom({ productUid, productCode, agentUid, agentCode, agentName, agentChannelCode, providerUid, providerName, providerCompanyCode, providerCode, vehicleNumber, modelName, subModel }) {
   const roomId = `CH_${productCode || productUid}_${agentCode}`;
