@@ -218,10 +218,28 @@ async function renderApiKeysTab(el) {
 /* ──────── 종합표 만들기 (공급사 통합) ────────
  *  공급사(보이는 탭) 시트의 42컬럼을 그대로 종합 양식으로 취합 (서버 /api/sync/jonghap).
  *  ※ 오플은 제외 — 종합표는 공급사 통합만 (2026-06-08 사용자 정책).
- *  출고불가/숨김 제외(노출 차량만). [복사] → 클립보드 TSV → 직원이 종합탭에 붙여넣기.
- *  (매일 손으로 공급사 탭 → 종합 취합하던 작업 대체) */
+ *  [시트 취합] 누를 때만 취합 (자동 로드 X). 먼저 매물 파악(탭수·전체·출고불가·올릴수있음) →
+ *  그 다음 [복사] → 클립보드 TSV → 직원이 종합탭에 붙여넣기. */
 function renderJonghapTab(el) {
-  let data = { columns: [], rows: [], tabs: [] };
+  let data = { columns: [], rows: [], tabs: [], summary: null };
+
+  // 초기 화면 — 취합 버튼만 (누를 때 취합)
+  const idle = () => {
+    el.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="ao-banner">
+          <i class="ph ph-table"></i>
+          <div>
+            <b>공급사 통합 종합표</b> · 흩어진 공급사 탭에서 <b>출고불가·숨김을 빼고</b> 올릴 수 있는 매물만 종합 양식으로 모읍니다.<br>
+            <span class="ao-banner-sub">[시트 취합]을 누르면 그때 공급사 시트를 읽어 매물을 파악합니다. (오플 제외)</span>
+          </div>
+        </div>
+        <div class="ao-actions">
+          <button class="btn btn-sm btn-primary" id="jhFetch"><i class="ph ph-arrows-clockwise"></i> 시트 취합</button>
+        </div>
+      </div>`;
+    el.querySelector('#jhFetch').addEventListener('click', load);
+  };
 
   const loading = () => {
     el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> 공급사 통합 시트 취합 중...</div>`;
@@ -230,47 +248,50 @@ function renderJonghapTab(el) {
     const res = await fetch('/api/sync/jonghap', { method: 'POST' });
     const out = await res.json();
     if (!out.ok) throw new Error(out.message || '취합 실패');
-    return { columns: out.columns || [], rows: out.rows || [], tabs: out.tabs || [] };
+    return { columns: out.columns || [], rows: out.rows || [], tabs: out.tabs || [], summary: out.summary || null };
   };
 
   const render = () => {
-    const { columns, rows, tabs } = data;
-    const PREVIEW = 100;
-    const shown = rows.slice(0, PREVIEW);
-    const tabSummary = (tabs || []).filter(t => t.count > 0).map(t => `${t.tab} ${t.count}`).join(' · ');
+    const { columns, rows, tabs, summary } = data;
+    const s = summary || { tabs: tabs.length, total: 0, unavailable: 0, uploadable: rows.length };
+    // 매물 있는 탭만, 전체 매물 많은 순
+    const tabRows = (tabs || []).filter(t => (t.total || 0) > 0).sort((a, b) => (b.total || 0) - (a.total || 0));
     el.innerHTML = `
       <div style="display:flex;flex-direction:column;gap:12px;height:100%;">
-        <div class="ao-banner">
-          <i class="ph ph-table"></i>
-          <div>
-            <b>노출 매물 ${rows.length}건</b>을 종합탭 양식(${columns.length}개 항목)으로 취합했습니다. <span class="ao-banner-sub">(출고불가·숨김 제외)</span><br>
-            <span class="ao-banner-sub">[복사] 후 구글시트 <b>종합</b> 탭에 붙여넣기 하세요. (머리글 포함은 빈 시트 처음 채울 때만)</span>
-          </div>
+        <!-- 매물 파악 요약 -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          ${statCard('공급사 탭', s.tabs, 'var(--text-sub)')}
+          ${statCard('전체 매물', s.total, 'var(--text-main)')}
+          ${statCard('출고불가·숨김', s.unavailable, 'var(--alert-red-text)')}
+          ${statCard('올릴 수 있음', s.uploadable, 'var(--accent)')}
         </div>
+        <div style="font-size:11px;color:var(--text-weak);">올릴 수 있는 ${s.uploadable}건을 종합탭 양식(${columns.length}개 항목)으로 취합했습니다. 아래 [복사] 후 구글시트 <b>종합</b> 탭에 붙여넣기 하세요.</div>
         <div class="ao-actions">
-          <button class="btn btn-sm btn-primary" id="jhCopyValues"><i class="ph ph-copy"></i> 값만 복사 (${rows.length}건)</button>
-          <button class="btn btn-sm" id="jhCopyHeader"><i class="ph ph-copy"></i> 머리글 포함 복사</button>
-          <button class="btn btn-sm" id="jhRefresh"><i class="ph ph-arrow-clockwise"></i> 새로고침</button>
-          <span class="ao-status">미리보기 ${shown.length} / 전체 ${rows.length}건</span>
+          <button class="btn btn-sm btn-primary" id="jhCopyValues" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 값만 복사 (${s.uploadable}건)</button>
+          <button class="btn btn-sm" id="jhCopyHeader" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 머리글 포함 복사</button>
+          <button class="btn btn-sm" id="jhRefresh"><i class="ph ph-arrow-clockwise"></i> 다시 취합</button>
         </div>
-        ${tabSummary ? `<div style="font-size:11px;color:var(--text-weak);">탭별: ${esc(tabSummary)}</div>` : ''}
+        <!-- 탭별 매물 현황 -->
         <div style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;">
-          <table style="font-size:11px;border-collapse:collapse;white-space:nowrap;">
+          <table style="font-size:12px;border-collapse:collapse;width:100%;">
             <thead style="position:sticky;top:0;z-index:2;">
               <tr style="background-color:var(--bg-header);color:var(--text-sub);font-weight:600;">
-                <th style="padding:4px 6px;text-align:right;color:var(--text-muted);">#</th>
-                ${columns.map(c => `<th style="padding:4px 8px;text-align:left;border-left:1px solid var(--border-soft);">${esc(c)}</th>`).join('')}
+                <th style="padding:6px 10px;text-align:left;">공급사 탭</th>
+                <th style="padding:6px 10px;text-align:right;">전체</th>
+                <th style="padding:6px 10px;text-align:right;color:var(--alert-red-text);">출고불가·숨김</th>
+                <th style="padding:6px 10px;text-align:right;color:var(--accent);">올릴 수 있음</th>
               </tr>
             </thead>
             <tbody>
-              ${shown.map((r, i) => `<tr style="border-bottom:1px solid var(--border-soft);">
-                <td style="padding:3px 6px;text-align:right;color:var(--text-muted);">${i + 1}</td>
-                ${r.map(v => `<td style="padding:3px 8px;border-left:1px solid var(--border-soft);max-width:220px;overflow:hidden;text-overflow:ellipsis;" title="${esc(v)}">${esc(v) || '<span style="color:var(--text-muted);">·</span>'}</td>`).join('')}
+              ${tabRows.map(t => `<tr style="border-bottom:1px solid var(--border-soft);">
+                <td style="padding:5px 10px;">${esc(t.tab)}</td>
+                <td style="padding:5px 10px;text-align:right;">${t.total || 0}</td>
+                <td style="padding:5px 10px;text-align:right;color:var(--text-muted);">${t.unavailable || 0}</td>
+                <td style="padding:5px 10px;text-align:right;font-weight:600;">${t.count || 0}</td>
               </tr>`).join('')}
+              ${tabRows.length === 0 ? '<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-muted);">취합된 매물이 없습니다.</td></tr>' : ''}
             </tbody>
           </table>
-          ${rows.length > PREVIEW ? `<div style="padding:8px;text-align:center;color:var(--text-muted);font-size:11px;">… 미리보기 ${PREVIEW}건만 표시. 복사는 전체 ${rows.length}건.</div>` : ''}
-          ${rows.length === 0 ? '<div style="padding:24px;text-align:center;color:var(--text-muted);">취합된 매물이 없습니다.</div>' : ''}
         </div>
       </div>
     `;
@@ -283,7 +304,7 @@ function renderJonghapTab(el) {
     };
     el.querySelector('#jhCopyValues').addEventListener('click', () => copy(false));
     el.querySelector('#jhCopyHeader').addEventListener('click', () => copy(true));
-    el.querySelector('#jhRefresh').addEventListener('click', () => load());
+    el.querySelector('#jhRefresh').addEventListener('click', load);
   };
 
   const load = async () => {
@@ -291,7 +312,15 @@ function renderJonghapTab(el) {
     try { data = await fetchData(); render(); }
     catch (e) { el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--alert-red-text);">취합 실패: ${esc(e.message)}</div>`; }
   };
-  load();
+  idle();   // 자동 취합 X — 사용자가 [시트 취합] 누를 때만
+}
+
+/* 매물 파악 통계 카드 */
+function statCard(label, value, color) {
+  return `<div style="flex:1;min-width:110px;border:1px solid var(--border);border-radius:6px;padding:10px 12px;">
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:2px;">${esc(label)}</div>
+    <div style="font-size:22px;font-weight:700;color:${color};">${value ?? 0}</div>
+  </div>`;
 }
 
 /* ──────── 공지 CRUD ──────── */

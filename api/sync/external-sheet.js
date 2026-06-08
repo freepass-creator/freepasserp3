@@ -634,30 +634,33 @@ function alignRowToJonghap(row, hmap) {
 }
 const statusColIdx = (hmap) => { for (const n of JONGHAP_ALIAS['상태']) if (hmap[n] != null) return hmap[n]; return -1; };
 
-/* 한 탭의 행들을 종합 양식으로 정렬해 out 에 push. 출고불가/숨김 제외.
+/* 한 탭의 행들을 종합 양식으로 정렬해 out 에 push (올릴 수 있는 차량만). 통계 반환.
  * 번호 없는 신차(번호미정 등) = 차종분류/세부모델 있는 실제 차량은 100신XXXX 임시번호 부여
  *  (tempState.n 공유 카운터). 100신0001 은 차량번호 정규식 통과 → 종합탭 붙여넣기 후 상품 동기화가
- *  일반 차량처럼 import (2026-06-08 사용자 선택). 빈 줄·푸터(차종/세부 다 빔)는 제외. */
+ *  일반 차량처럼 import (2026-06-08 사용자 선택). 빈 줄·푸터(차종/세부 다 빔)는 매물 아님 → 제외.
+ * 반환: { pushed(올릴수있음), total(전체 매물), unavailable(출고불가/숨김) }. */
 function pushTabRows(out, tabRows, hidden, fallbackProvider, tempState) {
+  const empty = { pushed: 0, total: 0, unavailable: 0 };
   const hi = tabRows.findIndex(r => r.map(c => String(c ?? '').trim()).includes('차량번호'));
-  if (hi < 0) return 0;
+  if (hi < 0) return empty;
   const hmap = buildHeaderMap(tabRows[hi]);
   const sIdx = statusColIdx(hmap), cIdx = hmap['차량번호'];
-  let n = 0;
+  let pushed = 0, total = 0, unavailable = 0;
   for (let i = hi + 1; i < tabRows.length; i++) {
-    if (hidden && hidden.has(i)) continue;
-    if (sIdx >= 0 && normalizeVehicleStatus(tabRows[i][sIdx]) === '출고불가') continue;   // 노출 차량만
     const car = String(tabRows[i]?.[cIdx] ?? '').trim();
     const cells = alignRowToJonghap(tabRows[i], hmap);
-    if (!VALID_CAR_NO.test(car)) {
-      if (!cells[CLASS_COL] && !cells[SUB_COL]) continue;   // 실제 차량 아님(빈 줄·푸터) → 제외
-      cells[CAR_COL] = `100신${String(++tempState.n).padStart(4, '0')}`;   // 번호 없는 신차 → 임시번호
-    }
+    const isCar = VALID_CAR_NO.test(car) || !!(cells[CLASS_COL] || cells[SUB_COL]);
+    if (!isCar) continue;                               // 빈 줄·푸터 → 매물 아님
+    total++;
+    const isUnavailable = (hidden && hidden.has(i))
+      || (sIdx >= 0 && normalizeVehicleStatus(tabRows[i][sIdx]) === '출고불가');
+    if (isUnavailable) { unavailable++; continue; }     // 출고불가/숨김 → 종합표 제외
+    if (!VALID_CAR_NO.test(car)) cells[CAR_COL] = `100신${String(++tempState.n).padStart(4, '0')}`;  // 번호없는 신차
     if (!cells[PC_COL] && fallbackProvider) cells[PC_COL] = fallbackProvider;
     out.push(cells);
-    n++;
+    pushed++;
   }
-  return n;
+  return { pushed, total, unavailable };
 }
 
 export async function buildJonghapTable() {
@@ -684,13 +687,19 @@ export async function buildJonghapTable() {
       } catch {}
       (batch.valueRanges || []).forEach((vr, ti) => {
         const tab = tabNames[ti];
-        const n = pushTabRows(rows, vr.values || [], hiddenByTab[tab] || new Set(), findPartnerCode(tab) || tab, tempState);
-        tabs.push({ tab, count: n });
+        const st = pushTabRows(rows, vr.values || [], hiddenByTab[tab] || new Set(), findPartnerCode(tab) || tab, tempState);
+        tabs.push({ tab, count: st.pushed, total: st.total, unavailable: st.unavailable });
       });
     }
   } catch (e) { console.warn('[jonghap] 공급사 실패:', e.message); }
 
-  return { ok: true, columns: JONGHAP_HEADERS, rows, tabs, count: rows.length };
+  // summary — 탭수·전체매물·출고불가·올릴수있음 (매물 파악용)
+  const summary = tabs.reduce((s, t) => {
+    s.total += t.total || 0; s.unavailable += t.unavailable || 0; s.uploadable += t.count || 0;
+    return s;
+  }, { tabs: tabs.length, total: 0, unavailable: 0, uploadable: 0 });
+
+  return { ok: true, columns: JONGHAP_HEADERS, rows, tabs, count: rows.length, summary };
 }
 
 /* HTTP handler — 클라이언트(dev.js)가 POST 로 호출.
