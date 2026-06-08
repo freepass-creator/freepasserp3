@@ -46,7 +46,8 @@ export function renderMasterCascade(el, index, opts = {}) {
   const subNode = () => { const md = modelNode(); return md ? md.subModels.find(s => s.id === state.catalogId) || null : null; };
   const variantNode = () => { const sm = subNode(); return sm ? sm.variants.find(v => v.variant === state.variant) || null : null; };
 
-  /* ── 보유 매물수 집계 (counts: catalog_id→대수). 모델·세부모델을 '많은 차부터' 정렬용 ── */
+  /* ── 보유 매물수 집계 (counts: catalog_id→대수). 제조사·모델 '많은 차부터' 정렬 + 라벨 대수 표기용.
+   *  세부모델 이하는 신규 연식순(정렬 안 함, 대수는 라벨에만). ── */
   const subDae = (sm) => (counts ? (counts.get(sm.id) || 0) : 0);
   const modelDae = (m) => m.subModels.reduce((s, sm) => s + subDae(sm), 0);
   const makerDae = (mk) => mk.models.reduce((s, m) => s + modelDae(m), 0);
@@ -79,8 +80,8 @@ export function renderMasterCascade(el, index, opts = {}) {
       case 'catalogId': {
         const md = modelNode();
         if (!md) return [];
-        const subs = counts ? [...md.subModels].sort((a, b) => subDae(b) - subDae(a)) : md.subModels;
-        return subs.map(s => ({
+        // 세부모델은 신규 연식부터 (buildMasterTree 가 year_start 내림차순으로 이미 정렬) — 매물수 정렬 X
+        return md.subModels.map(s => ({
           value: s.id,
           label: `${s.subModel}${s.year ? ' · ' + s.year : ''}${s.trimCount ? ' · 트림' + s.trimCount : ''}${daeSuffix(subDae(s))}`,
         }));
