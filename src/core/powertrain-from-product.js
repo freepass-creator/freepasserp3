@@ -16,7 +16,7 @@ const FUEL_NORM = [
   [/디젤|경유|diesel/i, '디젤'],          // 경유 → 디젤 통일
   [/LPG|LPi|LPI/i, 'LPG'],
   [/수소|FCEV/i, '수소'],
-  [/전기|일렉트릭|electric|\bEV\b/i, '전기'],
+  [/전기|일렉트릭|electric|\bEV\b/i, 'EV'],
   [/가솔린|휘발유|gasoline|petrol|GDI/i, '가솔린'],   // 휘발유 → 가솔린 통일
 ];
 function normFuel(s) { for (const [re, v] of FUEL_NORM) if (re.test(String(s || ''))) return v; return ''; }
@@ -47,7 +47,7 @@ export function powertrainFromProduct(p) {
   // 배터리(롱레인지/스탠다드) = EV 파워트레인 스펙 (배기량 자리). 롱레인지는 항상, 스탠다드는 EV일 때만.
   let battery = '';
   if (/롱\s?레인지/i.test(all)) battery = '롱레인지';
-  else if (fuel === '전기' && /스탠다드|스탠더드/i.test(all)) battery = '스탠다드';
+  else if (fuel === 'EV' && /스탠다드|스탠더드/i.test(all)) battery = '스탠다드';
 
   const variant = [fuel, disp, battery, turbo, drive, seats].filter(Boolean).join(' ');
 
