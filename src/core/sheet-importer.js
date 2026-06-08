@@ -91,7 +91,8 @@ export async function resolveTabTitle(sheetId, gid) {
 
 /** values.batchGet — 한 탭 전체 row 매트릭스 */
 export async function fetchSheetValues(sheetId, tab, range = 'A1:AZ2000') {
-  const tabEnc = encodeURIComponent(tab);
+  // 공백·괄호·쉼표·★ 등 특수문자 탭 이름은 작은따옴표로 감싸야 'Unable to parse range' 안 남
+  const tabEnc = encodeURIComponent(`'${String(tab).replace(/'/g, "''")}'`);
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${tabEnc}!${range}?key=${SHEETS_API_KEY}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`시트 fetch 실패: ${res.status}`);
@@ -101,7 +102,7 @@ export async function fetchSheetValues(sheetId, tab, range = 'A1:AZ2000') {
 
 /** 차량번호 셀의 chipRuns + hyperlink 추출 → row index → photo URL map */
 export async function fetchPhotoLinkMap(sheetId, tab, carNumberColLetter) {
-  const tabEnc = encodeURIComponent(tab);
+  const tabEnc = encodeURIComponent(`'${String(tab).replace(/'/g, "''")}'`);
   const map = {};
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${tabEnc}!${carNumberColLetter}1:${carNumberColLetter}2000&fields=sheets.data.rowData.values(chipRuns,hyperlink,formattedValue,userEnteredValue.formulaValue)&key=${SHEETS_API_KEY}`;
   try {

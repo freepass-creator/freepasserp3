@@ -17,8 +17,10 @@ export const SHEET_CONFIGS = {
   autoplus: {
     sheet_id: '1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U',
     tab_name: '판매차량리스트',           // 26-05-08 기준 새 탭 (구 '판매차량리스트(수수료 100)' 폐기)
-    // 추가 탭 — 특가 프로모션(전기차 등). 같은 양식. 같은 차량번호면 특가 가격이 본 리스트를 덮어씀(뒤에 처리)
-    extra_tabs: ['★★★  전기차(EV6,니로EV) 특가 프로모션 ★★★'],
+    // 본 리스트 외 특가/프로모션 탭(전기차·스포티지·말리부 등)을 자동탐지 — 공급사가 탭 추가/개명해도
+    //  안 깨짐. 공지/수정중/구버전/구독안내만 제외(AUTOPLUS_TAB_EXCLUDE). 같은 양식이라 autoplus 스키마로 파싱.
+    //  본 리스트를 먼저, 특가 탭을 뒤에 두어 같은 차량번호면 특가 가격이 덮어씀.
+    auto_tabs: true,
     provider_code: 'RP023',
     label: '오토플러스 (RP023)',
     schema: 'autoplus',
@@ -38,6 +40,16 @@ export const SHEET_CONFIGS = {
     label: '공급시트 자동탐지 (공급/정책 컬럼 있는 탭)',
     schema: 'auto-supply',
   },
+};
+
+/* 오플 자동탐지 시 제외할 탭 — 공지/수정중/구버전(구 …)/구독안내. 나머지 보이는 탭은 모두 차량 리스트로 간주. */
+const AUTOPLUS_TAB_EXCLUDE = /공지|수정중|구독|안내|^구\s/;
+
+/* 공급사 탭마다 상태 컬럼 헤더가 다름(상태/판매상태/즉시출고) — 우선순위대로 탐색. -1이면 없음. */
+const STATUS_COL_NAMES = ['상태', '판매상태', '즉시출고'];
+const findStatusIdx = (headers) => {
+  for (const n of STATUS_COL_NAMES) { const i = headers.indexOf(n); if (i >= 0) return i; }
+  return -1;
 };
 
 /* 종합시트 차고지 컬럼 회사명 → partner_code 매핑.
@@ -137,6 +149,11 @@ const isImport = (name) => {
   return IMPORT_BRAND_KEYWORDS.some(b => nl.includes(b));
 };
 
+/* 탭 이름 → A1 표기 range. 공백·괄호·쉼표·★ 등 특수문자 탭은 작은따옴표로 감싸야
+ * Sheets API 가 'Unable to parse range' 없이 파싱함. 내부 작은따옴표는 '' 로 이스케이프.
+ * (단일 호출 values/ranges 와 batchGet 모두 이 함수로 통일) */
+const tabRange = (tabName) => `'${String(tabName).replace(/'/g, "''")}'`;
+
 const safeGet = (row, idx) => (idx < 0 || idx >= row.length ? '' : String(row[idx] ?? '').trim());
 const parsePrice = (v) => parseInt(String(v || '').replace(/[^\d]/g, '') || '0', 10);
 
@@ -150,7 +167,7 @@ async function fetchJson(url) {
 async function loadChipRuns(sheetId, tabName) {
   const map = {};
   try {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${encodeURIComponent(tabName)}&fields=sheets.data.rowData.values.chipRuns&key=${SHEETS_API_KEY}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${encodeURIComponent(tabRange(tabName))}&fields=sheets.data.rowData.values.chipRuns&key=${SHEETS_API_KEY}`;
     const data = await fetchJson(url);
     const chipRows = data.sheets?.[0]?.data?.[0]?.rowData || [];
     chipRows.forEach((rd, ri) => {
@@ -167,7 +184,7 @@ async function loadChipRuns(sheetId, tabName) {
 }
 
 async function loadSheetValues(sheetId, tabName) {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(tabName)}?key=${SHEETS_API_KEY}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${encodeURIComponent(tabRange(tabName))}?key=${SHEETS_API_KEY}`;
   const data = await fetchJson(url);
   return data.values || [];
 }
@@ -178,7 +195,7 @@ async function loadSheetValues(sheetId, tabName) {
 async function loadHiddenRows(sheetId, tabName) {
   const hidden = new Set();
   try {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${encodeURIComponent(tabName)}&fields=sheets.data.rowMetadata.hiddenByUser,sheets.data.rowMetadata.hiddenByFilter&key=${SHEETS_API_KEY}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?ranges=${encodeURIComponent(tabRange(tabName))}&fields=sheets.data.rowMetadata.hiddenByUser,sheets.data.rowMetadata.hiddenByFilter&key=${SHEETS_API_KEY}`;
     const data = await fetchJson(url);
     const rowMeta = data.sheets?.[0]?.data?.[0]?.rowMetadata || [];
     rowMeta.forEach((m, i) => { if (m && (m.hiddenByUser || m.hiddenByFilter)) hidden.add(i); });
@@ -212,7 +229,7 @@ async function loadSheetGrid(sheetId, tabName) {
   const hiddenRows = new Set();
   try {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}`
-      + `?ranges=${encodeURIComponent(tabName)}`
+      + `?ranges=${encodeURIComponent(tabRange(tabName))}`
       + `&fields=${encodeURIComponent('sheets.data.rowData.values(chipRuns,hyperlink),sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}`
       + `&key=${SHEETS_API_KEY}`;
     const data = await fetchJson(url);
@@ -365,7 +382,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
   const carNumber = safeGet(row, idxCar);
   if (!carNumber || !VALID_CAR_NO.test(carNumber)) return null;
 
-  const idxStatus = colIdx('상태');
+  const idxStatus = findStatusIdx(headers);   // 상태/판매상태/즉시출고 별칭 — 탭마다 헤더 다름
   const statusRaw = safeGet(row, idxStatus);
   const vehicleStatus = normalizeVehicleStatus(statusRaw);
   const status = statusFlag(vehicleStatus);
@@ -472,7 +489,7 @@ export async function syncFromSheet(source) {
     }
 
     // 2) 모든 탭 값 한 번에 (batchGet, 1 call)
-    const ranges = tabNames.map(t => `'${t.replace(/'/g, "\\'")}'!A1:BZ2000`);
+    const ranges = tabNames.map(t => `${tabRange(t)}!A1:BZ2000`);
     const batchUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}/values:batchGet?${ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&')}&valueRenderOption=FORMATTED_VALUE&key=${SHEETS_API_KEY}`;
     const batch = await fetchJson(batchUrl);
     const valuesByTab = {};
@@ -481,7 +498,7 @@ export async function syncFromSheet(source) {
     // 3) 사진칩 + 숨김행 한 번에 (grid, 1 call) — 실패해도 무시
     const photoByTab = {}, hiddenByTab = {};
     try {
-      const gRanges = tabNames.map(t => `ranges=${encodeURIComponent(t)}`).join('&');
+      const gRanges = tabNames.map(t => `ranges=${encodeURIComponent(tabRange(t))}`).join('&');
       const gUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}?${gRanges}&fields=${encodeURIComponent('sheets.properties.title,sheets.data.rowData.values(chipRuns,hyperlink),sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}&key=${SHEETS_API_KEY}`;
       const g = await fetchJson(gUrl);
       for (const sh of (g.sheets || [])) {
@@ -537,9 +554,22 @@ export async function syncFromSheet(source) {
     };
   }
 
-  // ── 단일/멀티 탭 동기화 (autoplus / general) ── 본 탭 + extra_tabs(특가 등). 탭당 1회 호출.
+  // ── 단일/멀티 탭 동기화 (autoplus / general) ── 본 탭 + 특가 탭. 탭당 1회 호출.
   //  뒤 탭(특가)이 같은 차량번호(uid)면 앞 탭을 덮어씀 → 특가 가격 우선.
-  const tabList = [config.tab_name, ...(config.extra_tabs || [])];
+  let tabList;
+  if (config.auto_tabs) {
+    // 오플 — 보이는 탭 자동탐지. 본 리스트 먼저, 특가 탭 뒤. 공지/수정중/구버전/구독안내 제외.
+    const metaUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.sheet_id}?fields=sheets.properties(title,hidden)&key=${SHEETS_API_KEY}`;
+    const meta = await fetchJson(metaUrl);
+    const visible = (meta.sheets || [])
+      .filter(s => s.properties && !s.properties.hidden)
+      .map(s => s.properties.title)
+      .filter(Boolean);
+    const extra = visible.filter(t => t !== config.tab_name && !AUTOPLUS_TAB_EXCLUDE.test(t));
+    tabList = [config.tab_name, ...extra];
+  } else {
+    tabList = [config.tab_name, ...(config.extra_tabs || [])];
+  }
   let anyRows = false;
   for (const tabName of tabList) {
     const { rows, photoLinkMap, hiddenRows } = await loadSheetGrid(config.sheet_id, tabName);
@@ -584,8 +614,11 @@ export async function syncFromSheet(source) {
  * 공급사 탭이 이미 종합 양식(42컬럼)이라 passthrough — 입고일자·운전자범위·대인·대물 등 다 채워짐.
  * 출고불가/숨김 행 제외 (노출 차량만). 종합표 만들기 UI 가 호출 → 클립보드 TSV → 종합탭 붙여넣기. */
 const JONGHAP_HEADERS = ['상태', '입고일자', '구분', '차량번호', '차종분류', '세부모델', '연료', '외장', '내장', 'Km', '단기보증', '1개월', '6개월', '12개월', '장기보증', '24개월', '36개월', '48개월', '60개월', '트림', '옵션', '최초등록', '소비자가격', '제조사', '배기량', '차고지', '운전자범위', '연주행', '분납', '21세', '23세', '1만+', '대인', '대물', '자차', '자손', '무보험', '정비', '전용계좌', '비고', '공급사코드', '정책코드'];
-const JONGHAP_ALIAS = { '상태': ['상태', '판매상태', '즉시출고'] };   // 탭별 상태 컬럼 표기 차이 흡수
+const JONGHAP_ALIAS = { '상태': STATUS_COL_NAMES };   // 탭별 상태 컬럼 표기 차이 흡수
 const PC_COL = JONGHAP_HEADERS.indexOf('공급사코드');
+const CAR_COL = JONGHAP_HEADERS.indexOf('차량번호');
+const CLASS_COL = JONGHAP_HEADERS.indexOf('차종분류');
+const SUB_COL = JONGHAP_HEADERS.indexOf('세부모델');
 
 function buildHeaderMap(headerRow) {
   const m = {};
@@ -601,19 +634,25 @@ function alignRowToJonghap(row, hmap) {
 }
 const statusColIdx = (hmap) => { for (const n of JONGHAP_ALIAS['상태']) if (hmap[n] != null) return hmap[n]; return -1; };
 
-/* 한 탭의 행들을 종합 양식으로 정렬해 out 에 push. 출고불가/숨김/무효차량 제외. */
-function pushTabRows(out, tabRows, hidden, fallbackProvider) {
+/* 한 탭의 행들을 종합 양식으로 정렬해 out 에 push. 출고불가/숨김 제외.
+ * 번호 없는 신차(번호미정 등) = 차종분류/세부모델 있는 실제 차량은 100신XXXX 임시번호 부여
+ *  (tempState.n 공유 카운터). 100신0001 은 차량번호 정규식 통과 → 종합탭 붙여넣기 후 상품 동기화가
+ *  일반 차량처럼 import (2026-06-08 사용자 선택). 빈 줄·푸터(차종/세부 다 빔)는 제외. */
+function pushTabRows(out, tabRows, hidden, fallbackProvider, tempState) {
   const hi = tabRows.findIndex(r => r.map(c => String(c ?? '').trim()).includes('차량번호'));
   if (hi < 0) return 0;
   const hmap = buildHeaderMap(tabRows[hi]);
   const sIdx = statusColIdx(hmap), cIdx = hmap['차량번호'];
   let n = 0;
   for (let i = hi + 1; i < tabRows.length; i++) {
-    const car = String(tabRows[i]?.[cIdx] ?? '').trim();
-    if (!VALID_CAR_NO.test(car)) continue;
     if (hidden && hidden.has(i)) continue;
     if (sIdx >= 0 && normalizeVehicleStatus(tabRows[i][sIdx]) === '출고불가') continue;   // 노출 차량만
+    const car = String(tabRows[i]?.[cIdx] ?? '').trim();
     const cells = alignRowToJonghap(tabRows[i], hmap);
+    if (!VALID_CAR_NO.test(car)) {
+      if (!cells[CLASS_COL] && !cells[SUB_COL]) continue;   // 실제 차량 아님(빈 줄·푸터) → 제외
+      cells[CAR_COL] = `100신${String(++tempState.n).padStart(4, '0')}`;   // 번호 없는 신차 → 임시번호
+    }
     if (!cells[PC_COL] && fallbackProvider) cells[PC_COL] = fallbackProvider;
     out.push(cells);
     n++;
@@ -624,16 +663,10 @@ function pushTabRows(out, tabRows, hidden, fallbackProvider) {
 export async function buildJonghapTable() {
   const rows = [];
   const tabs = [];
+  const tempState = { n: 0 };   // 번호 없는 신차 100신XXXX 공유 카운터 (탭 간 충돌 방지)
 
-  // 1) 오플 (autoplus)
-  try {
-    const cfg = SHEET_CONFIGS.autoplus;
-    const { rows: avRows, hiddenRows } = await loadSheetGrid(cfg.sheet_id, cfg.tab_name);
-    const n = pushTabRows(rows, avRows, hiddenRows, cfg.provider_code || 'RP023');
-    tabs.push({ tab: '오플(RP023)', count: n });
-  } catch (e) { console.warn('[jonghap] 오플 실패:', e.message); }
-
-  // 2) 공급사 — 보이는 탭 batched (meta 1 + values 1 + 숨김 1)
+  // 공급사 — 보이는 탭 batched (meta 1 + values 1 + 숨김 1).
+  //  ※ 오플(autoplus)은 종합표에서 제외 (사용자 정책 2026-06-08) — 종합표는 공급사 통합만.
   try {
     const sid = SHEET_CONFIGS.supply.sheet_id;
     const meta = await fetchJson(`https://sheets.googleapis.com/v4/spreadsheets/${sid}?fields=sheets.properties(title,hidden)&key=${SHEETS_API_KEY}`);
@@ -642,16 +675,16 @@ export async function buildJonghapTable() {
       .map(s => s.properties.title)
       .filter(t => t && t !== '종합' && !/^(공지|안내)$|^★/.test(t));
     if (tabNames.length) {
-      const ranges = tabNames.map(t => `'${t.replace(/'/g, "\\'")}'!A1:BZ2000`);
+      const ranges = tabNames.map(t => `${tabRange(t)}!A1:BZ2000`);
       const batch = await fetchJson(`https://sheets.googleapis.com/v4/spreadsheets/${sid}/values:batchGet?${ranges.map(r => `ranges=${encodeURIComponent(r)}`).join('&')}&valueRenderOption=FORMATTED_VALUE&key=${SHEETS_API_KEY}`);
       const hiddenByTab = {};
       try {
-        const g = await fetchJson(`https://sheets.googleapis.com/v4/spreadsheets/${sid}?${tabNames.map(t => `ranges=${encodeURIComponent(t)}`).join('&')}&fields=${encodeURIComponent('sheets.properties.title,sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}&key=${SHEETS_API_KEY}`);
+        const g = await fetchJson(`https://sheets.googleapis.com/v4/spreadsheets/${sid}?${tabNames.map(t => `ranges=${encodeURIComponent(tabRange(t))}`).join('&')}&fields=${encodeURIComponent('sheets.properties.title,sheets.data.rowMetadata(hiddenByUser,hiddenByFilter)')}&key=${SHEETS_API_KEY}`);
         for (const sh of (g.sheets || [])) { const set = new Set(); (sh.data?.[0]?.rowMetadata || []).forEach((m, i) => { if (m && (m.hiddenByUser || m.hiddenByFilter)) set.add(i); }); hiddenByTab[sh.properties?.title] = set; }
       } catch {}
       (batch.valueRanges || []).forEach((vr, ti) => {
         const tab = tabNames[ti];
-        const n = pushTabRows(rows, vr.values || [], hiddenByTab[tab] || new Set(), findPartnerCode(tab) || tab);
+        const n = pushTabRows(rows, vr.values || [], hiddenByTab[tab] || new Set(), findPartnerCode(tab) || tab, tempState);
         tabs.push({ tab, count: n });
       });
     }

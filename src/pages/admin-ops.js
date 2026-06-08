@@ -215,15 +215,16 @@ async function renderApiKeysTab(el) {
   load();
 }
 
-/* ──────── 종합표 만들기 ────────
- *  오플 + 공급사(보이는 탭) 시트의 42컬럼을 그대로 종합 양식으로 취합 (서버 /api/sync/jonghap).
+/* ──────── 종합표 만들기 (공급사 통합) ────────
+ *  공급사(보이는 탭) 시트의 42컬럼을 그대로 종합 양식으로 취합 (서버 /api/sync/jonghap).
+ *  ※ 오플은 제외 — 종합표는 공급사 통합만 (2026-06-08 사용자 정책).
  *  출고불가/숨김 제외(노출 차량만). [복사] → 클립보드 TSV → 직원이 종합탭에 붙여넣기.
  *  (매일 손으로 공급사 탭 → 종합 취합하던 작업 대체) */
 function renderJonghapTab(el) {
   let data = { columns: [], rows: [], tabs: [] };
 
   const loading = () => {
-    el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> 오플 + 공급사 시트 취합 중...</div>`;
+    el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> 공급사 통합 시트 취합 중...</div>`;
   };
   const fetchData = async () => {
     const res = await fetch('/api/sync/jonghap', { method: 'POST' });
@@ -376,13 +377,9 @@ function renderSyncTab(el) {
             <span class="ao-source-name"><i class="ph ph-table"></i> 오토플러스</span>
             <span class="ao-source-desc">오플 재고 리스트 (RP023)</span>
           </button>
-          <button class="ao-source" id="syncFetchSupplyBtn" data-source="supply">
-            <span class="ao-source-name"><i class="ph ph-table"></i> 공급사 통합</span>
-            <span class="ao-source-desc">공급코드·정책코드 있는 탭 자동 탐지</span>
-          </button>
           <button class="ao-source" id="syncFetchGeneralBtn" data-source="general">
             <span class="ao-source-name"><i class="ph ph-table"></i> 종합 탭</span>
-            <span class="ao-source-desc">차고지에서 회사명 자동 추출 (보조)</span>
+            <span class="ao-source-desc">[종합표 만들기]로 채운 종합 탭 → ERP 일괄 적용</span>
           </button>
         </div>
         <div class="ao-links">
@@ -409,8 +406,7 @@ function renderSyncTab(el) {
   `;
   const fetchAutoplusBtn = el.querySelector('#syncFetchAutoplusBtn');
   const fetchGeneralBtn  = el.querySelector('#syncFetchGeneralBtn');
-  const fetchSupplyBtn   = el.querySelector('#syncFetchSupplyBtn');
-  const fetchBtns = [fetchAutoplusBtn, fetchGeneralBtn, fetchSupplyBtn];
+  const fetchBtns = [fetchAutoplusBtn, fetchGeneralBtn];
   const applyBtn = el.querySelector('#syncApplyBtn');
   const statusMsg = el.querySelector('#syncStatusMsg');
   const preview = el.querySelector('#syncPreview');
@@ -636,7 +632,6 @@ function renderSyncTab(el) {
   };
   fetchAutoplusBtn.addEventListener('click', onFetchClick);
   fetchGeneralBtn.addEventListener('click', onFetchClick);
-  fetchSupplyBtn.addEventListener('click', onFetchClick);
 
   applyBtn.addEventListener('click', async () => {
     if (!_syncFetched) return;
