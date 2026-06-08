@@ -684,6 +684,10 @@ function renderSyncTab(el) {
       const todoMap = '<td style="padding:4px 6px;background:var(--bg-stripe);color:var(--text-muted);font-style:italic;font-size:10px;">차종 매트릭스</td>';
       // 자동 분류된 칸 — 초록 배경 (vehicle_master 매칭 성공) / 빈값이면 todoMap
       const autoMap = (v) => v ? `<td style="padding:4px 6px;background:var(--alert-green-bg);color:var(--alert-green-text);font-weight:500;">${esc(String(v))}</td>` : todoMap;
+      // 기간별 대여료/보증금 셀 (상품찾기와 동일 — 월×보증)
+      const priceCell = (pr) => (pr && Number(pr.rent))
+        ? td(`${fmtMan(pr.rent)}${pr.deposit ? ' / ' + fmtMan(pr.deposit) : ''}`, { r: true, bg: 'var(--alert-blue-bg)' })
+        : td(empty, { r: true, bg: 'var(--alert-blue-bg)' });
 
       preview.innerHTML = `
         <table style="font-size:11px;border-collapse:collapse;white-space:nowrap;">
@@ -703,39 +707,34 @@ function renderSyncTab(el) {
               <th style="padding:4px 6px;text-align:left;">색상</th>
               <th style="padding:4px 6px;text-align:left;">연료</th>
               <th style="padding:4px 6px;text-align:left;border-right:3px solid var(--border-strong);">12·24·36개월</th>
-              <!-- 우: 상품찾기 PRODUCT_COLS 순서 그대로 -->
-              <th style="padding:4px 6px;text-align:left;">차량상태</th>
-              <th style="padding:4px 6px;text-align:left;">신차/중고</th>
-              <th style="padding:4px 6px;text-align:left;">렌트/구독</th>
+              <!-- 우: 상품찾기 22컬럼 그대로 (반영 후) — 월 대여료는 '월/보증' 쌍 -->
               <th style="padding:4px 6px;text-align:left;">차량번호</th>
+              <th style="padding:4px 6px;text-align:left;">상태</th>
+              <th style="padding:4px 6px;text-align:left;">구분</th>
               <th style="padding:4px 6px;text-align:left;">제조사</th>
               <th style="padding:4px 6px;text-align:left;">모델</th>
               <th style="padding:4px 6px;text-align:left;">세부모델</th>
               <th style="padding:4px 6px;text-align:left;">파워트레인</th>
               <th style="padding:4px 6px;text-align:left;">세부트림</th>
+              <th style="padding:4px 6px;text-align:left;">선택옵션</th>
               <th style="padding:4px 6px;text-align:left;">연식</th>
-              <th style="padding:4px 6px;text-align:right;">주행거리</th>
+              <th style="padding:4px 6px;text-align:right;">주행</th>
               <th style="padding:4px 6px;text-align:left;">연료</th>
-              <th style="padding:4px 6px;text-align:left;">외장색</th>
-              <th style="padding:4px 6px;text-align:left;">내장색</th>
-              <th style="padding:4px 6px;text-align:center;">사진</th>
+              <th style="padding:4px 6px;text-align:left;">외부</th>
+              <th style="padding:4px 6px;text-align:left;">내부</th>
+              <th style="padding:4px 6px;text-align:left;">심사</th>
+              <th style="padding:4px 6px;text-align:right;">1개월</th>
               <th style="padding:4px 6px;text-align:right;">12개월</th>
-              <th style="padding:4px 6px;text-align:right;">12보증</th>
               <th style="padding:4px 6px;text-align:right;">24개월</th>
-              <th style="padding:4px 6px;text-align:right;">24보증</th>
               <th style="padding:4px 6px;text-align:right;">36개월</th>
-              <th style="padding:4px 6px;text-align:right;">36보증</th>
-              <th style="padding:4px 6px;text-align:left;">세부트림</th>
-              <th style="padding:4px 6px;text-align:left;">옵션</th>
+              <th style="padding:4px 6px;text-align:right;">48개월</th>
+              <th style="padding:4px 6px;text-align:right;">60개월</th>
               <th style="padding:4px 6px;text-align:left;">공급사</th>
             </tr>
           </thead>
           <tbody>
             ${items.map(p => {
-              const r12 = p.price?.['12']?.rent, r24 = p.price?.['24']?.rent, r36 = p.price?.['36']?.rent;
-              const d12 = p.price?.['12']?.deposit, d24 = p.price?.['24']?.deposit, d36 = p.price?.['36']?.deposit;
-              const origin = /^신차/.test(p.product_type || '') ? '신차' : (/^중고/.test(p.product_type || '') ? '중고' : '');
-              const way = /구독$/.test(p.product_type || '') ? '구독' : (/렌트$/.test(p.product_type || '') ? '렌트' : '');
+              const r12 = p.price?.['12']?.rent, r24 = p.price?.['24']?.rent, r36 = p.price?.['36']?.rent;   // 좌측 시트추출 미리보기용
               return `<tr style="border-bottom:1px solid var(--border);">
                 <!-- 시트 원본 7칸 -->
                 ${raw(p.car_number)}
@@ -745,30 +744,28 @@ function renderSyncTab(el) {
                 ${raw(p.ext_color)}
                 ${raw(p.fuel_type)}
                 <td style="padding:4px 6px;background:var(--alert-orange-bg);text-align:right;font-variant-numeric:tabular-nums;border-right:3px solid var(--border-strong);">${[r12, r24, r36].map(fmt).filter(Boolean).join(' / ') || '-'}</td>
-                <!-- 상품찾기 컬럼 22칸 -->
-                ${map(p.vehicle_status)}
-                ${map(origin)}
-                ${map(way)}
+                <!-- 상품찾기 22칸 (반영 후) — 순서·항목 상품찾기 페이지와 동일 -->
                 ${map(p.car_number)}
+                ${map(p.vehicle_status)}
+                ${map(p.product_type)}
                 ${autoMap(p.maker)}
                 ${autoMap(p.model)}
                 ${autoMap(p.sub_model)}
                 ${autoMap(p.variant)}
                 ${autoMap(p.trim_name)}
+                <td style="padding:4px 6px;background:var(--alert-blue-bg);max-width:180px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.options)}">${e(p.options)}</td>
                 ${map(p.year)}
                 ${td(p.mileage ? p.mileage.toLocaleString('ko-KR') : empty, { r: true, bg: 'var(--alert-blue-bg)' })}
                 ${map(p.fuel_type)}
                 ${map(p.ext_color)}
-                ${todoMap}<!-- 내장색은 시트에 없음 — 항상 매트릭스 매핑 필요 -->
-                <td style="padding:4px 6px;text-align:center;background:var(--alert-blue-bg);">${p.photo_link ? `<a href="${esc(p.photo_link)}" target="_blank">📷</a>` : empty}</td>
-                ${td(fmtMan(r12) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(d12) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(r24) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(d24) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(r36) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${td(fmtMan(d36) || empty, { r: true, bg: 'var(--alert-blue-bg)' })}
-                ${autoMap(p.trim_name)}
-                <td style="padding:4px 6px;background:var(--alert-blue-bg);max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.options)}">${e(p.options)}</td>
+                ${map(p.int_color)}
+                ${map(p.credit_grade || p.screening_criteria)}
+                ${priceCell(p.price?.['1'])}
+                ${priceCell(p.price?.['12'])}
+                ${priceCell(p.price?.['24'])}
+                ${priceCell(p.price?.['36'])}
+                ${priceCell(p.price?.['48'])}
+                ${priceCell(p.price?.['60'])}
                 ${map(p.partner_code)}
               </tr>`;
             }).join('')}

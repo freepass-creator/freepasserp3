@@ -452,7 +452,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
   product.price = {};
   for (const [m, col] of Object.entries(rentCols)) {
     const r = parsePrice(safeGet(row, colIdx(col)));
-    if (!r) continue;
+    if (r < 100000) continue;   // 비현실적 저가(노트/조건문에서 추출된 숫자 등) 스킵 — 월 대여료는 10만원 이상
     const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
     product.price[m] = { rent: r, deposit: dep };
   }
