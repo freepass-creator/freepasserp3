@@ -14,6 +14,9 @@ import { buildMasterTree } from './vehicle-master-tree.js';
 const LEVELS = ['maker', 'model', 'catalogId', 'variant', 'trim'];
 const LABELS = ['① 제조사', '② 모델', '③ 세부모델', '④ 파워트레인', '⑤ 트림'];
 
+/* 국산 제조사 — 제조사 드롭다운을 국산(위)/수입(아래) optgroup 섹션으로 분리. 그 외는 수입. */
+const DOMESTIC_MAKERS = new Set(['현대', '기아', '제네시스', '쉐보레', '르노', '르노삼성', '삼성', 'KGM', 'KG모빌리티', '쌍용', '대우']);
+
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -43,21 +46,44 @@ export function renderMasterCascade(el, index, opts = {}) {
   const subNode = () => { const md = modelNode(); return md ? md.subModels.find(s => s.id === state.catalogId) || null : null; };
   const variantNode = () => { const sm = subNode(); return sm ? sm.variants.find(v => v.variant === state.variant) || null : null; };
 
+  /* ── 보유 매물수 집계 (counts: catalog_id→대수). 모델·세부모델을 '많은 차부터' 정렬용 ── */
+  const subDae = (sm) => (counts ? (counts.get(sm.id) || 0) : 0);
+  const modelDae = (m) => m.subModels.reduce((s, sm) => s + subDae(sm), 0);
+  const makerDae = (mk) => mk.models.reduce((s, m) => s + modelDae(m), 0);
+  const daeSuffix = (n) => (n > 0 ? ` · ${n}대` : '');
+
+  /* 제조사 → 국산(위)/수입(아래) 섹션. 각 섹션 안은 보유 매물 많은 순(동수면 모델수→가나다). */
+  function makerGroups() {
+    const dom = [], imp = [];
+    for (const t of tree) (DOMESTIC_MAKERS.has(t.maker) ? dom : imp).push(t);
+    const sortMk = (arr) => arr.sort((a, b) =>
+      makerDae(b) - makerDae(a) || b.modelCount - a.modelCount || a.maker.localeCompare(b.maker, 'ko'));
+    return [
+      { label: '국산', makers: sortMk(dom) },
+      { label: '수입', makers: sortMk(imp) },
+    ].filter(g => g.makers.length);
+  }
+
   /* ── 레벨별 옵션 [{value,label}] ── */
   function optionsFor(level) {
     switch (level) {
       case 'maker':
-        return tree.map(t => ({ value: t.maker, label: `${t.maker} (${t.modelCount})` }));
+        // 국산→수입 순, 각 섹션 내 많은 차부터 (flat — length 체크/자동선택용. 렌더는 fillSelect 가 optgroup 으로)
+        return makerGroups().flatMap(g => g.makers).map(t => ({ value: t.maker, label: `${t.maker} (${t.modelCount})` }));
       case 'model': {
         const mk = makerNode();
-        return mk ? mk.models.map(m => ({ value: m.model, label: `${m.model} (${m.subModelCount})` })) : [];
+        if (!mk) return [];
+        const models = counts ? [...mk.models].sort((a, b) => modelDae(b) - modelDae(a)) : mk.models;
+        return models.map(m => ({ value: m.model, label: `${m.model} (${m.subModelCount})${daeSuffix(modelDae(m))}` }));
       }
       case 'catalogId': {
         const md = modelNode();
-        return md ? md.subModels.map(s => ({
+        if (!md) return [];
+        const subs = counts ? [...md.subModels].sort((a, b) => subDae(b) - subDae(a)) : md.subModels;
+        return subs.map(s => ({
           value: s.id,
-          label: `${s.subModel}${s.year ? ' · ' + s.year : ''}${s.trimCount ? ' · 트림' + s.trimCount : ''}`,
-        })) : [];
+          label: `${s.subModel}${s.year ? ' · ' + s.year : ''}${s.trimCount ? ' · 트림' + s.trimCount : ''}${daeSuffix(subDae(s))}`,
+        }));
       }
       case 'variant': {
         const sm = subNode();
@@ -91,8 +117,18 @@ export function renderMasterCascade(el, index, opts = {}) {
   /* ── select 채우기 ── */
   function fillSelect(level) {
     const sel = selects[level];
-    const opts = optionsFor(level);
     const cur = state[level];
+    // 제조사 — 국산/수입 optgroup 섹션
+    if (level === 'maker') {
+      const groups = makerGroups();
+      sel.innerHTML = `<option value="">선택</option>` + groups.map(g =>
+        `<optgroup label="${esc(g.label)}">` +
+        g.makers.map(t => `<option value="${esc(t.maker)}"${t.maker === cur ? ' selected' : ''}>${esc(t.maker)} (${t.modelCount})${daeSuffix(makerDae(t))}</option>`).join('') +
+        `</optgroup>`).join('');
+      sel.disabled = groups.length === 0;
+      return;
+    }
+    const opts = optionsFor(level);
     sel.innerHTML =
       `<option value="">${opts.length ? '선택' : '─'}</option>` +
       opts.map(o => `<option value="${esc(o.value)}"${o.value === cur ? ' selected' : ''}>${esc(o.label)}</option>`).join('');
