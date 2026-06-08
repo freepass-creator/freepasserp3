@@ -22,6 +22,7 @@ import { renderMasterCascade } from '../core/master-cascade.js';
 import { buildMasterTree, masterTreeStats, parseTrim } from '../core/vehicle-master-tree.js';
 import { powertrainFromProduct } from '../core/powertrain-from-product.js';
 import { ensureCatalogSource, catalogSubModelByYear, inferMaker } from '../core/catalog-source.js';
+import { setBreadcrumbTail } from '../core/breadcrumb.js';
 
 let _activeTab = 'jonghap';
 let _syncFetched = null;
@@ -98,6 +99,9 @@ export function renderAdminOps() {
 function renderTab(id) {
   const el = document.getElementById('aoContent');
   if (!el) return;
+  // 상단 breadcrumb 꼬리 — 현재 하부탭 라벨 반영 (예: 관리자 › 차종마스터)
+  const tab = TABS.find(t => t.id === id);
+  if (tab) setBreadcrumbTail({ icon: `ph ph-${tab.icon}`, label: tab.label });
   if (id === 'jonghap') return renderJonghapTab(el);
   if (id === 'sync')    return renderSyncTab(el);
   if (id === 'notice')  return renderNoticeTab(el);
