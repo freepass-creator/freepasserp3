@@ -56,7 +56,7 @@ const findStatusIdx = (headers) => {
    '용인/우리캐피탈렌터카' 형태에서 마지막 토큰을 회사명으로 보고 매칭. */
 const PARTNER_NAME_TO_CODE = {
   '아이카': 'RP004',
-  '스타스카이': 'RP005',
+  '스타스카이': 'RP005', '스카이': 'RP005',
   '아이언렌트카': 'RP006', '아이언': 'RP006',
   '리더스렌터카': 'RP008', '리더스렌트카': 'RP008', '리더스': 'RP008',
   'KH': 'RP010',
@@ -379,8 +379,17 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
   const colIdx = (n) => headers.indexOf(n);
   const colPartial = (kw) => headers.findIndex(h => h.includes(kw));
   const idxCar = colIdx('차량번호');
-  const carNumber = safeGet(row, idxCar);
-  if (!carNumber || !VALID_CAR_NO.test(carNumber)) return null;
+  let carNumber = safeGet(row, idxCar);
+  // 번호 없는 신차(미정/번호미정/빈칸) — 차종분류·세부모델 있는 실제 차량이면 버리지 말고 100신XXXX 임시번호 부여.
+  //  행 위치(absRow) 기반 → 시트 순서 유지되면 재동기화 시 같은 uid (멱등). 사용자: "번호없는 차는 신차".
+  let pendingPlate = false;
+  if (!carNumber || !VALID_CAR_NO.test(carNumber)) {
+    const cls = safeGet(row, colIdx('차종분류'));
+    const sub = safeGet(row, colIdx('세부모델'));
+    if (!cls && !sub) return null;                       // 매물 아님(빈 줄/푸터)
+    carNumber = `100신${String(absRow).padStart(4, '0')}`;
+    pendingPlate = true;
+  }
 
   const idxStatus = findStatusIdx(headers);   // 상태/판매상태/즉시출고 별칭 — 탭마다 헤더 다름
   const statusRaw = safeGet(row, idxStatus);
@@ -415,7 +424,8 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     engine_cc:    parsePrice(safeGet(row, colIdx('배기량'))),
     location:     yard,
     partner_memo: safeGet(row, colIdx('비고')),
-    product_type: safeGet(row, colIdx('구분')) === '신차' ? '신차렌트' : '중고렌트',
+    product_type: (pendingPlate || safeGet(row, colIdx('구분')) === '신차') ? '신차렌트' : '중고렌트',
+    is_pending_plate: pendingPlate,     // 번호 미정 신차 — 실번호 받으면 수기로 덮어씀
     status,
     vehicle_status: vehicleStatus,
     status_label: statusRaw,
