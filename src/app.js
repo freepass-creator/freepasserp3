@@ -2366,15 +2366,8 @@ function bindLogout() {
     location.hash = 'settings';
   });
 
-  // 토픽바 우측 사용자 영역 — 계정정보·로그아웃은 설정 페이지로 일원화. 클릭 시 설정 직행.
-  document.getElementById('ptTbUserMenu')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    location.hash = 'settings';
-  });
-
-  // 알림 버튼 — 향후 알림 패널 연결 (현재는 placeholder)
-  document.getElementById('ptTbAlert')?.addEventListener('click', () => {
+  // 알림 버튼 — 좌측 하단 사이드바 (향후 알림 패널 연결, 현재는 placeholder)
+  document.getElementById('sbAlert')?.addEventListener('click', () => {
     showToast('알림 — 추후 지원 예정', 'info');
   });
 }

@@ -73,6 +73,7 @@
     <a href="#admin" class="pt-sb-bottom-link pt-sb-bottom-admin" data-page="admin" title="관리자"><i class="ph ph-shield-star"></i><span class="sb-label">관리자</span></a>
     <a href="#admin-settle" class="pt-sb-bottom-link pt-sb-bottom-admin-settle" data-page="admin-settle" title="관리자 정산 — 월별 수수료 정산"><i class="ph ph-calculator"></i><span class="sb-label">관리자 정산</span></a>
     <a href="#dev" class="pt-sb-bottom-link pt-sb-bottom-dev" data-page="dev" title="개발도구"><i class="ph ph-code"></i><span class="sb-label">개발도구</span></a>
+    <a href="javascript:void(0)" class="pt-sb-bottom-link" id="sbAlert" title="알림"><i class="ph ph-bell"></i><span class="sb-label">알림</span></a>
     <a href="#settings" class="pt-sb-bottom-link" data-page="settings" title="설정"><i class="ph ph-gear"></i><span class="sb-label">설정</span></a>
   </div>
 </aside>
@@ -104,12 +105,10 @@
   <div class="pt-tb-inner" data-tb="partners" hidden></div>
   <div class="pt-tb-inner" data-tb="users" hidden></div>
 
-  <!-- ③ 우측: [전역 버튼 자리] + 알림 + 설정(계정·로그아웃은 설정 페이지로 일원화) -->
+  <!-- ③ 우측: [전역 버튼 자리] (알림·설정은 좌측 하단 사이드바로 일원화) -->
   <span class="pt-tb-global">
     <!-- 전역 버튼 자리 — 향후 전역 액션 버튼을 여기에 추가 (#ptTbGlobalActions) -->
     <span id="ptTbGlobalActions" class="pt-tb-global-actions"></span>
-    <button class="pt-tb-icon" id="ptTbAlert" title="알림"><i class="ph ph-bell"></i></button>
-    <button class="pt-tb-icon" id="ptTbUserMenu" title="설정 · 계정"><i class="ph ph-gear"></i></button>
   </span>
 </header>
 
