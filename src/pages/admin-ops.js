@@ -17,6 +17,9 @@ import { customConfirm } from '../core/confirm.js';
 import { saveNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
 import { esc, emptyState, renderRoomItem, fmtMoneyMan } from '../core/ui-helpers.js';
 import { rowsToTsv } from '../core/jonghap-export.js';
+import { loadIndex } from '../core/vehicle-matrix.js';
+import { renderMasterCascade } from '../core/master-cascade.js';
+import { buildMasterTree, masterTreeStats, parseTrim } from '../core/vehicle-master-tree.js';
 
 let _activeTab = 'jonghap';
 let _syncFetched = null;
@@ -26,6 +29,7 @@ const TABS = [
   { id: 'sync',    icon: 'google-drive-logo', label: '외부 상품 동기화', sub: '오플시트 / 공급시트 자동탐지 / 종합' },
   { id: 'notice',  icon: 'megaphone',         label: '공지',           sub: '대시보드 공지 CRUD' },
   { id: 'apikeys', icon: 'key',              label: 'API 키',         sub: '외부 홈피 매물 연동 키 발급/폐기' },
+  { id: 'vehicle-master', icon: 'car-profile', label: '차종마스터',    sub: '5단계 분류 (제조사→모델→세부모델→파워트레인→트림)' },
 ];
 
 /* 로그 패널(#aoLog) 출력 — dev.js 의 devLog 와 동일 역할 */
@@ -96,6 +100,74 @@ function renderTab(id) {
   if (id === 'sync')    return renderSyncTab(el);
   if (id === 'notice')  return renderNoticeTab(el);
   if (id === 'apikeys') return renderApiKeysTab(el);
+  if (id === 'vehicle-master') return renderVehicleMasterTab(el);
+}
+
+/* ──────── 차종마스터 (조회전용) ────────
+ *  catalog(public/data/car-master/_index.json) 기반 5단계 캐스케이드.
+ *  제조사 → 모델 → 세부모델 → 파워트레인(연료·배기량·터보·구동·인승) → 트림.
+ *  데이터 편집은 개발도구/json (여기선 조회만). 기존 master-cascade·vehicle-master-tree 유틸 재사용. */
+async function renderVehicleMasterTab(el) {
+  el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> 차종마스터 불러오는 중...</div>`;
+  let index;
+  try { index = await loadIndex(); }
+  catch (e) { el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--alert-red-text);">차종마스터 로드 실패: ${esc(e.message)}</div>`; return; }
+
+  const stats = masterTreeStats(buildMasterTree(index));
+  const counts = new Map();   // catalog_id → 보유 매물수
+  for (const p of (store.products || [])) {
+    if (p._deleted || p.status === 'deleted') continue;
+    if (p.catalog_id) counts.set(p.catalog_id, (counts.get(p.catalog_id) || 0) + 1);
+  }
+
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:12px;height:100%;overflow:hidden;">
+      <div style="font-size:11px;color:var(--text-muted);">
+        제조사 ${stats.makers} · 모델 ${stats.models} · 세부모델 ${stats.subModels} · 파워트레인 ${stats.variants} · 트림 ${stats.trims}
+        <span style="margin-left:8px;color:var(--text-weak);">· 조회전용 (편집은 개발도구)</span>
+      </div>
+      <div id="vmtCascade"></div>
+      <div id="vmtDetail" style="flex:1;overflow:auto;"></div>
+    </div>`;
+
+  renderMasterCascade(el.querySelector('#vmtCascade'), index, {
+    counts,
+    onSelect: (sel) => renderVmtDetail(el.querySelector('#vmtDetail'), index, sel),
+  });
+}
+
+/* 세부모델 선택 시 그 안의 파워트레인 → 트림 분해를 펼쳐 보여줌 */
+function renderVmtDetail(el, index, sel) {
+  if (!el) return;
+  if (!sel || !sel.catalogId) { el.innerHTML = ''; return; }
+  const c = index[sel.catalogId];
+  if (!c) { el.innerHTML = ''; return; }
+
+  const variantMap = new Map();
+  for (const raw of (c.trims || [])) {
+    const { variant, trim } = parseTrim(raw);
+    const k = variant || '(미상)';
+    if (!variantMap.has(k)) variantMap.set(k, []);
+    if (!variantMap.get(k).includes(trim)) variantMap.get(k).push(trim);
+  }
+  const variants = [...variantMap];
+  if (!variants.length) { el.innerHTML = `<div style="color:var(--text-muted);font-size:12px;">트림 데이터 없음</div>`; return; }
+
+  el.innerHTML = `
+    <div style="font-size:12px;font-weight:600;color:var(--text-sub);margin:8px 0 6px;">
+      ${esc(sel.subModel || c.title)} — 파워트레인 ${variants.length} · 트림 ${(c.trims || []).length}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${variants.map(([variant, trims]) => {
+        const active = variant === sel.variant;
+        return `<div style="border:1px solid ${active ? 'var(--alert-blue-border)' : 'var(--border)'};border-radius:4px;overflow:hidden;">
+          <div style="padding:4px 8px;background:${active ? 'var(--alert-blue-bg)' : 'var(--bg-header)'};font-size:12px;font-weight:600;">④ ${esc(variant)}</div>
+          <div style="padding:5px 8px;font-size:12px;">
+            ${trims.map(t => `<span style="display:inline-block;padding:1px 7px;margin:2px;background:var(--bg-stripe);border:1px solid var(--border-soft);border-radius:3px;">${esc(t)}</span>`).join('')}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
 }
 
 /* ──────── API 키 (외부 홈피 매물 연동) ────────
