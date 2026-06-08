@@ -3227,7 +3227,7 @@
     "title": "제네시스 GV80 쿠페",
     "maker": "제네시스",
     "model_root": "GV80 쿠페",
-    "year_start": "2023-03",
+    "year_start": "2024-04",
     "year_end": "현재",
     "source": {
       "manufacturer": null,
@@ -3271,13 +3271,12 @@
     "trims": [
       "가솔린 2.5 T AWD",
       "가솔린 3.5 T AWD",
-      "가솔린 3.5 T 슈퍼차저 AWD"
+      "디젤 3.0 AWD"
     ],
     "fetched_at": "2026-04-29",
     "trims_meta": {
       "가솔린 2.5 T AWD": 69000000,
-      "가솔린 3.5 T AWD": 73500000,
-      "가솔린 3.5 T 슈퍼차저 AWD": 79500000
+      "가솔린 3.5 T AWD": 73500000
     }
   },
   "honda_cr_v_5세대": {
