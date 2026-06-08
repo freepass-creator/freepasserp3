@@ -30,6 +30,7 @@ import {
   getCatalogMakers, getCatalogModels, getCatalogSubModels, getCatalogTrims,
   findCatalogBySubModel, getCatalogById, titleToSubModel,
 } from '../core/catalog-source.js';
+import { parseTrim } from '../core/vehicle-master-tree.js';
 // 모듈 import 시 catalog _index.json prefetch — 로드 완료 시 재고 페이지 활성이면 자산정보 재렌더
 ensureCatalogSource().then(() => {
   if (document.querySelector('.pt-page.active')?.dataset.page === 'product') {
@@ -80,24 +81,40 @@ function inventoryCounts() {
   return { m, mm, mms };
 }
 
+/** catalog_id → Map(파워트레인 variant → [세부트림]). full 트림 문자열을 parseTrim 으로 분해 (마스터와 동일 로직) */
+function catalogPowertrains(cid) {
+  const map = new Map();
+  for (const raw of getCatalogTrims(cid)) {
+    const { variant, trim } = parseTrim(raw);
+    const k = variant || '(기본)';
+    if (!map.has(k)) map.set(k, []);
+    const t = trim === '(기본)' ? '' : trim;
+    if (t && !map.get(k).includes(t)) map.get(k).push(t);
+  }
+  return map;
+}
+
 function renderCarPicker(p, dis = '') {
   const curMk = p.maker || '';
   const curMd = p.model || '';
   const curSub = p.sub_model || '';
-  const curTrim = p.trim_name || p.trim || '';
-  const curCid = p.catalog_id
-    || (findCatalogBySubModel(curMk, curSub)?.id || '');
+  const curCid = p.catalog_id || (findCatalogBySubModel(curMk, curSub)?.id || '');
+  // 파워트레인/트림 분해 — variant 필드 있으면 그대로, 없으면(레거시 full trim_name) parseTrim 으로 분해
+  const split = (p.variant != null && p.variant !== '')
+    ? { variant: p.variant, trim: p.trim_name || p.trim || '' }
+    : parseTrim(p.trim_name || p.trim || '');
+  const curVariant = split.variant || '';
+  const curTrim = (split.trim && split.trim !== '(기본)') ? split.trim : '';
 
   const makers = getCatalogMakers();
   const models = curMk ? getCatalogModels(curMk) : [];
   const subs = (curMk && curMd) ? getCatalogSubModels(curMk, curMd) : [];
-  const trims = curCid ? getCatalogTrims(curCid) : [];
+  const variantOpts = curCid ? [...catalogPowertrains(curCid).keys()].map(v => ({ val: v, label: v })) : [];
 
-  // sub_model option: { val, label, attr } — data-cid 로 catalog_id 추적, label 에 생산년도 표기
+  // sub_model option: data-cid 로 catalog_id 추적, label 에 생산년도 표기
   const yy = (v) => { const m = (v || '').match(/^(\d{4})/); return m ? m[1].slice(2) : ''; };
   const yearLabel = (s) => {
-    const ys = yy(s.year_start);
-    const ye = yy(s.year_end);
+    const ys = yy(s.year_start), ye = yy(s.year_end);
     if (ys && (s.year_end === '현재' || !ye)) return ` (${ys}~)`;
     if (ys && ye) return ` (${ys}~${ye})`;
     return '';
@@ -105,11 +122,11 @@ function renderCarPicker(p, dis = '') {
   const subOpts = subs.map(s => ({ val: s.sub, label: s.sub + yearLabel(s), attr: ` data-cid="${esc(s.id)}"` }));
   const makerOpts = makers.map(m => ({ val: m, label: m }));
   const modelOpts = models.map(m => ({ val: m, label: m }));
-  const trimOpts = trims.map(t => ({ val: t, label: t }));
 
-  return `${pickerSelect('제조사',   'maker',     curMk,   makerOpts, { ctx: 'maker', mk: curMk }, dis)}
-          ${pickerSelect('모델',     'model',     curMd,   modelOpts, { ctx: 'model', mk: curMk }, dis)}
-          ${pickerSelect('세부모델', 'sub_model', curSub,  subOpts,   { ctx: 'sub_model', mk: curMk, md: curMd }, dis)}
+  return `${pickerSelect('제조사',   'maker',     curMk,      makerOpts,   { ctx: 'maker', mk: curMk }, dis)}
+          ${pickerSelect('모델',     'model',     curMd,      modelOpts,   { ctx: 'model', mk: curMk }, dis)}
+          ${pickerSelect('세부모델', 'sub_model', curSub,     subOpts,     { ctx: 'sub_model', mk: curMk, md: curMd }, dis)}
+          ${pickerSelect('파워트레인', 'variant', curVariant, variantOpts, { ctx: 'variant' }, dis)}
           ${ffi('세부트림', 'trim_name', curTrim, dis)}
           <input type="hidden" data-f="catalog_id" value="${esc(curCid)}">`;
 }
@@ -146,16 +163,16 @@ function bindCarPicker(card, p) {
   const mkSel = card.querySelector('select[data-picker="maker"]');
   const mdSel = card.querySelector('select[data-picker="model"]');
   const sbSel = card.querySelector('select[data-picker="sub_model"]');
-  const tmSel = card.querySelector('select[data-picker="trim_name"]');
+  const ptSel = card.querySelector('select[data-picker="variant"]');   // 파워트레인
+  const tmInput = card.querySelector('[data-f="trim_name"]');           // 세부트림 = 자유입력(datalist)
   const cidIn = card.querySelector('input[data-f="catalog_id"]');
-  if (!mkSel || !mdSel || !sbSel || !tmSel) return;
+  if (!mkSel || !mdSel || !sbSel) return;
 
   // cascade picker change 시 변경된 cascade 값들 + 동기 채워진 fuel_type/vehicle_class 까지 RTDB 자동 저장.
-  // [저장] 별도로 안 눌러도 다른 매물 이동/새로고침 후 복원 — autoFill 결과도 잃지 않음.
   const persistCascade = async () => {
     try {
       const patch = { updated_at: Date.now() };
-      for (const f of ['maker', 'model', 'sub_model', 'trim_name', 'catalog_id', 'fuel_type', 'vehicle_class']) {
+      for (const f of ['maker', 'model', 'sub_model', 'variant', 'trim_name', 'catalog_id', 'fuel_type', 'vehicle_class']) {
         const v = card.querySelector(`[data-f="${f}"]`)?.value;
         if (v != null) patch[f] = v;
       }
@@ -165,24 +182,26 @@ function bindCarPicker(card, p) {
   };
 
   const fill = (sel, opts, cur, ctx) => {
+    if (!sel) return;
     sel.innerHTML = `<option value="">선택</option>` + pickerOptionsHtml(opts, cur, ctx);
   };
   const yy = (v) => { const m = (v || '').match(/^(\d{4})/); return m ? m[1].slice(2) : ''; };
   const yearLabel = (s) => {
-    const ys = yy(s.year_start);
-    const ye = yy(s.year_end);
+    const ys = yy(s.year_start), ye = yy(s.year_end);
     if (ys && (s.year_end === '현재' || !ye)) return ` (${ys}~)`;
     if (ys && ye) return ` (${ys}~${ye})`;
     return '';
   };
   const subsToOpts = (subs) => subs.map(s => ({ val: s.sub, label: s.sub + yearLabel(s), attr: ` data-cid="${esc(s.id)}"` }));
   const arrToOpts = (arr) => arr.map(v => ({ val: v, label: v }));
+  const variantOpts = (cid) => cid ? [...catalogPowertrains(cid).keys()].map(v => ({ val: v, label: v })) : [];
 
   mkSel.addEventListener('change', () => {
     const newMk = mkSel.value;
     fill(mdSel, arrToOpts(newMk ? getCatalogModels(newMk) : []), '', { ctx: 'model', mk: newMk });
     fill(sbSel, [], '', { ctx: 'sub_model', mk: newMk, md: '' });
-    fill(tmSel, [], '', { ctx: 'trim' });
+    fill(ptSel, [], '', { ctx: 'variant' });
+    if (tmInput) tmInput.value = '';
     if (cidIn) cidIn.value = '';
     autoFillFromCarModel(card, newMk, '', '');
     persistCascade();
@@ -191,55 +210,48 @@ function bindCarPicker(card, p) {
     const mk = mkSel.value, newMd = mdSel.value;
     const subs = (mk && newMd) ? getCatalogSubModels(mk, newMd) : [];
     fill(sbSel, subsToOpts(subs), '', { ctx: 'sub_model', mk, md: newMd });
-    fill(tmSel, [], '', { ctx: 'trim' });
+    fill(ptSel, [], '', { ctx: 'variant' });
+    if (tmInput) tmInput.value = '';
     if (cidIn) cidIn.value = '';
     autoFillFromCarModel(card, mk, newMd, '');
     persistCascade();
   });
   sbSel.addEventListener('change', () => {
-    const mk = mkSel.value;
-    const sub = sbSel.value;
+    const mk = mkSel.value, sub = sbSel.value;
     // 선택된 option 의 data-cid → catalog_id 자동 set
     const opt = sbSel.selectedOptions[0];
     const cid = opt?.dataset?.cid || (findCatalogBySubModel(mk, sub)?.id || '');
     if (cidIn) cidIn.value = cid;
-    fill(tmSel, arrToOpts(cid ? getCatalogTrims(cid) : []), '', { ctx: 'trim' });
+    fill(ptSel, variantOpts(cid), '', { ctx: 'variant' });   // 파워트레인 옵션 채움
+    if (tmInput) tmInput.value = '';
+    refreshTrimDatalist(card, p);
     autoFillFromCarModel(card, mk, mdSel.value, sub);
     persistCascade();
   });
-  tmSel.addEventListener('change', () => {
+  if (ptSel) ptSel.addEventListener('change', () => {
+    if (tmInput) tmInput.value = '';                 // 파워트레인 바뀌면 트림 초기화
+    refreshTrimDatalist(card, p);                    // 트림 datalist 를 선택 파워트레인 기준으로 갱신
     autoFillFromCarModel(card, mkSel.value, mdSel.value, sbSel.value);
     persistCascade();
   });
+  if (tmInput) tmInput.addEventListener('change', () => persistCascade());
 }
 
-/* 트림 입력 필드에 카탈로그 트림 자동완성(datalist) 부착 */
-async function refreshTrimDatalist(card, p) {
+/* 세부트림 입력 필드 자동완성(datalist) — 선택된 catalog_id + 파워트레인 기준 클린 트림 제안.
+ *  파워트레인 선택돼 있으면 그 파워트레인의 트림만, 아니면 세부모델 전체 트림 합집합. */
+function refreshTrimDatalist(card, p) {
   const trimInput = card.querySelector('[data-f="trim_name"]');
   if (!trimInput) return;
-  const live = {
-    maker: card.querySelector('[data-f="maker"]')?.value || p.maker,
-    sub_model: card.querySelector('[data-f="sub_model"]')?.value || p.sub_model,
-    model: card.querySelector('[data-f="model"]')?.value || p.model,
-  };
-  if (!live.maker) return;
-  try {
-    const cat = await findMatrixCatalog(live.maker, live.sub_model, live.model);
-    if (!cat) return;
-    const c = await loadMatrixCatalog(cat.catalogId);
-    if (!c?.trims) return;
-    const trims = Object.keys(c.trims);
-    if (!trims.length) return;
-    // datalist 생성/갱신
-    let dl = card.querySelector('#mtxTrimList');
-    if (!dl) {
-      dl = document.createElement('datalist');
-      dl.id = 'mtxTrimList';
-      card.appendChild(dl);
-    }
-    dl.innerHTML = trims.map(t => `<option value="${esc(t)}">`).join('');
-    trimInput.setAttribute('list', 'mtxTrimList');
-  } catch {}
+  const cid = card.querySelector('[data-f="catalog_id"]')?.value || p.catalog_id || '';
+  const variant = card.querySelector('[data-f="variant"]')?.value || '';
+  if (!cid) return;
+  const ptMap = catalogPowertrains(cid);
+  const trims = ((variant && ptMap.has(variant)) ? ptMap.get(variant) : [...new Set([].concat(...ptMap.values()))]).filter(Boolean);
+  if (!trims.length) return;
+  let dl = card.querySelector('#mtxTrimList');
+  if (!dl) { dl = document.createElement('datalist'); dl.id = 'mtxTrimList'; card.appendChild(dl); }
+  dl.innerHTML = trims.map(t => `<option value="${esc(t)}">`).join('');
+  trimInput.setAttribute('list', 'mtxTrimList');
 }
 
 /* 차량번호 중복 검증 — input 변경 시 store.products 와 비교, 중복이면 경고 + 값 되돌림 */
@@ -371,7 +383,7 @@ async function refreshTrimOptionChips(card, p) {
         // cascade picker 의 현재 값들도 함께 저장 (RTDB 의 sub_model/trim_name 이 빈 값이라 watchCollection 콜백
         //  후 cascade picker 가 reset 되어 trim 매칭이 풀리는 회귀 방지)
         const patch = { options: next, updated_at: Date.now() };
-        const fields = ['maker', 'model', 'sub_model', 'trim_name', 'catalog_id'];
+        const fields = ['maker', 'model', 'sub_model', 'variant', 'trim_name', 'catalog_id'];
         for (const f of fields) {
           const v = card.querySelector(`[data-f="${f}"]`)?.value;
           if (v != null && v !== '') patch[f] = v;
@@ -439,6 +451,7 @@ async function refreshMatrixBanner(card, p) {
     maker: card.querySelector('[data-f="maker"]')?.value || p.maker,
     model: card.querySelector('[data-f="model"]')?.value || p.model,
     sub_model: card.querySelector('[data-f="sub_model"]')?.value || p.sub_model,
+    variant: card.querySelector('[data-f="variant"]')?.value || p.variant,
     trim_name: card.querySelector('[data-f="trim_name"]')?.value || p.trim_name,
     options: card.querySelector('[data-f="options"]')?.value || p.options,
   };
@@ -797,6 +810,7 @@ export function renderProductDetail(p) {
     if (canEdit) {
       bindFormSave(page, 'products', p._key, p);
       bindCarPicker(assetCard, p);
+      refreshTrimDatalist(assetCard, p);     // 초기 세부트림 datalist (선택 파워트레인 기준)
       bindCarNumberDupCheck(assetCard, p);   // 차량번호 중복 검증
     }
     // FP 인기옵션 chip — canEdit 와 무관하게 listener 박음 (chip 자체 disabled 가 권한 검사)
