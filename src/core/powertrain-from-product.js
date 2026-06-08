@@ -59,7 +59,7 @@ export function powertrainFromProduct(p) {
     .replace(/\d\s*세대/g, ' ')                                 // 세대 표기
     .replace(/\b\d{2,4}\s*MY\b/gi, ' ')                         // 연식코드 25MY / 2026 MY
     .replace(/자가용|영업용|렌터카|렌트카|리스|법인|개인용?|런칭/g, ' ')   // 등록구분·마케팅
-    .replace(/플러그인\s*하이브리드|하이브리드|PHEV|HEV|디젤|경유|가솔린|휘발유|LPG|LPi|LPI|전기|일렉트릭|E-?Tech|electric|수소|FCEV/gi, ' ')  // 연료
+    .replace(/플러그인\s*하이브리드|하이브리드|PHEV|HEV|디젤|경유|가솔린|휘발유|LPG|LPi|LPI|전기|일렉트릭|\bEV\b|E-?Tech|electric|수소|FCEV/gi, ' ')  // 연료
     .replace(/스마트\s*스트림|T-?GDI|GDI|MPI|IVT|DCT|CVT|DSG|e-?VGT|TDI/gi, ' ')   // 엔진테크·변속기
     .replace(/\d\.\d\s*T?|\d{3,4}\s*cc|\d+\s*인승?|터보/gi, ' ')   // 배기량·인승·터보
     .replace(/\b(AWD|4WD|RWD|FWD|2WD|4MATIC|xDrive|e-4WD|2륜|4륜|A\/T|M\/T|AT|MT)\b/gi, ' ')   // 구동·변속

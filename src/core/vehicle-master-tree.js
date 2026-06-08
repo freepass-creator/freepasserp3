@@ -17,7 +17,7 @@
 /* 스펙 토큰 판별 — 모델구분에 속하는 토큰인가 */
 const FUEL = new Set(['가솔린', '휘발유', '디젤', '경유', 'LPG', 'LPi', 'LPI', '하이브리드', 'HEV', '전기', 'EV', '수소', 'PHEV', 'FCEV']);
 // 연료 표기 통일 — 국어(경유/휘발유) → 표준(디젤/가솔린)
-const FUEL_NORM = { '경유': '디젤', '휘발유': '가솔린' };
+const FUEL_NORM = { '경유': '디젤', '휘발유': '가솔린', 'EV': '전기' };
 const normFuel = (t) => FUEL_NORM[t] || t;
 const BATTERY = new Set(['스탠다드', '스탠더드', '롱레인지', '롱 레인지']);
 const DRIVE = new Set(['AWD', '4WD', '2WD', 'RWD', 'FWD', 'e-4WD', '2륜', '4륜', '4MATIC', 'xDrive']);
