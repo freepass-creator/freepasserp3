@@ -154,13 +154,14 @@ export function getCatalogById(catalog_id) {
 /** 모델명 → 제조사 (catalog model_root 매칭). 제조사 미입력 시 1차 추론용. */
 export function catalogMakerByModel(model) {
   if (!_index || !model) return '';
-  const norm = (s) => String(s || '').toLowerCase().replace(/\s+/g, '');
+  const norm = (s) => String(s || '').toLowerCase().replace(/\s+/g, '').replace(/the|신형|올뉴|디올뉴|더뉴|뉴/g, '');
   const n = norm(model);
   if (n.length < 2) return '';
-  for (const c of Object.values(_index)) {
-    if (!c.model_root) continue;
+  const cats = Object.values(_index).filter((c) => c.model_root);
+  for (const c of cats) if (norm(c.model_root) === n) return c.maker;          // 정확 일치 우선
+  for (const c of cats) {                                                       // 부분일치 — 4자+ 만 (Q5↔Q50, K5↔K53 등 짧은코드 충돌 방지)
     const nm = norm(c.model_root);
-    if (nm === n || n.includes(nm) || nm.includes(n)) return c.maker;
+    if (nm.length >= 4 && (n.includes(nm) || nm.includes(n))) return c.maker;
   }
   return '';
 }
@@ -219,9 +220,9 @@ export function catalogSubModelByYear(maker, model, regDate) {
   // 연식 파싱 — "2023-05", "23-5-7"(YY-M-D), "23년식" 등 다양한 공급사 표기 흡수 → YYYY-MM
   const parseYM = (s) => {
     s = String(s || '').trim();
-    let m = s.match(/(\d{4})[-.\/]?\s*(\d{1,2})?/);                    // YYYY[-MM]
+    let m = s.match(/((?:19|20)\d{2})[-.\/년]?\s*(\d{1,2})?/);         // YYYY[-/.년 MM] (1598cc 같은 비연도 제외)
     if (m) return m[1] + '-' + String(m[2] || '1').padStart(2, '0');
-    m = s.match(/^(\d{2})[-.\/](\d{1,2})/) || s.match(/^(\d{2})\s*년/); // YY-MM / YY년식
+    m = s.match(/^(\d{2})[-.\/년]\s*(\d{1,2})?/);                      // YY-MM / YY년[M월]
     if (m) return (2000 + Number(m[1])) + '-' + String(m[2] || '1').padStart(2, '0');
     return '';
   };

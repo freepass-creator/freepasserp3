@@ -45,23 +45,23 @@ function parseTrim(raw) {
   const s = String(raw || '').trim().replace(/\s+/g, ' ');
   if (!s) return { variant: '', trim: '(기본)' };
   const toks = s.split(' ');
-  let cut = toks.length;
-  for (let i = toks.length - 1; i >= 0; i--) { if (isSpecToken(toks[i])) cut = i; else break; }
-  const trimToksRaw = toks.slice(0, cut), specToks = toks.slice(cut);
-  // 연료·배터리 토큰은 트림 앞/중간에 있어도 파워트레인으로, 노이즈(렌터카/더/뉴/연식MY)는 제거
-  const hasEV = [...trimToksRaw, ...specToks].some((t) => t === '전기' || t === 'EV');
-  const frontFuel = [], frontBattery = [], trimToks = [];
-  for (const t of trimToksRaw) {
-    if (FUEL.has(t)) frontFuel.push(t);
-    else if (t === '롱레인지' || t === '롱 레인지') frontBattery.push(t);
-    else if ((t === '스탠다드' || t === '스탠더드') && hasEV) frontBattery.push(t);
-    else if (!NOISE_TRIM.has(t) && !/^\d{2,4}\s*MY$/i.test(t)) trimToks.push(t);
-  }
+  // 스펙 토큰 위치 무관 파워트레인, 노이즈 제거, 나머지 트림. "2.0T"→2.0+T(규격통일).
+  const hasEV = toks.some((t) => t === '전기' || t === 'EV');
   const slots = { fuel: [], disp: [], battery: [], turbo: [], drive: [], seats: [], etc: [] };
-  for (const t of specToks) slots[classifySpec(t)].push(t);
-  slots.fuel = [...frontFuel, ...slots.fuel].map(normFuel);   // 경유→디젤, 휘발유→가솔린
-  slots.battery = [...frontBattery, ...slots.battery];        // 롱레인지/스탠다드(EV) = 파워트레인
-  const variant = [...slots.fuel, ...slots.disp, ...slots.battery, ...slots.turbo, ...slots.drive, ...slots.seats, ...slots.etc].join(' ');
+  const trimToks = [];
+  for (const tok of toks) {
+    const mt = tok.match(/^(\d\.\d)T$/i);
+    if (mt) { slots.disp.push(mt[1]); slots.turbo.push('T'); continue; }
+    if (FUEL.has(tok)) { slots.fuel.push(tok); continue; }
+    if (tok === '롱레인지' || tok === '롱') { slots.battery.push('롱레인지'); continue; }
+    if (tok === '레인지') continue;
+    if (tok === '스탠다드' || tok === '스탠더드') { (hasEV ? slots.battery : trimToks).push(tok); continue; }
+    if (isSpecToken(tok)) { slots[classifySpec(tok)].push(tok); continue; }
+    if (NOISE_TRIM.has(tok) || /^\d{2,4}\s*MY$/i.test(tok)) continue;
+    trimToks.push(tok);
+  }
+  slots.fuel = slots.fuel.map(normFuel);
+  const variant = [...slots.fuel, ...slots.disp, ...slots.battery, ...(slots.turbo.length ? ['T'] : []), ...slots.drive, ...slots.seats, ...slots.etc].join(' ');
   return { variant, trim: trimToks.length ? trimToks.join(' ') : '(기본)' };
 }
 

@@ -54,37 +54,28 @@ export function parseTrim(raw) {
   const s = String(raw || '').trim().replace(/\s+/g, ' ');
   if (!s) return { variant: '', trim: '(기본)' };
   const toks = s.split(' ');
-  // 뒤에서부터 스펙 토큰이 이어지는 최대 꼬리 찾기
-  let cut = toks.length;
-  for (let i = toks.length - 1; i >= 0; i--) {
-    if (isSpecToken(toks[i])) cut = i;
-    else break;
-  }
-  const trimToksRaw = toks.slice(0, cut);
-  const specToks = toks.slice(cut);
-
-  // 연료·배터리 토큰은 트림 앞/중간에 있어도 파워트레인으로 이동, 노이즈(렌터카/더/뉴/연식MY)는 제거.
-  //  예: "경유 프레스티지 2.2 2WD" → 트림 "프레스티지" / PT "디젤 2.2 2WD"
-  //      "EV 롱레인지 어스" → 트림 "어스" / PT "전기 롱레인지"  (배터리=동력원 스펙)
-  const hasEV = [...trimToksRaw, ...specToks].some((t) => t === '전기' || t === 'EV');
-  const frontFuel = [], frontBattery = [], trimToks = [];
-  for (const t of trimToksRaw) {
-    if (FUEL.has(t)) frontFuel.push(t);
-    else if (t === '롱레인지' || t === '롱 레인지') frontBattery.push(t);   // 롱레인지=배터리=파워트레인 (항상)
-    else if ((t === '스탠다드' || t === '스탠더드') && hasEV) frontBattery.push(t);  // 스탠다드는 EV일 때만 배터리 (ICE 트림 보존)
-    else if (!NOISE_TRIM.has(t) && !/^\d{2,4}\s*MY$/i.test(t)) trimToks.push(t);
-  }
-
-  // 스펙 토큰을 슬롯별 분류 후 표준 순서로 재조립
+  // 스펙 토큰은 위치 무관(앞/중간/뒤) 파워트레인으로, 노이즈는 제거, 나머지만 트림.
+  //  예: "경유 프레스티지 2.2 2WD"·"2.5 T AWD 캘리그래피" 둘 다 정상 분해. "2.0T"→배기량2.0+터보T(규격통일).
+  const hasEV = toks.some((t) => t === '전기' || t === 'EV');
   const slots = { fuel: [], disp: [], battery: [], turbo: [], drive: [], seats: [], etc: [] };
-  for (const t of specToks) slots[classifySpec(t)].push(t);
-  slots.fuel = [...frontFuel, ...slots.fuel].map(normFuel);   // 경유→디젤, 휘발유→가솔린
-  slots.battery = [...frontBattery, ...slots.battery];        // 롱레인지/스탠다드(EV) = 파워트레인
+  const trimToks = [];
+  for (const tok of toks) {
+    const mt = tok.match(/^(\d\.\d)T$/i);
+    if (mt) { slots.disp.push(mt[1]); slots.turbo.push('T'); continue; }       // 2.0T → 2.0 + T
+    if (FUEL.has(tok)) { slots.fuel.push(tok); continue; }
+    if (tok === '롱레인지' || tok === '롱') { slots.battery.push('롱레인지'); continue; }
+    if (tok === '레인지') continue;                                            // "롱 레인지" 분리 뒤토큰
+    if (tok === '스탠다드' || tok === '스탠더드') { (hasEV ? slots.battery : trimToks).push(tok); continue; }  // ICE 스탠다드는 트림
+    if (isSpecToken(tok)) { slots[classifySpec(tok)].push(tok); continue; }
+    if (NOISE_TRIM.has(tok) || /^\d{2,4}\s*MY$/i.test(tok)) continue;
+    trimToks.push(tok);
+  }
+  slots.fuel = slots.fuel.map(normFuel);   // 경유→디젤, 휘발유→가솔린, 전기→EV
   const ordered = [
     ...slots.fuel,
     ...slots.disp,
     ...slots.battery,
-    ...slots.turbo,
+    ...(slots.turbo.length ? ['T'] : []),   // 터보/T-GDI/GDI/TDI/T → 'T' 통일 (매물 파서와 규격 일치)
     ...slots.drive,
     ...slots.seats,
     ...slots.etc,

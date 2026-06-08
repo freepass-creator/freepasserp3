@@ -24,7 +24,7 @@ import { getOptionPool, splitOptionInput, findSimilarInPool } from '../core/trim
 import { parseVehicleRegistration, deriveMakerFromRegistration } from '../core/ocr-parsers/vehicle-registration.js';
 import { inferCarModel } from '../core/car-model-infer.js';
 import { findCarModel } from '../core/car-models.js';
-import { analyzeProduct as analyzeMatrix, loadIndex as loadMatrixIndex, findCatalog as findMatrixCatalog, loadCatalog as loadMatrixCatalog } from '../core/vehicle-matrix.js';
+import { analyzeProduct as analyzeMatrix, loadIndex as loadMatrixIndex } from '../core/vehicle-matrix.js';
 import {
   ensureCatalogSource,
   getCatalogMakers, getCatalogModels, getCatalogSubModels, getCatalogTrims,
