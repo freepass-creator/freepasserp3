@@ -48,15 +48,19 @@ function parseTrim(raw) {
   let cut = toks.length;
   for (let i = toks.length - 1; i >= 0; i--) { if (isSpecToken(toks[i])) cut = i; else break; }
   const trimToksRaw = toks.slice(0, cut), specToks = toks.slice(cut);
-  // 연료 토큰은 트림 앞/중간에 있어도 파워트레인으로, 노이즈(렌터카/더/뉴/연식MY)는 제거
-  const frontFuel = [], trimToks = [];
+  // 연료·배터리 토큰은 트림 앞/중간에 있어도 파워트레인으로, 노이즈(렌터카/더/뉴/연식MY)는 제거
+  const hasEV = [...trimToksRaw, ...specToks].some((t) => t === '전기' || t === 'EV');
+  const frontFuel = [], frontBattery = [], trimToks = [];
   for (const t of trimToksRaw) {
     if (FUEL.has(t)) frontFuel.push(t);
+    else if (t === '롱레인지' || t === '롱 레인지') frontBattery.push(t);
+    else if ((t === '스탠다드' || t === '스탠더드') && hasEV) frontBattery.push(t);
     else if (!NOISE_TRIM.has(t) && !/^\d{2,4}\s*MY$/i.test(t)) trimToks.push(t);
   }
   const slots = { fuel: [], disp: [], battery: [], turbo: [], drive: [], seats: [], etc: [] };
   for (const t of specToks) slots[classifySpec(t)].push(t);
   slots.fuel = [...frontFuel, ...slots.fuel].map(normFuel);   // 경유→디젤, 휘발유→가솔린
+  slots.battery = [...frontBattery, ...slots.battery];        // 롱레인지/스탠다드(EV) = 파워트레인
   const variant = [...slots.fuel, ...slots.disp, ...slots.battery, ...slots.turbo, ...slots.drive, ...slots.seats, ...slots.etc].join(' ');
   return { variant, trim: trimToks.length ? trimToks.join(' ') : '(기본)' };
 }

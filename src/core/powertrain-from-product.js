@@ -44,8 +44,12 @@ export function powertrainFromProduct(p) {
   const drive = (all.match(/\b(AWD|4WD|RWD|FWD|2WD|4MATIC|xDrive|e-4WD)\b/i) || [])[1] || '';
   const dm2 = blob.match(/(\d+)\s*인승/);
   const seats = dm2 ? dm2[1] + '인승' : '';
+  // 배터리(롱레인지/스탠다드) = EV 파워트레인 스펙 (배기량 자리). 롱레인지는 항상, 스탠다드는 EV일 때만.
+  let battery = '';
+  if (/롱\s?레인지/i.test(all)) battery = '롱레인지';
+  else if (fuel === '전기' && /스탠다드|스탠더드/i.test(all)) battery = '스탠다드';
 
-  const variant = [fuel, disp, turbo, drive, seats].filter(Boolean).join(' ');
+  const variant = [fuel, disp, battery, turbo, drive, seats].filter(Boolean).join(' ');
 
   // 트림 = 세부모델·파워트레인에 안 들어간 "나머지". 모델·섀시·파워트레인·노이즈 토큰을 빼고 남은 것.
   //  (공급사 입력패턴 1,753건 학습 기반 — 등록구분/연식MY/엔진테크/마케팅/괄호코드 등 노이즈 제거)
@@ -59,7 +63,8 @@ export function powertrainFromProduct(p) {
     .replace(/\d\s*세대/g, ' ')                                 // 세대 표기
     .replace(/\b\d{2,4}\s*MY\b/gi, ' ')                         // 연식코드 25MY / 2026 MY
     .replace(/자가용|영업용|렌터카|렌트카|리스|법인|개인용?|런칭/g, ' ')   // 등록구분·마케팅
-    .replace(/플러그인\s*하이브리드|하이브리드|PHEV|HEV|디젤|경유|가솔린|휘발유|LPG|LPi|LPI|전기|일렉트릭|\bEV\b|E-?Tech|electric|수소|FCEV/gi, ' ')  // 연료
+    .replace(/플러그인\s*하이브리드|하이브리드|PHEV|HEV|디젤|경유|가솔린|휘발유|LPG|LPi|LPI|전기|일렉트릭|\bEV\b|E-?Tech|electric|수소|FCEV/gi, ' ')  // 연료(동력원)
+    .replace(battery ? new RegExp(battery.replace('레인지', '\\s?레인지'), 'gi') : /(?!)/, ' ')   // 추출된 배터리(롱레인지/스탠다드) 제거
     .replace(/스마트\s*스트림|T-?GDI|GDI|MPI|IVT|DCT|CVT|DSG|e-?VGT|TDI/gi, ' ')   // 엔진테크·변속기
     .replace(/\d\.\d\s*T?|\d{3,4}\s*cc|\d+\s*인승?|터보/gi, ' ')   // 배기량·인승·터보
     .replace(/\b(AWD|4WD|RWD|FWD|2WD|4MATIC|xDrive|e-4WD|2륜|4륜|A\/T|M\/T|AT|MT)\b/gi, ' ')   // 구동·변속

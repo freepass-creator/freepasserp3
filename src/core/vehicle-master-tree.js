@@ -63,12 +63,15 @@ export function parseTrim(raw) {
   const trimToksRaw = toks.slice(0, cut);
   const specToks = toks.slice(cut);
 
-  // 연료 토큰은 트림 앞/중간에 있어도 파워트레인으로 이동, 노이즈 토큰(렌터카/더/뉴/연식MY 등)은 제거.
-  //  예: "경유 프레스티지 2.2 2WD" → 트림 "프레스티지" / 파워트레인 "디젤 2.2 2WD"
-  const frontFuel = [];
-  const trimToks = [];
+  // 연료·배터리 토큰은 트림 앞/중간에 있어도 파워트레인으로 이동, 노이즈(렌터카/더/뉴/연식MY)는 제거.
+  //  예: "경유 프레스티지 2.2 2WD" → 트림 "프레스티지" / PT "디젤 2.2 2WD"
+  //      "EV 롱레인지 어스" → 트림 "어스" / PT "전기 롱레인지"  (배터리=동력원 스펙)
+  const hasEV = [...trimToksRaw, ...specToks].some((t) => t === '전기' || t === 'EV');
+  const frontFuel = [], frontBattery = [], trimToks = [];
   for (const t of trimToksRaw) {
     if (FUEL.has(t)) frontFuel.push(t);
+    else if (t === '롱레인지' || t === '롱 레인지') frontBattery.push(t);   // 롱레인지=배터리=파워트레인 (항상)
+    else if ((t === '스탠다드' || t === '스탠더드') && hasEV) frontBattery.push(t);  // 스탠다드는 EV일 때만 배터리 (ICE 트림 보존)
     else if (!NOISE_TRIM.has(t) && !/^\d{2,4}\s*MY$/i.test(t)) trimToks.push(t);
   }
 
@@ -76,6 +79,7 @@ export function parseTrim(raw) {
   const slots = { fuel: [], disp: [], battery: [], turbo: [], drive: [], seats: [], etc: [] };
   for (const t of specToks) slots[classifySpec(t)].push(t);
   slots.fuel = [...frontFuel, ...slots.fuel].map(normFuel);   // 경유→디젤, 휘발유→가솔린
+  slots.battery = [...frontBattery, ...slots.battery];        // 롱레인지/스탠다드(EV) = 파워트레인
   const ordered = [
     ...slots.fuel,
     ...slots.disp,
