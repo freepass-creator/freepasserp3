@@ -639,16 +639,8 @@ function renderSyncTab(el) {
       } else {
         for (const p of items) if (p.maker && p.model) matched++;
       }
-      // 파워트레인 분리 (5단계) — trim_name 을 parseTrim 으로 {파워트레인(variant) + 클린 트림} 으로 분해.
-      //  예: "프레스티지 하이브리드 1.6" → variant "하이브리드 1.6" + trim_name "프레스티지". 재고관리 5단계와 동일 규격.
-      for (const p of items) {
-        if (!p.trim_name) continue;
-        const { variant, trim } = parseTrim(p.trim_name);
-        if (variant) {
-          p.variant = variant;
-          p.trim_name = (trim && trim !== '(기본)') ? trim : '';
-        }
-      }
+      // ※ 파워트레인(variant) 자동분리는 단순 parseTrim 으로 불가 — 시트 트림이 지저분함
+      //   (예 "그랑 콜레오스 하이브리드 E-Tech 1.5 터보 아이코닉 2WD"). 매물→catalog 표준 매칭 필요(별도).
       _syncFetched = data;
       const unmatched = items.length - matched;
       devLog(`[sync] ✓ ${data.synced}건 · 스킵 ${data.skipped}건 · 자동분류 ${matched}/${items.length}`);
