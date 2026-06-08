@@ -9,12 +9,6 @@
       "maxDuration": 300
     }
   },
-  "crons": [
-    {
-      "path": "/api/sync/auto",
-      "schedule": "0 18 * * *"
-    }
-  ],
   "rewrites": [
     {
       "source": "/catalog.html",

@@ -5,8 +5,8 @@
  *   - sync   : 외부 상품 동기화 (오플시트 / 공급시트 자동탐지 / 종합)
  *   - notice : 대시보드 공지 CRUD
  *
- * 자동 동기화(api/sync/auto.js, Vercel Cron)는 매일 1회 백그라운드 실행 중.
- * 여기 [외부 상품 동기화]는 즉시 반영이 필요할 때 쓰는 수동 경로.
+ * 동기화는 전부 수동 (2026-06-08): 공급사 확인 → [종합표 만들기]로 종합탭 채움 → [외부 상품 동기화]로 ERP 반영.
+ * Vercel Cron(자동 매일 동기화)은 비활성화 — api/sync/auto.js 는 수동/관리자 호출용으로만 잔존.
  *
  * 페이지 컨테이너(.pt-page[data-page="admin"]) 안에 마운트.
  */
@@ -383,18 +383,18 @@ function renderNoticeTab(el) {
 /* ──────── 외부 상품 동기화 ────────
  *  오토플러스(파트너코드 RP023) 구글시트 → products 일괄 동기화.
  *  서버(api/sync/external-sheet.js)가 시트 읽고 products 객체 반환 → 미리보기 → [적용] 클라이언트가 Firebase 일괄 write.
- *  ※ 자동(매일 1회 cron) 은 api/sync/auto.js 가 서버측에서 동일 로직으로 처리.
+ *  ※ 전부 수동 — 자동 cron 비활성화 (2026-06-08).
  */
 function renderSyncTab(el) {
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:14px;height:100%;">
 
-      <!-- 자동 동기화 안내 -->
+      <!-- 동기화 안내 (수동) -->
       <div class="ao-banner">
         <i class="ph ph-arrows-clockwise"></i>
         <div>
-          <b>자동 동기화 가동 중</b> · 매일 새벽 3시에 공급사 시트가 자동으로 반영됩니다.<br>
-          <span class="ao-banner-sub">지금 바로 반영해야 할 때만 아래 수동 불러오기를 사용하세요.</span>
+          <b>수동 동기화</b> · 공급사 확인 후 [종합표 만들기]로 종합탭을 채운 뒤, 아래에서 불러와 ERP에 반영하세요.<br>
+          <span class="ao-banner-sub">자동 동기화는 사용하지 않습니다 (공급사 확인 → 수동 반영).</span>
         </div>
       </div>
 
