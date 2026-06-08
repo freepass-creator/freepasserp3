@@ -254,6 +254,10 @@ function renderJonghapTab(el) {
     const { columns, rows, tabs, summary } = data;
     const s = summary || { tabs: tabs.length, total: 0, unavailable: 0, uploadable: rows.length };
     const tabRows = (tabs || []).filter(t => (t.total || 0) > 0).sort((a, b) => (b.total || 0) - (a.total || 0));
+    const tabStrip = tabRows.map(t => `${esc(t.tab)} ${t.count || 0}`).join(' · ');
+    const excluded = new Set();   // 체크 해제한 행 idx → 복사 제외
+
+    // 종합시트 헤더(42컬럼) 그대로 + 행별 체크박스. 매물 전체 표시(체크 가능하게 미리보기 컷 없음).
     result.innerHTML = `
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         ${statCard('공급사 탭', s.tabs, 'var(--text-sub)')}
@@ -261,37 +265,59 @@ function renderJonghapTab(el) {
         ${statCard('출고불가·숨김', s.unavailable, 'var(--alert-red-text)')}
         ${statCard('올릴 수 있음', s.uploadable, 'var(--accent)')}
       </div>
-      <div style="font-size:11px;color:var(--text-weak);">올릴 수 있는 ${s.uploadable}건을 종합탭 양식(${columns.length}개 항목)으로 취합했습니다. [복사] 후 구글시트 <b>종합</b> 탭에 붙여넣기 하세요.</div>
+      ${tabStrip ? `<div style="font-size:11px;color:var(--text-weak);">탭별 올릴수있음: ${tabStrip}</div>` : ''}
       <div class="ao-actions">
-        <button class="btn btn-sm btn-primary" id="jhCopyValues" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 값만 복사 (${s.uploadable}건)</button>
-        <button class="btn btn-sm" id="jhCopyHeader" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 머리글 포함 복사</button>
+        <button class="btn btn-sm btn-primary" id="jhCopyValues" ${rows.length ? '' : 'disabled'}><i class="ph ph-copy"></i> 값만 복사 (<span id="jhCnt">${rows.length}</span>건)</button>
+        <button class="btn btn-sm" id="jhCopyHeader" ${rows.length ? '' : 'disabled'}><i class="ph ph-copy"></i> 머리글 포함 복사</button>
+        <span class="ao-status" id="jhSel">전체 ${rows.length}건 선택 · 체크 해제하면 복사에서 빠집니다</span>
       </div>
-      <div style="border:1px solid var(--border);border-radius:4px;overflow:auto;">
-        <table style="font-size:12px;border-collapse:collapse;width:100%;">
+      <div style="flex:1;border:1px solid var(--border);border-radius:4px;overflow:auto;">
+        <table style="font-size:11px;border-collapse:collapse;white-space:nowrap;">
           <thead style="position:sticky;top:0;z-index:2;">
             <tr style="background-color:var(--bg-header);color:var(--text-sub);font-weight:600;">
-              <th style="padding:6px 10px;text-align:left;">공급사 탭</th>
-              <th style="padding:6px 10px;text-align:right;">전체</th>
-              <th style="padding:6px 10px;text-align:right;color:var(--alert-red-text);">출고불가·숨김</th>
-              <th style="padding:6px 10px;text-align:right;color:var(--accent);">올릴 수 있음</th>
+              <th style="padding:5px 8px;text-align:center;"><input type="checkbox" id="jhAll" checked></th>
+              <th style="padding:5px 6px;text-align:right;color:var(--text-muted);">#</th>
+              ${columns.map(c => `<th style="padding:5px 8px;text-align:left;border-left:1px solid var(--border-soft);">${esc(c)}</th>`).join('')}
             </tr>
           </thead>
           <tbody>
-            ${tabRows.map(t => `<tr style="border-bottom:1px solid var(--border-soft);">
-              <td style="padding:5px 10px;">${esc(t.tab)}</td>
-              <td style="padding:5px 10px;text-align:right;">${t.total || 0}</td>
-              <td style="padding:5px 10px;text-align:right;color:var(--text-muted);">${t.unavailable || 0}</td>
-              <td style="padding:5px 10px;text-align:right;font-weight:600;">${t.count || 0}</td>
+            ${rows.map((r, i) => `<tr style="border-bottom:1px solid var(--border-soft);">
+              <td style="padding:3px 8px;text-align:center;"><input type="checkbox" class="jhRow" data-i="${i}" checked></td>
+              <td style="padding:3px 6px;text-align:right;color:var(--text-muted);">${i + 1}</td>
+              ${r.map(v => `<td style="padding:3px 8px;border-left:1px solid var(--border-soft);max-width:220px;overflow:hidden;text-overflow:ellipsis;" title="${esc(v)}">${esc(v) || '<span style="color:var(--text-muted);">·</span>'}</td>`).join('')}
             </tr>`).join('')}
-            ${tabRows.length === 0 ? '<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-muted);">취합된 매물이 없습니다.</td></tr>' : ''}
+            ${rows.length === 0 ? `<tr><td colspan="${columns.length + 2}" style="padding:24px;text-align:center;color:var(--text-muted);">올릴 수 있는 매물이 없습니다.</td></tr>` : ''}
           </tbody>
         </table>
       </div>
     `;
+    const updateCount = () => {
+      const sel = rows.length - excluded.size;
+      result.querySelector('#jhCnt').textContent = sel;
+      result.querySelector('#jhSel').textContent = `${sel} / 전체 ${rows.length}건 선택 · 체크 해제하면 복사에서 빠집니다`;
+    };
+    result.querySelectorAll('.jhRow').forEach(cb => cb.addEventListener('change', () => {
+      const i = Number(cb.dataset.i);
+      if (cb.checked) excluded.delete(i); else excluded.add(i);
+      const allCb = result.querySelector('#jhAll');
+      allCb.checked = excluded.size === 0;
+      allCb.indeterminate = excluded.size > 0 && excluded.size < rows.length;
+      updateCount();
+    }));
+    result.querySelector('#jhAll').addEventListener('change', (e) => {
+      excluded.clear();
+      if (!e.target.checked) rows.forEach((_, i) => excluded.add(i));
+      e.target.indeterminate = false;
+      result.querySelectorAll('.jhRow').forEach(cb => { cb.checked = e.target.checked; });
+      updateCount();
+    });
+
     const copy = (withHeader) => {
-      const tsv = rowsToTsv(data, withHeader);
+      const sel = rows.filter((_, i) => !excluded.has(i));
+      if (!sel.length) { showToast('선택된 매물이 없습니다 — 체크해 주세요', 'error'); return; }
+      const tsv = rowsToTsv({ columns, rows: sel }, withHeader);
       navigator.clipboard?.writeText(tsv).then(
-        () => showToast(`복사됨 — ${data.rows.length}건${withHeader ? ' (머리글 포함)' : ''}. 종합탭에 붙여넣기 하세요`),
+        () => showToast(`복사됨 — ${sel.length}건${withHeader ? ' (머리글 포함)' : ''}. 종합탭에 붙여넣기 하세요`),
         () => showToast('복사 실패 — 브라우저 권한 확인', 'error'),
       );
     };
