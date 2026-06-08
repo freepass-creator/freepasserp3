@@ -149,9 +149,6 @@ export function renderAdminSettlement() {
   page.innerHTML = `
     <div class="ws4">
       <div class="ws4-card" style="flex:1 1 0;">
-        <div class="ws4-head">
-          <span id="asHeadTotals" style="font-size:var(--fs-xs);color:var(--text-sub);"></span>
-        </div>
         <div class="ws4-body no-pad" style="overflow:auto;">
           <table class="table" style="width:100%;font-size:var(--fs-xs);">
             <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
@@ -186,11 +183,8 @@ function drawRows() {
   const all = (store.adminSettlements || []).filter(s => !s._deleted && inPeriod(s.settle_month));
   all.sort((a, b) => (b.settle_month || '').localeCompare(a.settle_month || '') || (a.contract_code || '').localeCompare(b.contract_code || ''));
 
-  const totalsEl = document.getElementById('asHeadTotals');
-
   if (!all.length) {
     tbody.innerHTML = `<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text-muted);">${esc(periodLabel())} 정산 내역이 없습니다. 하단 [정산 등록]으로 추가하세요.</td></tr>`;
-    if (totalsEl) totalsEl.innerHTML = '';
     return;
   }
 
@@ -213,9 +207,6 @@ function drawRows() {
       <td style="text-align:center;"><button class="btn btn-sm btn-ghost" data-del="${esc(s._key)}" title="삭제"><i class="ph ph-trash"></i></button></td>
     </tr>`;
   }).join('');
-
-  if (totalsEl) totalsEl.innerHTML =
-    `공급사 청구 <b>${won(billSum)}원</b> · 에이전시 지급 <b>${won(paySum)}원</b> · <span style="color:var(--text-link);">당월 수익 <b>${won(profitSum)}원</b></span>`;
 
   tbody.querySelectorAll('tr[data-key]').forEach(tr => {
     tr.addEventListener('click', (e) => {
