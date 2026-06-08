@@ -40,15 +40,15 @@ export function renderPartnerList(partners) {
     // 유형별 카운트
     let stats = '';
     if (isAgent) {
-      const agentCount = (store.users || []).filter(u => u.agent_channel_code === code).length;
-      const ctCount = (store.contracts || []).filter(c => c.agent_channel_code === code).length;
+      const agentCount = (store.users || []).filter(u => u.agent_channel_code === code && !u._deleted).length;
+      const ctCount = (store.contracts || []).filter(c => c.agent_channel_code === code && !c._deleted).length;
       stats = `영업${agentCount} 계약${ctCount}`;
     } else if (isOperator) {
-      const userCount = (store.users || []).filter(u => u.company_code === code).length;
+      const userCount = (store.users || []).filter(u => u.company_code === code && !u._deleted).length;
       stats = `사용자${userCount}`;
     } else {
-      const carCount = (store.products || []).filter(p => p.provider_company_code === code || p.partner_code === code).length;
-      const ctCount = (store.contracts || []).filter(c => c.provider_company_code === code).length;
+      const carCount = (store.products || []).filter(p => (p.provider_company_code === code || p.partner_code === code) && !p._deleted).length;
+      const ctCount = (store.contracts || []).filter(c => c.provider_company_code === code && !c._deleted).length;
       stats = `차량${carCount} 계약${ctCount}`;
     }
     // 메인: 파트너명 코드  /  우측: 등록일

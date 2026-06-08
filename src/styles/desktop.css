@@ -2045,6 +2045,8 @@
     display: flex; gap: 4px; flex-shrink: 0; background: var(--bg-card);
   }
   .ws-input input { flex: 1; }
+  .ws-send-btn { flex-shrink: 0; padding: 0; width: 32px; display: inline-flex; align-items: center; justify-content: center; }
+  .ws-send-btn i { font-size: 16px; }
 
   /* 계약 진행 4단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
   .ct-steps-v3 { display: flex; flex-direction: column; gap: 4px; }

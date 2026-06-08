@@ -194,5 +194,8 @@ function openAdminChatRoomInPage(roomKey) {
     }
   };
   sendBtn.onclick = send;
-  input.onkeydown = (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
+  input.onkeydown = (e) => {
+    if (e.isComposing || e.keyCode === 229) return;  // 한글 IME 조합중 엔터 무시 (확정글자 재삽입 방지)
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  };
 }

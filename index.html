@@ -70,7 +70,7 @@
   <!-- 사이드바 하단 그룹 — 관리자 문의(비admin) + 관리자 페이지(admin) + 개발도구(시스템관리자) + 설정 -->
   <div class="pt-sb-bottom-group">
     <a href="#admin-chat" class="pt-sb-bottom-link pt-sb-bottom-admin-chat" id="sbAdminChat" data-page="admin-chat" title="관리자와 소통"><i class="ph ph-headset"></i><span class="sb-label">관리자 소통</span><span class="cnt" data-badge="admin-chat"></span></a>
-    <a href="#admin" class="pt-sb-bottom-link pt-sb-bottom-admin" data-page="admin" title="관리자"><i class="ph ph-shield-star"></i><span class="sb-label">관리자</span></a>
+    <a href="#admin" class="pt-sb-bottom-link pt-sb-bottom-admin" data-page="admin" title="관리자 페이지"><i class="ph ph-shield-star"></i><span class="sb-label">관리자 페이지</span></a>
     <a href="#admin-settle" class="pt-sb-bottom-link pt-sb-bottom-admin-settle" data-page="admin-settle" title="관리자 정산 — 월별 수수료 정산"><i class="ph ph-calculator"></i><span class="sb-label">관리자 정산</span></a>
     <a href="#dev" class="pt-sb-bottom-link pt-sb-bottom-dev" data-page="dev" title="개발도구"><i class="ph ph-code"></i><span class="sb-label">개발도구</span></a>
     <a href="#settings" class="pt-sb-bottom-link" data-page="settings" title="설정"><i class="ph ph-gear"></i><span class="sb-label">설정</span></a>
@@ -379,7 +379,7 @@
       </div>
       <div class="ws-input">
         <input type="text" class="input" placeholder="메시지 입력... ( / 명령어)">
-        <button class="btn-primary">전송 <kbd>Enter</kbd></button>
+        <button class="btn-primary ws-send-btn" aria-label="전송" title="전송 (Enter)"><i class="ph ph-paper-plane-tilt"></i></button>
       </div>
     </div>
 
@@ -1115,7 +1115,7 @@
       <div class="ws4-body" id="adminChatBody" style="display:flex;flex-direction:column;gap:6px;background:var(--bg-page);"></div>
       <div class="ws-input">
         <input type="text" class="input" id="adminChatInput" placeholder="메시지 입력..." enterkeyhint="send">
-        <button class="btn-primary" id="adminChatSend">전송 <kbd>Enter</kbd></button>
+        <button class="btn-primary ws-send-btn" id="adminChatSend" aria-label="전송" title="전송 (Enter)"><i class="ph ph-paper-plane-tilt"></i></button>
       </div>
     </div>
     <div class="ws4-card">
@@ -1288,7 +1288,7 @@
     policy:    { icon: 'shield-check',     label: '정책 관리' },
     partners:  { icon: 'handshake',        label: '파트너 관리' },
     users:     { icon: 'users-three',      label: '사용자 관리' },
-    admin:     { icon: 'shield-star',      label: '관리자' },
+    admin:     { icon: 'shield-star',      label: '관리자 페이지' },
     'admin-settle': { icon: 'calculator',  label: '관리자 정산' },
     settings:  { icon: 'gear',             label: '설정' },
     dev:       { icon: 'code',             label: '개발도구' },

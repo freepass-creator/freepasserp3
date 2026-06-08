@@ -16,7 +16,7 @@
  *      core/notify, pages/contract, pages/search
  */
 import { store } from '../core/store.js';
-import { watchCollection, pushRecord, updateRecord, fetchRecord } from '../firebase/db.js';
+import { watchCollection, pushRecord, updateRecord, fetchRecord, incrementAtomic } from '../firebase/db.js';
 import { markRoomRead } from '../firebase/collections.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { showToast } from '../core/toast.js';
@@ -325,26 +325,25 @@ export function bindChatInput() {
         text,
         sender_uid: store.currentUser?.uid || '',
         sender_role: store.currentUser?.role || '',
-        sender_code: store.currentUser?.user_code || store.currentUser?.company_code || '',
+        sender_code: store.currentUser?.user_code || '',  // 개인 식별자만 — company_code 폴백 금지 (공유 임시채널 노출 방지)
         sender_name: store.currentUser?.name || '',
         sender_email: store.currentUser?.email || '',
         created_at: Date.now(),
       });
       // 룸 메타 갱신
       const role = store.currentUser?.role;
-      const senderCode = store.currentUser?.user_code || store.currentUser?.company_code || '';
+      const senderCode = store.currentUser?.user_code || '';
       const update = {
         last_message: text,
         last_message_at: Date.now(),
         last_sender_code: senderCode,
         last_sender_role: role,
       };
-      const room = (store.rooms || []).find(r => r._key === _activeRoomId);
-      if (room) {
-        if (role === 'agent' || role === 'agent_admin') update.unread_for_provider = (Number(room.unread_for_provider) || 0) + 1;
-        else if (role === 'provider') update.unread_for_agent = (Number(room.unread_for_agent) || 0) + 1;
-      }
       updateRecord(`rooms/${_activeRoomId}`, update).catch(() => {});
+      // unread 는 원자적 증가 — 동시 전송 race 방지 (mobile-workspace 와 동일 규격)
+      const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
+                        : role === 'provider' ? 'unread_for_agent' : null;
+      if (unreadField) incrementAtomic(`rooms/${_activeRoomId}/${unreadField}`).catch(() => {});
     } catch (e) {
       console.error('[chat] send fail', e);
       input.value = text;     // 실패 시 텍스트 복구
@@ -353,6 +352,7 @@ export function bindChatInput() {
 
   sendBtn.addEventListener('click', send);
   input.addEventListener('keydown', (e) => {
+    if (e.isComposing || e.keyCode === 229) return;  // 한글 IME 조합중 엔터 무시 (확정글자 재삽입 방지)
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send();
