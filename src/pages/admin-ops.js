@@ -223,27 +223,26 @@ async function renderApiKeysTab(el) {
 function renderJonghapTab(el) {
   let data = { columns: [], rows: [], tabs: [], summary: null };
 
-  // 초기 화면 — 취합 버튼만 (누를 때 취합)
-  const idle = () => {
-    el.innerHTML = `
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div class="ao-banner">
-          <i class="ph ph-table"></i>
-          <div>
-            <b>공급사 통합 종합표</b> · 흩어진 공급사 탭에서 <b>출고불가·숨김을 빼고</b> 올릴 수 있는 매물만 종합 양식으로 모읍니다.<br>
-            <span class="ao-banner-sub">[시트 취합]을 누르면 그때 공급사 시트를 읽어 매물을 파악합니다. (오플 제외)</span>
-          </div>
+  // 고정 영역 — 안내 + [시트 취합] 버튼. 결과는 아래 #jhResult 에만 그림 (전체 페이지 안 움직임).
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:14px;height:100%;">
+      <div class="ao-banner">
+        <i class="ph ph-table"></i>
+        <div>
+          <b>공급사 통합 종합표</b> · 흩어진 공급사 탭에서 <b>출고불가·숨김을 빼고</b> 올릴 수 있는 매물만 종합 양식으로 모읍니다.<br>
+          <span class="ao-banner-sub">[시트 취합]을 누르면 그때 공급사 시트를 읽어 매물을 파악합니다. (오플 제외)</span>
         </div>
-        <div class="ao-actions">
-          <button class="btn btn-sm btn-primary" id="jhFetch"><i class="ph ph-arrows-clockwise"></i> 시트 취합</button>
-        </div>
-      </div>`;
-    el.querySelector('#jhFetch').addEventListener('click', load);
-  };
+      </div>
+      <div class="ao-actions">
+        <button class="btn btn-sm btn-primary" id="jhFetch"><i class="ph ph-arrows-clockwise"></i> 시트 취합</button>
+        <span id="jhStatus" class="ao-status"></span>
+      </div>
+      <div id="jhResult" style="flex:1;overflow:auto;display:none;flex-direction:column;gap:12px;"></div>
+    </div>`;
+  const fetchBtn = el.querySelector('#jhFetch');
+  const statusEl = el.querySelector('#jhStatus');
+  const result = el.querySelector('#jhResult');
 
-  const loading = () => {
-    el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-spinner" style="animation:pd-zip-spin 1s linear infinite;"></i> 공급사 통합 시트 취합 중...</div>`;
-  };
   const fetchData = async () => {
     const res = await fetch('/api/sync/jonghap', { method: 'POST' });
     const out = await res.json();
@@ -251,48 +250,42 @@ function renderJonghapTab(el) {
     return { columns: out.columns || [], rows: out.rows || [], tabs: out.tabs || [], summary: out.summary || null };
   };
 
-  const render = () => {
+  const renderResult = () => {
     const { columns, rows, tabs, summary } = data;
     const s = summary || { tabs: tabs.length, total: 0, unavailable: 0, uploadable: rows.length };
-    // 매물 있는 탭만, 전체 매물 많은 순
     const tabRows = (tabs || []).filter(t => (t.total || 0) > 0).sort((a, b) => (b.total || 0) - (a.total || 0));
-    el.innerHTML = `
-      <div style="display:flex;flex-direction:column;gap:12px;height:100%;">
-        <!-- 매물 파악 요약 -->
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          ${statCard('공급사 탭', s.tabs, 'var(--text-sub)')}
-          ${statCard('전체 매물', s.total, 'var(--text-main)')}
-          ${statCard('출고불가·숨김', s.unavailable, 'var(--alert-red-text)')}
-          ${statCard('올릴 수 있음', s.uploadable, 'var(--accent)')}
-        </div>
-        <div style="font-size:11px;color:var(--text-weak);">올릴 수 있는 ${s.uploadable}건을 종합탭 양식(${columns.length}개 항목)으로 취합했습니다. 아래 [복사] 후 구글시트 <b>종합</b> 탭에 붙여넣기 하세요.</div>
-        <div class="ao-actions">
-          <button class="btn btn-sm btn-primary" id="jhCopyValues" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 값만 복사 (${s.uploadable}건)</button>
-          <button class="btn btn-sm" id="jhCopyHeader" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 머리글 포함 복사</button>
-          <button class="btn btn-sm" id="jhRefresh"><i class="ph ph-arrow-clockwise"></i> 다시 취합</button>
-        </div>
-        <!-- 탭별 매물 현황 -->
-        <div style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;">
-          <table style="font-size:12px;border-collapse:collapse;width:100%;">
-            <thead style="position:sticky;top:0;z-index:2;">
-              <tr style="background-color:var(--bg-header);color:var(--text-sub);font-weight:600;">
-                <th style="padding:6px 10px;text-align:left;">공급사 탭</th>
-                <th style="padding:6px 10px;text-align:right;">전체</th>
-                <th style="padding:6px 10px;text-align:right;color:var(--alert-red-text);">출고불가·숨김</th>
-                <th style="padding:6px 10px;text-align:right;color:var(--accent);">올릴 수 있음</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${tabRows.map(t => `<tr style="border-bottom:1px solid var(--border-soft);">
-                <td style="padding:5px 10px;">${esc(t.tab)}</td>
-                <td style="padding:5px 10px;text-align:right;">${t.total || 0}</td>
-                <td style="padding:5px 10px;text-align:right;color:var(--text-muted);">${t.unavailable || 0}</td>
-                <td style="padding:5px 10px;text-align:right;font-weight:600;">${t.count || 0}</td>
-              </tr>`).join('')}
-              ${tabRows.length === 0 ? '<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-muted);">취합된 매물이 없습니다.</td></tr>' : ''}
-            </tbody>
-          </table>
-        </div>
+    result.innerHTML = `
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        ${statCard('공급사 탭', s.tabs, 'var(--text-sub)')}
+        ${statCard('전체 매물', s.total, 'var(--text-main)')}
+        ${statCard('출고불가·숨김', s.unavailable, 'var(--alert-red-text)')}
+        ${statCard('올릴 수 있음', s.uploadable, 'var(--accent)')}
+      </div>
+      <div style="font-size:11px;color:var(--text-weak);">올릴 수 있는 ${s.uploadable}건을 종합탭 양식(${columns.length}개 항목)으로 취합했습니다. [복사] 후 구글시트 <b>종합</b> 탭에 붙여넣기 하세요.</div>
+      <div class="ao-actions">
+        <button class="btn btn-sm btn-primary" id="jhCopyValues" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 값만 복사 (${s.uploadable}건)</button>
+        <button class="btn btn-sm" id="jhCopyHeader" ${s.uploadable ? '' : 'disabled'}><i class="ph ph-copy"></i> 머리글 포함 복사</button>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:4px;overflow:auto;">
+        <table style="font-size:12px;border-collapse:collapse;width:100%;">
+          <thead style="position:sticky;top:0;z-index:2;">
+            <tr style="background-color:var(--bg-header);color:var(--text-sub);font-weight:600;">
+              <th style="padding:6px 10px;text-align:left;">공급사 탭</th>
+              <th style="padding:6px 10px;text-align:right;">전체</th>
+              <th style="padding:6px 10px;text-align:right;color:var(--alert-red-text);">출고불가·숨김</th>
+              <th style="padding:6px 10px;text-align:right;color:var(--accent);">올릴 수 있음</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tabRows.map(t => `<tr style="border-bottom:1px solid var(--border-soft);">
+              <td style="padding:5px 10px;">${esc(t.tab)}</td>
+              <td style="padding:5px 10px;text-align:right;">${t.total || 0}</td>
+              <td style="padding:5px 10px;text-align:right;color:var(--text-muted);">${t.unavailable || 0}</td>
+              <td style="padding:5px 10px;text-align:right;font-weight:600;">${t.count || 0}</td>
+            </tr>`).join('')}
+            ${tabRows.length === 0 ? '<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-muted);">취합된 매물이 없습니다.</td></tr>' : ''}
+          </tbody>
+        </table>
       </div>
     `;
     const copy = (withHeader) => {
@@ -302,17 +295,28 @@ function renderJonghapTab(el) {
         () => showToast('복사 실패 — 브라우저 권한 확인', 'error'),
       );
     };
-    el.querySelector('#jhCopyValues').addEventListener('click', () => copy(false));
-    el.querySelector('#jhCopyHeader').addEventListener('click', () => copy(true));
-    el.querySelector('#jhRefresh').addEventListener('click', load);
+    result.querySelector('#jhCopyValues').addEventListener('click', () => copy(false));
+    result.querySelector('#jhCopyHeader').addEventListener('click', () => copy(true));
   };
 
   const load = async () => {
-    loading();
-    try { data = await fetchData(); render(); }
-    catch (e) { el.innerHTML = `<div style="padding:24px;text-align:center;color:var(--alert-red-text);">취합 실패: ${esc(e.message)}</div>`; }
+    fetchBtn.disabled = true;
+    statusEl.textContent = '공급사 시트 취합 중...';
+    result.style.display = 'none';
+    try {
+      data = await fetchData();
+      renderResult();
+      result.style.display = 'flex';
+      statusEl.textContent = '';
+    } catch (e) {
+      result.innerHTML = `<div style="padding:24px;text-align:center;color:var(--alert-red-text);">취합 실패: ${esc(e.message)}</div>`;
+      result.style.display = 'flex';
+      statusEl.textContent = '';
+    } finally {
+      fetchBtn.disabled = false;
+    }
   };
-  idle();   // 자동 취합 X — 사용자가 [시트 취합] 누를 때만
+  fetchBtn.addEventListener('click', load);
 }
 
 /* 매물 파악 통계 카드 */
