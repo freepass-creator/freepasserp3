@@ -837,13 +837,20 @@ function renderSyncTab(el) {
           // 차종 분류 (maker/model) — 비어있을 때만 자동 채움
           if (!found.maker && p.maker) updates[`products/${found._key}/maker`] = p.maker;
           if (!found.model && p.model) updates[`products/${found._key}/model`] = p.model;
-          // 세부모델(세대)·catalog_id — 연식매칭 결과로 항상 갱신 (시트는 모델레벨 → 정확한 세대로)
-          if (p.sub_model)  updates[`products/${found._key}/sub_model`]  = p.sub_model;
-          if (p.catalog_id) updates[`products/${found._key}/catalog_id`] = p.catalog_id;
-          // 파워트레인(5단계) — 항상 갱신 (powertrainFromProduct 결과). 트림은 클린값 있을 때만.
-          if (p.variant)             updates[`products/${found._key}/variant`]   = p.variant;
-          if (p.trim_name)           updates[`products/${found._key}/trim_name`] = p.trim_name;
-          else if (!found.trim_name) updates[`products/${found._key}/trim_name`] = '';
+          // 세부모델/파워트레인/트림 — 미분류(빈값·모델레벨)만 분류결과로 갱신, 이미 세대 지정(분류완료·수기보정)이면 보존.
+          //   "절충" 정책: 재동기화가 관리자 수기수정을 덮어쓰지 않음. 미분류 매물만 자동 세분화.
+          const curSub = found.sub_model || '';
+          const unclassified = !curSub || curSub === found.model || curSub === p.model;
+          if (unclassified) {
+            if (p.sub_model)  updates[`products/${found._key}/sub_model`]  = p.sub_model;
+            if (p.catalog_id) updates[`products/${found._key}/catalog_id`] = p.catalog_id;
+            if (p.variant)    updates[`products/${found._key}/variant`]    = p.variant;
+            if (p.trim_name)  updates[`products/${found._key}/trim_name`]  = p.trim_name;
+          } else {
+            // 분류완료/수기보정 보존 — 단 신규필드(파워트레인)·catalog_id가 빈 칸이면 보충만
+            if (!found.variant && p.variant)        updates[`products/${found._key}/variant`]    = p.variant;
+            if (!found.catalog_id && p.catalog_id)  updates[`products/${found._key}/catalog_id`] = p.catalog_id;
+          }
           // 시트의 정책코드/공급코드 — 시트값 명시되면 항상 우선 (사용자 마스터 데이터)
           if (p.policy_code)            updates[`products/${found._key}/policy_code`]            = p.policy_code;
           if (p.provider_company_code)  updates[`products/${found._key}/provider_company_code`]  = p.provider_company_code;
