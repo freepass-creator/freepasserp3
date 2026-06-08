@@ -657,6 +657,14 @@ function renderSyncTab(el) {
         const { variant, trim } = powertrainFromProduct(p);
         if (variant) p.variant = variant;
         if (trim) p.trim_name = trim;
+        // ③ 정책 자동매칭 — 시트 정책코드 우선, 없으면 공급코드(provider)로 해당 공급사 기본정책 → policy_code
+        //    (오플=RP023 기본정책 / 각 공급사 RP코드별 정책). 상품찾기 _policy 매칭(policy_code 일치)에 사용.
+        if (!p.policy_code) {
+          const prov = p.provider_company_code || p.partner_code;
+          const pol = prov && (store.policies || []).find(po => !po._deleted
+            && (po.provider_company_code === prov || po.partner_code === prov));
+          if (pol) p.policy_code = pol.policy_code || pol.term_code || '';
+        }
       }
       _syncFetched = data;
       const unmatched = items.length - matched;
