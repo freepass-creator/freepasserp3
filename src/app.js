@@ -522,12 +522,12 @@ window.refreshPageActions = function(pageName) {
     };
     const setStatusFilter = (v) => {
       userFilter.status = v;
-      renderUserList(store.users);
+      applyGlobalSearch();   // userFilter + 상단 검색어 동시 반영 (검색 유지)
       window.refreshPageActions?.('users');
     };
     const setCompanyFilter = (v) => {
       userFilter.company_code = v;
-      renderUserList(store.users);
+      applyGlobalSearch();   // userFilter + 상단 검색어 동시 반영 (검색 유지)
       window.refreshPageActions?.('users');
     };
     setPageActions({
@@ -947,6 +947,12 @@ async function createNewPolicy() {
     created_by: me.uid,
   };
   store.policies = [newRec, ...(store.policies || [])];
+  // 전체 레코드를 Firebase 에 즉시 저장 — policy_code·기본값 영속화 (createNewProduct 와 동일 패턴).
+  //   누락 시: policy_code(readonly·data-f 없음)가 flush 에 안 실려 정책이 저장 안 되던 버그.
+  setRecord(`policies/${code}`, newRec).catch(e => {
+    console.error('[policy create]', e);
+    showToast('정책 등록 실패 — ' + (e.message || e), 'error');
+  });
   const m = await import('./pages/policy.js');
   m.renderPolicyList(store.policies);
   const item = document.querySelector(`.pt-page[data-page="policy"] .ws4-list .room-item[data-id="${code}"]`);
@@ -1286,8 +1292,11 @@ function startHydration() {
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage);
   });
-  watchCollection('users',       (list) => { store.users       = list || []; renderUserList(store.users);             updateSidebarCounts(); window.refreshPageActions?.();
+  watchCollection('users',       (list) => { store.users       = list || [];
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    // users 페이지 활성 시 상단 검색어(_globalSearch)까지 반영해 재렌더 — 데이터 갱신(역할/상태 변경 등) 후 검색 유지
+    if (activePage === 'users') applyGlobalSearch(); else renderUserList(store.users);
+    updateSidebarCounts(); window.refreshPageActions?.();
     if (activePage) window.updatePageStats?.(activePage); });
   watchCollection('customers',   (list) => { store.customers   = list || []; });
   // vehicle_master Firebase 컬렉션 폐기됨 — 차종 데이터는 catalog (public/data/car-master) 단일 진실원
@@ -2017,7 +2026,6 @@ function buildContextMenuItems(page, id, item) {
       { v: 'admin',       l: '관리자' },
       { v: 'provider',    l: '공급사' },
       { v: 'agent',       l: '영업자' },
-      { v: 'agent_admin', l: '영업관리자' },
     ];
     const STATUS = [
       { v: 'active',  l: '승인' },

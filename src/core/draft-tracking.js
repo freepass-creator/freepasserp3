@@ -58,12 +58,18 @@ export function missingRequiredFields(collection, key) {
 }
 
 /* 미완성 신규 레코드 일괄 정리 — hashchange / popstate / beforeunload / 페이지 이탈 시 호출 */
+const DRAFT_FIELD_LABELS = {
+  policy_name: '정책명', provider_company_code: '공급코드',
+  car_number: '차량번호', partner_name: '거래처명',
+};
 export async function discardIncompleteDrafts() {
   for (const [collection, map] of Object.entries(_pendingDrafts)) {
     for (const [key, _] of [...map]) {
       if (!isDraftValid(collection, key)) {
+        // 무엇이 빠져서 폐기됐는지 명시 — "추가가 안됨" 혼란 방지
+        const missing = missingRequiredFields(collection, key).map(f => DRAFT_FIELD_LABELS[f] || f);
         try { await updateRecord(`${collection}/${key}`, { _deleted: true, updated_at: Date.now() }); } catch (_) {}
-        showToast('미입력 신규 항목 자동 정리됨', 'info');
+        showToast(missing.length ? `${missing.join('·')} 미입력 — 신규 항목이 저장되지 않고 정리됨` : '미입력 신규 항목 자동 정리됨', 'info');
       }
       map.delete(key);
     }

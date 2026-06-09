@@ -409,6 +409,8 @@ export function bindFormSave(page, collection, key, _current, options = {}) {
       return 1;
     } catch (e) {
       console.error(`[${collection}] save fail`, e);
+      // 저장 실패를 사용자에게 표면화 (지금까지 console 만 → "오류로 안됨" 원인 안 보임). 동적 import 로 순환참조 회피.
+      import('./toast.js').then(m => m.showToast(`저장 실패: ${e?.message || '권한·네트워크 확인'}`, 'error')).catch(() => {});
       return 0;
     }
   };
