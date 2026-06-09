@@ -652,20 +652,22 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const cheapest = priceRows.length ? priceRows.reduce((a, b) => (b.rent < a.rent ? b : a), priceRows[0]) : null;
   const st = p.vehicle_status || '';
   const stCls = /협의/.test(st) ? 'is-consult' : /계약|예약/.test(st) ? 'is-contract' : /불가/.test(st) ? 'is-blocked' : '';
-  // 차량정보 — 5단계(제조사~세부트림)부터 다 차량정보. 선택옵션 → 색상 → 연식·주행·연료 → 부가. 관계 붙여서.
-  const kvFull = (l, v) => `<div class="pd-kv full"><span class="k">${esc(l)}</span><span class="v">${(v != null && String(v).trim() && String(v).trim() !== '-') ? esc(v) : '-'}</span></div>`;
-  const optKv = `<div class="pd-kv full"><span class="k">선택옵션</span><span class="v">${opts.length ? opts.map(o => `<span class="pd-chip">${esc(o)}</span>`).join('') : '-'}</span></div>`;
-  const infoHtml =
-    kv('제조사', basicByLabel['제조사']) + kv('모델', basicByLabel['모델'])
-    + kvFull('세부모델', basicByLabel['세부모델'])
-    + kv('파워트레인', specByLabel['파워트레인']) + kv('세부트림', specByLabel['세부트림'])
-    + optKv
-    + kv('외부색상', specByLabel['외장색']) + kv('내부색상', specByLabel['내장색'])
-    + kv('연식', specByLabel['연식']) + kv('주행거리', specByLabel['주행'])
-    + kv('연료', specByLabel['연료']) + kv('구동방식', specByLabel['구동'])
-    + kv('배기량', specByLabel['배기량']) + kv('인승', specByLabel['인승'])
-    + kv('차종', specByLabel['차종']) + kv('용도', specByLabel['용도'])
-    + kv('최초등록', specByLabel['최초등록일']);
+  // 차량정보 — 5단계(제조사~세부트림)는 히어로 차량명에 있으니 중복 제외. 선택옵션 → 색상 → 연식·주행·연료 → 부가.
+  const infoOrder = [
+    ['외부색상', specByLabel['외장색']],
+    ['내부색상', specByLabel['내장색']],
+    ['연식',     specByLabel['연식']],
+    ['주행거리', specByLabel['주행']],
+    ['연료',     specByLabel['연료']],
+    ['구동방식', specByLabel['구동']],
+    ['배기량',   specByLabel['배기량']],
+    ['인승',     specByLabel['인승']],
+    ['차종',     specByLabel['차종']],
+    ['용도',     specByLabel['용도']],
+    ['최초등록', specByLabel['최초등록일']],
+  ];
+  const infoHtml = `<div class="pd-kv full"><span class="k">선택옵션</span><span class="v">${opts.length ? opts.map(o => `<span class="pd-chip">${esc(o)}</span>`).join('') : '-'}</span></div>`
+    + infoOrder.map(([l, v]) => kv(l, v)).join('');
   const condHtml = condRows.map(([l, v]) => kv(l, v)).join('');
   const etcHtml = [
     providerName ? kv('공급사', providerName) : '',
@@ -678,19 +680,15 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   body.innerHTML = `
     <div class="pd-photo">${photoHtml}</div>
 
-    <div class="pd-hero">
+    <!-- 차량정보 = 차량 식별(번호·뱃지·차량명) + 스펙. 5단계(제조사~트림)는 차량명에 있어 중복 행 없음. -->
+    <div class="pd-sec" style="padding-top:var(--sp-4);">
       <div class="pd-meta" style="margin:0 0 4px;">
         ${p.car_number ? `<span class="pd-carno" style="font-size:var(--fs-md);font-weight:var(--fw-heavy);color:var(--c-text);">${esc(p.car_number)}</span>` : ''}
         ${p.product_type ? `<span class="pd-tag is-type">${esc(p.product_type)}</span>` : ''}
         ${st ? `<span class="pd-tag ${stCls}">${esc(st)}</span>` : ''}
       </div>
       <div class="pd-name">${esc(vehName) || '-'}</div>
-    </div>
-
-    <!-- 차량정보 먼저 (차를 보고) -->
-    <div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>차량정보</div>
-      ${infoHtml ? `<div class="pd-spec">${infoHtml}</div>` : `<div class="pd-empty">정보 없음</div>`}
+      <div class="pd-spec" style="margin-top:var(--sp-3); border-top:1px solid var(--c-border-soft); padding-top:var(--sp-3);">${infoHtml}</div>
     </div>
 
     <!-- 대여료 관련 (별도 가격 하이라이트 블록 제거 — 기간별 표에 최저 강조) -->
