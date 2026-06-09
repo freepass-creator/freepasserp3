@@ -14,13 +14,12 @@
  */
 import { store, findProduct } from '../core/store.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from '../core/product-photos.js';
-import { extractProductDetailRows } from '../core/product-detail-rows.js';
-import { composeVehicleName, renderDetailSections } from '../core/product-detail-render.js';
+import { renderDetailSections } from '../core/product-detail-render.js';
 import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichProductsWithPolicy } from '../core/excel-export.js';
 import { showToast } from '../core/toast.js';
 import {
   esc, shortStatus, mapStatusDot, fmtMileage, normalizeVehicleStatus,
-  providerNameByCode, providerLabelByCode, fmtMoneyMan,
+  providerNameByCode,
 } from '../core/ui-helpers.js';
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { findCatalog } from '../core/vehicle-matrix.js';
@@ -545,11 +544,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   if (document.querySelector('.pt-page.active')?.dataset.page === 'search') {
     window.refreshPageActions?.('search');
   }
-  const role = store.currentUser?.role;
-  const isAdmin = role === 'admin';
-  const canSeeFee = isAdmin || role === 'agent' || role === 'agent_admin';
-  const pol = p._policy || p.policy || {};
-  const policyName = pol.policy_name || p.policy_name || '';
+  // (수수료/정책 게이팅은 renderDetailSections 가 audience 로 처리)
 
   // 헤더 — search 페이지에서만 갱신
   if (!options.skipHead) {
