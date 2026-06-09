@@ -1323,11 +1323,10 @@ function filterProductsExcept(exceptField) {
     }
     if (f.search) {
       const opts = Array.isArray(p.options) ? p.options.join(' ') : (p.options || '');
-      // 공급사 코드 → 회사명 lookup (검색어에 회사명 입력해도 매칭되도록)
+      // 공급사 코드 → 회사명·담당자명·연락처 lookup (회사/담당자 다 검색)
       const providerCode = p.provider_company_code || p.partner_code || '';
-      const providerName = providerCode
-        ? ((store.partners || []).find(x => (x.partner_code === providerCode || x.company_code === providerCode) && !x._deleted)?.partner_name || '')
-        : '';
+      const pp = providerCode ? (store.partners || []).find(x => (x.partner_code === providerCode || x.company_code === providerCode || x._key === providerCode) && !x._deleted) : null;
+      const providerName = pp ? [pp.partner_name, pp.company_name, pp.ceo_name, pp.manager_name, pp.manager_phone, pp.company_phone, pp.business_number].filter(Boolean).join(' ') : '';
       const hay = [
         p.car_number, p.vin, p.product_code,
         p.maker, p.model, p.sub_model, p.trim_name, p.trim,

@@ -1588,11 +1588,12 @@ function applyGlobalSearch() {
 
   // 다른 페이지 — store 데이터 필터 후 재렌더.
   const matches = (haystack) => !q || haystack.toLowerCase().includes(q);
-  // 코드 → 회사명 매핑 (검색어에 회사명 입력해도 코드로 매칭되도록 haystack 에 양쪽 포함)
+  // 코드 → 공급사 정보 (회사명·담당자명·대표·연락처·사업자번호 모두 haystack 에 — 회사/담당자명으로 다 검색)
   const provName = (code) => {
     if (!code) return '';
-    const p = (store.partners || []).find(x => (x.partner_code === code || x.company_code === code) && !x._deleted);
-    return p?.partner_name || p?.company_name || '';
+    const p = (store.partners || []).find(x => (x.partner_code === code || x.company_code === code || x._key === code) && !x._deleted);
+    if (!p) return '';
+    return [p.partner_name, p.company_name, p.ceo_name, p.manager_name, p.manager_phone, p.company_phone, p.business_number].filter(Boolean).join(' ');
   };
   const optionsStr = (opts) => Array.isArray(opts) ? opts.join(' ') : (opts || '');
 
@@ -1656,6 +1657,7 @@ function applyGlobalSearch() {
     const filtered = store.partners.filter(p => matches([
       p.partner_name, p.partner_code, p.company_name, p.company_code, p._key,
       p.partner_type, p.ceo_name, p.business_number,
+      p.manager_name, p.manager_phone, p.company_phone,
       p.contact_name, p.contact_title, p.phone, p.email, p.address, p.memo,
     ].filter(Boolean).join(' ')));
     renderPartnerList(filtered);
