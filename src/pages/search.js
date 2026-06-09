@@ -680,8 +680,9 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   body.innerHTML = `
     <div class="pd-photo">${photoHtml}</div>
 
-    <!-- 차량정보 = 차량 식별(번호·뱃지·차량명) + 스펙. 5단계(제조사~트림)는 차량명에 있어 중복 행 없음. -->
-    <div class="pd-sec" style="padding-top:var(--sp-4);">
+    <!-- 차량정보 = 섹션타이틀 + 차량 식별(번호·뱃지·차량명) + 스펙. 5단계는 차량명에 있어 중복 행 없음. -->
+    <div class="pd-sec">
+      <div class="pd-sec-h"><span class="bar"></span>차량정보</div>
       <div class="pd-meta" style="margin:0 0 4px;">
         ${p.car_number ? `<span class="pd-carno" style="font-size:var(--fs-md);font-weight:var(--fw-heavy);color:var(--c-text);">${esc(p.car_number)}</span>` : ''}
         ${p.product_type ? `<span class="pd-tag is-type">${esc(p.product_type)}</span>` : ''}
