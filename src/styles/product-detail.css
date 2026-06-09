@@ -12,26 +12,15 @@
 .pd-photo { background: var(--c-bg-sub); }
 .pd-photo:empty { display: none; }
 
-/* ── 히어로 (자연 차량명) ── */
-.pd-hero { padding: var(--sp-4) var(--sp-5) var(--sp-3); border-bottom: 1px solid var(--c-border); }
+/* ── 차량명 헤더 ── */
 .pd-name { font-size: var(--fs-base); font-weight: var(--fw-heavy); letter-spacing: -0.01em; line-height: 1.35; color: var(--c-text); }
-.pd-keyspec { margin-top: 6px; font-size: var(--fs-sm); color: var(--c-text-sub); display: flex; flex-wrap: wrap; gap: 2px 9px; }
-.pd-keyspec b { color: var(--c-text); font-weight: var(--fw-semibold); }
-.pd-meta { margin-top: var(--sp-2); display: flex; align-items: center; gap: 7px; }
+.pd-meta { display: flex; align-items: center; gap: 7px; }
 .pd-tag { font-size: var(--fs-xs); font-weight: var(--fw-semibold); padding: 1px 7px; border-radius: var(--radius); border: 1px solid var(--c-ok); color: var(--c-ok); background: transparent; }
 .pd-tag.is-type { border-color: var(--c-border-strong); color: var(--c-text-sub); background: var(--c-bg-sub); }
 .pd-tag.is-consult  { border-color: var(--c-warn); color: var(--c-warn); }
 .pd-tag.is-contract { border-color: var(--c-info); color: var(--c-info); }
 .pd-tag.is-blocked  { border-color: var(--c-err);  color: var(--c-err); }
 .pd-carno { font-size: var(--fs-xs); color: var(--c-text-muted); }
-
-/* ── 가격 강조 — 무채색 박스 + 네이비 좌측바, 가격 숫자만 네이비 (컬러 절제) ── */
-.pd-lead { display: flex; align-items: flex-end; gap: 10px; margin: var(--sp-4) var(--sp-5) 0; padding: var(--sp-3) var(--sp-4); background: var(--c-bg-zebra); border: 1px solid var(--c-border); border-left: 3px solid var(--c-accent); border-radius: var(--radius); }
-.pd-lead .lab { font-size: var(--fs-xs); color: var(--c-text-muted); font-weight: var(--fw-semibold); margin-bottom: 3px; }
-.pd-lead .amt { font-size: var(--fs-2xl); font-weight: var(--fw-heavy); color: var(--c-accent); letter-spacing: -0.02em; line-height: 1.1; }
-.pd-lead .unit { font-size: var(--fs-sm); color: var(--c-text-sub); margin-left: 2px; }
-.pd-lead .dep { margin-left: auto; text-align: right; font-size: var(--fs-xs); color: var(--c-text-muted); }
-.pd-lead .dep b { display: block; font-size: var(--fs-md); color: var(--c-text); font-weight: var(--fw-heavy); margin-top: 1px; }
 
 /* ── 섹션 ── */
 .pd-sec { padding: var(--sp-5) var(--sp-5) var(--sp-2); }

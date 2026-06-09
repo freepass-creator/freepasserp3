@@ -585,7 +585,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
   // 6섹션 row 데이터 — 공통 헬퍼
   const rows = extractProductDetailRows(p, { canSeeFee, isAdmin, policies: store.policies });
-  const basicRows = rows.basic;
   const specRows  = rows.spec;
   const insRows   = rows.ins;
   const condRows  = rows.cond;
@@ -593,28 +592,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const priceRows = rows.price;
   const feeRows   = rows.fee;
   const opts      = rows.options;
-
-  // 값에서 라벨과 중복되는 단어 제거 — "연간 주행" 라벨에 "연간 5만Km 주행" 값 → "5만Km"
-  //  라벨의 단어들(공백/슬래시 분리)을 값 앞뒤에서 제거
-  const cleanVal = (label, value) => {
-    if (!value || value === '-') return value || '-';
-    let v = String(value).trim();
-    const tokens = String(label).split(/[\s\/]+/).filter(t => t.length > 1);
-    for (const tok of tokens) {
-      // 앞에 있으면 제거
-      v = v.replace(new RegExp(`^${tok}\\s*`), '');
-      // 뒤에 있으면 제거
-      v = v.replace(new RegExp(`\\s*${tok}$`), '');
-    }
-    return v.trim() || value;
-  };
-  // 단일 행 — 라벨 1칸 + 값 3칸 spanning. 빈 값은 '-' (필터 안 함, 그냥 보여주는 표)
-  const renderGrid = (r) => r.map(([l, v]) => `<div class="lab">${esc(l)}</div><div class="full">${esc(cleanVal(l, v) || '-')}</div>`).join('');
-  // 좌우 쌍 — [라벨1][값1][라벨2][값2]. 값이 라벨과 겹치는 부분 자동 제거.
-  const pair = (l1, v1, l2, v2) => `
-    <div class="lab">${esc(l1)}</div><div>${esc(cleanVal(l1, v1) || '-')}</div>
-    <div class="lab">${esc(l2)}</div><div>${esc(cleanVal(l2, v2) || '-')}</div>
-  `;
 
   const photoHtml = imgs.length ? `
     <div class="detail-photo-stage">
@@ -640,7 +617,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   `;
 
   const specByLabel = Object.fromEntries(specRows.map(r => [r[0], r[1]]));
-  const basicByLabel = Object.fromEntries(basicRows.map(r => [r[0], r[1]]));
   const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
   // 매물 상세의 공급사 row — "회사명 (코드)" 같이 표시 (사용자 요청 — 코드 유지 + 회사명 노출)
   const providerName = providerLabelByCode(p.provider_company_code || p.partner_code, store) || '';
