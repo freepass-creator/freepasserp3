@@ -18,6 +18,7 @@ import {
   productImages, productExternalImages, supportedDriveSource, toProxiedImage,
 } from '../core/product-photos.js';
 import { openFullscreen } from '../core/product-detail-render.js';
+import { extractProductDetailRows } from '../core/product-detail-rows.js';
 import { ocrFile } from '../core/ocr.js';
 import { extractDocument } from '../core/ocr-gemini.js';
 import { getOptionPool, splitOptionInput, findSimilarInPool } from '../core/trim-options.js';
@@ -881,6 +882,23 @@ export function renderProductDetail(p) {
         <td><input class="input pd-price-memo" data-period="${m}" data-type="fee_memo" value="${esc(v.fee_memo || '')}" placeholder="-" style="width:100%;"${disabled}${lockAttr}></td>
       </tr>`;
     };
+    // 정책 정보 (보험·계약조건) — 연결된 정책에서 끌어와 읽기전용 표시. "정보 많은데 제한적" 해소.
+    const D = extractProductDetailRows(p, { canSeeFee: false, isAdmin: false, policies: store.policies || [] });
+    const curPolName = (store.policies || []).find(t => (t.policy_code || t._key) === curPol)?.policy_name || '';
+    const okv = ([, v]) => v != null && String(v).trim() && String(v).trim() !== '-';
+    // 정보 없어도 항목은 다 구성 — 보험 6항목 + 계약조건 전체, 값 없으면 '-'
+    const polInfoHtml = `
+      <div class="form-section-title"><i class="ph ph-shield-check"></i>정책 정보${curPolName ? ` <span style="color:var(--text-weak); font-weight:400; font-size:12px;">${esc(curPolName)}</span>` : (curPol ? '' : ` <span style="color:var(--text-weak); font-weight:400; font-size:12px;">정책 미선택</span>`)}</div>
+      <table class="table" style="margin-bottom:12px;">
+        <colgroup><col style="width:84px;"><col><col></colgroup>
+        <thead><tr><th>보험</th><th>한도</th><th>면책금</th></tr></thead>
+        <tbody>${D.ins.map(([l, lim, ded]) => `<tr><td>${esc(l)}</td><td>${esc(lim) || '-'}</td><td>${esc(ded) || '-'}</td></tr>`).join('')}</tbody>
+      </table>
+      <div class="form-section-title" style="font-size:12px; color:var(--text-sub);"><i class="ph ph-list-checks"></i>계약 조건</div>
+      <table class="table">
+        <colgroup><col style="width:84px;"><col></colgroup>
+        <tbody>${D.cond.map(([l, v]) => `<tr><td style="color:var(--text-sub); white-space:nowrap;">${esc(l)}</td><td>${okv([l, v]) ? esc(v) : '-'}</td></tr>`).join('')}</tbody>
+      </table>`;
     priceCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-section-title"><i class="ph ph-scroll"></i>상태 | 정책</div>
       <div class="form-grid" style="margin-bottom: 12px;">
@@ -903,6 +921,7 @@ export function renderProductDetail(p) {
           <tbody>${PRODUCT_TERMS.map(feeRow).join('')}</tbody>
         </table>
       ` : ''}
+      ${polInfoHtml}
     `;
     if (canEdit) bindProductPriceEdit(p);
   }

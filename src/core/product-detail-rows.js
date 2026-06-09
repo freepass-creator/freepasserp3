@@ -82,7 +82,7 @@ export function extractProductDetailRows(p, options = {}) {
     ['무보험상해', pol.uninsured_damage || pol.uninsured_compensation_limit,    pol.uninsured_deductible],
     ['자차손해',   pol.own_damage_compensation,                                ownDed],
     ['긴급출동',   pol.annual_roadside_assistance || pol.roadside_assistance,  ''],
-  ].filter(r => r[1] || r[2]);
+  ];   // 필터 안 함 — 정보 없어도 6개 항목 전부 노출 (값 없으면 뷰에서 '-')
 
   // 4. 기타 계약 조건
   const creditRaw = pol.credit_grade || pol.screening_criteria || p.credit_grade;

@@ -647,8 +647,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
   // ── 캐논 구성 (엑셀 탈피: 자연 차량명 + 가격 하이라이트 + 위계 섹션) ──
   const vehName = composeVehicleName(p);
-  const kv = (l, v) => (v != null && String(v).trim() && String(v).trim() !== '-')
-    ? `<div class="pd-kv"><span class="k">${esc(l)}</span><span class="v">${esc(v)}</span></div>` : '';
+  // 정보 없어도 항목은 다 노출 — 빈 값은 '-' (전체 필드 구성)
+  const kv = (l, v) => `<div class="pd-kv"><span class="k">${esc(l)}</span><span class="v">${(v != null && String(v).trim() && String(v).trim() !== '-') ? esc(v) : '-'}</span></div>`;
   const keyspec = [
     specByLabel['연식'] && `<span><b>${esc(specByLabel['연식'])}</b></span>`,
     specByLabel['주행'] && `<span><b>${esc(String(specByLabel['주행']).replace(/\s*km$/i, ''))}</b>km</span>`,
@@ -689,13 +689,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       ${infoHtml ? `<div class="pd-spec">${infoHtml}</div>` : `<div class="pd-empty">정보 없음</div>`}
     </div>
 
-    <!-- 이하 대여료 관련 — 가격 강조 → 기간별 대여료 → 보험 → 대여조건 -->
-    ${cheapest ? `
-    <div class="pd-lead">
-      <div><div class="lab">최저 월 대여료 · ${cheapest.m}개월</div><span class="amt">${fmtMoneyMan(cheapest.rent)}</span><span class="unit">원</span></div>
-      ${cheapest.dep ? `<div class="dep">보증금<b>${fmtMoneyMan(cheapest.dep)}원</b></div>` : ''}
-    </div>` : ''}
-
+    <!-- 대여료 관련 (별도 가격 하이라이트 블록 제거 — 기간별 표에 최저 강조) -->
     <div class="pd-sec">
       <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
       ${priceRows.length ? `
