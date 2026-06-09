@@ -26,6 +26,20 @@ export function trackDraft(collection, key, requiredField) {
   _pendingDrafts[collection]?.set(key, requiredField);
 }
 
+/** 필드가 채워졌나 — store 저장값 OR 활성 폼 DOM 입력값(아직 flush 전이어도 반영).
+ *  [저장] 버튼이 flush 전에 검증하므로 DOM 도 봐야 "입력했는데 미입력" 오판 방지. */
+function liveFieldFilled(rec, f) {
+  if (String(rec?.[f] || '').trim()) return true;
+  if (typeof document === 'undefined') return false;
+  const el = document.querySelector(`.pt-page.active [data-f="${f}"]`);
+  if (el) {
+    if ('value' in el && String(el.value || '').trim()) return true;          // input/select/textarea
+    const chip = el.querySelector?.('.chip.active[data-v]');                   // chip 기반
+    if (chip && String(chip.dataset.v || '').trim()) return true;
+  }
+  return false;
+}
+
 /** 필수 필드 모두 채워졌는지 — 단일/복수 모두 지원 */
 export function isDraftValid(collection, key) {
   const fieldOrFields = _pendingDrafts[collection]?.get(key);
@@ -35,7 +49,7 @@ export function isDraftValid(collection, key) {
   const rec = list.find(x => x._key === key);
   if (!rec) return true;        // already gone
   const fields = Array.isArray(fieldOrFields) ? fieldOrFields : [fieldOrFields];
-  return fields.every(f => !!String(rec[f] || '').trim());
+  return fields.every(f => liveFieldFilled(rec, f));
 }
 
 /** 저장 차단 여부 — 활성 신규 record 가 필수 필드 미입력 시 true.
@@ -54,7 +68,7 @@ export function missingRequiredFields(collection, key) {
   const rec = list.find(x => x._key === key);
   if (!rec) return [];
   const fields = Array.isArray(fieldOrFields) ? fieldOrFields : [fieldOrFields];
-  return fields.filter(f => !String(rec[f] || '').trim());
+  return fields.filter(f => !liveFieldFilled(rec, f));
 }
 
 /* 미완성 신규 레코드 일괄 정리 — hashchange / popstate / beforeunload / 페이지 이탈 시 호출 */
