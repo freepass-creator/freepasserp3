@@ -140,7 +140,7 @@ export function extractProductDetailRows(p, options = {}) {
   // 옵션 chips (raw 배열로)
   const opts = Array.isArray(p.options)
     ? p.options
-    : (p.options ? String(p.options).split(/[\s·,\/]+/).map(s => s.trim()).filter(Boolean) : []);
+    : (p.options ? String(p.options).split(/[,/]+/).map(s => s.trim()).filter(Boolean) : []);   // 콤마·슬래시만 (띄어쓰기로 안 쪼갬)
 
   return {
     basic, spec, ins, cond, etc,

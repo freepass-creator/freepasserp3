@@ -172,7 +172,7 @@ function renderSearchRow(p) {
   const creditBadge = creditGradeBadge(p) || '<span class="dim">-</span>';
   const optsArr = Array.isArray(p.options)
     ? p.options
-    : (p.options ? String(p.options).split(/[\s·,/]+/).filter(Boolean) : []);
+    : (p.options ? String(p.options).split(/[,/]+/).map(s => s.trim()).filter(Boolean) : []);   // 콤마·슬래시만
   const opts = optsArr.length ? optsArr.join(' ') : '-';
   const optsHtml = optsArr.length
     ? optsArr.map(o => `<span class="chip">${esc(o)}</span>`).join('')

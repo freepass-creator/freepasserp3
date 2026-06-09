@@ -736,7 +736,7 @@ export function renderProductDetail(p) {
   if (assetCard) {
     setHeadSave(assetCard, '자산 정보', canEdit, 'asset');
     const O = PRODUCT_OPTS;
-    const optsArr = Array.isArray(p.options) ? p.options : (p.options ? String(p.options).split(/[·,\/]/).map(s => s.trim()).filter(Boolean) : []);
+    const optsArr = Array.isArray(p.options) ? p.options : (p.options ? String(p.options).split(/[,/]+/).map(s => s.trim()).filter(Boolean) : []);   // 콤마·슬래시만 (띄어쓰기·· 로 안 쪼갬)
     const optsValue = optsArr.join(', ');
     const ro = (label, value) => `<div class="ff"><label>${esc(label)}</label><input type="text" class="input" value="${esc(value || '')}" readonly></div>`;
     const sect = (title, icon, body) => `<div class="form-section-title"><i class="ph ph-${icon}"></i>${esc(title)}</div><div class="form-grid">${body}</div>`;
