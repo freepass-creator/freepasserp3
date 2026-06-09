@@ -669,7 +669,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
 
     <div class="pd-hero">
       <div class="pd-meta" style="margin:0 0 4px;">
-        ${p.car_number ? `<span class="pd-carno" style="font-weight:var(--fw-heavy);color:var(--c-text);">${esc(p.car_number)}</span>` : ''}
+        ${p.car_number ? `<span class="pd-carno" style="font-size:var(--fs-md);font-weight:var(--fw-heavy);color:var(--c-text);">${esc(p.car_number)}</span>` : ''}
         ${p.product_type ? `<span class="pd-tag is-type">${esc(p.product_type)}</span>` : ''}
         ${st ? `<span class="pd-tag ${stCls}">${esc(st)}</span>` : ''}
       </div>
