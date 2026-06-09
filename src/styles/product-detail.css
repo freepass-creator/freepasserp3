@@ -19,6 +19,7 @@
 .pd-keyspec b { color: var(--c-text); font-weight: var(--fw-semibold); }
 .pd-meta { margin-top: var(--sp-2); display: flex; align-items: center; gap: 7px; }
 .pd-tag { font-size: var(--fs-xs); font-weight: var(--fw-semibold); padding: 1px 7px; border-radius: var(--radius); border: 1px solid var(--c-ok); color: var(--c-ok); background: transparent; }
+.pd-tag.is-type { border-color: var(--c-border-strong); color: var(--c-text-sub); background: var(--c-bg-sub); }
 .pd-tag.is-consult  { border-color: var(--c-warn); color: var(--c-warn); }
 .pd-tag.is-contract { border-color: var(--c-info); color: var(--c-info); }
 .pd-tag.is-blocked  { border-color: var(--c-err);  color: var(--c-err); }

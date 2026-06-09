@@ -652,14 +652,14 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const cheapest = priceRows.length ? priceRows.reduce((a, b) => (b.rent < a.rent ? b : a), priceRows[0]) : null;
   const st = p.vehicle_status || '';
   const stCls = /협의/.test(st) ? 'is-consult' : /계약|예약/.test(st) ? 'is-contract' : /불가/.test(st) ? 'is-blocked' : '';
-  const INFO_EXCLUDE = new Set(['파워트레인', '세부트림', '차령만료일', '차량가격', '차대번호', '위치']);
+  const INFO_EXCLUDE = new Set(['파워트레인', '세부트림', '상품구분', '차령만료일', '차량가격', '차대번호', '위치']);
   const infoHtml = specRows.filter(([l]) => !INFO_EXCLUDE.has(l)).map(([l, v]) => kv(l, v)).join('')
     + (opts.length ? `<div class="pd-kv full"><span class="k">선택옵션</span><span class="v">${opts.map(o => `<span class="pd-chip">${esc(o)}</span>`).join('')}</span></div>` : '');
   const condHtml = condRows.map(([l, v]) => kv(l, v)).join('');
   const etcHtml = [
     providerName ? kv('공급사', providerName) : '',
     (policyName && !isAdmin) ? kv('정책명', policyName) : '',   // admin 은 adminRows 에 정책명 포함 (중복 방지)
-    ...specRows.filter(([l]) => l !== '파워트레인' && l !== '세부트림' && INFO_EXCLUDE.has(l)).map(([l, v]) => kv(l, v)),
+    ...specRows.filter(([l]) => ['차령만료일', '차량가격', '차대번호', '위치'].includes(l)).map(([l, v]) => kv(l, v)),
     ...adminRows.map(([l, v]) => kv(l, v)),
   ].join('');
 
@@ -670,6 +670,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     <div class="pd-hero">
       <div class="pd-meta" style="margin:0 0 4px;">
         ${p.car_number ? `<span class="pd-carno" style="font-weight:var(--fw-heavy);color:var(--c-text);">${esc(p.car_number)}</span>` : ''}
+        ${p.product_type ? `<span class="pd-tag is-type">${esc(p.product_type)}</span>` : ''}
         ${st ? `<span class="pd-tag ${stCls}">${esc(st)}</span>` : ''}
       </div>
       <div class="pd-name">${esc(vehName) || '-'}</div>
