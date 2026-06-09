@@ -11,6 +11,7 @@ import { watchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtMoney, trimMinusSub, mEmpty } from '../core/format.js';
 import { firstProductImage, supportedDriveSource } from '../core/product-photos.js';
+import { appendAgentShareParams } from '../core/ui-helpers.js';
 import '../core/drive-photos.js';   // 카드 드라이브 썸네일 lazy 하이드레이션 observer 즉시 시작 (상세 열기 전에도 카드 사진 뜨게)
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
@@ -451,6 +452,7 @@ function shareProduct(p) {
   const d = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
   const qs = new URLSearchParams();
   if (me.user_code) qs.set('a', me.user_code);
+  appendAgentShareParams(qs, me);   // 로그인 영업자 이름·전화·회사 → 카탈로그 하단 CTA
   if (pid) qs.set('id', pid);
   else if (p.car_number) qs.set('car', p.car_number);
   if (title) qs.set('t', title);
@@ -474,7 +476,10 @@ function editProduct(p) {
 
 function shareCatalogLink() {
   const me = store.currentUser || {};
-  const url = `${location.origin}/catalog.html?a=${me.user_code || ''}`;
+  const qs = new URLSearchParams();
+  if (me.user_code) qs.set('a', me.user_code);
+  appendAgentShareParams(qs, me);
+  const url = `${location.origin}/catalog.html?${qs.toString()}`;
   if (navigator.share) {
     navigator.share({ title: '차량 카탈로그', url }).catch(() => {});
   } else {

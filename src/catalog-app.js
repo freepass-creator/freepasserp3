@@ -48,15 +48,30 @@ const agentEl = document.getElementById('catAgent');
 // 단일 차량 모드 — 그리드/필터 숨김 (CSS body.is-single). ?id / ?pid / ?car 모두 지원
 if (singleProductId || singleCarNumber) document.body.classList.add('is-single');
 
-// 영업자 정보 로드 (한 번)
+// 공유 링크에 담당자 정보(이름·전화·회사)가 실려오면 그대로 우선 사용 —
+//   /users 익명조회 race·권한 실패와 무관하게 "공유한(로그인한) 영업자" 연락처 확실히 노출.
+const inlineAgent = (params.get('n') || params.get('tel')) ? {
+  name: params.get('n') || '',
+  phone: params.get('tel') || '',
+  company_name: params.get('co') || '',
+  title: params.get('ti') || '',
+} : null;
+
+// 영업자 정보 로드 — 인라인 우선 즉시 렌더, 조회되면 빈 필드만 보강
+if (inlineAgent) { _agent = inlineAgent; renderAgent(); }
 if (agentCode) {
-  loadAgent().then(renderAgent).catch(e => console.warn('[catalog] 영업자 로드 실패:', e?.message || e));
+  loadAgent().then(found => {
+    if (!found) { if (!inlineAgent) _agent = null; return; }
+    const overrides = Object.fromEntries(Object.entries(inlineAgent || {}).filter(([, v]) => v));  // 인라인 비어있지 않은 값만 우선
+    _agent = { ...found, ...overrides };
+    renderAgent();
+  }).catch(e => console.warn('[catalog] 영업자 로드 실패:', e?.message || e));
 }
 
 async function loadAgent() {
   const snap = await get(dbRef(db, 'users'));
   const users = snap.val() || {};
-  _agent = Object.values(users).find(u => u.user_code === agentCode) || null;
+  return Object.values(users).find(u => u.user_code === agentCode) || null;
 }
 
 function renderAgent() {

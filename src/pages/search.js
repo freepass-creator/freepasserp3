@@ -19,7 +19,7 @@ import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichPro
 import { showToast } from '../core/toast.js';
 import {
   esc, shortStatus, mapStatusDot, fmtMileage, normalizeVehicleStatus,
-  providerNameByCode,
+  providerNameByCode, appendAgentShareParams,
 } from '../core/ui-helpers.js';
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { findCatalog } from '../core/vehicle-matrix.js';
@@ -439,6 +439,7 @@ export async function searchActionShare(p) {
   const d = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
   const qs = new URLSearchParams();
   if (me.user_code) qs.set('a', me.user_code);
+  appendAgentShareParams(qs, me);   // 로그인 영업자 이름·전화·회사 → 카탈로그 하단 CTA
   if (p._key) qs.set('id', p._key);
   else if (car) qs.set('car', car);
   if (title) qs.set('t', title);

@@ -313,6 +313,15 @@ export function flashSaved(elements) {
   });
 }
 
+/** 카탈로그 공유 링크에 로그인 영업자 연락처 파라미터 추가 (이름 n·전화 tel·회사 co·직급 ti).
+ *  카탈로그 하단 CTA 가 /users 조회 race·권한 실패해도 공유한 사람 연락처를 확실히 노출하게. */
+export function appendAgentShareParams(qs, me = {}) {
+  if (me.name) qs.set('n', me.name);
+  if (me.phone) qs.set('tel', me.phone);
+  if (me.company_name) qs.set('co', me.company_name);
+  if (me.title || me.position) qs.set('ti', me.title || me.position);
+}
+
 /* 페이지 단위 폼 일괄저장 — 변경된 [data-f] 필드만 모아 한 번에 updateRecord 호출.
  *  blur/change 시 자동저장 X. [저장] 버튼이 page.__flushSave() 를 호출해야 실제 저장. */
 export function bindFormSave(page, collection, key, _current, options = {}) {
