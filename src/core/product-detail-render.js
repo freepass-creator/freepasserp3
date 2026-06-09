@@ -189,8 +189,8 @@ export function renderDetailSections(p, opts = {}) {
     + [['외부색상', specByLabel['외장색']], ['내부색상', specByLabel['내장색']], ['연식', specByLabel['연식']], ['주행거리', specByLabel['주행']], ['연료', specByLabel['연료']], ['구동방식', specByLabel['구동']], ['배기량', specByLabel['배기량']], ['인승', specByLabel['인승']], ['차종', specByLabel['차종']], ['용도', specByLabel['용도']], ['최초등록', specByLabel['최초등록일']]].map(([l, v]) => kv(l, v)).join('');
   const condHtml = condRows.map(([l, v]) => kv(l, v)).join('');
   const etcHtml = [
-    providerName ? kv('공급사', providerName) : '',
-    (policyName && !isAdmin) ? kv('정책명', policyName) : '',
+    (providerName && aud !== 'customer') ? kv('공급사', providerName) : '',   // 손님엔 공급사 비공개
+    (policyName && aud !== 'customer' && !isAdmin) ? kv('정책명', policyName) : '',
     ...specRows.filter(([l]) => ['차령만료일', '차량가격', '차대번호', '위치'].includes(l)).map(([l, v]) => kv(l, v)),
     ...adminRows.map(([l, v]) => kv(l, v)),
   ].join('');
@@ -230,7 +230,7 @@ export function renderDetailSections(p, opts = {}) {
     </div>
 
     <div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>대여조건${policyName ? ` <span class="hint">${esc(policyName)}</span>` : ''}</div>
+      <div class="pd-sec-h"><span class="bar"></span>대여조건${(policyName && aud !== 'customer') ? ` <span class="hint">${esc(policyName)}</span>` : ''}</div>
       ${condHtml ? `<div class="pd-spec">${condHtml}</div>` : `<div class="pd-empty">조건 정보 없음</div>`}
     </div>
 

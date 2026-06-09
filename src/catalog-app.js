@@ -13,7 +13,7 @@ import { ref as dbRef, get } from 'firebase/database';
 import { db } from './firebase/config.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from './core/product-photos.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
-import { extractProductDetailRows } from './core/product-detail-rows.js';
+import { renderDetailSections } from './core/product-detail-render.js';
 import { stripLegalEntity } from './core/ui-helpers.js';
 
 // 익명 인증 — policies 읽기 위해 필요 (auth != null 룰 통과)
@@ -321,21 +321,6 @@ function openDetail(key) {
     history.pushState({ detail: p._key }, '', '#' + (p.car_number || p._key));
   }
 
-  // 6섹션 row — ERP 와 동일 헬퍼 (라벨/매핑/정책 fallback 통일)
-  // 카탈로그는 수수료/관리자정보 비공개: canSeeFee=false, isAdmin=false
-  const rowData = extractProductDetailRows(p, { canSeeFee: false, isAdmin: false, policies: _policies });
-  const pol = rowData.policy;
-  const basicRows = rowData.basic;
-  const specRows  = rowData.spec;
-  const insRows   = rowData.ins;
-  const condRows  = rowData.cond;
-  const opts      = rowData.options;
-  const priceRows = rowData.price;
-
-  const renderRows = (rows) => rows.filter(([, v]) => v != null && v !== '' && v !== '-').map(([l, v, full]) => `<div class="lab">${esc(l)}</div><div class="val${full ? ' full' : ''}">${esc(v)}</div>`).join('');
-
-  // 공급사 섹션 — 손님에게 노출 안 함 (도매·내부정보)
-
   // 메인 이미지 + (2장 이상이면) 썸네일 strip. 사진 없는 케이스 별도 시각화
   const driveSrc = supportedDriveSource(p);
   const noPhotoHtml = imgs.length === 0
@@ -356,51 +341,9 @@ function openDetail(key) {
   const wrap = document.getElementById('catDetailPage');
   wrap.hidden = false;
   wrap.innerHTML = `
-      <div class="cat-modal-body" style="padding:16px 0;">
+      <div class="cat-modal-body pd-detail" style="padding:16px 0;">
         <div class="cat-section">${photoHtml}</div>
-
-        <div class="cat-section">
-          <div class="cat-section-title"><i class="ph ph-info"></i> 기본정보</div>
-          <div class="cat-info-grid">${renderRows(basicRows)}</div>
-        </div>
-
-        ${specRows.filter(([,v])=>v != null && v !== '').length || opts.length ? `
-        <div class="cat-section">
-          <div class="cat-section-title"><i class="ph ph-car-simple"></i> 제조사 스펙</div>
-          <div class="cat-info-grid">
-            ${renderRows(specRows)}
-            ${opts.length ? `<div class="lab">옵션</div><div class="val full"><div class="cat-chips-wrap">${opts.map(o => `<span class="cat-option-chip">${esc(o)}</span>`).join('')}</div></div>` : ''}
-          </div>
-        </div>` : ''}
-
-        ${priceRows.length ? `
-        <div class="cat-section">
-          <div class="cat-section-title"><i class="ph ph-currency-krw"></i> 기간별 대여료 / 보증금</div>
-          <table class="cat-table">
-            <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
-            <tbody>${priceRows.map(r => `<tr>
-              <td>${r.m}개월</td>
-              <td class="num price-rent">${r.rent ? Math.round(r.rent/10000) + '만' : '-'}</td>
-              <td class="num">${r.dep ? Math.round(r.dep/10000) + '만' : '-'}</td>
-            </tr>`).join('')}</tbody>
-          </table>
-        </div>` : ''}
-
-        ${insRows.length ? `
-        <div class="cat-section">
-          <div class="cat-section-title"><i class="ph ph-shield-check"></i> 보험 정보</div>
-          <table class="cat-table">
-            <thead><tr><th>구분</th><th>보장한도</th><th>자기부담금</th></tr></thead>
-            <tbody>${insRows.map(r => `<tr><td>${esc(r[0])}</td><td>${esc(r[1] || '-')}</td><td>${esc(r[2] || '-')}</td></tr>`).join('')}</tbody>
-          </table>
-        </div>` : ''}
-
-        ${condRows.filter(([,v])=>v != null && v !== '').length ? `
-        <div class="cat-section">
-          <div class="cat-section-title"><i class="ph ph-list-checks"></i> 기타 계약 조건</div>
-          <div class="cat-info-grid">${renderRows(condRows)}</div>
-        </div>` : ''}
-
+        ${renderDetailSections(p, { audience: 'customer', store: { partners: _partners }, policies: _policies })}
       </div>
   `;
 
