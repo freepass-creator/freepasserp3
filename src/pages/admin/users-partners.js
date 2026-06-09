@@ -41,6 +41,12 @@ export function mount(main, subPath) {
               : '<button class="chip is-active" data-f="active">활성</button><button class="chip" data-f="inactive">비활성</button><button class="chip" data-f="pending">대기</button><button class="chip" data-f="all">전체</button>'
             }
           </div>
+          ${mode === 'users' ? `<div class="ws4-search-chips" style="margin-top:var(--sp-1);">
+            <button class="chip is-active" data-rolef="all">전체</button>
+            <button class="chip" data-rolef="provider">공급사</button>
+            <button class="chip" data-rolef="agent">영업사</button>
+            <button class="chip" data-rolef="admin">관리자</button>
+          </div>` : ''}
         </div>
         <div class="ws4-body" id="admList"></div>
       </div>
@@ -67,6 +73,14 @@ export function mount(main, subPath) {
   main.querySelectorAll('.chip[data-f]').forEach(c => {
     c.addEventListener('click', () => {
       main.querySelectorAll('.chip[data-f]').forEach(x => x.classList.remove('is-active'));
+      c.classList.add('is-active');
+      renderList();
+    });
+  });
+  // 역할 필터(공급사/영업사/관리자) — 상태칩과 독립 그룹
+  main.querySelectorAll('.chip[data-rolef]').forEach(c => {
+    c.addEventListener('click', () => {
+      main.querySelectorAll('.chip[data-rolef]').forEach(x => x.classList.remove('is-active'));
       c.classList.add('is-active');
       renderList();
     });
@@ -141,6 +155,14 @@ function renderList() {
     const statusMap = { active: 'active', pending: 'pending', hold: 'rejected', inactive: 'inactive' };
     const target = statusMap[f] || f;
     list = list.filter(item => item.status === target);
+  }
+
+  // 역할 필터 (users 모드) — 공급사(provider) / 영업사(agent+agent_admin) / 관리자(admin)
+  if (mode === 'users') {
+    const rf = document.querySelector('.chip[data-rolef].is-active')?.dataset.rolef || 'all';
+    if (rf !== 'all') {
+      list = list.filter(u => rf === 'agent' ? (u.role === 'agent' || u.role === 'agent_admin') : u.role === rf);
+    }
   }
 
   if (q) {
@@ -272,7 +294,7 @@ function loadUser(key) {
         <div class="form-section-body">
           ${ffi('이름','name',u)}
           ${ffv('이메일', u.email)}
-          ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'},{value:'agent_admin',label:'영업관리자'}])}
+          ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'}])}
           ${ffv('소속코드', u.company_code)}
           ${ffi('소속명','company_name',u)}
           ${ffv('계정코드', u.user_code)}
