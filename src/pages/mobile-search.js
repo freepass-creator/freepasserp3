@@ -11,6 +11,7 @@ import { watchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtMoney, trimMinusSub, mEmpty } from '../core/format.js';
 import { firstProductImage, supportedDriveSource } from '../core/product-photos.js';
+import '../core/drive-photos.js';   // 카드 드라이브 썸네일 lazy 하이드레이션 observer 즉시 시작 (상세 열기 전에도 카드 사진 뜨게)
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
 import { openBottomSheet, openFab, pushMobileView } from '../core/mobile-shell.js';
