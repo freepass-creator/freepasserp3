@@ -1,0 +1,65 @@
+/**
+ * product-detail.css — 상품 상세 캐논 컴포넌트 (영업 데스크톱 · 손님 카탈로그 · 모바일 공용)
+ *
+ * .pd-* 마크업의 단일 스타일. tokens.css 기반 모던 ERP — 엑셀격자 X, 타이포 위계 O.
+ * 자연 차량명 헤더 + 가격 하이라이트(네이비 블록) + 액센트 섹션 + 테두리 없는 조밀 표.
+ * index.html(데스크톱·모바일) + catalog.html(손님) 양쪽 로드. 컨테이너 무관.
+ */
+
+.pd-detail { font-family: var(--font); color: var(--c-text); font-size: var(--fs-sm); line-height: 1.5; }
+
+/* 사진 — 데스크톱 .detail-photo-stage / 모바일·카탈로그 .srch-gallery 래핑 */
+.pd-photo { background: linear-gradient(135deg, var(--c-bg-sub), var(--c-bg-hover)); }
+.pd-photo:empty { display: none; }
+
+/* ── 히어로 (자연 차량명) ── */
+.pd-hero { padding: var(--sp-4) var(--sp-5) var(--sp-3); }
+.pd-name { font-size: var(--fs-lg); font-weight: var(--fw-heavy); letter-spacing: -0.02em; line-height: 1.3; color: var(--c-text); }
+.pd-keyspec { margin-top: 7px; font-size: var(--fs-sm); color: var(--c-text-sub); display: flex; flex-wrap: wrap; gap: 2px 9px; }
+.pd-keyspec b { color: var(--c-text); font-weight: var(--fw-semibold); }
+.pd-meta { margin-top: 10px; display: flex; align-items: center; gap: 7px; }
+.pd-tag { font-size: var(--fs-xs); font-weight: var(--fw-semibold); padding: 2px 9px; border-radius: var(--radius); background: var(--c-ok-bg); color: var(--c-ok); }
+.pd-tag.is-consult { background: var(--c-warn-bg); color: var(--c-warn); }
+.pd-tag.is-contract { background: var(--c-info-bg); color: var(--c-info); }
+.pd-tag.is-blocked  { background: var(--c-err-bg);  color: var(--c-err); }
+.pd-carno { font-size: var(--fs-xs); color: var(--c-text-muted); }
+
+/* ── 가격 하이라이트 — 최상위 위계 (네이비 블록) ── */
+.pd-lead { display: flex; align-items: flex-end; gap: 10px; margin: 0 var(--sp-5) 4px; padding: var(--sp-4) var(--sp-4); background: var(--c-accent); border-radius: 8px; color: #fff; }
+.pd-lead .lab { font-size: var(--fs-xs); color: rgba(255,255,255,.7); font-weight: var(--fw-semibold); margin-bottom: 2px; }
+.pd-lead .amt { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.pd-lead .unit { font-size: var(--fs-sm); color: rgba(255,255,255,.85); margin-left: -3px; }
+.pd-lead .dep { margin-left: auto; text-align: right; font-size: var(--fs-xs); color: rgba(255,255,255,.7); }
+.pd-lead .dep b { display: block; font-size: var(--fs-md); color: #fff; font-weight: var(--fw-heavy); margin-top: 1px; }
+
+/* ── 섹션 ── */
+.pd-sec { padding: var(--sp-5) var(--sp-5) var(--sp-2); }
+.pd-sec-h { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-sm); font-weight: var(--fw-heavy); color: var(--c-text-muted); letter-spacing: .03em; margin-bottom: var(--sp-3); }
+.pd-sec-h .bar { width: 3px; height: 12px; background: var(--c-accent); border-radius: 2px; }
+.pd-sec-h .hint { margin-left: auto; font-size: var(--fs-xs); font-weight: var(--fw-medium); letter-spacing: 0; color: var(--c-text-muted); }
+.pd-sec.is-fee { background: var(--c-warn-bg); margin-top: var(--sp-2); }
+.pd-sec.is-fee .pd-sec-h .bar { background: var(--c-warn); }
+
+/* ── 차량정보·대여조건 — 엑셀격자 X, 2열 spec (라벨 muted/값 강조) ── */
+.pd-spec { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+.pd-kv { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--c-border-soft); }
+.pd-kv .k { font-size: var(--fs-xs); color: var(--c-text-muted); font-weight: var(--fw-medium); flex-shrink: 0; }
+.pd-kv .v { font-size: var(--fs-base); color: var(--c-text); font-weight: var(--fw-semibold); text-align: right; word-break: break-word; }
+.pd-kv.full { grid-column: 1 / -1; }
+.pd-chip { display: inline-block; background: var(--c-bg-sub); color: var(--c-text-sub); font-size: var(--fs-xs); padding: 1px 8px; border-radius: var(--radius); margin: 1px 0 1px 4px; }
+
+/* ── 대여료·보험 표 — 같은 family, 테두리 없이 행 구분. 대여료(rent)만 강조 ── */
+.pd-tbl { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.pd-tbl th, .pd-tbl td { padding: 8px 4px; text-align: right; border-bottom: 1px solid var(--c-border-soft); }
+.pd-tbl th:first-child, .pd-tbl td:first-child { text-align: left; }
+.pd-tbl thead th { font-size: var(--fs-xs); color: var(--c-text-muted); font-weight: var(--fw-semibold); border-bottom: 1px solid var(--c-border); }
+.pd-tbl tbody td { font-size: var(--fs-sm); color: var(--c-text); }
+.pd-tbl tbody td:first-child { color: var(--c-text-sub); font-weight: var(--fw-semibold); }
+.pd-tbl tbody tr:last-child td { border-bottom: 0; }
+.pd-tbl tbody tr.best td { background: var(--c-accent-soft); }
+.pd-rent { font-size: var(--fs-md); font-weight: 800; color: var(--c-accent); letter-spacing: -0.02em; }
+.pd-sec.is-fee .pd-rent { color: var(--c-warn); }
+.pd-best-tag { display: inline-block; font-size: 9px; font-weight: var(--fw-heavy); color: var(--c-accent); background: #fff; border: 1px solid var(--c-accent); border-radius: 3px; padding: 0 4px; margin-left: 5px; vertical-align: middle; }
+.pd-ins-sub { color: var(--c-text-muted); font-size: var(--fs-xs); }
+
+.pd-empty { font-size: var(--fs-xs); color: var(--c-text-muted); padding: var(--sp-3) 0; text-align: center; }
