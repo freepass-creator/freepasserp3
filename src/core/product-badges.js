@@ -58,6 +58,12 @@ function normalizeCreditGrade(raw) {
   return s;
 }
 
+/* ── 심사기준 정규화 라벨 (뱃지 X — 플레인 텍스트용) ── */
+export function creditGradeLabel(product) {
+  const raw = product?._policy?.screening_criteria || product?._policy?.credit_grade || product?.screening_criteria || product?.credit_grade || '';
+  return normalizeCreditGrade(raw);
+}
+
 /* ── 심사기준 뱃지 (정책의 credit_grade / screening_criteria) ── */
 export function creditGradeBadge(product) {
   const raw = product?._policy?.screening_criteria || product?._policy?.credit_grade || product?.screening_criteria || product?.credit_grade || '';

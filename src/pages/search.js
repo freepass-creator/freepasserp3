@@ -24,7 +24,7 @@ import {
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { findCatalog } from '../core/vehicle-matrix.js';
 import { FILTERS, matchFilter } from '../core/product-filters.js';
-import { creditGradeBadge } from '../core/product-badges.js';
+import { creditGradeLabel } from '../core/product-badges.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
 let _onCreateRoom = null;
@@ -106,13 +106,13 @@ export function calibrateSearchCols(products) {
     p => fmtMileage(p.mileage),
     p => p.fuel_type,
     p => p.ext_color,
-    p => (p._policy && (p._policy.credit_grade || p._policy.screening_criteria)) || p.credit_grade,
+    p => creditGradeLabel(p),   // 표시되는 정규화 라벨(신용무관 등) 기준으로 폭 계산 — raw보다 길 수 있음
   ];
   const HEADER_LABELS = ['차량번호','상태','구분','제조사','모델명','세부모델','파워트레인','세부트림','선택옵션','연식','주행','연료','색상','심사'];
   const HAS_FILTER = [false, true, true, true, true, true, true, true, true, true, true, true, true, true];
   const STATUS_DOT = 10;
   // 차량번호(idx 0): max 포맷 "000가0000" (7 ASCII + 1 한글) bold = ~64px + padding 16 → 80px 면 충분
-  const MIN_WIDTHS = [80, 72, 44, 44, 56, 60, 70, 56, 80, 40, 48, 48, 40, 44];
+  const MIN_WIDTHS = [80, 72, 44, 44, 56, 60, 70, 56, 80, 40, 48, 48, 40, 64];   // 심사(idx13) "신용무관" 한 줄 — 64
   // 공급사 컬럼은 마지막에 100px 고정 (한글 회사명 4-7자 fit)
 
   const widths = getters.map((get, idx) => {
@@ -169,7 +169,7 @@ function renderSearchRow(p) {
   const status = p.vehicle_status || '대기';
   const stFull = normalizeVehicleStatus(status);   // 5종 풀 라벨
   const credit = (p._policy && (p._policy.screening_criteria || p._policy.credit_grade)) || p.screening_criteria || p.credit_grade || '-';
-  const creditBadge = creditGradeBadge(p) || '<span class="dim">-</span>';
+  const creditTxt = creditGradeLabel(p);   // 뱃지 X — 플레인 텍스트 (한 줄)
   const optsArr = Array.isArray(p.options)
     ? p.options
     : (p.options ? String(p.options).split(/[,/]+/).map(s => s.trim()).filter(Boolean) : []);   // 콤마·슬래시만
@@ -200,7 +200,7 @@ function renderSearchRow(p) {
       <td class="center col-tight" title="${esc(p.fuel_type || '')}">${fuelB}</td>
       <td class="center col-tight" title="${esc(p.ext_color || '')}">${colorBadge(p.ext_color)}</td>
       <td class="center col-tight" title="${esc(p.int_color || '')}">${colorBadge(p.int_color)}</td>
-      <td class="center" title="${esc(credit)}">${creditBadge}</td>
+      <td class="center" title="${esc(credit)}" style="white-space:nowrap;">${creditTxt ? esc(creditTxt) : '<span class="dim">-</span>'}</td>
       <td class="num" data-period="1m">${fmtPricePair(p.price?.['1'])}</td>
       <td class="num" data-period="12m">${fmtPricePair(p.price?.['12'])}</td>
       <td class="num" data-period="24m">${fmtPricePair(p.price?.['24'])}</td>
