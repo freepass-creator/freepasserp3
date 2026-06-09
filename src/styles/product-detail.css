@@ -14,7 +14,7 @@
 
 /* ── 히어로 (자연 차량명) ── */
 .pd-hero { padding: var(--sp-4) var(--sp-5) var(--sp-3); border-bottom: 1px solid var(--c-border); }
-.pd-name { font-size: var(--fs-lg); font-weight: var(--fw-heavy); letter-spacing: -0.01em; line-height: 1.3; color: var(--c-text); }
+.pd-name { font-size: var(--fs-base); font-weight: var(--fw-heavy); letter-spacing: -0.01em; line-height: 1.35; color: var(--c-text); }
 .pd-keyspec { margin-top: 6px; font-size: var(--fs-sm); color: var(--c-text-sub); display: flex; flex-wrap: wrap; gap: 2px 9px; }
 .pd-keyspec b { color: var(--c-text); font-weight: var(--fw-semibold); }
 .pd-meta { margin-top: var(--sp-2); display: flex; align-items: center; gap: 7px; }
@@ -44,8 +44,8 @@
 /* ── 차량정보·대여조건 — 엑셀격자 X, 2열 spec (라벨 muted/값 강조) ── */
 .pd-spec { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
 .pd-kv { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--c-border-soft); }
-.pd-kv .k { font-size: var(--fs-xs); color: var(--c-text-muted); font-weight: var(--fw-medium); flex-shrink: 0; }
-.pd-kv .v { font-size: var(--fs-base); color: var(--c-text); font-weight: var(--fw-semibold); text-align: right; word-break: break-word; }
+.pd-kv .k { font-size: var(--fs-sm); color: var(--c-text-muted); font-weight: var(--fw-normal); flex-shrink: 0; }
+.pd-kv .v { font-size: var(--fs-sm); color: var(--c-text); font-weight: var(--fw-semibold); text-align: right; word-break: break-word; }
 .pd-kv.full { grid-column: 1 / -1; }
 .pd-chip { display: inline-block; background: var(--c-bg-sub); border: 1px solid var(--c-border-soft); color: var(--c-text-sub); font-size: var(--fs-xs); padding: 1px 7px; border-radius: var(--radius); margin: 1px 0 1px 4px; }
 
@@ -53,15 +53,15 @@
 .pd-tbl { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .pd-tbl th, .pd-tbl td { padding: 7px 4px; text-align: right; border-bottom: 1px solid var(--c-border-soft); }
 .pd-tbl th:first-child, .pd-tbl td:first-child { text-align: left; }
-.pd-tbl thead th { font-size: var(--fs-xs); color: var(--c-text-muted); font-weight: var(--fw-semibold); border-bottom: 1px solid var(--c-border); }
+.pd-tbl thead th { font-size: var(--fs-sm); color: var(--c-text-muted); font-weight: var(--fw-normal); border-bottom: 1px solid var(--c-border); }
 .pd-tbl tbody td { font-size: var(--fs-sm); color: var(--c-text); }
 .pd-tbl tbody td:first-child { color: var(--c-text-sub); font-weight: var(--fw-semibold); }
 .pd-tbl tbody tr:last-child td { border-bottom: 0; }
 .pd-tbl tbody tr.best td { background: var(--c-bg-sub); }
 .pd-tbl td:first-child, .pd-tbl th, .pd-tbl .pd-rent { white-space: nowrap; }
-.pd-rent { font-size: var(--fs-md); font-weight: var(--fw-heavy); color: var(--c-accent); letter-spacing: -0.01em; }
+.pd-rent { font-size: var(--fs-sm); font-weight: var(--fw-heavy); color: var(--c-accent); }
 .pd-sec.is-fee .pd-rent { color: var(--c-text); }
-.pd-best-tag { display: inline-block; font-size: var(--fs-2xs); font-weight: var(--fw-heavy); color: var(--c-accent); border: 1px solid var(--c-accent); border-radius: var(--radius); padding: 0 4px; margin-left: 5px; vertical-align: middle; }
+.pd-best-tag { display: inline-block; font-size: var(--fs-xs); font-weight: var(--fw-heavy); color: var(--c-accent); border: 1px solid var(--c-accent); border-radius: var(--radius); padding: 0 4px; margin-left: 5px; vertical-align: middle; }
 .pd-ins-sub { color: var(--c-text-muted); font-size: var(--fs-xs); }
 
 .pd-empty { font-size: var(--fs-xs); color: var(--c-text-muted); padding: var(--sp-3) 0; text-align: center; }
