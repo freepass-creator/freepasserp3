@@ -689,12 +689,7 @@ export function renderSearchDetail(p, targetCard, options = {}) {
       ${cheapest.dep ? `<div class="dep">보증금<b>${fmtMoneyMan(cheapest.dep)}원</b></div>` : ''}
     </div>` : ''}
 
-    <div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>차량정보</div>
-      ${infoHtml ? `<div class="pd-spec">${infoHtml}</div>` : `<div class="pd-empty">정보 없음</div>`}
-    </div>
-
-    <!-- 기간별 대여료 -->
+    <!-- 기간별 대여료 (가격 하이라이트 바로 뒤 — 대여료 정보 한 곳에) -->
     <div class="pd-sec">
       <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
       ${priceRows.length ? `
@@ -709,6 +704,11 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         const parts = [age, mileage, insurance].filter(Boolean);
         return parts.length ? `<div class="pd-ins-sub" style="margin-top:6px;text-align:right;">* ${esc(parts.join(' · '))} 기준</div>` : '';
       })()}` : `<div class="pd-empty">가격 미입력</div>`}
+    </div>
+
+    <div class="pd-sec">
+      <div class="pd-sec-h"><span class="bar"></span>차량정보</div>
+      ${infoHtml ? `<div class="pd-spec">${infoHtml}</div>` : `<div class="pd-empty">정보 없음</div>`}
     </div>
 
     <!-- 운전자 연령·범위 → 대여조건에 통합 -->

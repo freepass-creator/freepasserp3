@@ -27,8 +27,8 @@
 /* ── 가격 하이라이트 — 최상위 위계 (네이비 블록) ── */
 .pd-lead { display: flex; align-items: flex-end; gap: 10px; margin: 0 var(--sp-5) 4px; padding: var(--sp-4) var(--sp-4); background: var(--c-accent); border-radius: 8px; color: #fff; }
 .pd-lead .lab { font-size: var(--fs-xs); color: rgba(255,255,255,.7); font-weight: var(--fw-semibold); margin-bottom: 2px; }
-.pd-lead .amt { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
-.pd-lead .unit { font-size: var(--fs-sm); color: rgba(255,255,255,.85); margin-left: -3px; }
+.pd-lead .amt { font-size: var(--fs-2xl); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+.pd-lead .unit { font-size: var(--fs-sm); color: rgba(255,255,255,.85); margin-left: 2px; }
 .pd-lead .dep { margin-left: auto; text-align: right; font-size: var(--fs-xs); color: rgba(255,255,255,.7); }
 .pd-lead .dep b { display: block; font-size: var(--fs-md); color: #fff; font-weight: var(--fw-heavy); margin-top: 1px; }
 
@@ -57,6 +57,7 @@
 .pd-tbl tbody td:first-child { color: var(--c-text-sub); font-weight: var(--fw-semibold); }
 .pd-tbl tbody tr:last-child td { border-bottom: 0; }
 .pd-tbl tbody tr.best td { background: var(--c-accent-soft); }
+.pd-tbl td:first-child, .pd-tbl th, .pd-tbl .pd-rent { white-space: nowrap; }   /* 기간·헤더·대여료 줄바꿈 방지 */
 .pd-rent { font-size: var(--fs-md); font-weight: 800; color: var(--c-accent); letter-spacing: -0.02em; }
 .pd-sec.is-fee .pd-rent { color: var(--c-warn); }
 .pd-best-tag { display: inline-block; font-size: 9px; font-weight: var(--fw-heavy); color: var(--c-accent); background: #fff; border: 1px solid var(--c-accent); border-radius: 3px; padding: 0 4px; margin-left: 5px; vertical-align: middle; }
