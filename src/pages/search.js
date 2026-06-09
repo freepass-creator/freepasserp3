@@ -15,7 +15,7 @@
 import { store, findProduct } from '../core/store.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from '../core/product-photos.js';
 import { extractProductDetailRows } from '../core/product-detail-rows.js';
-import { composeVehicleName } from '../core/product-detail-render.js';
+import { composeVehicleName, renderDetailSections } from '../core/product-detail-render.js';
 import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichProductsWithPolicy } from '../core/excel-export.js';
 import { showToast } from '../core/toast.js';
 import {
@@ -583,16 +583,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     });
   }
 
-  // 6섹션 row 데이터 — 공통 헬퍼
-  const rows = extractProductDetailRows(p, { canSeeFee, isAdmin, policies: store.policies });
-  const specRows  = rows.spec;
-  const insRows   = rows.ins;
-  const condRows  = rows.cond;
-  const adminRows = rows.etc;
-  const priceRows = rows.price;
-  const feeRows   = rows.fee;
-  const opts      = rows.options;
-
   const photoHtml = imgs.length ? `
     <div class="detail-photo-stage">
       <img class="detail-photo-main" id="dtlMainImg" src="${esc(imgs[0])}" alt="" loading="lazy"
@@ -616,108 +606,11 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     ${driveSrc ? `<div style="padding:8px; text-align:center; color:var(--text-muted); font-size:12px;">사진 불러오는 중...</div>` : ''}
   `;
 
-  const specByLabel = Object.fromEntries(specRows.map(r => [r[0], r[1]]));
-  const condByLabel = Object.fromEntries(condRows.map(r => [r[0], r[1]]));
-  // 매물 상세의 공급사 row — "회사명 (코드)" 같이 표시 (사용자 요청 — 코드 유지 + 회사명 노출)
-  const providerName = providerLabelByCode(p.provider_company_code || p.partner_code, store) || '';
-
-  // ── 캐논 구성 (엑셀 탈피: 자연 차량명 + 가격 하이라이트 + 위계 섹션) ──
-  const vehName = composeVehicleName(p);
-  // 정보 없어도 항목은 다 노출 — 빈 값은 '-' (전체 필드 구성)
-  const kv = (l, v) => `<div class="pd-kv"><span class="k">${esc(l)}</span><span class="v">${(v != null && String(v).trim() && String(v).trim() !== '-') ? esc(v) : '-'}</span></div>`;
-  const cheapest = priceRows.length ? priceRows.reduce((a, b) => (b.rent < a.rent ? b : a), priceRows[0]) : null;
-  const st = p.vehicle_status || '';
-  const stCls = /협의/.test(st) ? 'is-consult' : /계약|예약/.test(st) ? 'is-contract' : /불가/.test(st) ? 'is-blocked' : '';
-  // 차량정보 — 5단계(제조사~세부트림)는 히어로 차량명에 있으니 중복 제외. 선택옵션 → 색상 → 연식·주행·연료 → 부가.
-  const infoOrder = [
-    ['외부색상', specByLabel['외장색']],
-    ['내부색상', specByLabel['내장색']],
-    ['연식',     specByLabel['연식']],
-    ['주행거리', specByLabel['주행']],
-    ['연료',     specByLabel['연료']],
-    ['구동방식', specByLabel['구동']],
-    ['배기량',   specByLabel['배기량']],
-    ['인승',     specByLabel['인승']],
-    ['차종',     specByLabel['차종']],
-    ['용도',     specByLabel['용도']],
-    ['최초등록', specByLabel['최초등록일']],
-  ];
-  const infoHtml = `<div class="pd-kv full"><span class="k">선택옵션</span><span class="v">${opts.length ? opts.map(o => `<span class="pd-chip">${esc(o)}</span>`).join('') : '-'}</span></div>`
-    + infoOrder.map(([l, v]) => kv(l, v)).join('');
-  const condHtml = condRows.map(([l, v]) => kv(l, v)).join('');
-  const etcHtml = [
-    providerName ? kv('공급사', providerName) : '',
-    (policyName && !isAdmin) ? kv('정책명', policyName) : '',   // admin 은 adminRows 에 정책명 포함 (중복 방지)
-    ...specRows.filter(([l]) => ['차령만료일', '차량가격', '차대번호', '위치'].includes(l)).map(([l, v]) => kv(l, v)),
-    ...adminRows.map(([l, v]) => kv(l, v)),
-  ].join('');
-
   const body = card.querySelector('.ws4-body');
   body.innerHTML = `
     <div class="pd-photo">${photoHtml}</div>
 
-    <!-- 차량정보 = 섹션타이틀 + 차량 식별(번호·뱃지·차량명) + 스펙. 5단계는 차량명에 있어 중복 행 없음. -->
-    <div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>차량정보</div>
-      <div class="pd-meta" style="margin:0 0 4px;">
-        ${p.car_number ? `<span class="pd-carno" style="font-size:var(--fs-base);font-weight:var(--fw-heavy);color:var(--c-text);">${esc(p.car_number)}</span>` : ''}
-        ${p.product_type ? `<span class="pd-tag is-type">${esc(p.product_type)}</span>` : ''}
-        ${st ? `<span class="pd-tag ${stCls}">${esc(st)}</span>` : ''}
-      </div>
-      <div class="pd-name">${esc(vehName) || '-'}</div>
-      <div class="pd-spec" style="margin-top:var(--sp-3); border-top:1px solid var(--c-border-soft); padding-top:var(--sp-3);">${infoHtml}</div>
-    </div>
-
-    <!-- 대여료 관련 (별도 가격 하이라이트 블록 제거 — 기간별 표에 최저 강조) -->
-    <div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
-      ${priceRows.length ? `
-      <table class="pd-tbl">
-        <thead><tr><th>기간</th><th>월 대여료</th><th>보증금</th></tr></thead>
-        <tbody>${priceRows.map(r => `<tr class="${cheapest && r.m === cheapest.m ? 'best' : ''}"><td>${r.m}개월${cheapest && r.m === cheapest.m ? '<span class="pd-best-tag">최저</span>' : ''}</td><td><span class="pd-rent">${fmtMoneyMan(r.rent)}</span></td><td>${fmtMoneyMan(r.dep) || '-'}</td></tr>`).join('')}</tbody>
-      </table>
-      ${(() => {
-        const age = condByLabel['기본연령'];
-        const mileage = String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, '');
-        const insurance = condByLabel['보험 포함'];
-        const parts = [age, mileage, insurance].filter(Boolean);
-        return parts.length ? `<div class="pd-ins-sub" style="margin-top:6px;text-align:right;">* ${esc(parts.join(' · '))} 기준</div>` : '';
-      })()}` : `<div class="pd-empty">가격 미입력</div>`}
-    </div>
-
-    <!-- 운전자 연령·범위 → 대여조건에 통합 -->
-
-    <!-- 보험 -->
-    <div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>보험</div>
-      ${insRows.length ? `
-      <table class="pd-tbl">
-        <thead><tr><th>항목</th><th>한도</th><th>면책금</th></tr></thead>
-        <tbody>${insRows.map(([l, lim, ded]) => `<tr><td>${esc(l)}</td><td>${esc(lim) || '-'}</td><td>${esc(ded) || '-'}</td></tr>`).join('')}</tbody>
-      </table>` : `<div class="pd-empty">보험 정보 없음</div>`}
-    </div>
-
-    <!-- 대여조건 (운전자 연령·범위 통합) -->
-    <div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>대여조건${policyName ? ` <span class="hint">${esc(policyName)}</span>` : ''}</div>
-      ${condHtml ? `<div class="pd-spec">${condHtml}</div>` : `<div class="pd-empty">조건 정보 없음</div>`}
-    </div>
-
-    <!-- 기타 정보 -->
-    ${etcHtml ? `<div class="pd-sec">
-      <div class="pd-sec-h"><span class="bar"></span>기타 정보</div>
-      <div class="pd-spec">${etcHtml}</div>
-    </div>` : ''}
-
-    <!-- 수수료 (영업자/관리자만) -->
-    ${canSeeFee ? `<div class="pd-sec is-fee">
-      <div class="pd-sec-h"><span class="bar"></span>수수료 <span class="hint">내부용</span></div>
-      ${feeRows.length ? `
-      <table class="pd-tbl">
-        <thead><tr><th>기간</th><th>수수료</th><th>비고</th></tr></thead>
-        <tbody>${feeRows.map(r => `<tr><td>${r.m}개월</td><td><span class="pd-rent">${fmtMoneyMan(r.fee)}</span></td><td class="pd-ins-sub">${esc(r.fee_memo || '')}</td></tr>`).join('')}</tbody>
-      </table>` : `<div class="pd-empty">등록된 수수료 없음</div>`}
-    </div>` : ''}
+    ${renderDetailSections(p, {})}
   `;
   // 새 차량 선택 시 항상 사진부터 보이게 — 스크롤 맨 위로
   body.scrollTop = 0;
