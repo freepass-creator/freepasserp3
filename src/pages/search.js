@@ -649,13 +649,6 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   const vehName = composeVehicleName(p);
   // 정보 없어도 항목은 다 노출 — 빈 값은 '-' (전체 필드 구성)
   const kv = (l, v) => `<div class="pd-kv"><span class="k">${esc(l)}</span><span class="v">${(v != null && String(v).trim() && String(v).trim() !== '-') ? esc(v) : '-'}</span></div>`;
-  const keyspec = [
-    specByLabel['연식'] && `<span><b>${esc(specByLabel['연식'])}</b></span>`,
-    specByLabel['주행'] && `<span><b>${esc(String(specByLabel['주행']).replace(/\s*km$/i, ''))}</b>km</span>`,
-    specByLabel['연료'] && `<span>${esc(specByLabel['연료'])}</span>`,
-    specByLabel['외장색'] && `<span>${esc(specByLabel['외장색'])}</span>`,
-    specByLabel['인승'] && `<span>${esc(specByLabel['인승'])}</span>`,
-  ].filter(Boolean).join('');
   const cheapest = priceRows.length ? priceRows.reduce((a, b) => (b.rent < a.rent ? b : a), priceRows[0]) : null;
   const st = p.vehicle_status || '';
   const stCls = /협의/.test(st) ? 'is-consult' : /계약|예약/.test(st) ? 'is-contract' : /불가/.test(st) ? 'is-blocked' : '';
@@ -675,12 +668,11 @@ export function renderSearchDetail(p, targetCard, options = {}) {
     <div class="pd-photo">${photoHtml}</div>
 
     <div class="pd-hero">
-      <div class="pd-name">${esc(vehName) || '-'}</div>
-      ${keyspec ? `<div class="pd-keyspec">${keyspec}</div>` : ''}
-      <div class="pd-meta">
+      <div class="pd-meta" style="margin:0 0 4px;">
+        ${p.car_number ? `<span class="pd-carno" style="font-weight:var(--fw-heavy);color:var(--c-text);">${esc(p.car_number)}</span>` : ''}
         ${st ? `<span class="pd-tag ${stCls}">${esc(st)}</span>` : ''}
-        ${p.car_number ? `<span class="pd-carno">${esc(p.car_number)}</span>` : ''}
       </div>
+      <div class="pd-name">${esc(vehName) || '-'}</div>
     </div>
 
     <!-- 차량정보 먼저 (차를 보고) -->
