@@ -44,7 +44,8 @@ export function extractProductDetailRows(p, options = {}) {
 
   // 2. 제조사 스펙 (손님 노출 안전 항목만 — 관리자 전용은 isAdmin 게이팅)
   const spec = [
-    ['트림',       p.trim_name || p.trim],
+    ['파워트레인', p.variant],                    // 5단계 — 연료·배기량·구동·배터리
+    ['세부트림',   p.trim_name || p.trim],
     ['연식',       p.year],
     ['외장색',     p.ext_color],
     ['내장색',     p.int_color],
@@ -66,14 +67,21 @@ export function extractProductDetailRows(p, options = {}) {
     ] : []),
   ];
 
-  // 3. 보험 정보 — 3-tuple [구분, 한도, 면책금]
+  // 3. 보험 정보 — 3-tuple [구분, 한도, 면책금]. 필드명은 정책 폼(policy.js) 저장명 우선 + 레거시 fallback.
+  //   자차 면책 = 수리율 + 최소~최대 범위 합성 (예 "20% · 50만원~100만원").
+  const ownDed = (() => {
+    const ratio = pol.own_damage_repair_ratio || pol.own_damage_compensation_rate;
+    const lo = pol.own_damage_min_deductible, hi = pol.own_damage_max_deductible;
+    const range = (lo && hi) ? `${lo}~${hi}` : (lo || hi || '');
+    return [ratio, range].filter(Boolean).join(' · ');
+  })();
   const ins = [
-    ['대인',     pol.injury_compensation_limit,          pol.injury_deductible],
-    ['대물',     pol.property_compensation_limit,        pol.property_deductible],
-    ['자손사고', pol.personal_injury_compensation_limit, pol.personal_injury_deductible],
-    ['무보험상해', pol.uninsured_compensation_limit,     pol.uninsured_deductible],
-    ['자차손해', pol.own_damage_compensation,            pol.own_damage_min_deductible],
-    ['긴급출동', pol.roadside_assistance, ''],
+    ['대인',       pol.injury_compensation_limit,                              pol.injury_deductible],
+    ['대물',       pol.property_compensation_limit,                            pol.property_deductible],
+    ['자손사고',   pol.self_body_accident || pol.personal_injury_compensation_limit, pol.self_body_deductible || pol.personal_injury_deductible],
+    ['무보험상해', pol.uninsured_damage || pol.uninsured_compensation_limit,    pol.uninsured_deductible],
+    ['자차손해',   pol.own_damage_compensation,                                ownDed],
+    ['긴급출동',   pol.annual_roadside_assistance || pol.roadside_assistance,  ''],
   ].filter(r => r[1] || r[2]);
 
   // 4. 기타 계약 조건

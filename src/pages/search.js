@@ -656,7 +656,8 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         ${pair('차량상태', basicByLabel['차량상태'] || p.vehicle_status, '상품구분', specByLabel['상품구분'] || p.product_type)}
         ${pair('제조사', basicByLabel['제조사'], '모델명', basicByLabel['모델'])}
         <div class="lab">세부모델</div><div class="full">${esc(basicByLabel['세부모델'] || '-')}</div>
-        <div class="lab">세부트림</div><div class="full">${esc(specByLabel['트림'] || '-')}</div>
+        <div class="lab">파워트레인</div><div class="full">${esc(specByLabel['파워트레인'] || '-')}</div>
+        <div class="lab">세부트림</div><div class="full">${esc(specByLabel['세부트림'] || '-')}</div>
         <div class="lab">선택옵션</div><div class="full ${opts.length ? 'chips-wrap' : ''}">${opts.length ? opts.map(o => `<span class="chip">${esc(o)}</span>`).join('') : '-'}</div>
         ${pair('연식', specByLabel['연식'], '주행거리', specByLabel['주행'])}
         ${pair('연료', specByLabel['연료'], '구동방식', specByLabel['구동'])}
