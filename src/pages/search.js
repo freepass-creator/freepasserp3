@@ -432,11 +432,17 @@ export async function searchActionShare(p) {
   const car = p.car_number || '';
   const title = `${car} ${p.sub_model || p.model || ''}`.trim() || '차량';
   const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
+  // 미리보기 설명용 요약 — 연식 · 주행 · 연료 · 최저 월대여료
+  const km = p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '';
+  const rents = Object.values(p.price || {}).map(v => Number(v?.rent || 0)).filter(r => r > 0);
+  const rentTxt = rents.length ? `월 ${Math.round(Math.min(...rents) / 10000)}만~` : '';
+  const d = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
   const qs = new URLSearchParams();
   if (me.user_code) qs.set('a', me.user_code);
   if (p._key) qs.set('id', p._key);
   else if (car) qs.set('car', car);
   if (title) qs.set('t', title);
+  if (d) qs.set('d', d);
   if (firstImg) qs.set('img', firstImg);
   const url = `${location.origin}/catalog.html?${qs.toString()}`;
   try {

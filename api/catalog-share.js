@@ -63,15 +63,16 @@ export default async function handler(req, res) {
 
     let html = loadTemplate();
 
-    // og:title / title 교체 (title 이 있을 때만)
+    // og:title / title / og:description 교체 (title=차량번호+차량명 이 있을 때만).
+    //   설명도 "장기렌트 상품 안내" 대신 차량번호·차량명(+d 요약)으로 — 카톡 미리보기에 차량 같이 노출.
     if (title) {
       const t = escAttr(title);
+      const desc = String(req.query.d || '').trim();
+      const d = escAttr(desc ? `${title} · ${desc}` : title);
       html = html
         .replace(/<title>[\s\S]*?<\/title>/i, `<title>${t}</title>`)
-        .replace(
-          /<meta\s+property="og:title"[^>]*>/i,
-          `<meta property="og:title" content="${t}">`
-        );
+        .replace(/<meta\s+property="og:title"[^>]*>/i, `<meta property="og:title" content="${t}">`)
+        .replace(/<meta\s+property="og:description"[^>]*>/i, `<meta property="og:description" content="${d}">`);
     }
 
     // og:image 주입 (없으면 추가)
