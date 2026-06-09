@@ -456,6 +456,20 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
     product.price[m] = { rent: r, deposit: dep };
   }
+  // ── 대여료 이상치 방어 (엑셀 오입력 당겨올 때) ──
+  //  ① 상한: 월 대여료 2천만원 초과 = 비현실적(자릿수 오타 등) → 제거
+  //  ② 역전: 짧은 기간이 더 긴 기간보다 쌈(단기<장기는 불가능) → 짧은 쪽이 잘못된 값 → 제거
+  for (const k of Object.keys(product.price)) {
+    if (product.price[k].rent > 20000000) { console.warn(`[sync] ${carNumber} ${k}개월 대여료 ${product.price[k].rent} 상한초과 제거`); delete product.price[k]; }
+  }
+  const _terms = Object.keys(product.price).map(Number).sort((a, b) => a - b);
+  for (let i = 0; i < _terms.length; i++) {
+    const k = String(_terms[i]);
+    const r = product.price[k]?.rent;
+    if (r == null) continue;
+    const inverted = _terms.slice(i + 1).some(m2 => (product.price[String(m2)]?.rent || 0) > r * 1.05);
+    if (inverted) { console.warn(`[sync] ${carNumber} ${k}개월 대여료 ${r} 역전(장기보다 쌈) 제거`); delete product.price[k]; }
+  }
 
   // uid — partner_code + 차량번호 기반 (멱등)
   const uidSeed = `${partnerCode}_${carNumber}`;
