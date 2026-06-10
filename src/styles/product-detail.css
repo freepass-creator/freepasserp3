@@ -54,3 +54,27 @@
 .pd-ins-sub { color: var(--c-text-muted); font-size: var(--fs-xs); }
 
 .pd-empty { font-size: var(--fs-xs); color: var(--c-text-muted); padding: var(--sp-3) 0; text-align: center; }
+
+/* ── 하단 틀고정 액션바 (영업 데스크톱 상세) — 소통·공유·계약. 본문 스크롤해도 하단 고정 ── */
+.pd-actionbar {
+  position: sticky; bottom: 0; z-index: 2;
+  display: flex; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5);
+  margin-top: var(--sp-3);
+  background: var(--c-bg-page, #fff);
+  border-top: 1px solid var(--c-border);
+}
+.pd-act {
+  flex: 1;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  height: 30px;
+  font-size: var(--fs-sm); font-weight: var(--fw-semibold);
+  color: var(--c-text-sub);
+  background: var(--c-bg-sub);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+.pd-act:hover { background: var(--c-bg-zebra); color: var(--c-text); }
+.pd-act.is-primary { background: var(--c-accent); border-color: var(--c-accent); color: #fff; }
+.pd-act.is-primary:hover { background: #0F1B35; }

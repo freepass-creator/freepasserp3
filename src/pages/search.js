@@ -551,16 +551,11 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <button class="pt-sb-toggle" id="detailClose" title="상세 패널 접기"><i class="ph ph-caret-right"></i></button>
         <span style="color: var(--text-main);">${esc(p.car_number || '-')}</span>
         <span class="text-sub">${esc([p.maker, p.model, p.sub_model].filter(Boolean).join(' '))}</span>
-        <button class="ws4-head-share" id="detailShare" title="카탈로그 공유 링크 복사" aria-label="공유" style="margin-left:auto;"><i class="ph ph-share-network"></i></button>
         <button class="ws4-head-close" id="detailCloseX" title="상세 패널 닫기" aria-label="닫기"><i class="ph ph-x"></i></button>
       `;
       const toggleCollapse = () => document.querySelector('[data-page="search"] .ws4')?.classList.toggle('is-collapsed');
       head.querySelector('#detailClose')?.addEventListener('click', toggleCollapse);
       head.querySelector('#detailCloseX')?.addEventListener('click', toggleCollapse);
-      head.querySelector('#detailShare')?.addEventListener('click', () => searchActionShare(p));   // 매물 공유 — 헤드에서 바로
-      // 하단바 액션 — 더 이상 패널 footer 에 박지 않음. 전역 하단 액션바(setPageActions) 사용.
-      const foot = card.querySelector('.ws4-foot[data-foot="search-detail"]');
-      if (foot) foot.innerHTML = '';
     }
   }
 
@@ -601,13 +596,25 @@ export function renderSearchDetail(p, targetCard, options = {}) {
   `;
 
   const body = card.querySelector('.ws4-body');
+  const dRole = store.currentUser?.role;
+  const dIsAgent = dRole === 'agent' || dRole === 'agent_admin' || dRole === 'admin';
   body.innerHTML = `
     <div class="pd-photo">${photoHtml}</div>
 
     ${renderDetailSections(p, {})}
+
+    <div class="pd-actionbar">
+      ${dIsAgent ? `<button class="pd-act" id="actChat" title="이 차량으로 채팅방 생성"><i class="ph ph-chat-circle"></i> 소통</button>` : ''}
+      <button class="pd-act" id="actShare" title="카탈로그 공유 링크 복사"><i class="ph ph-share-network"></i> 공유</button>
+      ${dIsAgent ? `<button class="pd-act is-primary" id="actContract" title="이 차량으로 가계약 생성"><i class="ph ph-file-text"></i> 계약</button>` : ''}
+    </div>
   `;
   // 새 차량 선택 시 항상 사진부터 보이게 — 스크롤 맨 위로
   body.scrollTop = 0;
+  // 하단 틀고정 액션 — 소통 · 공유 · 계약
+  body.querySelector('#actChat')?.addEventListener('click', () => searchActionChat(p));
+  body.querySelector('#actShare')?.addEventListener('click', () => searchActionShare(p));
+  body.querySelector('#actContract')?.addEventListener('click', () => searchActionContract(p));
 
   // 표준옵션 인터랙션 — 더보기 토글 + 매트릭스 자세히
   body.querySelectorAll('[data-fp-more]').forEach(btn => {
