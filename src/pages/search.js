@@ -25,6 +25,7 @@ import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-mas
 import { findCatalog } from '../core/vehicle-matrix.js';
 import { FILTERS, matchFilter } from '../core/product-filters.js';
 import { creditGradeLabel } from '../core/product-badges.js';
+import { matchRecord } from '../core/search-match.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
 let _onCreateRoom = null;
@@ -1323,21 +1324,8 @@ function filterProductsExcept(exceptField) {
       if (!sel.has(String(v))) return false;
     }
     if (f.search) {
-      const opts = Array.isArray(p.options) ? p.options.join(' ') : (p.options || '');
-      // 공급사 코드 → 회사명·담당자명·연락처 lookup (회사/담당자 다 검색)
-      const providerCode = p.provider_company_code || p.partner_code || '';
-      const pp = providerCode ? (store.partners || []).find(x => (x.partner_code === providerCode || x.company_code === providerCode || x._key === providerCode) && !x._deleted) : null;
-      const providerName = pp ? [pp.partner_name, pp.company_name, pp.ceo_name, pp.manager_name, pp.manager_phone, pp.company_phone, pp.business_number].filter(Boolean).join(' ') : '';
-      const hay = [
-        p.car_number, p.vin, p.product_code,
-        p.maker, p.model, p.sub_model, p.trim_name, p.trim,
-        p.fuel_type, p.year, p.ext_color, p.int_color,
-        p.vehicle_status, p.product_type, p.vehicle_class, p.location,
-        opts,
-        providerCode, providerName,
-        p.policy_code, p._policy?.policy_name, p._policy?.credit_grade,
-      ].filter(Boolean).join(' ').toLowerCase();
-      if (!hay.includes(f.search)) return false;
+      // 공통 규격 — 레코드 전체 값 + 공급사 회사·담당자명 + 정책 자동 검색
+      if (!matchRecord(p, f.search, store)) return false;
     }
     // 퀵 필터 (하단바)
     if (f.quick.size) {

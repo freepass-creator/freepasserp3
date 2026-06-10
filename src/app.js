@@ -20,6 +20,7 @@ if (isMobileUA()) {
 import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';
 import { watchCollection, pushRecord, updateRecord, softDelete, fetchRecord, setRecord } from './firebase/db.js';
 import { store } from './core/store.js';
+import { matchRecord } from './core/search-match.js';
 // 삭제 + 권한 체크 — app.js 에서 분리 (canDelete + 6개 delete 함수)
 import {
   canDelete, deleteProduct, deletePolicy, deletePartner, deleteRoom, deleteContract, deleteSettlement,
@@ -1586,90 +1587,15 @@ function applyGlobalSearch() {
     return;
   }
 
-  // 다른 페이지 — store 데이터 필터 후 재렌더.
-  const matches = (haystack) => !q || haystack.toLowerCase().includes(q);
-  // 코드 → 공급사 정보 (회사명·담당자명·대표·연락처·사업자번호 모두 haystack 에 — 회사/담당자명으로 다 검색)
-  const provName = (code) => {
-    if (!code) return '';
-    const p = (store.partners || []).find(x => (x.partner_code === code || x.company_code === code || x._key === code) && !x._deleted);
-    if (!p) return '';
-    return [p.partner_name, p.company_name, p.ceo_name, p.manager_name, p.manager_phone, p.company_phone, p.business_number].filter(Boolean).join(' ');
-  };
-  const optionsStr = (opts) => Array.isArray(opts) ? opts.join(' ') : (opts || '');
-
-  if (page === 'workspace') {
-    if (!store.rooms) return;
-    const filtered = store.rooms.filter(r => matches([
-      r.car_number, r.vehicle_number, r.maker, r.model, r.sub_model,
-      r.provider_company_code, provName(r.provider_company_code || r.provider_code),
-      r.agent_channel_code, r.agent_code, r.agent_name,
-      r.chat_code, r.room_id, r._key,
-      r.last_message, r.last_message_text,        // 대화내용
-    ].filter(Boolean).join(' ')));
-    renderRoomList(filtered);
-  } else if (page === 'contract') {
-    if (!store.contracts) return;
-    const filtered = store.contracts.filter(c => matches([
-      c.contract_code, c.contract_id, c._key,
-      c.customer_name, c.customer_phone, c.customer_birth, c.company_name,
-      c.car_number_snapshot, c.car_number,
-      c.maker_snapshot, c.maker, c.model_snapshot, c.model, c.sub_model_snapshot,
-      c.fuel_type_snapshot, c.year_snapshot, c.ext_color_snapshot,
-      c.provider_company_code, provName(c.provider_company_code),
-      c.agent_channel_code, c.agent_code, c.agent_name,
-      c.contract_status,
-    ].filter(Boolean).join(' ')));
-    renderContractList(filtered);
-  } else if (page === 'settle') {
-    if (!store.settlements) return;
-    const filtered = store.settlements.filter(s => matches([
-      s.contract_code, s.contract_id, s._key,
-      s.customer_name, s.car_number, s.maker, s.model, s.sub_model_snapshot,
-      s.provider_company_code, provName(s.provider_company_code),
-      s.agent_channel_code, s.agent_code, s.agent_name,
-      s.settlement_status, s.status,
-    ].filter(Boolean).join(' ')));
-    renderSettlementList(filtered);
-  } else if (page === 'product') {
-    if (!store.products) return;
-    const filtered = store.products.filter(p => matches([
-      p.car_number, p.vin, p.product_code, p.product_uid,
-      p.maker, p.model, p.sub_model, p.trim_name, p.trim,
-      optionsStr(p.options),
-      p.year, p.fuel_type, p.ext_color, p.int_color, p.vehicle_class, p.product_type,
-      p.vehicle_status, p.location, p.partner_memo,
-      p.provider_company_code, p.partner_code, provName(p.provider_company_code || p.partner_code),
-      p.policy_code, p._policy?.policy_name,
-    ].filter(Boolean).join(' ')));
-    renderProductList(filtered);
-  } else if (page === 'policy') {
-    if (!store.policies) return;
-    const filtered = store.policies.filter(p => matches([
-      p.policy_name, p.policy_code, p._key,
-      p.provider_company_code, provName(p.provider_company_code), p.provider_name,
-      p.credit_grade, p.screening_criteria,
-      p.term_description, p.description,
-      p.status,
-    ].filter(Boolean).join(' ')));
-    renderPolicyList(filtered);
-  } else if (page === 'partners') {
-    if (!store.partners) return;
-    const filtered = store.partners.filter(p => matches([
-      p.partner_name, p.partner_code, p.company_name, p.company_code, p._key,
-      p.partner_type, p.ceo_name, p.business_number,
-      p.manager_name, p.manager_phone, p.company_phone,
-      p.contact_name, p.contact_title, p.phone, p.email, p.address, p.memo,
-    ].filter(Boolean).join(' ')));
-    renderPartnerList(filtered);
-  } else if (page === 'users') {
-    const filtered = (store.users || []).filter(u => matches([
-      u.name, u.email, u.user_code, u._key,
-      u.position, u.role, u.status,
-      u.company_name, u.company_code, provName(u.company_code),
-      u.agent_channel_code, u.phone,
-    ].filter(Boolean).join(' ')));
-    renderUserList(filtered);
-  }
+  // 모든 페이지 공통 규격 — 레코드 전체 값 + 공급사 회사·담당자명 + 연결 정책 자동 검색 (search-match.js)
+  const M = (item) => matchRecord(item, q, store);
+  if (page === 'workspace')     { if (store.rooms)       renderRoomList(store.rooms.filter(M)); }
+  else if (page === 'contract') { if (store.contracts)   renderContractList(store.contracts.filter(M)); }
+  else if (page === 'settle')   { if (store.settlements) renderSettlementList(store.settlements.filter(M)); }
+  else if (page === 'product')  { if (store.products)    renderProductList(store.products.filter(M)); }
+  else if (page === 'policy')   { if (store.policies)    renderPolicyList(store.policies.filter(M)); }
+  else if (page === 'partners') { if (store.partners)    renderPartnerList(store.partners.filter(M)); }
+  else if (page === 'users')    { renderUserList((store.users || []).filter(M)); }
 }
 
 function bindGlobalSearch() {

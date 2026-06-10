@@ -4,6 +4,7 @@
  * /admin/partners → 파트너 관리
  */
 import { store } from '../../core/store.js';
+import { matchRecord } from '../../core/search-match.js';
 import { watchCollection, updateRecord, softDelete, setRecord } from '../../firebase/db.js';
 import { showToast } from '../../core/toast.js';
 import { empty } from '../../core/format.js';
@@ -166,8 +167,8 @@ function renderList() {
   }
 
   if (q) {
-    if (mode === 'users') list = list.filter(u => [u.name, u.email, u.role, u.company_name, u.phone, u.uid, u.status].some(v => v && String(v).toLowerCase().includes(q)));
-    else list = list.filter(p => [p.partner_name, p.partner_code, p.partner_type, p.manager_name, p.manager_phone].some(v => v && String(v).toLowerCase().includes(q)));
+    // 공통 규격 — 레코드 전체 값 + 공급사 회사·담당자명 자동 검색 (users·partners 동일)
+    list = list.filter(item => matchRecord(item, q, store));
   }
 
   list.sort((a,b) => (b.created_at||0) - (a.created_at||0));
