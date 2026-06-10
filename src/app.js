@@ -585,14 +585,24 @@ window.refreshPageActions = function(pageName) {
       .reduce((n, set) => n + (set?.size || 0), 0);
     const providerActive = !!(_searchFilter.provider && _searchFilter.provider !== 'all');
     const anyActive = QUICK.some(q => isQuickFilterActive(q.v)) || sheetCount > 0 || providerActive;
-    // 공급사 드롭다운 — 공급사(partner_type 공급) 우선, 없으면 전체 파트너
-    const provList = (store.partners || []).filter(pt => !pt._deleted && /공급/.test(pt.partner_type || ''));
-    const provPool = provList.length ? provList : (store.partners || []).filter(pt => !pt._deleted);
+    // 공급사 드롭다운 — 매물 보유 공급사 + 대수 표시, 대수 많은 순
+    const provCount = {};
+    let provTotal = 0;
+    for (const pr of (store.products || [])) {
+      if (pr._deleted || pr.status === 'deleted') continue;
+      provTotal++;
+      const code = pr.provider_company_code || pr.partner_code;
+      if (code) provCount[code] = (provCount[code] || 0) + 1;
+    }
+    const provNameOf = (code) => {
+      const pt = (store.partners || []).find(x => (x.partner_code === code || x.company_code === code || x._key === code) && !x._deleted);
+      return pt?.partner_name || pt?.company_name || code;
+    };
     const providerOpts = [
-      { value: 'all', label: '공급사 전체' },
-      ...provPool
-        .map(pt => ({ value: pt.partner_code || pt.company_code || pt._key, label: pt.partner_name || pt.company_name || pt.partner_code || pt._key }))
-        .sort((a, b) => String(a.label).localeCompare(String(b.label), 'ko')),
+      { value: 'all', label: `공급사 전체 (${provTotal}대)` },
+      ...Object.entries(provCount)
+        .sort((a, b) => b[1] - a[1] || provNameOf(a[0]).localeCompare(provNameOf(b[0]), 'ko'))
+        .map(([code, n]) => ({ value: code, label: `${provNameOf(code)} (${n}대)` })),
     ];
     const left = [
       { chip: true, label: '전체', active: !anyActive,
