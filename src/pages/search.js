@@ -13,7 +13,7 @@
  *   - _searchFilter (외부 모듈에서 검색 input → 필터 갱신용 export)
  */
 import { store, findProduct } from '../core/store.js';
-import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from '../core/product-photos.js';
+import { productImages, productExternalImages, supportedDriveSource, toProxiedImage, shortImg } from '../core/product-photos.js';
 import { renderDetailSections } from '../core/product-detail-render.js';
 import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichProductsWithPolicy } from '../core/excel-export.js';
 import { showToast } from '../core/toast.js';
@@ -431,20 +431,15 @@ export async function searchActionShare(p) {
   if (!p) return;
   const me = store.currentUser || {};
   const car = p.car_number || '';
-  // 차량명·대표사진·요약을 링크에 — 카톡 미리보기(제목+썸네일). 서버 env 설정되면 서버조회 우선.
+  // 최대한 짧게 — 차량명(t)+대표사진(img)만. 서버 env 설정되면 id 서버조회 우선이라 이것도 뺄 수 있음.
   const title = `${car} ${p.sub_model || p.model || ''}`.trim() || '차량';
-  const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
-  const km = p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '';
-  const rents = Object.values(p.price || {}).map(v => Number(v?.rent || 0)).filter(r => r > 0);
-  const rentTxt = rents.length ? `월 ${Math.round(Math.min(...rents) / 10000)}만~` : '';
-  const d = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
   const qs = new URLSearchParams();
   if (me.user_code) qs.set('a', me.user_code);
   if (p._key) qs.set('id', p._key);
   else if (car) qs.set('car', car);
   if (title) qs.set('t', title);
-  if (d) qs.set('d', d);
-  if (firstImg) qs.set('img', firstImg);
+  const img = shortImg(p);
+  if (img) qs.set('img', img);
   const url = `${location.origin}/catalog.html?${qs.toString()}`;
   try {
     await navigator.clipboard.writeText(url);

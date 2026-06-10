@@ -10,7 +10,7 @@ import { store, findProduct } from '../core/store.js';
 import { watchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtMoney, trimMinusSub, mEmpty } from '../core/format.js';
-import { firstProductImage, supportedDriveSource } from '../core/product-photos.js';
+import { firstProductImage, supportedDriveSource, shortImg } from '../core/product-photos.js';
 import '../core/drive-photos.js';   // 카드 드라이브 썸네일 lazy 하이드레이션 observer 즉시 시작 (상세 열기 전에도 카드 사진 뜨게)
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
@@ -440,21 +440,16 @@ async function inquireProduct(p) {
 
 function shareProduct(p) {
   const me = store.currentUser || {};
-  // 차량명·대표사진·요약을 링크에 실어 보냄 — 카톡 미리보기(제목+썸네일). 서버 env 설정되면 서버조회가 우선.
+  // 최대한 짧게 — 차량명(t)+대표사진(img)만. 서버 env 설정되면 id 서버조회가 우선이라 이것도 뺄 수 있음.
   const title = `${p.car_number || ''} ${p.sub_model || p.model || ''}`.trim() || '차량';
-  const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
   const pid = p._key || p.product_uid || '';
-  const km = p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '';
-  const rents = Object.values(p.price || {}).map(v => Number(v?.rent || 0)).filter(r => r > 0);
-  const rentTxt = rents.length ? `월 ${Math.round(Math.min(...rents) / 10000)}만~` : '';
-  const d = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
   const qs = new URLSearchParams();
   if (me.user_code) qs.set('a', me.user_code);
   if (pid) qs.set('id', pid);
   else if (p.car_number) qs.set('car', p.car_number);
   if (title) qs.set('t', title);
-  if (d) qs.set('d', d);
-  if (firstImg) qs.set('img', firstImg);
+  const img = shortImg(p);
+  if (img) qs.set('img', img);
   const url = `${location.origin}/catalog.html?${qs.toString()}`;
   if (navigator.share) {
     navigator.share({ title, url }).catch(() => {});

@@ -123,6 +123,18 @@ export function firstProductImage(product) {
   return raw ? toProxiedImage(raw) : '';
 }
 
+/** 공유 링크용 대표사진 — 원본 URL(프록시 안 함). 이미 /api/img 프록시면 원본 url= 만 추출해 짧게.
+ *  catalog-share 가 서버에서 다시 프록시하므로 링크에 raw URL 만 실으면 됨. */
+export function shortImg(product) {
+  let img = productImages(product)[0] || productExternalImages(product)[0]
+    || (Array.isArray(product?.image_urls) && product.image_urls[0]) || product?.image_url || '';
+  if (img.startsWith('/api/img')) {
+    const m = img.match(/[?&]url=([^&]+)/);
+    if (m) img = decodeURIComponent(m[1]);
+  }
+  return img;
+}
+
 /** product.photo_link 중 서버 스크래핑이 필요한 URL 하나 반환 (없으면 '') */
 export function supportedDriveSource(product) {
   const raw = product?.photo_link || '';
