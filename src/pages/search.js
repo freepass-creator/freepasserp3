@@ -551,11 +551,13 @@ export function renderSearchDetail(p, targetCard, options = {}) {
         <button class="pt-sb-toggle" id="detailClose" title="상세 패널 접기"><i class="ph ph-caret-right"></i></button>
         <span style="color: var(--text-main);">${esc(p.car_number || '-')}</span>
         <span class="text-sub">${esc([p.maker, p.model, p.sub_model].filter(Boolean).join(' '))}</span>
+        <button class="ws4-head-share" id="detailShare" title="카탈로그 공유 링크 복사" aria-label="공유" style="margin-left:auto;"><i class="ph ph-share-network"></i></button>
         <button class="ws4-head-close" id="detailCloseX" title="상세 패널 닫기" aria-label="닫기"><i class="ph ph-x"></i></button>
       `;
       const toggleCollapse = () => document.querySelector('[data-page="search"] .ws4')?.classList.toggle('is-collapsed');
       head.querySelector('#detailClose')?.addEventListener('click', toggleCollapse);
       head.querySelector('#detailCloseX')?.addEventListener('click', toggleCollapse);
+      head.querySelector('#detailShare')?.addEventListener('click', () => searchActionShare(p));   // 매물 공유 — 헤드에서 바로
       // 하단바 액션 — 더 이상 패널 footer 에 박지 않음. 전역 하단 액션바(setPageActions) 사용.
       const foot = card.querySelector('.ws4-foot[data-foot="search-detail"]');
       if (foot) foot.innerHTML = '';

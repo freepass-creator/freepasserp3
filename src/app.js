@@ -603,17 +603,15 @@ window.refreshPageActions = function(pageName) {
       if (dot) dot.hidden = sheetCount === 0;
     }
 
-    // 중: 선택 차량 액션 (소통/계약/공유) + 출력(엑셀/사진)
+    // 중: 선택 차량 액션 (소통/계약) + 출력(엑셀/사진). 공유는 상세 패널 헤드로 이동(매물 공유라 상세에 귀속).
     const center = [
       ...(isAgent ? [
         { label: '소통', icon: 'ph-chat-circle', primary: hasSelection,
           title: '이 차량으로 채팅방 생성', onClick: requireSelect(searchActionChat) },
         { label: '계약', icon: 'ph-file-text',
           title: '이 차량으로 가계약 생성', onClick: requireSelect(searchActionContract) },
+        { divider: true },
       ] : []),
-      { label: '공유', icon: 'ph-share-network',
-        title: '카탈로그 링크 복사', onClick: requireSelect(searchActionShare) },
-      { divider: true },
       { label: '엑셀', icon: 'ph-file-xls', title: '필터된 차량 엑셀 다운로드', onClick: () => searchExportExcel() },
       { label: '사진', icon: 'ph-file-zip', title: '필터된 차량 사진 ZIP', onClick: () => searchDownloadPhotoZip() },
     ];

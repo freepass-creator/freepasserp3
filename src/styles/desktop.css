@@ -1117,8 +1117,7 @@
   }
   .ws4-head { gap: 6px; }
   /* 상세 패널 우측 X 닫기 — margin-left: auto 로 head 우측 끝 */
-  .ws4-head-close {
-    margin-left: auto;
+  .ws4-head-close, .ws4-head-share {
     width: 24px; height: 24px;
     display: inline-flex; align-items: center; justify-content: center;
     background: transparent;
@@ -1130,7 +1129,8 @@
     line-height: 1;
     padding: 0;
   }
-  .ws4-head-close:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .ws4-head-close:hover, .ws4-head-share:hover { background: var(--bg-stripe); color: var(--text-main); }
+  .ws4-head-share:hover { color: var(--c-accent); }
   .table thead th { font-weight: 400; vertical-align: middle; }
   /* 토픽바 검색 input — 좌측 고정 280px (제목 absolute 중앙, 사용자 우측 고정) */
   .pt-tb-search-wrap {
