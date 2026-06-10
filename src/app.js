@@ -590,6 +590,8 @@ window.refreshPageActions = function(pageName) {
     let provTotal = 0;
     for (const pr of (store.products || [])) {
       if (pr._deleted || pr.status === 'deleted') continue;
+      const st = String(pr.vehicle_status || '').replace(/\s+/g, '');
+      if (st !== '출고가능' && st !== '즉시출고') continue;   // 출고가능 매물만 카운트
       provTotal++;
       const code = pr.provider_company_code || pr.partner_code;
       if (code) provCount[code] = (provCount[code] || 0) + 1;
