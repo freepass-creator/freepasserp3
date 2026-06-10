@@ -1292,6 +1292,18 @@
   .pt-actions-zone:empty { display: none; }
   .pt-actions-divider { width: 1px; height: 16px; background: var(--border); margin: 0 var(--sp-3); }
 
+  /* 액션바 공급사 드롭다운 — chip 과 비슷한 크기, native select */
+  .pt-actions .pt-actions-select {
+    height: 20px; max-width: 150px; padding: 0 4px;
+    font-size: 11px; font-family: inherit;
+    border: 1px solid var(--border); border-radius: 2px;
+    background: transparent; color: var(--text-sub);
+    cursor: pointer;
+  }
+  .pt-actions .pt-actions-select.is-active {
+    border-color: var(--text-main); color: var(--text-main); font-weight: 500;
+  }
+
   /* 액션바 내부 .btn-xs / .chip — 통일 규격 강제 (전역 base.css 토큰 위에) */
   .pt-actions .btn-xs { height: 20px; padding: 0 6px; font-size: 11px; gap: 4px; }
   .pt-actions .chip   { height: 20px; padding: 0 6px; font-size: 11px; gap: 4px; }

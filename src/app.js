@@ -583,7 +583,17 @@ window.refreshPageActions = function(pageName) {
     ];
     const sheetCount = Object.values(_searchFilter.activeFilters || {})
       .reduce((n, set) => n + (set?.size || 0), 0);
-    const anyActive = QUICK.some(q => isQuickFilterActive(q.v)) || sheetCount > 0;
+    const providerActive = !!(_searchFilter.provider && _searchFilter.provider !== 'all');
+    const anyActive = QUICK.some(q => isQuickFilterActive(q.v)) || sheetCount > 0 || providerActive;
+    // 공급사 드롭다운 — 공급사(partner_type 공급) 우선, 없으면 전체 파트너
+    const provList = (store.partners || []).filter(pt => !pt._deleted && /공급/.test(pt.partner_type || ''));
+    const provPool = provList.length ? provList : (store.partners || []).filter(pt => !pt._deleted);
+    const providerOpts = [
+      { value: 'all', label: '공급사 전체' },
+      ...provPool
+        .map(pt => ({ value: pt.partner_code || pt.company_code || pt._key, label: pt.partner_name || pt.company_name || pt.partner_code || pt._key }))
+        .sort((a, b) => String(a.label).localeCompare(String(b.label), 'ko')),
+    ];
     const left = [
       { chip: true, label: '전체', active: !anyActive,
         title: '모든 필터 해제',
@@ -592,6 +602,9 @@ window.refreshPageActions = function(pageName) {
         chip: true, label: q.l, active: isQuickFilterActive(q.v),
         onClick: (e) => searchToggleQuickFilter(q.v, e.currentTarget),
       })),
+      { select: true, value: _searchFilter.provider || 'all', active: providerActive,
+        title: '공급사로 필터', options: providerOpts,
+        onChange: (v) => { _searchFilter.provider = v; applySearchFilter(); window.refreshPageActions?.('search'); } },
     ];
 
     // 검색창 우측 필터 아이콘 — search 페이지에서만 노출, dot 으로 활성 상태 표시

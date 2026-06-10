@@ -72,6 +72,7 @@ if (typeof window !== 'undefined') window.updateSearchStats = updateSearchStats;
 export const _searchFilter = {
   chip: 'all',
   search: '',
+  provider: 'all',                   // 공급사 드롭다운 필터 (코드 또는 'all')
   column: {},
   quick: new Set(),                  // 하단 퀵필터 (new/used/age26)
   fpOptions: new Set(),              // 표준옵션 필수 (예: VENT_SEAT_DR, HUD)
@@ -468,6 +469,7 @@ export function isQuickFilterActive(key) {
 /** 모든 필터 일괄 해제 — 전체 chip 클릭 시 호출 */
 export function clearAllSearchFilters() {
   _searchFilter.quick.clear();
+  _searchFilter.provider = 'all';
   if (_searchFilter.fpOptions) _searchFilter.fpOptions.clear();
   // 시트에서 토글한 그룹 필터도 모두 해제 (range 는 객체, chip 그룹은 Set)
   const af = _searchFilter.activeFilters || {};
@@ -1329,6 +1331,10 @@ function filterProductsExcept(exceptField) {
     if (f.search) {
       // 공통 규격 — 레코드 전체 값 + 공급사 회사·담당자명 + 정책 자동 검색
       if (!matchRecord(p, f.search, store)) return false;
+    }
+    // 공급사 드롭다운 필터
+    if (f.provider && f.provider !== 'all') {
+      if ((p.provider_company_code || p.partner_code) !== f.provider) return false;
     }
     // 퀵 필터 (하단바)
     if (f.quick.size) {

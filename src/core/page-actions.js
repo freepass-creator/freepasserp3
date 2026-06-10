@@ -6,6 +6,7 @@
  * 액션 객체 형식:
  *   { label, icon, onClick, primary?, danger?, disabled?, title? } — 일반 버튼 (.btn-xs)
  *   { chip: true, label, active?, onClick, title? } — 토글 chip (.chip)
+ *   { select: true, value, options:[{value,label}], onChange(v), title? } — 드롭다운 필터
  *   { divider: true } — 시각적 구분선
  */
 
@@ -26,6 +27,17 @@ function renderActionItem(a) {
     chip.innerHTML = `${a.icon ? `<i class="ph ${a.icon}"></i>` : ''}${a.label || ''}`;
     if (a.onClick) chip.addEventListener('click', a.onClick);
     return chip;
+  }
+  if (a.select) {
+    const sel = document.createElement('select');
+    sel.className = 'pt-actions-select' + (a.active ? ' is-active' : '');
+    if (a.title) sel.title = a.title;
+    if (a.disabled) sel.disabled = true;
+    sel.innerHTML = (a.options || [])
+      .map(o => `<option value="${String(o.value).replace(/"/g, '&quot;')}"${String(o.value) === String(a.value) ? ' selected' : ''}>${o.label}</option>`)
+      .join('');
+    if (a.onChange) sel.addEventListener('change', e => a.onChange(e.target.value));
+    return sel;
   }
   // 일반 버튼 — 액션바는 항상 btn-xs 사이즈
   const btn = document.createElement('button');
