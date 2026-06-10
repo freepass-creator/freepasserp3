@@ -13,6 +13,51 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import admin from 'firebase-admin';
+
+const DATABASE_URL = 'https://freepasserp3-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+let _appPromise = null;
+function getAdmin() {
+  if (_appPromise) return _appPromise;
+  _appPromise = (async () => {
+    if (admin.apps.length) return admin.app();
+    const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON || process.env.FIREBASE_SERVICE_ACCOUNT || '';
+    if (!raw) throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON env var not set');
+    const trimmed = raw.trim();
+    const decoded = trimmed.startsWith('{') ? trimmed : Buffer.from(trimmed, 'base64').toString('utf8');
+    const creds = JSON.parse(decoded);
+    return admin.initializeApp({ credential: admin.credential.cert(creds), databaseURL: DATABASE_URL });
+  })();
+  return _appPromise;
+}
+
+/* 상품 id → OG 메타 (제목=차량번호+차량명 / 요약=연식·주행·연료·최저월대여료 / 대표사진).
+ *  서버에서 직접 조회 → 공유 링크에 t·d·img 안 박아도 됨(짧은 링크). 실패 시 null → URL 파라미터 fallback. */
+async function fetchProductMeta(id) {
+  if (!id) return null;
+  try {
+    const app = await getAdmin();
+    const db = admin.database(app);
+    const p = (await db.ref(`products/${id}`).once('value')).val();
+    if (!p) return null;
+    const trim = p.trim_name || p.trim || '';
+    const title = [p.car_number, p.sub_model || p.model, trim].filter(Boolean).join(' ');
+    const km = p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '';
+    let rentFrom = 0;
+    for (const v of Object.values(p.price || {})) {
+      const r = Number(v?.rent || 0);
+      if (r >= 100000 && (!rentFrom || r < rentFrom)) rentFrom = r;
+    }
+    const rentTxt = rentFrom ? `월 ${Math.round(rentFrom / 10000)}만~` : '';
+    const desc = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
+    const photo = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || p.photo_link || '';
+    return { title, desc, photo };
+  } catch (e) {
+    console.warn('[catalog-share] product fetch fail:', e?.message || e);
+    return null;
+  }
+}
 
 let _cachedTemplate = null;
 function loadTemplate() {
@@ -58,17 +103,19 @@ function proxiedImageUrl(host, raw) {
 export default async function handler(req, res) {
   try {
     const host = req.headers['x-forwarded-host'] || req.headers.host || '';
-    const title = String(req.query.t || '').trim();
-    const img = String(req.query.img || '').trim();
+    const id = String(req.query.id || req.query.pid || '').trim();
+    // 서버에서 상품 직접 조회 (짧은 링크). 실패/구버전이면 URL 파라미터(t/d/img) fallback.
+    const meta = await fetchProductMeta(id);
+    const title = meta?.title || String(req.query.t || '').trim();
+    const desc  = meta?.desc  || String(req.query.d || '').trim();
+    const img   = meta?.photo || String(req.query.img || '').trim();
 
     let html = loadTemplate();
 
-    // og:title / title / og:description 교체 (title=차량번호+차량명 이 있을 때만).
-    //   설명도 "장기렌트 상품 안내" 대신 차량번호·차량명(+d 요약)으로 — 카톡 미리보기에 차량 같이 노출.
+    // og:title / title / og:description 교체 — "상품 안내" 대신 차량번호+차량명 / 요약(연식·주행·연료·월대여료)
     if (title) {
       const t = escAttr(title);
-      const desc = String(req.query.d || '').trim();
-      const d = escAttr(desc ? `${title} · ${desc}` : title);
+      const d = escAttr(desc || title);
       html = html
         .replace(/<title>[\s\S]*?<\/title>/i, `<title>${t}</title>`)
         .replace(/<meta\s+property="og:title"[^>]*>/i, `<meta property="og:title" content="${t}">`)

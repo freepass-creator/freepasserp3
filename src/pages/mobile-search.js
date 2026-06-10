@@ -11,7 +11,6 @@ import { watchCollection } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtMoney, trimMinusSub, mEmpty } from '../core/format.js';
 import { firstProductImage, supportedDriveSource } from '../core/product-photos.js';
-import { appendAgentShareParams } from '../core/ui-helpers.js';
 import '../core/drive-photos.js';   // 카드 드라이브 썸네일 lazy 하이드레이션 observer 즉시 시작 (상세 열기 전에도 카드 사진 뜨게)
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
@@ -441,23 +440,13 @@ async function inquireProduct(p) {
 
 function shareProduct(p) {
   const me = store.currentUser || {};
-  // OG 메타에 쓸 차량명 + 대표사진 — Vercel serverless(api/catalog-share)가 동적 주입
+  // 짧은 링크 — 차량명/사진/요약/담당자는 서버(api/catalog-share)가 id 로 조회해 OG 주입, 담당자는 ?a= 조회
   const title = `${p.car_number || ''} ${p.sub_model || p.model || ''}`.trim() || '차량';
-  const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
   const pid = p._key || p.product_uid || '';
-  // 미리보기 설명 — 연식 · 주행 · 연료 · 최저 월대여료
-  const km = p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '';
-  const rents = Object.values(p.price || {}).map(v => Number(v?.rent || 0)).filter(r => r > 0);
-  const rentTxt = rents.length ? `월 ${Math.round(Math.min(...rents) / 10000)}만~` : '';
-  const d = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
   const qs = new URLSearchParams();
   if (me.user_code) qs.set('a', me.user_code);
-  appendAgentShareParams(qs, me);   // 로그인 영업자 이름·전화·회사 → 카탈로그 하단 CTA
   if (pid) qs.set('id', pid);
   else if (p.car_number) qs.set('car', p.car_number);
-  if (title) qs.set('t', title);
-  if (d) qs.set('d', d);
-  if (firstImg) qs.set('img', firstImg);
   const url = `${location.origin}/catalog.html?${qs.toString()}`;
   if (navigator.share) {
     navigator.share({ title, url }).catch(() => {});
@@ -476,10 +465,7 @@ function editProduct(p) {
 
 function shareCatalogLink() {
   const me = store.currentUser || {};
-  const qs = new URLSearchParams();
-  if (me.user_code) qs.set('a', me.user_code);
-  appendAgentShareParams(qs, me);
-  const url = `${location.origin}/catalog.html?${qs.toString()}`;
+  const url = `${location.origin}/catalog.html?a=${encodeURIComponent(me.user_code || '')}`;
   if (navigator.share) {
     navigator.share({ title: '차량 카탈로그', url }).catch(() => {});
   } else {

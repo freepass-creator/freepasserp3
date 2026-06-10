@@ -16,8 +16,9 @@ import { enrichProductsWithPolicy } from './core/policy-utils.js';
 import { renderDetailSections } from './core/product-detail-render.js';
 import { stripLegalEntity } from './core/ui-helpers.js';
 
-// 익명 인증 — policies 읽기 위해 필요 (auth != null 룰 통과)
-signInAnonymously(auth).catch(e => console.warn('[catalog] 익명 인증 실패:', e?.message || e));
+// 익명 인증 — policies·users 읽기 위해 필요 (auth != null 룰 통과).
+//   authReady 로 잡아서 영업자 조회(get)가 인증 완료 후 실행되게 — race 로 기본번호 노출되던 버그 방지.
+const authReady = signInAnonymously(auth).catch(e => console.warn('[catalog] 익명 인증 실패:', e?.message || e));
 
 // URL 파라미터
 const params = new URLSearchParams(location.search);
@@ -57,10 +58,10 @@ const inlineAgent = (params.get('n') || params.get('tel')) ? {
   title: params.get('ti') || '',
 } : null;
 
-// 영업자 정보 로드 — 인라인 우선 즉시 렌더, 조회되면 빈 필드만 보강
+// 영업자 정보 로드 — 인라인(구버전 링크) 있으면 즉시 렌더, 인증 후 ?a= 조회로 보강
 if (inlineAgent) { _agent = inlineAgent; renderAgent(); }
 if (agentCode) {
-  loadAgent().then(found => {
+  authReady.then(() => loadAgent()).then(found => {
     if (!found) { if (!inlineAgent) _agent = null; return; }
     const overrides = Object.fromEntries(Object.entries(inlineAgent || {}).filter(([, v]) => v));  // 인라인 비어있지 않은 값만 우선
     _agent = { ...found, ...overrides };

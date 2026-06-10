@@ -19,7 +19,7 @@ import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichPro
 import { showToast } from '../core/toast.js';
 import {
   esc, shortStatus, mapStatusDot, fmtMileage, normalizeVehicleStatus,
-  providerNameByCode, appendAgentShareParams,
+  providerNameByCode,
 } from '../core/ui-helpers.js';
 import { FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { findCatalog } from '../core/vehicle-matrix.js';
@@ -425,27 +425,16 @@ export async function searchActionContract(p) {
   }
 }
 
-/* 공유(카탈로그 링크 클립보드 복사) — 하단 액션바에서 호출
- * Vercel serverless(api/catalog-share)가 t/img 로 OG 메타 동적 주입 → 카톡 미리보기에 차량명+사진 */
+/* 공유(카탈로그 링크 클립보드 복사) — 상세 패널 헤드 + 하단 액션바에서 호출.
+ * 짧은 링크(?a=&id=) — 차량명/사진/요약은 서버(api/catalog-share)가 id 로 조회해 OG 주입, 담당자는 ?a= 조회 */
 export async function searchActionShare(p) {
   if (!p) return;
   const me = store.currentUser || {};
   const car = p.car_number || '';
-  const title = `${car} ${p.sub_model || p.model || ''}`.trim() || '차량';
-  const firstImg = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || '';
-  // 미리보기 설명용 요약 — 연식 · 주행 · 연료 · 최저 월대여료
-  const km = p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '';
-  const rents = Object.values(p.price || {}).map(v => Number(v?.rent || 0)).filter(r => r > 0);
-  const rentTxt = rents.length ? `월 ${Math.round(Math.min(...rents) / 10000)}만~` : '';
-  const d = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
   const qs = new URLSearchParams();
   if (me.user_code) qs.set('a', me.user_code);
-  appendAgentShareParams(qs, me);   // 로그인 영업자 이름·전화·회사 → 카탈로그 하단 CTA
   if (p._key) qs.set('id', p._key);
   else if (car) qs.set('car', car);
-  if (title) qs.set('t', title);
-  if (d) qs.set('d', d);
-  if (firstImg) qs.set('img', firstImg);
   const url = `${location.origin}/catalog.html?${qs.toString()}`;
   try {
     await navigator.clipboard.writeText(url);
