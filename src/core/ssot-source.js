@@ -7,6 +7,8 @@
  *  - 엔카 기반 1,803 세부모델 = 전 세대(구형 포함) 커버 → 연식 기반 세대 매칭이 catalog(403, 신차위주)보다 강함.
  *  - 엔트리: { maker, model, sub_model(코드통일), gen_code, year_start, year_end, title, status, variants, trims }
  */
+import { variantLabel } from './ssot-snap.js';
+
 const MATCH_URL = 'https://raw.githubusercontent.com/freepass-creator/vehicle-master/main/dist/match-index.json';
 const MANIFEST_URL = 'https://raw.githubusercontent.com/freepass-creator/vehicle-master/main/dist/manifest.json';
 const CACHE_KEY = 'ssot_match_index_v1';
@@ -17,6 +19,7 @@ let _version = null;
 
 function toEntries(data) {
   return (data.entries || []).map(e => ({
+    id: e.id || '',
     maker: e.maker,
     model: e.model,
     sub_model: e.sub_model,
@@ -69,3 +72,61 @@ export function getCachedMakerOrigin() {
 }
 
 export function ssotVersion() { return _version; }
+
+/* ════════ 동기 접근 + 재고관리 picker 캐스케이드 ════════ */
+
+/** 동기 — 메모리 캐시 우선, 없으면 localStorage 즉시 복원. 둘 다 없으면 [] (catalog 폴백) */
+export function getCachedSsotEntries() {
+  if (_entries) return _entries;
+  try {
+    const c = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+    if (c && Array.isArray(c.entries)) { _entries = toEntries({ entries: c.entries }); return _entries; }
+  } catch {}
+  return [];
+}
+
+let _casc = null, _cascFor = null;
+function cascade() {
+  const e = getCachedSsotEntries();
+  if (_cascFor === e && _casc) return _casc;
+  const byMaker = new Map();   // maker → Map(model → [entry])
+  for (const x of e) {
+    if (!byMaker.has(x.maker)) byMaker.set(x.maker, new Map());
+    const mm = byMaker.get(x.maker);
+    if (!mm.has(x.model)) mm.set(x.model, []);
+    mm.get(x.model).push(x);
+  }
+  _casc = byMaker; _cascFor = e;
+  return _casc;
+}
+
+export function ssotLoaded() { return getCachedSsotEntries().length > 0; }
+export function ssotMakers() { return [...cascade().keys()]; }
+export function ssotModels(maker) { const mm = cascade().get(maker); return mm ? [...mm.keys()] : []; }
+/** [{ sub, id, year_start, year_end }] — 출시순(최신 먼저) */
+export function ssotSubs(maker, model) {
+  const mm = cascade().get(maker);
+  const arr = (mm && mm.get(model)) || [];
+  return arr.map(e => ({ sub: e.sub_model, id: e.id, year_start: e.year_start, year_end: e.year_end }))
+    .sort((a, b) => String(b.year_start || '').localeCompare(String(a.year_start || '')));
+}
+function ssotEntry(maker, model, sub) {
+  const mm = cascade().get(maker);
+  const arr = (mm && mm.get(model)) || [];
+  return arr.find(e => e.sub_model === sub) || null;
+}
+/** 파워트레인 라벨 목록 — 스냅과 동일 포맷(variantLabel: 2.0 / 인승 구분시) */
+export function ssotVariantLabels(maker, model, sub) {
+  const e = ssotEntry(maker, model, sub);
+  if (!e) return [];
+  const seatVary = new Set((e.variants || []).map(v => v.seat).filter(Boolean)).size > 1;
+  return (e.variants || []).map(v => variantLabel(v, seatVary)).filter(Boolean);
+}
+/** 선택 파워트레인의 트림 (없으면 세부모델 union) — datalist 제안용 */
+export function ssotTrimsFor(maker, model, sub, label) {
+  const e = ssotEntry(maker, model, sub);
+  if (!e) return [];
+  const seatVary = new Set((e.variants || []).map(v => v.seat).filter(Boolean)).size > 1;
+  const v = (e.variants || []).find(x => variantLabel(x, seatVary) === label);
+  return (v && v.trims && v.trims.length) ? v.trims : (e.trims || []);
+}

@@ -71,8 +71,8 @@ function prodSeat(p) {
   return mm ? Number(mm[1]) : 0;
 }
 
-/* ── 파워트레인 라벨 (배기량 .1 고정: 2.0/3.0 정수도 .0 표기) ── */
-function variantLabel(v, showSeat) {
+/* ── 파워트레인 라벨 (배기량 .1 고정: 2.0/3.0 정수도 .0 표기). picker 와 공유 ── */
+export function variantLabel(v, showSeat) {
   if (!v) return '';
   let e = '';
   if (v.battery_kwh != null) e = `${v.battery_kwh}kWh`;

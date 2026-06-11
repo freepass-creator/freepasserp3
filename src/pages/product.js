@@ -42,7 +42,17 @@ ensureCatalogSource().then(() => {
 });
 import { fpIdsToNames, FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { pickPartner } from '../core/dialogs.js';
-import { getCachedMakerOrigin, loadSsotEntries } from '../core/ssot-source.js';
+import {
+  getCachedMakerOrigin, loadSsotEntries,
+  ssotLoaded, ssotMakers, ssotModels, ssotSubs, ssotVariantLabels, ssotTrimsFor,
+} from '../core/ssot-source.js';
+
+/* 재고관리 picker 소스 — SSOT(1803, 동기화와 동일) 우선, 미로드/누락 시 catalog 폴백 */
+const srcMakers = () => (ssotLoaded() ? ssotMakers() : getCatalogMakers());
+const srcModels = (mk) => (ssotLoaded() ? ssotModels(mk) : getCatalogModels(mk));
+const srcSubs = (mk, md) => (ssotLoaded() ? ssotSubs(mk, md) : getCatalogSubModels(mk, md));
+const srcVariantLabels = (mk, md, sub, cid) =>
+  ssotLoaded() ? ssotVariantLabels(mk, md, sub) : (cid ? [...catalogPowertrains(cid).keys()] : []);
 import {
   esc, shortStatus, fmtTime, fmtDate, fmtMileage,
   listBody, emptyState, renderRoomItem,
@@ -108,10 +118,11 @@ function renderCarPicker(p, dis = '') {
   const curVariant = split.variant || '';
   const curTrim = (split.trim && split.trim !== '(기본)') ? split.trim : '';
 
-  const makers = getCatalogMakers();
-  const models = curMk ? getCatalogModels(curMk) : [];
-  const subs = (curMk && curMd) ? getCatalogSubModels(curMk, curMd) : [];
-  const variantOpts = curCid ? [...catalogPowertrains(curCid).keys()].map(v => ({ val: v, label: v })) : [];
+  if (!ssotLoaded()) loadSsotEntries().catch(() => {});   // 캐시 채우기 — 다음 렌더부터 SSOT 캐스케이드
+  const makers = srcMakers();
+  const models = curMk ? srcModels(curMk) : [];
+  const subs = (curMk && curMd) ? srcSubs(curMk, curMd) : [];
+  const variantOpts = srcVariantLabels(curMk, curMd, curSub, curCid).map(v => ({ val: v, label: v }));
 
   // sub_model option: data-cid 로 catalog_id 추적, label 에 생산년도 표기
   const yy = (v) => { const m = (v || '').match(/^(\d{4})/); return m ? m[1].slice(2) : ''; };
@@ -217,11 +228,10 @@ function bindCarPicker(card, p) {
   };
   const subsToOpts = (subs) => subs.map(s => ({ val: s.sub, label: s.sub + yearLabel(s), attr: ` data-cid="${esc(s.id)}"` }));
   const arrToOpts = (arr) => arr.map(v => ({ val: v, label: v }));
-  const variantOpts = (cid) => cid ? [...catalogPowertrains(cid).keys()].map(v => ({ val: v, label: v })) : [];
 
   mkSel.addEventListener('change', () => {
     const newMk = mkSel.value;
-    fill(mdSel, arrToOpts(newMk ? getCatalogModels(newMk) : []), '', { ctx: 'model', mk: newMk });
+    fill(mdSel, arrToOpts(newMk ? srcModels(newMk) : []), '', { ctx: 'model', mk: newMk });
     fill(sbSel, [], '', { ctx: 'sub_model', mk: newMk, md: '' });
     fill(ptSel, [], '', { ctx: 'variant' });
     if (tmInput) tmInput.value = '';
@@ -231,7 +241,7 @@ function bindCarPicker(card, p) {
   });
   mdSel.addEventListener('change', () => {
     const mk = mkSel.value, newMd = mdSel.value;
-    const subs = (mk && newMd) ? getCatalogSubModels(mk, newMd) : [];
+    const subs = (mk && newMd) ? srcSubs(mk, newMd) : [];
     fill(sbSel, subsToOpts(subs), '', { ctx: 'sub_model', mk, md: newMd });
     fill(ptSel, [], '', { ctx: 'variant' });
     if (tmInput) tmInput.value = '';
@@ -240,15 +250,14 @@ function bindCarPicker(card, p) {
     persistCascade();
   });
   sbSel.addEventListener('change', () => {
-    const mk = mkSel.value, sub = sbSel.value;
-    // 선택된 option 의 data-cid → catalog_id 자동 set
-    const opt = sbSel.selectedOptions[0];
-    const cid = opt?.dataset?.cid || (findCatalogBySubModel(mk, sub)?.id || '');
+    const mk = mkSel.value, md = mdSel.value, sub = sbSel.value;
+    // catalog_id 는 실제 catalog 매칭만 저장 (SSOT id로 오염 X). 파워트레인은 SSOT(mk/md/sub) 우선.
+    const cid = findCatalogBySubModel(mk, sub)?.id || (ssotLoaded() ? '' : (sbSel.selectedOptions[0]?.dataset?.cid || ''));
     if (cidIn) cidIn.value = cid;
-    fill(ptSel, variantOpts(cid), '', { ctx: 'variant' });   // 파워트레인 옵션 채움
+    fill(ptSel, srcVariantLabels(mk, md, sub, cid).map(v => ({ val: v, label: v })), '', { ctx: 'variant' });
     if (tmInput) tmInput.value = '';
     refreshTrimDatalist(card, p);
-    autoFillFromCarModel(card, mk, mdSel.value, sub);
+    autoFillFromCarModel(card, mk, md, sub);
     persistCascade();
   });
   if (ptSel) ptSel.addEventListener('change', () => {
@@ -265,11 +274,21 @@ function bindCarPicker(card, p) {
 function refreshTrimDatalist(card, p) {
   const trimInput = card.querySelector('[data-f="trim_name"]');
   if (!trimInput) return;
-  const cid = card.querySelector('[data-f="catalog_id"]')?.value || p.catalog_id || '';
   const variant = card.querySelector('[data-f="variant"]')?.value || '';
-  if (!cid) return;
-  const ptMap = catalogPowertrains(cid);
-  const trims = ((variant && ptMap.has(variant)) ? ptMap.get(variant) : [...new Set([].concat(...ptMap.values()))]).filter(Boolean);
+  let trims = [];
+  if (ssotLoaded()) {   // SSOT 트림 우선 (선택 파워트레인 기준)
+    const mk = card.querySelector('[data-f="maker"]')?.value || p.maker || '';
+    const md = card.querySelector('[data-f="model"]')?.value || p.model || '';
+    const sb = card.querySelector('[data-f="sub_model"]')?.value || p.sub_model || '';
+    trims = ssotTrimsFor(mk, md, sb, variant).filter(Boolean);
+  }
+  if (!trims.length) {   // catalog 폴백
+    const cid = card.querySelector('[data-f="catalog_id"]')?.value || p.catalog_id || '';
+    if (cid) {
+      const ptMap = catalogPowertrains(cid);
+      trims = ((variant && ptMap.has(variant)) ? ptMap.get(variant) : [...new Set([].concat(...ptMap.values()))]).filter(Boolean);
+    }
+  }
   if (!trims.length) return;
   let dl = card.querySelector('#mtxTrimList');
   if (!dl) { dl = document.createElement('datalist'); dl.id = 'mtxTrimList'; card.appendChild(dl); }
