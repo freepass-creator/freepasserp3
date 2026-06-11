@@ -22,6 +22,8 @@ import { renderMasterCascade } from '../core/master-cascade.js';
 import { buildMasterTree, masterTreeStats, parseTrim } from '../core/vehicle-master-tree.js';
 import { powertrainFromProduct } from '../core/powertrain-from-product.js';
 import { ensureCatalogSource, catalogSubModelByYear, inferMaker } from '../core/catalog-source.js';
+import { loadSsotEntries } from '../core/ssot-source.js';
+import { buildSnapIndex, snapToSsot } from '../core/ssot-snap.js';
 import { setBreadcrumbTail } from '../core/breadcrumb.js';
 
 let _activeTab = 'jonghap';
@@ -630,10 +632,12 @@ function renderSyncTab(el) {
           title: c.title || '',
           status: c.status === 'archived' ? 'deleted' : 'active',
         })).filter(m => m.maker && m.model);
-        // 안전 fallback — vehicle_master 도 있으면 합침
-        const merged = [...catalogModels, ...((store.carModels || []).filter(m => m.maker && m.model))];
+        // 우리 차종마스터 SSOT (엔카 1,803, 전 세대) — 연식 기반 세대매칭 강화. 실패 시 catalog 만으로 진행.
+        const ssotEntries = await loadSsotEntries().catch((e) => { devLog(`[sync] SSOT 로드 실패: ${e?.message || e}`); return []; });
+        // 순서: SSOT 우선(전세대) → catalog(신차/세부보강) → vehicle_master(수기 fallback)
+        const merged = [...ssotEntries, ...catalogModels, ...((store.carModels || []).filter(m => m.maker && m.model))];
         const vmIndex = buildVehicleIndex(merged);
-        devLog(`[sync] catalog 인덱스: ${catalogModels.length}개 + vehicle_master ${(store.carModels || []).length}개`);
+        devLog(`[sync] 매칭 인덱스: SSOT ${ssotEntries.length} + catalog ${catalogModels.length} + vehicle_master ${(store.carModels || []).length}`);
         for (const p of items) {
           const m = matchVehicle(p.raw_model_short || '', p.raw_model_full || '', p.first_registration_date || '', vmIndex);
           if (m.maker)     p.maker = m.maker;
@@ -645,20 +649,31 @@ function renderSyncTab(el) {
       } else {
         for (const p of items) if (p.maker && p.model) matched++;
       }
-      // ── 5단계 자동분류 (어떤 공급사가 어떻게 입력해도 웬만큼 찾아넣게) ──
-      await ensureCatalogSource();   // catalog _index 로드 (세부모델 연식매칭용)
+      // ── 5단계 자동분류 — 우리 SSOT 규격의 '완전경로 종착지' 하나로 스냅 (raw 통과 금지) ──
+      await ensureCatalogSource();   // catalog _index 로드 (폴백용)
+      const ssotForSnap = await loadSsotEntries().catch(() => []);
+      const snapIndex = ssotForSnap.length ? buildSnapIndex(ssotForSnap) : null;
+      let snapped = 0;
       for (const p of items) {
-        // ⓪ 제조사 미입력 → 추론 (catalog 모델매칭 → 수입 브랜드 패턴). 예: "320I"→BMW, "E200"→벤츠
-        if (!p.maker) p.maker = inferMaker(p.model, `${p.sub_model || ''} ${p.trim_name || ''} ${p.raw_model_full || ''}`);
-        // ① 세부모델(세대) — 연식+모델로 catalog 세대 배정 (시트 세부모델이 모델레벨이라 보강)
-        const sm = catalogSubModelByYear(p.maker, p.model, p.first_registration_date || p.year);
-        if (sm) { p.sub_model = sm.sub_model; p.catalog_id = sm.catalog_id; }
-        // ② 파워트레인 + 세부트림 — 연료·배기량·구동/인승 구조화 필드로 variant, 트림은 나머지(노이즈 제거)
-        const { variant, trim } = powertrainFromProduct(p);
-        if (variant) p.variant = variant;
-        if (trim) p.trim_name = trim;
-        // ③ 정책 자동매칭 — 시트 정책코드 우선, 없으면 공급코드(provider)로 해당 공급사 기본정책 → policy_code
-        //    (오플=RP023 기본정책 / 각 공급사 RP코드별 정책). 상품찾기 _policy 매칭(policy_code 일치)에 사용.
+        // 우리 규격에 가둠 — 제조사·모델·세부모델·파워트레인·세부트림 전부 SSOT 실재값으로.
+        //  (없는 트림이어도 제일 비슷한 SSOT 트림으로 스냅. 어떤 차든 종착지 1개로.)
+        const snap = snapIndex ? snapToSsot(p, snapIndex) : null;
+        if (snap) {
+          p.maker = snap.maker; p.model = snap.model; p.sub_model = snap.sub_model;
+          p.gen_code = snap.gen_code;
+          p.variant = snap.variant;
+          p.trim_name = snap.trim_name;
+          snapped++;
+        } else {
+          // ── 폴백: 기존 catalog 휴리스틱 (SSOT 매칭 실패 차종) ──
+          if (!p.maker) p.maker = inferMaker(p.model, `${p.sub_model || ''} ${p.trim_name || ''} ${p.raw_model_full || ''}`);
+          const sm = catalogSubModelByYear(p.maker, p.model, p.first_registration_date || p.year);
+          if (sm) { p.sub_model = sm.sub_model; p.catalog_id = sm.catalog_id; }
+          const { variant, trim } = powertrainFromProduct(p);
+          if (variant) p.variant = variant;
+          if (trim) p.trim_name = trim;
+        }
+        // ③ 정책 자동매칭 (공통) — 시트 정책코드 우선, 없으면 공급코드로 해당 공급사 기본정책 → policy_code
         if (!p.policy_code) {
           const prov = p.provider_company_code || p.partner_code;
           const pol = prov && (store.policies || []).find(po => !po._deleted
@@ -666,6 +681,7 @@ function renderSyncTab(el) {
           if (pol) p.policy_code = pol.policy_code || pol.term_code || '';
         }
       }
+      devLog(`[sync] SSOT 규격 스냅 ${snapped}/${items.length} · 폴백 ${items.length - snapped}`);
       _syncFetched = data;
       const unmatched = items.length - matched;
       devLog(`[sync] ✓ ${data.synced}건 · 스킵 ${data.skipped}건 · 자동분류 ${matched}/${items.length}`);

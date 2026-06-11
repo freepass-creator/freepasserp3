@@ -42,6 +42,7 @@ ensureCatalogSource().then(() => {
 });
 import { fpIdsToNames, FP_POPULAR_PRIMARY, FP_POPULAR_SECONDARY } from '../core/fp-options-master.js';
 import { pickPartner } from '../core/dialogs.js';
+import { getCachedMakerOrigin, loadSsotEntries } from '../core/ssot-source.js';
 import {
   esc, shortStatus, fmtTime, fmtDate, fmtMileage,
   listBody, emptyState, renderRoomItem,
@@ -143,6 +144,15 @@ function pickerSelect(label, field, cur, opts, ctx, dis) {
   </div>`;
 }
 
+/* 국산/수입 — 우리 SSOT 의 origin(데이터) 우선. SSOT 미로드/누락 시에만 아래 set 으로 fallback. */
+const DOMESTIC_MAKERS = new Set(['현대', '기아', '제네시스', '쉐보레', '르노', '르노삼성', '삼성', 'KGM', 'KG모빌리티', '쌍용', '대우']);
+let _ssotKicked = false;
+function isDomesticMaker(mk) {
+  if (!_ssotKicked) { _ssotKicked = true; loadSsotEntries().catch(() => {}); }  // 캐시 채우기(1회)
+  const o = getCachedMakerOrigin()[mk];
+  return o ? o === '국산' : DOMESTIC_MAKERS.has(mk);   // SSOT origin 우선
+}
+
 function pickerOptionsHtml(opts, cur, ctx) {
   const { m, mm, mms } = inventoryCounts();
   const countOf = (val) => {
@@ -155,9 +165,21 @@ function pickerOptionsHtml(opts, cur, ctx) {
     const n = countOf(o.val);
     return n > 0 ? `${o.label} (${n})` : o.label;
   };
+  const optHtml = (o) => `<option value="${esc(o.val)}"${o.attr || ''} ${o.val === cur ? 'selected' : ''}>${esc(labelOf(o))}</option>`;
   const inList = opts.some(o => o.val === cur);
-  return opts.map(o => `<option value="${esc(o.val)}"${o.attr || ''} ${o.val === cur ? 'selected' : ''}>${esc(labelOf(o))}</option>`).join('')
-    + (cur && !inList ? `<option value="${esc(cur)}" selected>${esc(cur)}</option>` : '');
+  const fallback = (cur && !inList) ? `<option value="${esc(cur)}" selected>${esc(cur)}</option>` : '';
+
+  // 제조사 — 국산차/수입차 optgroup 섹션 구분 (SSOT origin 데이터 기반)
+  if (ctx.ctx === 'maker') {
+    const dom = opts.filter(o => isDomesticMaker(o.val));
+    const imp = opts.filter(o => !isDomesticMaker(o.val));
+    let html = '';
+    if (dom.length) html += `<optgroup label="── 국산차 ──">${dom.map(optHtml).join('')}</optgroup>`;
+    if (imp.length) html += `<optgroup label="── 수입차 ──">${imp.map(optHtml).join('')}</optgroup>`;
+    return html + fallback;
+  }
+
+  return opts.map(optHtml).join('') + fallback;
 }
 
 function bindCarPicker(card, p) {

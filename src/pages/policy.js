@@ -107,6 +107,50 @@ export const POLICY_OPTS = {
   insurance_included: ['보험료 포함','보험료 별도','보험료 협의'],
 };
 
+/* ── 금액/퍼센트 토글 입력 — 드롭다운 대신 자유입력 + %↔정액(만원) 아이콘 토글.
+ *   저장값: '%'면 "(접두)N%"(예 "대여료의 10%"), '만원'이면 "N만원". 필터는 숫자/% 파싱이라 지장 없음. ── */
+function parseAmtVal(value, defUnit) {
+  const s = String(value == null ? '' : value).trim();
+  const num = (s.match(/(\d+(?:\.\d+)?)/) || [])[1] || '';
+  let unit = defUnit, pctPrefix = '';
+  if (s.includes('%')) { unit = '%'; const i = num ? s.indexOf(String(num)) : -1; if (i > 0) pctPrefix = s.slice(0, i).trim() + ' '; }
+  else if (/만원|원/.test(s)) unit = '만원';
+  return { num, unit, pctPrefix };
+}
+function ffAmt(label, field, value, dis = '', opts = {}) {
+  const p = parseAmtVal(value, opts.unit || '만원');
+  const unit = p.unit;
+  const prefix = opts.pctPrefix || p.pctPrefix || '';
+  const amtPrefix = opts.amtPrefix || '';   // 만원 모드 접두 (예: '월 ' → "월 3만원")
+  const lock = dis ? '' : ' data-edit-lock="1" readonly';
+  return `<div class="ff"><label>${esc(label)}</label>
+    <div class="amt-field" data-prefix="${esc(prefix)}" data-amtprefix="${esc(amtPrefix)}" style="display:flex;gap:4px;align-items:stretch;">
+      <input type="hidden" data-f="${esc(field)}" value="${esc(value || '')}">
+      <input type="number" inputmode="decimal" class="input amt-num" value="${esc(p.num)}" placeholder="0"${dis}${lock} style="text-align:right;flex:1;min-width:0;">
+      <button type="button" class="amt-unit" data-unit="${esc(unit)}"${dis} title="누르면 % ↔ 만원 전환" style="flex:none;width:46px;border:1px solid var(--border);border-radius:6px;background:var(--bg-stripe);font-size:12px;font-weight:700;cursor:pointer;color:var(--text-sub);">${esc(unit)}</button>
+    </div></div>`;
+}
+function bindAmtToggles(page) {
+  page.querySelectorAll('.amt-field').forEach(box => {
+    const hidden = box.querySelector('input[data-f]');
+    const num = box.querySelector('.amt-num');
+    const btn = box.querySelector('.amt-unit');
+    if (!hidden || !num || !btn) return;
+    const recompute = () => {
+      const n = String(num.value).trim();
+      const u = btn.dataset.unit;
+      hidden.value = n === '' ? '' : (u === '%' ? `${box.dataset.prefix || ''}${n}%` : `${box.dataset.amtprefix || ''}${n}만원`);
+    };
+    num.addEventListener('input', recompute);
+    btn.addEventListener('click', () => {
+      if (!document.body.classList.contains('is-edit-mode')) return;
+      btn.dataset.unit = btn.dataset.unit === '%' ? '만원' : '%';
+      btn.textContent = btn.dataset.unit;
+      recompute();
+    });
+  });
+}
+
 export function renderPolicyList(policies) {
   const body = listBody('policy');
   if (!body) return;
@@ -211,7 +255,7 @@ export function renderPolicyDetail(pol) {
       ${sec('file-text', '조건')}
       <div class="form-grid">
         ${ffs('약정 주행거리', 'annual_mileage',               String(pol.annual_mileage || '').replace(/\s*주행\s*$/, ''), O.annual_mileage, dis)}
-        ${ffs('1만km추가',  'mileage_upcharge_per_10000km',   pol.mileage_upcharge_per_10000km,   O.mileage_upcharge_per_10000km, dis)}
+        ${ffAmt('1만km추가', 'mileage_upcharge_per_10000km', pol.mileage_upcharge_per_10000km, dis, { unit: '만원' })}
         ${ffs('보증금분납', 'deposit_installment',            pol.deposit_installment,            O.deposit_installment, dis)}
         ${ffs('보증카드',   'deposit_card_payment',           pol.deposit_card_payment,           O.deposit_card_payment, dis)}
         ${ffi('결제방식',   'payment_method',                 pol.payment_method,                 dis)}
@@ -230,17 +274,17 @@ export function renderPolicyDetail(pol) {
       ${sec('shield', '보험')}
       <div class="form-grid">
         ${ffi('대인배상',   'injury_compensation_limit',          pol.injury_compensation_limit, dis)}
-        ${ffs('대인면책',   'injury_deductible',                  pol.injury_deductible,                                                 O.injury_deductible, dis)}
+        ${ffAmt('대인면책', 'injury_deductible', pol.injury_deductible, dis, { unit: '만원' })}
         ${ffs('대물배상',   'property_compensation_limit',        pol.property_compensation_limit,                                       O.property_compensation_limit, dis)}
-        ${ffs('대물면책',   'property_deductible',                pol.property_deductible,                                               O.property_deductible, dis)}
+        ${ffAmt('대물면책', 'property_deductible', pol.property_deductible, dis, { unit: '만원' })}
         ${ffs('자손사고',   'self_body_accident',                 pol.self_body_accident || pol.personal_injury_compensation_limit,      O.self_body_accident, dis)}
-        ${ffs('자손면책',   'self_body_deductible',               pol.self_body_deductible || pol.personal_injury_deductible,            O.self_body_deductible, dis)}
+        ${ffAmt('자손면책', 'self_body_deductible', pol.self_body_deductible || pol.personal_injury_deductible, dis, { unit: '만원' })}
         ${ffs('무보험상해', 'uninsured_damage',                   pol.uninsured_damage || pol.uninsured_compensation_limit,              O.uninsured_damage, dis)}
-        ${ffs('무보험면책', 'uninsured_deductible',               pol.uninsured_deductible,                                              O.uninsured_deductible, dis)}
+        ${ffAmt('무보험면책', 'uninsured_deductible', pol.uninsured_deductible, dis, { unit: '만원' })}
         ${ffs('자차손해',   'own_damage_compensation',            pol.own_damage_compensation,                                           O.own_damage_compensation, dis)}
-        ${ffs('자차수리율', 'own_damage_repair_ratio',            pol.own_damage_repair_ratio || pol.own_damage_compensation_rate,       O.own_damage_repair_ratio, dis)}
-        ${ffs('자차최소',   'own_damage_min_deductible',          pol.own_damage_min_deductible,                                         O.own_damage_min_deductible, dis)}
-        ${ffs('자차최대',   'own_damage_max_deductible',          pol.own_damage_max_deductible,                                         O.own_damage_max_deductible, dis)}
+        ${ffAmt('자차수리율', 'own_damage_repair_ratio', pol.own_damage_repair_ratio || pol.own_damage_compensation_rate, dis, { unit: '%' })}
+        ${ffAmt('자차최소', 'own_damage_min_deductible', pol.own_damage_min_deductible, dis, { unit: '만원' })}
+        ${ffAmt('자차최대', 'own_damage_max_deductible', pol.own_damage_max_deductible, dis, { unit: '만원' })}
         ${ffs('긴급출동',   'annual_roadside_assistance',         pol.annual_roadside_assistance || pol.roadside_assistance,             O.annual_roadside_assistance, dis)}
         ${ffs('정비서비스', 'maintenance_service',                pol.maintenance_service,                                               O.maintenance_service, dis)}
         ${ffs('보험료포함', 'insurance_included',                 pol.insurance_included,                                                O.insurance_included, dis)}
@@ -251,11 +295,11 @@ export function renderPolicyDetail(pol) {
         ${ffs('면허취득',   'license_period',                     pol.license_period,                                                    O.license_period, dis)}
         ${ffs('연령상한',   'driver_age_upper_limit',             pol.driver_age_upper_limit,                                            O.driver_age_upper_limit, dis)}
         ${ffs('연령하향',   'driver_age_lowering',                pol.driver_age_lowering,                                               O.driver_age_lowering, dis)}
-        ${ffs('연령하향비', 'age_lowering_cost',                  pol.age_lowering_cost,                                                 O.age_lowering_cost, dis)}
+        ${ffAmt('연령하향비', 'age_lowering_cost', pol.age_lowering_cost, dis, { unit: '%', pctPrefix: '대여료의 ' })}
         ${ffs('개인범위',   'personal_driver_scope',              pol.personal_driver_scope,                                             O.personal_driver_scope, dis)}
         ${ffs('사업자범위', 'business_driver_scope',              pol.business_driver_scope,                                             O.business_driver_scope, dis)}
         ${ffs('추가인원',   'additional_driver_allowance_count',  pol.additional_driver_allowance_count,                                 O.additional_driver_allowance_count, dis)}
-        ${ffs('추가운전비', 'additional_driver_cost',             pol.additional_driver_cost,                                            O.additional_driver_cost, dis)}
+        ${ffAmt('추가운전비', 'additional_driver_cost', pol.additional_driver_cost, dis, { unit: '만원', amtPrefix: '월 ' })}
       </div>
     `;
   }
@@ -290,6 +334,7 @@ export function renderPolicyDetail(pol) {
     }
   }
 
+  bindAmtToggles(page);
   if (canEdit) bindFormSave(page, 'policies', pol._key, pol);
 }
 

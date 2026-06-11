@@ -314,46 +314,54 @@ window.refreshPageActions = function(pageName) {
   // body.is-draft-mode — 신규 draft 활성 시 시각 구분 (하늘색). 편집모드 OFF / 다른 매물 선택 시 자동 제거
   document.body.classList.toggle('is-draft-mode', !!isNewDraft);
 
-  const editToggle = (isNewDraft && !draftStarted)
-    ? {
-        // 신규 등록 + 아무것도 입력 안 함 → [취소] (입력 시작하면 [저장] 으로 자동 변경)
-        label: '취소',
-        icon: 'ph-x',
-        title: '신규 등록 취소 — 입력 안 한 항목 폐기',
-        onClick: async () => {
-          if (!await customConfirm({ message: '입력하신 내용을 폐기하고 신규 등록을 취소할까요?', danger: true, okLabel: '폐기', cancelLabel: '계속 입력' })) return;
-          await updateRecord(`${coll}/${activeId}`, { _deleted: true, updated_at: Date.now() }, { silent: true });
-          untrackDraft(coll, activeId);
-          window.toggleEditMode?.(false);
-          showToast('신규 등록 취소됨');
-        },
+  // 신규 등록 폐기
+  const _discardDraft = {
+    label: '취소',
+    icon: 'ph-x',
+    title: '신규 등록 취소 — 입력 안 한 항목 폐기',
+    onClick: async () => {
+      if (!await customConfirm({ message: '입력하신 내용을 폐기하고 신규 등록을 취소할까요?', danger: true, okLabel: '폐기', cancelLabel: '계속 입력' })) return;
+      await updateRecord(`${coll}/${activeId}`, { _deleted: true, updated_at: Date.now() }, { silent: true });
+      untrackDraft(coll, activeId);
+      window.toggleEditMode?.(false);
+      showToast('신규 등록 취소됨');
+    },
+  };
+  // 수정 취소 (기존 record) — 편집 모드만 끔
+  const _exitEdit = {
+    label: '취소',
+    icon: 'ph-x',
+    title: '수정 취소 — 편집 모드 끄기',
+    onClick: () => { window.toggleEditMode?.(false); showToast('수정 취소'); },
+  };
+  // 저장 — 검증 후 flush + 편집 모드 끔
+  const _saveEdit = {
+    label: '저장',
+    icon: 'ph-check',
+    primary: true,
+    title: '변경 사항 저장 + 편집 모드 끄기',
+    onClick: async () => {
+      // 신규 draft 가 활성이면 필수 필드 검증 — 미입력 시 저장 차단
+      if (coll && activeId && isDraftSaveBlocked(coll, activeId)) {
+        const missing = missingRequiredFields(coll, activeId);
+        const labels = { car_number: '차량번호', provider_company_code: '공급사', policy_name: '정책명', partner_name: '파트너명' };
+        const missLabels = missing.map(f => labels[f] || f).join(', ');
+        showToast(`필수 정보 미입력: ${missLabels}`, 'error');
+        return;
       }
-    : {
-        label: isEditing ? '저장' : '수정',
-        icon:  isEditing ? 'ph-check' : 'ph-pencil-simple',
-        primary: isEditing,
-        title: isEditing ? '변경 사항 저장 + 편집 모드 끄기' : '편집 모드 켜기',
-        onClick: async () => {
-          if (isEditing) {
-            // 신규 draft 가 활성이면 필수 필드 검증 — 미입력 시 저장 차단
-            if (coll && activeId && isDraftSaveBlocked(coll, activeId)) {
-              const missing = missingRequiredFields(coll, activeId);
-              const labels = { car_number: '차량번호', provider_company_code: '공급사', policy_name: '정책명', partner_name: '파트너명' };
-              const missLabels = missing.map(f => labels[f] || f).join(', ');
-              showToast(`필수 정보 미입력: ${missLabels}`, 'error');
-              return;
-            }
-            const n = await window.flushActivePageSaves?.();
-            // 신규 draft 가 모두 채워져 저장됐으면 추적 해제
-            if (coll && activeId) untrackDraft(coll, activeId);
-            window.toggleEditMode?.(false);
-            if (n > 0) showToast(`저장됨 (${n}건)`, 'success');
-            else showToast('변경사항 없음', 'info');
-          } else {
-            window.toggleEditMode?.(true);
-          }
-        },
-      };
+      const n = await window.flushActivePageSaves?.();
+      if (coll && activeId) untrackDraft(coll, activeId);
+      window.toggleEditMode?.(false);
+      if (n > 0) showToast(`저장됨 (${n}건)`, 'success');
+      else showToast('변경사항 없음', 'info');
+    },
+  };
+  // 보기:[수정] / 수정모드:[취소][저장] / 신규 draft 미입력:[취소]
+  const editActions = (isNewDraft && !draftStarted)
+    ? [_discardDraft]
+    : isEditing
+      ? [(isNewDraft ? _discardDraft : _exitEdit), _saveEdit]
+      : [{ label: '수정', icon: 'ph-pencil-simple', title: '편집 모드 켜기', onClick: () => { window.toggleEditMode?.(true); } }];
 
   if (p === 'product') {
     const hasSelection = !!activeId;
@@ -373,7 +381,7 @@ window.refreshPageActions = function(pageName) {
       ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewProduct() },
-        editToggle,
+        ...editActions,
         { divider: true },
         { label: '복사', icon: 'ph-copy', disabled: !hasSelection,
           title: '현재 차량 정보 복사', onClick: () => copyProduct(product) },
@@ -403,7 +411,7 @@ window.refreshPageActions = function(pageName) {
       ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPolicy() },
-        editToggle,
+        ...editActions,
         { divider: true },
         { label: '복사', icon: 'ph-copy', disabled: !hasSelection,
           title: '현재 정책 조건/보험/운전자 정보 복사', onClick: () => copyPolicy(policy) },
@@ -429,7 +437,7 @@ window.refreshPageActions = function(pageName) {
       ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPartner() },
-        editToggle,
+        ...editActions,
         { divider: true },
         { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
           onClick: () => deletePartner(activeId) },
@@ -451,7 +459,7 @@ window.refreshPageActions = function(pageName) {
         buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
-        editToggle,
+        ...editActions,
         { divider: true },
         { label: chatHidden ? '채팅 보이기' : '채팅 숨기기',
           icon:  chatHidden ? 'ph-eye' : 'ph-eye-slash',
@@ -476,7 +484,7 @@ window.refreshPageActions = function(pageName) {
         buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
-        editToggle,
+        ...editActions,
         { divider: true },
         { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
           onClick: () => deleteContract(activeId) },
@@ -496,7 +504,7 @@ window.refreshPageActions = function(pageName) {
         buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
-        editToggle,
+        ...editActions,
         { divider: true },
         { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
           onClick: () => deleteSettlement(activeId) },
@@ -556,7 +564,7 @@ window.refreshPageActions = function(pageName) {
         },
       ],
       right: [
-        editToggle,
+        ...editActions,
         { divider: true },
         { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,
           onClick: () => deleteUser(activeId) },
