@@ -653,7 +653,7 @@ function renderSyncTab(el) {
       await ensureCatalogSource();   // catalog _index 로드 (폴백용)
       const ssotForSnap = await loadSsotEntries().catch(() => []);
       const snapIndex = ssotForSnap.length ? buildSnapIndex(ssotForSnap) : null;
-      let snapped = 0;
+      let snapped = 0, reviewN = 0;
       for (const p of items) {
         // 우리 규격에 가둠 — 제조사·모델·세부모델·파워트레인·세부트림 전부 SSOT 실재값으로.
         //  (없는 트림이어도 제일 비슷한 SSOT 트림으로 스냅. 어떤 차든 종착지 1개로.)
@@ -663,8 +663,14 @@ function renderSyncTab(el) {
           p.gen_code = snap.gen_code;
           p.variant = snap.variant;
           p.trim_name = snap.trim_name;
+          p.match_confidence = snap.confidence;            // 'high' | 'review'
+          p.match_flags = snap.flags && snap.flags.length ? snap.flags.join(',') : '';
+          if (snap.confidence === 'review') reviewN++;
           snapped++;
         } else {
+          p.match_confidence = 'review';                   // 폴백(SSOT 미스냅)도 검토 대상
+          p.match_flags = '폴백';
+          reviewN++;
           // ── 폴백: 기존 catalog 휴리스틱 (SSOT 매칭 실패 차종) ──
           if (!p.maker) p.maker = inferMaker(p.model, `${p.sub_model || ''} ${p.trim_name || ''} ${p.raw_model_full || ''}`);
           const sm = catalogSubModelByYear(p.maker, p.model, p.first_registration_date || p.year);
@@ -681,7 +687,7 @@ function renderSyncTab(el) {
           if (pol) p.policy_code = pol.policy_code || pol.term_code || '';
         }
       }
-      devLog(`[sync] SSOT 규격 스냅 ${snapped}/${items.length} · 폴백 ${items.length - snapped}`);
+      devLog(`[sync] SSOT 규격 스냅 ${snapped}/${items.length} · 폴백 ${items.length - snapped} · ⚠검토필요 ${reviewN}`);
       _syncFetched = data;
       const unmatched = items.length - matched;
       devLog(`[sync] ✓ ${data.synced}건 · 스킵 ${data.skipped}건 · 자동분류 ${matched}/${items.length}`);
@@ -773,7 +779,9 @@ function renderSyncTab(el) {
                 ${map(p.car_number)}
                 ${map(p.vehicle_status)}
                 ${map(p.product_type)}
-                ${autoMap(p.maker)}
+                ${p.match_confidence === 'review'
+                  ? `<td style="padding:4px 6px;background:var(--alert-orange-bg);color:var(--alert-orange-text);font-weight:600;" title="검토필요: ${esc(p.match_flags || '')}">⚠ ${e(p.maker)}</td>`
+                  : autoMap(p.maker)}
                 ${autoMap(p.model)}
                 ${autoMap(p.sub_model)}
                 ${autoMap(p.variant)}

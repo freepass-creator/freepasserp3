@@ -103,9 +103,9 @@ function snapVariant(p, variants) {
   return best;
 }
 
-/* ── 트림 스냅: 후보 트림 중 최유사 (항상 실재 트림) ── */
+/* ── 트림 스냅: 후보 트림 중 최유사 (항상 실재 트림). {name, score} 반환 ── */
 function snapTrim(rawTrim, trims) {
-  if (!trims || !trims.length) return '';
+  if (!trims || !trims.length) return { name: '', score: 0 };
   // raw 에서 모델/파워트레인 토큰 거품 제거 (대충): 숫자.숫자, 2WD/4WD, 인승, 연료어
   let clean = String(rawTrim || '')
     .replace(/\d\.\d\s*(?:터보|T\b)?/gi, ' ')
@@ -119,7 +119,7 @@ function snapTrim(rawTrim, trims) {
     const s = simScore(clean, t);
     if (s > bestS) { bestS = s; best = t; }
   }
-  return best;  // 매칭 약해도 가장 가까운 실재 트림으로
+  return { name: best, score: bestS };  // 매칭 약해도 가장 가까운 실재 트림으로
 }
 
 /* ── 수입 엔진코드 → SSOT 한글 모델 추론 (520d→5시리즈, S400d→S클래스, A6 45→A6) ── */
@@ -214,6 +214,7 @@ export function snapToSsot(p, snapIndex) {
   // 1) 제품의 기존 maker/model 우선 (공백·하이픈 무시) — 이미 분류된 현재고에 강함 (테슬라 '모델Y'='모델 Y')
   let cand = (p.maker && p.model) ? byModelNorm.get(`${keyNorm(p.maker)}|${keyNorm(p.model)}`) : null;
   let m = null;
+  let resolvedBy = 'direct';
   // 2) 없으면 raw 텍스트로 matchVehicle
   if (!cand || !cand.length) {
     m = matchVehicle(
@@ -222,16 +223,17 @@ export function snapToSsot(p, snapIndex) {
       p.first_registration_date || p.year || '',
       index
     );
-    if (m.maker && m.model) cand = byModel.get(`${m.maker}|${m.model}`) || [];
+    if (m.maker && m.model) { cand = byModel.get(`${m.maker}|${m.model}`) || []; resolvedBy = 'match'; }
   }
   // 3) 수입 엔진코드 추론 (520d→5시리즈, S400d→S클래스, A6 45→A6) — 모델명이 코드로만 온 수입차
   if (!cand || !cand.length) {
     const mkr = p.maker || (m && m.maker) || '';
     const text = `${p.model || ''} ${p.sub_model || ''} ${p.trim_name || ''} ${p.raw_model_full || ''} ${p.raw_model_short || ''}`;
     const inferred = inferImportModel(mkr, text, modelsByMaker && modelsByMaker.get(keyNorm(mkr)));
-    if (inferred) cand = byModelNorm.get(`${keyNorm(mkr)}|${keyNorm(inferred)}`) || [];
+    if (inferred) { cand = byModelNorm.get(`${keyNorm(mkr)}|${keyNorm(inferred)}`) || []; resolvedBy = 'infer'; }
   }
   if (!cand || !cand.length) return null;
+  const nGen = cand.length;   // 이 모델의 세대(세부모델) 수 — 연식 중요도 판단용
 
   const pf = fuelKey(p.fuel_type) || fuelKey(`${p.trim_name || ''} ${p.raw_model_full || ''}`);
   const regYear = regYearOf(p);
@@ -263,12 +265,31 @@ export function snapToSsot(p, snapIndex) {
   // 트림은 '스냅된 파워트레인의 트림'만 (LPG에 가솔린 N Line 안 붙게). 없으면 세부모델 union 폴백.
   const vTrims = (v && v.trims && v.trims.length) ? v.trims : entry.trims;
   const seatVaries = new Set((entry.variants || []).map(x => x.seat).filter(Boolean)).size > 1;
+  const tr = snapTrim((m && m.trim_name) || p.trim_name, vTrims);
+
+  // ── confidence: 불확실 신호(정밀). 하나라도 있으면 '검토필요' ──
+  const rawTrimText = String((m && m.trim_name) || p.trim_name || '').trim();
+  const sameFuelDispVary = pf
+    ? new Set((entry.variants || []).filter(x => fuelKey(x.fuel) === pf && x.displacement_l != null).map(x => x.displacement_l)).size > 1
+    : false;
+  const review = [];   // 'review' 유발 (고신호 — 오스냅 가능성)
+  const info = [];     // 참고용 (흔하고 대체로 정상이라 review 안 띄움)
+  if (resolvedBy === 'infer') review.push('수입추론');                 // 모델을 엔진코드로 추론
+  if (pf && v && fuelKey(v.fuel) && fuelKey(v.fuel) !== pf) review.push('연료불일치');  // 맞는 연료 파워트레인 없음
+  if (prodDispL(p) == null && sameFuelDispVary) review.push('배기량미상');  // 같은연료 배기량 여러개인데 배기량 모름
+  if (!regYear && nGen > 1) info.push('연식미상');                     // 다세대인데 등록일 없음 (세대=최신 추정)
+  if (rawTrimText.length >= 2 && (vTrims || []).length > 1 && tr.score < 0.2) info.push('트림추정');
+  const flags = [...review, ...info];
+  const confidence = review.length ? 'review' : 'high';
+
   return {
     maker: entry.maker,
     model: entry.model,
     sub_model: entry.sub_model,
     gen_code: entry.gen_code || '',
     variant: variantLabel(v, seatVaries),
-    trim_name: snapTrim((m && m.trim_name) || p.trim_name, vTrims),
+    trim_name: tr.name,
+    confidence,
+    flags,
   };
 }
