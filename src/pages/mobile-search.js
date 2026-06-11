@@ -336,9 +336,9 @@ function renderCard(p) {
 
   // 썸네일 심사기준 오버레이 — '신용무관' / '신용조회' 2종 정규화
   const creditRaw = p._policy?.screening_criteria || p._policy?.credit_grade || p.screening_criteria || p.credit_grade || '';
-  const creditLabel = /저신용|무심사|신용 *무관/.test(creditRaw) ? '신용무관'
-                    : /신용 *필요|신용 *조회|등급/.test(creditRaw) ? '신용조회'
-                    : (creditRaw || '신용무관');
+  const creditLabel = /저신용|무심사|신용 *무관|소득 *무관/.test(creditRaw) ? '소득무관'
+                    : /신용 *필요|신용 *조회|소득 *확인|소득 *조회|등급/.test(creditRaw) ? '소득확인'
+                    : (creditRaw || '소득무관');
   const creditTone = /무관|없음|전체/.test(creditLabel) ? 'ok'
                    : /조회|필요|등급|심사|소득/.test(creditLabel) ? 'warn'
                    : 'info';

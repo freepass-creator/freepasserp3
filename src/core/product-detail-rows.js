@@ -86,7 +86,8 @@ export function extractProductDetailRows(p, options = {}) {
 
   // 4. 기타 계약 조건
   const creditRaw = pol.credit_grade || pol.screening_criteria || p.credit_grade;
-  const creditDisplay = String(creditRaw || '').trim() === '저신용' ? '신용무관' : creditRaw;
+  const creditDisplay = /저신용|신용 *무관/.test(String(creditRaw || '').trim()) ? '소득무관'
+    : (/신용 *조회|신용 *필요/.test(String(creditRaw || '').trim()) ? '소득확인' : creditRaw);
   const cond = [
     ['심사여부',     needsReview(p, pol) ? '심사필요' : '무심사'],
     ['심사기준',     creditDisplay],

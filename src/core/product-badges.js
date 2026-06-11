@@ -53,8 +53,8 @@ export function needsReview(product) {
 function normalizeCreditGrade(raw) {
   if (!raw) return '';
   const s = String(raw).trim();
-  if (/저신용|무심사|신용 *무관/.test(s)) return '신용무관';
-  if (/신용 *필요|신용 *조회|등급/.test(s)) return '신용조회';
+  if (/저신용|무심사|신용 *무관|소득 *무관/.test(s)) return '소득무관';
+  if (/신용 *필요|신용 *조회|소득 *확인|소득 *조회|등급/.test(s)) return '소득확인';
   return s;
 }
 
@@ -70,8 +70,8 @@ export function creditGradeBadge(product) {
   const grade = normalizeCreditGrade(raw);
   if (!grade) return '';
   let tone = 'accent';
-  if (/무관|없음|전체/.test(grade)) tone = 'ok';        // 신용무관 = 초록
-  else if (/조회|필요|등급|심사|소득/.test(grade)) tone = 'warn';  // 신용조회 = 주황
+  if (/무관|없음|전체/.test(grade)) tone = 'ok';        // 소득무관 = 초록
+  else if (/확인|조회|필요|등급|심사|소득/.test(grade)) tone = 'warn';  // 소득확인 = 주황
   return badgeHtml(grade, tone);
 }
 

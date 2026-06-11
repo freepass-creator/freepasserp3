@@ -19,22 +19,22 @@ import {
   providerNameByCode, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
-/* 심사기준 정규화 — 레거시 값(`무심사` / `신용필요` / credit_grade) → 표준 2종 */
+/* 심사기준 정규화 — 표준 2종(소득무관 / 소득확인). 레거시 신용 값도 매핑 */
 export function normalizeScreening(raw) {
   const s = String(raw || '').trim();
   if (!s) return '';
-  // 신용 조회 안 함 계열
-  if (/무심사|신용무관|신용 *무관/.test(s)) return '신용무관';
-  // 신용 조회 / 등급 체크 계열
-  if (/신용 *필요|신용 *조회|등급/.test(s)) return '신용조회';
-  return s;   // 5종 외 값은 원본 유지 (편집 시 사용자가 수정)
+  // 소득(신용) 무관 계열
+  if (/무심사|신용 *무관|소득 *무관/.test(s)) return '소득무관';
+  // 소득 확인(신용 조회) 계열
+  if (/신용 *필요|신용 *조회|소득 *확인|소득 *조회|등급/.test(s)) return '소득확인';
+  return s;   // 그 외 값은 원본 유지 (편집 시 사용자가 수정)
 }
 
 /* 신규 정책 등록 시 자동으로 박히는 기본값 — 한국 렌트카 업계 흔한 표준값.
  *  사용자는 편집만 하면 됨. POLICY_OPTS 의 첫 옵션과 일치시키지 말고 실무 기본값 우선. */
 export const POLICY_DEFAULTS = {
-  // 식별·심사 — credit_grade 폐기, screening_criteria 만 유지 (신용무관 / 신용조회)
-  screening_criteria: '신용무관',
+  // 식별·심사 — credit_grade 폐기, screening_criteria 만 유지 (소득무관 / 소득확인)
+  screening_criteria: '소득무관',
   // 운전자
   basic_driver_age: '만 26세 이상',
   license_period: '1년 이상',
@@ -75,7 +75,7 @@ export const POLICY_DEFAULTS = {
 
 /* v2 정책 OPTS — 드롭다운 옵션 */
 export const POLICY_OPTS = {
-  screening_criteria: ['신용무관','신용조회'],
+  screening_criteria: ['소득무관','소득확인'],
   // credit_grade: 폐기 (screening_criteria 로 통합)
   basic_driver_age: ['만 21세 이상','만 22세 이상','만 23세 이상','만 24세 이상','만 25세 이상','만 26세 이상','만 27세 이상','만 28세 이상','만 29세 이상','만 30세 이상'],
   license_period: ['제한없음','3개월 이상','6개월 이상','1년 이상','2년 이상','3년 이상'],
