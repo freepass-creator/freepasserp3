@@ -63,13 +63,24 @@ function simScore(raw, cand) {
   return dice(a, b);
 }
 
+/* ── 제품 인승 추출: 필드 우선, 없으면 'N인승' 텍스트 ── */
+function prodSeat(p) {
+  const d = Number(p.seat || p.seats || p.seating_capacity || p.passenger_capacity || p.capacity || 0);
+  if (d) return d;
+  const mm = `${p.trim_name || ''} ${p.variant || ''} ${p.raw_model_full || ''} ${p.sub_model || ''}`.match(/(\d+)\s*인승/);
+  return mm ? Number(mm[1]) : 0;
+}
+
 /* ── 파워트레인 라벨 (배기량 .1 고정: 2.0/3.0 정수도 .0 표기) ── */
-function variantLabel(v) {
+function variantLabel(v, showSeat) {
   if (!v) return '';
   let e = '';
   if (v.battery_kwh != null) e = `${v.battery_kwh}kWh`;
   else if (v.displacement_l != null) e = `${Number(v.displacement_l).toFixed(1)}${v.turbo ? 'T' : ''}`;
-  return [v.fuel, e, v.drivetrain].filter(Boolean).join(' ');
+  const parts = [v.fuel, e];
+  if (showSeat && v.seat) parts.push(`${v.seat}인승`);   // 인승이 구분될 때만 (카니발 7/9 등)
+  if (v.drivetrain) parts.push(v.drivetrain);
+  return parts.filter(Boolean).join(' ');
 }
 
 /* ── 파워트레인 스냅: SSOT variants 중 최근접 ── */
@@ -78,12 +89,14 @@ function snapVariant(p, variants) {
   const pf = fuelKey(p.fuel_type) || fuelKey(`${p.trim_name || ''} ${p.raw_model_full || ''}`);
   const pd = prodDispL(p);
   const pdr = driveKey(`${p.trim_name || ''} ${p.raw_model_full || ''} ${p.variant || ''} ${p.drive_type || ''}`);
+  const ps = prodSeat(p);
   let best = variants[0], bestScore = -1e9;
   for (const v of variants) {
     let s = 0;
     if (pf) s += (fuelKey(v.fuel) === pf ? 100 : -120);          // 연료 최우선
     if (pd != null && v.displacement_l != null) s -= Math.abs(pd - v.displacement_l) * 25;  // 배기량 근접
     if (v.battery_kwh != null && pf === '전기') s += 5;
+    if (ps && v.seat) s += (Number(v.seat) === ps ? 40 : -15);   // 인승 (카니발 7/9, GV80 5/7 등 동일동력 구분)
     if (pdr && v.drivetrain) s += (driveKey(v.drivetrain) === pdr ? 30 : -8);  // 구동
     if (s > bestScore) { bestScore = s; best = v; }
   }
@@ -249,12 +262,13 @@ export function snapToSsot(p, snapIndex) {
   const v = snapVariant(p, entry.variants);
   // 트림은 '스냅된 파워트레인의 트림'만 (LPG에 가솔린 N Line 안 붙게). 없으면 세부모델 union 폴백.
   const vTrims = (v && v.trims && v.trims.length) ? v.trims : entry.trims;
+  const seatVaries = new Set((entry.variants || []).map(x => x.seat).filter(Boolean)).size > 1;
   return {
     maker: entry.maker,
     model: entry.model,
     sub_model: entry.sub_model,
     gen_code: entry.gen_code || '',
-    variant: variantLabel(v),
+    variant: variantLabel(v, seatVaries),
     trim_name: snapTrim((m && m.trim_name) || p.trim_name, vTrims),
   };
 }
