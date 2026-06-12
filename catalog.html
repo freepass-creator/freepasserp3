@@ -119,21 +119,67 @@
   }
   .cat-cta:hover { background: #1d4ed8; }
 
-  /* 필터 — segmented control. 외곽 한 틀 + 세로 라인 구분 (컴팩트).
-     기본 숨김 → 검색창의 세부필터 버튼(catDetailFilterBtn)으로 토글해 노출. */
+  /* 필터 — segmented control. 외곽 한 틀 + 세로 라인 구분 (컴팩트). 빠른 필터(항상 노출) */
   .cat-filters {
     margin: 6px 12px;
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 6px;
-    display: none; gap: 0;
+    display: flex; gap: 0;
     overflow: hidden;
     box-shadow: 0 1px 2px rgba(0,0,0,0.03);
   }
-  body.cat-filters-open:not(.is-detail):not(.is-single) .cat-filters { display: flex; }
-  /* 필터바 닫으면 펼쳐진 preset 행도 함께 숨김 */
-  body:not(.cat-filters-open) .cat-presets { display: none; }
   .cat-search-detail-btn.is-active { background: var(--accent-blue, #2563eb); color: #fff; }
+
+  /* 세부 필터 시트 — 검색창 sliders 버튼으로 오픈. 모든 카테고리 한 번에. (앱 디테일 필터 대응) */
+  .cat-filter-sheet-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.4);
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .cat-filter-sheet {
+    width: 100%; max-width: 520px; max-height: 85vh;
+    background: var(--bg-card); border-radius: 14px 14px 0 0;
+    display: flex; flex-direction: column;
+    box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
+  }
+  .cfs-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
+    font-weight: 700; font-size: 15px; color: var(--text-main);
+  }
+  .cfs-close { background: transparent; border: 0; font-size: 20px; cursor: pointer; color: var(--text-sub); line-height: 1; }
+  .cfs-body { padding: 8px 16px 4px; overflow-y: auto; }
+  .cfs-section { padding: 10px 0; border-bottom: 1px solid var(--bg-stripe); }
+  .cfs-section:last-child { border-bottom: 0; }
+  .cfs-title { font-size: 12px; font-weight: 700; color: var(--text-sub); margin-bottom: 8px; }
+  .cfs-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cfs-chip {
+    padding: 7px 12px; border: 1px solid var(--border); border-radius: 16px;
+    background: transparent; color: var(--text-main); font-size: 13px; cursor: pointer;
+    font-family: inherit; transition: background-color 100ms, border-color 100ms;
+  }
+  .cfs-chip:hover { background: var(--bg-stripe); }
+  .cfs-chip.is-active { background: var(--accent-blue, #2563eb); color: #fff; border-color: var(--accent-blue, #2563eb); }
+  .cfs-foot {
+    display: flex; gap: 8px; padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+  .cfs-reset {
+    flex: 0 0 auto; padding: 0 18px; height: 44px;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: transparent; color: var(--text-sub); font-size: 14px; cursor: pointer; font-family: inherit;
+  }
+  .cfs-apply {
+    flex: 1; height: 44px; border: 0; border-radius: 8px;
+    background: var(--accent-blue, #2563eb); color: #fff; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+  }
+  @media (min-width: 601px) {
+    .cat-filter-sheet-overlay { align-items: center; }
+    .cat-filter-sheet { border-radius: 14px; max-height: 80vh; }
+  }
   .cat-filters .cat-chip {
     flex: 1;
     border: 0;

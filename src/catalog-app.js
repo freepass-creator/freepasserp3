@@ -418,12 +418,78 @@ searchEl?.addEventListener('input', (e) => {
   renderGrid();
 });
 
-// 세부 필터 버튼 — 필터바(cat-filters) 토글. 기본 숨김이라 눌러야 필터 칩이 나옴.
+// 세부 필터 버튼 — 모든 카테고리(대여료/보증금/연식/주행/연료)를 한 번에 보여주는 디테일 필터 시트.
+//  (앱 웹/모바일의 디테일 필터에 대응. 카탈로그 기존 _filter 상태를 그대로 사용)
 const detailFilterBtn = document.getElementById('catDetailFilterBtn');
-detailFilterBtn?.addEventListener('click', () => {
-  const open = document.body.classList.toggle('cat-filters-open');
-  detailFilterBtn.classList.toggle('is-active', open);
-});
+detailFilterBtn?.addEventListener('click', openCatDetailFilter);
+
+function _catDetailFilterActive() {
+  return _filter.fuels.size || _filter.rentIdx.size || _filter.depositIdx.size
+       || _filter.yearIdx.size || _filter.mileageIdx.size;
+}
+
+function openCatDetailFilter() {
+  document.querySelector('.cat-filter-sheet-overlay')?.remove();
+  const fuels = ['가솔린', '디젤', 'LPG', '하이브리드', '전기'];
+  const rangeChips = (key) => RANGE_PRESETS[key].items
+    .map((it, i) => `<button class="cfs-chip ${_filter[key + 'Idx'].has(i) ? 'is-active' : ''}" data-g="${key}" data-i="${i}">${it.l}</button>`).join('');
+  const fuelChips = fuels
+    .map(f => `<button class="cfs-chip ${_filter.fuels.has(f) ? 'is-active' : ''}" data-g="fuel" data-f="${f}">${f}</button>`).join('');
+  const section = (title, chipsHtml) => `<div class="cfs-section"><div class="cfs-title">${title}</div><div class="cfs-chips">${chipsHtml}</div></div>`;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'cat-filter-sheet-overlay';
+  overlay.innerHTML = `
+    <div class="cat-filter-sheet" role="dialog" aria-label="세부 필터">
+      <div class="cfs-head"><span>세부 필터</span><button class="cfs-close" aria-label="닫기"><i class="ph ph-x"></i></button></div>
+      <div class="cfs-body">
+        ${section('대여료 (월)', rangeChips('rent'))}
+        ${section('보증금', rangeChips('deposit'))}
+        ${section('연식', rangeChips('year'))}
+        ${section('주행거리', rangeChips('mileage'))}
+        ${section('연료', fuelChips)}
+      </div>
+      <div class="cfs-foot">
+        <button class="cfs-reset" type="button">초기화</button>
+        <button class="cfs-apply" type="button">적용</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  overlay.querySelector('.cfs-close').addEventListener('click', close);
+
+  // 칩 토글 — _filter 상태 직접 변경 (빠른 필터 바와 같은 상태 공유)
+  overlay.querySelector('.cfs-body').addEventListener('click', (e) => {
+    const btn = e.target.closest('.cfs-chip');
+    if (!btn) return;
+    const g = btn.dataset.g;
+    if (g === 'fuel') {
+      const f = btn.dataset.f;
+      if (_filter.fuels.has(f)) _filter.fuels.delete(f); else _filter.fuels.add(f);
+    } else {
+      const set = _filter[g + 'Idx'];
+      const i = Number(btn.dataset.i);
+      if (set.has(i)) set.delete(i); else set.add(i);
+    }
+    btn.classList.toggle('is-active');
+  });
+
+  overlay.querySelector('.cfs-reset').addEventListener('click', () => {
+    _filter.fuels.clear();
+    _filter.rentIdx.clear(); _filter.depositIdx.clear();
+    _filter.yearIdx.clear(); _filter.mileageIdx.clear();
+    overlay.querySelectorAll('.cfs-chip.is-active').forEach(b => b.classList.remove('is-active'));
+  });
+
+  overlay.querySelector('.cfs-apply').addEventListener('click', () => {
+    updateCategoryBadges();
+    renderGrid();
+    detailFilterBtn?.classList.toggle('is-active', !!_catDetailFilterActive());
+    close();
+  });
+}
 
 filtersEl?.querySelectorAll('.cat-chip').forEach(chip => {
   chip.addEventListener('click', () => {
