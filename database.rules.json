@@ -5,7 +5,7 @@
       "$uid": {
         ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
         "role": {
-          ".validate": "!data.exists() || newData.val() === data.val() || root.child('users').child(auth.uid).child('role').val() === 'admin'"
+          ".validate": "(!data.exists() && newData.val() !== 'admin') || newData.val() === data.val() || root.child('users').child(auth.uid).child('role').val() === 'admin'"
         }
       }
     },
@@ -55,14 +55,16 @@
     },
 
     "contracts": {
-      ".read": "auth != null",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (query.orderByChild === 'agent_uid' && query.equalTo === auth.uid) || (query.orderByChild === 'provider_company_code' && query.equalTo === root.child('users').child(auth.uid).child('company_code').val()) || (query.orderByChild === 'agent_channel_code' && query.equalTo === root.child('users').child(auth.uid).child('agent_channel_code').val()))",
       ".write": "auth != null",
+      "$id": { ".read": "auth != null" },
       ".indexOn": ["product_uid", "partner_code", "contract_status", "agent_uid", "provider_company_code", "agent_channel_code", "created_at"]
     },
 
     "settlements": {
-      ".read": "auth != null",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (query.orderByChild === 'agent_uid' && query.equalTo === auth.uid) || (query.orderByChild === 'provider_company_code' && query.equalTo === root.child('users').child(auth.uid).child('company_code').val()) || (query.orderByChild === 'agent_channel_code' && query.equalTo === root.child('users').child(auth.uid).child('agent_channel_code').val()))",
       ".write": "auth != null",
+      "$id": { ".read": "auth != null" },
       ".indexOn": ["contract_code", "settlement_status", "provider_company_code", "agent_uid", "agent_channel_code"]
     },
 
