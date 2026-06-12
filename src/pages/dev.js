@@ -575,13 +575,12 @@ async function migratePartnerType() {
   try {
     const { ref, get, update } = await import('firebase/database');
     const { db } = await import('../firebase/config.js');
+    const { partnerTypeLabel } = await import('../core/partner-types.js');
     const snap = await get(ref(db, 'partners'));
     const data = snap.val() || {};
-    const MAP = { provider: '공급사', channel: '영업채널', supplier: '공급사', sales_channel: '영업채널', operator: '운영사' };
     let count = 0;
     for (const [key, val] of Object.entries(data)) {
-      const cur = (val.partner_type || '').toLowerCase();
-      const mapped = MAP[cur];
+      const mapped = partnerTypeLabel(val.partner_type);   // 한/영 별칭 → 표준 한글 (단일 소스)
       if (mapped && mapped !== val.partner_type) {
         await update(ref(db, `partners/${key}`), { partner_type: mapped });
         count++;

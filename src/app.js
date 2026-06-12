@@ -82,6 +82,7 @@ import {
 } from './pages/product.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
 import { filterByRole, roleScope, roleLabel } from './core/roles.js';
+import { PARTNER_TYPES } from './core/partner-types.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from './core/chat-render.js';
 import { markRoomRead } from './firebase/collections.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
@@ -1919,7 +1920,6 @@ function buildContextMenuItems(page, id, item) {
   if (page === 'partners') {
     const pa = (store.partners || []).find(x => x._key === id);
     if (!pa) return [];
-    const PARTNER_TYPES = ['공급사', '영업채널', '운영사'];
     const isActive = pa.is_active !== false;
     return [
       { icon: 'ph ph-tag', label: `유형: ${pa.partner_type || '-'}`,
