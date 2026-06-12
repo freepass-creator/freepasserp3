@@ -418,6 +418,13 @@ searchEl?.addEventListener('input', (e) => {
   renderGrid();
 });
 
+// 세부 필터 버튼 — 필터바(cat-filters) 토글. 기본 숨김이라 눌러야 필터 칩이 나옴.
+const detailFilterBtn = document.getElementById('catDetailFilterBtn');
+detailFilterBtn?.addEventListener('click', () => {
+  const open = document.body.classList.toggle('cat-filters-open');
+  detailFilterBtn.classList.toggle('is-active', open);
+});
+
 filtersEl?.querySelectorAll('.cat-chip').forEach(chip => {
   chip.addEventListener('click', () => {
     // 전체 — 모든 필터 해제
