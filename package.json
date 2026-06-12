@@ -15,6 +15,7 @@
     "prebuild": "node scripts/autoname-select-groups.cjs && node scripts/build-car-master-bundle.cjs && node scripts/build-aliases-map.cjs"
   },
   "devDependencies": {
+    "puppeteer-core": "^25.1.0",
     "vite": "^8.0.4",
     "vitest": "^2.1.9"
   },
