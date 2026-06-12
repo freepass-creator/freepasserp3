@@ -710,28 +710,32 @@ function openCatRangePop(anchor, key) {
   }, 0);
 }
 
-/* Firebase 데이터 로드 */
-watchCollection('policies', (list) => {
-  _policies = list || [];
-  if (_products.length) {
-    _products = enrichProductsWithPolicy(_products, _policies);
-    renderGrid();
-  }
-});
-watchCollection('partners', (list) => {
-  _partners = list || [];
-  // 공급사 카탈로그면 브랜드 자동 갱신 (?p)
-  if (providerCode) {
-    const partner = _partners.find(p => (p.partner_code || p.company_code || p._key) === providerCode);
-    if (partner) {
-      const name = stripLegalEntity(partner.partner_name || partner.company_name || providerCode);
-      const brandText = document.getElementById('catBrandText');
-      if (brandText) brandText.textContent = name;
-      document.title = name;
-      document.querySelector('meta[property="og:title"]')?.setAttribute('content', name);
+/* Firebase 데이터 로드.
+   policies/partners 는 rule 이 auth!=null → 익명 인증 완료 후 구독(인증 전 구독 시 초기 1회
+   PERMISSION_DENIED + 데이터 빈 깜빡임 발생). products 는 public(.read:true)이라 즉시 구독해 빠른 초기 렌더. */
+authReady.then(() => {
+  watchCollection('policies', (list) => {
+    _policies = list || [];
+    if (_products.length) {
+      _products = enrichProductsWithPolicy(_products, _policies);
+      renderGrid();
     }
-  }
-  if (_products.length) renderGrid();
+  });
+  watchCollection('partners', (list) => {
+    _partners = list || [];
+    // 공급사 카탈로그면 브랜드 자동 갱신 (?p)
+    if (providerCode) {
+      const partner = _partners.find(p => (p.partner_code || p.company_code || p._key) === providerCode);
+      if (partner) {
+        const name = stripLegalEntity(partner.partner_name || partner.company_name || providerCode);
+        const brandText = document.getElementById('catBrandText');
+        if (brandText) brandText.textContent = name;
+        document.title = name;
+        document.querySelector('meta[property="og:title"]')?.setAttribute('content', name);
+      }
+    }
+    if (_products.length) renderGrid();
+  });
 });
 watchCollection('products', (list) => {
   let raw = list || [];
