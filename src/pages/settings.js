@@ -12,6 +12,7 @@ import { logout as fbLogout, resetPassword } from '../firebase/auth.js';
 import { showToast } from '../core/toast.js';
 import { esc, renderRoomItem } from '../core/ui-helpers.js';
 import { roleLabel } from '../core/roles.js';
+import { AUTO_LOGOUT_OPTIONS, refreshIdleLogout } from '../core/idle-logout.js';
 
 const TABS = [
   { id: 'guide',    icon: 'book-open',     label: '사용설명',      sub: '단축키 | 우클릭 | 페이지 가이드' },
@@ -392,6 +393,7 @@ function renderSystemSection() {
   const landing = localStorage.getItem('fp.landing') || 'search';
   const soundOn = localStorage.getItem('fp.sound') !== 'off';
   const pushOn = (typeof Notification !== 'undefined' && Notification.permission === 'granted');
+  const autoLogoutMin = Number(localStorage.getItem('fp.autoLogout') || '0');
 
   return `
     <!-- 외관 -->
@@ -445,6 +447,21 @@ function renderSystemSection() {
         </div>
       </div>
     </section>
+
+    <!-- 보안 -->
+    <section class="settings-section">
+      <div class="settings-section-title">보안</div>
+      <div class="settings-rows">
+        <div class="settings-row">
+          <label class="settings-row-label">자동 로그아웃<span class="settings-row-hint" style="display:block;color:var(--text-muted);font-size:12px;">미사용 시간 초과 시 자동 로그아웃</span></label>
+          <select class="input" id="stAutoLogout" style="max-width: 200px;">
+            ${AUTO_LOGOUT_OPTIONS.map(o =>
+              `<option value="${o.min}" ${autoLogoutMin === o.min ? 'selected' : ''}>${o.label}</option>`
+            ).join('')}
+          </select>
+        </div>
+      </div>
+    </section>
   `;
 }
 
@@ -486,6 +503,14 @@ function bindSystemSection(body) {
     const cur = localStorage.getItem('fp.sound') !== 'off';
     localStorage.setItem('fp.sound', cur ? 'off' : 'on');
     renderTabBody();
+  });
+
+  // 자동 로그아웃
+  body.querySelector('#stAutoLogout')?.addEventListener('change', (e) => {
+    localStorage.setItem('fp.autoLogout', e.target.value);
+    refreshIdleLogout();
+    const min = Number(e.target.value);
+    showToast(min ? `자동 로그아웃: ${(AUTO_LOGOUT_OPTIONS.find(o => o.min === min) || {}).label}` : '자동 로그아웃 해제');
   });
 }
 

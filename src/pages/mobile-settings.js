@@ -19,6 +19,7 @@ async function requestNotificationPermission() {
 }
 import { navigate } from '../core/router.js';
 import { roleLabel } from '../core/roles.js';
+import { AUTO_LOGOUT_OPTIONS } from '../core/idle-logout.js';
 import { updateRecord, fetchCollection } from '../firebase/db.js';
 import { uploadImage, uploadFile } from '../firebase/storage-helper.js';
 import { logout, resetPassword } from '../firebase/auth.js';
@@ -68,12 +69,6 @@ const NOTIF_TYPES = [
   { key: 'inquiry',    label: '신규 문의',   icon: 'ph ph-chat-circle-dots' },
   { key: 'contract',   label: '계약 진행',   icon: 'ph ph-file-text' },
   { key: 'notice',     label: '공지사항',   icon: 'ph ph-megaphone' },
-];
-const AUTO_LOGOUT_OPTIONS = [
-  { min: 0,   label: '사용 안 함' },
-  { min: 15,  label: '15분' },
-  { min: 60,  label: '1시간' },
-  { min: 480, label: '8시간' },
 ];
 
 function _render() {

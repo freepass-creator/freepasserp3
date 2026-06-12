@@ -7,6 +7,14 @@
  */
 const ACTIVITY_EVENTS = ['pointerdown', 'keydown', 'touchstart', 'mousemove', 'visibilitychange'];
 
+/** 자동 로그아웃 선택지 (분) — 모바일/데스크톱 설정 공용 */
+export const AUTO_LOGOUT_OPTIONS = [
+  { min: 0,   label: '사용 안 함' },
+  { min: 15,  label: '15분' },
+  { min: 60,  label: '1시간' },
+  { min: 480, label: '8시간' },
+];
+
 let timer = null;
 let bound = null;
 let lastReset = 0;
