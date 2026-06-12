@@ -114,38 +114,8 @@ const _pageFilters = {
   workspace: { unread: 'all', company_code: 'all' },   // all / unread
 };
 
-function getCompanyOptions() {
-  const codes = new Set();
-  (store.partners || []).filter(p => !p._deleted).forEach(p => {
-    const code = p.partner_code || p.company_code;
-    if (code) codes.add(code);
-  });
-  return [...codes].sort();
-}
-function partnerNameOf(code) {
-  const pa = (store.partners || []).find(p => (p.partner_code === code || p.company_code === code) && !p._deleted);
-  return pa?.partner_name || pa?.company_name || code;
-}
-function buildCompanyDropdownChip(curCompany, setter) {
-  const opts = getCompanyOptions();
-  return {
-    chip: true,
-    label: curCompany === 'all' ? '소속 전체 ▾' : `${partnerNameOf(curCompany)} (${curCompany}) ▾`,
-    onClick: (e) => {
-      import('./core/context-menu.js').then(({ openContextMenu }) => {
-        openContextMenu(e, [
-          { label: '소속 전체', active: curCompany === 'all', action: () => setter('all') },
-          { divider: true },
-          ...opts.map(code => ({
-            label: `${partnerNameOf(code)} (${code})`,
-            active: curCompany === code,
-            action: () => setter(code),
-          })),
-        ]);
-      });
-    },
-  };
-}
+// 소속(공급사) 드롭다운은 상품찾기(search) 자체 '공급코드' 필터로만 제공.
+//  업무소통/계약/정산/정책/재고 액션바의 소속 드롭다운은 제거됨(공급사만 노출 정책 + 상품찾기 일원화).
 
 /* 페이지 이탈 시 — 활성 페이지의 변경 사항을 먼저 flush 후 draft 정리.
  *  ([저장] 버튼만 저장하는 spec 의 예외 — 사용자가 [수정] → 입력 → 저장 안 누르고 다른 메뉴로 가는
@@ -368,7 +338,6 @@ window.refreshPageActions = function(pageName) {
     const product = hasSelection ? (store.products || []).find(x => x._key === activeId) : null;
     const f = _pageFilters.product;
     const setS = (v) => { f.status = v; renderFilteredProducts(); window.refreshPageActions?.('product'); };
-    const setC = (v) => { f.company_code = v; renderFilteredProducts(); window.refreshPageActions?.('product'); };
     setPageActions({
       left: [
         { chip: true, label: '전체', active: f.status === 'all',  onClick: () => setS('all') },
@@ -376,8 +345,6 @@ window.refreshPageActions = function(pageName) {
         { chip: true, label: '가능', active: f.status === '가능', onClick: () => setS('가능') },
         { chip: true, label: '협의', active: f.status === '협의', onClick: () => setS('협의') },
         { chip: true, label: '불가', active: f.status === '불가', onClick: () => setS('불가') },
-        { divider: true },
-        buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewProduct() },
@@ -400,14 +367,11 @@ window.refreshPageActions = function(pageName) {
     const policy = hasSelection ? (store.policies || []).find(x => x._key === activeId) : null;
     const f = _pageFilters.policy;
     const setS = (v) => { f.status = v; renderFilteredPolicies(); window.refreshPageActions?.('policy'); };
-    const setC = (v) => { f.company_code = v; renderFilteredPolicies(); window.refreshPageActions?.('policy'); };
     setPageActions({
       left: [
         { chip: true, label: '전체',   active: f.status === 'all',      onClick: () => setS('all') },
         { chip: true, label: '활성',   active: f.status === 'active',   onClick: () => setS('active') },
         { chip: true, label: '비활성', active: f.status === 'inactive', onClick: () => setS('inactive') },
-        { divider: true },
-        buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
         { label: '신규등록', icon: 'ph-plus', primary: !isEditing, onClick: () => createNewPolicy() },
@@ -449,14 +413,11 @@ window.refreshPageActions = function(pageName) {
     const hasSelection = !!activeId;
     const f = _pageFilters.workspace;
     const setU = (v) => { f.unread = v; renderFilteredRooms(); window.refreshPageActions?.('workspace'); };
-    const setC = (v) => { f.company_code = v; renderFilteredRooms(); window.refreshPageActions?.('workspace'); };
     setPageActions({
       left: [
         { chip: true, label: '전체',   active: f.unread === 'all',    onClick: () => setU('all') },
         { chip: true, label: '읽음',   active: f.unread === 'read',   onClick: () => setU('read') },
         { chip: true, label: '안읽음', active: f.unread === 'unread', onClick: () => setU('unread') },
-        { divider: true },
-        buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
         ...editActions,
@@ -473,15 +434,12 @@ window.refreshPageActions = function(pageName) {
     const hasSelection = !!activeId;
     const f = _pageFilters.contract;
     const setS = (v) => { f.status = v; renderFilteredContracts(); window.refreshPageActions?.('contract'); };
-    const setC = (v) => { f.company_code = v; renderFilteredContracts(); window.refreshPageActions?.('contract'); };
     setPageActions({
       left: [
         { chip: true, label: '전체', active: f.status === 'all',      onClick: () => setS('all') },
         { chip: true, label: '대기', active: f.status === 'pending',  onClick: () => setS('pending') },
         { chip: true, label: '진행', active: f.status === 'progress', onClick: () => setS('progress') },
         { chip: true, label: '완료', active: f.status === 'done',     onClick: () => setS('done') },
-        { divider: true },
-        buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
         ...editActions,
@@ -494,14 +452,11 @@ window.refreshPageActions = function(pageName) {
     const hasSelection = !!activeId;
     const f = _pageFilters.settle;
     const setS = (v) => { f.status = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
-    const setC = (v) => { f.company_code = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
     setPageActions({
       left: [
         { chip: true, label: '전체',   active: f.status === 'all',     onClick: () => setS('all') },
         { chip: true, label: '미정산', active: f.status === 'pending', onClick: () => setS('pending') },
         { chip: true, label: '완료',   active: f.status === 'done',    onClick: () => setS('done') },
-        { divider: true },
-        buildCompanyDropdownChip(f.company_code, setC),
       ],
       right: [
         ...editActions,
@@ -1156,6 +1111,13 @@ async function boot() {
     document.body.classList.remove('is-login');
     hydrateUser(user);
     startHydration();
+    // 백그라운드 서비스 — ⚠ v3 리팩터(9063c71)에서 호출 블록이 통째로 누락된 회귀 복구.
+    //  채팅알림/만기알림/메뉴뱃지/명령팔레트는 읽기전용(구독·토스트·뱃지·단축키) → 안전.
+    //  initAutoStatus(차량상태 자동변경)는 부작용 검토 후 별도 — 의도적으로 제외.
+    import('./core/chat-notif.js').then(m => m.initChatNotif()).catch(() => {});
+    import('./core/alerts.js').then(m => m.initAlerts()).catch(() => {});
+    import('./core/menu-badges.js').then(m => m.initMenuBadges()).catch(() => {});
+    import('./core/command-palette.js').then(m => m.initCommandPalette()).catch(() => {});
     // 모바일(폰) UA → 4탭 SPA 활성화
     initMobileShell();
   } else {

@@ -1294,12 +1294,12 @@
   .pt-actions-center { justify-content: center; gap: var(--sp-2); }
   .pt-actions-right  { justify-content: flex-end; flex: 1; min-width: 0; }
   .pt-actions-zone:empty { display: none; }
-  .pt-actions-divider { width: 1px; height: 16px; background: var(--border); margin: 0 var(--sp-3); }
+  .pt-actions-divider { width: 1px; height: 18px; background: var(--border); margin: 0 var(--sp-3); }
 
-  /* 액션바 공급사 드롭다운 — chip 과 비슷한 크기, native select */
+  /* 액션바 공급사 드롭다운 — chip 과 동일 규격, native select */
   .pt-actions .pt-actions-select {
-    height: 20px; max-width: 150px; padding: 0 4px;
-    font-size: 11px; font-family: inherit;
+    height: 24px; max-width: 160px; padding: 0 8px;
+    font-size: 12px; font-family: inherit;
     border: 1px solid var(--border); border-radius: 2px;
     background: transparent; color: var(--text-sub);
     cursor: pointer;
@@ -1308,9 +1308,10 @@
     border-color: var(--text-main); color: var(--text-main); font-weight: 500;
   }
 
-  /* 액션바 내부 .btn-xs / .chip — 통일 규격 강제 (전역 base.css 토큰 위에) */
-  .pt-actions .btn-xs { height: 20px; padding: 0 6px; font-size: 11px; gap: 4px; }
-  .pt-actions .chip   { height: 20px; padding: 0 6px; font-size: 11px; gap: 4px; }
+  /* 액션바 내부 .btn-xs / .chip — 통일 규격 강제 (전역 base.css 토큰 위에).
+     버튼/chip/select 전부 height 24 · font 12 동일 규격 (액션바 36px 안에서 시각 균형) */
+  .pt-actions .btn-xs { height: 24px; padding: 0 9px; font-size: 12px; gap: 5px; }
+  .pt-actions .chip   { height: 24px; padding: 0 9px; font-size: 12px; gap: 5px; }
   .pt-actions .chip.is-active {
     background: var(--text-main); color: var(--text-inverse); border-color: var(--text-main);
   }

@@ -68,7 +68,7 @@ function onNewMessage(room) {
   }
 
   // 3. Browser notification (if tab not focused)
-  if (document.hidden && Notification.permission === 'granted') {
+  if (document.hidden && ('Notification' in window) && Notification.permission === 'granted') {
     const notif = new Notification(`${name}`, {
       body: msg,
       icon: '/favicon.svg',
