@@ -5,7 +5,7 @@
  * matchFilter: 제품 p 가 그룹 g 의 chip 와 매칭되는지
  * buildDynamicChips: dynamic 필터(제조사/모델/연식 등) 칩을 products 에서 집계
  */
-import { needsReview } from './product-badges.js';
+import { needsReview, VEHICLE_STATUSES } from './product-badges.js';
 
 export const TOP_N = {
   maker: 8, model: 12, submodel: 12, year: 10,
@@ -68,7 +68,7 @@ export const FILTERS = {
   vehicle_status: {
     // vehicle_status 표준 5가지 (사용자 정책)
     label: '출고상태', icon: 'ph ph-truck',
-    chips: ['즉시출고','출고가능','출고협의','상품화중','출고불가'].map(s => ({
+    chips: VEHICLE_STATUSES.map(s => ({
       id: `vs_${s}`, label: s, match: v => v === s,
     })),
   },

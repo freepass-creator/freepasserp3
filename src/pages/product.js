@@ -59,10 +59,11 @@ import {
   ffi, ffs, setHeadSave, flashSaved, bindFormSave,
   providerNameByCode, providerLabelByCode, formatMainLine,
 } from '../core/ui-helpers.js';
+import { VEHICLE_STATUSES } from '../core/product-badges.js';
 
 /* v2 product-manage 옵션 — 차량 스펙 드롭다운 */
 export const PRODUCT_OPTS = {
-  vehicle_status: ['즉시출고','출고가능','출고협의','상품화중','출고불가'],
+  vehicle_status: VEHICLE_STATUSES,
   product_type: ['중고렌트','신차렌트','중고구독','신차구독'],
   fuel_type: ['가솔린','디젤','LPG','하이브리드','전기','수소'],
   vehicle_class: ['경차','소형','준중형','중형','준대형','대형','SUV','RV','승합','화물','수입'],

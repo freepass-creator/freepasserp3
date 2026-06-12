@@ -9,6 +9,7 @@
  *   - 정책 휴리스틱: needsReview
  */
 import { updateRecord } from '../firebase/db.js';
+import { VEHICLE_STATUS_SET } from './product-badges.js';
 
 /* ──────── 문자열·포맷 ──────── */
 export function esc(s) {
@@ -32,10 +33,9 @@ export function shortStatus(s) {
 
 /* 5종 풀 라벨 정규화 — 상품찾기 등 풀 표기 페이지용.
  * API `normalizeVehicleStatus` (external-sheet) 와 동일 룰. */
-const VEHICLE_STATUS_ALLOWED = new Set(['즉시출고', '출고가능', '상품화중', '출고협의', '출고불가']);
 export function normalizeVehicleStatus(s) {
   const t = String(s || '').trim();
-  if (VEHICLE_STATUS_ALLOWED.has(t)) return t;
+  if (VEHICLE_STATUS_SET.has(t)) return t;
   if (t === '판매중' || t === '할인판매') return '출고가능';
   if (/즉시/.test(t)) return '즉시출고';
   if (/상품화/.test(t)) return '상품화중';

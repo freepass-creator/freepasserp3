@@ -15,6 +15,11 @@ const VS_TONE = {
   '출고불가': 'err',
 };
 
+/* 차량상태 표준 5종 — VS_TONE 키 순서가 단일 소스(배열·Set 파생).
+ *  드롭다운/칩/정규화에서 인라인 리터럴 금지하고 여기서 import. */
+export const VEHICLE_STATUSES = Object.keys(VS_TONE);
+export const VEHICLE_STATUS_SET = new Set(VEHICLE_STATUSES);
+
 function badgeHtml(label, tone, variant = 'is-filled') {
   return `<span class="badge ${variant} badge-${tone}">${label}</span>`;
 }

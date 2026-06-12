@@ -81,8 +81,9 @@ import {
   renderProductList, renderProductDetail,
 } from './pages/product.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
-import { filterByRole, roleScope, roleLabel } from './core/roles.js';
+import { filterByRole, roleScope, roleLabel, ROLES } from './core/roles.js';
 import { PARTNER_TYPES } from './core/partner-types.js';
+import { VEHICLE_STATUSES } from './core/product-badges.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from './core/chat-render.js';
 import { markRoomRead } from './firebase/collections.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
@@ -1103,7 +1104,7 @@ async function boot() {
   }
 
   // 유효한 역할을 가진 사용자만 진입 — 그 외(미가입/role 없음/비활성/대기/거부) 모두 로그인 화면
-  const VALID_ROLES = ['admin', 'agent', 'agent_admin', 'agent_manager', 'provider'];
+  const VALID_ROLES = Object.values(ROLES);   // roles.js 단일 소스
   const status = user?.status || 'active';
   const hasValidRole = user && VALID_ROLES.includes(user.role);
   const isBlocked = user && (user.is_active === false || status === 'pending' || status === 'rejected');
@@ -1826,7 +1827,7 @@ function buildContextMenuItems(page, id, item) {
   if (page === 'product') {
     const p = (store.products || []).find(x => x._key === id);
     if (!p) return [];
-    const STATUS_OPTS = ['즉시출고', '출고가능', '상품화중', '출고협의', '출고불가'];
+    const STATUS_OPTS = VEHICLE_STATUSES;
     // 정책 후보 — 차량 공급사의 정책만 (회사 일치). 빈 공급사면 disabled
     const productProvider = p.provider_company_code || p.partner_code || '';
     const policyCandidates = (store.policies || [])
