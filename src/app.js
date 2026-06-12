@@ -1300,8 +1300,11 @@ function startHydration() {
   watchCollection('settlements', (list) => { store.settlements = list || []; renderFilteredSettlements();    updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage); }, { scope: _dataScope });
-  watchCollection('admin_settlements', (list) => { store.adminSettlements = list || [];
-    if (document.querySelector('.pt-page[data-page="admin-settle"]')?.classList.contains('active')) window.renderAdminSettlement?.(); });
+  // admin_settlements 는 관리자 전용 (read rule 도 admin) — 비관리자는 watch 안 함 (PERMISSION_DENIED 방지)
+  if (store.currentUser?.role === 'admin') {
+    watchCollection('admin_settlements', (list) => { store.adminSettlements = list || [];
+      if (document.querySelector('.pt-page[data-page="admin-settle"]')?.classList.contains('active')) window.renderAdminSettlement?.(); });
+  }
   // partners 갱신 시 dependent list 재렌더는 디바운스 (연속 변경 시 1번만)
   let _partnersRefreshT;
   const refreshPartnersDependents = () => {
@@ -1325,7 +1328,9 @@ function startHydration() {
     if (activePage === 'users') applyGlobalSearch(); else renderUserList(store.users);
     updateSidebarCounts(); window.refreshPageActions?.();
     if (activePage) window.updatePageStats?.(activePage); });
-  watchCollection('customers',   (list) => { store.customers   = list || []; });
+  // 고객 PII — 비관리자는 자기가 만든 고객만 (created_by). 전화 중복검색도 자기 고객 내에서.
+  const _custScope = (store.currentUser?.role === 'admin') ? null : { field: 'created_by', value: store.currentUser?.uid || '\x00none' };
+  watchCollection('customers',   (list) => { store.customers   = list || []; }, { scope: _custScope });
   // vehicle_master Firebase 컬렉션 폐기됨 — 차종 데이터는 catalog (public/data/car-master) 단일 진실원
   // catalog cascade 데이터는 src/core/catalog-source.js 에서 _index.json 로드
 

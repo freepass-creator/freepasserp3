@@ -69,15 +69,16 @@
     },
 
     "admin_settlements": {
-      ".read": "auth != null",
-      ".write": "auth != null",
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
       ".indexOn": ["settle_month", "settle_status", "contract_code"]
     },
 
     "customers": {
-      ".read": "auth != null",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (query.orderByChild === 'created_by' && query.equalTo === auth.uid))",
       ".write": "auth != null",
-      ".indexOn": ["phone", "name", "created_at"]
+      "$id": { ".read": "auth != null" },
+      ".indexOn": ["phone", "name", "created_at", "created_by"]
     },
 
     "inquiries": {
