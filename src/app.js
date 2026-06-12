@@ -1120,6 +1120,9 @@ async function boot() {
     import('./core/command-palette.js').then(m => m.initCommandPalette()).catch(() => {});
     // 모바일(폰) UA → 4탭 SPA 활성화
     initMobileShell();
+    // 모바일 온보딩(PWA 설치 + 알림 권한 안내) — 모바일 UA 에서만 자동 노출, 7일 쿨다운.
+    //  v3 리팩터에서 호출 누락돼 신규유저 온보딩이 죽어있던 회귀 복구. 알림 권한 안내가 채팅알림과 보완.
+    import('./core/onboard-prompt.js').then(m => m.checkOnboard()).catch(() => {});
   } else {
     // 인증은 됐지만 진입 자격 없음 → 강제 로그아웃 + 로그인 폼
     if (user) {
