@@ -11,6 +11,7 @@ import { updateRecord } from '../firebase/db.js';
 import { logout as fbLogout, resetPassword } from '../firebase/auth.js';
 import { showToast } from '../core/toast.js';
 import { esc, renderRoomItem } from '../core/ui-helpers.js';
+import { roleLabel } from '../core/roles.js';
 
 const TABS = [
   { id: 'guide',    icon: 'book-open',     label: '사용설명',      sub: '단축키 | 우클릭 | 페이지 가이드' },
@@ -238,12 +239,11 @@ function renderGuideSection() {
 /* ──────── 계정 정보 ──────── */
 function renderAccountSection(user) {
   const initial = (user.name || user.email || '?').trim().charAt(0).toUpperCase();
-  const ROLE_LABEL = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업 관리자' };
   // 변경 불가 정보 — 읽기 전용 표시 (가입 시 확정 / 관리자만 변경 가능)
   const READONLY_INFO = [
     { label: '이메일',     value: user.email || '-' },
     { label: '소속',       value: user.company_name || user.company_code || '-' },
-    { label: '역할',       value: ROLE_LABEL[user.role] || user.role || '-' },
+    { label: '역할',       value: roleLabel(user.role) || '-' },
     { label: '사용자 코드', value: user.user_code || '-' },
     { label: '가입일',     value: user.created_at ? new Date(user.created_at).toLocaleDateString('ko-KR') : '-' },
   ];

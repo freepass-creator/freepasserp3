@@ -9,6 +9,18 @@ export const ROLES = Object.freeze({
   ADMIN: 'admin',
 });
 
+/** 역할 표시 라벨 (전역 단일 소스 — 파일마다 중복 정의 금지) */
+const ROLE_LABELS = Object.freeze({
+  admin: '관리자',
+  provider: '공급사',
+  agent: '영업자',
+  agent_admin: '영업관리자',
+  agent_manager: '영업관리자',
+});
+export function roleLabel(role) {
+  return ROLE_LABELS[role] || role || '';
+}
+
 /** 영업자 or 영업관리자 */
 export function isAgentSide(role) {
   return role === ROLES.AGENT || role === ROLES.AGENT_ADMIN;

@@ -395,7 +395,7 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
 
   // 기간/가격 — 등록된 가격 있는 기간만 노출 (desktop 동일)
   const priceMap = p.price || {};
-  const PERIODS = ['1', '12', '24', '36', '48', '60'];
+  const PERIODS = ['12', '24', '36', '48', '60'];   // 데스크톱과 동일 (1개월 제거)
   const availablePeriods = PERIODS.filter(m => Number(priceMap[m]?.rent) > 0);
   const defaultM = availablePeriods.includes('36') ? '36' : (availablePeriods[0] || '36');
 
@@ -534,12 +534,13 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
         if (birth && birth.length !== 6) { showToast('생년월일 6자리', 'error'); return; }
         if (isBiz && (!bizNo || !bizName)) { showToast('사업자 정보 입력', 'error'); return; }
 
-        // 중복 체크 — 본인 + 동일 차량 + 동일 계약자명 = 같은 계약
-        // (다른 영업자 / 다른 계약자 / 취소된 계약 은 무관)
+        // 중복 체크 — 배정 영업자 + 동일 차량 + 동일 계약자명 = 같은 계약
+        // (admin 대행 시엔 me 가 아닌 선택된 agent 기준이어야 함)
+        const dupAgentUid = agent.uid || agent._key || '';
         if (productUid) {
           const dup = (store.contracts || []).find(c =>
             !c._deleted &&
-            c.agent_uid === me.uid &&
+            c.agent_uid === dupAgentUid &&
             c.product_uid === productUid &&
             (c.customer_name || '').trim() === name &&
             c.contract_status !== '계약취소'

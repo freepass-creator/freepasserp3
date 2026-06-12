@@ -447,8 +447,6 @@ export function renderContractWorkV2(c) {
     }
   }
 
-  const ACTOR_LABEL = { agent: '영업자', provider: '공급사', admin: '관리자' };
-
   // 4단계 — 한 줄 = 영업자 | → | 공급사 (7단계 시절 레이아웃, 4줄로 축소)
   // 정책:
   //   - 활성 단계 (locked X / done X): 본인 액터 = 편집 모드 안 들어가도 즉시 입력 가능

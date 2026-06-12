@@ -18,7 +18,8 @@ async function requestNotificationPermission() {
   } catch { return false; }
 }
 import { navigate } from '../core/router.js';
-import { updateRecord } from '../firebase/db.js';
+import { roleLabel } from '../core/roles.js';
+import { updateRecord, fetchCollection } from '../firebase/db.js';
 import { uploadImage, uploadFile } from '../firebase/storage-helper.js';
 import { logout, resetPassword } from '../firebase/auth.js';
 import { auth } from '../firebase/config.js';
@@ -190,7 +191,7 @@ function _render() {
           </button>
           <button class="m-info-row" id="mstPush">
             <span class="m-info-label"><i class="ph ph-bell"></i> 웹 푸시</span>
-            <span class="m-toggle ${Notification.permission === 'granted' ? 'is-on' : ''}" aria-hidden="true"><span class="m-toggle-knob"></span></span>
+            <span class="m-toggle ${(('Notification' in window) && Notification.permission === 'granted') ? 'is-on' : ''}" aria-hidden="true"><span class="m-toggle-knob"></span></span>
           </button>
           ${role === 'provider' ? `
             <button class="m-info-row" id="mstOnlyMine">
@@ -493,6 +494,7 @@ function bindAll(main, u) {
           root.querySelectorAll('[data-logout-min]').forEach(b => {
             b.addEventListener('click', () => {
               localStorage.setItem('fp.autoLogout', b.dataset.logoutMin);
+              import('../core/idle-logout.js').then(({ refreshIdleLogout }) => refreshIdleLogout());
               showToast('저장됨');
               sheet.close();
               render();
@@ -561,9 +563,11 @@ function bindAll(main, u) {
     const entered = prompt('계정을 삭제하려면 이메일을 입력하세요:');
     if (entered !== u.email) { showToast('이메일 불일치', 'error'); return; }
     try {
-      await auth.currentUser.delete();
+      // 1) DB 먼저 (auth 삭제 후엔 토큰 무효화로 write 불가) → 2) auth 계정 삭제 → 3) 로그아웃/이동
       await updateRecord(`users/${u.uid}`, { status: 'deleted', deleted_at: Date.now() });
+      await auth.currentUser.delete();
       showToast('계정 삭제됨');
+      await logout();
     } catch (e) {
       showToast('삭제 실패: 재로그인 후 시도하세요', 'error');
     }
@@ -591,8 +595,8 @@ function bindAll(main, u) {
   // 헤더 우측 공지/도움말
   document.getElementById('mstHeaderNotice')?.addEventListener('click', async () => {
     const { openBottomSheet } = await import('../core/mobile-shell.js');
-    // 대시보드 공지 데이터 가져오기 (store.notices 혹은 firebase notices 경로)
-    const notices = store.notices || [];
+    // 대시보드 공지 데이터 — home_notices 컬렉션 (실데이터)
+    const notices = await fetchCollection('home_notices').catch(() => []);
     const list = [...notices].filter(n => !n._deleted).sort((a, b) => (b.created_at || 0) - (a.created_at || 0)).slice(0, 20);
     const html = list.length
       ? `<div class="m-doc-list">${list.map(n => `
@@ -719,6 +723,3 @@ function sanitizeName(name) {
   return String(name).trim().replace(/\s+/g, '_').replace(/[^\w.\-가-힣]/g, '_').slice(0, 120) || 'file';
 }
 
-function roleLabel(role) {
-  return { admin: '관리자', provider: '공급사', agent: '영업자', agent_admin: '영업관리자' }[role] || role;
-}

@@ -14,12 +14,13 @@ import { firstProductImage, supportedDriveSource, shortImg } from '../core/produ
 import '../core/drive-photos.js';   // 카드 드라이브 썸네일 lazy 하이드레이션 observer 즉시 시작 (상세 열기 전에도 카드 사진 뜨게)
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
-import { openBottomSheet, openFab, pushMobileView } from '../core/mobile-shell.js';
-import { FILTERS, matchFilter, buildDynamicChips } from '../core/product-filters.js';
+import { pushMobileView } from '../core/mobile-shell.js';
+import { FILTERS, matchFilter } from '../core/product-filters.js';
 import { openFilterSheet } from '../core/filter-sheet.js';
 import { normalizeYear } from '../core/normalize.js';
 
 let unsub = null;
+let unsubPol = null;
 let allProducts = [];
 let query = '';
 // activeFilters: { [groupKey]: Set<chipId> } — desktop 과 동일 구조
@@ -28,6 +29,7 @@ let renderLimit = 30;
 
 export function mount() {
   unsub?.();
+  unsubPol?.();
   renderLimit = 30;
 
   const main = document.getElementById('mainContent');
@@ -64,7 +66,7 @@ export function mount() {
   });
 
   // policies watcher (enrich 다시)
-  watchCollection('policies', (data) => {
+  unsubPol = watchCollection('policies', (data) => {
     store.policies = data;
     if (allProducts.length) {
       allProducts = enrichProductsWithPolicy(allProducts, data);
@@ -217,29 +219,6 @@ function updateFilterDot() {
   const dot = document.getElementById('mSearchFilterDot');
   if (!dot) return;
   dot.hidden = getFilterCount() === 0;
-}
-
-/** 검색창 카운트를 현재 필터 상태 기준으로 즉시 갱신 (바텀시트에서 실시간 미리보기용) */
-function updateSearchCount() {
-  const countEl = document.getElementById('mSearchCount');
-  if (!countEl) return;
-  const n = getFiltered().length;
-  countEl.textContent = n ? `${n}대` : '0대';
-}
-
-/** 바텀시트 제목 옆 전체 필터 개수 뱃지 동기화 */
-function updateSheetTitleBadge(sheetRoot) {
-  if (!sheetRoot) return;
-  const title = sheetRoot.querySelector('.m-sheet-title');
-  if (!title) return;
-  const total = getFilterCount();
-  const existing = title.querySelector('.sb-badge');
-  if (total) {
-    if (existing) existing.textContent = total;
-    else title.insertAdjacentHTML('beforeend', ` <span class="sb-badge is-visible">${total}</span>`);
-  } else {
-    existing?.remove();
-  }
 }
 
 function renderActive() {
@@ -461,26 +440,10 @@ function shareProduct(p) {
   }
 }
 
-function editProduct(p) {
-  store.pendingEditProduct = p._key;
-  import('../core/router.js').then(({ navigate }) => navigate('/product'));
-}
-
-function shareCatalogLink() {
-  const me = store.currentUser || {};
-  const url = `${location.origin}/catalog.html?a=${encodeURIComponent(me.user_code || '')}`;
-  if (navigator.share) {
-    navigator.share({ title: '차량 카탈로그', url }).catch(() => {});
-  } else {
-    navigator.clipboard?.writeText(url).then(
-      () => showToast('카탈로그 링크 복사됨'),
-      () => showToast('복사 실패', 'error')
-    );
-  }
-}
-
 export function unmount() {
   unsub?.();
   unsub = null;
+  unsubPol?.();
+  unsubPol = null;
   document.querySelectorAll('.m-fab').forEach(el => el.remove());
 }

@@ -59,6 +59,11 @@ function formatDob(contract) {
   return '';
 }
 
+/** 진행률 뱃지 색 — 완료=ok / 진행=info / 미시작=muted (목록·상세 공용) */
+function progColor(prog) {
+  return prog.done === prog.total ? 'var(--c-ok)' : prog.done > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
+}
+
 /** 모바일 정보 행 — label + value, value 가 비면 '-' */
 function iRow(label, value) {
   const v = value === 0 || value ? String(value) : '';
@@ -143,45 +148,18 @@ export function mount() {
     if (card) openContract(card.dataset.code);
   });
 
-  // 진단 — 콘솔에서 store 상태 즉시 점검 가능
-  if (typeof window !== 'undefined') {
-    window.__mctDebug = () => ({
-      total: store.contracts?.length || 0,
-      role: store.currentUser?.role,
-      uid: store.currentUser?.uid,
-      user_code: store.currentUser?.user_code,
-      channel: store.currentUser?.agent_channel_code || store.currentUser?.channel_code,
-      visible: getVisible().length,
-      sample: (store.contracts || [])[0],
-    });
-  }
-
   // 즉시 렌더 — startHydration 이 이미 store.contracts 채워놨으면 0초 노출
   renderList();
 
   unsub = watchCollection('contracts', (data) => {
     store.contracts = data || [];
-    const me = store.currentUser || {};
-    console.log('[mobile-contract] loaded:', data?.length || 0,
-      'role:', me.role, 'uid:', me.uid, 'user_code:', me.user_code,
-      'channel:', me.agent_channel_code || me.channel_code,
-      'visible:', getVisible().length);
-    // 첫 계약 샘플의 매칭 필드 출력 (왜 매칭 안 되는지 즉각 진단)
-    if ((data?.length || 0) > 0 && getVisible().length === 0) {
-      const c = data[0];
-      console.warn('[mobile-contract] visible=0, sample mismatch check:', {
-        contract_agent_uid: c.agent_uid, my_uid: me.uid, match_uid: c.agent_uid === me.uid,
-        contract_agent_code: c.agent_code, my_user_code: me.user_code, match_code: c.agent_code === me.user_code,
-        contract_channel: c.agent_channel_code, my_channel: me.agent_channel_code || me.channel_code,
-      });
-    }
     renderList();
   }, { scope: roleScope(store.currentUser) });   // 서버 스코프 — 비관리자는 자기 계약만
 }
 
 function getVisible() {
-  // 모바일은 모든 계약 노출 — 영업자/공급사/관리자 모두 다른 사람 계약도 보고
-  // 각 역할이 작성한 메모를 서로 볼 수 있도록 (협업 목적)
+  // store.contracts 는 watchCollection({scope}) 로 이미 역할 스코핑됨
+  //  (비관리자=자기 계약 / 영업관리자=채널 / 관리자=전체). 추가 필터 불필요.
   return [...(store.contracts || [])];
 }
 
@@ -267,7 +245,7 @@ function renderList() {
       dob,
       c.customer_phone,
     ].filter(Boolean).join(' · ');
-    const progressColor = prog.done === prog.total ? 'var(--c-ok)' : prog.done > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
+    const progressColor = progColor(prog);
     return `
       <article class="m-card-contract" data-code="${c.contract_code}">
         <div class="m-card-icon-wrap is-${tone}">
@@ -380,9 +358,10 @@ function bindContractView(view, c) {
     const price = product?.price?.[m] || {};
     const rent = Number(price.rent) || 0;
     const deposit = Number(price.deposit) || 0;
-    const updates = { rent_month: m };
-    if (rent) updates.rent_amount = rent;
-    if (deposit) updates.deposit_amount = deposit;
+    // canonical 필드명 = *_snapshot (desktop/정산/contract-send 와 동일 — 안 그러면 정산에 안 먹힘)
+    const updates = { rent_month_snapshot: m };
+    if (rent) updates.rent_amount_snapshot = rent;
+    if (deposit) updates.deposit_amount_snapshot = deposit;
     try {
       await updateRecord(`contracts/${c._key}`, updates);
       Object.assign(c, updates);
@@ -585,7 +564,10 @@ function renderProgressPanel(c) {
 
   // 기본 정보 (차량번호 / 기간 선택 / 대여료 / 보증금)
   const periods = [12, 24, 36, 48, 60];
-  const curMonth = Number(c.rent_month) || 36;
+  // 읽기는 canonical(*_snapshot) 우선 + 구 모바일계약(snapshot 없던 시절) legacy 폴백
+  const curMonth = Number(c.rent_month_snapshot ?? c.rent_month) || 36;
+  const curRent = c.rent_amount_snapshot ?? c.rent_amount;
+  const curDeposit = c.deposit_amount_snapshot ?? c.deposit_amount;
   const periodChips = periods.map(m =>
     `<button class="chip chip-xs ${m === curMonth ? 'is-active' : ''}" data-ct-period="${m}">${m}M</button>`
   ).join('');
@@ -605,14 +587,14 @@ function renderProgressPanel(c) {
       <div class="m-info-row-split">
         <div class="m-info-row-edit">
           <span class="m-info-label">월대여료</span>
-          <input class="m-info-input" data-ct-field="rent_amount" type="text" inputmode="numeric"
-                 value="${c.rent_amount ? Number(c.rent_amount).toLocaleString() : ''}" placeholder="0">
+          <input class="m-info-input" data-ct-field="rent_amount_snapshot" type="text" inputmode="numeric"
+                 value="${curRent ? Number(curRent).toLocaleString() : ''}" placeholder="0">
           <span class="m-info-suffix">원</span>
         </div>
         <div class="m-info-row-edit">
           <span class="m-info-label">보증금</span>
-          <input class="m-info-input" data-ct-field="deposit_amount" type="text" inputmode="numeric"
-                 value="${c.deposit_amount ? Number(c.deposit_amount).toLocaleString() : ''}" placeholder="0">
+          <input class="m-info-input" data-ct-field="deposit_amount_snapshot" type="text" inputmode="numeric"
+                 value="${curDeposit ? Number(curDeposit).toLocaleString() : ''}" placeholder="0">
           <span class="m-info-suffix">원</span>
         </div>
       </div>
@@ -662,7 +644,7 @@ function renderProgressPanel(c) {
     `;
   }).join('');
 
-  const progressColor = prog.done === prog.total ? 'var(--c-ok)' : prog.done > 0 ? 'var(--c-info)' : 'var(--c-text-muted)';
+  const progressColor = progColor(prog);
 
   // 역할별 메모 — 3슬롯 (영업자 / 공급사 / 관리자) 각자 본인 슬롯만 편집, 모두 다 읽기
   const memoSlots = [
@@ -708,12 +690,13 @@ function renderProgressPanel(c) {
 }
 
 function renderDetailPanel(c) {
-  const rentAmt = c.rent_amount ? fmtWon(c.rent_amount) : '';
-  const depAmt = c.deposit_amount ? fmtWon(c.deposit_amount) : '';
-  const contractDeposit = c.contract_deposit ? fmtWon(c.contract_deposit) : '';
-  const balance = c.balance_amount ? fmtWon(c.balance_amount) : '';
-  const pol = c._policy || {};
+  const rentVal = c.rent_amount_snapshot ?? c.rent_amount;
+  const depVal = c.deposit_amount_snapshot ?? c.deposit_amount;
+  const rentAmt = rentVal ? fmtWon(rentVal) : '';
+  const depAmt = depVal ? fmtWon(depVal) : '';
   const prod = findProduct(c.product_uid) || findProductByUid(c.product_uid) || findProduct(c.seed_product_key) || {};
+  // 정책은 상품(prod)에 enrich 되어 있음 — 계약 레코드엔 _policy 가 없음
+  const pol = prod._policy || c._policy || {};
 
   const signedUrl = c.signed_pdf_url || c.signed_pdf_data_url || '';
   const unsignedUrl = c.unsigned_pdf_url || '';
@@ -739,11 +722,9 @@ function renderDetailPanel(c) {
         ${iRow('계약코드', c.contract_code)}
         ${iRow('계약상태', c.contract_status)}
         ${iRow('계약일', c.contract_date)}
-        ${iRow('대여기간', c.rent_month ? c.rent_month + '개월' : '')}
+        ${iRow('대여기간', (c.rent_month_snapshot ?? c.rent_month) ? (c.rent_month_snapshot ?? c.rent_month) + '개월' : '')}
         ${iRow('월대여료', rentAmt)}
         ${iRow('보증금', depAmt)}
-        ${iRow('계약금', contractDeposit)}
-        ${iRow('잔금',   balance)}
       `)}
       ${iSection('차량 스냅샷', `
         ${iRow('차량번호', c.car_number_snapshot)}

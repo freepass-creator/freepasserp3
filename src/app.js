@@ -81,7 +81,7 @@ import {
   renderProductList, renderProductDetail,
 } from './pages/product.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
-import { filterByRole, roleScope } from './core/roles.js';
+import { filterByRole, roleScope, roleLabel } from './core/roles.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from './core/chat-render.js';
 import { markRoomRead } from './firebase/collections.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
@@ -1776,8 +1776,8 @@ function formatProductForCopy(p) {
   const namePos = [me.name, me.position].filter(Boolean).join(' ');
   if (namePos) agentParts.push(namePos);
   // 역할 (영업/공급/관리)
-  const roleLabel = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업 관리자' }[me.role];
-  if (roleLabel) agentParts.push(roleLabel);
+  const meRoleLabel = roleLabel(me.role);
+  if (meRoleLabel) agentParts.push(meRoleLabel);
   if (agentParts.length) {
     lines.push('');
     lines.push(`담당: ${agentParts.join(' | ')}`);
@@ -2056,8 +2056,7 @@ function hydrateUser(user) {
   const brandText = document.querySelector('.pt-sb-brand .sb-brand-text');
   if (brandText) brandText.textContent = user.company_name || 'freepass ERP';
   // user 정보 텍스트만 갱신 (로그아웃 버튼 등 다른 자식은 보존)
-  const roleBase = { admin: '관리자', provider: '공급', agent: '영업', agent_admin: '영업' }[user.role] || user.role || '';
-  const role = user.role === 'agent_admin' ? `${roleBase} | 관리자` : roleBase;
+  const role = roleLabel(user.role);
   const userInfo = document.querySelector('.pt-sb-user-info');
   if (userInfo) {
     userInfo.textContent = `${user.name || user.email || ''}${role ? ' | ' + role : ''}`;

@@ -12,6 +12,7 @@ import {
   listBody, emptyState, renderRoomItem,
   setHeadSave, bindFormSave, renderInfoGrid, ffi,
 } from '../core/ui-helpers.js';
+import { roleLabel as roleLabelOf } from '../core/roles.js';
 
 const ROLE_BADGE = {
   admin:         { txt: '관리', tone: 'red' },
@@ -19,10 +20,6 @@ const ROLE_BADGE = {
   agent_admin:   { txt: '영관', tone: 'orange' },
   agent_manager: { txt: '영관', tone: 'orange' },   // legacy alias
   agent:         { txt: '영업', tone: 'orange' },
-};
-const ROLE_LABEL = {
-  admin: '관리자', provider: '공급사', agent: '영업자',
-  agent_admin: '영업관리자', agent_manager: '영업관리자',
 };
 
 // 사용자 목록 필터 (전역 — 사이드바 chip + 소속코드 dropdown 이 갱신)
@@ -58,7 +55,7 @@ export function renderUserList(users) {
     return String(a.name || '').localeCompare(String(b.name || ''), 'ko');
   });
   body.innerHTML = sorted.map((u, i) => {
-    const roleLabel = ROLE_LABEL[u.role] || u.role || '-';
+    const roleLabel = roleLabelOf(u.role) || '-';
     const norm = normalizeStatus(u);
     const statusLabel = u.status === 'pending' ? '승인 대기' : u.status === 'rejected' ? '반려' : (u.is_active === false ? '비활성' : '승인됨');
     // 메인: 이름 직급 회사명 (공백 구분, 문단처럼)  /  우측: 마지막 로그인
@@ -102,7 +99,7 @@ export function renderUserDetail(u) {
   const role = store.currentUser?.role;
   const canEdit = role === 'admin';
   const dis = canEdit ? '' : ' disabled';
-  const ROLES = [['admin', '관리자'], ['provider', '공급사'], ['agent_admin', '영업관리자'], ['agent', '영업자']];
+  const ROLES = [['admin', '관리자'], ['provider', '공급사'], ['agent', '영업자']];
   const STATUSES = [['active', '승인'], ['pending', '대기']];
   const currentStatus = normalizeStatus(u);   // 'active' / 'pending'
   // 사용자 소속 회사 후보 — partners 기반. value=partner_code, display=partner_name
@@ -145,7 +142,7 @@ export function renderUserDetail(u) {
       ['이름', u.name, true],
       ['직책', u.title, true],
       ['이메일', u.email, true],
-      ['역할', ROLE_LABEL[u.role] || u.role || '-', true],
+      ['역할', roleLabelOf(u.role) || '-', true],
       ['상태', currentStatus, true],
       ['소속', [u.company_name, u.company_code].filter(Boolean).join(' · '), true],
       ['연락처', u.phone, true],

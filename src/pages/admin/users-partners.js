@@ -12,6 +12,7 @@ import { fieldInput as ffi, fieldSelect as ffs, fieldView as ffv, fieldTextarea 
 import { initWs4Resize } from '../../core/resize.js';
 import { setBreadcrumbBrief } from '../../core/breadcrumb.js';
 import { renderExcelTable } from '../../core/excel-table.js';
+import { roleLabel as roleLabelOf } from '../../core/roles.js';
 
 let unsubs = [];
 let activeKey = null;
@@ -217,9 +218,8 @@ function renderList() {
       : [item.partner_name, item.ceo_name, item.manager_name].filter(Boolean).join(' ');
     const statusLabel = { active: '승인', pending: '대기', rejected: '반려', inactive: '비활' }[item.status] || '';
     const avatarIcon = mode === 'users' ? 'ph-user' : 'ph-buildings';
-    const roleLabel = { admin: '관리자', provider: '공급사', agent: '영업자', agent_admin: '영업관리자' }[item.role] || item.role || '';
     const sub = mode === 'users'
-      ? [roleLabel, item.company_name, item.phone].filter(Boolean).join(' · ')
+      ? [roleLabelOf(item.role), item.company_name, item.phone].filter(Boolean).join(' · ')
       : [item.partner_type, item.business_number, item.manager_phone || item.company_phone].filter(Boolean).join(' · ');
 
     return `
@@ -315,7 +315,7 @@ function loadUser(key) {
         <div class="form-section-body">
           ${ffv('UID', u.uid)}
           ${ffv('상태', { active: '승인', pending: '대기', rejected: '반려', inactive: '비활', deleted: '삭제' }[u.status] || u.status)}
-          ${ffv('역할', { admin: '관리자', provider: '공급사', agent: '영업자', agent_admin: '영업관리자' }[u.role] || u.role)}
+          ${ffv('역할', roleLabelOf(u.role))}
           ${ffv('가입일', u.created_at ? new Date(u.created_at).toLocaleDateString('ko') : '-')}
         </div>
       </div>

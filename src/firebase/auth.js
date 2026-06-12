@@ -10,6 +10,7 @@ import {
 import { ref, get } from 'firebase/database';
 import { auth, db } from './config.js';
 import { store } from '../core/store.js';
+import { startIdleLogout, stopIdleLogout } from '../core/idle-logout.js';
 
 // 명시적 LOCAL persistence — 브라우저 새로고침 / 재시작 후에도 로그인 유지
 // 1s timeout 으로 race — Firebase 가 어떤 이유로든 settle 안 시켜도 로그인 진행
@@ -49,8 +50,10 @@ export function initAuth() {
         // ⚠ Firebase rule 의 auth.uid 매칭용 — profile 에 uid 필드가 다른 값으로 들어있으면
         //   여기서 덮어쓰여 PERMISSION_DENIED 발생. spread 뒤에 uid/email 명시.
         store.currentUser = { ...profile, uid: user.uid, email: user.email };
+        startIdleLogout();               // 유휴 자동 로그아웃 타이머 시작 (fp.autoLogout)
       } else {
         store.currentUser = null;
+        stopIdleLogout();
       }
       store.authReady = true;
       if (!resolved) { resolved = true; resolve(store.currentUser); }
