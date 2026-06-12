@@ -15,6 +15,11 @@ import { productImages, productExternalImages, supportedDriveSource, toProxiedIm
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
 import { renderDetailSections } from './core/product-detail-render.js';
 import { stripLegalEntity } from './core/ui-helpers.js';
+import { FILTERS, matchFilter, buildDynamicChips } from './core/product-filters.js';
+
+// 손님용 디테일 필터 그룹 — 앱 FILTERS 재사용하되 내부필터(공급코드/심사기준/출고상태/심사여부 등) 제외.
+const CAT_FILTER_GROUPS = ['rent', 'deposit', 'period', 'maker', 'model', 'submodel', 'year', 'fuel', 'color', 'vehicle_class', 'mileage'];
+const _activeFilters = {};   // group -> Set<chipId> (앱과 동일 모델)
 
 // 익명 인증 — policies·users 읽기 위해 필요 (auth != null 룰 통과).
 //   authReady 로 잡아서 영업자 조회(get)가 인증 완료 후 실행되게 — race 로 기본번호 노출되던 버그 방지.
@@ -177,6 +182,15 @@ function applyFilter() {
     if (q) {
       const hay = [p.car_number, p.maker, p.model, p.sub_model, p.trim_name, p.options].filter(Boolean).join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
+    }
+    // 디테일 필터(앱 FILTERS 모델) — 그룹 내 OR, 그룹 간 AND. matchFilter 재사용.
+    for (const g in _activeFilters) {
+      const set = _activeFilters[g];
+      if (!set || !set.size) continue;
+      const f = FILTERS[g];
+      if (!f) continue;
+      const chips = [...set].map(cid => (f.chips || []).find(c => c.id === cid)).filter(Boolean);
+      if (chips.length && !chips.some(chip => matchFilter(p, g, chip))) return false;
     }
     return true;
   });
@@ -423,32 +437,36 @@ searchEl?.addEventListener('input', (e) => {
 const detailFilterBtn = document.getElementById('catDetailFilterBtn');
 detailFilterBtn?.addEventListener('click', openCatDetailFilter);
 
-function _catDetailFilterActive() {
-  return _filter.fuels.size || _filter.rentIdx.size || _filter.depositIdx.size
-       || _filter.yearIdx.size || _filter.mileageIdx.size;
+function _detailFilterActive() {
+  return Object.values(_activeFilters).some(s => s && s.size);
 }
 
 function openCatDetailFilter() {
   document.querySelector('.cat-filter-sheet-overlay')?.remove();
-  const fuels = ['가솔린', '디젤', 'LPG', '하이브리드', '전기'];
-  const rangeChips = (key) => RANGE_PRESETS[key].items
-    .map((it, i) => `<button class="cfs-chip ${_filter[key + 'Idx'].has(i) ? 'is-active' : ''}" data-g="${key}" data-i="${i}">${it.l}</button>`).join('');
-  const fuelChips = fuels
-    .map(f => `<button class="cfs-chip ${_filter.fuels.has(f) ? 'is-active' : ''}" data-g="fuel" data-f="${f}">${f}</button>`).join('');
-  const section = (title, chipsHtml) => `<div class="cfs-section"><div class="cfs-title">${title}</div><div class="cfs-chips">${chipsHtml}</div></div>`;
+  buildDynamicChips(_products);   // 제조사/모델 등 동적 칩 집계(카운트 포함)
+  const expanded = {};            // group -> 더보기 펼침 여부
+
+  const renderSection = (g) => {
+    const f = FILTERS[g];
+    if (!f) return '';
+    const set = _activeFilters[g];
+    const popular = f.dynamic ? (f.popular || []) : (f.chips || []);
+    const others  = f.dynamic ? (f.others || [])  : [];
+    if (!popular.length && !others.length) return '';
+    const show = expanded[g] ? [...popular, ...others] : popular;
+    const chips = show.map(c =>
+      `<button class="cfs-chip ${set?.has(c.id) ? 'is-active' : ''}" data-g="${g}" data-c="${c.id}">${esc(c.label)}</button>`).join('');
+    const more = (!expanded[g] && others.length)
+      ? `<button class="cfs-chip cfs-more" data-more="${g}">더보기 (${others.length})</button>` : '';
+    return `<div class="cfs-section" data-sec="${g}"><div class="cfs-title"><i class="${f.icon}"></i> ${esc(f.label)}</div><div class="cfs-chips">${chips}${more}</div></div>`;
+  };
 
   const overlay = document.createElement('div');
   overlay.className = 'cat-filter-sheet-overlay';
   overlay.innerHTML = `
     <div class="cat-filter-sheet" role="dialog" aria-label="세부 필터">
       <div class="cfs-head"><span>세부 필터</span><button class="cfs-close" aria-label="닫기"><i class="ph ph-x"></i></button></div>
-      <div class="cfs-body">
-        ${section('대여료 (월)', rangeChips('rent'))}
-        ${section('보증금', rangeChips('deposit'))}
-        ${section('연식', rangeChips('year'))}
-        ${section('주행거리', rangeChips('mileage'))}
-        ${section('연료', fuelChips)}
-      </div>
+      <div class="cfs-body">${CAT_FILTER_GROUPS.map(renderSection).join('')}</div>
       <div class="cfs-foot">
         <button class="cfs-reset" type="button">초기화</button>
         <button class="cfs-apply" type="button">적용</button>
@@ -456,37 +474,34 @@ function openCatDetailFilter() {
     </div>`;
   document.body.appendChild(overlay);
   const close = () => overlay.remove();
-
   overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
   overlay.querySelector('.cfs-close').addEventListener('click', close);
 
-  // 칩 토글 — _filter 상태 직접 변경 (빠른 필터 바와 같은 상태 공유)
-  overlay.querySelector('.cfs-body').addEventListener('click', (e) => {
-    const btn = e.target.closest('.cfs-chip');
-    if (!btn) return;
-    const g = btn.dataset.g;
-    if (g === 'fuel') {
-      const f = btn.dataset.f;
-      if (_filter.fuels.has(f)) _filter.fuels.delete(f); else _filter.fuels.add(f);
-    } else {
-      const set = _filter[g + 'Idx'];
-      const i = Number(btn.dataset.i);
-      if (set.has(i)) set.delete(i); else set.add(i);
+  const body = overlay.querySelector('.cfs-body');
+  body.addEventListener('click', (e) => {
+    const moreBtn = e.target.closest('[data-more]');
+    if (moreBtn) {
+      const g = moreBtn.dataset.more;
+      expanded[g] = true;
+      const sec = body.querySelector(`[data-sec="${g}"]`);
+      if (sec) sec.outerHTML = renderSection(g);
+      return;
     }
+    const btn = e.target.closest('.cfs-chip');
+    if (!btn || !btn.dataset.c) return;
+    const g = btn.dataset.g, cid = btn.dataset.c;
+    const set = _activeFilters[g] || (_activeFilters[g] = new Set());
+    if (set.has(cid)) set.delete(cid); else set.add(cid);
     btn.classList.toggle('is-active');
   });
 
   overlay.querySelector('.cfs-reset').addEventListener('click', () => {
-    _filter.fuels.clear();
-    _filter.rentIdx.clear(); _filter.depositIdx.clear();
-    _filter.yearIdx.clear(); _filter.mileageIdx.clear();
+    for (const k in _activeFilters) _activeFilters[k]?.clear();
     overlay.querySelectorAll('.cfs-chip.is-active').forEach(b => b.classList.remove('is-active'));
   });
-
   overlay.querySelector('.cfs-apply').addEventListener('click', () => {
-    updateCategoryBadges();
     renderGrid();
-    detailFilterBtn?.classList.toggle('is-active', !!_catDetailFilterActive());
+    detailFilterBtn?.classList.toggle('is-active', !!_detailFilterActive());
     close();
   });
 }
