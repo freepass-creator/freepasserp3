@@ -57,13 +57,13 @@
     "contracts": {
       ".read": "auth != null",
       ".write": "auth != null",
-      ".indexOn": ["product_uid", "partner_code", "contract_status", "agent_uid", "provider_company_code", "created_at"]
+      ".indexOn": ["product_uid", "partner_code", "contract_status", "agent_uid", "provider_company_code", "agent_channel_code", "created_at"]
     },
 
     "settlements": {
       ".read": "auth != null",
       ".write": "auth != null",
-      ".indexOn": ["contract_code", "settlement_status", "provider_company_code"]
+      ".indexOn": ["contract_code", "settlement_status", "provider_company_code", "agent_uid", "agent_channel_code"]
     },
 
     "admin_settlements": {

@@ -1,7 +1,7 @@
 /**
  * Firebase DB helpers — shared subscription cache + common operations
  */
-import { ref, onValue, off, get, set, update, push, query, limitToLast } from 'firebase/database';
+import { ref, onValue, off, get, set, update, push, query, limitToLast, orderByChild, equalTo } from 'firebase/database';
 import { db } from './config.js';
 import { trackSave } from '../core/save-status.js';
 
@@ -30,8 +30,10 @@ const _watchers = new Map(); // cacheKey → { ref, callbacks, unsubscribe }
  * Multiple callers watching the same path share ONE Firebase listener.
  */
 export function watchCollection(path, callback, options = {}) {
-  const { limit, transform } = options;
-  const cacheKey = `${path}\x00${limit || ''}`;
+  const { limit, transform, scope } = options;
+  // scope = { field, value } → 역할별 서버측 쿼리 스코핑 (자기 것만 다운로드). 없으면 전체(admin).
+  const scopeKey = scope ? `${scope.field}=${scope.value}` : '';
+  const cacheKey = `${path}\x00${limit || ''}\x00${scopeKey}`;
 
   if (_watchers.has(cacheKey)) {
     const entry = _watchers.get(cacheKey);
@@ -47,9 +49,11 @@ export function watchCollection(path, callback, options = {}) {
     };
   }
 
-  const dbRef = limit
-    ? query(ref(db, path), limitToLast(limit))
-    : ref(db, path);
+  const dbRef = scope
+    ? query(ref(db, path), orderByChild(scope.field), equalTo(scope.value))
+    : limit
+      ? query(ref(db, path), limitToLast(limit))
+      : ref(db, path);
 
   const callbacks = new Set([callback]);
 

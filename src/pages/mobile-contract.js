@@ -10,7 +10,7 @@ import { fmtWon, mEmpty } from '../core/format.js';
 import { fmtDate, providerNameByCode } from '../core/ui-helpers.js';
 import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { pushMobileView } from '../core/mobile-shell.js';
-import { filterByRole } from '../core/roles.js';
+import { filterByRole, roleScope } from '../core/roles.js';
 
 /** 운전 가능 연령 — 기본 연령 + 하향 연령 포맷 */
 function formatDriverAge(pol) {
@@ -176,7 +176,7 @@ export function mount() {
       });
     }
     renderList();
-  });
+  }, { scope: roleScope(store.currentUser) });   // 서버 스코프 — 비관리자는 자기 계약만
 }
 
 function getVisible() {

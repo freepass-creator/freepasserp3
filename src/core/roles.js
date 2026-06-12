@@ -20,6 +20,23 @@ export function isParty(role) {
 }
 
 /**
+ * 역할별 서버측 쿼리 스코프 — watchCollection({ scope }) 용.
+ * 자기 것만 '다운로드'(filterByRole 은 화면 필터, 이건 서버 쿼리). admin=null(전체).
+ *  계약·정산 모두 agent_uid / provider_company_code / agent_channel_code 보유 (생성 시 세팅).
+ * @returns {{field:string, value:string}|null}
+ */
+export function roleScope(me) {
+  if (!me?.role || me.role === ROLES.ADMIN) return null;   // 전체
+  const NONE = '\x00none';   // 값 없으면 아무것도 안 매칭 (미배정 사용자는 빈 목록)
+  if (me.role === ROLES.AGENT) return { field: 'agent_uid', value: me.uid || NONE };
+  if (me.role === ROLES.AGENT_ADMIN || me.role === ROLES.AGENT_MANAGER)
+    return { field: 'agent_channel_code', value: me.agent_channel_code || me.company_code || NONE };
+  if (me.role === ROLES.PROVIDER)
+    return { field: 'provider_company_code', value: me.company_code || NONE };
+  return { field: 'agent_uid', value: me.uid || NONE };   // 알수없는 역할 = 보수적
+}
+
+/**
  * 역할별 필터링 — 계약/정산/방 공통
  * @param {Array} list
  * @param {Object} me - currentUser

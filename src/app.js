@@ -81,7 +81,7 @@ import {
   renderProductList, renderProductDetail,
 } from './pages/product.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
-import { filterByRole } from './core/roles.js';
+import { filterByRole, roleScope } from './core/roles.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from './core/chat-render.js';
 import { markRoomRead } from './firebase/collections.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
@@ -1292,12 +1292,14 @@ function startHydration() {
       }
     }
   });
+  // 역할별 서버 스코프 — 비관리자는 자기 것만 다운로드 (서버측 read 보호의 클라이언트 절반)
+  const _dataScope = roleScope(store.currentUser);
   watchCollection('contracts',   (list) => { store.contracts   = list || []; renderFilteredContracts();      updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
-    if (activePage) window.updatePageStats?.(activePage); });
+    if (activePage) window.updatePageStats?.(activePage); }, { scope: _dataScope });
   watchCollection('settlements', (list) => { store.settlements = list || []; renderFilteredSettlements();    updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
-    if (activePage) window.updatePageStats?.(activePage); });
+    if (activePage) window.updatePageStats?.(activePage); }, { scope: _dataScope });
   watchCollection('admin_settlements', (list) => { store.adminSettlements = list || [];
     if (document.querySelector('.pt-page[data-page="admin-settle"]')?.classList.contains('active')) window.renderAdminSettlement?.(); });
   // partners 갱신 시 dependent list 재렌더는 디바운스 (연속 변경 시 1번만)

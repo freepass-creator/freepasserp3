@@ -13,7 +13,7 @@ import { pushMobileView, openBottomSheet } from '../core/mobile-shell.js';
 import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { mEmpty, mLoading } from '../core/format.js';
 import { fmtDate, chatCodeOf, providerNameByCode } from '../core/ui-helpers.js';
-import { isAgentSide } from '../core/roles.js';
+import { isAgentSide, roleScope } from '../core/roles.js';
 
 let unsubRooms = null;
 let unsubMessages = null;
@@ -83,7 +83,7 @@ export function mount() {
       }
     }
   }, { limit: 200 });
-  unsubContracts = watchCollection('contracts', (d) => { store.contracts = d; });
+  unsubContracts = watchCollection('contracts', (d) => { store.contracts = d; }, { scope: roleScope(store.currentUser) });
 }
 
 function renderRooms() {
