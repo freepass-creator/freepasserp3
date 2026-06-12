@@ -1988,13 +1988,14 @@ function buildContextMenuItems(page, id, item) {
   if (page === 'contract') {
     const c = (store.contracts || []).find(x => x.contract_code === id || x._key === id);
     if (!c) return [];
-    const CONTRACT_STATUS = ['진행중', '대기', '계약체결', '심사중', '출고대기', '출고완료', '완료', '취소'];
+    // 표준 계약상태(contract.js CONTRACT_STATUSES) + 필드도 contract_status 로 통일.
+    //  (이전: 비표준 8종을 'status' 유령필드에 써서 실제 상태 안 바뀌던 버그)
     return [
-      { icon: 'ph ph-flag', label: `상태: ${c.status || '-'}`,
-        submenu: CONTRACT_STATUS.map(s => ({
-          label: s, active: c.status === s,
+      { icon: 'ph ph-flag', label: `상태: ${c.contract_status || '-'}`,
+        submenu: CONTRACT_STATUSES.map(s => ({
+          label: s, active: c.contract_status === s,
           action: async () => {
-            await updateRecord(`contracts/${c._key}`, { status: s, updated_at: Date.now() });
+            await updateRecord(`contracts/${c._key}`, { contract_status: s, updated_at: Date.now() });
             showToast(`상태 → ${s}`);
           },
         })),

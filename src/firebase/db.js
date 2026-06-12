@@ -66,7 +66,14 @@ export function watchCollection(path, callback, options = {}) {
     entry.lastData = data;
     callbacks.forEach(cb => cb(data));
   }, (error) => {
-    console.warn(`[watchCollection] ${path} 실패:`, error?.code || error?.message || error);
+    const code = error?.code || error?.message || error;
+    // PERMISSION_DENIED 는 "데이터 0건"이 아니라 스코프/규칙 불일치 신호 — 빈 배열로 삼키되 가시화.
+    //  (예: 영업관리자 노드의 agent_channel_code 누락 시 스코프 쿼리 거부 → 조용한 빈 화면 방지)
+    if (String(code).toUpperCase().includes('PERMISSION_DENIED')) {
+      console.error(`[watchCollection] ${path} 권한거부(PERMISSION_DENIED) — 스코프/규칙 불일치 가능. 빈 목록으로 처리됨.`);
+    } else {
+      console.warn(`[watchCollection] ${path} 실패:`, code);
+    }
     entry.lastData = [];
     callbacks.forEach(cb => cb([]));
   });

@@ -12,7 +12,7 @@ import { STEPS as CONTRACT_STEPS, getProgress, getStepStates } from '../core/con
 import { pushMobileView, openBottomSheet } from '../core/mobile-shell.js';
 import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { mEmpty, mLoading } from '../core/format.js';
-import { fmtDate, chatCodeOf, providerNameByCode } from '../core/ui-helpers.js';
+import { fmtDate, chatCodeOf, providerNameByCode, esc } from '../core/ui-helpers.js';
 import { isAgentSide, roleScope } from '../core/roles.js';
 
 let unsubRooms = null;
@@ -167,7 +167,7 @@ function renderRooms() {
           </div>
           <div class="m-room-item-sub">
             ${senderBadge}
-            <span>${[fmtHM, r.last_message, hasUnread ? `(안읽음 ${unread > 99 ? '99+' : unread})` : ''].filter(Boolean).join(' · ') || '-'}</span>
+            <span>${[fmtHM, esc(r.last_message || ''), hasUnread ? `(안읽음 ${unread > 99 ? '99+' : unread})` : ''].filter(Boolean).join(' · ') || '-'}</span>
           </div>
         </div>
       </div>
@@ -605,8 +605,9 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
             customer_birth: birth || '',
             customer_phone: phone,
             customer_is_business: isBiz,
-            customer_business_no: isBiz ? (bizNo || '') : '',
-            customer_business_name: isBiz ? (bizName || '') : '',
+            // 데스크톱 계약상세 reader(contract.js:174-175)와 동일 표준명
+            customer_business_number: isBiz ? (bizNo || '') : '',
+            customer_company_name: isBiz ? (bizName || '') : '',
             // 관계자 — 본인 (agent_uid/code 가 본인이어야 본인 목록에 노출)
             agent_uid: agent.uid || agent._key || '',
             agent_code: agent.user_code || '',

@@ -13,12 +13,23 @@ import {
   listBody, emptyState, renderRoomItem, flashSaved,
   providerNameByCode, providerLabelByCode, formatMainLine, renderInfoGrid,
 } from '../core/ui-helpers.js';
+import {
+  SETTLEMENT_STATUSES_FULL, getSettlementStatus,
+  settlementStatusPayload, SETTLEMENT_STATUS_DEFAULT,
+} from '../core/settlement-status.js';
 
-const SETTLE_STATUSES = ['미정산', '정산완료', '환수'];
+// 칩/뱃지는 SSOT(settlement-status.js) 어휘를 사용. createSettlement 가 '정산대기'로 생성하므로
+//  여기 칩/뱃지에 그 값이 반드시 있어야 신규 정산이 안 깨짐. legacy 별칭(미정산/환수)도 흡수.
+const SETTLE_STATUSES = SETTLEMENT_STATUSES_FULL;   // 정산대기/정산완료/정산보류/환수대기/환수결정
 const SETTLE_BADGE = {
-  '미정산': { txt: '미정', tone: 'orange' },
+  '정산대기': { txt: '대기', tone: 'orange' },
   '정산완료': { txt: '완료', tone: 'green' },
-  '환수': { txt: '환수', tone: 'red' },
+  '정산보류': { txt: '보류', tone: 'gray' },
+  '환수대기': { txt: '환수', tone: 'red' },
+  '환수결정': { txt: '환수', tone: 'red' },
+  // legacy 별칭 (구 데이터)
+  '미정산':  { txt: '대기', tone: 'orange' },
+  '환수':    { txt: '환수', tone: 'red' },
 };
 
 function toDateInput(ts) {
@@ -37,7 +48,7 @@ export function renderSettlementList(settlements) {
   if (!visible.length) { body.innerHTML = emptyState('정산 항목이 없습니다'); renderSettlementDetail(null); return; }
   const sorted = [...visible].sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
   body.innerHTML = sorted.map((s, i) => {
-    const status = s.settlement_status || s.status || '미정산';
+    const status = getSettlementStatus(s);
     const sb = SETTLE_BADGE[status] || { txt: status.slice(0, 2), tone: 'gray' };
     const fee = s.fee_amount || s.commission || 0;
     const feeText = fee ? `${Math.round(Number(fee)/10000)}만원` : '';
@@ -92,7 +103,7 @@ export function renderSettlementDetail(s) {
   const canEdit = role === 'admin' || role === 'provider';
   const fee = Number(s.fee_amount || s.commission || 0);
   const baseFee = Number(s.base_fee || 0);
-  const status = s.settlement_status || s.status || '미정산';
+  const status = getSettlementStatus(s);
 
   // 1. 정산 작업 (편집 폼) — 헤더에 [저장] 버튼 (id="setlSave")
   if (workCard) {
@@ -122,14 +133,18 @@ export function renderSettlementDetail(s) {
 
   // 2. 정산 상세 (read-only)
   if (detailCard) {
-    const monthlyRent = s.monthly_rent ? `${Math.round(Number(s.monthly_rent)/10000)}만/월` : '';
-    const dep = s.deposit ? `${Math.round(Number(s.deposit)/10000)}만` : '';
-    const carLine = [s.car_number, s.maker, s.sub_model || s.model, s.trim_name].filter(Boolean).join(' · ');
-    const agentLine = [s.agent_company || s.agent_partner_name, s.agent_name].filter(Boolean).join(' · ');
+    // createSettlement 가 쓰는 실제 필드명에 맞춤(rent_amount/deposit_amount/rent_month/contract_code). legacy 폴백 유지.
+    const rentRaw = s.rent_amount ?? s.monthly_rent;
+    const depRaw = s.deposit_amount ?? s.deposit;
+    const termRaw = s.rent_month ?? s.term;
+    const monthlyRent = rentRaw ? `${Math.round(Number(rentRaw)/10000)}만/월` : '';
+    const dep = depRaw ? `${Math.round(Number(depRaw)/10000)}만` : '';
+    const carLine = [s.car_number, s.maker, s.sub_model_snapshot || s.sub_model || s.model_snapshot || s.model, s.trim_name].filter(Boolean).join(' · ');
+    const agentLine = [s.agent_name, s.agent_code || s.agent_channel_code].filter(Boolean).join(' · ');
     const rows = [
-      ['계약번호', s.contract_id || s._key, true],
+      ['계약번호', s.contract_code || s.contract_id || s._key, true],
       ['계약자', s.customer_name],
-      ['기간', s.term ? s.term + '개월' : ''],
+      ['기간', termRaw ? termRaw + '개월' : ''],
       ['차량', carLine, true],
       ['대여료', monthlyRent],
       ['보증금', dep],
@@ -180,12 +195,13 @@ function bindSettleEdit(s) {
     const feeStr = page.querySelector('#setlFee')?.value.replace(/[^\d]/g, '') || '0';
     const dateStr = page.querySelector('#setlDate')?.value || '';
     const memo = page.querySelector('#setlMemo')?.value || '';
-    const status = page.querySelector('#setlStatus .chip.active')?.dataset.status || '미정산';
+    const status = page.querySelector('#setlStatus .chip.active')?.dataset.status || SETTLEMENT_STATUS_DEFAULT;
     const settled_at = dateStr ? new Date(dateStr).getTime() : null;
 
     const update = {
       fee_amount: Number(feeStr) || 0,
-      status,
+      // settlement_status + status 둘 다 기록 (reader 가 settlement_status 우선 → 둘 동기화 안 하면 편집 반영 안 됨)
+      ...settlementStatusPayload(status),
       memo,
       settled_at,
       updated_at: Date.now(),

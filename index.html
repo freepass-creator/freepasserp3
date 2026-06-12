@@ -1297,8 +1297,13 @@
     dev:       { icon: 'code',             label: '개발도구' },
     'admin-chat': { icon: 'headset',       label: '관리자 소통' },
   };
+  // 관리자 전용 페이지 — 비관리자가 URL 해시로 직접 진입(#users/#partners 등) 시 차단.
+  //  CSS 메뉴 숨김(display:none)은 우회 가능 → 실제 렌더 진입을 역할로 가드.
+  //  partners/users 는 영업채널·전직원 PII 노출 경로라 특히 중요. admin-chat 은 비관리자도 쓰는 기능이라 제외.
+  const ADMIN_ONLY_PAGES = ['partners','users','admin','admin-settle','dev'];
   function showPage(name) {
     if (!VALID_PAGES.includes(name)) name = 'search';
+    if (ADMIN_ONLY_PAGES.includes(name) && !document.body.classList.contains('role-admin')) name = 'search';
     document.querySelectorAll('.pt-page').forEach(p => p.classList.toggle('active', p.dataset.page === name));
     document.querySelectorAll('.pt-sb a').forEach(a => a.classList.toggle('active', a.dataset.page === name));
     document.querySelectorAll('.pt-sb-bottom-link').forEach(a => a.classList.toggle('active', a.dataset.page === name));

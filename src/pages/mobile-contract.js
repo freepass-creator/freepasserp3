@@ -656,7 +656,7 @@ function renderProgressPanel(c) {
     const val = (c[s.key] || '').replace(/</g, '&lt;');
     const body = s.canEdit
       ? `<textarea class="m-info-input m-ct-memo" data-ct-text="${s.key}"
-           placeholder="${s.label} (자동 저장)" rows="3">${c[s.key] || ''}</textarea>`
+           placeholder="${s.label} (자동 저장)" rows="3">${val}</textarea>`
       : `<div class="m-ct-memo-readonly">${val || '-'}</div>`;
     return `
       <section class="m-info-section">
