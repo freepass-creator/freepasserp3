@@ -139,7 +139,7 @@
   }
   .cat-filter-sheet {
     width: 100%; max-width: 520px; max-height: 85vh;
-    background: var(--bg-card); border-radius: 14px 14px 0 0;
+    background: var(--bg-card); border-radius: 8px 8px 0 0;
     display: flex; flex-direction: column;
     box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
   }
@@ -157,7 +157,7 @@
   .cfs-chip.cfs-more { color: var(--text-sub); border-style: dashed; }
   .cfs-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .cfs-chip {
-    padding: 7px 12px; border: 1px solid var(--border); border-radius: 16px;
+    padding: 7px 12px; border: 1px solid var(--border); border-radius: var(--radius);
     background: transparent; color: var(--text-main); font-size: 13px; cursor: pointer;
     font-family: inherit; transition: background-color 100ms, border-color 100ms;
   }
@@ -170,17 +170,17 @@
   }
   .cfs-reset {
     flex: 0 0 auto; padding: 0 18px; height: 44px;
-    border: 1px solid var(--border); border-radius: 8px;
+    border: 1px solid var(--border); border-radius: var(--radius);
     background: transparent; color: var(--text-sub); font-size: 14px; cursor: pointer; font-family: inherit;
   }
   .cfs-apply {
-    flex: 1; height: 44px; border: 0; border-radius: 8px;
+    flex: 1; height: 44px; border: 0; border-radius: var(--radius);
     background: var(--accent-blue, #2563eb); color: #fff; font-size: 15px; font-weight: 700;
     cursor: pointer; font-family: inherit;
   }
   @media (min-width: 601px) {
     .cat-filter-sheet-overlay { align-items: center; }
-    .cat-filter-sheet { border-radius: 14px; max-height: 80vh; }
+    .cat-filter-sheet { border-radius: 8px; max-height: 80vh; }
   }
   .cat-filters .cat-chip {
     flex: 1;
