@@ -2061,7 +2061,7 @@ function hydrateUser(user) {
   const tbUserRole = document.querySelector('.pt-tb-user-role');
   if (tbUserRole) tbUserRole.textContent = user.position || '';
   // body 에 role 클래스 — CSS 가 권한별 메뉴 가시성 처리
-  document.body.classList.remove('role-admin', 'role-provider', 'role-agent', 'role-agent_admin');
+  document.body.classList.remove('role-admin', 'role-provider', 'role-agent', 'role-agent_admin', 'role-agent_manager');
   if (user.role) document.body.classList.add(`role-${user.role}`);
   // 시스템 관리자(이메일 화이트리스트) — 개발도구(#dev) 가시성 게이팅
   document.body.classList.toggle('is-sysadmin', isSystemAdmin(user));

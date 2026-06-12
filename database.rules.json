@@ -3,7 +3,7 @@
     "users": {
       ".read": "auth != null",
       "$uid": {
-        ".write": "auth != null",
+        ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
         "role": {
           ".validate": "!data.exists() || newData.val() === data.val() || root.child('users').child(auth.uid).child('role').val() === 'admin'"
         }
@@ -11,14 +11,14 @@
     },
 
     "partners": {
-      ".read": true,
-      ".write": "auth != null",
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
       ".indexOn": ["partner_code", "partner_type"]
     },
 
     "policies": {
       ".read": "auth != null",
-      ".write": "auth != null",
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider')",
       ".indexOn": ["policy_code", "provider_company_code"]
     },
 

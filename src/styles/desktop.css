@@ -912,6 +912,10 @@
   body.role-agent_admin .pt-sb a[data-page="policy"],
   body.role-agent_admin .pt-sb a[data-page="partners"],
   body.role-agent_admin .pt-sb a[data-page="users"],
+  body.role-agent_manager .pt-sb a[data-page="product"],
+  body.role-agent_manager .pt-sb a[data-page="policy"],
+  body.role-agent_manager .pt-sb a[data-page="partners"],
+  body.role-agent_manager .pt-sb a[data-page="users"],
   body.role-provider    .pt-sb a[data-page="partners"],
   body.role-provider    .pt-sb a[data-page="users"] { display: none; }
   /* 관리자 페이지(외부상품 동기화 / 공지)는 admin 만 */
