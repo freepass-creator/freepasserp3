@@ -1291,7 +1291,7 @@ function startHydration() {
         if (msgs.length) renderChatMessages(msgs, activeRoom);
       }
     }
-  });
+  }, { scope: roleScope(store.currentUser) });   // 채팅방도 자기 것만 (대화 프라이버시)
   // 역할별 서버 스코프 — 비관리자는 자기 것만 다운로드 (서버측 read 보호의 클라이언트 절반)
   const _dataScope = roleScope(store.currentUser);
   watchCollection('contracts',   (list) => { store.contracts   = list || []; renderFilteredContracts();      updateSidebarCounts(); window.refreshPageActions?.();

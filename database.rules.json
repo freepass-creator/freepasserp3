@@ -39,14 +39,15 @@
     },
 
     "rooms": {
-      ".read": "auth != null",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (query.orderByChild === 'agent_uid' && query.equalTo === auth.uid) || (query.orderByChild === 'provider_company_code' && query.equalTo === root.child('users').child(auth.uid).child('company_code').val()) || (query.orderByChild === 'agent_channel_code' && query.equalTo === root.child('users').child(auth.uid).child('agent_channel_code').val()))",
       ".write": "auth != null",
-      ".indexOn": ["product_uid", "agent_uid", "provider_uid", "provider_company_code", "last_message_at"]
+      "$id": { ".read": "auth != null" },
+      ".indexOn": ["product_uid", "agent_uid", "provider_uid", "provider_company_code", "agent_channel_code", "last_message_at"]
     },
 
     "messages": {
       "$room_id": {
-        ".read": "auth != null",
+        ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('rooms').child($room_id).child('agent_uid').val() === auth.uid || root.child('rooms').child($room_id).child('provider_uid').val() === auth.uid || (root.child('users').child(auth.uid).child('company_code').val() !== null && root.child('rooms').child($room_id).child('provider_company_code').val() === root.child('users').child(auth.uid).child('company_code').val()) || (root.child('users').child(auth.uid).child('agent_channel_code').val() !== null && root.child('rooms').child($room_id).child('agent_channel_code').val() === root.child('users').child(auth.uid).child('agent_channel_code').val()))",
         ".write": "auth != null",
         "$message_id": {
           "sender_uid": { ".validate": "newData.val() === auth.uid" }

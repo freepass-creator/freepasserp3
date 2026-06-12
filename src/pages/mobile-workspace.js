@@ -82,7 +82,7 @@ export function mount() {
         openRoom(rid);
       }
     }
-  }, { limit: 200 });
+  }, roleScope(store.currentUser) ? { scope: roleScope(store.currentUser) } : { limit: 200 });   // 비관리자=자기 방만, 관리자=최근200
   unsubContracts = watchCollection('contracts', (d) => { store.contracts = d; }, { scope: roleScope(store.currentUser) });
 }
 
