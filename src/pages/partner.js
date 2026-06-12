@@ -52,7 +52,9 @@ export function renderPartnerList(partners) {
       stats = `차량${carCount} 계약${ctCount}`;
     }
     // 메인: 파트너명 코드  /  우측: 등록일
-    const mainLine = [pName(pa), code].filter(Boolean).join(' ');
+    //  표시 코드는 '실제 발급 코드'만 — _key 폴백을 코드인 양 보여주지 않음 (오해 방지)
+    const dispCode = pa.partner_code || pa.company_code || '(코드 미발급)';
+    const mainLine = [pName(pa), dispCode].filter(Boolean).join(' ');
     // 보조: 유형 | 담당자 | 연락처 | 통계
     const subParts = [typeLabel, pa.contact_name, pa.phone, stats].filter(Boolean);
     return renderRoomItem({

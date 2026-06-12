@@ -478,6 +478,7 @@ function renderToolsTab(el) {
           <button class="btn btn-sm" id="devMigrateTermPolicy"><i class="ph ph-swap"></i> policies: term_* → policy_*</button>
           <button class="btn btn-sm" id="devMigrateModelName"><i class="ph ph-swap"></i> model_name → model</button>
           <button class="btn btn-sm" id="devMigratePartnerType"><i class="ph ph-swap"></i> partner_type 영어 → 한글</button>
+          <button class="btn btn-sm" id="devFillPartnerCode"><i class="ph ph-identification-card"></i> partner_code 공란채움 (= _key)</button>
           <button class="btn btn-sm" id="devMigrateUserCode"><i class="ph ph-identification-badge"></i> user_code 일괄부여</button>
           <button class="btn btn-sm" id="devMigrateCreditGrade"><i class="ph ph-swap"></i> credit_grade: 저신용 → 신용무관</button>
         </div>
@@ -507,6 +508,7 @@ function renderToolsTab(el) {
   el.querySelector('#devMigrateTermPolicy').addEventListener('click', () => migrateTermPolicy());
   el.querySelector('#devMigrateModelName').addEventListener('click', () => migrateModelName());
   el.querySelector('#devMigratePartnerType').addEventListener('click', () => migratePartnerType());
+  el.querySelector('#devFillPartnerCode').addEventListener('click', () => fillPartnerCode());
   el.querySelector('#devMigrateUserCode').addEventListener('click', () => migrateUserCode());
   el.querySelector('#devMigrateCreditGrade').addEventListener('click', () => migrateCreditGrade());
 }
@@ -586,6 +588,27 @@ async function migratePartnerType() {
       }
     }
     devLog(`✓ partner_type 한글화 ${count}건`);
+    showToast(`${count}건 완료`);
+  } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
+}
+
+async function fillPartnerCode() {
+  if (!confirm('partner_code 공란인 파트너에 _key 를 코드로 채웁니다 (PT-XXXX). 멱등.')) return;
+  try {
+    const { ref, get, update } = await import('firebase/database');
+    const { db } = await import('../firebase/config.js');
+    const snap = await get(ref(db, 'partners'));
+    const data = snap.val() || {};
+    let count = 0;
+    for (const [key, val] of Object.entries(data)) {
+      if (!val || val._deleted) continue;
+      if (!val.partner_code && !val.company_code) {
+        await update(ref(db, `partners/${key}`), { partner_code: key });
+        devLog(`  ${key} (${val.partner_name || ''}) → partner_code=${key}`);
+        count++;
+      }
+    }
+    devLog(`✓ partner_code 공란채움 ${count}건`);
     showToast(`${count}건 완료`);
   } catch (e) { devLog(`✗ ${e.message}`); showToast('실패', 'error'); }
 }

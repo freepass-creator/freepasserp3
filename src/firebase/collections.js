@@ -200,12 +200,18 @@ export async function saveUserProfile(uid, profile) {
 
   let role = 'agent';
   let company_code = 'SP999';
+  let agent_channel_code = '';
   let matched_partner_code = null;
   if (matched) {
     matched_partner_code = matched.partner_code;
-    if (matched.partner_type === 'sales_channel')      { role = 'agent';    company_code = matched.partner_code; }
-    else if (matched.partner_type === 'provider')      { role = 'provider'; company_code = matched.partner_code; }
-    // operator 는 그대로 SP999 유지 (운영사 가입은 비정상 — admin 이 수동 부여)
+    const pt = matched.partner_type || '';   // 한/영 모두 대응 (데이터 혼재 + 마이그레이션 과도기)
+    if (/영업|sales/i.test(pt)) {
+      // 영업채널 → 영업자. 채널 연결은 agent_channel_code (영업채널 카운트 기준 필드)
+      role = 'agent'; company_code = matched.partner_code; agent_channel_code = matched.partner_code;
+    } else if (/공급|provider/i.test(pt)) {
+      role = 'provider'; company_code = matched.partner_code;
+    }
+    // 운영사(operator) 는 SP999 유지 (운영사 가입은 비정상 — admin 이 수동 부여)
   }
 
   await setRecord(`users/${uid}`, {
@@ -215,6 +221,7 @@ export async function saveUserProfile(uid, profile) {
     user_code,
     role,
     company_code,
+    agent_channel_code,      // 영업자 소속 채널 (영업채널 카운트가 이 필드 기준)
     matched_partner_code,    // 매칭 추적용 (감사 / admin 검토)
     status: 'active',
     created_at: Date.now(),
