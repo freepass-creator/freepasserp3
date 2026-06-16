@@ -141,6 +141,8 @@ export function showOnboardSheet() {
         notifBtn.disabled = false;
         if (ok) {
           showToast('알림이 허용되었습니다', 'success');
+          // 권한 허용 직후 FCM 토큰 발급/저장 (앱 닫혀있어도 푸시)
+          import('./push.js').then(m => m.initPush()).catch(() => {});
           close();
         } else if (Notification.permission === 'denied') {
           showToast('알림이 차단되었습니다. 브라우저 설정에서 변경할 수 있어요', 'info', 4000);

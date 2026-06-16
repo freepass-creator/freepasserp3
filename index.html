@@ -70,6 +70,7 @@
   <a href="#users" data-page="users" title="사용자 관리"><i class="ph ph-users-three"></i><span class="sb-label">사용자 관리</span><span class="cnt" data-badge="users"></span></a>
   <!-- 사이드바 하단 그룹 — 관리자 문의(비admin) + 관리자 페이지(admin) + 개발도구(시스템관리자) + 설정 -->
   <div class="pt-sb-bottom-group">
+    <a href="#send" class="pt-sb-bottom-link" data-page="send" title="계약발송 — 렌터카 계약서 작성·전자서명 발송"><i class="ph ph-paper-plane-tilt"></i><span class="sb-label">계약발송</span></a>
     <a href="#admin-chat" class="pt-sb-bottom-link pt-sb-bottom-admin-chat" id="sbAdminChat" data-page="admin-chat" title="관리자와 소통"><i class="ph ph-headset"></i><span class="sb-label">관리자 소통</span><span class="cnt" data-badge="admin-chat"></span></a>
     <a href="#admin" class="pt-sb-bottom-link pt-sb-bottom-admin" data-page="admin" title="관리자 페이지"><i class="ph ph-shield-star"></i><span class="sb-label">관리자 페이지</span></a>
     <a href="#admin-settle" class="pt-sb-bottom-link pt-sb-bottom-admin-settle" data-page="admin-settle" title="관리자 정산 — 월별 수수료 정산"><i class="ph ph-calculator"></i><span class="sb-label">관리자 정산</span></a>
@@ -104,6 +105,7 @@
   <div class="pt-tb-inner" data-tb="policy" hidden></div>
   <div class="pt-tb-inner" data-tb="partners" hidden></div>
   <div class="pt-tb-inner" data-tb="users" hidden></div>
+  <div class="pt-tb-inner" data-tb="send" hidden></div>
 
   <!-- ③ 우측: [전역 버튼 자리] (알림·설정은 좌측 하단 사이드바로 일원화) -->
   <span class="pt-tb-global">
@@ -1098,6 +1100,9 @@
 <!-- 설정 (계정 + 시스템 + 카탈로그 통합) -->
 <div class="pt-page" data-page="settings"></div>
 
+<!-- 계약발송 (렌터카 계약서 작성·전자서명 발송) -->
+<div class="pt-page" data-page="send"></div>
+
 <!-- 개발도구 (시스템관리자 전용) -->
 <div class="pt-page" data-page="dev"></div>
 
@@ -1284,12 +1289,13 @@
     users:     '이름·이메일·회사·연락처...',
     'admin-settle': '정산월·계약번호·차량번호·공급사·영업자...',
   };
-  const VALID_PAGES = ['search','workspace','contract','settle','product','policy','partners','users','admin','admin-settle','settings','dev','admin-chat'];
+  const VALID_PAGES = ['search','workspace','contract','send','settle','product','policy','partners','users','admin','admin-settle','settings','dev','admin-chat'];
   // 페이지 표시명 + 아이콘 — 토픽바 가운데 작업상태 표시
   const PAGE_TITLES = {
     search:    { icon: 'magnifying-glass', label: '상품 찾기' },
     workspace: { icon: 'chat-circle-dots', label: '업무 소통' },
     contract:  { icon: 'file-text',        label: '계약 관리' },
+    send:      { icon: 'paper-plane-tilt',  label: '계약발송' },
     settle:    { icon: 'calculator',       label: '정산 관리' },
     product:   { icon: 'package',          label: '재고 관리' },
     policy:    { icon: 'shield-check',     label: '정책 관리' },
@@ -1308,6 +1314,7 @@
   function showPage(name) {
     if (!VALID_PAGES.includes(name)) name = 'search';
     if (ADMIN_ONLY_PAGES.includes(name) && !document.body.classList.contains('role-admin')) name = 'search';
+    document.body.dataset.activePage = name;  // 페이지별 크롬 토글용 (예: 발송 페이지는 전역 검색 숨김)
     document.querySelectorAll('.pt-page').forEach(p => p.classList.toggle('active', p.dataset.page === name));
     document.querySelectorAll('.pt-sb a').forEach(a => a.classList.toggle('active', a.dataset.page === name));
     document.querySelectorAll('.pt-sb-bottom-link').forEach(a => a.classList.toggle('active', a.dataset.page === name));
@@ -1332,6 +1339,8 @@
     // settings / dev / admin-chat — app.js 가 window 에 노출
     if (name === 'settings') {
       window.renderSettings?.();
+    } else if (name === 'send') {
+      window.renderSend?.();
     } else if (name === 'dev') {
       window.renderDev?.();
     } else if (name === 'admin') {

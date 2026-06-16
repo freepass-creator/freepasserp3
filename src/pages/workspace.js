@@ -344,6 +344,8 @@ export function bindChatInput() {
       const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
                         : role === 'provider' ? 'unread_for_agent' : null;
       if (unreadField) incrementAtomic(`rooms/${_activeRoomId}/${unreadField}`).catch(() => {});
+      // 상대편·관리자에게 FCM 푸시 (앱 닫혀있어도 알림) — 비차단
+      import('../core/push.js').then(m => m.notifyNewMessage(_activeRoomId, text)).catch(() => {});
     } catch (e) {
       console.error('[chat] send fail', e);
       input.value = text;     // 실패 시 텍스트 복구

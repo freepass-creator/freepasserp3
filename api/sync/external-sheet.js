@@ -144,6 +144,31 @@ function statusFlag(vehicleStatus) {
   return vehicleStatus === '출고가능' || vehicleStatus === '즉시출고' ? 'available' : 'unavailable';
 }
 
+/* ── 차종 표기 정규화 (시트 입력 흔들림 흡수) ──
+ * 시트마다 같은 차를 다르게 적는 표기 차이를 sync 시점에 통일.
+ *  목적: 같은 차가 모델명/세부모델 컬럼 흔들림 때문에 목록·필터에서 갈라지는 것 방지.
+ * 룰 테이블 = [{ match(product), apply(product, ctx) }]. 차종 늘면 여기만 추가. */
+const VEHICLE_NAMING_RULES = [
+  {
+    // 테슬라 모델 Y — '모델 Y'/'모델Y' 공백 흔들림 통일.
+    //  신차는 전부 '모델 Y 주니퍼'(2025~ 페이스리프트)로. 구형 모델 Y(2021-2024)는
+    //  중고로만 들어오므로 신차일 때만 주니퍼 강제. 중고는 주니퍼 표기 있을 때만 통일.
+    match: ({ maker, model, sub_model }) =>
+      /테슬라|tesla/i.test(maker || '') && /모델\s*y/i.test(`${model || ''} ${sub_model || ''}`),
+    apply: (p, { isNew }) => {
+      p.model = '모델 Y';
+      if (isNew || /주니퍼/.test(p.sub_model || '')) p.sub_model = '모델 Y 주니퍼';
+      else p.sub_model = String(p.sub_model || '').replace(/모델\s*y/i, '모델 Y');
+    },
+  },
+];
+function normalizeVehicleNaming(product, ctx = {}) {
+  for (const r of VEHICLE_NAMING_RULES) {
+    if (r.match(product)) r.apply(product, ctx);
+  }
+  return product;
+}
+
 const isImport = (name) => {
   const nl = String(name || '').toLowerCase();
   return IMPORT_BRAND_KEYWORDS.some(b => nl.includes(b));
@@ -470,6 +495,9 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     const inverted = _terms.slice(i + 1).some(m2 => (product.price[String(m2)]?.rent || 0) > r * 1.05);
     if (inverted) { console.warn(`[sync] ${carNumber} ${k}개월 대여료 ${r} 역전(장기보다 쌈) 제거`); delete product.price[k]; }
   }
+
+  // 차종 표기 정규화 — 같은 차 모델명/세부모델 흔들림 통일 (예: 테슬라 모델 Y 신차 → 모델 Y 주니퍼)
+  normalizeVehicleNaming(product, { isNew: product.product_type === '신차렌트' });
 
   // uid — partner_code + 차량번호 기반 (멱등)
   const uidSeed = `${partnerCode}_${carNumber}`;

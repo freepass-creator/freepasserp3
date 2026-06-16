@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상세 구성 목업 v2 — 위계 (엑셀 탈피)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --c-bg:#fff; --c-bg-sub:#f1f3f5; --c-bg-zebra:#fafbfc; --c-bg-hover:#e9ecef;
+  --c-text:#111; --c-text-sub:#495057; --c-text-muted:#868e96;
+  --c-border-soft:#edeef0; --c-border:#d5d8dc; --c-border-strong:#adb5bd;
+  --c-accent:#1B2A4A; --c-accent-soft:#F0F3F9;
+  --c-ok:#0d9488; --c-ok-bg:#f0fdfa; --c-warn:#d97706; --c-warn-bg:#fffbeb;
+  --font:Consolas,'SF Mono',ui-monospace,'Pretendard',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:#e9ecef;color:var(--c-text);font-size:12px;line-height:1.5;padding:24px;display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.panel{width:440px;background:#fff;border:1px solid var(--c-border);border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(17,17,17,.08)}
+.caption{text-align:center;font-size:13px;color:#495057;margin-bottom:6px;font-weight:600}
+
+/* 갤러리 */
+.pd-gallery{position:relative;aspect-ratio:16/10;background:linear-gradient(135deg,#eef1f4,#dfe3e8);display:flex;align-items:center;justify-content:center}
+.pd-gallery .gi{font-size:40px;color:#c2c8cf}
+.pd-badges{position:absolute;left:12px;top:12px;display:flex;gap:5px}
+.pd-ovb{background:rgba(27,42,74,.88);color:#fff;font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;backdrop-filter:blur(4px)}
+.pd-ovb.w{background:rgba(217,119,6,.9)}
+
+/* 히어로 */
+.pd-hero{padding:15px 18px 13px}
+.pd-name{font-size:17px;font-weight:700;letter-spacing:-.02em;line-height:1.3;color:var(--c-text)}
+.pd-keyspec{margin-top:7px;font-size:12px;color:var(--c-text-sub);display:flex;flex-wrap:wrap;gap:2px 9px}
+.pd-keyspec b{color:var(--c-text);font-weight:600}
+.pd-meta{margin-top:10px;display:flex;align-items:center;gap:7px}
+.pd-tag{font-size:11px;font-weight:600;padding:2px 9px;border-radius:4px;background:var(--c-ok-bg);color:var(--c-ok)}
+.pd-carno{font-size:11px;color:var(--c-text-muted)}
+
+/* 가격 하이라이트 — 최상위 위계 */
+.pd-lead{display:flex;align-items:flex-end;gap:10px;margin:0 18px 4px;padding:14px 16px;background:var(--c-accent);border-radius:8px;color:#fff}
+.pd-lead .lab{font-size:11px;color:rgba(255,255,255,.7);font-weight:600;margin-bottom:2px}
+.pd-lead .amt{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.pd-lead .unit{font-size:12px;color:rgba(255,255,255,.85);margin-left:-4px}
+.pd-lead .dep{margin-left:auto;text-align:right;font-size:11px;color:rgba(255,255,255,.7)}
+.pd-lead .dep b{display:block;font-size:14px;color:#fff;font-weight:700;margin-top:1px}
+
+/* 섹션 */
+.pd-sec{padding:16px 18px 6px}
+.pd-sec-h{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--c-text-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+.pd-sec-h .bar{width:3px;height:12px;background:var(--c-accent);border-radius:2px}
+.pd-sec-h .hint{margin-left:auto;font-size:11px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--c-text-muted)}
+
+/* 차량정보 — 엑셀격자 X. 2열 spec, 라벨 muted 소형 + 값 진하게. 점선 구분만 */
+.pd-spec{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.pd-kv{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid var(--c-border-soft)}
+.pd-kv .k{font-size:11px;color:var(--c-text-muted);font-weight:500;flex-shrink:0}
+.pd-kv .v{font-size:13px;color:var(--c-text);font-weight:600;text-align:right;word-break:break-word}
+.pd-kv.full{grid-column:1/-1}
+.pd-chip{display:inline-block;background:var(--c-bg-sub);color:var(--c-text-sub);font-size:11px;padding:1px 8px;border-radius:4px;margin-left:4px}
+
+/* 대여료/보험 — 같은 family, 테두리 없이 행 구분. 대여료(rent)만 강조 */
+.pd-tbl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.pd-tbl th,.pd-tbl td{padding:8px 4px;text-align:right;border-bottom:1px solid var(--c-border-soft)}
+.pd-tbl th:first-child,.pd-tbl td:first-child{text-align:left}
+.pd-tbl thead th{font-size:11px;color:var(--c-text-muted);font-weight:600;border-bottom:1px solid var(--c-border)}
+.pd-tbl tbody td:first-child{font-size:12px;color:var(--c-text-sub);font-weight:600}
+.pd-tbl tbody td{font-size:12px;color:var(--c-text)}
+.pd-tbl tbody tr:last-child td{border-bottom:0}
+.pd-rent{font-size:15px;font-weight:800;color:var(--c-accent);letter-spacing:-.02em}
+.pd-tbl tbody tr.best td{background:var(--c-accent-soft)}
+.pd-best-tag{display:inline-block;font-size:9px;font-weight:700;color:var(--c-accent);background:#fff;border:1px solid var(--c-accent);border-radius:3px;padding:0 4px;margin-left:5px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div style="width:100%;text-align:center;margin-bottom:10px">
+  <h1 style="font-size:16px;color:#1B2A4A">상세 구성 v2 — 위계 (엑셀 탈피)</h1>
+  <p style="font-size:12px;color:#868e96;margin-top:4px">격자 테두리 제거 · 라벨 muted/값 강조 · 가격 최상위 위계</p>
+</div>
+
+<!-- 영업자 -->
+<div>
+<div class="caption">영업자·관리자</div>
+<div class="panel">
+  <div class="pd-gallery"><i class="gi">▦</i><div class="pd-badges"><span class="pd-ovb">즉시출고</span><span class="pd-ovb w">중고구독</span></div></div>
+
+  <div class="pd-hero">
+    <div class="pd-name">기아 더 뉴 스포티지 NQ5 하이브리드 2WD 노블레스</div>
+    <div class="pd-keyspec"><span><b>24년식</b></span><span><b>54,873</b>km</span><span>하이브리드</span><span>미색</span><span>5인승</span></div>
+    <div class="pd-meta"><span class="pd-tag">출고가능</span><span class="pd-carno">222이9372</span></div>
+  </div>
+
+  <div class="pd-lead">
+    <div><div class="lab">최저 월 대여료 · 36개월</div><span class="amt">93만</span><span class="unit">원</span></div>
+    <div class="dep">보증금<b>186만원</b></div>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
+    <table class="pd-tbl">
+      <thead><tr><th>기간</th><th>월 대여료</th><th>보증금</th></tr></thead>
+      <tbody>
+        <tr><td>12개월</td><td><span class="pd-rent">111만</span></td><td>222만원</td></tr>
+        <tr><td>24개월</td><td><span class="pd-rent">93만</span></td><td>186만원</td></tr>
+        <tr class="best"><td>36개월<span class="pd-best-tag">최저</span></td><td><span class="pd-rent">93만</span></td><td>186만원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>차량정보</div>
+    <div class="pd-spec">
+      <div class="pd-kv"><span class="k">상품구분</span><span class="v">중고구독</span></div>
+      <div class="pd-kv"><span class="k">연식</span><span class="v">24년식</span></div>
+      <div class="pd-kv"><span class="k">주행</span><span class="v">54,873km</span></div>
+      <div class="pd-kv"><span class="k">연료</span><span class="v">하이브리드</span></div>
+      <div class="pd-kv"><span class="k">배기량</span><span class="v">1,598cc</span></div>
+      <div class="pd-kv"><span class="k">구동</span><span class="v">2WD</span></div>
+      <div class="pd-kv"><span class="k">인승</span><span class="v">5인승</span></div>
+      <div class="pd-kv"><span class="k">외장색</span><span class="v">미색</span></div>
+      <div class="pd-kv full"><span class="k">선택옵션</span><span class="v">기본형 <span class="pd-chip">드라이브와이즈</span></span></div>
+    </div>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>보험</div>
+    <table class="pd-tbl">
+      <thead><tr><th>항목</th><th>한도</th><th>면책금</th></tr></thead>
+      <tbody>
+        <tr><td>대인</td><td>무한</td><td>30만원</td></tr>
+        <tr><td>대물</td><td>1억원</td><td>30만원</td></tr>
+        <tr><td>자손사고</td><td>1.5억원</td><td>30만원</td></tr>
+        <tr><td>자차손해</td><td>차량가액</td><td>20% · 50만~100만</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>대여조건</div>
+    <div class="pd-spec">
+      <div class="pd-kv"><span class="k">심사</span><span class="v">무심사</span></div>
+      <div class="pd-kv"><span class="k">약정주행</span><span class="v">연 2만km</span></div>
+      <div class="pd-kv"><span class="k">기본연령</span><span class="v">만 26세+</span></div>
+      <div class="pd-kv"><span class="k">보험포함</span><span class="v">포함</span></div>
+      <div class="pd-kv"><span class="k">정비</span><span class="v">포함</span></div>
+      <div class="pd-kv"><span class="k">탁송비</span><span class="v">무료</span></div>
+    </div>
+  </div>
+
+  <div class="pd-sec" style="background:var(--c-warn-bg);margin-top:6px">
+    <div class="pd-sec-h"><span class="bar" style="background:var(--c-warn)"></span>수수료 <span class="hint">내부용</span></div>
+    <table class="pd-tbl">
+      <thead><tr><th>기간</th><th>수수료</th></tr></thead>
+      <tbody><tr><td>36개월</td><td><span class="pd-rent" style="color:var(--c-warn)">110만</span></td></tr></tbody>
+    </table>
+  </div>
+  <div style="height:10px"></div>
+</div>
+</div>
+
+<!-- 손님 -->
+<div>
+<div class="caption">손님 (수수료·코드·차고지 숨김)</div>
+<div class="panel">
+  <div class="pd-gallery"><i class="gi">▦</i><div class="pd-badges"><span class="pd-ovb">즉시출고</span></div></div>
+
+  <div class="pd-hero">
+    <div class="pd-name">기아 더 뉴 스포티지 NQ5 하이브리드 2WD 노블레스</div>
+    <div class="pd-keyspec"><span><b>24년식</b></span><span><b>54,873</b>km</span><span>하이브리드</span><span>미색</span><span>5인승</span></div>
+    <div class="pd-meta"><span class="pd-tag">출고가능</span></div>
+  </div>
+
+  <div class="pd-lead">
+    <div><div class="lab">최저 월 대여료 · 36개월</div><span class="amt">93만</span><span class="unit">원</span></div>
+    <div class="dep">보증금<b>186만원</b></div>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
+    <table class="pd-tbl">
+      <thead><tr><th>기간</th><th>월 대여료</th><th>보증금</th></tr></thead>
+      <tbody>
+        <tr><td>12개월</td><td><span class="pd-rent">111만</span></td><td>222만원</td></tr>
+        <tr><td>24개월</td><td><span class="pd-rent">93만</span></td><td>186만원</td></tr>
+        <tr class="best"><td>36개월<span class="pd-best-tag">최저</span></td><td><span class="pd-rent">93만</span></td><td>186만원</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>차량정보</div>
+    <div class="pd-spec">
+      <div class="pd-kv"><span class="k">상품구분</span><span class="v">중고구독</span></div>
+      <div class="pd-kv"><span class="k">연식</span><span class="v">24년식</span></div>
+      <div class="pd-kv"><span class="k">주행</span><span class="v">54,873km</span></div>
+      <div class="pd-kv"><span class="k">연료</span><span class="v">하이브리드</span></div>
+      <div class="pd-kv"><span class="k">배기량</span><span class="v">1,598cc</span></div>
+      <div class="pd-kv"><span class="k">구동</span><span class="v">2WD</span></div>
+      <div class="pd-kv"><span class="k">인승</span><span class="v">5인승</span></div>
+      <div class="pd-kv"><span class="k">외장색</span><span class="v">미색</span></div>
+      <div class="pd-kv full"><span class="k">선택옵션</span><span class="v">기본형 <span class="pd-chip">드라이브와이즈</span></span></div>
+    </div>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>보험</div>
+    <table class="pd-tbl">
+      <thead><tr><th>항목</th><th>한도</th><th>면책금</th></tr></thead>
+      <tbody>
+        <tr><td>대인</td><td>무한</td><td>30만원</td></tr>
+        <tr><td>대물</td><td>1억원</td><td>30만원</td></tr>
+        <tr><td>자손사고</td><td>1.5억원</td><td>30만원</td></tr>
+        <tr><td>자차손해</td><td>차량가액</td><td>20% · 50만~100만</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pd-sec">
+    <div class="pd-sec-h"><span class="bar"></span>대여조건</div>
+    <div class="pd-spec">
+      <div class="pd-kv"><span class="k">심사</span><span class="v">무심사</span></div>
+      <div class="pd-kv"><span class="k">약정주행</span><span class="v">연 2만km</span></div>
+      <div class="pd-kv"><span class="k">기본연령</span><span class="v">만 26세+</span></div>
+      <div class="pd-kv"><span class="k">보험포함</span><span class="v">포함</span></div>
+      <div class="pd-kv"><span class="k">정비</span><span class="v">포함</span></div>
+      <div class="pd-kv"><span class="k">탁송비</span><span class="v">무료</span></div>
+    </div>
+  </div>
+  <div style="height:10px"></div>
+</div>
+</div>
+
+</body>
+</html>

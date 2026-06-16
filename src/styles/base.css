@@ -175,12 +175,12 @@ td.num, td.date, th.num, th.date {
 }
 
 .btn-primary {
-  background: var(--text-main);
+  background: var(--brand, var(--text-main));
   color: var(--text-inverse);
-  border-color: var(--text-main);
+  border-color: var(--brand, var(--text-main));
 }
-.btn-primary:hover { background: #000; border-color: #000; }
-.btn-primary:active { background: #1f2937; }
+.btn-primary:hover { background: var(--brand-h, #000); border-color: var(--brand-h, #000); }
+.btn-primary:active { background: var(--brand-h, #1f2937); }
 
 .btn-danger {
   background: var(--alert-red-text);

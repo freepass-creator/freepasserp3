@@ -216,6 +216,10 @@
   --radius-pill: 2px;     /* desktop ERP — 사실상 각진 */
   --ctrl-r:      2px;
 
+  /* 강조색(테마) — 기본은 모노크롬(검정). 설정에서 fp.accent 로 override. */
+  --brand:       var(--text-main);
+  --brand-h:     #000;
+
   --card-r:      6px;     /* 카드·섹션 */
   --bubble-r:    12px;    /* 말풍선·리치 카드 */
   --pill-r:      999px;   /* 명시적 pill 필요 시 */

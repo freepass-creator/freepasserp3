@@ -14,6 +14,7 @@ async function requestNotificationPermission() {
   if (Notification.permission === 'denied') return false;
   try {
     const p = await Notification.requestPermission();
+    if (p === 'granted') import('../core/push.js').then(m => m.initPush()).catch(() => {});
     return p === 'granted';
   } catch { return false; }
 }

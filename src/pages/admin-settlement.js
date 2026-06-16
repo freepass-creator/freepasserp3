@@ -21,6 +21,7 @@ import { esc, providerLabelByCode } from '../core/ui-helpers.js';
 
 /* ──────── 필드 메타 (폼·목록·계산 단일 소스) ──────── */
 const STATUS_OPTS = ['계약완료', '정산완료', '진행', '보류', '취소', '환수'];
+const PRODUCT_OPTS = ['무보증', '일반', '무심사'];
 
 // type: text | num | date | select   · calc: 자동계산(읽기전용)
 const BLOCKS = [
@@ -111,6 +112,30 @@ function isAdmin() {
   return (store.currentUser || {}).role === 'admin';
 }
 
+/* ──────── 드롭다운 소스 (기존 데이터 기반) ──────── */
+function activePartnerNames(type) {
+  return [...new Set((store.partners || []).filter(p => {
+    if (p._deleted || p.is_active === false) return false;
+    const pt = p.partner_type || '공급사';
+    if (type === '공급사') return pt === '공급사' || pt === 'provider';
+    if (type === '영업채널') return pt === '영업채널' || pt === 'sales_channel';
+    return pt === type;
+  }).map(p => p.partner_name || p.company_name || p.partner_code || p._key).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'ko'));
+}
+const providerNames = () => activePartnerNames('공급사');
+const channelNames = () => activePartnerNames('영업채널');
+
+/** select 셀 — 현재값이 옵션에 없으면 맨 앞에 보존 */
+function selectCell(field, value, options) {
+  const opts = [...options];
+  if (value && !opts.includes(value)) opts.unshift(value);
+  return `<select class="input input-sm" data-f="${field}">
+    <option value="">—</option>
+    ${opts.map(o => `<option value="${esc(o)}" ${o === value ? 'selected' : ''}>${esc(o)}</option>`).join('')}
+  </select>`;
+}
+
 /* ──────── 기간 네비게이터 상태 (월/분기/연) ──────── */
 let _pMode = 'month';   // month | quarter | year
 let _pY = new Date().getFullYear();
@@ -157,13 +182,18 @@ export function renderAdminSettlement() {
             <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
               <tr>
                 <th style="text-align:left;">정산월</th>
-                <th style="text-align:left;">계약번호</th>
                 <th style="text-align:left;">상태</th>
                 <th style="text-align:left;">차량번호</th>
                 <th style="text-align:left;">모델명</th>
                 <th style="text-align:left;">고객</th>
+                <th style="text-align:left;">연락처</th>
+                <th style="text-align:left;">상품구분</th>
+                <th style="text-align:left;">기간</th>
+                <th style="text-align:right;">대여료</th>
+                <th style="text-align:right;">보증금</th>
                 <th style="text-align:left;">공급사</th>
-                <th style="text-align:left;">영업자</th>
+                <th style="text-align:left;">영업채널</th>
+                <th style="text-align:left;">담당자</th>
                 <th style="text-align:right;">공급사청구</th>
                 <th style="text-align:right;">에이전시지급</th>
                 <th style="text-align:right;">당월수익</th>
@@ -187,7 +217,7 @@ function drawRows() {
   all.sort((a, b) => (b.settle_month || '').localeCompare(a.settle_month || '') || (a.contract_code || '').localeCompare(b.contract_code || ''));
 
   if (!all.length) {
-    tbody.innerHTML = `<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--text-muted);">${esc(periodLabel())} 정산 내역이 없습니다. 하단 [정산 등록]으로 추가하세요.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;padding:32px;color:var(--text-muted);">${esc(periodLabel())} 정산 내역이 없습니다. 하단 [정산 등록]으로 추가하세요.</td></tr>`;
     return;
   }
 
@@ -207,13 +237,18 @@ function rowHtml(s) {
   if (editing) {
     return `<tr data-key="${esc(s._key)}" data-edit="1">
       <td><input type="month" class="input input-sm" data-f="settle_month" value="${esc(month)}"></td>
-      <td><input class="input input-sm" data-f="contract_code" value="${esc(s.contract_code || '')}"></td>
       <td><select class="input input-sm" data-f="settle_status">${statusOptionsHtml}</select></td>
-      <td><input class="input input-sm" data-f="car_number" value="${esc(s.car_number || '')}"></td>
-      <td><input class="input input-sm" data-f="model_name" value="${esc(s.model_name || '')}"></td>
-      <td><input class="input input-sm" data-f="customer_name" value="${esc(s.customer_name || '')}"></td>
-      <td><input class="input input-sm" data-f="provider_name" value="${esc(s.provider_name || '')}"></td>
-      <td><input class="input input-sm" data-f="agent_name" value="${esc(s.agent_name || '')}"></td>
+      <td><input class="input input-sm" data-f="car_number" value="${esc(s.car_number || '')}" placeholder="차량번호"></td>
+      <td><input class="input input-sm" data-f="model_name" value="${esc(s.model_name || '')}" placeholder="모델명"></td>
+      <td><input class="input input-sm" data-f="customer_name" value="${esc(s.customer_name || '')}" placeholder="고객명"></td>
+      <td><input class="input input-sm" data-f="customer_phone" value="${esc(s.customer_phone || '')}" placeholder="연락처"></td>
+      <td>${selectCell('product_type', s.product_type || '', PRODUCT_OPTS)}</td>
+      <td><input class="input input-sm" data-f="contract_term" value="${esc(s.contract_term || '')}" placeholder="개월"></td>
+      <td style="text-align:right;"><input class="input input-sm" data-f="contract_rent" data-num="1" value="${esc(s.contract_rent != null ? won(s.contract_rent) : '')}" style="text-align:right;"></td>
+      <td style="text-align:right;"><input class="input input-sm" data-f="deposit" data-num="1" value="${esc(s.deposit != null ? won(s.deposit) : '')}" style="text-align:right;"></td>
+      <td>${selectCell('provider_name', s.provider_name || '', providerNames())}</td>
+      <td>${selectCell('agency', s.agency || '', channelNames())}</td>
+      <td><input class="input input-sm" data-f="writer" value="${esc(s.writer || '')}" placeholder="담당자"></td>
       <td style="text-align:right;"><input class="input input-sm" data-f="provider_bill" data-num="1" value="${esc(s.provider_bill != null ? won(s.provider_bill) : '')}" style="text-align:right;"></td>
       <td style="text-align:right;"><input class="input input-sm" data-f="agency_pay" data-num="1" value="${esc(s.agency_pay != null ? won(s.agency_pay) : '')}" style="text-align:right;"></td>
       <td style="text-align:right;color:var(--text-muted);" data-calc="monthly_profit">${man(c.monthly_profit)}</td>
@@ -226,13 +261,18 @@ function rowHtml(s) {
 
   return `<tr data-key="${esc(s._key)}" style="cursor:pointer;">
     <td>${esc(s.settle_month || '-')}</td>
-    <td>${esc(s.contract_code || '-')}</td>
     <td>${esc(s.settle_status || '-')}</td>
     <td>${esc(s.car_number || '-')}</td>
     <td>${esc(s.model_name || '-')}</td>
     <td>${esc(s.customer_name || '-')}</td>
+    <td>${esc(s.customer_phone || '-')}</td>
+    <td>${esc(s.product_type || '-')}</td>
+    <td>${esc(s.contract_term || '-')}</td>
+    <td style="text-align:right;">${man(s.contract_rent)}</td>
+    <td style="text-align:right;">${man(s.deposit)}</td>
     <td>${esc(s.provider_name || '-')}</td>
-    <td>${esc(s.agent_name || '-')}</td>
+    <td>${esc(s.agency || '-')}</td>
+    <td>${esc(s.writer || '-')}</td>
     <td style="text-align:right;">${man(c.provider_bill)}</td>
     <td style="text-align:right;">${man(c.agency_pay)}</td>
     <td style="text-align:right;font-weight:var(--fw-semibold);color:${c.monthly_profit >= 0 ? 'var(--text-main)' : '#dc2626'};">${man(c.monthly_profit)}</td>
@@ -333,7 +373,7 @@ function addInlineRow() {
   drawRows();
   // 첫 입력 셀에 포커스
   setTimeout(() => {
-    document.querySelector(`tr[data-key="${placeholder._key}"] input[data-f="contract_code"]`)?.focus();
+    document.querySelector(`tr[data-key="${placeholder._key}"] input[data-f="car_number"]`)?.focus();
   }, 0);
 }
 

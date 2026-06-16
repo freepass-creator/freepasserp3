@@ -178,6 +178,8 @@ function openAdminChatRoomInPage(roomKey) {
         // 보낸 사람은 자동으로 읽음 처리 (사이드바 뱃지 자체 발신으로 안 늘어남)
         [`read_by/${me.uid}`]: sentAt,
       });
+      // 상대편에게 FCM 푸시 (앱 닫혀있어도 알림) — 비차단
+      import('../core/push.js').then(m => m.notifyNewMessage(roomKey, text)).catch(() => {});
       // 비admin 의 첫 메시지 → 관리자에게 SMS/알림톡 (실패해도 비즈니스 플로우는 안 막힘)
       if (isFirstMessage && me.role !== 'admin') {
         const senderLabel = me.role === 'provider' ? '공급사' : '영업자';

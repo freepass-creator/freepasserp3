@@ -876,7 +876,7 @@
     margin: 0;
   }
   .pt-tb .btn-primary {
-    background: var(--c-primary, var(--text-main));
+    background: var(--brand, var(--c-primary, var(--text-main)));
     color: var(--text-inv, #fff);
   }
 
@@ -1143,6 +1143,8 @@
     display: flex;
     align-items: center;
   }
+  /* 계약발송 — 전용 페이지처럼: 전역 검색창 불필요 → 숨김 (상단바는 페이지 액션 전용) */
+  body[data-active-page="send"] .pt-tb-search-wrap { display: none; }
   .pt-tb-search {
     flex: 1 1 auto;
     margin: 0;

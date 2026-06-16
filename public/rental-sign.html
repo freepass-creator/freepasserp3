@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>렌터카 계약 · 전자서명</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{ --navy:#16314d; --navy2:#22466b; --line:#e6ebf1; --bg:#f4f6f9; --ink:#15191e; --ink2:#475467; --mute:#7c8a98; --ok:#13a37a; --danger:#c0392b; }
+  *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all;-webkit-tap-highlight-color:transparent}
+  body{font-family:"Pretendard",-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:480px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:var(--bg)}
+  /* 헤더 + 스텝 인디케이터 */
+  .fh{padding:16px 18px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  .fh h1{font-size:16px;font-weight:800;color:var(--navy);letter-spacing:-.02em}
+  .fh p{font-size:12.5px;color:var(--mute);margin-top:2px}
+  .steps{display:flex;gap:5px;margin-top:11px}
+  .steps i{flex:1;height:4px;border-radius:99px;background:#e3e8ef}
+  .steps i.on{background:var(--navy)}
+  .steps i.done{background:var(--ok)}
+  /* 본문 */
+  .body{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column}
+  .slabel{font-size:11.5px;font-weight:800;color:var(--navy2);letter-spacing:.02em}
+  .stitle{font-size:19px;font-weight:800;letter-spacing:-.03em;margin:5px 0 4px}
+  .sdesc{font-size:13px;color:var(--ink2);margin-bottom:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px 16px;margin-bottom:12px}
+  .row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:6px 0;border-bottom:1px solid #f1f4f8}
+  .row:last-child{border-bottom:none}
+  .row .k{color:var(--mute);flex:0 0 auto}
+  .row .v{font-weight:700;text-align:right}
+  /* 입력 */
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:5px}
+  .field input{width:100%;height:48px;font-size:16px;font-family:inherit;border:1px solid #cfd9e6;border-radius:9px;padding:0 14px;background:#fff;color:var(--ink)}
+  .field input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(22,49,77,.08)}
+  /* 사진 캡처 */
+  .shot{border:1.5px dashed #cfd9e6;border-radius:13px;background:#fff;padding:20px;text-align:center;cursor:pointer;transition:border-color .15s}
+  .shot.has{border-style:solid;border-color:var(--ok);padding:8px}
+  .shot .ic{font-size:34px;line-height:1}
+  .shot .t{font-size:14px;font-weight:700;margin-top:8px}
+  .shot .d{font-size:12px;color:var(--mute);margin-top:3px}
+  .shot img{width:100%;border-radius:8px;display:block}
+  .shot input{display:none}
+  .retake{margin-top:8px;font-size:12.5px;color:var(--navy);font-weight:700;text-align:center;text-decoration:underline}
+  /* 동의 */
+  .cc{display:flex;gap:11px;align-items:flex-start;padding:13px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;margin-bottom:9px;cursor:pointer;font-size:13px;line-height:1.5}
+  .cc.on{border-color:var(--navy);background:#f7f9fc}
+  .cc input{width:20px;height:20px;flex:0 0 auto;margin-top:1px;accent-color:var(--navy)}
+  .cc b{color:var(--navy)}
+  .cc-all{font-weight:800;background:#eef3f8;border-color:#d3e0ee}
+  /* 서명 */
+  .sig{display:flex;flex-direction:column;flex:1;min-height:240px}
+  .sig-canvas{flex:1;min-height:200px;background:#fff;border:1.5px solid #cfd9e6;border-radius:13px;touch-action:none}
+  .sig-bar{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
+  .sig-hint{font-size:12.5px;color:var(--mute)}
+  /* 푸터 버튼 */
+  .foot{padding:13px 18px calc(13px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);display:flex;gap:9px}
+  .btn{flex:1;height:52px;border:none;border-radius:11px;font-family:inherit;font-size:15.5px;font-weight:800;cursor:pointer}
+  .btn-prev{flex:0 0 86px;background:#eef1f5;color:var(--ink2)}
+  .btn-next{background:var(--navy);color:#fff}
+  .btn-next:disabled{background:#c5cdd8;color:#fff}
+  .btn-sm{height:36px;flex:0 0 auto;padding:0 14px;font-size:13px;border-radius:8px;background:#eef1f5;color:var(--ink2)}
+  /* 상태/완료 */
+  .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 24px}
+  .center .big{width:74px;height:74px;border-radius:50%;background:var(--ok);color:#fff;font-size:40px;display:grid;place-items:center;margin-bottom:18px}
+  .center h2{font-size:20px;font-weight:800;color:var(--navy)}
+  .center p{font-size:14px;color:var(--ink2);margin-top:8px}
+  .err{color:var(--danger);font-weight:700}
+  .spin{width:30px;height:30px;border:3px solid #dde3ea;border-top-color:var(--navy);border-radius:50%;animation:r .7s linear infinite}
+  @keyframes r{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="center"><div class="spin"></div><p style="margin-top:14px;color:var(--mute)">불러오는 중…</p></div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+import { getDatabase, ref, get, update } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js';
+
+const app = initializeApp({
+  apiKey: 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY',
+  databaseURL: 'https://freepasserp3-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'freepasserp3',
+});
+const db = getDatabase(app);
+const $app = document.getElementById('app');
+const token = new URLSearchParams(location.search).get('t');
+
+// 진행 상태
+const S = {
+  step: 0,
+  data: null,                       // contract_sign 레코드 (차량·정책 사전입력)
+  name:'', phone:'', rrn:'', license:'', addr:'',
+  licenseImg:'', faceImg:'', sig:'',
+  agree:[false,false,false,false],
+  busy:false,
+};
+const STEPS = ['계약 확인','계약자 정보','면허증','얼굴 사진','약관 동의','전자서명'];
+const AGREE_ITEMS = [
+  '본인은 대여 조건·보험·정비 주요사항을 확인하였으며, <b>사고 시 보험 미적용 사유와 그 경우 손해 전액을 임차인이 부담</b>한다는 조건에 동의합니다.',
+  '<b>자동차 임대차 계약 약관</b> 전문을 수령·확인하고 이에 동의합니다.',
+  '<b>개인정보·신용정보 수집·이용 및 제3자 제공</b>에 동의합니다.',
+  '<b>차량 위치정보(GPS) 수집·이용</b>에 동의합니다. (계약 위반 시 차량 회수 목적)',
+];
+
+init();
+async function init(){
+  if(!token){ fail('잘못된 링크입니다.'); return; }
+  try{
+    const snap = await get(ref(db, `contract_sign/${token}`));
+    const d = snap.val();
+    if(!d){ fail('서명 요청을 찾을 수 없습니다.<br><small>링크가 만료되었거나 취소되었습니다.</small>'); return; }
+    if(d.signed_at){ doneScreen(d, true); return; }
+    if(d.expires_at && d.expires_at < Date.now()){ fail('만료된 요청입니다.'); return; }
+    S.data = d;
+    render();
+  }catch(e){ console.error(e); fail('불러올 수 없습니다. 잠시 후 다시 시도해 주세요.'); }
+}
+
+function fail(msg){ $app.innerHTML = `<div class="center"><div style="font-size:44px">⚠️</div><h2 style="color:var(--danger);margin-top:10px">오류</h2><p class="err">${msg}</p></div>`; }
+
+function header(){
+  const total = STEPS.length;
+  const bars = STEPS.map((_,i)=>`<i class="${i<S.step?'done':i===S.step?'on':''}"></i>`).join('');
+  const d = S.data || {};
+  return `<div class="fh"><h1>렌터카 계약 · 전자서명</h1><p>${esc(d.company_name||'렌터카')} · ${esc(d.car_number||d.model_name||'')}</p><div class="steps">${bars}</div></div>`;
+}
+
+function render(){
+  const d = S.data;
+  let inner = '';
+  if(S.step===0){ // 계약 확인
+    inner = `<div class="slabel">STEP 1 · 계약 확인</div><div class="stitle">계약 내용을 확인하세요</div>
+      <div class="sdesc">아래 차량으로 자동차 임대차 계약을 진행합니다.</div>
+      <div class="card">
+        <div class="row"><span class="k">임대인</span><span class="v">${esc(d.company_name||'-')}</span></div>
+        <div class="row"><span class="k">차량</span><span class="v">${esc(d.model_name||'-')}</span></div>
+        <div class="row"><span class="k">차량번호</span><span class="v">${esc(d.car_number||'-')}</span></div>
+        <div class="row"><span class="k">계약번호</span><span class="v">${esc(d.contract_code||'-')}</span></div>
+      </div>
+      <div class="sdesc" style="margin:0">다음 단계에서 본인 정보 입력 · 면허증/얼굴 확인 · 약관 동의 · 전자서명을 진행합니다.</div>`;
+  } else if(S.step===1){ // 계약자 정보
+    inner = `<div class="slabel">STEP 2 · 계약자 정보</div><div class="stitle">본인 정보를 입력하세요</div><div class="sdesc">계약서에 기재되는 정보입니다.</div>
+      ${inp('name','성명','홍길동')}
+      ${inp('phone','연락처','010-0000-0000','tel')}
+      ${inp('rrn','주민등록번호','앞 6자리-뒤 7자리')}
+      ${inp('license','운전면허번호','00-00-000000-00')}
+      ${inp('addr','주소','도로명 주소')}`;
+  } else if(S.step===2){ // 면허증
+    inner = `<div class="slabel">STEP 3 · 본인인증 ①</div><div class="stitle">운전면허증을 촬영하세요</div>
+      <div class="sdesc">면허 효력·운전자격 확인용입니다. 글자가 또렷하게 보이도록 촬영해 주세요.</div>
+      ${shot('license','면허증 촬영','카메라로 운전면허증 앞면을 찍어주세요','environment',S.licenseImg)}`;
+  } else if(S.step===3){ // 얼굴
+    inner = `<div class="slabel">STEP 3 · 본인인증 ②</div><div class="stitle">본인 얼굴을 촬영하세요</div>
+      <div class="sdesc">면허증 사진과 동일인인지 확인하기 위한 본인 셀카입니다.</div>
+      ${shot('face','얼굴 촬영','전면 카메라로 본인 얼굴을 찍어주세요','user',S.faceImg)}`;
+  } else if(S.step===4){ // 동의
+    const allOn = S.agree.every(Boolean);
+    inner = `<div class="slabel">STEP 4 · 약관 동의</div><div class="stitle">아래 내용에 동의해 주세요</div><div class="sdesc">동의해야 계약을 진행할 수 있습니다.</div>
+      <label class="cc cc-all ${allOn?'on':''}"><input type="checkbox" id="ccAll" ${allOn?'checked':''}><span>전체 동의</span></label>
+      ${AGREE_ITEMS.map((t,i)=>`<label class="cc ${S.agree[i]?'on':''}"><input type="checkbox" data-ag="${i}" ${S.agree[i]?'checked':''}><span>${t}</span></label>`).join('')}`;
+  } else if(S.step===5){ // 서명
+    inner = `<div class="slabel">STEP 5 · 전자서명</div><div class="stitle">아래 칸에 서명해 주세요</div>
+      <div class="sdesc">「전자서명법」에 따라 서면 서명·날인과 동일한 효력을 가집니다.</div>
+      <div class="sig"><canvas class="sig-canvas" id="sigCanvas"></canvas>
+        <div class="sig-bar"><span class="sig-hint">손가락으로 서명해 주세요</span><button type="button" class="btn-sm" id="sigClear">지우기</button></div>
+      </div>`;
+  }
+  const isLast = S.step===STEPS.length-1;
+  const foot = `<div class="foot">${S.step>0?`<button class="btn btn-prev" id="bPrev">이전</button>`:''}
+      <button class="btn btn-next" id="bNext" ${nextDisabled()?'disabled':''}>${isLast?'동의하고 제출':'다음'}</button></div>`;
+  $app.innerHTML = header() + `<div class="body">${inner}</div>` + foot;
+  wire();
+}
+
+function inp(k,label,ph,type){ return `<div class="field"><label>${label}</label><input id="f_${k}" type="${type||'text'}" inputmode="${type==='tel'?'tel':'text'}" placeholder="${ph}" value="${esc(S[k])}"></div>`; }
+function shot(kind,title,desc,cap,img){
+  const field = kind==='license'?'licenseImg':'faceImg';
+  if(img) return `<div class="shot has" data-shot="${kind}"><img src="${img}" alt="${title}"><div class="retake">다시 촬영</div><input type="file" accept="image/*" capture="${cap}" data-cap="${field}"></div>`;
+  return `<div class="shot" data-shot="${kind}"><div class="ic">📷</div><div class="t">${title}</div><div class="d">${desc}</div><input type="file" accept="image/*" capture="${cap}" data-cap="${field}"></div>`;
+}
+
+function nextDisabled(){
+  if(S.busy) return true;
+  if(S.step===1) return !(S.name && S.phone && S.rrn && S.license);
+  if(S.step===2) return !S.licenseImg;
+  if(S.step===3) return !S.faceImg;
+  if(S.step===4) return !S.agree.every(Boolean);
+  if(S.step===5) return !S.sig;
+  return false;
+}
+
+function wire(){
+  document.getElementById('bPrev')?.addEventListener('click',()=>{ if(S.step>0){S.step--;render();} });
+  document.getElementById('bNext')?.addEventListener('click',onNext);
+  // 입력
+  ['name','phone','rrn','license','addr'].forEach(k=>{
+    const el=document.getElementById('f_'+k);
+    if(el) el.addEventListener('input',()=>{ S[k]=el.value; const b=document.getElementById('bNext'); if(b) b.disabled=nextDisabled(); });
+  });
+  // 사진 촬영
+  document.querySelectorAll('[data-shot]').forEach(box=>{
+    const input=box.querySelector('input[type=file]');
+    box.addEventListener('click',()=>input.click());
+    input.addEventListener('change',()=>{
+      const file=input.files[0]; if(!file) return;
+      const r=new FileReader();
+      r.onload=()=>{ S[input.dataset.cap]=r.result; render(); };
+      r.readAsDataURL(file);
+    });
+  });
+  // 동의
+  document.getElementById('ccAll')?.addEventListener('change',e=>{ S.agree=S.agree.map(()=>e.target.checked); render(); });
+  document.querySelectorAll('[data-ag]').forEach(c=>c.addEventListener('change',()=>{ S.agree[+c.dataset.ag]=c.checked; render(); }));
+  // 서명 패드
+  if(S.step===5) initSig();
+}
+
+function initSig(){
+  const c=document.getElementById('sigCanvas');
+  const ratio=window.devicePixelRatio||1;
+  const rect=c.getBoundingClientRect();
+  c.width=Math.round(rect.width*ratio); c.height=Math.round(rect.height*ratio);
+  const ctx=c.getContext('2d'); ctx.scale(ratio,ratio);
+  ctx.lineWidth=2.6; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.strokeStyle='#16314d';
+  let drawing=false, dirty=false;
+  const pos=e=>{ const r=c.getBoundingClientRect(); const p=e.touches?e.touches[0]:e; return {x:p.clientX-r.left,y:p.clientY-r.top}; };
+  const start=e=>{ e.preventDefault(); drawing=true; const{x,y}=pos(e); ctx.beginPath(); ctx.moveTo(x,y); };
+  const move=e=>{ if(!drawing)return; e.preventDefault(); const{x,y}=pos(e); ctx.lineTo(x,y); ctx.stroke(); dirty=true; };
+  const end=()=>{ if(!drawing)return; drawing=false; if(dirty){ S.sig=c.toDataURL('image/png'); document.getElementById('bNext').disabled=nextDisabled(); } };
+  c.addEventListener('mousedown',start); c.addEventListener('mousemove',move); window.addEventListener('mouseup',end);
+  c.addEventListener('touchstart',start,{passive:false}); c.addEventListener('touchmove',move,{passive:false}); c.addEventListener('touchend',end);
+  document.getElementById('sigClear').addEventListener('click',()=>{ ctx.clearRect(0,0,c.width,c.height); dirty=false; S.sig=''; document.getElementById('bNext').disabled=nextDisabled(); });
+}
+
+async function onNext(){
+  if(nextDisabled()) return;
+  if(S.step < STEPS.length-1){ S.step++; render(); return; }
+  // 마지막 — 제출
+  await submit();
+}
+
+async function submit(){
+  S.busy=true;
+  $app.innerHTML = `<div class="center"><div class="spin"></div><p style="margin-top:14px;color:var(--mute)">제출 중…<br><small>사진·서명을 안전하게 업로드합니다</small></p></div>`;
+  try{
+    // 사진은 압축(JPEG) 후 dataURL 로 RTDB 저장 — 미인증 손님은 토큰 노드에 update 만 가능(규칙상 OK)
+    const [license_photo, face_photo] = await Promise.all([
+      compress(S.licenseImg, 1280, 0.6),
+      compress(S.faceImg, 900, 0.6),
+    ]);
+    await update(ref(db, `contract_sign/${token}`), {
+      signed_at: Date.now(),
+      customer_name: S.name, customer_phone: S.phone,
+      customer_rrn_masked: maskRrn(S.rrn), customer_license: S.license, customer_address: S.addr,
+      agree_all: true,
+      signature_png: S.sig,
+      license_photo,
+      face_photo,
+      status: 'signed',
+    });
+    if(S.data?.contract_code){
+      try{ await update(ref(db, `contracts/${S.data.contract_code}`), { contract_status:'계약완료', signed_at:Date.now() }); }catch(_){}
+    }
+    doneScreen(S.data, false);
+  }catch(e){
+    console.error(e); S.busy=false;
+    fail('제출에 실패했습니다.<br><small>'+esc(e?.message||e)+'</small>');
+  }
+}
+
+// 이미지 압축(리사이즈+JPEG) → dataURL. RTDB 노드 크기 절약.
+function compress(dataUrl, maxW, q){
+  return new Promise(res=>{
+    if(!dataUrl) return res('');
+    const img=new Image();
+    img.onload=()=>{
+      const scale=Math.min(1, maxW/(img.width||maxW));
+      const w=Math.round((img.width||maxW)*scale), h=Math.round((img.height||maxW)*scale);
+      const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      try{ res(cv.toDataURL('image/jpeg', q)); }catch(_){ res(dataUrl); }
+    };
+    img.onerror=()=>res(dataUrl);
+    img.src=dataUrl;
+  });
+}
+
+function doneScreen(d, already){
+  $app.innerHTML = `<div class="center"><div class="big">✓</div>
+    <h2>${already?'이미 서명 완료되었습니다':'전자서명이 완료되었습니다'}</h2>
+    <p>${esc(d?.company_name||'렌터카')} 임대차 계약의<br>전자서명·본인확인이 접수되었습니다.</p>
+    <div class="card" style="margin-top:18px;width:100%;text-align:left">
+      <div class="row"><span class="k">차량</span><span class="v">${esc(d?.model_name||d?.car_number||'-')}</span></div>
+      <div class="row"><span class="k">본인확인</span><span class="v">면허증·얼굴 촬영 완료</span></div>
+      <div class="row"><span class="k">전자서명</span><span class="v">완료</span></div>
+    </div>
+    <p style="margin-top:16px;font-size:12.5px;color:var(--mute)">이 화면은 닫으셔도 됩니다. 계약 진행 안내가 별도로 연락됩니다.</p></div>`;
+}
+
+function maskRrn(v){ const s=String(v||'').replace(/[^0-9]/g,''); return s.length>=7 ? s.slice(0,6)+'-'+s[6]+'••••••' : v; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+</script>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>프리패스모빌리티 공급사 입점 안내</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --navy:#1B2A4A; --accent:#9EC5F3; --base:#7F93B3;
+    --ink:#1b2733; --ink2:#445466; --ink3:#7c8a98; --line:#e4e8ee; --soft:#f5f8fc;
+  }
+  body{ background:#e9edf2; font-family:"Pretendard",-apple-system,system-ui,sans-serif; color:var(--ink); line-height:1.75; font-size:10.5pt; padding:24px 0; -webkit-font-smoothing:antialiased; }
+  .document{ width:210mm; min-height:297mm; margin:0 auto 24px; background:#fff; padding:24mm 22mm; box-shadow:0 2px 24px rgba(22,49,77,.13); position:relative; }
+
+  .logo{ font-size:17pt; font-weight:700; color:var(--navy); letter-spacing:-.3px; }
+  .logo .m{ color:var(--base); font-weight:600; }
+  .cover-tag{ display:inline-block; margin-top:26px; font-size:9.5pt; font-weight:700; letter-spacing:3px; color:var(--base); }
+  h1{ font-size:23pt; font-weight:800; color:var(--navy); line-height:1.32; margin-top:6px; letter-spacing:-.5px; }
+  .cover-sub{ font-size:11.5pt; color:var(--ink2); margin-top:12px; }
+  .cover-line{ border:0; border-top:2px solid var(--navy); margin:22px 0; }
+
+  h2{ font-size:14pt; font-weight:800; color:var(--navy); margin:28px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+  h2:first-of-type{ margin-top:8px; }
+  p{ margin:8px 0; color:var(--ink2); }
+  strong{ color:var(--navy); font-weight:700; }
+  .lead{ font-size:11pt; color:var(--ink2); }
+
+  table{ width:100%; border-collapse:collapse; margin:12px 0; font-size:10pt; }
+  th{ background:var(--navy); color:#fff; text-align:left; padding:9px 12px; font-weight:600; width:22%; white-space:nowrap; border-bottom:1px solid #2c3f63; }
+  td{ border-bottom:1px solid var(--line); padding:9px 12px; color:var(--ink2); }
+  .contact-tbl th{ background:var(--base); border-bottom:1px solid #93a6c0; }
+
+  ul.clean{ list-style:none; margin:10px 0; }
+  ul.clean li{ position:relative; padding:5px 0 5px 16px; color:var(--ink2); }
+  ul.clean li::before{ content:""; position:absolute; left:0; top:14px; width:5px; height:5px; border-radius:50%; background:var(--navy); }
+  ul.clean li strong{ color:var(--navy); }
+
+  .norm{ display:flex; align-items:center; gap:8px; margin:12px 0; }
+  .ncol{ flex:1; align-self:stretch; border:1px solid var(--line); border-radius:8px; overflow:hidden; }
+  .ncol .nh{ font-size:8.3pt; font-weight:700; padding:6px 11px; border-bottom:1px solid var(--line); }
+  .ncol .nb{ font-size:9pt; padding:9px 11px; line-height:1.7; }
+  .ncol-raw .nh{ background:#f1f3f6; color:var(--ink3); }
+  .ncol-raw .nb{ color:var(--ink3); }
+  .ncol-std .nh{ background:var(--navy); color:#fff; }
+  .ncol-std .nb{ color:var(--ink2); }
+  .ncol-std .nb b{ color:var(--navy); }
+  .narr{ color:var(--base); font-weight:800; font-size:15pt; flex:0 0 auto; }
+
+  .shotwrap{ display:flex; gap:14px; margin:14px 0; align-items:flex-start; }
+  .shot{ flex:1; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:#fff; position:relative; }
+  .shot.full{ flex:none; width:100%; margin-top:14px; }
+  .shot img{ width:100%; display:block; }
+  .shot .cap{ padding:9px 13px; font-size:9pt; color:var(--ink2); border-top:1px solid var(--line); background:var(--soft); }
+  .shot .cap b{ color:var(--navy); }
+
+  .box{ margin:16px 0 0; border:1px solid var(--line); border-left:3px solid var(--navy); border-radius:8px; padding:13px 16px; background:var(--soft); font-size:9.7pt; color:var(--ink2); }
+  .box b{ color:var(--navy); }
+  .note{ margin-top:14px; font-size:9.3pt; color:var(--ink2); }
+  .contact{ margin-top:18px; border:1px solid var(--line); border-radius:10px; padding:16px 18px; background:var(--soft); font-size:9.7pt; color:var(--ink2); }
+  .contact b{ color:var(--navy); }
+  .contact-h{ font-size:10.5pt; font-weight:800; color:var(--navy); margin-bottom:10px; }
+  .pagefoot{ position:absolute; bottom:12mm; left:22mm; right:22mm; border-top:1px solid var(--line); padding-top:7px; font-size:8pt; color:var(--ink3); display:flex; justify-content:space-between; }
+
+  .stats{ display:flex; gap:10px; margin:14px 0 4px; }
+  .stat{ flex:1; border:1px solid var(--line); border-radius:10px; padding:13px 10px; text-align:center; background:var(--soft); }
+  .stat .v{ font-size:17pt; font-weight:800; color:var(--navy); letter-spacing:-.5px; line-height:1.15; }
+  .stat .l{ font-size:8.3pt; color:var(--ink3); margin-top:4px; }
+
+  .cmp{ width:100%; border-collapse:collapse; margin:12px 0; font-size:9.8pt; table-layout:fixed; }
+  .cmp th{ background:var(--navy); color:#fff; text-align:left; padding:9px 13px; font-weight:700; width:50%; }
+  .cmp td{ border-bottom:1px solid var(--line); padding:9px 13px; vertical-align:top; width:50%; }
+  .cmp td.bad{ color:var(--ink3); }
+  .cmp td.good{ color:var(--ink2); }
+  .cmp td.good strong{ color:var(--navy); }
+
+  ol.proc{ counter-reset:proc; list-style:none; margin:12px 0; }
+  ol.proc li{ position:relative; padding:8px 0 8px 38px; border-bottom:1px solid var(--line); color:var(--ink2); }
+  ol.proc li::before{ counter-increment:proc; content:counter(proc); position:absolute; left:0; top:8px; width:23px; height:23px; border-radius:50%; background:var(--navy); color:#fff; font-size:8.5pt; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  ol.proc li strong{ color:var(--navy); }
+
+  .pdf-btn{ position:fixed; right:22px; bottom:22px; z-index:999; background:var(--navy); color:#fff; border:none; border-radius:999px; padding:13px 22px; font-size:10.5pt; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:0 5px 18px rgba(22,49,77,.32); }
+  .pdf-btn:hover{ background:#24375c; }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .document{ box-shadow:none; margin:0; width:210mm; height:297mm; min-height:297mm; overflow:hidden; padding:22mm 22mm 14mm; page-break-after:always; }
+    .document:last-of-type{ page-break-after:auto; }
+    .pdf-btn{ display:none; }
+    .shot, .box, table, .stats, .norm, ol.proc li, .contact, ul.clean li, .stat { break-inside:avoid; page-break-inside:avoid; }
+    h2{ break-after:avoid; }
+    @page{ size:A4; margin:0; }
+  }
+  @media screen and (max-width:760px){
+    body{ padding:0; font-size:11pt; }
+    .document{ width:auto; min-height:auto; padding:20px 16px; margin:0 0 10px; box-shadow:none; border-bottom:8px solid #e9edf2; }
+    h1{ font-size:19pt; }
+    .norm{ flex-direction:column; }
+    .narr{ transform:rotate(90deg); align-self:center; }
+    .shotwrap{ flex-direction:column; }
+    .shotwrap .shot{ flex:1 1 auto !important; width:100%; }
+    .stats{ flex-wrap:wrap; }
+    .stat{ flex:1 1 42%; }
+    .pagefoot{ position:static; margin-top:14px; }
+    .pdf-btn{ right:14px; bottom:14px; padding:11px 16px; font-size:10pt; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== 1page : 회사 소개 (공급사) ===== -->
+<div class="document">
+  <div class="logo">프리패스<span class="m">모빌리티</span></div>
+  <div class="cover-tag">PARTNER GUIDE · 공급사 입점 안내</div>
+  <h1>매물·정책·판매를 표준화해<br>함께 운영하는 장기렌트 플랫폼</h1>
+  <div class="cover-sub">공급사는 표준 정책에 맞춰 매물을 등록하고, 프리패스모빌리티는 이를 ERP로 표준화해 전국 영업망으로 판매합니다. 매달 50~100여 대 판매, 정산·사후관리까지 함께 운영하고, 필요하면 홈페이지·전용 페이지도 제작합니다.</div>
+  <hr class="cover-line">
+
+  <h2>회사 소개</h2>
+  <p>프리패스모빌리티는 여러 렌트사의 매물을 <strong>자체 ERP로 통합·표준화</strong>해, <strong>검증된 영업 파트너망</strong>에 연결하는 장기렌트 플랫폼입니다. 공급사는 매물을 올리기만 하면 되고, 노출·문의·계약·정산·사후관리는 프리패스모빌리티가 한 곳에서 운영합니다.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="v">월 50~100대</div><div class="l">월 판매 대수</div></div>
+    <div class="stat"><div class="v">업체별 25%</div><div class="l">올린 매물 판매 전환 (10대 중 2~3대)</div></div>
+    <div class="stat"><div class="v">2,000여 대</div><div class="l">누적 판매</div></div>
+    <div class="stat"><div class="v">ERP 제공</div><div class="l">회원사 맞춤 렌터카 관리 ERP</div></div>
+  </div>
+
+  <h2>입점하면</h2>
+  <ul class="clean">
+    <li><strong>프리패스 판매력</strong> — 영업 파트너들이 매달 50~100여 대를 판매하고, <strong>업체별로 올린 매물의 평균 약 25%(10대 중 2~3대)가 판매</strong>됩니다. 누적 2,000여 대 판매, 영업 파트너를 계속 발굴해 판매망은 갈수록 커집니다</li>
+    <li><strong>회원사 대상 ERP 제공</strong> — 렌터카 관리 ERP(팀JPK)를 회원사에 제공. 운영현황·자산·재무·정비 중 필요한 기능만 골라 맞춤형으로 사용</li>
+    <li><strong>홈페이지·전용 페이지 제작</strong> — 귀사 매물을 노출할 홈페이지와 공급사 전용 페이지를 제작해 드립니다 (필요 시)</li>
+    <li><strong>화이트라벨 — 공급사 이름으로</strong> — 프리패스 노출 없이 귀사 이름·브랜드로 전달돼, 받는 쪽에는 공급사의 자료처럼 보입니다</li>
+    <li><strong>표준 정책·규격으로 운영</strong> — 표준 정책에 맞춰 등록하면 ERP가 차종·조건·사진을 자동 정리. 일관된 기준으로 운영돼 품질이 유지됨</li>
+    <li><strong>사후관리 부담 감소</strong> — 손님에게는 공급사 브랜드로 나가되, 정비·사고·행정 조율은 <strong>프리패스 전담 창구가 대행</strong>해 공급사가 직접 응대할 일이 없습니다(책임중개)</li>
+  </ul>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>1</span></div>
+</div>
+
+<!-- ===== 2page : 공급사 불편함 → 프리패스 ===== -->
+<div class="document">
+  <h2>기존 방식과 프리패스 방식</h2>
+  <p class="lead">공급사가 겪던 판로·관리 부담을, 프리패스모빌리티는 영업망과 시스템으로 해결합니다.</p>
+  <table class="cmp">
+    <tr><th>기존 방식의 부담</th><th>프리패스 방식</th></tr>
+    <tr><td class="bad">자체 영업·광고로 한정된 판로</td><td class="good">검증된 <strong>영업 파트너망이 대신 판매</strong></td></tr>
+    <tr><td class="bad">매물마다 일일이 등록·설명</td><td class="good">엑셀·등록증만 올리면 <strong>표준 규격 자동 정리</strong></td></tr>
+    <tr><td class="bad">영업자·문의마다 제각각 응대</td><td class="good">프리패스 <strong>단일 창구</strong>로 소통</td></tr>
+    <tr><td class="bad">계약·정산을 따로 추적</td><td class="good">ERP에서 <strong>진행·정산을 한눈에</strong></td></tr>
+    <tr><td class="bad">출고 후 사후관리 응대 부담</td><td class="good">정비·사고를 <strong>프리패스가 조율</strong></td></tr>
+  </table>
+
+  <div class="box">
+    <b>공급사는 매물에만, 나머지는 프리패스가</b>
+    <p style="margin:6px 0 0">판매·노출·문의 응대·계약·정산·사후관리까지 — 손이 많이 가는 일은 프리패스모빌리티가 시스템과 책임운영으로 처리합니다. 공급사는 <strong>좋은 매물을 확보하고 올리는 데</strong>만 집중하면 됩니다.</p>
+  </div>
+
+  <h2>입점 효과</h2>
+  <ul class="clean">
+    <li><strong>전국 판매 채널 확보</strong> — 광고나 자체 영업 없이도 전국 영업망이 매물을 판매. 기존에 닿지 못하던 판로가 열림</li>
+    <li><strong>온라인 판매까지</strong> — 자사 브랜드 그대로 홈페이지·전용 페이지로 노출. 없던 온라인 채널을 새로 확보</li>
+    <li><strong>관리 효율화</strong> — 흩어져 있던 매물·계약·정산을 한 시스템에서 정리</li>
+    <li><strong>표준 정책으로 일관 운영</strong> — 제각각이던 매물·조건이 하나의 기준으로 정리돼 품질이 유지</li>
+    <li><strong>사후관리 분담</strong> — 정비·사고 응대를 프리패스와 나눠, 출고 후 부담을 줄임</li>
+  </ul>
+
+  <div class="box">
+    <b>어떻게 함께할 곳을 정하나요?</b>
+    <p style="margin:6px 0 0">장기렌트는 정책·표준·사후관리에서 <strong>서로 발을 맞춰야</strong> 손님까지 안정적으로 이어집니다. 그래서 무리하게 늘리기보다, 주로 <strong>함께하는 회원사의 소개</strong>로 한 곳씩 모시며 차근차근 넓혀갑니다. 같은 기준으로 함께 운영해, 들어오신 곳도 손님도 안심할 수 있게 하기 위해서입니다. 함께하실 곳은 언제든 환영합니다.</p>
+  </div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>2</span></div>
+</div>
+
+<!-- ===== 3page : 입점 절차 + 표준화 ===== -->
+<div class="document">
+  <h2>입점 절차</h2>
+  <p class="lead">제휴부터 정산까지, 공급사가 거치는 흐름은 다음과 같습니다.</p>
+  <ol class="proc">
+    <li><strong>업무제휴 체결</strong> — 회원사 소개로 만나 협의 후 입점 계약</li>
+    <li><strong>매물 업로드</strong> — 올리기 편한 대로, <strong>ERP에 직접 입력하거나 엑셀로</strong> 주시면 됩니다. 양식이 달라도 저희가 취합해 표준 규격으로 정리합니다</li>
+    <li><strong>표준 규격 자동 정리</strong> — 차종·거래조건·사진을 ERP가 하나의 기준으로 통합</li>
+    <li><strong>영업 파트너망에 노출</strong> — 검증된 전국 영업자가 매물을 판매</li>
+    <li><strong>문의·계약 진행</strong> — 프리패스가 중간에서 조율, 진행상황은 ERP에 기록</li>
+    <li><strong>익월 초~10일 정산</strong> — 매월 1일~말일 거래분을 익월 초~10일 지급</li>
+  </ol>
+
+  <div class="norm">
+    <div class="ncol ncol-raw">
+      <div class="nh">올리던 그대로</div>
+      <div class="nb">엑셀 시트 · 차량등록증<br>제각각인 차종명·옵션·조건 표기</div>
+    </div>
+    <div class="narr">›</div>
+    <div class="ncol ncol-std">
+      <div class="nh">ERP 표준 규격으로 자동 정리</div>
+      <div class="nb"><b>차종 5단계 분류 + 색상·연료·옵션·거래조건 통일</b><br>사진까지 함께 정리돼 영업망에 바로 노출</div>
+    </div>
+  </div>
+
+  <div class="box">
+    <b>표준 정책으로 등록, 운영은 시스템이</b>
+    <ul class="clean" style="margin:8px 0 0">
+      <li><strong>ERP 직접 입력도, 엑셀도</strong> — 편한 방식으로 올리면 ERP가 표준 규격으로 자동 정리 (사진 포함)</li>
+      <li><strong>가격·조건은 공급사가 결정</strong> — 매물은 언제든 수정·중단 가능</li>
+      <li>노출·문의·계약·정산 내역을 <strong>ERP에서 실시간 확인</strong></li>
+      <li>거래·정산 <strong>차량별로 투명 공개</strong> — 정산은 매월 1일~말일분 익월 초~10일</li>
+    </ul>
+  </div>
+
+  <div class="note"><strong>입점 시 준비물</strong> — 사업자등록증, 차량등록증(또는 매물 엑셀), 차량 사진 정도면 됩니다. 표기 정리·표준화는 ERP가 알아서 처리합니다.</div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>3</span></div>
+</div>
+
+<!-- ===== 4page : 매물·정산 관리 화면 ===== -->
+<div class="document">
+  <h2>매물·정산 관리 (ERP)</h2>
+  <p class="lead">올린 매물이 어떻게 정리·노출되고, 거래·정산이 어떻게 진행되는지 한 시스템에서 확인합니다.</p>
+
+  <div class="shot full" style="margin-top:6px">
+    <img src="./assets/shot_search.png" alt="통합 매물">
+    <div class="cap"><b>통합 매물</b> — 귀사 매물이 표준 규격으로 정리돼 검색·필터·노출 (상시 출고가능 약 350대)</div>
+  </div>
+
+  <div class="shot full">
+    <img src="./assets/shot_contract.png" alt="계약·정산">
+    <div class="cap"><b>계약 · 정산</b> — 출고문의 → 계약 → 인도까지 진행상황과 정산 내역을 한 화면에서. 영업자는 손님에게 담당자 이름으로(화이트라벨) 전달하고, 공급사는 거래·정산 현황만 확인하면 됩니다.</div>
+  </div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>4</span></div>
+</div>
+
+<!-- ===== 5page : 연계 브랜드 ① 카벨 ===== -->
+<div class="document">
+  <h2>연계 브랜드 ① 카벨(주)</h2>
+  <p class="lead">프리패스모빌리티는 판매를 넘어 정비·관리·안전거래까지 자체 브랜드로 함께 운영합니다. 그 첫 번째, <strong>카벨(주)</strong>는 <strong>전국 네트워크 정비 플랫폼</strong>입니다 — 렌터카 회차 후 검수·정비·상품화·배차 준비까지 한 번에.</p>
+  <div class="shot full" style="width:88%; margin:10px auto 0">
+    <img src="./assets/carbell3.png" alt="카벨 회차 단순화">
+    <div class="cap"><b>회차 과정 단순화</b> — 기존 6단계+@ → <b>카벨 3단계</b>로, 시간·비용을 줄입니다</div>
+  </div>
+  <div class="shot full" style="width:88%; margin:14px auto 0">
+    <img src="./assets/carbell2.png" alt="카벨 검수·정비·상품화">
+    <div class="cap"><b>검수 · 정비 · 상품화</b> — 회차 차량을 배차 가능한 상태로 만들어 둡니다</div>
+  </div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>5</span></div>
+</div>
+
+<!-- ===== 6page : 연계 브랜드 ② 팀JPK ===== -->
+<div class="document">
+  <h2>연계 브랜드 ② 팀JPK(주)</h2>
+  <p class="lead"><strong>팀JPK(주)</strong>는 <strong>렌터카 관리 ERP·위탁관리</strong> 브랜드입니다. 차량·계약·재무를 한 시스템에서 관리하며, 필요한 기능만 골라 쓸 수 있습니다.</p>
+
+  <div class="shot full" style="margin-top:6px">
+    <img src="./assets/jpk_contract.png" alt="운영현황">
+    <div class="cap"><b>운영현황</b> — 어느 차가 누구에게 나갔는지, 운행·휴차·미납·반납예정·만기를 한눈에 (개인정보 가림)</div>
+  </div>
+  <div class="shot full">
+    <img src="./assets/jpk_asset.png" alt="자산관리">
+    <div class="cap"><b>자산관리</b> — 차량·보험·할부·검사·수선·GPS·자산처분을 통합 관리</div>
+  </div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>6</span></div>
+</div>
+
+<!-- ===== 7page : 팀JPK ② 재무·정비 ===== -->
+<div class="document">
+  <h2>연계 브랜드 ② 팀JPK(주) — 재무·정비</h2>
+
+  <div class="shot full" style="margin-top:6px">
+    <img src="./assets/jpk_finance.png" alt="입출금관리">
+    <div class="cap"><b>입출금관리</b> — 계좌·수납·지출·세금계산서를 계약별로 매칭해 정산</div>
+  </div>
+  <div class="shot full">
+    <img src="./assets/jpk_inspect.png" alt="검사·정비">
+    <div class="cap"><b>검사 · 정비</b> — 검사 만기·D-day 자동 추적, 수선 이력 관리 (카벨 정비 연계)</div>
+  </div>
+
+  <div class="box">
+    <b>필요한 기능만, 렌터카사 맞춤형으로</b>
+    <p style="margin:6px 0 0">자산·운영·재무·정비 중 <strong>필요한 기능만 골라</strong> 쓰면 되고, 렌터카사의 규모·업무 방식에 맞춰 <strong>맞춤형으로 제공</strong>합니다.</p>
+  </div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>7</span></div>
+</div>
+
+<!-- ===== 8page : 연계 브랜드 ③ 렌터카 착한거래 ===== -->
+<div class="document">
+  <h2>연계 브랜드 ③ 렌터카 착한거래</h2>
+  <p class="lead"><strong>렌터카 착한거래</strong>는 렌터카 회사를 위한 <strong>안전거래 플랫폼</strong>입니다 (<strong>무료</strong> · 회원사 모집·배포 중). 계약할 때 손님 동의로 의지를 확인해 두고, 실제 미납·미반납 문제가 생겼을 때만 거래위험으로 기록·공유합니다. 선량한 손님에겐 영향이 없고, 문제 상황에선 렌트사를 지켜줍니다.</p>
+
+  <div style="display:flex; gap:20px; justify-content:center; align-items:flex-start; flex-wrap:wrap; margin:14px 0">
+    <div style="text-align:center">
+      <img src="./assets/rs_app_consent.png" alt="착한거래 동의하기" style="height:132mm; width:auto; border:1px solid var(--line); border-radius:14px; box-shadow:0 3px 12px rgba(22,49,77,.12); display:block">
+      <div style="font-size:8.5pt; color:var(--ink2); margin-top:8px"><b style="color:var(--navy)">손님 동의</b> — 거래코드를 입력해 본인이 직접 동의</div>
+    </div>
+    <div style="text-align:center">
+      <img src="./assets/rs_app_me.png" alt="내 거래이력 확인" style="height:132mm; width:auto; border:1px solid var(--line); border-radius:14px; box-shadow:0 3px 12px rgba(22,49,77,.12); display:block">
+      <div style="font-size:8.5pt; color:var(--ink2); margin-top:8px"><b style="color:var(--navy)">거래이력 확인</b> — 본인인증 후 본인만 열람·전달</div>
+    </div>
+  </div>
+
+  <div class="box">
+    <b>도입 취지 — 신뢰 기반의 안전거래</b>
+    <ul class="clean" style="margin:8px 0 0">
+      <li>계약 시 손님 동의 = 강요가 아닌 <strong>본인 의지 확인</strong> (거래코드로 동의)</li>
+      <li>미납·미반납이 <strong>실제로 생겼을 때만 기록</strong> — 사전 신용차별이 아님</li>
+      <li>본인인증한 <strong>손님 본인만 열람·직접 제출</strong> — 플랫폼·타사 누구도 못 봄 (개인정보 부담 없음)</li>
+      <li>이상이 없으면 <strong>상태확인서</strong>를 받아 다음 렌트사에 전달 — 깨끗한 거래이력이 자산</li>
+    </ul>
+  </div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>8</span></div>
+</div>
+
+<!-- ===== 8page : 정산 + 문의 ===== -->
+<div class="document">
+  <h2>주요 혜택</h2>
+  <table>
+    <tr><th>판매</th><td>매달 <strong>50~100여 대</strong> 판매, 업체별 올린 매물의 평균 <strong>약 25%(10대 중 2~3대) 판매</strong>, 누적 <strong>2,000여 대 판매</strong></td></tr>
+    <tr><th>홈페이지</th><td>귀사 매물 노출용 <strong>홈페이지·공급사 전용 페이지 제작</strong> (필요 시)</td></tr>
+    <tr><th>화이트라벨</th><td>프리패스 노출 없이 <strong>공급사 이름·브랜드로</strong> 전달 — 받는 쪽엔 공급사 것처럼</td></tr>
+    <tr><th>운영 대행</th><td>노출·문의·계약·사후관리까지 프리패스가 처리 — 공급사는 매물 등록·표준 정책 적용에 집중</td></tr>
+    <tr><th>입점 비용</th><td>매물 등록·노출 비용 <strong>없음</strong> · 정산은 매월 1일~말일 거래분 익월 초~10일 지급</td></tr>
+  </table>
+
+  <h2>자주 묻는 질문</h2>
+  <table>
+    <tr><th>가격은 누가 정하나요?</th><td><strong>공급사가 정합니다.</strong> 프리패스는 정해진 조건으로 노출·판매만 합니다</td></tr>
+    <tr><th>매물을 내리고 싶으면?</th><td><strong>언제든 수정·중단 가능</strong>합니다. 매물 통제권은 공급사에 있습니다</td></tr>
+    <tr><th>비용이 드나요?</th><td>등록·노출은 <strong>무료</strong>입니다. 수수료는 차종·조건에 따라 <strong>사전 협의된 요율</strong>로 정해지며, <strong>거래가 완료된 건에 한해 정산 시 차감</strong>됩니다</td></tr>
+    <tr><th>우리 이름이 노출되나요?</th><td>프리패스는 노출되지 않습니다. <strong>공급사 이름·브랜드(화이트라벨)</strong>로 전달됩니다</td></tr>
+  </table>
+
+  <h2>공급사 입점 및 ERP 도입 문의</h2>
+  <table class="contact-tbl">
+    <tr><th style="width:24%">홈페이지</th><td><strong>freepassmobility.com</strong></td></tr>
+    <tr><th>ERP</th><td><strong>freepasserp.com</strong></td></tr>
+    <tr><th>입점 문의</th><td><strong>박영협</strong> 대표 010-6393-0926　·　<strong>박태윤</strong> 매니저 010-2925-1798</td></tr>
+  </table>
+
+  <div style="margin-top:22px; text-align:center; color:var(--navy); font-weight:700; font-size:11.5pt; letter-spacing:-.2px">좋은 매물을 함께 만들어갈 공급사를 기다립니다. 감사합니다.</div>
+
+  <div class="pagefoot"><span>프리패스모빌리티 공급사 입점 안내</span><span>9</span></div>
+</div>
+
+<button class="pdf-btn" onclick="window.print()">PDF로 저장 / 인쇄</button>
+
+</body>
+</html>

@@ -295,6 +295,8 @@ function bindChatInput(roomId, room) {
       if (unreadField) {
         incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(err => console.warn('[chat] unread 증가 실패:', err));
       }
+      // 상대편·관리자에게 FCM 푸시 (앱 닫혀있어도 알림) — 비차단
+      import('../core/push.js').then(m => m.notifyNewMessage(roomId, text)).catch(() => {});
     } catch (err) {
       console.error('[chat] 전송 실패:', err);
       input.value = text; // 입력 복구

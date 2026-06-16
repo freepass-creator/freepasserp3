@@ -55,6 +55,7 @@ const TAB_HELP = {
       <ul>
         <li><b>다크모드</b>: 야간 작업 시 눈 피로 감소.</li>
         <li><b>폰트</b>: 기본은 Consolas + Pretendard 혼합 (영문/숫자 mono + 한글 깔끔). 굴림체로 바꾸면 옛 ERP 톤.</li>
+        <li><b>모서리·강조색</b>: 화면 둥글기(직각 / 약간 둥글게)와 주요 버튼 강조 색상을 취향대로.</li>
         <li><b>시작 페이지</b>: 로그인 후 자동 이동할 화면.</li>
         <li><b>웹 푸시 알림</b>: 브라우저가 닫혀있어도 받습니다 (한 번만 권한 요청).</li>
       </ul>
@@ -387,6 +388,26 @@ const FONT_PRESETS = {
   system:      { label: '시스템 기본',                         value: `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` },
 };
 
+/* 모서리(라디우스) 프리셋 — 직각 ↔ 약간 둥글게 (jpkerp5 참고) */
+const RADIUS_PRESETS = {
+  default: { label: '기본',        vars: { '--radius': '2px', '--radius-sm': '2px', '--radius-pill': '2px', '--ctrl-r': '2px' } },
+  square:  { label: '직각',        vars: { '--radius': '0',   '--radius-sm': '0',   '--radius-pill': '0',   '--ctrl-r': '0' } },
+  soft:    { label: '약간 둥글게', vars: { '--radius': '6px', '--radius-sm': '4px', '--radius-pill': '8px', '--ctrl-r': '6px' } },
+};
+
+/* 강조색(테마) 프리셋 — mono(기본 검정) + 색상 스와치 (jpkerp5 ACCENT 참고) */
+const ACCENT_PRESETS = {
+  mono:   { label: '기본(검정)',  brand: '', hover: '' },
+  navy:   { label: '네이비',      brand: '#1B2A4A', hover: '#0F1B35' },
+  blue:   { label: '블루',        brand: '#2563eb', hover: '#1d4ed8' },
+  teal:   { label: '틸',          brand: '#0d9488', hover: '#0f766e' },
+  green:  { label: '그린',        brand: '#16a34a', hover: '#15803d' },
+  red:    { label: '레드',        brand: '#dc2626', hover: '#b91c1c' },
+  orange: { label: '오렌지',      brand: '#ea580c', hover: '#c2410c' },
+  purple: { label: '퍼플',        brand: '#9333ea', hover: '#7e22ce' },
+  slate:  { label: '슬레이트',    brand: '#475569', hover: '#334155' },
+};
+
 function renderSystemSection() {
   const theme = localStorage.getItem('fp.theme') || 'light';
   const fontKey = localStorage.getItem('fp.font') || 'hybrid';
@@ -394,6 +415,8 @@ function renderSystemSection() {
   const soundOn = localStorage.getItem('fp.sound') !== 'off';
   const pushOn = (typeof Notification !== 'undefined' && Notification.permission === 'granted');
   const autoLogoutMin = Number(localStorage.getItem('fp.autoLogout') || '0');
+  const radiusKey = localStorage.getItem('fp.radius') || 'default';
+  const accentKey = localStorage.getItem('fp.accent') || 'mono';
 
   return `
     <!-- 외관 -->
@@ -413,6 +436,25 @@ function renderSystemSection() {
               `<option value="${k}" ${fontKey === k ? 'selected' : ''}>${v.label}</option>`
             ).join('')}
           </select>
+        </div>
+        <div class="settings-row">
+          <label class="settings-row-label">모서리</label>
+          <div style="display:flex; gap:6px;">
+            ${Object.entries(RADIUS_PRESETS).map(([k, v]) =>
+              `<button class="btn btn-sm st-radius${radiusKey === k ? ' btn-primary' : ' btn-outline'}" data-radius="${k}">${v.label}</button>`
+            ).join('')}
+          </div>
+        </div>
+        <div class="settings-row">
+          <label class="settings-row-label">강조색</label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            ${Object.entries(ACCENT_PRESETS).map(([k, v]) => {
+              const sw = v.brand || 'var(--text-main)';
+              const on = accentKey === k;
+              return `<button class="st-accent" data-accent="${k}" title="${v.label}"
+                style="width:24px;height:24px;border-radius:50%;background:${sw};border:2px solid ${on ? 'var(--text-main)' : 'transparent'};box-shadow:0 0 0 1px var(--border-strong);cursor:pointer;padding:0;"></button>`;
+            }).join('')}
+          </div>
         </div>
       </div>
     </section>
@@ -483,6 +525,21 @@ function bindSystemSection(body) {
     localStorage.setItem('fp.font', key);
     showToast(`폰트 변경됨: ${preset.label.split(' ')[0]}`);
   });
+
+  // 모서리(라디우스)
+  body.querySelectorAll('.st-radius').forEach(b => b.addEventListener('click', () => {
+    localStorage.setItem('fp.radius', b.dataset.radius);
+    applyStoredRadius();
+    renderTabBody();
+  }));
+
+  // 강조색(테마)
+  body.querySelectorAll('.st-accent').forEach(b => b.addEventListener('click', () => {
+    localStorage.setItem('fp.accent', b.dataset.accent);
+    applyStoredAccent();
+    renderTabBody();
+    showToast('강조색 변경됨: ' + (ACCENT_PRESETS[b.dataset.accent]?.label || ''));
+  }));
 
   // 시작 페이지
   body.querySelector('#stLanding')?.addEventListener('change', (e) => {
@@ -594,4 +651,20 @@ export function applyStoredFont() {
 export function applyStoredTheme() {
   const theme = localStorage.getItem('fp.theme');
   if (theme) document.documentElement.dataset.theme = theme;
+}
+
+/* 모서리(라디우스) 부팅 — 저장된 프리셋의 CSS 변수 적용 */
+export function applyStoredRadius() {
+  const preset = RADIUS_PRESETS[localStorage.getItem('fp.radius')];
+  if (!preset) return;
+  for (const [k, v] of Object.entries(preset.vars)) document.documentElement.style.setProperty(k, v);
+}
+
+/* 강조색(테마) 부팅 — mono(기본)면 override 제거(→ --text-main), 색상이면 --brand 설정 */
+export function applyStoredAccent() {
+  const preset = ACCENT_PRESETS[localStorage.getItem('fp.accent')];
+  const root = document.documentElement;
+  if (!preset || !preset.brand) { root.style.removeProperty('--brand'); root.style.removeProperty('--brand-h'); return; }
+  root.style.setProperty('--brand', preset.brand);
+  root.style.setProperty('--brand-h', preset.hover);
 }

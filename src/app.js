@@ -91,6 +91,7 @@ import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/c
 // findCarModel/inferCarModel 은 호출처(product.js, vehicle-ocr.js) 에서 직접 import
 import { renderSettings } from './pages/settings.js';
 import { renderDev } from './pages/dev.js';
+import { renderSend } from './pages/contract-rental-send.js';
 import { renderAdminOps } from './pages/admin-ops.js';
 import { renderAdminSettlement } from './pages/admin-settlement.js';
 import { isSystemAdmin } from './core/admin-access.js';
@@ -98,6 +99,7 @@ import { setPageActions } from './core/page-actions.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
 window.renderDev = renderDev;
+window.renderSend = renderSend;
 window.renderAdminOps = renderAdminOps;
 window.renderAdminSettlement = renderAdminSettlement;
 
@@ -1088,9 +1090,11 @@ async function boot() {
 
   // 저장된 폰트/다크모드 즉시 적용 (FOUC 방지)
   try {
-    const { applyStoredFont, applyStoredTheme } = await import('./pages/settings.js');
+    const { applyStoredFont, applyStoredTheme, applyStoredRadius, applyStoredAccent } = await import('./pages/settings.js');
     applyStoredFont();
     applyStoredTheme();
+    applyStoredRadius();
+    applyStoredAccent();
   } catch (_) {}
 
   // 샘플 데이터 즉시 정리 — auth/hydration 동안에도 샘플이 보이지 않게
@@ -1120,6 +1124,8 @@ async function boot() {
     //  채팅알림/만기알림/메뉴뱃지/명령팔레트는 읽기전용(구독·토스트·뱃지·단축키) → 안전.
     //  initAutoStatus(차량상태 자동변경)는 부작용 검토 후 별도 — 의도적으로 제외.
     import('./core/chat-notif.js').then(m => m.initChatNotif()).catch(() => {});
+    // FCM 푸시 — 알림권한 이미 허용된 기기면 토큰 발급/저장 (앱 닫혀있어도 채팅 알림)
+    import('./core/push.js').then(m => m.initPush()).catch(() => {});
     import('./core/alerts.js').then(m => m.initAlerts()).catch(() => {});
     import('./core/menu-badges.js').then(m => m.initMenuBadges()).catch(() => {});
     import('./core/command-palette.js').then(m => m.initCommandPalette()).catch(() => {});

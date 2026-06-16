@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>자동차 렌탈 계약서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  /* ============================================================
+     자동차 렌탈 계약서 — ERP형(데이터필드 채움) · 모던 디자인
+     · [data-field="키"] 텍스트를 ERP가 주입 (freepasserp3 호환 스키마)
+     · 약관: #termsSource(hidden) → JS 2단 자동 페이지네이션
+     · 모던 톤: 넓은 여백 · 부드러운 카드(8px) · 정제된 단일 액센트
+     ============================================================ */
+  :root{
+    /* ============================================================
+       ★ 회사별 테마 설정 — 회사 계약서를 만들 때 이 블록만 교체하면 됨
+       (예: 프리패스 = 딥틸 #0e3a52 / 손오공 = 블루 #1d4ed8)
+       ============================================================ */
+    --accent:#1f3b63;        /* CI 강조색 (섹션번호·배지·당사자·키커) */
+    --accent-ink:#16304f;    /* 강조색 진한 톤 */
+    --accent-bg:#eef1f6;     /* 강조 배경 틴트 */
+    --tint:#f8fafc;          /* 표 헤더·라벨 셀 배경색 */
+    --radius:4px;            /* 카드·표 모서리 라운드 (각진 톤) */
+
+    /* ── 공통 팔레트 (회사 무관, 고정) ── */
+    --ink:#0f172a; --ink2:#334155; --mute:#64748b; --faint:#94a3b8;
+    --line:#e6eaf0; --line2:#eef1f6; --bg:#f1f4f8; --card:#ffffff;
+    --th:#e7ecf3; --bd:#cbd3de; --bd2:#dbe2ea;   /* 표 헤더배경·외곽선·내부선 (또렷하게) */
+    --ok:#0e9f6e; --danger:#e02424; --warn-bg:#fff7ed; --warn-ink:#b45309;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;word-break:keep-all;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-family:"Pretendard Variable","Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+       background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;
+       font-feature-settings:"tnum";line-height:1.6}
+  body.cloak{visibility:hidden}  /* 로딩 중 깜빡임 차단 — 렌더 완료 후 해제 */
+
+  /* ===== 좌측 입력 빌더(하네스) — 단독 실행용. ?embed=1 또는 body.embed 시 숨김 ===== */
+  .builder{position:fixed;top:0;left:0;bottom:0;width:max(340px, calc(100vw - 210mm - 44px));z-index:60;overflow-y:auto;
+           background:#eef2f7;color:#334155;font-size:12px;padding:0 0 30px;border-right:1px solid #d8e0ea}
+  .bd-head{position:sticky;top:0;background:#fff;padding:13px 16px;border-bottom:1px solid #e2e8f0;
+           display:flex;gap:8px;align-items:center;z-index:1}
+  .bd-head a{font-size:12px;font-weight:700;color:#475569;text-decoration:none;border:1px solid #cbd5e1;border-radius:6px;padding:6px 10px}
+  .bd-head a:hover{background:#f1f5f9}
+  .bd-head button{font:inherit;font-weight:700;font-size:12px;border:none;border-radius:6px;padding:7px 13px;cursor:pointer;background:var(--accent);color:#fff}
+  .bd-head .bd-print{margin-left:auto}
+  .bd-head .bd-reset{background:transparent;color:#dc6868;border:1px solid #f0c4c4}
+  .bd-head .bd-reset:hover{background:#fdf0f0}
+  #bdTop{padding:13px 15px;background:#fff;border-bottom:1px solid #e2e8f0}
+  .bd-load{display:flex;gap:7px;margin-bottom:13px}
+  .bd-load input{flex:1;font:inherit;font-size:12px;color:#0f172a;background:#fff;border:1px solid #cbd5e1;border-radius:5px;padding:7px 9px}
+  .bd-load button{font:inherit;font-size:11.5px;font-weight:700;border:none;border-radius:5px;padding:7px 13px;cursor:pointer;background:var(--accent);color:#fff;white-space:nowrap}
+  .bd-selrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px}
+  #bdGroups{columns:235px;column-gap:12px;padding:13px 15px}
+  .bd-sec{break-inside:avoid;margin:0 0 12px;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:11px 13px}
+  .bd-sec.policy{background:#fffdf6;border-color:#ece2c4}
+  .bd-sec.policy .bd-t{color:#b45309}
+  .bd-acct{font-size:11px;font-weight:700;color:#334155;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;padding:7px 9px}
+  .bd-t{font-size:10.5px;font-weight:800;color:var(--accent-ink);letter-spacing:.03em;margin-bottom:9px}
+  .bd-row{margin-bottom:8px}
+  .bd-row:last-child{margin-bottom:0}
+  .bd-row label{display:block;font-size:10px;color:#64748b;margin-bottom:3px;font-weight:600}
+  .bd-row input,.bd-row select{width:100%;font:inherit;font-size:12px;color:#0f172a;background:#fff;
+           border:1px solid #cbd5e1;border-radius:5px;padding:6px 8px}
+  .bd-row input:focus,.bd-row select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-bg)}
+  .bd-row input::placeholder{color:#a3aebd}
+  .bd-hint{padding:13px 15px;font-size:10px;color:#94a3b8;line-height:1.5}
+
+  /* 화면: 우측에 A4폭만 남기고 나머지는 빌더(입력). 임베드/인쇄 시 전체폭 */
+  body{padding-left:max(340px, calc(100vw - 210mm - 44px))}
+  body.embed{padding-left:0}
+  body.embed .builder{display:none}
+  @media print{ .builder{display:none} body{padding-left:0} }
+
+  /* A4 페이지 */
+  .page{width:210mm;height:297mm;overflow:hidden;background:var(--card);margin:22px auto;padding:12mm 13mm;
+        position:relative;display:flex;flex-direction:column;font-size:11.5px;
+        box-shadow:0 10px 40px rgba(15,23,42,.13)}
+  .pbody{flex:1 1 auto;min-height:0;overflow:hidden}
+  /* 정적 페이지(본문·별지)는 내용이 넘치면 잘리지 않고 다음 시트로 흐름.
+     약관 자동분할 페이지(#termsPages 내부)·측정 스테이지는 고정 유지 → 영향 없음 */
+  body>.page{height:auto;min-height:297mm;overflow:visible}
+  body>.page>.pbody{overflow:visible}
+  .pagefoot{position:absolute;left:13mm;right:13mm;bottom:6mm;display:flex;justify-content:space-between;align-items:center;
+            padding-top:2.5mm;border-top:1px solid var(--line2);
+            font-size:9px;color:var(--faint);letter-spacing:.02em}
+  .pagefoot .pf-co{font-weight:700;color:var(--mute)}
+
+  /* 문서 헤더(런닝) */
+  .rhead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8mm;
+         padding-bottom:3.5mm;border-bottom:2px solid var(--ink)}
+  .rhead .rh-doc{font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .rhead .rh-meta{font-size:9.5px;color:var(--mute);text-align:right;line-height:1.5}
+  .rhead .rh-meta b{color:var(--ink2)}
+
+  /* 섹션 */
+  .section{margin-bottom:5mm}
+  .sec-h{display:flex;align-items:center;gap:9px;margin-bottom:3mm}
+  .subhead{font-size:11px;font-weight:800;color:var(--ink2);margin:4mm 0 2.5mm;padding-bottom:1.5mm;
+           border-bottom:1px solid var(--line);display:flex;align-items:center;gap:7px}
+  .subhead .shtag{font-size:8.5px;font-weight:700;color:var(--mute);background:var(--tint);
+                  border:1px solid var(--line);border-radius:3px;padding:1px 6px;letter-spacing:.02em}
+  .subhead .sh-ic{display:inline-flex;align-items:center;color:var(--accent)}
+  .subhead .shtag{margin-left:auto}
+  .sec-h .no{flex:0 0 auto;width:22px;height:22px;border-radius:4px;background:var(--accent);color:#fff;
+             font-size:11px;font-weight:800;display:grid;place-items:center;letter-spacing:-.02em}
+  .sec-h .no svg{width:14px;height:14px}
+  .sec-h .t{font-size:13px;font-weight:800;letter-spacing:-.01em}
+  .sec-h .sub{font-size:9.5px;color:var(--faint);margin-left:auto;font-weight:600}
+
+  /* 키-값 데이터 그리드 (모던: 라벨 옅은 틴트, 얇은 라인) */
+  /* 라벨-값 표 — 옆 뚫린 가로줄형(모던) : 외곽·세로선 없음, 라인 동일, 라벨 틴트 유지 */
+  .kv{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--bd)}
+  .kv .k{background:var(--th);padding:7px 9px;font-size:9.5px;font-weight:700;color:var(--ink2);
+         display:flex;align-items:center;border-bottom:1px solid var(--bd)}
+  .kv .v{padding:7px 10px;font-size:11px;color:var(--ink);display:flex;align-items:center;
+         border-bottom:1px solid var(--bd)}
+  .kv .span2{grid-column:span 3}     /* 값이 라벨1+값3 폭 차지 */
+  .kv .full{grid-column:1 / -1}
+  /* 긴 설명 셀은 일반 텍스트 흐름 — flex가 inline <b>/<span>을 조각내 줄바꿈 깨지는 것 방지 */
+  .kv .v.span2,.kv .v.full{display:block;line-height:1.55}
+  .kv .v.span2 b,.kv .v.full b{font-weight:700}
+  .kv .v.strong{font-weight:700}
+  .kv .v .unit{color:var(--mute);font-weight:500;margin-left:2px;font-size:9.5px}
+
+  /* 강조 수치 줄 (월 대여료·보증금 등) */
+  .moneyrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:3mm}
+  .moneyrow.four{grid-template-columns:repeat(4,1fr)}
+  .money{border:1px solid var(--line);border-radius:var(--radius);padding:9px 12px;background:var(--card)}
+  .money.hl{background:var(--accent-bg);border-color:#cfe0ff}
+  .money .ml{font-size:9.5px;color:var(--mute);font-weight:700;margin-bottom:2px}
+  .money .mv{font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .money.hl .mv{color:var(--accent-ink)}
+  .money .mv small{font-size:10px;font-weight:600;color:var(--mute)}
+
+  /* 일반 표 */
+  /* 일반 표 — 옆 뚫린 가로줄형(모던) */
+  table.tbl{width:100%;border-collapse:collapse;font-size:10.5px;border-top:1px solid var(--bd)}
+  table.tbl th{background:var(--th);color:var(--ink2);font-weight:700;font-size:9.5px;padding:7px 8px;text-align:left;border-bottom:1px solid var(--bd)}
+  table.tbl td{padding:7px 8px;border-bottom:1px solid var(--bd);color:var(--ink)}
+  table.tbl .c{text-align:center}
+  table.keyterms td.kt{font-size:12.5px;font-weight:800;padding:7px 8px;color:var(--ink)}
+
+  /* 특약/안내 박스 */
+  .note{font-size:9.5px;color:var(--mute);line-height:1.55;margin-top:2.5mm}
+  /* 표·키값 직후 유의사항(※)은 설명 대상에 붙도록 일정 간격 통일 */
+  table.tbl + .note, .kv + .note{margin-top:1.8mm}
+  .note .em{color:var(--danger);font-weight:700}
+  /* 약관 단락 */
+  .terms-cols p{margin:0 0 1.7mm;text-align:justify}
+  .terms-cols .t-art{font-weight:800;color:var(--ink);margin-top:3.4mm;font-size:9.8px}
+  .terms-cols .t-art:first-child{margin-top:0}
+  .terms-cols .t-h{font-weight:700;color:var(--ink2);margin-top:1.6mm}
+  .terms-cols .t-sub{padding-left:3.5mm;color:var(--ink2);margin-bottom:1mm}
+  /* 형광펜 강조 (주요사항) */
+  .mark{background:linear-gradient(transparent 36%, #ffe88a 36% 94%, transparent 94%);font-weight:700;padding:0 1.5px}
+  .terms-cols .mark{color:var(--ink)}
+  /* 사고 처리 절차 */
+  .acc-steps{font-size:10px;color:var(--ink2);line-height:1.5;margin-top:1mm}
+  .acc-steps > div{display:flex;gap:8px;align-items:flex-start;padding:2.3mm 0;border-bottom:1px solid var(--bd)}
+  .acc-steps > div:last-child{border-bottom:none}
+  .acc-steps b{flex:0 0 auto;width:16px;height:16px;border-radius:3px;background:var(--accent);color:#fff;font-size:9px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+  /* 유의사항 — 본문과 규격 통일(박스·액센트 없음, ※ 회색 소문자) */
+  .callout{font-size:9.5px;color:var(--mute);line-height:1.55;margin-top:2.5mm}
+  /* 경고 박스 — 중대 위반(현장이탈·뺑소니 등) 강조 */
+  .warnbox{margin-top:3mm;display:flex;gap:8px;align-items:flex-start;background:var(--danger-bg,#fdeaea);border:1px solid var(--danger-bd,#f2c2c2);border-left:3px solid var(--danger,#c0392b);border-radius:var(--radius);padding:8px 10px}
+  .warnbox .wi{flex:0 0 auto;color:var(--danger,#c0392b);margin-top:1px}
+  .warnbox .wt{font-size:10px;line-height:1.55;color:var(--ink)}
+  .warnbox .wt b{color:var(--danger,#c0392b);font-weight:800}
+  .warnbox .wh{display:block;font-weight:800;color:var(--danger,#c0392b);font-size:10.5px;margin-bottom:2px;letter-spacing:-.01em}
+  .callout::before{content:"※ "}
+  .special{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+           font-size:10.5px;color:var(--ink);background:var(--card)}
+  .special .lbl{background:var(--tint);color:var(--mute);font-size:9.5px;font-weight:700;
+                padding:5px 9px;border-bottom:1px solid var(--line2)}
+  .special .lbl + div{padding:7px 9px;min-height:12mm}
+
+  /* 서명 블록 */
+  .sign{margin-top:8mm;border-top:1px solid var(--line);padding-top:5mm}
+  .sign .agree{font-size:10px;color:var(--ink2);line-height:1.6;margin-bottom:5mm}
+  .sign-rows{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+  .sign-box{display:flex;align-items:baseline;gap:8px}
+  .sign-box .role{font-size:9.5px;color:var(--mute);font-weight:700;flex:0 0 64px}
+  .sign-box .nm{flex:1;border-bottom:1px solid var(--ink2);padding-bottom:3px;font-size:12px;font-weight:700}
+  .sign-box .seal{flex:0 0 auto;font-size:9px;color:var(--faint)}
+  .sign-co{flex:1}
+  .sign-co .scn{font-size:12px;font-weight:800;border-bottom:1px solid var(--ink2);padding-bottom:3px}
+  .sign-co .scs{font-size:8.5px;color:var(--mute);margin-top:3px}
+  .sign-date{text-align:center;font-size:11px;letter-spacing:.1em;color:var(--ink2);margin:6mm 0 5mm;font-weight:600}
+
+  /* 동의 및 전자서명 */
+  .agree-all{display:flex;gap:9px;align-items:center;background:var(--accent-bg);border:1px solid #cfe0ff;
+             border-radius:4px;padding:9px 12px;font-weight:800;font-size:11.5px;margin-bottom:3mm;cursor:pointer}
+  .agree-all input{width:16px;height:16px;flex:0 0 auto;accent-color:var(--accent)}
+  .agree-list{margin:0 0 6mm}
+  .agree-item{display:flex;gap:9px;align-items:flex-start;padding:2.6mm 1mm;border-bottom:1px solid var(--line2);font-size:11px;line-height:1.5;cursor:pointer}
+  .agree-item:last-child{border-bottom:none}
+  .agree-item input{width:15px;height:15px;flex:0 0 auto;margin-top:1px;accent-color:var(--accent)}
+  .annexbox{border:1px solid var(--bd);border-radius:var(--radius);padding:8px 11px;margin:0 0 5mm;background:var(--th)}
+  .annexbox .annex-h{font-size:10px;font-weight:800;color:var(--ink2);margin-bottom:4px;letter-spacing:-.01em}
+  .annexbox .annex-items{display:grid;grid-template-columns:1fr 1fr;gap:3px 14px;font-size:10px;color:var(--ink)}
+  .annexbox .annex-note{font-size:9px;color:var(--mute);margin-top:6px;line-height:1.55}
+  .esign{margin-top:5mm;border-top:1px solid var(--line);padding-top:5mm}
+  .esign-date{text-align:center;font-size:11px;letter-spacing:.1em;color:var(--ink2);margin-bottom:6mm;font-weight:600}
+  .esign-row{display:grid;grid-template-columns:1fr 1fr;gap:8mm}
+  .esign-lbl{font-size:9.5px;font-weight:800;color:var(--accent);margin-bottom:4px}
+  .esign-pad{height:24mm;border:1px solid var(--line2);border-radius:4px;background:var(--tint);
+             display:grid;place-items:center;color:var(--faint);font-size:10px;overflow:hidden}
+  .esign-pad img{max-width:92%;max-height:92%}
+  .esign-nm{margin-top:5px;font-size:11px;font-weight:700}
+  .esign-sub{font-size:8.5px;color:var(--mute);margin-top:2px}
+
+  /* ===== 표지 ===== */
+  .cover{padding:0}
+  .cover-in{flex:1;display:flex;flex-direction:column;padding:17mm 18mm 14mm}
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:6mm;border-bottom:1px solid var(--line)}
+  .cover-co{display:flex;align-items:center;gap:12px}
+  .cover-co .co-logo{height:30px;width:auto;max-width:165px;object-fit:contain;object-position:left center}
+  .cover-co .co-t{font-size:13.5px;font-weight:800}
+  .cover-co .co-s{font-size:9.5px;color:var(--mute);margin-top:1px}
+  .cover-no{text-align:right;font-size:9.5px;color:var(--mute)}
+  .cover-no .cn-type{display:inline-block;font-size:9px;font-weight:800;color:#fff;background:var(--accent);
+                     border-radius:3px;padding:2px 10px;margin-bottom:6px;letter-spacing:.04em}
+  .cover-no b{color:var(--ink);font-weight:800;letter-spacing:.02em}
+  .cover-hero{margin-top:17mm}
+  .cover-kicker{font-size:10.5px;font-weight:800;color:var(--accent);letter-spacing:.24em;margin-bottom:9px}
+  .cover-title{font-size:40px;font-weight:800;letter-spacing:-.025em;line-height:1.08}
+  .cover-lead{font-size:11px;color:var(--mute);line-height:1.65;margin-top:11px;max-width:138mm}
+  .cover-parties-cap{margin-top:auto;font-size:10.5px;color:var(--mute);font-weight:600;margin-bottom:6px;letter-spacing:.01em}
+  .cover-parties{display:flex;align-items:stretch;border:1px solid var(--bd);border-radius:5px;overflow:hidden}
+  .cover-parties .cp{flex:1;padding:13px 16px;background:var(--th)}
+  .cover-parties .cp:first-child{border-right:1px solid var(--bd)}
+  .cp-tag{display:inline-block;font-size:8.5px;font-weight:800;color:#fff;background:var(--accent);border-radius:3px;padding:1px 6px;margin-left:5px;vertical-align:1px}
+  .cover-parties-note{font-size:9.5px;color:var(--faint);margin-top:7px;line-height:1.5}
+  .cover-parties .cp-role{font-size:8.5px;font-weight:800;color:var(--accent);letter-spacing:.1em;margin-bottom:4px}
+  .cover-parties .cp-name{font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .cover-parties .cp-sub{font-size:9.5px;color:var(--mute);margin-top:3px}
+  .cover-parties .cp-x{flex:0 0 auto;display:grid;place-items:center;width:44px;background:var(--accent);
+                       color:#fff;font-size:9px;font-weight:800;letter-spacing:.06em}
+  .cover-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:9mm}
+  .cover-sum .cs{border:1px solid var(--line);border-radius:5px;padding:10px 13px;background:var(--card)}
+  .cover-sum .cs .csl{font-size:8.5px;color:var(--mute);font-weight:700;margin-bottom:4px;letter-spacing:.02em}
+  .cover-sum .cs .csv{font-size:14px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+  .cover-sum .cs .cssub{font-size:9px;color:var(--faint);margin-top:2px;font-weight:600}
+  .cover-foot{margin-top:9mm;padding-top:7mm;border-top:1px solid var(--line);
+              display:flex;justify-content:space-between;align-items:flex-end;font-size:9.5px;color:var(--mute)}
+  .cover-foot b{color:var(--ink2);font-weight:700}
+  .cover-foot .dot{margin:0 6px;color:var(--faint)}
+  .cover-foot .cf-co{font-weight:800;color:var(--ink2)}
+
+  @media print{
+    @page{size:A4;margin:0}
+    html,body{background:#fff;margin:0}
+    .toolbar{display:none}
+    .page{margin:0;box-shadow:none;page-break-after:always}
+    .page:last-child{page-break-after:auto}
+  }
+  @media screen{ .page{border-radius:3px} }
+</style>
+</head>
+<body class="cloak">
+
+<aside class="builder" id="builder">
+  <div class="bd-head">
+    <a href="../index.html">← 허브</a>
+    <button class="bd-reset" id="bdReset" type="button">초기화</button>
+    <button class="bd-print" onclick="window.print()">🖨 인쇄 · PDF</button>
+  </div>
+  <div id="bdForm"></div>
+  <div class="bd-hint">이 입력 패널은 <b>단독 실행용 하네스</b>입니다. 다른 ERP에 임베드할 때는 <b>?embed=1</b> 로 열면 패널이 숨겨지고, 외부 ERP가 <b>Contract.setData({…})</b> 로 값을 주입합니다.</div>
+</aside>
+
+<!-- ============== PAGE 1 · 표지 ============== -->
+<section class="page cover">
+  <div class="cover-in">
+    <!-- 상단 식별 스트립 -->
+    <div class="cover-top">
+      <div class="cover-co">
+        <img class="co-logo" data-field="company_logo" src="assets/logo-sonogong.webp" alt="회사 로고">
+        <div class="co-name">
+          <div class="co-t" data-field="company_name">주식회사 손오공렌터카</div>
+        </div>
+      </div>
+      <div class="cover-no">계약서 번호 <b data-field="contract_code">CT-2026-0000</b></div>
+    </div>
+
+    <!-- 히어로 -->
+    <div class="cover-hero">
+      <div class="cover-kicker" data-field="doc_kicker">AUTOMOBILE RENTAL AGREEMENT</div>
+      <h1 class="cover-title" data-field="doc_title">자동차 렌탈 계약서</h1>
+    </div>
+
+    <!-- 계약 당사자 (하단) -->
+    <div class="cover-parties-cap">본 자동차 임대차 계약은 아래 당사자 간 체결됩니다</div>
+    <div class="cover-parties">
+      <div class="cp">
+        <div class="cp-role">임대인 (회사)</div>
+        <div class="cp-name" data-field="company_name">주식회사 손오공렌터카</div>
+        <div class="cp-sub"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span> · <span data-field="company_phone">-</span></div>
+      </div>
+      <div class="cp">
+        <div class="cp-role">임차인 (고객) <span class="cp-tag" data-field="contract_type_label">개인</span></div>
+        <div class="cp-name" data-field="customer_name">○ ○ ○</div>
+        <div class="cp-sub" data-field="customer_phone">010-0000-0000</div>
+      </div>
+    </div>
+    <div class="cover-parties-note">본 계약은 자동차 임대차의 조건을 정하며, 양 당사자의 서명(전자서명 포함)으로 효력이 발생합니다.</div>
+
+    <!-- 푸터 -->
+    <div class="cover-foot">
+      <div>계약 체결일 <b data-field="contract_date">2026. 00. 00.</b><span class="dot">·</span>체결 장소 <b data-field="contract_place">본사</b></div>
+      <div class="cf-co" data-field="company_name">주식회사 손오공렌터카</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PAGE 2 · 계약자 / 차량 / 대여조건 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc" data-field="doc_title">자동차 렌탈 계약서</div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>체결일 <b data-field="contract_date">2026. 00. 00.</b></div>
+    </div>
+
+    <!-- 01 계약자 -->
+    <div class="section">
+      <div class="sec-h"><div class="no">01</div><div class="t">계약자 정보</div><div class="sub" data-field="contract_type_label">개인</div></div>
+      <div class="kv">
+        <div class="k" data-field="label_name">성명</div><div class="v strong span2" data-field="customer_name">○ ○ ○</div>
+        <div class="k" data-field="label_id">주민등록번호</div><div class="v" data-field="customer_id">000000-0000000</div>
+        <div class="k" data-field="label_driver">운전면허번호</div><div class="v" data-field="driver_or_biz_no">00-00-000000-00</div>
+        <div class="k">연락처</div><div class="v" data-field="customer_phone">010-0000-0000</div>
+        <div class="k">이메일</div><div class="v" data-field="customer_email">name@email.com</div>
+        <div class="k">주소</div><div class="v span2" data-field="customer_address">주소를 입력하세요</div>
+        <div class="k" data-field="label_emergency">비상 연락처</div><div class="v span2" data-field="emergency_contact">관계 · 010-0000-0000</div>
+      </div>
+      <div class="note" data-note="corp" style="display:none">※ <b>법인 계약</b>: 위 계약자 정보는 법인명·법인등록번호·사업자등록번호·대표자·사업장 기준으로 기재됩니다.</div>
+    </div>
+
+    <!-- 02 차량 -->
+    <div class="section">
+      <div class="sec-h"><div class="no">02</div><div class="t">대여 차량 정보</div></div>
+      <div class="kv">
+        <div class="k">차량번호</div><div class="v strong" data-field="car_number">00가0000</div>
+        <div class="k">차대번호</div><div class="v" data-field="vin">VIN</div>
+        <div class="k">차명</div><div class="v strong span2" data-field="vehicle_name">현대 쏘나타 디 엣지 2.0 가솔린 익스클루시브</div>
+        <div class="k">선택 옵션</div><div class="v span2" data-field="options">-</div>
+        <div class="k">외장 색상</div><div class="v" data-field="color_exterior">색상</div>
+        <div class="k">내장 색상</div><div class="v" data-field="color_interior">색상</div>
+        <div class="k">연식</div><div class="v" data-field="model_year">2024년식</div>
+        <div class="k">인도 주행거리</div><div class="v" data-field="odometer_delivery">0 km</div>
+        <div class="k">연료</div><div class="v" data-field="fuel">가솔린</div>
+        <div class="k">차량 가격</div><div class="v" data-field="vehicle_price">-</div>
+      </div>
+      <div class="note" data-note="newcar" style="display:none"><span class="em">신차(출고 전)</span>는 차량번호·차대번호가 미정이며, 출고·등록 후 확정되면 임차인에게 서면(문자 포함)으로 통지하고 차량 인수증에 기재합니다.</div>
+    </div>
+
+    <!-- 03 대여조건 -->
+    <div class="section">
+      <div class="sec-h"><div class="no">03</div><div class="t">대여 조건</div></div>
+
+      <div class="kv">
+        <div class="k">상품 유형</div><div class="v strong span2" data-field="product_label">렌트 선택형</div>
+        <div class="k">월 대여료</div><div class="v strong"><span data-field="rent_amount">0</span> 원 <span style="color:var(--mute);font-weight:500">(VAT 포함)</span><span data-ins="sep" style="display:none;color:var(--mute);font-weight:500"> · 보험료 제외</span></div>
+        <div class="k">보험</div><div class="v"><span data-ins="inc">월 대여료에 포함</span><span data-ins="sep" style="display:none"><b>임차인이 직접 가입</b> <span style="color:var(--mute)">(별도 · 본 대여료에 미포함)</span></span></div>
+        <div class="k">보증금</div><div class="v strong"><span data-field="deposit_amount">0</span> 원</div>
+        <div class="k">대여 기간</div><div class="v" data-field="rent_month">00 개월</div>
+        <div class="k">결제 주기</div><div class="v" data-field="payment_cycle">월 1회</div>
+        <div class="k">계약 시작일</div><div class="v" data-field="contract_start">2026. 00. 00.</div>
+        <div class="k">계약 종료일</div><div class="v" data-field="contract_end">2026. 00. 00.</div>
+        <div class="k">만기 인수옵션</div><div class="v" data-field="buyback_option">만기 협의</div>
+        <div class="k">인수 가격</div><div class="v" data-field="buyback_price">-</div>
+      </div>
+
+      <div class="subhead"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3.5h6V6H9z"/><path d="M8.5 12.5l1.5 1.5 2.5-3"/></svg></span>약정 · 부가 조건 <span class="shtag">준수사항</span></div>
+      <div class="kv">
+        <div class="k">연간 약정주행</div><div class="v" data-field="annual_mileage">20,000 km</div>
+        <div class="k">초과 주행 요율</div><div class="v" data-field="over_mileage_rate">km당 000원</div>
+        <div class="k">중도해지 수수료</div>
+        <div class="v span2" style="grid-column:span 3">잔여기간 대여료(VAT 제외) × <b>차량인도일로부터 1년 미만 <span data-field="early_termination_rate_y1">30</span>% / 1년 이상 <span data-field="early_termination_rate_y2">20</span>%</b> <span style="color:var(--mute)">(약관 제11·14조)</span></div>
+        <div class="k">연체 · 시동제어</div>
+        <div class="v span2" style="grid-column:span 3">대여료·면책금 청구일로부터 <b>3일 연체 시 시동제어</b> · <b>10일 연체 시 계약 자동 해지 및 차량 회수</b> <span style="color:var(--mute)">(보증금 2회차 미납 시 즉시 시동제어)</span></div>
+        <div class="k">부가 장비</div>
+        <div class="v span2" style="grid-column:span 3">GPS <span data-field="gps_installed">장착</span> · 하이패스 <span data-field="hipass_included">제공</span> · 블랙박스 <span data-field="blackbox_included">제공</span> · 스페어키 <span data-field="spare_key_count">1</span>개</div>
+      </div>
+
+      <div class="callout">차량 식별은 <b>자동차등록증상 차량번호·차대번호</b> 기준이며, 옵션·사양·색상의 단순 오기는 계약 취소 사유로 인정되지 않습니다. (약관 제1조·제6조)</div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>자동차 렌탈 계약서 · <span class="num">2</span></span></div>
+</section>
+
+<!-- ============== PAGE 3 · 운전자 / 자동차 보험 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc" data-field="doc_title">자동차 렌탈 계약서</div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>임차인 <b data-field="customer_name">○ ○ ○</b></div>
+    </div>
+
+    <!-- 04 자동차 보험 (보장 + 사고처리) -->
+    <div class="section">
+      <div class="sec-h"><div class="no">04</div><div class="t">자동차 보험</div><div class="sub">대인 · 대물 · 자차 · 사고처리</div></div>
+      <div class="kv">
+        <div class="k">보험 조건</div><div class="v strong span2" data-field="insurance_condition">보험료 포함 (월 대여료에 포함)</div>
+        <div class="k">보험 적용 대상</div><div class="v span2">「08 운전자」에 등록된 운전자(계약자 본인·추가 운전자)에 한함 · 유효 면허 소지</div>
+      </div>
+
+      <!-- 포함형 : 회사(영업용) 자동차보험 -->
+      <div data-ins="inc">
+        <div class="kv" style="margin-top:0;border-top:none">
+          <div class="k">보험사</div><div class="v strong" data-field="insurer_name">렌터카공제조합</div>
+          <div class="k">사고 접수</div><div class="v strong" data-field="insurer_phone">1661-7977</div>
+          <div class="k">추가 면책금</div><div class="v span2" data-field="extra_deductibles">해당 없음 <span style="color:var(--mute);font-weight:500">(단독사고·휠/타이어·연령 등 사유 발생 시 항목별 부과)</span></div>
+        </div>
+        <div class="note" style="margin-bottom:2.5mm">※ 보험사·사고접수 연락처는 <b>체결일 기준</b>이며 매년 갱신 시 변경될 수 있습니다. 변경 시 서면·문자로 통지하며, <b>현재 정보는 계약조회에서 확인</b>할 수 있습니다.</div>
+        <table class="tbl">
+          <thead><tr><th style="width:14%"></th><th class="c">대인배상 Ⅰ·Ⅱ</th><th class="c">대물배상</th><th class="c">자기신체사고</th><th class="c">무보험차상해</th><th class="c">자기차량손해</th><th class="c">긴급출동</th></tr></thead>
+          <tbody>
+            <tr>
+              <th>보상 한도</th>
+              <td class="c strong" data-field="coverage_liability_person">무한</td>
+              <td class="c strong" data-field="coverage_liability_property">1억원</td>
+              <td class="c strong" data-field="coverage_self_injury">1억원</td>
+              <td class="c strong" data-field="coverage_uninsured">2억원</td>
+              <td class="c strong" data-field="self_damage_coverage">차량가</td>
+              <td class="c strong" data-field="emergency_dispatch_limit">연 5회</td>
+            </tr>
+            <tr>
+              <th>사고 시 면책금</th>
+              <td class="c" data-field="deductible_liability_person">30만원</td>
+              <td class="c" data-field="deductible_liability_property">30만원</td>
+              <td class="c" style="color:var(--mute)">없음</td>
+              <td class="c" style="color:var(--mute)">없음</td>
+              <td class="c">수리비 <span data-field="self_damage_deductible_rate">20</span>%</td>
+              <td class="c" style="color:var(--mute)">없음</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 별도형(개인보험) : 임차인 본인 명의 직접 가입 -->
+      <div data-ins="sep" style="display:none">
+        <div class="callout" style="margin-top:3mm">본 상품은 <b>임차인이 본인 명의로 개인 자동차 종합보험에 직접 가입</b>하는 방식입니다. 임차인은 <b>차량 출고 전까지</b> 아래 최소 보장 조건을 충족하는 개인 종합보험에 가입하고 <b>계약기간 내내 효력을 유지</b>하며, 가입·유지 증명서를 회사에 제출하여야 합니다. (약관 제9조의2)</div>
+        <div class="subhead" style="margin-top:3mm"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6z"/><path d="M9.5 12l1.8 1.8 3.2-3.6"/></svg></span>개인 종합보험 최소 보장 조건 <span class="shtag">임차인 의무 가입</span></div>
+        <table class="tbl">
+          <thead><tr><th class="c">대인배상</th><th class="c">대물배상</th><th class="c">자기차량손해(자차)</th><th class="c">자기신체사고 / 자동차상해</th></tr></thead>
+          <tbody><tr>
+            <td class="c strong">무한</td>
+            <td class="c strong">1억원 이상</td>
+            <td class="c strong">차량가액 · 1억원 이상</td>
+            <td class="c strong">포함</td>
+          </tr></tbody>
+        </table>
+        <div class="note" style="margin-bottom:2.5mm">※ 대물·자차 한도는 회사와 협의하여 확정하며, 위 기준 미만으로 가입할 수 없습니다.</div>
+        <div class="kv">
+          <div class="k">가입 주체</div><div class="v span2"><b>임차인 본인 명의</b>의 개인 자동차 종합보험</div>
+          <div class="k">증명서 제출</div><div class="v span2">차량 출고 전 <b>가입사실·효력유지 증명서</b>를 회사에 제출</div>
+          <div class="k">효력 상실 시</div><div class="v span2">보험 만료·해지·효력 상실 시 즉시 통지 후 재가입 · 미이행 시 <b>즉시 계약 해지 및 차량 회수</b></div>
+        </div>
+        <div class="note">※ <b>회사는 차량 운행 사고의 보험 보상 책임을 지지 않으며</b>, 모든 사고는 임차인의 개인 보험으로 처리됩니다. 보험 미가입·미유지 중 발생한 손해는 전액 임차인이 부담합니다.</div>
+      </div>
+
+      <!-- 자차 (자기차량손해) — 회원사·상품별 상이 -->
+      <div class="subhead" style="margin-top:5mm"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6z"/><path d="M9.5 12l1.8 1.8 3.2-3.6"/></svg></span>자차 (자기차량손해) 처리 <span class="shtag">회원사·상품별 상이</span></div>
+      <div class="kv">
+        <div class="k">자차 면책금</div><div class="v span2">수리비의 <b><span data-field="self_damage_deductible_rate">20</span>%</b> <span style="color:var(--mute)">(<span data-field="self_damage_deductible_min">50만</span>~<span data-field="self_damage_deductible_max">100만</span>원)</span> · 면책금 미납 시 보험 접수 취소·미처리 → <b>수리비 전액 임차인 부담</b></div>
+        <div class="k">중과실 사고</div><div class="v span2"><span data-ins="inc">자차 면책금 외 <b>수리비 20% 추가 부담</b></span><span data-ins="sep" style="display:none">개인보험 처리 결과와 무관하게 <b>총 수리비 60%를 회사에 추가 배상</b> (12대 중과실 포함)</span> · 폐차 시 동급 차량 계약 유지 (임대인 판단)</div>
+        <div class="k">자차 처리 제외</div><div class="v span2" data-field="self_damage_exclusions"><b>단독사고 · 가해자 불명(보유불명) 사고</b> · 휠/타이어 단독 손상 · 전손 · 고의·관리 소홀 등 — 가입 공제·보험 상품 및 회원사 정책에 따라 자차 처리가 제한·제외될 수 있습니다.</div>
+      </div>
+      <div class="note">※ <b>자차(자기차량손해)의 면책·처리 제외 기준은 회원사(가입 공제·보험 상품)별로 상이</b>합니다. 위 「자차 처리 제외」 기재가 우선하며, 적용 기준은 계약 시 별도 안내합니다.</div>
+
+      <!-- 사고 처리 · 대차 (공통) -->
+      <div class="subhead" style="margin-top:5mm"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L5 16l3 3 4.3-4.3a4 4 0 0 1 5.4-5.4z"/></svg></span>사고 처리 · 대차</div>
+      <div class="kv">
+        <div class="k">사고 수리 입고</div><div class="v span2"><b>임대인 지정 협력 정비공장 입고</b> · 임의 수리 시 전액 임차인 부담 (보험 처리 불가)</div>
+        <div class="k">사고 대차</div><div class="v span2"><b>가입자 한정</b> · 8시간 이상 수리로 운행 불가 시 동급 차량 1영업일 이내 제공 <span style="color:var(--mute)">(불가 시 수리기간 대여료 차감)</span> · 임대인·지정 협력사 차량만 이용(외부 렌터카 임의 이용 시 대차료 청구 제한) · <span data-field="replacement_car_policy">미가입 시 미제공</span></div>
+      </div>
+
+      <div class="subhead" style="margin-top:5mm"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9.5 16.5H2.5z"/><path d="M12 10v4M12 17.5h.01"/></svg></span>사고 발생 시 처리 <span class="shtag">필수 절차</span></div>
+      <div class="acc-steps">
+        <div><b>1</b><span><strong>경찰(112)·보험사(<span data-field="insurer_phone">1661-7977</span>)·회사에 즉시 신고</strong>하고 <strong>접수번호·경찰 사고사실확인원</strong>을 확보합니다. <span style="color:var(--mute)">— 보험 처리의 필수 요건</span></span></div>
+        <div><b>2</b><span>현장 사진·블랙박스 영상·상대방 정보 등 <span class="mark">객관적 증거를 보존</span>하고, 현장 <strong>자체 합의를 금지</strong>합니다.</span></div>
+        <div><b>3</b><span><strong>회사 지정 협력 정비공장에 입고</strong>합니다. 임의 수리·외부 입고 시 보험 처리가 불가합니다.</span></div>
+        <div><b>4</b><span>자차 면책금을 납부하고 보험을 접수·정산하며, 정산 후 차량을 인수합니다.</span></div>
+      </div>
+      <div class="warnbox">
+        <svg class="wi" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9.5 16.5H2.5z"/><path d="M12 9v5M12 17.5h.01"/></svg>
+        <div class="wt"><span class="wh">이 경우 보험이 적용되지 않아 손해 전액을 임차인이 부담합니다</span><b>음주·무면허 운전·현장이탈(뺑소니)·사고 미신고·자체 합의·고의·무단 임의수리</b>, 또는 <b>객관적 현장 보존 없이</b> 종결한 사고는 <b>본 계약상 보험 적용에서 제외</b>되어 차량 수리비·휴차료·대차료 등 <b>손해 전액을 임차인이 부담</b>합니다.</div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>자동차 렌탈 계약서 · <span class="num">3</span></span></div>
+</section>
+
+<!-- ============== PAGE 4 · 정비·A/S / 결제 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc" data-field="doc_title">자동차 렌탈 계약서</div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>차량 <b data-field="car_number">00가0000</b></div>
+    </div>
+
+    <!-- 06 정비 · A/S -->
+    <div class="section">
+      <div class="sec-h"><div class="no">05</div><div class="t">정비 서비스</div><div class="sub">정비 · 수리 · 검사</div></div>
+      <div class="kv">
+        <div class="k">정비 상품</div><div class="v" data-field="maintenance_product">정비 제외</div>
+        <div class="k">지정 정비점</div><div class="v" data-field="designated_garage">임대인 지정 또는 사전 합의된 정비점</div>
+        <div class="k">정기 정비 · 검사</div><div class="v span2">정비 상품 가입 시 범위 내 <b>엔진오일·소모품·정기 점검</b> 무상 제공 <span style="color:var(--mute)">(미가입 시 임차인 부담)</span> · 정기검사 2년 1회 / 종합검사 1년 1회 (대행)</div>
+        <div class="k">초기 하자</div><div class="v span2">차량 인도 후 <b>2,000km 또는 1개월 이내</b> 기능 고장 시 수리비 지원 또는 동종 차량 대차·교체</div>
+        <div class="k">소모품 교체</div><div class="v span2">타이어·배터리·와이퍼·브레이크 패드 등 <b>일반 소모품은 임차인 부담</b> <span style="color:var(--mute)">(정비 상품 가입 시 가입 범위 내 제공)</span></div>
+        <div class="k">반납 시 연료</div><div class="v span2"><b>인도 시와 동일한 연료량으로 반납</b> · 부족분은 반납일 시가 기준 정산하여 청구합니다.</div>
+        <div class="k">고장·수리 접수</div><div class="v span2">고장·정비 필요 시 <b>회사 또는 지정 정비점에 먼저 접수</b> · 임의 외부 수리 시 비용은 임차인 부담 (사전 승인분 제외)</div>
+        <div class="k">대차 서비스</div><div class="v span2" data-field="maintenance_replacement"><b>정비·수리 입고로 운행 불가 시 대차 제공</b> — 제공 여부·기간은 가입 정비 상품 및 회원사 정책에 따릅니다 <span style="color:var(--mute)">(미가입·범위 외 미제공)</span></div>
+      </div>
+      <div class="callout">정비·수리 세부 항목 및 보증 범위는 가입한 정비 상품과 약관 제7조에 따르며, 추가 수리·보증 조건은 계약서 특약 또는 별도 안내에 따릅니다.</div>
+    </div>
+
+    <!-- 07 결제 -->
+    <div class="section">
+      <div class="sec-h"><div class="no">06</div><div class="t">결제 방법</div></div>
+      <div class="kv">
+        <div class="k">입금 은행</div><div class="v" data-field="payment_bank">신한은행</div>
+        <div class="k">계좌번호</div><div class="v" data-field="payment_account_no">000-000-000000</div>
+        <div class="k">예금주</div><div class="v" data-field="payment_account_holder">주식회사 손오공렌터카</div>
+        <div class="k">자동이체일</div><div class="v" data-field="auto_debit_date">매월 25일</div>
+        <div class="k">지출증빙</div><div class="v" data-field="invoice_type">세금계산서</div>
+        <div class="k">발행 주기</div><div class="v" data-field="invoice_cycle">월 1회</div>
+      </div>
+
+      <div class="subhead"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4L6 21z"/><path d="M9.5 8h5M9.5 12h5"/></svg></span>세금계산서 발행 정보 <span class="shtag">매출·매입 증빙</span></div>
+      <div data-tax="corp" class="note" style="display:none">법인 계약: 세금계산서는 위 <b>계약자(법인)</b> 정보(법인명·법인등록번호·사업자등록번호)로 발행됩니다 — <b>발행처 = 계약자 동일</b>.</div>
+      <div data-tax="form">
+        <div class="kv"><div class="k">발행 구분</div><div class="v strong span2" data-field="tax_issue_type">개인 (주민번호)</div></div>
+        <div class="kv" data-tax="biz" style="margin-top:0;border-top:none;display:none">
+          <div class="k">상호</div><div class="v" data-field="tax_biz_name">-</div>
+          <div class="k">사업자등록번호</div><div class="v" data-field="tax_biz_no">-</div>
+          <div class="k">대표자</div><div class="v" data-field="tax_ceo">-</div>
+          <div class="k">업태 / 종목</div><div class="v" data-field="tax_biz_type_item">-</div>
+          <div class="k">세금계산서 이메일</div><div class="v span2" data-field="tax_email">-</div>
+          <div class="k">사업장 주소</div><div class="v span2" data-field="tax_biz_address">-</div>
+        </div>
+        <div class="note"><b>개인</b> 주민등록번호로 발행 · <b>개인사업자</b> 사업자등록번호로 발행. (개인 계약이어도 개인사업자 증빙이 필요하면 발행 구분에서 개인사업자 선택)</div>
+      </div>
+
+      <div class="subhead" style="margin-top:5mm"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/></svg></span>보증금 분납 스케줄 <span class="shtag" data-field="deposit_installment">일시납</span></div>
+      <table class="tbl">
+        <thead><tr><th>1회차</th><th>2회차</th><th>3회차</th><th>4회차</th><th>5회차</th><th>총 보증금</th></tr></thead>
+        <tbody><tr>
+          <td data-field="deposit_round_1">-</td><td data-field="deposit_round_2">-</td><td data-field="deposit_round_3">-</td>
+          <td data-field="deposit_round_4">-</td><td data-field="deposit_round_5">-</td>
+          <td class="strong" style="font-weight:700" data-field="deposit_total">0 원</td>
+        </tr></tbody>
+      </table>
+      <div class="note">자동이체일(<span data-field="auto_debit_date_inline">매월 25일</span>)에 청구되며, 보증금 분납분 미납 시 약관 제4조·제11조에 따라 시동제어·계약해지 사유가 됩니다.</div>
+
+      <div class="subhead" style="margin-top:5mm"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15v2"/></svg></span>정산 · 관리 기준 <span class="shtag">약관 적용 기준</span></div>
+      <div class="kv">
+        <div class="k">지연손해금률</div><div class="v" data-field="late_fee_rate">연 00%</div>
+        <div class="k">보증금 반환기한</div><div class="v" data-field="deposit_return_term">반납·정산 후 00일 이내</div>
+        <div class="k">정산 청구기준</div>
+        <div class="v span2" style="grid-column:span 3">기한이익 상실 시 <b data-field="claim_basis">잔여 대여료 상당액</b>을 청구 <span style="color:var(--mute)">(중도해지수수료와 중복 청구하지 않음 · 약관 제11·14조)</span></div>
+        <div class="k">물품 보관기간</div><div class="v" data-field="impound_keep_term">반환 통지 후 00일</div>
+        <div class="k">물품 보관료</div><div class="v" data-field="impound_fee">1일 0원</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:5mm">정비·결제 세부는 위와 같으며, 추가 수리·보증 조건 및 개별 합의 사항은 다음 「특약」에 따릅니다.</div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>자동차 렌탈 계약서 · <span class="num">4</span></span></div>
+</section>
+
+<!-- ============== PAGE · 특약 / 연대보증 (개별 합의 · 해당 시) ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc" data-field="doc_title">자동차 렌탈 계약서</div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>차량 <b data-field="car_number">00가0000</b></div>
+    </div>
+
+    <!-- 특약 사항 (개별 합의 · 약관 우선) -->
+    <div class="section">
+      <div class="sec-h"><div class="no">07</div><div class="t">특약 사항</div><div class="sub">개별 합의 · 약관·계약조건에 우선</div></div>
+      <div class="kv">
+        <div class="k">특약 사항</div>
+        <div class="v" data-field="special_terms" style="grid-column:span 3;min-height:42mm;align-items:flex-start">-</div>
+      </div>
+      <div class="note">※ 본 특약은 약관 및 위 계약 조건에 우선하여 적용되며, 기재가 없을 경우 「없음」으로 봅니다. 양 당사자가 합의한 사항만 효력이 있습니다.</div>
+    </div>
+
+    <!-- 08 운전자 -->
+    <div class="section" style="margin-top:7mm">
+      <div class="sec-h"><div class="no">08</div><div class="t">운전자</div><div class="sub">등록자만 보험 적용</div></div>
+      <div class="kv">
+        <div class="k">운전자 연령</div><div class="v strong" data-field="driver_age">만 26세 이상</div>
+        <div class="k">운전 가능 범위</div><div class="v" data-field="driver_scope">계약자 본인 · 추가 운전자</div>
+      </div>
+      <div class="subhead" style="margin-top:4mm"><span class="sh-ic"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3.3 2.8-5 5.5-5 1.2 0 2.3.3 3.2.9"/><path d="M17 8v6M14 11h6"/></svg></span>추가 운전자 <span class="shtag">해당 시 등록</span></div>
+      <table class="tbl" data-list="additional_drivers" data-max-slots="3">
+        <thead><tr><th class="c" style="width:8%">No</th><th style="width:20%">성명</th><th style="width:22%">주민번호</th><th style="width:14%">관계</th><th style="width:22%">면허번호</th><th>연락처</th></tr></thead>
+        <tbody>
+          <tr data-repeat="driver"><td class="c">1</td><td data-field="drv1_name">-</td><td data-field="drv1_rrn">-</td><td data-field="drv1_relation">-</td><td data-field="drv1_license">-</td><td data-field="drv1_phone">-</td></tr>
+          <tr data-repeat="driver"><td class="c">2</td><td data-field="drv2_name">-</td><td data-field="drv2_rrn">-</td><td data-field="drv2_relation">-</td><td data-field="drv2_license">-</td><td data-field="drv2_phone">-</td></tr>
+          <tr data-repeat="driver"><td class="c">3</td><td data-field="drv3_name">-</td><td data-field="drv3_rrn">-</td><td data-field="drv3_relation">-</td><td data-field="drv3_license">-</td><td data-field="drv3_phone">-</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><span class="em">등록되지 않은 자의 운전 중 사고는 모든 담보 보험 적용이 제외</span>되며 전액 계약자 부담입니다. (약관 제5조)</div>
+    </div>
+
+    <!-- 09 연대보증인 (맨 마지막) -->
+    <div class="section" style="margin-top:7mm">
+      <div class="sec-h"><div class="no">09</div><div class="t">연대보증인</div><div class="sub">해당 시 작성</div></div>
+      <div class="kv">
+        <div class="k">성명</div><div class="v strong" data-field="guarantor_name">-</div>
+        <div class="k">주민등록번호</div><div class="v" data-field="guarantor_rrn">-</div>
+        <div class="k">관계</div><div class="v" data-field="guarantor_relation">-</div>
+        <div class="k">연락처</div><div class="v" data-field="guarantor_phone">-</div>
+        <div class="k">직업</div><div class="v span2" data-field="guarantor_occupation">-</div>
+        <div class="k">주소</div><div class="v span2" data-field="guarantor_address">-</div>
+      </div>
+      <div class="note">※ 연대보증인은 본 계약에 따른 임차인의 채무를 임차인과 연대하여 책임을 부담합니다. 보증한도·보증기간·책임 범위는 별첨 연대보증 확약서에 따릅니다. (약관 제20조)</div>
+    </div>
+
+    <div class="note" style="margin-top:7mm">본인은 위 「대여 조건·보험·정비·특약」 주요사항을 확인하였으며, 약관 전문 및 동의·전자서명 페이지로 이어집니다.</div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>자동차 렌탈 계약서 · <span class="num"></span></span></div>
+</section>
+
+<!-- ============== 약관 (자동 페이지네이션) ============== -->
+<div id="termsSource" style="display:none">
+  <p class="t-art" style="text-align:center;border-bottom:1px solid var(--bd);padding-bottom:2mm;margin-bottom:3mm">자동차 렌탈(대여) 약관</p>
+  <p>본 약관은 임대인(이하 "회사")과 임차인 사이에 체결되는 <b data-field="product_label">렌트 선택형</b> 자동차 임대차계약의 일반 조건을 정한다. 본 약관에서 "회사"는 차량을 대여하는 임대인을, "임차인"은 개인·법인 등 차량을 대여받는 계약자를 말한다.</p>
+
+  <p class="t-art">제1조 (차종 및 대여요금)</p>
+  <p>① 대여 차량의 차종, 차량번호, 차대번호, 옵션, 차량상태, 월 대여료, 보증금, 약정 주행거리, 초과운행료, 보험조건, 정비조건 및 기타 계약조건은 계약서에 기재된 내용에 따른다.</p>
+  <p>② 월 대여료에는 계약서에 별도로 정한 경우를 제외하고 차량 사용에 따른 기본 대여료와 계약서상 포함 항목이 반영된다.</p>
+  <p>③ 계약서에 기재된 금액, 기간, 기준일, 비율, 보관기간·보관료, 운행제한·차량회수 기준, 보험조건, 정비조건, 중도해지수수료, 초과운행료 등 개별 조건은 본 약관의 적용 기준이 되며, 본 약관과 계약서 기재가 상충하는 경우 계약서의 개별 조건을 우선한다.</p>
+  <p>④ 개인정보 수집·이용 및 제3자 제공 동의서, 신용정보 조회·제공 동의서, 위치정보 수집·이용 동의서, 자동이체(CMS) 출금 신청서, 차량 인수증 및 (해당 시) 연대보증 확약서 등 본 계약의 부속 서류는 본 계약과 일체를 이루며 본 약관과 동일한 효력을 가진다.</p>
+
+  <p class="t-art">제2조 (계약기간 및 계약연장)</p>
+  <p>① 계약기간은 계약서에 기재된 차량 인도일 또는 계약시작일부터 계약종료일까지로 하며, 인도일과 계약서 작성일이 다른 경우 실제 차량 인도일을 기준으로 대여료·주행거리·계약기간 및 각종 의무의 기산일을 정할 수 있다.</p>
+  <p>② 계약기간을 연장하려는 경우 임차인은 계약서에 정한 사전통지기한까지 회사에 연장 의사를 통지하여야 하며, 회사가 동의하는 경우에 한하여 연장계약을 체결할 수 있다. 위 기간 내 통지가 없는 경우 연장하지 않는 것으로 본다.</p>
+  <p>③ 회사는 임차인의 연체 여부, 사고 이력, 차량상태, 신용상태, 보증금 유지 여부, 계약위반 여부 등을 고려하여 계약연장을 거절할 수 있다.</p>
+  <p>④ 계약기간 만료 후 임차인이 차량을 반환하지 아니하거나 회사의 사전승인 없이 계속 운행하는 경우, 임차인은 실제 반환일까지의 대여료, 지연손해금, 차량점유로 인한 손해 및 제18조에 따른 비용을 부담한다.</p>
+
+  <p class="t-art">제3조 (대여료 지급 및 정산)</p>
+  <p>① 임차인은 계약서에 정한 월 대여료를 회사가 지정한 지급일에 선불로 지급하여야 하며, 자동이체일·결제일·납부계좌·청구방식은 계약서 및 자동이체 신청서에 따른다.</p>
+  <p>② 자동이체 미출금·결제 실패의 경우에도 임차인의 지급의무는 면제되지 아니하며, 임차인은 즉시 회사가 지정한 방법으로 미납금을 납부하여야 한다.</p>
+  <p>③ 결제계좌 잔액부족, 카드한도초과, 계좌정지, 명의불일치, 자동이체 해지, 지급정지, 계좌압류, 결제수단 오류 등 임차인 또는 결제명의자의 사유로 결제가 이루어지지 않은 경우 그 연체책임은 임차인이 부담하며, 임차인이 회사의 사전승인 없이 자동이체를 해지하거나 결제수단을 무단 변경한 경우 회사는 이를 중대한 계약위반으로 볼 수 있다.</p>
+  <p>④ 계약기간 만료·해지·차량반환 지연 등으로 1개월 미만의 사용기간이 발생한 경우 회사는 월 대여료를 일 단위로 환산하여 정산할 수 있으며, 일할 계산 방식은 계약서에 정한 기준에 따른다.</p>
+  <p>⑤ 임차인이 대여료 등 금전지급의무를 지급기일까지 이행하지 아니한 경우, 지급기일 다음 날부터 완제일까지 계약서에 정한 지연손해금률에 따른 지연손해금을 부담한다.</p>
+
+  <p class="t-art">제4조 (보증금 및 정산)</p>
+  <p>① 임차인은 계약서에 정한 보증금을 회사에 지급하여야 하며, 보증금은 본 계약상 채무를 담보하기 위한 금원으로 회사는 이에 대한 이자를 지급하지 아니한다. 보증금 분납 조건이 있는 경우 임차인은 계약서에 정한 기일에 각 회차 보증금을 납부하여야 하며, 보증금 미납은 대여료 연체와 동일한 계약위반으로 본다.</p>
+  <p>② 회사는 임차인의 미납 대여료, 지연손해금, 과태료·통행료·범칙금, 하이패스 미납금, 사고비, 면책금, 자기부담금, 원상회복비, 차량회수비, 탁송·견인비, 보관료, 정비비, 법적조치비용 등 임차인이 부담할 금원을 보증금에서 우선 공제할 수 있다.</p>
+  <p>③ 보증금은 계약 종료 후 차량 반환, 미납금 정산, 사고 여부 및 과태료·통행료·범칙금 조회, 차량상태 확인이 완료된 후 계약서에 정한 기한 내에 반환한다. 종료 후에도 추후 확인되는 금원이 있는 경우 회사는 그 예상금액 범위에서 반환을 유보하거나 반환 후 별도로 청구할 수 있다.</p>
+
+  <p class="t-art">제5조 (운전자격 및 운전자 범위)</p>
+  <p>① 차량은 계약서에 기재된 운전자 또는 회사가 사전에 승인한 운전자만 운전할 수 있다.</p>
+  <p>② 임차인은 차량 운전자에게 유효한 운전면허가 유지되도록 하여야 하며, 운전면허 취소·정지·효력상실·면허종별 불일치가 발생한 경우 즉시 회사에 통지하여야 한다.</p>
+  <p>③ <span class="mark">계약서상 운전자 범위를 벗어난 자가 차량을 운전한 경우</span> 회사는 계약을 해지할 수 있고, 그 운행 중 발생한 사고, 보험처리 제한, 차량손해, 제3자 손해, 과태료 및 기타 손해는 임차인이 부담한다.</p>
+  <p>④ 임차인은 운전자격 확인을 위하여 회사가 운전면허증 확인, 본인확인 및 관련 서류 제출을 요구하는 경우 이에 협조하여야 한다.</p>
+
+  <p class="t-art">제6조 (차량 인도·인수 및 반납·원상회복)</p>
+  <p>① 회사는 계약서에 정한 차량을 인도하고, 임차인은 인수 시 차량번호, 주행거리, 외관·실내 상태, 지급품, 옵션, 자동차키, 블랙박스, 내비게이션, GPS·하이패스 단말기 등의 상태를 확인하여야 한다.</p>
+  <p>② 임차인이 차량인수증에 서명하거나 차량을 인도받아 운행을 개시한 경우 특별한 이의가 없는 한 정상적으로 인수한 것으로 본다. 인수 당시 하자나 부적합을 발견한 경우 지체 없이 차량인수증에 기재하여야 하며, 인도 시 작성된 차량인수증·사진·영상·주행거리 기록·체크리스트는 본 계약의 일부로 본다.</p>
+  <p>③ 차량 인도 후 발생한 훼손, 분실, 오염, 사고, 부분품 손상 등에 대하여 임차인은 자신의 귀책이 없음을 입증하지 못하는 한 그 책임을 부담한다.</p>
+  <p>④ 임차인은 계약 종료 또는 해지 시 회사가 지정한 일시·장소에 차량과 자동차키, 등록증, 지급품, 부속품, 옵션품, 블랙박스 메모리카드, 내비게이션, 하이패스 단말기 등 인도 당시 지급받은 물품을 함께 반환하여야 한다.</p>
+  <p>⑤ 임차인은 통상마모를 제외하고 외관손상, 실내오염·악취·흡연흔적, 시트·타이어·휠 손상, 유리파손, 랩핑·스티커, 임의튜닝, 장치훼손, 부분품·자동차키 분실 등에 대하여 원상회복 책임을 부담하며, 이를 이행하지 아니한 경우 회사는 직접 수리·복구하고 그 비용을 임차인에게 청구하거나 보증금에서 공제할 수 있다.</p>
+  <p>⑥ 차량 반납 시 연료는 인도 시와 동일한 수준으로 채워 반납하며 부족분은 반납일 시가로 정산한다. 반납 지연 시 임차인은 실제 반납일까지의 일할 대여료, 지연손해금, 회수비용 및 회사가 입은 손해를 부담한다.</p>
+
+  <p class="t-art">제7조 (차량 사용·관리 및 정비)</p>
+  <p>① 임차인은 선량한 관리자의 주의로 차량을 사용·보관·관리하고, 일상점검·소모품 확인, 타이어·엔진오일·냉각수·경고등·브레이크·배터리 등 운행 전후 기본 점검을 이행하여야 한다.</p>
+  <p>② 임차인의 점검 소홀, 경고등 무시, 무리한 운행, 침수지역 운행, 오일 부족·타이어 공기압 부족 운행 등으로 발생한 고장 또는 손해는 임차인이 부담한다.</p>
+  <p>③ 정비서비스 가입 여부와 제공 범위는 계약서에 따르며, 미가입 시 법정검사와 회사가 부담하기로 명시한 항목을 제외한 일반정비·소모품 교체·경정비·타이어·배터리·브레이크·와이퍼·오일류 등 차량 유지비용은 임차인이 부담한다.</p>
+  <p>④ 정비·수리는 회사가 승인한 지정 정비점 또는 회사가 인정한 정비업체에서 받아야 하며, 임차인이 회사의 승인 없이 임의로 정비·수리한 비용은 임차인이 부담하고(사전 승인분 제외) 부적절한 수리로 인한 추가 손해도 임차인이 부담한다. 임차인의 관리소홀·사고·침수·부주의·튜닝·임의개조·경고등 무시·운행 지속 등으로 발생한 고장이나 손해는 정비서비스 대상에서 제외된다.</p>
+  <p>⑤ 임차인은 차량을 회사의 소유권·차량회수권 또는 본 계약상 권리를 침해하는 방식으로 사용·보관·점유하여서는 아니 되며, 구체적인 금지행위는 제8조에 따른다.</p>
+
+  <p class="t-art">제8조 (금지행위)</p>
+  <p>① 임차인은 다음 각 호의 행위를 하여서는 아니 된다.</p>
+  <p class="t-sub">1. 회사의 사전승인 없이 차량을 제3자에게 양도·전대·대여·담보제공·점유이전 또는 사용하게 하는 행위</p>
+  <p class="t-sub">2. 계약서상 운전자 범위를 벗어난 자에게 차량을 운전하게 하는 행위</p>
+  <p class="t-sub">3. 차량을 은닉하거나 회사의 차량 확인·점검·회수 요청을 거부하는 행위</p>
+  <p class="t-sub">4. GPS·블랙박스·하이패스·차량상태 확인장치 등 차량관리장치를 탈거·훼손·전원차단·차폐 또는 작동방해하는 행위</p>
+  <p class="t-sub">5. 차량번호판·차대번호·등록증·자동차키·보험서류 등 차량 관련 서류를 위·변조하거나 부정사용하는 행위</p>
+  <p class="t-sub">6. 음주·무면허·약물운전, 뺑소니, 사고 후 미조치, 보험사기, 고의사고, 중대한 교통법규 위반 행위</p>
+  <p class="t-sub">7. 회사의 사전승인 없이 차량을 해외로 반출하거나 장기간 소재를 불명확하게 하는 행위</p>
+  <p class="t-sub">8. 차량을 압류·가압류·강제집행·유치권 주장·제3자의 권리주장 대상이 되게 하는 행위</p>
+  <p class="t-sub">9. 차량을 범죄·불법영업·유상운송·재렌트·운전연습·경기·견인·위험물 운송·주행거리 조작 등 허용되지 않은 목적으로 사용하는 행위</p>
+  <p class="t-sub">10. 회사의 사전승인 없이 차량의 구조·외관·장치·번호판·블랙박스·GPS·내비게이션·하이패스·썬팅·랩핑·스티커·전장장치·타이어·휠 등을 변경·탈거·훼손하는 행위</p>
+  <p class="t-sub">11. 차량 내부에 현금·귀중품·유가증권·중요서류·위험물·불법물품·부패성 물품 등을 방치하는 행위</p>
+  <p class="t-sub">12. 기타 차량의 소유권 또는 회사의 권리를 침해하거나 침해할 우려가 있는 일체의 행위</p>
+
+  <p class="t-art">제9조 (사고처리 및 보험)</p>
+  <p>① 사고가 발생한 경우 임차인 또는 운전자는 즉시 안전조치를 취하고, 경찰 또는 보험사에 신고하며, 회사에 사고 사실을 지체 없이 통지하여야 한다.</p>
+  <p>② 임차인은 사고 장소 이탈, 현장 미접수, 임의합의, 자가수리, 사고은폐, 허위진술, 보험접수 거부 등 사고처리를 방해하는 행위를 하여서는 아니 된다. <span class="mark">경찰 신고 또는 보험사 현장 접수가 없는 사고는 보험처리가 제한될 수 있다.</span></p>
+  <p>③ 사고 차량은 회사가 지정하거나 승인한 정비공장에 입고하여야 하며, 임차인이 회사의 승인 없이 임의로 수리한 경우 회사는 해당 수리비를 인정하지 않을 수 있다.</p>
+  <p>④ 운전자 범위 위반, 음주·무면허·약물운전, 고의사고, 사고 후 미조치, 보험약관상 면책사유, 중대한 법규위반 등으로 보험 또는 자차손해면책이 제한되는 경우 그 손해는 임차인이 부담한다.</p>
+  <p>⑤ 보험 또는 자차손해면책이 적용되더라도 계약서에 정한 면책금, 자기부담금, 휴차손해, 감가손해, 견인비, 탁송료, 대차비, 보험처리 제외 손해, 보상한도 초과 손해는 임차인이 부담한다.</p>
+  <p>⑥ 12대 중과실 사고, 중대한 교통법규 위반 사고 또는 보험약관상 면책·제한 사유에 해당하는 사고의 경우, 임차인은 계약서에 정한 추가부담금, 자차면책금, 자기부담금, 보험 미보상 손해 및 제18조에 따른 손해를 부담한다.</p>
+  <p class="t-sub">※ 12대 중과실 : 신호위반 · 중앙선 침범 · 제한속도 20km 초과 · 앞지르기·끼어들기 방법 위반 · 철길건널목 통과방법 위반 · 횡단보도 보행자 보호의무 위반 · 무면허운전 · 음주운전 · 보도 침범 · 승객추락 방지의무 위반 · 어린이보호구역 안전운전 의무 위반 · 화물 고정조치 위반 (교통사고처리 특례법 제3조)</p>
+
+  <p class="t-art">제9조의2 (개인보험형 — 임차인의 개인 보험 가입 및 유지 의무)</p>
+  <p>본 조는 계약서 「보험 조건」이 <b>개인보험형(임차인이 본인 명의로 직접 가입)</b>으로 기재된 경우에 한하여 적용된다.</p>
+  <p>① 임차인은 계약 체결일부터 차량 출고 전까지 해당 대여 차량에 대하여 다음 각 호의 최소 보장 조건을 충족하는 개인 자동차 종합보험에 본인 명의로 의무적으로 가입하고, 그 효력을 계약기간 내내 유지하여야 한다.</p>
+  <p class="t-sub">1. 대인배상 : 무한</p>
+  <p class="t-sub">2. 대물배상 : 1억원 이상 (회사와 협의하여 확정)</p>
+  <p class="t-sub">3. 자기차량손해(자차) : 차량가액을 보상하는 조건으로 1억원 이상 (회사와 협의하여 확정)</p>
+  <p class="t-sub">4. 자기신체사고 또는 자동차상해 담보 포함</p>
+  <p>② 임차인은 차량 출고 전까지 위 보험의 가입 사실 및 효력 유지 증명서를 회사에 제출하여야 하며, 보험의 만료·해지·효력 상실 등이 발생한 경우 즉시 회사에 통지하고 지체 없이 재가입하거나 효력을 회복하여야 한다.</p>
+  <p>③ 회사는 차량 운행과 관련하여 발생하는 사고에 대하여 보험 보상 책임을 지지 아니하며, 모든 사고는 임차인이 가입한 개인 보험으로 처리한다. 임차인이 가입한 개인 보험의 보상 한도를 초과하는 손해, 자기부담금, 보험에서 보상하지 않는 손해는 전적으로 임차인이 부담한다.</p>
+  <p>④ 임차인의 중과실(12대 중과실 포함)로 차량 손해가 발생한 경우, 임차인은 개인 보험 처리 결과와 관계없이 회사가 입은 손해의 배상으로서 총 수리비의 60%에 해당하는 금액을 회사에 배상한다. 다만 개인 보험 처리 후 임차인이 부담하는 최종 손해액이 이미 60%를 초과하는 경우에는 그 실제 손해액으로 하며, 본 항은 회사가 입은 실제 손해의 배상을 정한 것으로 위약벌이 아니다.</p>
+  <p>⑤ 임차인이 본 조의 가입·유지 의무를 위반하거나 보험 효력이 상실된 경우 회사는 즉시 계약을 해지하고 차량 반환을 청구할 수 있으며, 임차인이 불응하면 무보험 운행 방지를 위하여 차량을 회수할 수 있다. 이로 인하여 발생하는 모든 비용과 손해는 임차인이 부담한다.</p>
+  <p>⑥ 본 조는 「자동차손해배상 보장법」 등 관계 법령의 강행규정에 반하지 아니하는 범위에서 효력을 가지며, 제3자(피해자)에 대한 법령상 책임은 회사와 임차인 사이의 내부 책임 분담과 별개로 한다.</p>
+
+  <p class="t-art">제10조 (GPS 및 차량관리장치)</p>
+  <p>① 차량에는 도난방지, 연체관리, 사고대응, 차량위치 확인, 차량회수, 계약이행 확인 및 차량보호를 위한 GPS, 통신장치, 차량상태 확인장치, 시동제어장치 등이 설치될 수 있다.</p>
+  <p>② 위 장치를 통한 차량 위치정보의 수집·이용·제공은 「위치정보의 보호 및 이용 등에 관한 법률」에 따른 별도 동의서에 따르며, 임차인은 그 설치 및 운영 목적을 설명받았음을 확인한다.</p>
+  <p>③ 임차인은 위 장치를 임의로 탈거·훼손·전원차단·차폐·조작 또는 작동방해하여서는 아니 된다. 위반 시 회사는 계약위반으로 보아 차량반환을 청구하거나 계약을 해지할 수 있고, 장치 복구비용·차량회수비용 및 제18조에 따른 손해배상을 청구할 수 있다.</p>
+  <p>④ 회사는 제11조에 따른 차량관리 조치를 위하여 관련 법령 및 별도 동의 범위 내에서 차량관리장치를 활용할 수 있다.</p>
+
+  <p class="t-art">제11조 (연체·기한이익 상실·계약해지 및 차량회수)</p>
+  <p>① 임차인이 계약서에 정한 운행제한 기준일까지 대여료 등을 지급하지 아니한 경우, 회사는 통지 또는 통지 시도 후 차량 위치확인, 운행제한, 시동제어, 결제수단 변경 요구, 보증금 추가 납부 요구 등 채권보전 조치를 취할 수 있다. 다만 시동제어 또는 운행제한 조치는 차량이 운행 중인 상태에서는 시행하지 아니하며, 안전상 위험이 없다고 판단되는 범위 내에서 진행한다.</p>
+  <p>② 다음 각 호의 사유가 발생한 경우 임차인은 기한의 이익을 상실하며, 회사는 미납금·손해배상금·회수비용을 청구할 수 있다. 이와 함께 잔여 대여료 상당액 또는 중도해지수수료는 계약서에 정한 청구기준에 따라 그 중 하나를 청구하며, 양자를 중복하여 청구하지 아니한다.</p>
+  <p class="t-sub">1. 대여료 등 지급의무를 계약서에 정한 차량회수 기준일까지 이행하지 아니한 경우</p>
+  <p class="t-sub">2. 보증금 또는 보증금 분납금을 지급하지 아니한 경우</p>
+  <p class="t-sub">3. 자동이체를 임의 해지하거나 결제수단을 무단 변경한 경우</p>
+  <p class="t-sub">4. 연락두절되거나 주소지·실거주지·사업장소재지를 허위로 고지한 경우</p>
+  <p class="t-sub">5. 차량을 은닉하거나 회사의 차량 확인·회수를 거부한 경우</p>
+  <p class="t-sub">6. 차량관리장치를 훼손·탈거·차단한 경우</p>
+  <p class="t-sub">7. 차량을 무단 양도·전대·담보제공·점유이전한 경우</p>
+  <p class="t-sub">8. 압류·가압류·강제집행·파산·회생·폐업·지급불능 등 채권보전이 필요한 사유가 발생한 경우</p>
+  <p class="t-sub">9. 운전자격 상실, 무면허·음주·고의사고·보험사기 등 중대한 계약위반이 발생한 경우</p>
+  <p class="t-sub">10. 기타 임차인의 귀책사유로 계약을 유지하기 어려운 중대한 사유가 발생한 경우</p>
+  <p>③ 회사는 임차인이 본 계약을 위반한 경우 상당한 기간을 정하여 시정을 요구할 수 있으며 그 기간 내 시정되지 아니하면 계약을 해지할 수 있다. 다만 제2항 각 호의 사유가 발생하거나 차량 소유권·채권보전을 위하여 긴급한 필요가 있는 경우 별도의 추가 동의 없이 계약을 해지하거나 차량반환·회수절차를 진행할 수 있다.</p>
+  <p>④ 계약이 해지된 경우 임차인은 즉시 차량, 자동차키, 등록증, 지급품, 옵션품, 부속품 일체를 회사가 지정한 장소에 반환하여야 하며, 반환하지 아니하는 경우 회사는 차량관리 조치, 차량회수, 법적조치 및 손해배상 청구를 진행할 수 있다. 차량회수는 회사 직원 또는 회사가 지정한 위탁·탁송·회수업체 등이 진행할 수 있으며 임차인은 이에 협조하여야 한다. 차량회수는 관련 법령이 허용하는 범위 내에서 평온한 방법으로 진행하며, 임차인 또는 제3자의 주거·사업장·관리구역 등에 무단으로 침입하거나 물리력을 행사하는 방식으로 진행하지 아니한다.</p>
+  <p>⑤ 본 조의 조치는 계약 체결 당시 계약서 및 핵심 고지사항을 통해 사전 고지된 것으로, 임차인은 이것이 계약위반 시 회사의 차량보호 및 채권보전을 위한 조치임을 확인한다.</p>
+  <p>⑥ 회사는 계약서에 정한 청구기준에 따라 잔여 대여료 상당액 또는 중도해지수수료(제14조) 중 하나를 청구하며, 양자를 중복하여 청구하지 아니한다. 계약해지·차량회수는 임차인의 미납금·중도해지수수료·손해배상·원상회복·과태료·통행료·회수비용 등 본 계약상 채무에 영향을 미치지 아니하고, 그로 인한 비용·손해는 제18조에 따른다.</p>
+
+  <p class="t-art">제12조 (통지 및 도달 간주)</p>
+  <p>① 회사는 임차인이 제공한 전화번호, 문자메시지, 카카오톡, 이메일, 주소지, 실거주지, 사업장소재지, 비상연락처 중 하나 이상의 방법으로 계약상 통지를 할 수 있다.</p>
+  <p>② 임차인은 주소, 연락처, 실거주지, 사업장소재지, 비상연락처 변경 시 즉시 회사에 통지하여야 한다.</p>
+  <p>③ 회사가 임차인이 제공한 연락처 또는 주소지로 통지하였으나, 임차인이 제2항의 변경통지를 이행하지 아니하거나 정당한 사유 없이 수신을 거부하는 등 임차인의 귀책사유로 통지가 도달하지 못한 경우에는 통상 도달할 수 있었던 때에 도달한 것으로 본다. 다만 임차인에게 귀책사유가 없는 경우에는 그러하지 아니하다.</p>
+
+  <p class="t-art">제13조 (차량 내부 물품 처리)</p>
+  <p>① 임차인은 차량 내부에 현금·귀중품·유가증권·중요서류·전자기기·고가품·부패성 물품·위험물·불법물품 등을 보관하여서는 아니 된다.</p>
+  <p>② 회사가 차량을 회수하는 경우 차량 내부에 물품이 있는 때에는 회수 당시 내부 상태를 사진·영상으로 기록하고 확인 가능한 범위에서 물품 목록을 작성할 수 있으며, 임차인은 계약서에 정한 보관기간 내에 회사가 지정한 장소에서 직접 수령하여야 한다.</p>
+  <p>③ 임차인이 보관기간 내에 수령하지 아니하는 경우 회사는 계약서에 정한 보관료·운반비·포장비·폐기비 등을 청구하거나 보증금·정산금에서 공제할 수 있다. 부패·악취·인화성·위험물 등 보관이 곤란한 물품은 즉시 폐기할 수 있고 그 비용은 임차인이 부담하며, 불법·범죄 의심 물품은 관계기관에 신고·인계할 수 있다.</p>
+  <p>④ 보관기간이 지나도록 수령하지 아니하거나 연락이 되지 않는 경우 회사는 수령을 최고하고 상당한 기간 경과 후 물품을 폐기·매각 등 처분할 수 있으며, 매각 시 매각대금에서 비용 및 미납 채무를 공제한 후 잔액을 반환한다. 다만 현금·귀중품·신분증·중요서류 등은 별도 보관하거나 관계기관에 인계할 수 있다.</p>
+  <p>⑤ 임차인이 물품을 방치하여 발생한 분실·훼손·폐기·보관료·제3자 분쟁 및 손해에 대하여 회사는 책임을 지지 아니한다. 다만 회사의 고의 또는 중대한 과실로 인한 손해는 그러하지 아니하다.</p>
+
+  <p class="t-art">제14조 (중도해지수수료 및 승계)</p>
+  <p>① 임차인이 계약기간 만료 전 계약을 해지하거나, 임차인의 귀책사유로 회사가 계약을 해지한 경우 임차인은 계약서에 정한 중도해지수수료를 부담한다.</p>
+  <p>② 중도해지수수료는 계약서에 별도 정함이 없는 한 잔여 계약기간의 대여료 합계액(부가가치세 제외)에 계약서에 정한 해지수수료율을 곱하여 산정한다. 다만 제11조에 따라 잔여 대여료 상당액을 청구하는 경우에는 본 조의 중도해지수수료를 중복하여 청구하지 아니한다.</p>
+  <p>③ 임차인이 회사가 승인하는 신규 임차인을 확보하고 회사의 심사 및 승계절차가 완료된 경우 회사는 중도해지수수료의 전부 또는 일부를 면제할 수 있다. 단, 승계수수료·미납금·사고비·원상회복비·탁송료·기타 정산금은 임차인이 부담한다.</p>
+  <p>④ 임차인은 회사의 사전 서면승인 없이 본 계약상 지위, 차량 점유·사용권, 차량 관련 권리·의무를 제3자에게 양도·승계·전대·담보제공 또는 이전할 수 없다. 회사의 승인 없이 차량을 제3자에게 인도·승계한 경우 회사는 계약을 해지할 수 있고, 그로 인한 위약금·차량회수비·사고비·과태료·통행료·보험처리 제한 손해 등은 임차인이 부담한다.</p>
+
+  <p class="t-art">제15조 (초과운행부담금)</p>
+  <p>① 계약서에 약정 주행거리가 기재된 경우, 계약 종료·해지 또는 차량반환 시점의 실제 운행거리가 약정 주행거리를 초과하면 임차인은 계약서에 정한 1km당 초과운행료를 기준으로 산정한 초과운행부담금을 부담한다.</p>
+  <p>② 계약기간 중 중도해지된 경우 약정 주행거리는 실제 사용일수 기준으로 일할 계산하며, 차량 출고·반환 탁송·정비 목적 운행 등 임차인의 사용과 무관한 운행거리는 계약서에 정한 기준에 따라 공제할 수 있다.</p>
+
+  <p class="t-art">제16조 (차량의 멸실·도난·폐차·중대훼손)</p>
+  <p>① 차량이 도난·멸실·침수·화재·전손·폐차·중대훼손 또는 수리불능 상태가 된 경우 임차인은 즉시 경찰·보험사 및 회사에 통지하여야 한다.</p>
+  <p>② 예상 수리비가 차량 장부가액의 계약서에 정한 기준을 초과하거나 수리가 불가능한 경우 본 계약은 해당 사유 발생일로부터 해지될 수 있다.</p>
+  <p>③ 임차인의 귀책사유로 차량이 멸실·도난·전손·폐차 또는 수리불능 상태가 된 경우 임차인은 미납 대여료, 중도해지수수료, 면책금, 자기부담금, 보상한도 초과 손해, 사고 당시 차량가액 상당 손해, 회수비용, 행정비용 등 회사가 입은 손해를 배상하여야 한다.</p>
+  <p>④ 보험 또는 자차손해면책이 적용되는 경우에도 면책금, 자기부담금, 보험 미보상 손해, 고의·중과실 또는 약관상 면책사유로 인한 손해는 임차인이 부담한다.</p>
+
+  <p class="t-art">제17조 (만기 차량 인수)</p>
+  <p>① 계약서에 확정 인수가격 또는 인수옵션이 기재된 경우 임차인은 대여기간 만료 시 계약서에 정한 기준에 따라 차량 인수를 요청할 수 있다. 다만 계약서에 인수가격이 확정되지 않고 "만기협의"로 기재된 경우, 인수 여부 및 인수가격은 계약만료 시점의 차량상태·시세·미납금·사고이력·회사 기준에 따라 회사와 임차인이 별도로 협의한다.</p>
+  <p>② 임차인이 차량을 인수하려는 경우 계약서에 정한 사전통지기한까지 회사에 인수 의사를 통지하여야 하며, 위 기간 내 통지가 없는 경우 인수하지 않는 것으로 본다.</p>
+  <p>③ 인수 시 회사는 인수가격에서 반환할 보증금을 상계한 후 잔액을 차량 인수대금으로 청구할 수 있으며, 명의이전 비용·취득세·인수 이후 발생하는 범칙금·과태료·통행료 등은 임차인이 부담한다.</p>
+  <p>④ 임차인이 차량을 인수하는 경우 사고로 인한 시세하락손해를 회사에 청구할 수 없으며, 인수가격은 변경되지 아니한다.</p>
+
+  <p class="t-art">제18조 (비용부담 및 손해배상)</p>
+  <p>① 임차인이 본 계약을 위반하거나 차량의 사용·보관·관리상 고의 또는 과실로 회사 또는 제3자에게 손해를 발생시킨 경우 임차인은 그 손해를 배상하여야 한다. 임차인의 연체·연락두절·차량 미반환·사고 미처리·무단점유 또는 계약위반으로 회사에 비용·손해가 발생한 경우에도 같다.</p>
+  <p>② 임차인이 부담하는 비용 및 손해에는 차량수리비, 부품비·공임, 견인비, 탁송료, 차량회수비, 보관료, 주차료, 진단비, 인건비, 출장비, 감가손해, 휴차손해, 보험료 할증 또는 보험처리 제한 손해, 대차비, 과태료·범칙금·통행료·하이패스 미납금, 법적조치비용, 제3자 배상금, 행정비용, 원상회복비, 기타 회사가 입은 통상손해 및 임차인이 알았거나 알 수 있었던 특별손해가 포함된다.</p>
+  <p>③ 차량 사용 중 발생한 과태료·범칙금·주차료·통행료·하이패스 미납금·견인료·보관료·행정수수료 등은 임차인이 부담하며, 회사가 먼저 청구받거나 대납한 경우 임차인은 청구 즉시 상환한다. 임차인의 주소·연락처·운전자정보 변경으로 고지·납부가 지연되어 발생한 가산금·압류·행정처분·손해도 임차인이 부담한다.</p>
+  <p>④ 임차인의 고의·중과실·무면허·음주·약물운전·사고 후 미조치·운전자 범위 위반·차량관리장치 훼손·차량 은닉·무단양도·전대 등 중대한 계약위반으로 발생한 손해는 보험 또는 자차손해면책 여부와 관계없이 임차인이 부담한다.</p>
+  <p>⑤ 회사는 위 비용 및 손해를 임차인에게 별도로 청구하거나 보증금·정산금에서 공제할 수 있다.</p>
+
+  <p class="t-art">제19조 (개인정보 및 신용정보)</p>
+  <p>① 회사는 계약 체결, 차량 인도, 운전자격 확인, 대여료 청구·자동이체, 보험·사고 처리, 정비, 과태료 처리, 차량회수, 채권관리, 분쟁대응을 위하여 필요한 범위 내에서 임차인의 개인정보 및 신용정보를 처리할 수 있다.</p>
+  <p>② 임차인은 회사가 계약상 업무 수행을 위하여 탁송업체, 정비업체, 보험사, 렌터카공제조합, 결제대행사, 금융기관, 채권추심기관, 법률대리인, 행정기관 등에게 필요한 정보를 제공할 수 있음을 확인한다. 개인정보·신용정보·위치정보의 세부 수집항목, 이용목적, 보유기간, 제3자 제공에 관한 사항은 별도 동의서에 따른다.</p>
+
+  <p class="t-art">제20조 (연대보증)</p>
+  <p>① 연대보증인이 있는 경우 보증채무의 범위, 보증한도, 보증기간 및 책임 내용은 별도 연대보증 확약서에 따르며, 연대보증인은 그 확약서에서 정한 바에 따라 임차인과 연대하여 책임을 부담한다.</p>
+  <p>② 계약이 연장되는 경우 연대보증의 연장 여부는 별도의 서면동의에 따른다.</p>
+
+  <p class="t-art">제21조 (분쟁해결 및 관할)</p>
+  <p>① 본 계약과 관련하여 분쟁이 발생한 경우 회사와 임차인은 우선 협의하여 해결하도록 노력하며, 본 약관에 규정되지 아니한 사항은 공정거래위원회가 고시한 「자동차 대여 표준약관」 및 관계 법령에 따른다.</p>
+  <p>② 협의가 이루어지지 아니하는 경우 관련 법령에 따른 관할법원을 제1심 관할법원으로 한다.</p>
+  <p>③ 본 계약의 일부 조항이 무효로 판단되더라도 나머지 조항의 효력에는 영향을 미치지 아니한다.</p>
+</div>
+<span data-field="terms_title" style="display:none">자동차 렌탈(대여) 약관 · 개인 · 개인사업자용</span>
+<div id="termsPages"></div>
+
+<!-- ============== 동의 및 전자서명 (문서 측 · 본인인증/촬영은 외부 플랫폼) ============== -->
+<section class="page" id="agreePage">
+  <div class="pbody">
+    <div class="rhead"><div class="rh-doc" data-field="doc_title">자동차 렌탈 계약서</div><div class="rh-meta">동의 및 전자서명</div></div>
+    <div class="section">
+      <div class="sec-h"><div class="no">10</div><div class="t">동의 및 확인 사항</div><div class="sub">전자서명 전 확인</div></div>
+      <label class="agree-all"><input type="checkbox" id="agreeAll"><span>아래 항목을 모두 확인하고 동의합니다 (전체 동의)</span></label>
+      <div class="agree-list">
+        <label class="agree-item"><input type="checkbox" class="agchk"><span>본인은 <b>대여 조건·보험·정비 주요사항</b>을 확인하였으며, 특히 <b>사고 시 보험 미적용 사유와 그 경우 손해 전액을 임차인이 부담</b>한다는 조건에 동의합니다.</span></label>
+        <label class="agree-item"><input type="checkbox" class="agchk"><span><b>자동차 임대차 계약 약관</b> 전문을 수령·확인하고 이에 동의합니다.</span></label>
+        <label class="agree-item"><input type="checkbox" class="agchk"><span><b>개인정보 수집·이용 및 제3자 제공</b>에 동의합니다. <span style="color:var(--mute)">(계약 체결·이행·세금계산서 발행 목적 / 보유기간 계약 종료 후 5년 / 세부 사항은 별첨 「개인정보 동의서」)</span></span></label>
+        <label class="agree-item"><input type="checkbox" class="agchk"><span><b>차량 위치정보(GPS) 수집·이용</b>에 동의합니다. <span style="color:var(--mute)">(계약 위반 시 차량 회수 목적 / 세부 사항은 별첨 「위치정보 동의서」)</span></span></label>
+        <label class="agree-item"><input type="checkbox" class="agchk"><span><b>개인신용정보 수집·이용 및 제공·조회</b>에 동의합니다. <span style="color:var(--mute)">(계약 체결·연체 관리 목적 / 세부 사항은 별첨 「개인신용정보 동의서」)</span></span></label>
+      </div>
+
+      <div class="annexbox">
+        <div class="annex-h">부속 서류 (본 계약과 일체 · 약관 제1조)</div>
+        <div class="annex-items">
+          <span>① 개인정보 수집·이용 및 제3자 제공 동의서</span>
+          <span>② 개인신용정보 수집·이용·제공·조회 동의서</span>
+          <span>③ 위치정보 수집·이용 동의서</span>
+          <span>④ 자동이체(CMS) 출금 신청서</span>
+          <span>⑤ 차량 인수증 <span style="color:var(--mute)">(부속서류 1)</span></span>
+          <span>⑥ 연대보증 확약서 <span style="color:var(--mute)">(해당 시)</span></span>
+        </div>
+        <div class="annex-note">위 부속 서류는 본 계약 및 약관과 일체를 이루며, 본인은 각 서류를 교부받고 그 내용을 확인·동의하였습니다. 각 동의의 구체적 수집항목·이용목적·보유기간·제3자 제공 범위는 해당 부속 서류에 따릅니다.</div>
+      </div>
+
+      <div class="esign">
+        <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+        <div class="esign-row">
+          <div>
+            <div class="esign-lbl">임차인 (전자서명)</div>
+            <div class="esign-pad" data-sign="customer"><span>서명란 · 본인인증 후 서명</span></div>
+            <div class="esign-nm" data-field="customer_name">○ ○ ○</div>
+          </div>
+          <div>
+            <div class="esign-lbl">임대인</div>
+            <div class="esign-pad"><span><span data-field="company_name">주식회사 손오공렌터카</span> &nbsp;(직인)</span></div>
+            <div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div>
+            <div class="esign-sub">사업자등록번호 <span data-field="company_biz_no">000-00-00000</span></div>
+          </div>
+        </div>
+        <div class="note">전자서명은 「전자서명법」에 따라 서면 서명·날인과 동일한 법적 효력을 가집니다. 본인인증(신분증·얼굴 확인)은 발송·인증 플랫폼에서 완료된 후 본 서명이 이루어집니다.</div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span><span data-field="doc_title">자동차 렌탈 계약서</span> · <span class="num"></span></span></div>
+</section>
+
+<!-- ============== 부속서류 1 · 차량 인수증 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">차량 인수증 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 1</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>임차인 <b data-field="customer_name">○ ○ ○</b></div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="6" rx="1.5"/><path d="M6 11l2-4h8l2 4"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg></div><div class="t">차량 정보</div></div>
+      <div class="kv">
+        <div class="k">차명</div><div class="v strong span2" data-field="vehicle_name">현대 쏘나타 디 엣지 2.0 가솔린 익스클루시브</div>
+        <div class="k">차량번호</div><div class="v strong" data-field="car_number">00가0000</div>
+        <div class="k">외장 색상</div><div class="v" data-field="color_exterior">색상</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 11h6M9 15h4"/></svg></div><div class="t">인수 · 반납 상태</div></div>
+      <table class="tbl">
+        <thead><tr><th>항목</th><th>인수 시</th><th>반납 시</th></tr></thead>
+        <tbody>
+          <tr><td>일시</td><td data-field="handover_datetime">-</td><td data-field="return_datetime">-</td></tr>
+          <tr><td>주행거리</td><td data-field="odometer_delivery">0 km</td><td data-field="odometer_return">-</td></tr>
+          <tr><td>연료 게이지</td><td data-field="fuel_gauge_delivery">-</td><td data-field="fuel_gauge_return">-</td></tr>
+          <tr><td>외관 파손 · 스크래치</td><td data-field="damage_delivery">없음</td><td data-field="damage_return">-</td></tr>
+        </tbody>
+      </table>
+      <div class="kv" style="margin-top:3mm">
+        <div class="k">인도 장소</div><div class="v" data-field="handover_location">-</div>
+        <div class="k">인도자 (직원)</div><div class="v" data-field="handover_agent_name">-</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4-9 4z"/><path d="M3 8v8l9 4 9-4V8"/><path d="M12 12v8"/></svg></div><div class="t">동봉 물품</div></div>
+      <div class="kv">
+        <div class="k">기본 장비</div><div class="v span2">네비게이션 · 블랙박스 · 안전표지판</div>
+        <div class="k">스마트키</div><div class="v"><span data-field="smartkey_count">1</span> 개</div>
+        <div class="k">보조키</div><div class="v"><span data-field="subkey_count">0</span> 개</div>
+        <div class="k">기타</div><div class="v span2" data-field="other_items">-</div>
+      </div>
+    </div>
+
+    <div class="esign">
+      <div class="note">본인은 위 차량을 위 상태로 인수하였으며, 반납 시 위 상태를 기준으로 점검함에 동의합니다.</div>
+      <div class="esign-row" style="margin-top:5mm">
+        <div><div class="esign-lbl">인수자 (임차인)</div><div class="esign-pad" data-sign="customer"><span>서명란</span></div><div class="esign-nm" data-field="customer_name">○ ○ ○</div></div>
+        <div><div class="esign-lbl">인도자 (회사)</div><div class="esign-pad"><span><span data-field="company_name">주식회사 손오공렌터카</span> (직인)</span></div><div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>차량 인수증 · 부속서류 1</span></div>
+</section>
+
+<!-- ============== 부속서류 2 · 임대차 계약 사실확인서 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">임대차 계약 사실확인서 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 2</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b></div>
+    </div>
+
+    <div class="callout">본 확인서는 <b>과태료·범칙금 부과 대상자 변경</b> 및 <b>임대차 사실 확인</b>을 위하여 관련 기관에 제출할 목적으로 발급됩니다.</div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></div><div class="t">임차인</div></div>
+      <div class="kv">
+        <div class="k">성명</div><div class="v strong" data-field="customer_name">○ ○ ○</div>
+        <div class="k">주민등록번호</div><div class="v" data-field="customer_id">-</div>
+        <div class="k">운전면허번호</div><div class="v" data-field="driver_or_biz_no">-</div>
+        <div class="k">연락처</div><div class="v" data-field="customer_phone">-</div>
+        <div class="k">주소</div><div class="v span2" data-field="customer_address">-</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="6" rx="1.5"/><path d="M6 11l2-4h8l2 4"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg></div><div class="t">임대차 차량 · 기간</div></div>
+      <div class="kv">
+        <div class="k">차명</div><div class="v strong span2" data-field="vehicle_name">현대 쏘나타 디 엣지 2.0 가솔린 익스클루시브</div>
+        <div class="k">차량번호</div><div class="v strong" data-field="car_number">00가0000</div>
+        <div class="k">차대번호</div><div class="v" data-field="vin">VIN</div>
+        <div class="k">임대차 시작</div><div class="v" data-field="contract_start">2026. 00. 00.</div>
+        <div class="k">임대차 종료</div><div class="v" data-field="contract_end">2026. 00. 00.</div>
+      </div>
+    </div>
+
+    <div class="callout">위 차량은 <b>임대인(회사)</b> 소유이며, 위 <b>임차인</b>이 위 임대차 기간 동안 임차하여 사용하고 있음을 확인합니다. 따라서 위 기간 중 발생한 과태료·범칙금의 부과 대상자는 <b>임차인</b>입니다.</div>
+
+    <div class="esign">
+      <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+      <div class="esign-row">
+        <div></div>
+        <div><div class="esign-lbl">발급인 (임대인)</div><div class="esign-pad"><span><span data-field="company_name">주식회사 손오공렌터카</span> (직인)</span></div><div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div><div class="esign-sub">사업자등록번호 <span data-field="company_biz_no">000-00-00000</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>임대차 계약 사실확인서 · 부속서류 2</span></div>
+</section>
+
+<!-- ============== 부속서류 3 · 운전자격 검증 확인서 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">운전자격 검증 확인서 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 3</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b></div>
+    </div>
+
+    <div class="callout">회사(<span data-field="company_name">주식회사 손오공렌터카</span>)는 차량 대여 서비스 제공을 위해 <b>「여객자동차 운수사업법」 제34조의2 제2항</b>에 따라 임대차계약서상 운전자의 <b>운전자격(운전면허 효력 유무 및 운전면허 범위)</b>을 확인하여야 할 의무가 있어, 다음과 같이 귀하의 확인을 받습니다.</div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8.5" cy="12" r="2"/><path d="M13.5 10.5h4M13.5 13.5h3"/></svg></div><div class="t">운전자격 확인 사항</div></div>
+      <div class="acc-steps">
+        <div><b>1</b><span>대여사업자가 운전자[제2운전자(공동임차인) 포함]의 <strong>운전면허증 원본을 제출받아 사본을 저장</strong>하고, 면허증상의 <strong>사진과 본인의 얼굴을 면밀히 대조</strong>하였음을 확인합니다.</span></div>
+        <div><b>2</b><span>운전자 본인은 <strong>「도로교통법」 제93조에 따라 운전면허가 취소·정지되지 아니</strong>하였고, 같은 법 제95조 제1항의 <strong>운전면허증 반납의무를 위반하지 않았음</strong>을 확인합니다.</span></div>
+        <div><b>3</b><span><strong>「형법」 제225조</strong>를 위반하여 운전면허증을 위·변조하였거나 「도로교통법」 제95조 제1항의 반납의무를 위반한 경우, <strong>민·형사상 일체의 불이익을 감수</strong>할 것을 확인합니다.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></div><div class="t">운전자 정보</div></div>
+      <div class="kv">
+        <div class="k">성명</div><div class="v strong" data-field="customer_name">○ ○ ○</div>
+        <div class="k">운전면허번호</div><div class="v" data-field="driver_license_no">-</div>
+        <div class="k">생년월일</div><div class="v" data-field="customer_birth">-</div>
+        <div class="k">연락처</div><div class="v" data-field="customer_phone">-</div>
+      </div>
+      <div class="note">※ 추가 운전자가 있는 경우 「08 운전자」 등록자도 위와 동일하게 운전자격을 확인합니다.</div>
+    </div>
+
+    <div class="callout"><b>민·형사상 받을 수 있는 불이익</b> — 「형법」 제225조(공문서등의 위조·변조): <b>10년 이하 징역</b> / 「도로교통법」 제95조: 취소·정지 처분 시 <b>7일 내 면허증 반납 의무</b> / 「자동차대여 표준약관」 제4·7조: 신원확인 불응·정보 허위·면허 취소·정지 시 <b>계약 체결 거절 또는 해지</b>.</div>
+
+    <div class="agree-line" style="font-size:11px;font-weight:700;color:var(--ink);text-align:center;margin:5mm 0 2mm">상기 내용과 같이 대여사업자에게 안내받고 운전자격을 확인하였습니다.</div>
+
+    <div class="esign">
+      <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+      <div class="esign-row">
+        <div><div class="esign-lbl">운전자 (본인)</div><div class="esign-pad"><span>서명란 · 본인인증 후 서명</span></div><div class="esign-nm" data-field="customer_name">○ ○ ○</div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>운전자격 검증 확인서 · 부속서류 3</span></div>
+</section>
+
+<!-- ============== 부속서류 4 · 개인정보 수집·이용 및 제3자 제공 동의서 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">개인정보 수집·이용 및 제3자 제공 동의서 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 4</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>임차인 <b data-field="customer_name">○ ○ ○</b></div>
+    </div>
+
+    <div class="callout">회사(<span data-field="company_name">주식회사 손오공렌터카</span>)는 자동차 임대차계약의 체결·이행을 위하여 「개인정보 보호법」 제15조·제17조·제22조에 따라 아래와 같이 귀하의 개인정보 수집·이용 및 제3자 제공에 관한 동의를 받습니다.</div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 7.7-8 9-4.6-1.3-8-4.5-8-9V6z"/><path d="M9.5 12l1.8 1.8 3.2-3.6"/></svg></div><div class="t">수집·이용 항목 및 목적</div></div>
+      <table class="tbl">
+        <thead><tr><th style="width:14%">구분</th><th style="width:36%">수집 항목</th><th style="width:32%">이용 목적</th><th>보유기간</th></tr></thead>
+        <tbody>
+          <tr><td>필수</td><td>성명, 주민등록번호, 연락처, 주소, 운전면허번호, 이메일</td><td>계약 체결·이행, 본인확인, 대금 청구, 세금계산서 발행</td><td>계약 종료 후 5년</td></tr>
+          <tr><td>결제</td><td>계좌·카드 정보, 예금주 생년월일</td><td>대여료 자동이체·정산</td><td>계약 종료 후 5년</td></tr>
+          <tr><td>운행</td><td>차량 위치정보, 운행·사고 정보</td><td>차량 관리, 사고·보험 처리, 채권보전</td><td>계약 종료 후 5년</td></tr>
+        </tbody>
+      </table>
+      <div class="note">※ 관계 법령(국세기본법·상법 등)에 따라 보존이 필요한 경우 해당 법령에 정한 기간 동안 보관합니다.</div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="9" r="2.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 19c0-2.5 1.7-4 3.5-4s3.5 1.5 3.5 4M13.5 19c0-2.5 1.7-4 3.5-4s3.5 1.5 3.5 4"/></svg></div><div class="t">제3자 제공</div></div>
+      <table class="tbl">
+        <thead><tr><th style="width:28%">제공받는 자</th><th style="width:34%">제공 목적</th><th>제공 항목</th></tr></thead>
+        <tbody>
+          <tr><td>보험사 · 렌터카공제조합</td><td>자동차보험 가입·갱신, 사고 처리</td><td>성명·주민번호·연락처·차량정보</td></tr>
+          <tr><td>지정 정비·탁송·회수업체</td><td>정비·탁송·차량 회수</td><td>성명·연락처·주소·차량정보</td></tr>
+          <tr><td>결제대행사 · 금융기관</td><td>대여료 청구·자동이체</td><td>성명·계좌·결제정보</td></tr>
+          <tr><td>신용정보기관 · 채권추심기관</td><td>연체 관리·채권 회수</td><td>성명·주민번호·연락처·채무정보</td></tr>
+        </tbody>
+      </table>
+      <div class="note">※ 제공받은 자의 보유기간은 제공 목적 달성 시까지로 하며, 관계 법령에 정한 경우 그 기간에 따릅니다.</div>
+    </div>
+
+    <div class="callout"><b>동의 거부 권리 및 불이익</b> — 귀하는 개인정보 수집·이용 및 제3자 제공에 대한 동의를 거부할 권리가 있습니다. 다만 <b>필수 항목에 대한 동의를 거부하는 경우 자동차 임대차계약의 체결 및 이행이 불가</b>합니다.</div>
+
+    <div class="agree-line" style="font-size:11px;font-weight:700;color:var(--ink);text-align:center;margin:5mm 0 2mm">본인은 위 개인정보의 수집·이용 및 제3자 제공에 동의합니다.</div>
+    <div class="esign">
+      <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+      <div class="esign-row">
+        <div><div class="esign-lbl">정보주체 (임차인)</div><div class="esign-pad" data-sign="customer"><span>서명란 · 본인인증 후 서명</span></div><div class="esign-nm" data-field="customer_name">○ ○ ○</div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>개인정보 동의서 · 부속서류 4</span></div>
+</section>
+
+<!-- ============== 부속서류 5 · 개인신용정보 수집·이용·제공·조회 동의서 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">개인신용정보 수집·이용·제공·조회 동의서 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 5</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>임차인 <b data-field="customer_name">○ ○ ○</b></div>
+    </div>
+
+    <div class="callout">회사(<span data-field="company_name">주식회사 손오공렌터카</span>)는 자동차 임대차계약의 체결·유지 및 연체 관리를 위하여 「신용정보의 이용 및 보호에 관한 법률」 제32조·제33조·제34조에 따라 아래 각 항목별로 귀하의 개인신용정보 동의를 받습니다.</div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v16H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div><div class="t">① 개인신용정보 수집·이용 동의</div><div class="sub">필수</div></div>
+      <div class="kv">
+        <div class="k">수집 항목</div><div class="v span2">성명·주민등록번호 등 식별정보, 신용도·신용거래능력 판단정보, 연체·채무 정보</div>
+        <div class="k">이용 목적</div><div class="v span2">계약 체결 여부 판단, 한도·조건 결정, 계약 유지·연체 관리, 채권 회수</div>
+        <div class="k">보유·이용 기간</div><div class="v span2">동의일로부터 계약 종료 후 5년 (관계 법령에 정한 경우 그 기간)</div>
+      </div>
+      <div class="consent-mark" style="text-align:right;font-size:10px;font-weight:700;color:var(--ink);margin-top:4px">위 개인신용정보 수집·이용에 동의합니다 &nbsp;동의<span style="display:inline-block;width:11px;height:11px;border:1.3px solid var(--ink2);border-radius:2px;vertical-align:-1px;margin-left:5px"></span></div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h6m4 0h6M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg></div><div class="t">② 개인신용정보 제공·조회 동의</div><div class="sub">필수</div></div>
+      <div class="kv">
+        <div class="k">제공·조회 대상</div><div class="v span2">종합신용정보집중기관(한국신용정보원), 신용조회회사(CB), 금융기관, 렌터카공제조합</div>
+        <div class="k">제공·조회 항목</div><div class="v span2">성명·주민등록번호 등 식별정보, 신용도·신용거래능력 판단정보, 연체·채무 정보</div>
+        <div class="k">제공·조회 목적</div><div class="v span2">신용조회를 통한 계약 심사, 신용정보집중기관 제공, 연체정보 등록·관리, 채권 회수</div>
+      </div>
+      <div class="consent-mark" style="text-align:right;font-size:10px;font-weight:700;color:var(--ink);margin-top:4px">위 개인신용정보 제공·조회에 동의합니다 &nbsp;동의<span style="display:inline-block;width:11px;height:11px;border:1.3px solid var(--ink2);border-radius:2px;vertical-align:-1px;margin-left:5px"></span></div>
+      <div class="note">※ 연체 발생 시 신용정보기관에 연체 정보가 등록되어 신용등급 하락 등 불이익이 발생할 수 있습니다.</div>
+    </div>
+
+    <div class="callout"><b>동의 거부 권리 및 불이익</b> — 귀하는 위 각 동의를 거부할 권리가 있습니다. 다만 <b>동의를 거부하는 경우 계약 체결이 제한</b>될 수 있습니다.</div>
+
+    <div class="agree-line" style="font-size:11px;font-weight:700;color:var(--ink);text-align:center;margin:5mm 0 2mm">본인은 위 각 항목에 표시한 바와 같이 개인신용정보의 수집·이용 및 제공·조회에 동의합니다.</div>
+    <div class="esign">
+      <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+      <div class="esign-row">
+        <div><div class="esign-lbl">정보주체 (임차인)</div><div class="esign-pad" data-sign="customer"><span>서명란 · 본인인증 후 서명</span></div><div class="esign-nm" data-field="customer_name">○ ○ ○</div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>개인신용정보 동의서 · 부속서류 5</span></div>
+</section>
+
+<!-- ============== 부속서류 6 · 위치정보 수집·이용 동의서 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">위치정보 수집·이용 동의서 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 6</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>차량 <b data-field="car_number">00가0000</b></div>
+    </div>
+
+    <div class="callout">회사(<span data-field="company_name">주식회사 손오공렌터카</span>)는 대여 차량의 관리·보호를 위하여 차량에 부착된 위치정보 단말(GPS)을 통해 「위치정보의 보호 및 이용 등에 관한 법률」 제18조·제19조에 따라 아래와 같이 위치정보 수집·이용에 관한 동의를 받습니다.</div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 0 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div class="t">위치정보 수집·이용 내용</div></div>
+      <div class="kv">
+        <div class="k">수집 대상</div><div class="v span2">대여 차량(<span data-field="car_number">00가0000</span>)에 설치된 GPS·통신 단말의 위치정보</div>
+        <div class="k">수집 목적</div><div class="v span2">차량 도난·분실 방지, 연체 시 차량 위치 확인 및 회수, 사고 대응, 계약 이행 확인</div>
+        <div class="k">이용·제공</div><div class="v span2">차량 관리·회수 목적 범위 내에서 회사 및 회사가 지정한 회수·관제 위탁업체가 이용</div>
+        <div class="k">보유 기간</div><div class="v span2">계약 기간 동안 수집하며, 계약 종료 후 지체 없이 파기 (분쟁·채권 관련 시 그 종료 시까지)</div>
+      </div>
+      <div class="note">※ 위치정보는 계약 위반(연체·연락두절·차량 은닉 등)에 대한 차량 보호 및 채권보전 목적으로만 이용하며, 그 외 목적으로 이용하지 않습니다.</div>
+    </div>
+
+    <div class="callout"><b>동의 거부 권리 및 불이익</b> — 귀하는 본 동의를 거부할 권리가 있습니다. 다만 위치정보 수집은 차량 도난 방지 및 무보증·후불 대여의 전제 조건이므로, <b>동의를 거부하는 경우 계약 체결이 제한</b>될 수 있습니다.</div>
+
+    <div class="agree-line" style="font-size:11px;font-weight:700;color:var(--ink);text-align:center;margin:5mm 0 2mm">본인은 위 대여 차량의 위치정보 수집·이용에 동의합니다.</div>
+    <div class="esign">
+      <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+      <div class="esign-row">
+        <div><div class="esign-lbl">정보주체 (임차인)</div><div class="esign-pad" data-sign="customer"><span>서명란 · 본인인증 후 서명</span></div><div class="esign-nm" data-field="customer_name">○ ○ ○</div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>위치정보 동의서 · 부속서류 6</span></div>
+</section>
+
+<!-- ============== 부속서류 7 · 자동이체(CMS) 출금 신청서 ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">자동이체(CMS) 출금 신청서 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 7</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>임차인 <b data-field="customer_name">○ ○ ○</b></div>
+    </div>
+
+    <div class="callout">신청인은 아래 출금계좌에서 자동차 임대차계약에 따른 월 대여료 등을 회사(<span data-field="company_name">주식회사 손오공렌터카</span>)가 자동이체(CMS) 방식으로 출금하는 것에 동의하여 다음과 같이 신청합니다.</div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div><div class="t">출금 계좌</div></div>
+      <div class="kv">
+        <div class="k">예금주</div><div class="v strong" data-field="payment_account_holder">○ ○ ○</div>
+        <div class="k">예금주 생년월일</div><div class="v" data-field="customer_birth">-</div>
+        <div class="k">은행</div><div class="v" data-field="cms_bank">-</div>
+        <div class="k">계좌번호</div><div class="v" data-field="cms_account_no">-</div>
+        <div class="k">연락처</div><div class="v span2" data-field="customer_phone">010-0000-0000</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/></svg></div><div class="t">출금 조건</div></div>
+      <div class="kv">
+        <div class="k">출금일</div><div class="v" data-field="auto_debit_date">매월 25일</div>
+        <div class="k">출금 금액</div><div class="v"><span data-field="rent_amount">0</span> 원 <span style="color:var(--mute);font-weight:500">(월 대여료, VAT 포함)</span></div>
+        <div class="k">출금 시작월</div><div class="v" data-field="cms_start_month">-</div>
+        <div class="k">수납업체</div><div class="v" data-field="cms_agency">금융결제원 CMS</div>
+      </div>
+      <div class="note">※ 잔액부족·계좌정지·자동이체 해지 등 신청인 또는 예금주의 사유로 출금이 이루어지지 않은 경우에도 대여료 지급의무는 면제되지 않으며, 그 연체책임은 임차인이 부담합니다. (약관 제3조)</div>
+    </div>
+
+    <div class="agree-line" style="font-size:11px;font-weight:700;color:var(--ink);text-align:center;margin:5mm 0 2mm">본인은 위 계좌에서의 자동이체(CMS) 출금을 신청·동의합니다.</div>
+    <div class="esign">
+      <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+      <div class="esign-row">
+        <div><div class="esign-lbl">신청인 (예금주)</div><div class="esign-pad" data-sign="customer"><span>서명란 · 본인인증 후 서명</span></div><div class="esign-nm" data-field="payment_account_holder">○ ○ ○</div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>자동이체(CMS) 신청서 · 부속서류 7</span></div>
+</section>
+
+<!-- ============== 부속서류 8 · 연대보증 확약서 (해당 시) ============== -->
+<section class="page">
+  <div class="pbody">
+    <div class="rhead">
+      <div class="rh-doc">연대보증 확약서 <span style="font-size:9.5px;color:var(--mute);font-weight:600;margin-left:5px">부속서류 8</span></div>
+      <div class="rh-meta">계약번호 <b data-field="contract_code">CT-2026-0000</b><br>임차인 <b data-field="customer_name">○ ○ ○</b></div>
+    </div>
+
+    <div class="callout">아래 연대보증인은 임차인(<span data-field="customer_name">○ ○ ○</span>)이 회사(<span data-field="company_name">주식회사 손오공렌터카</span>)와 체결한 자동차 임대차계약에 따른 임차인의 채무를 임차인과 연대하여 부담할 것을 확약합니다.</div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-6 7-6s7 2.1 7 6"/></svg></div><div class="t">연대보증인 정보</div></div>
+      <div class="kv">
+        <div class="k">성명</div><div class="v strong" data-field="guarantor_name">-</div>
+        <div class="k">주민등록번호</div><div class="v" data-field="guarantor_rrn">-</div>
+        <div class="k">임차인과의 관계</div><div class="v" data-field="guarantor_relation">-</div>
+        <div class="k">연락처</div><div class="v" data-field="guarantor_phone">-</div>
+        <div class="k">직업</div><div class="v span2" data-field="guarantor_occupation">-</div>
+        <div class="k">주소</div><div class="v span2" data-field="guarantor_address">-</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sec-h"><div class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h6"/></svg></div><div class="t">보증 조건</div></div>
+      <div class="kv">
+        <div class="k">보증 대상 계약</div><div class="v span2">계약번호 <span data-field="contract_code">CT-2026-0000</span> · 차량 <span data-field="car_number">00가0000</span></div>
+        <div class="k">보증 채무 범위</div><div class="v span2">월 대여료, 연체·지연손해금, 면책금·자기부담금, 위약금·중도해지수수료, 차량 손해배상·원상회복비, 회수비용 등 본 계약상 임차인의 일체의 금전채무</div>
+        <div class="k">보증 한도 (최고액)</div><div class="v strong"><span data-field="guarantee_limit">-</span> 원</div>
+        <div class="k">보증 기간</div><div class="v" data-field="guarantee_period">계약 기간 만료일까지</div>
+      </div>
+      <div class="note">※ 「보증인 보호를 위한 특별법」에 따라 보증 채무의 최고액을 위와 같이 서면으로 특정하며, 계약 연장 시 보증의 연장 여부는 별도의 서면동의에 따릅니다.</div>
+    </div>
+
+    <div class="callout">연대보증인은 본 확약의 내용과 그에 따른 책임(임차인과 동일한 책임으로 채무를 부담하며, 회사는 임차인에 대한 청구 없이도 연대보증인에게 직접 청구할 수 있음)을 충분히 이해하고 이에 동의합니다.</div>
+
+    <div class="agree-line" style="font-size:11px;font-weight:700;color:var(--ink);text-align:center;margin:5mm 0 2mm">본인은 위 임차인의 채무를 연대하여 보증할 것을 확약합니다.</div>
+    <div class="esign">
+      <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
+      <div class="esign-row">
+        <div><div class="esign-lbl">연대보증인</div><div class="esign-pad" data-sign="guarantor"><span>서명란 · 본인인증 후 서명</span></div><div class="esign-nm" data-field="guarantor_name">○ ○ ○</div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="pagefoot"><span class="pf-co" data-field="company_name">주식회사 손오공렌터카</span><span>연대보증 확약서 · 부속서류 8</span></div>
+</section>
+
+<script>
+/* ===== 약관 2단 자동 페이지네이션 ===== */
+(function(){
+  function field(name, fb){ var el=document.querySelector('[data-field="'+name+'"]'); return el? (el.textContent||fb) : fb; }
+  var lastSig='';
+  function build(force){
+    var src=document.getElementById('termsSource');
+    var out=document.getElementById('termsPages');
+    if(!src||!out) return;
+    var co=field('company_name','주식회사 손오공렌터카');
+    var tt=field('terms_title','자동차 임대차 계약 약관');
+    var sig=co+'|'+tt;
+    if(!force && sig===lastSig && out.children.length) return;  /* 동일 내용 재생성 방지(깜빡임 X) */
+    var items=Array.prototype.slice.call(src.querySelectorAll('p'));
+    var idx=0;
+    var stage=document.createElement('div'); stage.style.cssText='position:absolute;left:-99999px;top:0;width:210mm';
+    document.body.appendChild(stage);
+    function newPage(){
+      var p=document.createElement('section'); p.className='page';
+      p.innerHTML='<div class="pbody">'
+        +'<div class="rhead"><div class="rh-doc">'+tt+'</div>'
+        +'<div class="rh-meta">'+co+'</div></div>'
+        +'<div class="terms-cols" style="display:grid;grid-template-columns:1fr 1fr;gap:8mm;font-size:9.3px;line-height:1.55;color:var(--ink2)"><div class="tc tcL"></div><div class="tc tcR"></div></div>'
+        +'</div><div class="pagefoot"><span class="pf-co">'+co+'</span><span>약관 · <span class="num"></span></span></div>';
+      stage.appendChild(p);
+      return p;
+    }
+    function colFull(col, page){
+      // 컬럼이 페이지 본문 높이를 넘으면 true
+      var body=page.querySelector('.pbody');
+      return col.getBoundingClientRect().bottom > body.getBoundingClientRect().bottom - 6;
+    }
+    var page=newPage();
+    var cols=[page.querySelector('.tcL'), page.querySelector('.tcR')];
+    var ci=0;
+    while(idx<items.length){
+      var node=items[idx].cloneNode(true);
+      cols[ci].appendChild(node);
+      if(colFull(cols[ci], page)){
+        cols[ci].removeChild(node);
+        if(ci===0){ ci=1; }
+        else { page=newPage(); cols=[page.querySelector('.tcL'), page.querySelector('.tcR')]; ci=0; }
+        continue;
+      }
+      idx++;
+    }
+    out.innerHTML='';                                   /* 완성 후 한 번에 교체(빈 화면 없이) */
+    while(stage.firstChild){ out.appendChild(stage.firstChild); }
+    document.body.removeChild(stage);
+    lastSig=sig;
+    numberPages();
+    document.body.classList.remove('cloak');   /* 약관까지 렌더 완료 → 화면 노출 */
+  }
+  /* 표지 제외 전 페이지 통일 번호 (N / M) — 허브 A4 표준 */
+  function numberPages(){
+    var nums=document.querySelectorAll('.page .pagefoot .num');
+    var total=nums.length;
+    Array.prototype.forEach.call(nums, function(n, i){ n.textContent=(i+1)+' / '+total; });
+  }
+  function run(force){ requestAnimationFrame(function(){ build(force); }); }
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ run(true); }); }
+  window.addEventListener('load', function(){ run(true); });
+  window.addEventListener('resize', function(){ clearTimeout(window.__t); window.__t=setTimeout(function(){ build(true); },200); });
+  window.__rebuildTerms=function(){ run(false); };
+})();
+</script>
+
+<script>
+/* ===== ERP 선택 미리보기: 회사 · 상품 · 구독보험 · 계약유형 ===== */
+(function(){
+  var COMPANIES={
+    sonogong:{logo:'assets/logo-sonogong.webp', name:'주식회사 손오공렌터카', ceo:'조규진', title:'대표이사', biz:'000-00-00000', phone:'-', bank:'-', acct:'-'},
+    switchplan:{logo:'', name:'스위치플랜 주식회사', ceo:'박영현', title:'사내이사', biz:'000-00-00000', phone:'-', bank:'-', acct:'-'}
+  };
+  var PRODUCTS={
+    '구독인수형':{label:'구독 인수형', sub:true, take:true, ttitle:'자동차 구독 계약 약관 (인수형)'},
+    '구독선택형':{label:'구독 선택형 (반납)', sub:true, take:false, ttitle:'자동차 구독 계약 약관 (선택형)'},
+    '렌트인수형':{label:'렌트 인수형', sub:false, take:true, ttitle:'자동차 렌탈 계약 약관 (인수형)'},
+    '렌트선택형':{label:'렌트 선택형 (반납)', sub:false, take:false, ttitle:'자동차 렌탈 계약 약관 (선택형)'}
+  };
+  var TYPES={
+    '개인':{type:'개인', name:'성명', id:'주민등록번호', driver:'운전면허번호', residence:'거주 형태', emergency:'비상 연락처', corp:false},
+    '법인':{type:'법인', name:'법인명', id:'법인등록번호', driver:'사업자등록번호', residence:'사업장 형태', emergency:'담당자', corp:true}
+  };
+  /* 운전자 연령 (상품별) — 회사별 정책은 추후 freepasserp3 연동 */
+  var AGES={ sub:['만 21세 이상','만 24세 이상','만 26세 이상','만 30세 이상','만 35세 이상'], rent:['만 21세 이상','만 26세 이상'] };
+  var state={co:'sonogong', pd:'렌트선택형', ins:'포함', ct:'개인', car:'등록완료', tax:'개인'};
+
+  /* ── 데이터 모델: 템플릿 기본값(defaults) + 입력값(DATA) ── */
+  var defaults={}, DATA={};
+  function captureDefaults(){ document.querySelectorAll('[data-field]').forEach(function(e){ var k=e.dataset.field; if(!(k in defaults)) defaults[k]=e.textContent; }); }
+  function setDom(k,v){ document.querySelectorAll('[data-field="'+k+'"]').forEach(function(e){ e.textContent=v; }); }
+  function applyField(k){ var v=DATA[k]; setDom(k,(v!=null&&v!=='')?v:(defaults[k]||'')); }
+  function setField(k,v){ DATA[k]=v; applyField(k); saveDraft(); }
+
+  /* ── 저장/복원/초기화 (localStorage) — 새로고침해도 계약 유지 ── */
+  var LSKEY='jpk_rental_contract_draft';
+  var INIT_STATE={co:'sonogong', pd:'렌트선택형', ins:'포함', ct:'개인', car:'등록완료', tax:'개인'};
+  var _saveT;
+  function saveDraft(){ clearTimeout(_saveT); _saveT=setTimeout(function(){ try{ localStorage.setItem(LSKEY, JSON.stringify({s:state,d:DATA})); }catch(e){} },120); }
+  function loadDraft(){ try{ var r=localStorage.getItem(LSKEY); if(!r) return; var o=JSON.parse(r); if(o.s) Object.keys(o.s).forEach(function(k){ if(k in state) state[k]=o.s[k]; }); if(o.d){ DATA=o.d; Object.keys(DATA).forEach(applyField); } }catch(e){} }
+  function syncAllForm(){
+    SELECTS.forEach(function(s){ var sel=document.getElementById('sel_'+s.k); if(sel) sel.value=state[s.k]; });
+    document.querySelectorAll('#bdGroups input[data-k]').forEach(function(inp){ var k=inp.getAttribute('data-k'); inp.value=(k in DATA)?DATA[k]:''; });
+  }
+  function resetDraft(){
+    try{ localStorage.removeItem(LSKEY); }catch(e){}
+    Object.keys(DATA).forEach(function(k){ setDom(k, defaults[k]||''); });
+    DATA={};
+    Object.keys(INIT_STATE).forEach(function(k){ state[k]=INIT_STATE[k]; });
+    render(); syncAllForm();
+  }
+
+  function render(){
+    /* 회사 (로고 스왑) */
+    var c=COMPANIES[state.co]; if(!c){ state.co='sonogong'; c=COMPANIES.sonogong; }
+    setDom('company_name', c.name); setDom('company_ceo', c.ceo); setDom('company_ceo_title', c.title||'대표이사');
+    setDom('company_biz_no', c.biz); setDom('company_phone', c.phone);
+    setDom('payment_bank', c.bank); setDom('payment_account_no', c.acct); setDom('payment_account_holder', c.name); /* 회사 고정 계좌 */
+    var av=document.getElementById('bdAcct'); if(av) av.textContent=c.bank+' '+c.acct+' · '+c.name;
+    var img=document.querySelector('.co-logo');
+    if(img){ if(c.logo){ img.src=c.logo; img.style.display=''; } else { img.style.display='none'; } }
+    document.querySelectorAll('.co-name .co-t').forEach(function(n){ n.style.display = c.logo?'none':''; });
+
+    /* 상품 */
+    var p=PRODUCTS[state.pd];
+    setDom('product_label', p.label);
+    setDom('doc_title', p.sub ? '자동차 구독 계약서' : '자동차 렌탈 계약서');
+    setDom('doc_kicker', p.sub ? 'AUTOMOBILE SUBSCRIPTION AGREEMENT' : 'AUTOMOBILE RENTAL AGREEMENT');
+    setDom('buyback_option', p.take ? '만기 시 인수 (인수형)' : '만기 시 반납 또는 인수 선택');
+    setDom('annual_mileage', p.sub ? '20,000 km' : '30,000 km');
+
+    /* 운전자 연령 드롭다운 (상품별 옵션) */
+    var ageSel=document.getElementById('sel_driver_age');
+    if(ageSel){
+      var list=p.sub?AGES.sub:AGES.rent, cur=ageSel.value;
+      ageSel.innerHTML='';
+      list.forEach(function(a){ var op=el('option',null,a); op.value=a; ageSel.appendChild(op); });
+      var want=(DATA.driver_age&&list.indexOf(DATA.driver_age)>=0)?DATA.driver_age:((list.indexOf(cur)>=0)?cur:(list.indexOf('만 26세 이상')>=0?'만 26세 이상':list[0]));
+      ageSel.value=want; setField('driver_age', want);
+    }
+
+    /* 보험 조건 (구독만 포함/별도, 렌트는 포함 고정) */
+    var insTxt = !p.sub ? '보험료 포함 (월 대여료에 포함)'
+      : (state.ins==='포함' ? '보험료 포함형 (월 구독료에 포함)' : '개인보험형 (임차인이 본인 명의로 직접 가입)');
+    setDom('insurance_condition', insTxt);
+    var insSep = p.sub && state.ins==='별도';   /* 구독 + 별도일 때만 월 보험료 별도 표시 */
+    document.querySelectorAll('[data-ins="sep"]').forEach(function(e){ e.style.display = insSep?'':'none'; });
+    document.querySelectorAll('[data-ins="inc"]').forEach(function(e){ e.style.display = insSep?'none':''; });
+    var insSel=document.getElementById('sel_ins'); if(insSel){ insSel.disabled=!p.sub; if(!p.sub){ state.ins='포함'; insSel.value='포함'; } }
+
+    /* 계약유형 */
+    var t=TYPES[state.ct];
+    setDom('contract_type_label', t.type);
+    setDom('label_name', t.name); setDom('label_id', t.id); setDom('label_driver', t.driver);
+    setDom('label_emergency', t.emergency);
+    document.querySelectorAll('[data-note="corp"]').forEach(function(n){ n.style.display = t.corp?'':'none'; });
+
+    /* 법인 = 세금계산서 발행처 = 계약자(법인) 동일 → 입력/표 숨김 */
+    var taxForm=document.querySelector('.bd-sec[data-group="세금계산서 발행처"]');
+    if(taxForm) taxForm.style.display=t.corp?'none':'';
+    document.querySelectorAll('[data-tax="corp"]').forEach(function(n){ n.style.display=t.corp?'':'none'; });
+    document.querySelectorAll('[data-tax="form"]').forEach(function(n){ n.style.display=t.corp?'none':''; });
+    if(t.corp){
+      setDom('tax_issue_type','법인 (계약자와 동일)');
+    } else {
+      var biz=state.tax==='사업자';
+      setDom('tax_issue_type', biz?'개인사업자 (사업자등록번호 발행)':'개인 (주민등록번호 발행)');
+      document.querySelectorAll('[data-tax="biz"]').forEach(function(n){ n.style.display=biz?'':'none'; });
+      document.querySelectorAll('[data-taxbiz]').forEach(function(n){ n.style.display=biz?'':'none'; });
+      var st=document.getElementById('sel_tax'); if(st) st.value=state.tax;
+    }
+
+    /* 차량 상태 (신차 = 번호·차대번호 미정) */
+    if(state.car==='신차'){
+      setDom('car_number','미정 (신차)'); setDom('vin','미정 (신차)');
+    } else {
+      applyField('car_number'); applyField('vin');
+    }
+    document.querySelectorAll('[data-note="newcar"]').forEach(function(n){ n.style.display = state.car==='신차'?'':'none'; });
+
+    /* 약관명 = 상품 반영 + 약관 재생성 */
+    setDom('terms_title', p.ttitle);
+    if(window.__rebuildTerms) window.__rebuildTerms();
+  }
+
+  /* ── 좌측 입력 폼(하네스) ── */
+  var SELECTS=[
+    {k:'co', label:'회사', opts:[['sonogong','주식회사 손오공렌터카'],['switchplan','스위치플랜 주식회사']]},
+    {k:'pd', label:'상품', opts:[['구독인수형','구독 인수형'],['구독선택형','구독 선택형(반납)'],['렌트인수형','렌트 인수형'],['렌트선택형','렌트 선택형(반납)']]},
+    {k:'ins', label:'구독 보험', opts:[['포함','포함형'],['별도','별도형']]},
+    {k:'ct', label:'계약 유형', opts:[['개인','개인'],['법인','법인']]},
+    {k:'car', label:'차량 상태', opts:[['등록완료','등록완료'],['신차','신차(출고 전)']]}
+  ];
+  var GROUPS=[
+    {t:'계약자', f:[['customer_name','성명/법인명'],['customer_id','주민/법인등록번호'],['driver_or_biz_no','면허/사업자번호'],['customer_phone','연락처'],['customer_email','이메일'],['customer_address','주소',2],['emergency_contact','비상 연락처',2]]},
+    {t:'세금계산서 발행처', f:[['tax_issue_type','발행 구분'],['tax_biz_name','상호'],['tax_biz_no','사업자등록번호'],['tax_ceo','대표자'],['tax_biz_type_item','업태/종목'],['tax_email','세금계산서 이메일'],['tax_biz_address','사업장 주소']]},
+    {t:'대여 차량', f:[['car_number','차량번호'],['vin','차대번호'],['vehicle_name','차명(전체) ★필수',2],['options','선택 옵션',2],['color_exterior','외장 색상'],['color_interior','내장 색상'],['model_year','연식'],['odometer_delivery','인도 주행거리'],['fuel','연료'],['vehicle_price','차량 가격']]},
+    {t:'대여 조건', f:[['rent_month','대여기간'],['contract_start','시작일'],['contract_end','종료일'],['rent_amount','월 대여료'],['deposit_amount','보증금'],['driver_age','운전자 연령'],['buyback_price','만기 인수가'],['special_terms','특약사항',2]]},
+    {t:'연대보증인 (선택)', f:[['guarantor_name','성명'],['guarantor_rrn','주민번호'],['guarantor_relation','관계'],['guarantor_phone','연락처'],['guarantor_occupation','직업'],['guarantor_address','주소',2]]}
+  ];
+  /* 정책 값 — 한번 세팅(계약마다 안 바뀜). 추후 freepasserp3 회사별 정책 연동 */
+  var POLICY=[
+    ['over_mileage_rate','초과 주행 요율'],['early_termination_rate','중도해지 수수료율(%)'],
+    ['payment_cycle','결제 주기'],['auto_debit_date','자동이체일'],
+    ['invoice_type','지출증빙'],['invoice_cycle','발행 주기'],['contract_place','체결 장소']
+  ];
+  /* 고정값 칸 = 드롭다운(datalist) — 직접입력·자동완성 값도 보존하는 자유입력 겸용 */
+  var FIELD_OPTS={
+    fuel:['가솔린','디젤','LPG','하이브리드','전기','수소'],
+    color_exterior:['흰색','검정','쥐색(그레이)','은색(실버)','진주색','남색','파랑','빨강','갈색'],
+    color_interior:['검정','베이지','그레이','브라운','아이보리'],
+    model_year:['2026년식','2025년식','2024년식','2023년식','2022년식','2021년식','2020년식'],
+    rent_month:['12 개월','24 개월','36 개월','48 개월','60 개월'],
+    guarantor_relation:['본인','배우자','부모','자녀','형제자매','친인척','지인','직장동료'],
+    payment_cycle:['월납','선납','분기납'],
+    invoice_type:['세금계산서','현금영수증','카드매출전표']
+  };
+  var DATE_FIELDS={contract_start:1, contract_end:1};   /* 날짜 = 캘린더 피커 */
+  function el(tag,cls,html){ var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
+  function buildForm(){
+    var host=document.getElementById('bdForm'); if(!host) return;
+    var top=el('div'); top.id='bdTop';
+
+    /* 계약정보 불러오기 (ERP 연동) */
+    var load=el('div','bd-load');
+    load.innerHTML='<input id="loadCode" placeholder="계약코드 · 차량번호로 불러오기">'
+      +'<button id="loadBtn" type="button">계약정보 불러오기</button>';
+    top.appendChild(load);
+
+    /* 계약 구성 (선택) */
+    top.appendChild(el('div','bd-t','계약 구성'));
+    var selrow=el('div','bd-selrow');
+    SELECTS.forEach(function(s){
+      var row=el('div','bd-row'); row.appendChild(el('label',null,s.label));
+      var sel=el('select'); sel.id='sel_'+s.k;
+      s.opts.forEach(function(o){ var op=el('option',null,o[1]); op.value=o[0]; sel.appendChild(op); });
+      sel.value=state[s.k];
+      sel.addEventListener('change', function(){ state[s.k]=this.value; render(); saveDraft(); });
+      row.appendChild(sel); selrow.appendChild(row);
+    });
+    top.appendChild(selrow);
+    host.appendChild(top);
+
+    function fieldRow(f){
+      var row=el('div','bd-row');
+      if(/^tax_/.test(f[0]) && f[0]!=='tax_issue_type') row.setAttribute('data-taxbiz','1');
+      row.appendChild(el('label',null,f[1]));
+      if(f[0]==='driver_age'){
+        var sel=el('select'); sel.id='sel_driver_age';
+        sel.addEventListener('change', function(){ setField('driver_age', this.value); });
+        row.appendChild(sel);
+      } else if(f[0]==='tax_issue_type'){
+        var ts=el('select'); ts.id='sel_tax';
+        [['개인','개인 (주민번호 발행)'],['사업자','개인사업자 (사업자등록번호)']].forEach(function(o){ var op=el('option',null,o[1]); op.value=o[0]; ts.appendChild(op); });
+        ts.value=state.tax;
+        ts.addEventListener('change', function(){ state.tax=this.value; render(); saveDraft(); });
+        row.appendChild(ts);
+      } else if(f[0]==='auto_debit_date'){
+        var ds=el('select'); ds.id='sel_debit';
+        ['매월 5일','매월 10일','매월 15일','매월 20일','매월 25일','매월 말일'].forEach(function(o){ var op=el('option',null,o); op.value=o; ds.appendChild(op); });
+        ds.value='매월 25일';
+        ds.addEventListener('change', function(){ setField('auto_debit_date', this.value); setField('auto_debit_date_inline', this.value); });
+        row.appendChild(ds);
+      } else if(DATE_FIELDS[f[0]]){
+        var di=el('input'); di.type='date'; di.setAttribute('data-k',f[0]);
+        di.addEventListener('input', function(){ setField(f[0], this.value); });
+        row.appendChild(di);
+      } else {
+        var inp=el('input'); inp.type='text'; inp.placeholder=defaults[f[0]]||f[1]; inp.setAttribute('data-k',f[0]);
+        if(FIELD_OPTS[f[0]]){
+          var dlid='dl_'+f[0]; inp.setAttribute('list',dlid);
+          var dl=el('datalist'); dl.id=dlid;
+          FIELD_OPTS[f[0]].forEach(function(o){ var op=el('option'); op.value=o; dl.appendChild(op); });
+          row.appendChild(dl);
+        }
+        inp.addEventListener('input', function(){ setField(f[0], this.value); });
+        row.appendChild(inp);
+      }
+      return row;
+    }
+
+    /* 입력 그룹 (멀티컬럼 카드) */
+    var groups=el('div'); groups.id='bdGroups';
+    GROUPS.forEach(function(g){
+      var sc=el('div','bd-sec'); sc.setAttribute('data-group',g.t); sc.appendChild(el('div','bd-t',g.t));
+      g.f.forEach(function(f){ sc.appendChild(fieldRow(f)); });
+      groups.appendChild(sc);
+    });
+
+    /* 정책 값 — 한번 세팅 (상품/회사 단위, 계약마다 안 바뀜) */
+    var psec=el('div','bd-sec policy'); psec.setAttribute('data-group','정책');
+    psec.appendChild(el('div','bd-t','정책 값 · 한번 세팅 (계약마다 안 바뀜)'));
+    POLICY.forEach(function(f){ psec.appendChild(fieldRow(f)); });
+    var acctRow=el('div','bd-row'); acctRow.appendChild(el('label',null,'입금 계좌 (회사 고정 · 자동)'));
+    var acctView=el('div','bd-acct'); acctView.id='bdAcct'; acctRow.appendChild(acctView); psec.appendChild(acctRow);
+    groups.appendChild(psec);
+
+    host.appendChild(groups);
+
+    /* 불러오기 핸들러 — ERP가 Contract.loader 를 설정하면 그 데이터로 채움 */
+    var lb=document.getElementById('loadBtn');
+    if(lb) lb.addEventListener('click', function(){
+      var code=(document.getElementById('loadCode')||{}).value||'';
+      if(typeof window.Contract.loader==='function'){
+        Promise.resolve(window.Contract.loader(code)).then(function(data){ if(data) window.Contract.setData(data); });
+      } else {
+        alert('ERP 연동 시 사용됩니다.\n외부 ERP에서 Contract.loader = function(code){ return 계약데이터객체 } 를 설정하세요.');
+      }
+    });
+  }
+
+  /* ── 공개 API (다른 ERP에서 임베드 후 값 주입) ── */
+  window.Contract={
+    loader:null,   /* ERP가 설정: function(code){ return 계약데이터객체(또는 Promise) } */
+    setField:setField,
+    setData:function(o){ o=o||{}; Object.keys(o).forEach(function(k){ if(k in state) state[k]=o[k]; else setField(k,o[k]); });
+      syncForm(o); render(); },
+    select:function(k,v){ if(k in state){ state[k]=v; render(); } },
+    getDefaults:function(){ return defaults; },
+    render:render
+  };
+  /* 불러온 값으로 폼 입력칸/셀렉트 표시 동기화 */
+  function syncForm(o){
+    SELECTS.forEach(function(s){ var sel=document.getElementById('sel_'+s.k); if(sel) sel.value=state[s.k]; });
+    GROUPS.forEach(function(g){ g.f.forEach(function(f){
+      if(o && (f[0] in o)){ var inp=document.querySelector('#bdGroups input[data-k="'+f[0]+'"]'); if(inp) inp.value=o[f[0]]; }
+    }); });
+  }
+
+  function init(){
+    if(/[?&]embed=1/.test(location.search)) document.body.classList.add('embed');
+    captureDefaults();
+    loadDraft();        /* 저장된 계약 복원 */
+    buildForm();
+    render();
+    syncAllForm();      /* 복원값을 폼 입력칸에 반영 */
+    /* 초기화 버튼 */
+    var rst=document.getElementById('bdReset');
+    if(rst) rst.addEventListener('click', function(){ if(confirm('입력한 계약 내용을 모두 초기화할까요?')) resetDraft(); });
+    /* 전체 동의 토글 */
+    var all=document.getElementById('agreeAll');
+    if(all) all.addEventListener('change', function(){ document.querySelectorAll('.agchk').forEach(function(c){ c.checked=all.checked; }); });
+    /* 부모 ERP(iframe)에서 postMessage 로 주입 */
+    window.addEventListener('message', function(ev){
+      var d=ev.data; if(d && d.type==='contract:setData' && d.data) window.Contract.setData(d.data);
+    });
+    /* cloak 해제 폴백 (약관 렌더가 우선 해제) */
+    setTimeout(function(){ document.body.classList.remove('cloak'); }, 700);
+  }
+  window.addEventListener('load', init);
+})();
+</script>
+
+<script>
+/* ===== 인쇄/PDF 저장 시 파일명 = 문서 제목 (고객·계약일 자동 반영) ===== */
+(function(){
+  var BASE='자동차 렌탈계약서';
+  function val(name){
+    var el=document.querySelector('[data-field="'+name+'"]');
+    var t=el?(el.textContent||'').replace(/\s+/g,' ').trim():'';
+    if(!t || /○/.test(t) || /\b00\b/.test(t)) return '';   /* 플레이스홀더(○ ○ ○ · 2026. 00. 00.) 무시 */
+    return t;
+  }
+  function pdfTitle(){
+    var who=val('customer_name');
+    var when=val('contract_date').replace(/[.\s]+/g,'-').replace(/^-+|-+$/g,'');
+    var parts=[BASE];
+    if(who)  parts.push(who);
+    if(when) parts.push(when);
+    return parts.join('_').replace(/[\\\/:*?"<>|]/g,'');   /* 파일명 금지문자 제거 */
+  }
+  var ORIG=document.title;
+  window.addEventListener('beforeprint', function(){ document.title=pdfTitle(); });
+  window.addEventListener('afterprint',  function(){ document.title=ORIG; });
+})();
+</script>
+
+</body>
+</html>
