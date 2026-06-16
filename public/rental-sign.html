@@ -94,15 +94,18 @@ const S = {
   data: null,                       // contract_sign 레코드 (차량·정책 사전입력)
   name:'', phone:'', rrn:'', license:'', addr:'',
   licenseImg:'', faceImg:'', sig:'',
-  agree:[false,false,false,false],
+  agree:[false,false,false,false,false,false],
   busy:false,
 };
-const STEPS = ['계약 확인','계약자 정보','면허증','얼굴 사진','약관 동의','전자서명'];
+const STEPS = ['계약 확인','계약자 정보','면허증','얼굴 사진','약관·서류 동의','전자서명'];
+// 각 서류 단위 동의 — 1회 전자서명이 계약서·약관·모든 부속서류에 일괄 적용됨
 const AGREE_ITEMS = [
-  '본인은 대여 조건·보험·정비 주요사항을 확인하였으며, <b>사고 시 보험 미적용 사유와 그 경우 손해 전액을 임차인이 부담</b>한다는 조건에 동의합니다.',
-  '<b>자동차 임대차 계약 약관</b> 전문을 수령·확인하고 이에 동의합니다.',
-  '<b>개인정보·신용정보 수집·이용 및 제3자 제공</b>에 동의합니다.',
-  '<b>차량 위치정보(GPS) 수집·이용</b>에 동의합니다. (계약 위반 시 차량 회수 목적)',
+  { key:'main',    t:'<b>자동차 임대차 계약서</b> 본문(대여조건·보험·정비·정산·특약)을 확인하고 동의합니다.' },
+  { key:'terms',   t:'<b>자동차 임대차 계약 약관</b> 전문(제1조~제21조)을 수령·확인하고 동의합니다.' },
+  { key:'privacy', t:'<b>개인정보 수집·이용 및 제3자 제공</b> 동의서에 동의합니다.' },
+  { key:'credit',  t:'<b>신용정보 조회·제공</b> 동의서에 동의합니다.' },
+  { key:'gps',     t:'<b>차량 위치정보(GPS) 수집·이용</b> 동의서에 동의합니다. (계약 위반 시 차량 회수 목적)' },
+  { key:'cms',     t:'<b>자동이체(CMS) 출금</b> 신청·동의에 동의합니다.' },
 ];
 
 init();
@@ -158,12 +161,12 @@ function render(){
       ${shot('face','얼굴 촬영','전면 카메라로 본인 얼굴을 찍어주세요','user',S.faceImg)}`;
   } else if(S.step===4){ // 동의
     const allOn = S.agree.every(Boolean);
-    inner = `<div class="slabel">STEP 4 · 약관 동의</div><div class="stitle">아래 내용에 동의해 주세요</div><div class="sdesc">동의해야 계약을 진행할 수 있습니다.</div>
+    inner = `<div class="slabel">STEP 4 · 약관·서류 동의</div><div class="stitle">각 서류에 동의해 주세요</div><div class="sdesc">계약서·약관과 부속서류 각각에 동의합니다. 다음 단계의 <b>전자서명 1회</b>가 모든 서류에 일괄 적용됩니다.</div>
       <label class="cc cc-all ${allOn?'on':''}"><input type="checkbox" id="ccAll" ${allOn?'checked':''}><span>전체 동의</span></label>
-      ${AGREE_ITEMS.map((t,i)=>`<label class="cc ${S.agree[i]?'on':''}"><input type="checkbox" data-ag="${i}" ${S.agree[i]?'checked':''}><span>${t}</span></label>`).join('')}`;
+      ${AGREE_ITEMS.map((it,i)=>`<label class="cc ${S.agree[i]?'on':''}"><input type="checkbox" data-ag="${i}" ${S.agree[i]?'checked':''}><span>${it.t}</span></label>`).join('')}`;
   } else if(S.step===5){ // 서명
-    inner = `<div class="slabel">STEP 5 · 전자서명</div><div class="stitle">아래 칸에 서명해 주세요</div>
-      <div class="sdesc">「전자서명법」에 따라 서면 서명·날인과 동일한 효력을 가집니다.</div>
+    inner = `<div class="slabel">STEP 5 · 전자서명 (일괄)</div><div class="stitle">아래 칸에 서명해 주세요</div>
+      <div class="sdesc">이 <b>서명 1회</b>가 계약서·약관·모든 부속서류(개인정보·신용정보·위치정보·자동이체 등)에 <b>일괄 날인</b>됩니다. 「전자서명법」에 따라 서면 서명·날인과 동일한 효력을 가집니다.</div>
       <div class="sig"><canvas class="sig-canvas" id="sigCanvas"></canvas>
         <div class="sig-bar"><span class="sig-hint">손가락으로 서명해 주세요</span><button type="button" class="btn-sm" id="sigClear">지우기</button></div>
       </div>`;
@@ -251,11 +254,15 @@ async function submit(){
       compress(S.licenseImg, 1280, 0.6),
       compress(S.faceImg, 900, 0.6),
     ]);
+    // 서류별 동의 기록 (감사 추적) — 1회 서명이 모든 서류에 일괄 적용
+    const consents = {};
+    AGREE_ITEMS.forEach((it,i)=>{ consents[it.key] = !!S.agree[i]; });
     await update(ref(db, `contract_sign/${token}`), {
       signed_at: Date.now(),
       customer_name: S.name, customer_phone: S.phone,
       customer_rrn_masked: maskRrn(S.rrn), customer_license: S.license, customer_address: S.addr,
       agree_all: true,
+      consents,
       signature_png: S.sig,
       license_photo,
       face_photo,
@@ -295,6 +302,7 @@ function doneScreen(d, already){
     <div class="card" style="margin-top:18px;width:100%;text-align:left">
       <div class="row"><span class="k">차량</span><span class="v">${esc(d?.model_name||d?.car_number||'-')}</span></div>
       <div class="row"><span class="k">본인확인</span><span class="v">면허증·얼굴 촬영 완료</span></div>
+      <div class="row"><span class="k">서명 적용</span><span class="v">계약서·약관·부속서류 일괄</span></div>
       <div class="row"><span class="k">전자서명</span><span class="v">완료</span></div>
     </div>
     <p style="margin-top:16px;font-size:12.5px;color:var(--mute)">이 화면은 닫으셔도 됩니다. 계약 진행 안내가 별도로 연락됩니다.</p></div>`;

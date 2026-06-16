@@ -75,9 +75,27 @@ function buildFromCode(code) {
 function buildFromProduct(p) {
   const pol = (store.policies || []).find(t => (t.policy_code || t._key) === p.policy_code) || {};
 
-  // 회사 코드 매핑 (공급사명 키워드 → 계약서 회사 선택값)
-  const provName = providerNameByCode(p.provider_company_code || p.partner_code, store) || '';
-  const co = /손오공/.test(provName) ? 'sonogong' : /스위치/.test(provName) ? 'switchplan' : 'sonogong';
+  // 회사 ↔ 공급사 연동: 손오공/스위치는 내장 프리셋(로고·직인), 그 외 등록 공급사는 'auto'+법인정보 주입
+  const provCode = p.provider_company_code || p.partner_code;
+  const provName = providerNameByCode(provCode, store) || '';
+  let co = 'sonogong', companyInject = {};
+  if (/손오공/.test(provName)) co = 'sonogong';
+  else if (/스위치/.test(provName)) co = 'switchplan';
+  else {
+    const partner = (store.partners || []).find(x => !x._deleted && (x.partner_code === provCode || x.company_code === provCode));
+    if (partner) {
+      co = 'auto';
+      companyInject = {
+        company_name: partner.partner_name || partner.company_name || provName || '',
+        company_ceo: partner.ceo_name || '',
+        company_ceo_title: '대표',
+        company_biz_no: partner.business_number || '',
+        payment_bank: partner.bank_name || '',
+        payment_account_no: partner.bank_account || '',
+        payment_account_holder: partner.bank_holder || partner.partner_name || partner.company_name || '',
+      };
+    }
+  }
   // 보험 포함/별도(개인보험)
   const ins = /별도|개인/.test(pol.insurance_included || '') ? '별도' : '포함';
   // 차량 풀네임
@@ -86,8 +104,9 @@ function buildFromProduct(p) {
   const yr = String(p.model_year || '').trim();
 
   return {
-    // 계약구성 셀렉트 (state 키)
+    // 계약구성 셀렉트 (state 키) + 회사(공급사) 법인정보
     co, ins,
+    ...companyInject,
     // 차량 (매물)
     car_number: p.car_number || '',
     vehicle_name,
@@ -500,6 +519,8 @@ function loadEntry(r) {
   try {
     const C = document.getElementById('rsIframe')?.contentWindow?.Contract;
     if (C && C.setData) C.setData(r.contract_data || {});
+    // 서명완료 건이면 손님 서명을 모든 슬롯에 일괄 표시 (계약서·약관·부속서류)
+    if (C && C.applySignature && r.signature_png) C.applySignature('customer', r.signature_png);
   } catch (_) {}
   currentToken = r._key;
   currentCode = r.contract_code || null;

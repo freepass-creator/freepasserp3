@@ -207,6 +207,12 @@
   .esign-pad{height:24mm;border:1px solid var(--line2);border-radius:4px;background:var(--tint);
              display:grid;place-items:center;color:var(--faint);font-size:10px;overflow:hidden}
   .esign-pad img{max-width:92%;max-height:92%}
+  /* 자동 전자직인 — 빨간 원형 도장 (직인 이미지 없을 때) */
+  .esign-pad .seal-auto{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+    width:18mm;height:18mm;border:1.3mm solid #c0392b;border-radius:50%;color:#c0392b;font-weight:800;
+    font-size:8px;line-height:1.15;text-align:center;transform:rotate(-7deg);opacity:.9;padding:2px;box-sizing:border-box;word-break:keep-all}
+  .esign-pad .seal-auto i{font-style:normal;font-size:6.5px;font-weight:700;margin-top:1px}
+  .esign-pad .seal-img{max-width:88%;max-height:88%}
   .esign-nm{margin-top:5px;font-size:11px;font-weight:700}
   .esign-sub{font-size:8.5px;color:var(--mute);margin-top:2px}
 
@@ -833,7 +839,7 @@
           </div>
           <div>
             <div class="esign-lbl">임대인</div>
-            <div class="esign-pad"><span><span data-field="company_name">주식회사 손오공렌터카</span> &nbsp;(직인)</span></div>
+            <div class="esign-pad" data-seal="company"><span><span data-field="company_name">주식회사 손오공렌터카</span> &nbsp;(직인)</span></div>
             <div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div>
             <div class="esign-sub">사업자등록번호 <span data-field="company_biz_no">000-00-00000</span></div>
           </div>
@@ -893,7 +899,7 @@
       <div class="note">본인은 위 차량을 위 상태로 인수하였으며, 반납 시 위 상태를 기준으로 점검함에 동의합니다.</div>
       <div class="esign-row" style="margin-top:5mm">
         <div><div class="esign-lbl">인수자 (임차인)</div><div class="esign-pad" data-sign="customer"><span>서명란</span></div><div class="esign-nm" data-field="customer_name">○ ○ ○</div></div>
-        <div><div class="esign-lbl">인도자 (회사)</div><div class="esign-pad"><span><span data-field="company_name">주식회사 손오공렌터카</span> (직인)</span></div><div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div></div>
+        <div><div class="esign-lbl">인도자 (회사)</div><div class="esign-pad" data-seal="company"><span><span data-field="company_name">주식회사 손오공렌터카</span> (직인)</span></div><div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div></div>
       </div>
     </div>
   </div>
@@ -938,7 +944,7 @@
       <div class="esign-date" data-field="contract_date">2026. 00. 00.</div>
       <div class="esign-row">
         <div></div>
-        <div><div class="esign-lbl">발급인 (임대인)</div><div class="esign-pad"><span><span data-field="company_name">주식회사 손오공렌터카</span> (직인)</span></div><div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div><div class="esign-sub">사업자등록번호 <span data-field="company_biz_no">000-00-00000</span></div></div>
+        <div><div class="esign-lbl">발급인 (임대인)</div><div class="esign-pad" data-seal="company"><span><span data-field="company_name">주식회사 손오공렌터카</span> (직인)</span></div><div class="esign-nm"><span data-field="company_ceo_title">대표이사</span> <span data-field="company_ceo">조규진</span></div><div class="esign-sub">사업자등록번호 <span data-field="company_biz_no">000-00-00000</span></div></div>
       </div>
     </div>
   </div>
@@ -1307,6 +1313,23 @@
   function applyField(k){ var v=DATA[k]; setDom(k,(v!=null&&v!=='')?v:(defaults[k]||'')); }
   function setField(k,v){ DATA[k]=v; applyField(k); saveDraft(); }
 
+  /* ── 직인(도장) / 서명 렌더 ── 회사 직인: 이미지(company_seal) 우선, 없으면 자동 전자직인 */
+  function sealHtml(){
+    if(DATA.company_seal) return '<img class="seal-img" src="'+DATA.company_seal+'" alt="직인">';
+    var nm=(DATA.company_name||defaults.company_name||'').replace(/주식회사|㈜|\(주\)|주식회사/g,'').trim();
+    return '<span class="seal-auto">'+(nm||'직인')+'<i>(인)</i></span>';
+  }
+  function applySeals(){
+    document.querySelectorAll('[data-seal="company"]').forEach(function(pad){ pad.innerHTML=sealHtml(); });
+  }
+  /* 손님/보증인 서명 일괄 주입 — 발송·서명 플랫폼(rental-sign)이 1회 서명으로 모든 슬롯 채움 */
+  function applySignature(role, dataUrl){
+    if(!dataUrl) return;
+    document.querySelectorAll('.esign-pad[data-sign="'+role+'"]').forEach(function(pad){
+      pad.innerHTML='<img src="'+dataUrl+'" alt="서명">';
+    });
+  }
+
   /* ── 저장/복원/초기화 (localStorage) — 새로고침해도 계약 유지 ── */
   var LSKEY='jpk_rental_contract_draft';
   var INIT_STATE={co:'sonogong', pd:'렌트선택형', ins:'포함', ct:'개인', car:'등록완료', tax:'개인'};
@@ -1326,15 +1349,23 @@
   }
 
   function render(){
-    /* 회사 (로고 스왑) */
-    var c=COMPANIES[state.co]; if(!c){ state.co='sonogong'; c=COMPANIES.sonogong; }
-    setDom('company_name', c.name); setDom('company_ceo', c.ceo); setDom('company_ceo_title', c.title||'대표이사');
-    setDom('company_biz_no', c.biz); setDom('company_phone', c.phone);
-    setDom('payment_bank', c.bank); setDom('payment_account_no', c.acct); setDom('payment_account_holder', c.name); /* 회사 고정 계좌 */
-    var av=document.getElementById('bdAcct'); if(av) av.textContent=c.bank+' '+c.acct+' · '+c.name;
-    var img=document.querySelector('.co-logo');
-    if(img){ if(c.logo){ img.src=c.logo; img.style.display=''; } else { img.style.display='none'; } }
-    document.querySelectorAll('.co-name .co-t').forEach(function(n){ n.style.display = c.logo?'none':''; });
+    /* 회사 — 'auto'(ERP 공급사 연동)면 주입된 company_* 유지, 프리셋이면 적용 */
+    if(state.co==='auto'){
+      var img0=document.querySelector('.co-logo');
+      if(img0){ if(DATA.company_logo){ img0.src=DATA.company_logo; img0.style.display=''; } else img0.style.display='none'; }
+      document.querySelectorAll('.co-name .co-t').forEach(function(n){ n.style.display = DATA.company_logo?'none':''; });
+      var av0=document.getElementById('bdAcct'); if(av0) av0.textContent=(DATA.payment_bank||'-')+' '+(DATA.payment_account_no||'-')+' · '+(DATA.payment_account_holder||DATA.company_name||'');
+    } else {
+      var c=COMPANIES[state.co]; if(!c){ state.co='sonogong'; c=COMPANIES.sonogong; }
+      setDom('company_name', c.name); setDom('company_ceo', c.ceo); setDom('company_ceo_title', c.title||'대표이사');
+      setDom('company_biz_no', c.biz); setDom('company_phone', c.phone);
+      setDom('payment_bank', c.bank); setDom('payment_account_no', c.acct); setDom('payment_account_holder', c.name); /* 회사 고정 계좌 */
+      var av=document.getElementById('bdAcct'); if(av) av.textContent=c.bank+' '+c.acct+' · '+c.name;
+      var img=document.querySelector('.co-logo');
+      if(img){ if(c.logo){ img.src=c.logo; img.style.display=''; } else { img.style.display='none'; } }
+      document.querySelectorAll('.co-name .co-t').forEach(function(n){ n.style.display = c.logo?'none':''; });
+    }
+    applySeals();
 
     /* 상품 */
     var p=PRODUCTS[state.pd];
@@ -1400,7 +1431,7 @@
 
   /* ── 좌측 입력 폼(하네스) ── */
   var SELECTS=[
-    {k:'co', label:'회사', opts:[['sonogong','주식회사 손오공렌터카'],['switchplan','스위치플랜 주식회사']]},
+    {k:'co', label:'회사', opts:[['sonogong','주식회사 손오공렌터카'],['switchplan','스위치플랜 주식회사'],['auto','공급사 자동 (재고 기준)']]},
     {k:'pd', label:'상품', opts:[['구독인수형','구독 인수형'],['구독선택형','구독 선택형(반납)'],['렌트인수형','렌트 인수형'],['렌트선택형','렌트 선택형(반납)']]},
     {k:'ins', label:'구독 보험', opts:[['포함','포함형'],['별도','별도형']]},
     {k:'ct', label:'계약 유형', opts:[['개인','개인'],['법인','법인']]},
@@ -1532,6 +1563,8 @@
       syncForm(o); render(); },
     select:function(k,v){ if(k in state){ state[k]=v; render(); } },
     getDefaults:function(){ return defaults; },
+    applySignature:applySignature,   /* (role,dataUrl) — 손님/보증인 1회 서명 → 모든 슬롯 주입 */
+    applySeals:applySeals,           /* 회사 직인 재적용 */
     render:render
   };
   /* 불러온 값으로 폼 입력칸/셀렉트 표시 동기화 */
