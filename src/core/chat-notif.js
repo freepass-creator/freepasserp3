@@ -62,9 +62,9 @@ function onNewMessage(room) {
     playNotifSound();
   }
 
-  // 2. Toast (if not looking at this room)
-  if (!isActiveRoom) {
-    showToast(`${name}: ${msg.slice(0, 30)}${msg.length > 30 ? '...' : ''}`, 'info', 3000);
+  // 2. Chat popup — 대화 당사자(agent/provider)만, 관리자는 제외
+  if (!isActiveRoom && (role === 'agent' || role === 'provider')) {
+    showChatPopup(room, name, msg);
   }
 
   // 3. Browser notification (if tab not focused)
@@ -137,6 +137,53 @@ function updateBadge(rooms) {
   } else {
     document.title = "freepass erp";
   }
+}
+
+function ensurePopupContainer() {
+  let wrap = document.getElementById('chatNotifWrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'chatNotifWrap';
+    wrap.className = 'chat-notif-wrap';
+    document.body.appendChild(wrap);
+  }
+  return wrap;
+}
+
+function dismissPopup(el) {
+  if (!el.isConnected) return;
+  clearTimeout(el._cnpTimer);
+  el.classList.add('is-out');
+  setTimeout(() => el.remove(), 250);
+}
+
+function showChatPopup(room, name, msg) {
+  const wrap = ensurePopupContainer();
+  const el = document.createElement('div');
+  el.className = 'chat-notif-popup';
+  const preview = msg.slice(0, 60) + (msg.length > 60 ? '…' : '');
+  el.innerHTML = `
+    <div class="cnp-inner">
+      <div class="cnp-icon"><i class="ph ph-chat-circle-dots"></i></div>
+      <div class="cnp-content">
+        <div class="cnp-name">${name}</div>
+        <div class="cnp-msg">${preview}</div>
+      </div>
+      <button class="cnp-close" aria-label="닫기"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="cnp-bar"></div>
+  `;
+
+  el.querySelector('.cnp-inner').addEventListener('click', (e) => {
+    if (e.target.closest('.cnp-close')) return;
+    window.dispatchEvent(new CustomEvent('fp:open-room', { detail: { roomKey: room._key } }));
+    dismissPopup(el);
+  });
+
+  el.querySelector('.cnp-close').addEventListener('click', () => dismissPopup(el));
+
+  wrap.appendChild(el);
+  el._cnpTimer = setTimeout(() => dismissPopup(el), 5000);
 }
 
 // Simple notification sound (Web Audio API)

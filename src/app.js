@@ -103,6 +103,12 @@ window.renderSend = renderSend;
 window.renderAdminOps = renderAdminOps;
 window.renderAdminSettlement = renderAdminSettlement;
 
+// 채팅 알림 팝업 클릭 → 업무소통 페이지로 이동 + 해당 대화방 선택
+window.addEventListener('fp:open-room', ({ detail }) => {
+  location.hash = 'workspace';
+  setTimeout(() => selectRoom(detail.roomKey), 50);
+});
+
 /* ── 페이지별 하단 액션바 — index.html showPage() 에서 호출 ── */
 let _productClipboard = null;
 let _policyClipboard = null;

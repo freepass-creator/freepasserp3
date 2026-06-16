@@ -852,6 +852,102 @@
   .toast.toast-success { background: var(--alert-green-text); }
   .toast.toast-error   { background: var(--alert-red-text); }
   .toast.toast-warn    { background: var(--alert-orange-text); }
+
+  /* 카카오톡 스타일 채팅 알림 팝업 */
+  .chat-notif-wrap {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 9600;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--sp-2);
+    pointer-events: none;
+  }
+  body.is-mobile .chat-notif-wrap { display: none; }
+
+  .chat-notif-popup {
+    pointer-events: auto;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    box-shadow: var(--shadow-popup);
+    width: 300px;
+    overflow: hidden;
+    animation: cnp-in 220ms var(--ease);
+    cursor: pointer;
+  }
+  .chat-notif-popup.is-out {
+    animation: cnp-out 250ms var(--ease) forwards;
+  }
+  @keyframes cnp-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cnp-out {
+    to { opacity: 0; transform: translateY(8px); }
+  }
+  .cnp-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+  }
+  .cnp-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: var(--c-accent);
+    color: var(--c-text-inv);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .cnp-content {
+    flex: 1;
+    min-width: 0;
+  }
+  .cnp-name {
+    font-weight: var(--fw-semibold);
+    font-size: var(--font-size);
+    color: var(--c-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cnp-msg {
+    font-size: var(--font-size);
+    color: var(--c-text-sub);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+  }
+  .cnp-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--c-text-muted);
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    font-size: 12px;
+  }
+  .cnp-close:hover { background: var(--c-bg-hover); color: var(--c-text); }
+  .cnp-bar {
+    height: 2px;
+    background: var(--c-accent);
+    animation: cnp-bar 5s linear forwards;
+  }
+  @keyframes cnp-bar {
+    from { width: 100%; }
+    to   { width: 0%; }
+  }
   /* 정렬 적용된 헤더 — 화살표 표시 (오름 ↑ / 내림 ↓) */
   [data-page="search"] table.table-fixed thead th.is-sort-asc::after { content: ' ↑'; color: var(--text-sub); }
   [data-page="search"] table.table-fixed thead th.is-sort-desc::after { content: ' ↓'; color: var(--text-sub); }
