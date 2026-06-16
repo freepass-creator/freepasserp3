@@ -186,20 +186,28 @@ function showChatPopup(room, name, msg) {
   el._cnpTimer = setTimeout(() => dismissPopup(el), 5000);
 }
 
-// Simple notification sound (Web Audio API)
+// Bell notification sound (Web Audio API)
 function playNotifSound() {
   try {
     if (!audioCtx) audioCtx = new AudioContext();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.frequency.value = 880;
-    osc.type = 'sine';
-    gain.gain.value = 0.1;
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.3);
+    const now = audioCtx.currentTime;
+    // 종 소리 = 여러 배음 + 빠른 어택 + 긴 감쇠
+    [
+      { freq: 880,  gain: 0.7 },
+      { freq: 1108, gain: 0.4 },
+      { freq: 2637, gain: 0.2 },
+    ].forEach(({ freq, gain: peak }) => {
+      const osc = audioCtx.createOscillator();
+      const g   = audioCtx.createGain();
+      osc.connect(g);
+      g.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(peak, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+      osc.start(now);
+      osc.stop(now + 1.8);
+    });
   } catch (e) { /* ignore */ }
 }
 
