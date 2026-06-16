@@ -62,8 +62,8 @@ function onNewMessage(room) {
     playNotifSound();
   }
 
-  // 2. Chat popup — 대화 당사자(agent/provider)만, 관리자는 제외
-  if (!isActiveRoom && (role === 'agent' || role === 'provider')) {
+  // 2. Chat popup (if not looking at this room)
+  if (!isActiveRoom) {
     showChatPopup(room, name, msg);
   }
 
