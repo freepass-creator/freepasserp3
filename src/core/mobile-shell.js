@@ -363,3 +363,8 @@ export function pushMobileView(html, opts = {}) {
   onMount?.(view);
   return { view, close };
 }
+
+/** 탭 이동 전 남아있는 pushed view 전부 제거 */
+export function closeAllMobileViews() {
+  document.querySelectorAll('.m-view').forEach(el => el.remove());
+}

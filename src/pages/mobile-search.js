@@ -14,7 +14,7 @@ import { firstProductImage, supportedDriveSource, shortImg } from '../core/produ
 import '../core/drive-photos.js';   // 카드 드라이브 썸네일 lazy 하이드레이션 observer 즉시 시작 (상세 열기 전에도 카드 사진 뜨게)
 import { enrichProductsWithPolicy } from '../core/policy-utils.js';
 import { renderProductDetail } from '../core/product-detail-render.js';
-import { pushMobileView } from '../core/mobile-shell.js';
+import { pushMobileView, closeAllMobileViews } from '../core/mobile-shell.js';
 import { FILTERS, matchFilter } from '../core/product-filters.js';
 import { openFilterSheet } from '../core/filter-sheet.js';
 import { normalizeYear } from '../core/normalize.js';
@@ -409,6 +409,7 @@ async function inquireProduct(p) {
       providerCode: p.provider_company_code || '',
     });
     store.pendingOpenRoom = roomId;
+    closeAllMobileViews();  // 상품 상세 view 닫고 이동
     const { navigate } = await import('../core/router.js');
     navigate('/workspace', { transition: false });
   } catch (e) {
