@@ -417,6 +417,14 @@ async function saveDraft(opts = {}) {
       created_at: currentCreatedAt,
       expires_at: currentCreatedAt + 30 * 86400 * 1000,
     });
+    // 로컬스토리지에 토큰 캐싱 (목록 조회 폴백용 — DB 규칙 미배포 시 개별 조회)
+    try {
+      const cached = JSON.parse(localStorage.getItem('rs_sign_tokens') || '[]');
+      if (!cached.includes(currentToken)) {
+        cached.push(currentToken);
+        localStorage.setItem('rs_sign_tokens', JSON.stringify(cached));
+      }
+    } catch (_) {}
     // 계약 레코드에 sign_token 색인 저장 (목록 조회 폴백용)
     const linkedContract = (store.contracts || []).find(c => !c._deleted && c.contract_code === currentCode);
     if (linkedContract?._key) {
@@ -495,11 +503,12 @@ async function renderList() {
       const { fetchCollection } = await import('../firebase/db.js');
       all = await fetchCollection('contract_sign');
     } catch (_permErr) {
-      // DB 규칙 미배포 시 폴백: contracts에 색인된 sign_token으로 개별 조회
+      // DB 규칙 미배포 시 폴백: 로컬스토리지 캐시 + contracts 색인 sign_token으로 개별 조회
       const { fetchRecord } = await import('../firebase/db.js');
-      const tokens = [...new Set(
-        (store.contracts || []).filter(c => !c._deleted && c.sign_token).map(c => c.sign_token),
-      )];
+      let localTokens = [];
+      try { localTokens = JSON.parse(localStorage.getItem('rs_sign_tokens') || '[]'); } catch (_) {}
+      const contractTokens = (store.contracts || []).filter(c => !c._deleted && c.sign_token).map(c => c.sign_token);
+      const tokens = [...new Set([...localTokens, ...contractTokens])];
       all = (await Promise.all(
         tokens.map(t => fetchRecord(`contract_sign/${t}`).then(r => r ? { ...r, _key: t } : null).catch(() => null)),
       )).filter(Boolean);
@@ -564,6 +573,10 @@ async function deleteEntry(r) {
     const { softDelete } = await import('../firebase/db.js');
     await softDelete(`contract_sign/${r._key}`);
     if (currentToken === r._key) { currentToken = null; currentCode = null; currentCreatedAt = null; }
+    try {
+      const cached = JSON.parse(localStorage.getItem('rs_sign_tokens') || '[]');
+      localStorage.setItem('rs_sign_tokens', JSON.stringify(cached.filter(t => t !== r._key)));
+    } catch (_) {}
     renderList();
   } catch (e) {
     console.error('[rental-send] delete', e);
