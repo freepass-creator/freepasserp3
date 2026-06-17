@@ -417,6 +417,17 @@ async function saveDraft(opts = {}) {
       created_at: currentCreatedAt,
       expires_at: currentCreatedAt + 30 * 86400 * 1000,
     });
+    // 계약 레코드에 sign_token 색인 저장 (목록 조회 폴백용)
+    const linkedContract = (store.contracts || []).find(c => !c._deleted && c.contract_code === currentCode);
+    if (linkedContract?._key) {
+      const { updateRecord } = await import('../firebase/db.js');
+      updateRecord(`contracts/${linkedContract._key}`, {
+        sign_token: currentToken,
+        sign_status: status,
+        sign_updated_at: Date.now(),
+      }).catch(() => null);
+    }
+
     if (!opts.silentToast) showToast(status === 'sent' ? '발송 저장 완료' : '임시 저장됨 (목록에서 이어쓰기 가능)');
     refreshListIfOpen();
     return currentToken;
@@ -479,9 +490,21 @@ async function renderList() {
   if (!body) return;
   body.innerHTML = '<div style="padding:18px;color:var(--text-muted);">불러오는 중…</div>';
   try {
-    const { fetchCollection } = await import('../firebase/db.js');
-    const all = await fetchCollection('contract_sign'); // 최신순, _deleted 제외
-    listRows = all.filter(r => (r.template || 'rental') === 'rental' && (r.status || 'draft') === listTab);
+    let all = [];
+    try {
+      const { fetchCollection } = await import('../firebase/db.js');
+      all = await fetchCollection('contract_sign');
+    } catch (_permErr) {
+      // DB 규칙 미배포 시 폴백: contracts에 색인된 sign_token으로 개별 조회
+      const { fetchRecord } = await import('../firebase/db.js');
+      const tokens = [...new Set(
+        (store.contracts || []).filter(c => !c._deleted && c.sign_token).map(c => c.sign_token),
+      )];
+      all = (await Promise.all(
+        tokens.map(t => fetchRecord(`contract_sign/${t}`).then(r => r ? { ...r, _key: t } : null).catch(() => null)),
+      )).filter(Boolean);
+    }
+    listRows = all.filter(r => !r._deleted && (r.template || 'rental') === 'rental' && (r.status || 'draft') === listTab);
     if (!listRows.length) {
       const labels = { draft: '작성중인', sent: '발송한', signed: '서명완료된' };
       body.innerHTML = `<div style="padding:28px 16px;text-align:center;color:var(--text-muted);">${labels[listTab]} 계약서가 없습니다</div>`;

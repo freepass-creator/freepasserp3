@@ -139,6 +139,7 @@
     },
 
     "contract_sign": {
+      ".read": "auth != null",
       "$token": {
         ".read": true,
         ".write": "root.child('contract_sign').child($token).exists() || auth != null"
