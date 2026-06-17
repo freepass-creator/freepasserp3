@@ -203,9 +203,9 @@ function playNotifSound() {
     const now = audioCtx.currentTime;
     // 종 소리 = 여러 배음 + 빠른 어택 + 긴 감쇠
     [
-      { freq: 880,  gain: 0.3 },
-      { freq: 1108, gain: 0.15 },
-      { freq: 2637, gain: 0.08 },
+      { freq: 880,  gain: 0.21 },
+      { freq: 1108, gain: 0.10 },
+      { freq: 2637, gain: 0.06 },
     ].forEach(({ freq, gain: peak }) => {
       const osc = audioCtx.createOscillator();
       const g   = audioCtx.createGain();
