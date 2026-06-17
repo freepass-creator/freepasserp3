@@ -289,6 +289,7 @@ function bindChatInput(roomId, room) {
     const user = store.currentUser;
     if (!user?.uid || !user?.role) { showToast('로그인 필요', 'error'); return; }
     input.value = '';  // 낙관적 클리어 — 실패 시 복구
+    input.focus();    // 키보드 유지 — 버튼 탭 후 포커스 이탈 방지
     // 개인 식별자만 허용 — company_code 폴백 금지 (SP999 같은 공유 임시채널 노출 방지)
     const senderCode = user.user_code || '';
     try {
