@@ -336,6 +336,7 @@ export function bindChatInput() {
       const update = {
         last_message: text,
         last_message_at: Date.now(),
+        last_sender_uid: store.currentUser?.uid || '',
         last_sender_code: senderCode,
         last_sender_role: role,
       };
