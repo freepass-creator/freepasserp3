@@ -1,0 +1,19 @@
+name: Deploy Firebase Rules
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'storage.rules'
+      - 'database.rules.json'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy Firebase Storage & Database Rules
+        run: npx firebase-tools@latest deploy --only storage,database --token "$FIREBASE_TOKEN" --project freepasserp3 --non-interactive
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
