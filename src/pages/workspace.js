@@ -391,7 +391,7 @@ async function sendChatFile(file, roomId) {
     showToast('업로드 중...', 'info');
     const { uploadFile, uploadImage } = await import('../firebase/storage-helper.js');
     const safe = file.name.replace(/[^\w.\-가-힣]/g, '_').slice(0, 100) || 'file';
-    const path = `chat-files/${roomId}/${Date.now()}_${safe}`;
+    const path = `contract-files/chat-${roomId}/${Date.now()}_${safe}`;
     const isImage = file.type.startsWith('image/');
     const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
     const user = store.currentUser || {};
