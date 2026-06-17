@@ -374,6 +374,53 @@ export function bindChatInput() {
       send();
     }
   });
+
+  // 파일 첨부
+  const fileInput = inputBar.querySelector('.ws-file-input');
+  fileInput?.addEventListener('change', async () => {
+    const file = fileInput.files?.[0];
+    fileInput.value = '';
+    if (!file || !_activeRoomId) return;
+    await sendChatFile(file, _activeRoomId);
+  });
+}
+
+async function sendChatFile(file, roomId) {
+  if (file.size > 20 * 1024 * 1024) { showToast('20MB 이하 파일만 첨부 가능합니다', 'error'); return; }
+  try {
+    showToast('업로드 중...', 'info');
+    const { uploadFile, uploadImage } = await import('../firebase/storage-helper.js');
+    const safe = file.name.replace(/[^\w.\-가-힣]/g, '_').slice(0, 100) || 'file';
+    const path = `chat-files/${roomId}/${Date.now()}_${safe}`;
+    const isImage = file.type.startsWith('image/');
+    const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+    const user = store.currentUser || {};
+    const msgData = {
+      text: file.name,
+      sender_uid: user.uid || '',
+      sender_role: user.role || '',
+      sender_code: user.user_code || '',
+      sender_name: user.name || '',
+      sender_email: user.email || '',
+      created_at: Date.now(),
+    };
+    if (isImage) msgData.image_url = url; else msgData.file_url = url;
+    await pushRecord(`messages/${roomId}`, msgData, { skipAudit: true });
+    const lastMsg = isImage ? `[사진] ${file.name}` : `[파일] ${file.name}`;
+    const role = user.role;
+    updateRecord(`rooms/${roomId}`, {
+      last_message: lastMsg, last_message_at: Date.now(),
+      last_sender_uid: user.uid || '', last_sender_role: role,
+      last_sender_code: user.user_code || '',
+    }).catch(() => {});
+    const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
+                      : role === 'provider' ? 'unread_for_agent' : null;
+    if (unreadField) incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(() => {});
+    import('../core/push.js').then(m => m.notifyNewMessage(roomId, lastMsg)).catch(() => {});
+  } catch (e) {
+    console.error('[chat] file send fail', e);
+    showToast('파일 전송 실패: ' + (e?.message || ''), 'error');
+  }
 }
 
 /* 상품 → 대화방 생성 — 상품찾기 상세 / 업무소통 + 버튼 공용

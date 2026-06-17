@@ -2163,6 +2163,9 @@
   .ws-input input { flex: 1; }
   .ws-send-btn { flex-shrink: 0; padding: 0; width: 32px; display: inline-flex; align-items: center; justify-content: center; }
   .ws-send-btn i { font-size: 16px; }
+  .ws-attach-btn { flex-shrink: 0; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); border-radius: 4px; }
+  .ws-attach-btn:hover { background: var(--bg-hover); color: var(--text); }
+  .ws-attach-btn i { font-size: 15px; pointer-events: none; }
 
   /* 계약 진행 4단계 — 영업/공급 분리 체크리스트 (workspace + contract 양쪽 사용) */
   .ct-steps-v3 { display: flex; flex-direction: column; gap: 4px; }

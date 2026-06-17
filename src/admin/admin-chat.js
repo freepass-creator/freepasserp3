@@ -9,7 +9,7 @@
  * 노출: window.renderAdminChat (index.html showPage 에서 호출)
  */
 import { store } from '../core/store.js';
-import { watchCollection, pushRecord, updateRecord, setRecord } from '../firebase/db.js';
+import { watchCollection, pushRecord, updateRecord, setRecord, incrementAtomic } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { fmtDate, emptyState, renderRoomItem } from '../core/ui-helpers.js';
 import { renderChatMessages as v2RenderChatMessages } from '../core/chat-render.js';
@@ -200,4 +200,38 @@ function openAdminChatRoomInPage(roomKey) {
     if (e.isComposing || e.keyCode === 229) return;  // 한글 IME 조합중 엔터 무시 (확정글자 재삽입 방지)
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
   };
+
+  // 파일 첨부
+  const fileInput = page.querySelector('#adminChatFileInput');
+  if (fileInput) {
+    fileInput.onchange = async () => {
+      const file = fileInput.files?.[0];
+      fileInput.value = '';
+      if (!file || !roomKey) return;
+      if (file.size > 20 * 1024 * 1024) { showToast('20MB 이하 파일만 첨부 가능합니다', 'error'); return; }
+      try {
+        showToast('업로드 중...', 'info');
+        const { uploadFile, uploadImage } = await import('../firebase/storage-helper.js');
+        const safe = file.name.replace(/[^\w.\-가-힣]/g, '_').slice(0, 100) || 'file';
+        const path = `chat-files/${roomKey}/${Date.now()}_${safe}`;
+        const isImage = file.type.startsWith('image/');
+        const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+        const msgData = {
+          text: file.name, sender_uid: me.uid, sender_name: me.name || me.email || '',
+          sender_code: me.user_code || '', sender_role: me.role || '', created_at: Date.now(),
+        };
+        if (isImage) msgData.image_url = url; else msgData.file_url = url;
+        await pushRecord(`messages/${roomKey}`, msgData, { skipAudit: true });
+        const lastMsg = isImage ? `[사진] ${file.name}` : `[파일] ${file.name}`;
+        updateRecord(`rooms/${roomKey}`, {
+          last_message: lastMsg, last_message_at: Date.now(),
+          last_sender_role: me.role || '', last_sender_uid: me.uid,
+        }).catch(() => {});
+        import('../core/push.js').then(m => m.notifyNewMessage(roomKey, lastMsg)).catch(() => {});
+      } catch (e) {
+        console.error('[admin-chat] file send fail', e);
+        showToast('파일 전송 실패: ' + (e?.message || ''), 'error');
+      }
+    };
+  }
 }

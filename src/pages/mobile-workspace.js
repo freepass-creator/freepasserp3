@@ -224,6 +224,7 @@ function openRoom(roomId) {
         ${mLoading()}
       </div>
       <div class="m-chat-input-area">
+        <label class="m-chat-attach" title="파일 첨부"><i class="ph ph-paperclip"></i><input type="file" hidden id="mwsChatFile" accept="image/*,.pdf,.heic,.webp"></label>
         <input class="m-chat-input" id="mwsChatText" type="text"
                placeholder="메시지 입력..."
                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
@@ -344,11 +345,53 @@ function bindChatInput(roomId, room) {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
   });
 
+  // 파일 첨부
+  const fileInput = document.getElementById('mwsChatFile');
+  fileInput?.addEventListener('change', async () => {
+    const file = fileInput.files?.[0];
+    fileInput.value = '';
+    if (!file) return;
+    await sendMobileChatFile(file, roomId, room);
+  });
+
   // 포커스 시 읽음
   input?.addEventListener('focus', () => {
     const me = store.currentUser;
     if (me?.uid && me?.role) markRoomRead(roomId, me.role, me.uid, room).catch(() => {});
   });
+}
+
+async function sendMobileChatFile(file, roomId, room) {
+  if (file.size > 20 * 1024 * 1024) { showToast('20MB 이하 파일만 첨부 가능합니다', 'error'); return; }
+  const user = store.currentUser;
+  if (!user?.uid || !user?.role) { showToast('로그인 필요', 'error'); return; }
+  try {
+    showToast('업로드 중...', 'info');
+    const { uploadFile, uploadImage } = await import('../firebase/storage-helper.js');
+    const safe = file.name.replace(/[^\w.\-가-힣]/g, '_').slice(0, 100) || 'file';
+    const path = `chat-files/${roomId}/${Date.now()}_${safe}`;
+    const isImage = file.type.startsWith('image/');
+    const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+    const senderCode = user.user_code || '';
+    const msgData = {
+      text: file.name, sender_uid: user.uid, sender_role: user.role,
+      sender_code: senderCode, sender_name: user.name || '', created_at: Date.now(),
+    };
+    if (isImage) msgData.image_url = url; else msgData.file_url = url;
+    await pushRecord(`messages/${roomId}`, msgData, { skipAudit: true });
+    const lastMsg = isImage ? `[사진] ${file.name}` : `[파일] ${file.name}`;
+    updateRecord(`rooms/${roomId}`, {
+      last_message: lastMsg, last_message_at: Date.now(),
+      last_sender_uid: user.uid, last_sender_role: user.role, last_sender_code: senderCode,
+    }).catch(() => {});
+    const unreadField = (user.role === 'agent' || user.role === 'agent_admin') ? 'unread_for_provider'
+                      : user.role === 'provider' ? 'unread_for_agent' : null;
+    if (unreadField) incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(() => {});
+    import('../core/push.js').then(m => m.notifyNewMessage(roomId, lastMsg)).catch(() => {});
+  } catch (e) {
+    console.error('[chat] file send fail', e);
+    showToast('파일 전송 실패: ' + (e?.message || ''), 'error');
+  }
 }
 
 /** 계약 진행상황 바텀시트 */
