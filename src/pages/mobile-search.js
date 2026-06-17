@@ -408,6 +408,14 @@ async function inquireProduct(p) {
       subModel: p.sub_model || '',
       providerCode: p.provider_company_code || '',
     });
+    // 방이 store.rooms에 없으면 직접 fetch → navigate 전에 pre-populate (Firebase push 지연 방지)
+    if (!(store.rooms || []).find(r => r._key === roomId)) {
+      const { fetchRecord } = await import('../firebase/db.js');
+      const roomData = await fetchRecord(`rooms/${roomId}`);
+      if (roomData) {
+        store.rooms = [{ _key: roomId, ...roomData }, ...(store.rooms || [])];
+      }
+    }
     store.pendingOpenRoom = roomId;
     closeAllMobileViews();  // 상품 상세 view 닫고 이동
     const { navigate, getCurrentRoute } = await import('../core/router.js');
