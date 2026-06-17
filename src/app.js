@@ -557,7 +557,8 @@ window.refreshPageActions = function(pageName) {
     const sheetCount = Object.values(_searchFilter.activeFilters || {})
       .reduce((n, set) => n + (set?.size || 0), 0);
     const providerActive = !!(_searchFilter.provider && _searchFilter.provider !== 'all');
-    const anyActive = QUICK.some(q => isQuickFilterActive(q.v)) || sheetCount > 0 || providerActive;
+    const periodSet = _searchFilter.activeFilters?.period;
+    const anyActive = QUICK.some(q => isQuickFilterActive(q.v)) || sheetCount > 0 || providerActive || periodSet?.size > 0;
     // 공급사 드롭다운 — 매물 보유 공급사 + 대수 표시, 대수 많은 순
     const provCount = {};
     let provTotal = 0;
@@ -590,6 +591,19 @@ window.refreshPageActions = function(pageName) {
       { select: true, value: _searchFilter.provider || 'all', active: providerActive,
         title: '공급사로 필터', options: providerOpts,
         onChange: (v) => { _searchFilter.provider = v; applySearchFilter(); window.refreshPageActions?.('search'); } },
+      ...['12', '24', '36', '48', '60'].map(m => ({
+        chip: true, label: `${m}개월`, active: !!(periodSet?.has(`p${m}`)),
+        title: `${m}개월 가격이 있는 매물만`,
+        onClick: () => {
+          if (!_searchFilter.activeFilters) _searchFilter.activeFilters = {};
+          if (!_searchFilter.activeFilters.period) _searchFilter.activeFilters.period = new Set();
+          const id = `p${m}`, s = _searchFilter.activeFilters.period;
+          if (s.has(id)) s.delete(id); else s.add(id);
+          if (!s.size) delete _searchFilter.activeFilters.period;
+          applySearchFilter();
+          window.refreshPageActions?.('search');
+        },
+      })),
     ];
 
     // 검색창 우측 필터 아이콘 — search 페이지에서만 노출, dot 으로 활성 상태 표시

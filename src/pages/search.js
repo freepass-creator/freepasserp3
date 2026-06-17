@@ -744,7 +744,7 @@ const SEARCH_COL_FIELD = [
   'ext_color',                // 외부색
   'int_color',                // 내부색
   '_policy.credit_grade',
-  null, null, null, null, null, null,  // 가격 6컬럼 (1M/12M/24M/36M/48M/60M, range 미구현)
+  'price.1.rent', 'price.12.rent', 'price.24.rent', 'price.36.rent', 'price.48.rent', 'price.60.rent',
   '_provider_name',           // 20 공급사 (한글 회사명 — getColumnVal 에서 lookup)
 ];
 
@@ -754,6 +754,11 @@ const _sortState = { field: null, dir: null };
 function getColumnVal(p, field) {
   if (!field) return null;
   if (field.startsWith('_policy.')) return p._policy?.[field.slice(8)];
+  if (field.startsWith('price.')) {
+    const [, m, type] = field.split('.');
+    const v = Number(p.price?.[m]?.[type] || 0);
+    return v > 0 ? v : null;
+  }
   if (field === 'options' && Array.isArray(p.options)) return p.options.join('·');
   // 공급사 — 코드를 한글 회사명으로 변환해서 필터/정렬
   if (field === '_provider_name') {
@@ -1202,6 +1207,24 @@ function buildFtPop(th) {
   wrap.className = 'ft-pop';
   if (!field) {
     wrap.innerHTML = '<div style="padding:12px; color:var(--text-muted); text-align:center;">필터 미지원</div>';
+    return wrap;
+  }
+  // 가격 컬럼 — 정렬만 지원 (개별 금액 필터 X)
+  if (field.startsWith('price.')) {
+    wrap.innerHTML = `
+      <div class="ft-pop-section ft-pop-sort">
+        <div class="ft-pop-row sort-half" data-act="sort-asc"><span class="ft-arrow">↑</span> 오름차순</div>
+        <div class="ft-pop-row sort-half" data-act="sort-desc"><span class="ft-arrow">↓</span> 내림차순</div>
+      </div>`;
+    const bindSort = (act, dir) => wrap.querySelector(`[data-act="${act}"]`)?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (_sortState.field === field && _sortState.dir === dir) { _sortState.field = null; _sortState.dir = null; }
+      else { _sortState.field = field; _sortState.dir = dir; }
+      applySearchFilter();
+      wrap.remove(); _activeFtTh = null;
+    });
+    bindSort('sort-asc', 'asc');
+    bindSort('sort-desc', 'desc');
     return wrap;
   }
   const products = filterProductsExcept(field);
