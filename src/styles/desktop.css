@@ -864,7 +864,10 @@
     gap: var(--sp-2);
     pointer-events: none;
   }
-  body.is-mobile .chat-notif-wrap { display: none; }
+  body.is-mobile .chat-notif-wrap {
+    bottom: 80px; left: 12px; right: 12px;
+  }
+  body.is-mobile .chat-notif-popup { width: auto; }
 
   .chat-notif-popup {
     pointer-events: auto;

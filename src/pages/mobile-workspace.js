@@ -655,9 +655,8 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
           }
 
           showToast(`계약 생성됨 (${code})`, 'success');
-          // 계약 페이지로 이동 — 생성된 계약 즉시 확인
-          const { navigate } = await import('../core/router.js');
-          navigate('/contract');
+          // 시트 닫고 채팅방으로 복귀 (history.back = openBottomSheet 가 push 한 entry 팝)
+          history.back();
           onCreated?.(code);
         } catch (e) {
           console.error('[contract start]', e);
