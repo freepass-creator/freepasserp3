@@ -31,6 +31,7 @@ import {
   renderContractWorkV2, bindContractWorkV2,
   createContractFromRoomLocal,
 } from './contract.js';
+import { openFullscreen } from '../core/product-detail-render.js';
 import { renderSearchDetail } from './search.js';
 
 /* ── 모듈 state ── */
@@ -278,6 +279,9 @@ export function renderRoomDetail(room) {
           if (r) renderRoomDetail(r);
         },
       });
+
+      // 계약 서류 미리보기 (면허증 + 첨부서류) — 읽기 전용
+      _appendContractDocs(stepCard.querySelector('.ws4-body'), contract);
     }
   }
 
@@ -484,6 +488,59 @@ export async function createRoomFromProduct(product) {
     console.error('[room create]', e);
     showToast('생성 실패 — ' + (e.message || e), 'error');
   }
+}
+
+/* 계약 서류 읽기 전용 섹션 — 계약 진행 패널 하단에 추가 */
+function _appendContractDocs(bodyEl, c) {
+  if (!bodyEl || !c) return;
+  const isPdf = u => /\.pdf(\?|$)/i.test(u || '');
+
+  const license = c.doc_license || c.customer_license_url || '';
+  const docAtts = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
+  const mobileDocs = c.customer_docs
+    ? Object.values(c.customer_docs).filter(d => d && !d._deleted && d.url).map(d => d.url)
+    : [];
+  const allAtts = [...docAtts, ...mobileDocs];
+
+  if (!license && !allAtts.length) return;
+
+  let html = `<div style="border-top:1px solid var(--border);margin-top:4px;padding:8px 0 4px;">
+    <div style="font-size:11px;font-weight:600;color:var(--text-sub);padding:0 2px 6px;">첨부 서류</div>`;
+
+  if (license) {
+    html += `<div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">운전면허증</div>`;
+    html += isPdf(license)
+      ? `<a href="${esc(license)}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-link);text-decoration:none;padding:8px;border:1px solid var(--border);border-radius:4px;background:var(--bg-stripe);margin-bottom:8px;"><i class="ph ph-file-pdf" style="font-size:20px;color:var(--alert-red-text);"></i>면허증 PDF 보기</a>`
+      : `<img src="${esc(license)}" style="max-width:100%;max-height:160px;border-radius:4px;cursor:zoom-in;display:block;margin-bottom:8px;" data-doc-img="${esc(license)}">`;
+  }
+
+  if (allAtts.length) {
+    html += `<div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">첨부서류 ${allAtts.length}개</div>`;
+    html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:5px;">`;
+    allAtts.forEach(url => {
+      html += `<div style="aspect-ratio:1/1;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-stripe);">`;
+      html += isPdf(url)
+        ? `<a href="${esc(url)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--alert-red-text);text-decoration:none;font-size:9px;gap:2px;"><i class="ph ph-file-pdf" style="font-size:22px;"></i><span>PDF</span></a>`
+        : `<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;" data-doc-img="${esc(url)}">`;
+      html += `</div>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `</div>`;
+
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  bodyEl.appendChild(div);
+
+  // 이미지 클릭 → 풀스크린 (면허증 + 첨부서류 갤러리)
+  const allImgUrls = [license, ...allAtts].filter(u => u && !isPdf(u));
+  div.querySelectorAll('[data-doc-img]').forEach(img => {
+    img.addEventListener('click', () => {
+      const idx = allImgUrls.indexOf(img.dataset.docImg);
+      openFullscreen(allImgUrls, Math.max(0, idx));
+    });
+  });
 }
 
 /* 새 대화방 — 업무소통 페이지 헤드 "+" 버튼 → 차량번호 prompt */
