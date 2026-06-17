@@ -82,7 +82,16 @@ export function mount() {
         openRoom(rid);
       }
     }
-  }, roleScope(store.currentUser) ? { scope: roleScope(store.currentUser) } : { limit: 200 });   // 비관리자=자기 방만, 관리자=최근200
+  }, roleScope(store.currentUser) ? { scope: roleScope(store.currentUser) } : { limit: 200 });
+
+  // 이미 store.rooms 에 방이 있으면 즉시 열기 (watchCollection 콜백 대기 불필요)
+  if (store.pendingOpenRoom) {
+    const rid = store.pendingOpenRoom;
+    if ((store.rooms || []).find(r => r._key === rid)) {
+      store.pendingOpenRoom = null;
+      setTimeout(() => openRoom(rid), 0);
+    }
+  }   // 비관리자=자기 방만, 관리자=최근200
   unsubContracts = watchCollection('contracts', (d) => { store.contracts = d; }, { scope: roleScope(store.currentUser) });
 }
 

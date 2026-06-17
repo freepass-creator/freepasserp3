@@ -410,7 +410,7 @@ async function inquireProduct(p) {
     });
     store.pendingOpenRoom = roomId;
     const { navigate } = await import('../core/router.js');
-    navigate('/', { transition: false });
+    navigate('/workspace', { transition: false });
   } catch (e) {
     console.error('[inquireProduct]', e);
     showToast('문의방 열기 실패', 'error');
