@@ -2126,28 +2126,26 @@
     padding: var(--sp-2) var(--sp-3); font-size: var(--font-size); line-height: 1.45;
     border-radius: var(--radius); word-break: break-word; max-width: 100%;
   }
-  /* 채팅 말풍선 — 배경색만으로 구분 (보더 X, 깔끔하게) */
-  .chat-row.is-mine .chat-bubble {
-    background: var(--alert-blue-bg); color: var(--alert-blue-text);
-    border-top-right-radius: 4px;
-  }
-  /* 말풍선 — 테두리 없이 색깔로만 구분 */
+  /* 채팅 말풍선 — 내 메시지: 네이비(브랜드), 상대방: 밝은 회색 */
   .chat-bubble { border: 0; }
-  .chat-row.is-other .chat-bubble-agent {
-    background: var(--alert-blue-bg); color: var(--text-main);
-    border-top-left-radius: 4px;
+  .chat-row.is-mine .chat-bubble {
+    background: var(--c-accent); color: var(--c-text-inv);
+    border-top-right-radius: 0;
   }
+  .chat-row.is-other .chat-bubble-agent,
   .chat-row.is-other .chat-bubble-provider {
-    background: var(--alert-green-bg); color: var(--text-main);
-    border-top-left-radius: 4px;
+    background: var(--c-bg-sub); color: var(--c-text);
+    border-top-left-radius: 0;
   }
-  /* 관리자 — Freepass CI 네이비 반전 (송/수신 양쪽 모두 적용) */
-  .chat-row.is-other .chat-bubble-admin,
+  /* 관리자 — 짙은 보라/슬레이트 톤으로 구분 */
+  .chat-row.is-other .chat-bubble-admin {
+    background: #4B5563; color: var(--c-text-inv);
+    border-top-left-radius: 0;
+  }
   .chat-row.is-mine .chat-bubble-admin {
-    background: #1B2A4A; color: var(--text-inverse);
+    background: var(--c-accent); color: var(--c-text-inv);
+    border-top-right-radius: 0;
   }
-  .chat-row.is-other .chat-bubble-admin { border-top-left-radius: 4px; }
-  .chat-row.is-mine .chat-bubble-admin  { border-top-right-radius: 4px; }
   .chat-meta {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 10px; color: var(--text-muted); padding: 0 2px;
