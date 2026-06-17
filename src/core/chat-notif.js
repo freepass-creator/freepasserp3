@@ -10,6 +10,17 @@ let audioCtx = null;
 let initialized = false;
 let soundEnabled = true;
 
+// 모바일 브라우저는 사용자 제스처 없이 AudioContext 재생 불가 — 첫 터치/클릭 시 미리 활성화
+function unlockAudio() {
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  audioCtx.resume().catch(() => {});
+  document.removeEventListener('touchstart', unlockAudio, true);
+  document.removeEventListener('click', unlockAudio, true);
+}
+document.addEventListener('touchstart', unlockAudio, true);
+document.addEventListener('click', unlockAudio, true);
+
 export function initChatNotif() {
   if (initialized) return;
   initialized = true;
