@@ -489,7 +489,7 @@ function bindContractView(view, c) {
       try {
         const { uploadImage, uploadFile } = await import('../firebase/storage-helper.js');
         const safe = sanitizeFileName(file.name);
-        const path = `chat-files/contract-${c.contract_code}/license_${Date.now()}_${safe}`;
+        const path = `contract-files/${c._key || c.contract_code}/license_${Date.now()}_${safe}`;
         const isImage = (file.type || '').startsWith('image/');
         const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
         const now = Date.now();
@@ -846,8 +846,7 @@ async function uploadCustomerDocs(c, files) {
     }
     try {
       const safe = sanitizeFileName(file.name);
-      // chat-files 경로 패턴 재사용 (storage rules 에 이미 허용된 경로)
-      const path = `chat-files/contract-${c.contract_code}/${Date.now()}_${safe}`;
+      const path = `contract-files/${c._key || c.contract_code}/${Date.now()}_${safe}`;
       const isImage = (file.type || '').startsWith('image/');
       const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
       await pushRecord(`contracts/${c._key}/customer_docs`, {

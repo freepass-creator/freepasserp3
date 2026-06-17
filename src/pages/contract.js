@@ -314,7 +314,7 @@ function renderContractDocs(card, c) {
       showToast('면허증 업로드 중...', 'info');
       const { uploadImage, uploadFile } = await import('../firebase/storage-helper.js');
       const isImage = file.type?.startsWith('image/');
-      const path = `contract-docs/${c._key}/license_${Date.now()}_${file.name}`;
+      const path = `contract-files/${c._key}/license_${Date.now()}_${file.name}`;
       const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
       await updateRecord(`contracts/${c._key}`, { doc_license: url, updated_at: Date.now() });
       c.doc_license = url;
@@ -380,7 +380,7 @@ function renderContractDocs(card, c) {
         const newUrls = [];
         for (const file of files) {
           const isImage = file.type?.startsWith('image/');
-          const path = `contract-docs/${c._key}/att_${Date.now()}_${file.name}`;
+          const path = `contract-files/${c._key}/att_${Date.now()}_${file.name}`;
           const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
           newUrls.push(url);
         }
