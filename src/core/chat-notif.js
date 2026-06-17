@@ -44,12 +44,11 @@ export function initChatNotif() {
 
       // New message detected
       if (curTs > prevTs) {
-        // 본인이 보낸 메시지는 알림 제외 — uid / user_code / role 다중 체크
+        // 본인이 보낸 메시지는 알림 제외 — UID 우선 (공유 코드 SP001 등 오탐 방지)
         const isMine =
           (room.last_sender_uid && room.last_sender_uid === uid) ||
-          (room.last_sender_code && userCode && room.last_sender_code === userCode) ||
-          // fallback: sender_uid/code 없는 옛 데이터 — role 기반
-          (!room.last_sender_uid && !room.last_sender_code && room.last_sender_role === role);
+          // fallback: sender_uid 없는 옛 데이터만 role 기반
+          (!room.last_sender_uid && room.last_sender_role === role);
         if (!isMine) {
           onNewMessage(room);
         }
