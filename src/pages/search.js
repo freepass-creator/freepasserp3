@@ -1383,6 +1383,16 @@ function filterProductsExcept(exceptField) {
     // 모바일 시트에서 토글한 그룹 필터 — 그룹 내 OR, 그룹 간 AND. range 타입은 별도.
     if (f.activeFilters && Object.keys(f.activeFilters).length) {
       for (const [g, val] of Object.entries(f.activeFilters)) {
+        // 개월 필터 — 선택된 개월 중 하나라도 대여료가 있는 매물만 (OR)
+        if (g === 'period') {
+          if (!val || !val.size) continue;
+          const hasAny = [...val].some(pid => {
+            const m = pid.slice(1); // 'p12' → '12', 'p1' → '1'
+            return Number(p.price?.[m]?.rent) > 0;
+          });
+          if (!hasAny) return false;
+          continue;
+        }
         const ff = FILTERS[g];
         if (ff?.type === 'range') {
           const lo = val?.min ?? 0;
