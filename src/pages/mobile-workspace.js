@@ -126,6 +126,19 @@ function renderRooms() {
     rooms = rooms.filter(r => !r.hidden_for_admin);
   }
 
+  // 출고불가 차량 채팅방 기본 숨김 — 안읽음 메시지 있으면 예외 표시
+  if (store.products?.length) {
+    const unreadKey = (role === 'agent' || role === 'agent_admin') ? 'unread_for_agent'
+                    : role === 'provider' ? 'unread_for_provider' : 'unread_for_admin';
+    rooms = rooms.filter(r => {
+      const prod = store.products.find(
+        p => p._key === r.product_uid || (r.product_code && p.product_code === r.product_code)
+      );
+      if (!prod || prod.vehicle_status !== '출고불가') return true;
+      return Number(r[unreadKey] || r.unread || 0) > 0;
+    });
+  }
+
   if (q) rooms = rooms.filter(r => [
     r.vehicle_number, r.sub_model, r.model, r.maker,
     r.agent_code, r.provider_code, r.provider_company_code,
