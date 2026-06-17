@@ -226,8 +226,20 @@ function renderContractDocs(card, c) {
   const canEdit = role === 'admin' || role === 'agent' || role === 'agent_admin' || role === 'provider';
   const body = card.querySelector('.ws4-body');
 
-  const license = c.doc_license || '';
-  const attachments = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
+  // 면허증 — PC(doc_license) 우선, 모바일(customer_license_url) fallback
+  const license = c.doc_license || c.customer_license_url || '';
+  const licenseEditable = !!c.doc_license;
+
+  // 첨부서류 — PC 배열(doc_attachments) + 모바일 객체(customer_docs) 통합
+  const docAtts = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
+  const mobileDocs = c.customer_docs
+    ? Object.values(c.customer_docs).filter(d => d && !d._deleted && d.url)
+    : [];
+  // { url, deletable, docIndex } — docIndex 있는 항목만 삭제 버튼
+  const attachments = [
+    ...docAtts.map((url, i) => ({ url, deletable: canEdit, docIndex: i })),
+    ...mobileDocs.map(d => ({ url: d.url, name: d.name, deletable: false })),
+  ];
   const isPdf = (u) => u && /\.pdf(\?|$)/i.test(u);
 
   body.innerHTML = `
@@ -238,7 +250,7 @@ function renderContractDocs(card, c) {
           <i class="ph ph-identification-card" style="font-size:14px;color:${license ? 'var(--alert-green-text)' : 'var(--text-sub)'};"></i>
           <span style="flex:1;font-size:12px;font-weight:500;">운전면허증 <span style="color:var(--alert-red-text);">*</span></span>
           ${license ? '<span style="font-size:10px;color:var(--alert-green-text);">제출됨</span>' : '<span style="font-size:10px;color:var(--text-muted);">미제출</span>'}
-          ${license && canEdit ? `
+          ${license && canEdit && licenseEditable ? `
             <button class="btn" style="height:22px;padding:0 8px;font-size:11px;color:var(--alert-red-text);" id="ctLicenseDel"><i class="ph ph-x"></i></button>
           ` : ''}
         </div>
@@ -274,12 +286,12 @@ function renderContractDocs(card, c) {
         <div style="padding:8px;">
           ${attachments.length ? `
             <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));gap:6px;">
-              ${attachments.map((url, i) => `
+              ${attachments.map((att, i) => `
                 <div style="position:relative;aspect-ratio:1/1;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-stripe);">
-                  ${isPdf(url)
-                    ? `<a href="${esc(url)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--alert-red-text);text-decoration:none;font-size:9px;gap:2px;"><i class="ph ph-file-pdf" style="font-size:24px;"></i><span>PDF</span></a>`
-                    : `<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block;" data-doc-img="${esc(url)}">`}
-                  ${canEdit ? `<button data-att-del="${i}" style="position:absolute;top:2px;right:2px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="ph ph-x"></i></button>` : ''}
+                  ${isPdf(att.url)
+                    ? `<a href="${esc(att.url)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--alert-red-text);text-decoration:none;font-size:9px;gap:2px;"><i class="ph ph-file-pdf" style="font-size:24px;"></i><span>PDF</span></a>`
+                    : `<img src="${esc(att.url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block;" data-doc-img="${esc(att.url)}">`}
+                  ${att.deletable ? `<button data-att-del="${att.docIndex}" style="position:absolute;top:2px;right:2px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="ph ph-x"></i></button>` : ''}
                   <span style="position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;">${i + 1}</span>
                 </div>
               `).join('')}
@@ -396,14 +408,15 @@ function renderContractDocs(card, c) {
     });
   });
 
-  // 첨부서류 개별 삭제
+  // 첨부서류 개별 삭제 (PC 업로드분만 — docIndex 기반)
   body.querySelectorAll('[data-att-del]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const idx = Number(btn.dataset.attDel);
-      if (!confirm(`첨부 ${idx + 1}을 제거할까요?`)) return;
-      const next = attachments.filter((_, i) => i !== idx);
-      await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
-      c.doc_attachments = next;
+      if (!confirm('첨부 서류를 제거할까요?')) return;
+      const cur = Array.isArray(c.doc_attachments) ? [...c.doc_attachments] : [];
+      cur.splice(idx, 1);
+      await updateRecord(`contracts/${c._key}`, { doc_attachments: cur, updated_at: Date.now() });
+      c.doc_attachments = cur;
       showToast('제거됨');
       renderContractDocs(card, c);
     });

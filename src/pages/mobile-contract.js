@@ -445,8 +445,9 @@ function bindContractView(view, c) {
     if (e.target.closest('#ctLicenseDel')) {
       if (!confirm('운전면허증을 삭제하시겠습니까?')) return;
       try {
-        await updateRecord(`contracts/${c._key}`, { customer_license_url: '', customer_license_at: 0 });
-        c.customer_license_url = '';
+        await updateRecord(`contracts/${c._key}`, { doc_license: null, customer_license_url: null, customer_license_at: 0 });
+        c.doc_license = null;
+        c.customer_license_url = null;
         c.customer_license_at = 0;
         refreshCustomer();
         showToast('면허증 삭제됨');
@@ -493,7 +494,8 @@ function bindContractView(view, c) {
         const isImage = (file.type || '').startsWith('image/');
         const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
         const now = Date.now();
-        await updateRecord(`contracts/${c._key}`, { customer_license_url: url, customer_license_at: now });
+        await updateRecord(`contracts/${c._key}`, { doc_license: url, customer_license_url: url, customer_license_at: now });
+        c.doc_license = url;
         c.customer_license_url = url;
         c.customer_license_at = now;
         refreshCustomer();
@@ -752,14 +754,20 @@ function renderDetailPanel(c) {
 }
 
 function renderCustomerPanel(c) {
-  // 첨부서류 (일반)
+  // 첨부서류 — 모바일(customer_docs) + PC(doc_attachments) 통합
   const docs = c.customer_docs || {};
   const docList = Object.entries(docs)
     .filter(([, v]) => v && !v._deleted)
     .sort((a, b) => (b[1].uploaded_at || 0) - (a[1].uploaded_at || 0));
-  const docBody = docList.length
+  const pcAtts = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
+  const pcDocList = pcAtts.map((url, i) => [
+    `__pc_${i}`,
+    { url, name: `PC서류 ${i + 1}`, mime: /\.pdf(\?|$)/i.test(url) ? 'application/pdf' : 'image/jpeg', _readonly: true },
+  ]);
+  const allDocList = [...docList, ...pcDocList];
+  const docBody = allDocList.length
     ? `<div class="m-doc-list">
-        ${docList.map(([key, d]) => {
+        ${allDocList.map(([key, d]) => {
           const isImg = (d.mime || '').startsWith('image/');
           return `<div class="m-doc-item" data-doc="${key}">
             <span class="m-doc-thumb">${isImg ? `<img src="${d.url}" alt="">` : `<i class="ph ph-file-text"></i>`}</span>
@@ -767,7 +775,7 @@ function renderCustomerPanel(c) {
               <a href="${d.url}" target="_blank" rel="noopener" class="m-doc-link">${(d.name || '파일').replace(/</g,'&lt;')}</a>
               <span class="m-doc-meta">${d.size ? `${Math.round(d.size/1024)}KB` : ''}${d.uploaded_at ? ` · ${new Date(d.uploaded_at).toLocaleDateString('ko', { month:'2-digit', day:'2-digit' })}` : ''}</span>
             </span>
-            <button class="m-doc-del" data-doc-del="${key}" type="button" aria-label="삭제"><i class="ph ph-trash"></i></button>
+            ${!d._readonly ? `<button class="m-doc-del" data-doc-del="${key}" type="button" aria-label="삭제"><i class="ph ph-trash"></i></button>` : ''}
           </div>`;
         }).join('')}
         <button class="m-doc-add-row" id="ctDocAddBtn" type="button"><i class="ph ph-plus"></i> 서류 추가</button>
@@ -778,8 +786,8 @@ function renderCustomerPanel(c) {
         <span class="m-upload-hint">신분증 · 인감 · 기타 (10MB 이하)</span>
       </button>`;
 
-  // 면허증 (단일, customer_license_url)
-  const licUrl = c.customer_license_url || '';
+  // 면허증 — doc_license(통합) 우선, 구버전 fallback
+  const licUrl = c.doc_license || c.customer_license_url || '';
   const licBody = licUrl
     ? `<div class="m-doc-list">
         <div class="m-doc-item">

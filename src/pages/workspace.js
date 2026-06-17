@@ -16,7 +16,7 @@
  *      core/notify, pages/contract, pages/search
  */
 import { store } from '../core/store.js';
-import { watchCollection, pushRecord, updateRecord, fetchRecord, incrementAtomic } from '../firebase/db.js';
+import { watchCollection, watchRecord, pushRecord, updateRecord, fetchRecord, incrementAtomic } from '../firebase/db.js';
 import { markRoomRead } from '../firebase/collections.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { showToast } from '../core/toast.js';
@@ -37,6 +37,7 @@ import { renderSearchDetail } from './search.js';
 /* ── 모듈 state ── */
 let _activeRoomId = null;
 let _msgUnsub = null;       // 현재 룸 메시지 구독 해제 함수
+let _contractUnsub = null;  // 계약 서류 실시간 구독 해제 함수
 let _currentMessages = [];  // 활성 룸 메시지 캐시
 let _prevPeerReadAt = 0;    // 상대 마지막 읽음 시각 (변경 감지)
 
@@ -280,8 +281,30 @@ export function renderRoomDetail(room) {
         },
       });
 
-      // 계약 서류 미리보기 (면허증 + 첨부서류) — 읽기 전용
+      // 계약 서류 미리보기 (면허증 + 첨부서류) — 읽기 전용 + 실시간 갱신
       _appendContractDocs(stepCard.querySelector('.ws4-body'), contract);
+
+      // 서류 필드 실시간 감지 — 다른 기기에서 업로드 시 즉시 반영
+      if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} }
+      _contractUnsub = watchRecord(`contracts/${contract._key}`, (latest) => {
+        if (!latest) return;
+        const docChanged =
+          latest.doc_license !== contract.doc_license ||
+          latest.customer_license_url !== contract.customer_license_url ||
+          JSON.stringify(latest.doc_attachments) !== JSON.stringify(contract.doc_attachments) ||
+          JSON.stringify(latest.customer_docs) !== JSON.stringify(contract.customer_docs);
+        if (!docChanged) return;
+        Object.assign(contract, {
+          doc_license: latest.doc_license,
+          customer_license_url: latest.customer_license_url,
+          doc_attachments: latest.doc_attachments,
+          customer_docs: latest.customer_docs,
+        });
+        const body = stepCard?.querySelector('.ws4-body');
+        if (!body) return;
+        body.querySelector('.ws-docs-section')?.remove();
+        _appendContractDocs(body, contract);
+      });
     }
   }
 
@@ -504,7 +527,7 @@ function _appendContractDocs(bodyEl, c) {
 
   if (!license && !allAtts.length) return;
 
-  let html = `<div style="border-top:1px solid var(--border);margin-top:4px;padding:8px 0 4px;">
+  let html = `<div class="ws-docs-section" style="border-top:1px solid var(--border);margin-top:4px;padding:8px 0 4px;">
     <div style="font-size:11px;font-weight:600;color:var(--text-sub);padding:0 2px 6px;">첨부 서류</div>`;
 
   if (license) {
