@@ -410,8 +410,14 @@ async function inquireProduct(p) {
     });
     store.pendingOpenRoom = roomId;
     closeAllMobileViews();  // 상품 상세 view 닫고 이동
-    const { navigate } = await import('../core/router.js');
+    const { navigate, getCurrentRoute } = await import('../core/router.js');
+    const alreadyOnWorkspace = getCurrentRoute() === '/workspace';
     navigate('/workspace', { transition: false });
+    if (alreadyOnWorkspace) {
+      // 이미 워크스페이스 탭 — navigate가 mount()를 건너뜀 → 직접 처리
+      const { tryOpenPendingRoom } = await import('./mobile-workspace.js');
+      setTimeout(() => tryOpenPendingRoom(), 0);
+    }
   } catch (e) {
     console.error('[inquireProduct]', e);
     showToast('문의방 열기 실패', 'error');

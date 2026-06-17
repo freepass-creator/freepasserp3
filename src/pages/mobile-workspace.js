@@ -23,6 +23,17 @@ let activeView = null; // {view, close}
 let chatMessages = [];
 let chatKeyboardCleanup = null;
 
+/** 이미 워크스페이스 탭이 활성화된 상태에서 pendingOpenRoom 처리 */
+export function tryOpenPendingRoom() {
+  if (!store.pendingOpenRoom) return;
+  const rid = store.pendingOpenRoom;
+  if ((store.rooms || []).find(r => r._key === rid)) {
+    store.pendingOpenRoom = null;
+    openRoom(rid);
+  }
+  // room 아직 없으면 watchCollection 콜백이 처리
+}
+
 export function mount() {
   cleanup();
   const main = document.getElementById('mainContent');
