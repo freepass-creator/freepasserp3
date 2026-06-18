@@ -1101,6 +1101,14 @@ window.refreshPageActions?.();
 
 /* ── Boot ── */
 async function boot() {
+  // SW 등록 — 새 버전 배포 시 SW_UPDATED 메시지로 자동 새로고침
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.addEventListener('message', (e) => {
+      if (e.data?.type === 'SW_UPDATED') window.location.reload();
+    });
+  }
+
   // 모바일 감지 → body.is-mobile + #mobileApp 표시 (auth 이전, FOUC 회피)
   if (isMobileUA()) {
     document.body.classList.add('is-mobile');

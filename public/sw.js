@@ -7,7 +7,7 @@
  *  - 폰트: cache-first (영구)
  *  - API/Firebase: 캐시 안 함
  */
-const VERSION = 'v44';
+const VERSION = 'v45';
 const CACHE_SHELL = `freepass-shell-${VERSION}`;
 const CACHE_ASSETS = `freepass-assets-${VERSION}`;
 const CACHE_IMAGES = `freepass-images-${VERSION}`;
@@ -29,6 +29,9 @@ self.addEventListener('activate', (e) => {
     const valid = new Set([CACHE_SHELL, CACHE_ASSETS, CACHE_IMAGES, CACHE_FONTS]);
     await Promise.all(keys.filter(k => !valid.has(k)).map(k => caches.delete(k)));
     await self.clients.claim();
+    // 새 버전 활성화 → 열린 탭 모두에 reload 요청
+    const all = await self.clients.matchAll({ type: 'window' });
+    all.forEach(c => c.postMessage({ type: 'SW_UPDATED' }));
   })());
 });
 
