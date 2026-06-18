@@ -45,8 +45,8 @@ export const SHEET_CONFIGS = {
 /* 오플 자동탐지 시 제외할 탭 — 공지/수정중/구버전(구 …)/구독안내. 나머지 보이는 탭은 모두 차량 리스트로 간주. */
 const AUTOPLUS_TAB_EXCLUDE = /공지|수정중|구독|안내|^구\s/;
 
-/* 공급사 탭마다 상태 컬럼 헤더가 다름(상태/판매상태/즉시출고) — 우선순위대로 탐색. -1이면 없음. */
-const STATUS_COL_NAMES = ['상태', '판매상태', '즉시출고'];
+/* 공급사 탭마다 상태 컬럼 헤더가 다름(상태/배차상태/판매상태/즉시출고) — 우선순위대로 탐색. -1이면 없음. */
+const STATUS_COL_NAMES = ['배차상태', '상태', '판매상태', '즉시출고'];
 const findStatusIdx = (headers) => {
   for (const n of STATUS_COL_NAMES) { const i = headers.indexOf(n); if (i >= 0) return i; }
   return -1;
@@ -416,10 +416,12 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     pendingPlate = true;
   }
 
-  const idxStatus = findStatusIdx(headers);   // 상태/판매상태/즉시출고 별칭 — 탭마다 헤더 다름
+  const idxStatus = findStatusIdx(headers);   // 배차상태/상태/판매상태/즉시출고 별칭 — 탭마다 헤더 다름
   const statusRaw = safeGet(row, idxStatus);
   const vehicleStatus = normalizeVehicleStatus(statusRaw);
   const status = statusFlag(vehicleStatus);
+  const idxPhysical = headers.indexOf('차량상태');
+  const physicalStatus = idxPhysical >= 0 ? safeGet(row, idxPhysical) : '';
 
   // 공급코드 명시 컬럼 우선, 없으면 차고지에서 회사명 추출
   const idxProvider = colPartial('공급코드');
@@ -454,6 +456,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     status,
     vehicle_status: vehicleStatus,
     status_label: statusRaw,
+    physical_status: physicalStatus || '',
     is_active: true,
     photo_link: photoLinkMap[absRow] || '',
     source: 'external_sheet',
