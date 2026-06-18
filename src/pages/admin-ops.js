@@ -724,12 +724,13 @@ function renderSyncTab(el) {
           <thead style="position:sticky;top:0;z-index:2;">
             <!-- 그룹 헤더 -->
             <tr>
-              <th colspan="7" style="padding:6px;background:var(--alert-orange-bg);color:var(--alert-orange-text);border-right:3px solid var(--border-strong);">📄 시트 추출 (오토플러스 원본)</th>
+              <th colspan="8" style="padding:6px;background:var(--alert-orange-bg);color:var(--alert-orange-text);border-right:3px solid var(--border-strong);">📄 시트 추출 (오토플러스 원본)</th>
               <th colspan="23" style="padding:6px;background:var(--alert-blue-bg);color:var(--alert-blue-text);">🗂 상품찾기 컬럼 (반영 후) + 정책코드</th>
             </tr>
             <!-- 컬럼 헤더 -->
             <tr style="background:var(--bg-header);font-weight:500;color:var(--text-sub);">
               <!-- 시트 원본 -->
+              <th style="padding:4px 6px;text-align:right;color:var(--text-muted);">#</th>
               <th style="padding:4px 6px;text-align:left;">차량번호</th>
               <th style="padding:4px 6px;text-align:left;">차종</th>
               <th style="padding:4px 6px;text-align:left;">풀네임</th>
@@ -764,10 +765,11 @@ function renderSyncTab(el) {
             </tr>
           </thead>
           <tbody>
-            ${items.map(p => {
+            ${items.map((p, idx) => {
               const r12 = p.price?.['12']?.rent, r24 = p.price?.['24']?.rent, r36 = p.price?.['36']?.rent;   // 좌측 시트추출 미리보기용
               return `<tr style="border-bottom:1px solid var(--border);">
-                <!-- 시트 원본 7칸 -->
+                <!-- 시트 원본 8칸 -->
+                <td style="padding:4px 6px;background:var(--alert-orange-bg);text-align:right;color:var(--text-muted);font-variant-numeric:tabular-nums;">${idx + 1}</td>
                 ${raw(p.car_number)}
                 ${raw(p.raw_model_short)}
                 <td style="padding:4px 6px;background:var(--alert-orange-bg);max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="${esc(p.raw_model_full)}">${e(p.raw_model_full)}</td>
