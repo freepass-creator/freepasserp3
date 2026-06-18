@@ -171,6 +171,7 @@ export function renderSend() {
         <div id="rsTabs" style="display:flex;gap:6px;padding:8px 14px;border-bottom:1px solid var(--border);flex:0 0 auto;">
           <button class="btn btn-sm" data-tab="draft">작성중</button>
           <button class="btn btn-sm" data-tab="sent">발송됨</button>
+          <button class="btn btn-sm" data-tab="pending_review">검토대기</button>
           <button class="btn btn-sm" data-tab="signed">서명완료</button>
         </div>
         <div id="rsListBody" style="flex:1;min-height:0;overflow:auto;"></div>
@@ -209,6 +210,7 @@ export function renderSend() {
     if (btn.classList.contains('rs-load')) loadEntry(r);
     else if (btn.classList.contains('rs-copy')) copyLink(r._key);
     else if (btn.classList.contains('rs-del')) deleteEntry(r);
+    else if (btn.classList.contains('rs-approve')) approveEntry(r);
   });
 
   // ── 상단 검색 자동완성 — 계약(진행중)·재고(상품) → 선택 시 자동 채움(=그 차량의 새 계약) ──
@@ -515,7 +517,7 @@ async function renderList() {
     }
     listRows = all.filter(r => !r._deleted && (r.template || 'rental') === 'rental' && (r.status || 'draft') === listTab);
     if (!listRows.length) {
-      const labels = { draft: '작성중인', sent: '발송한', signed: '서명완료된' };
+      const labels = { draft: '작성중인', sent: '발송한', pending_review: '검토 대기중인', signed: '서명완료된' };
       body.innerHTML = `<div style="padding:28px 16px;text-align:center;color:var(--text-muted);">${labels[listTab]} 계약서가 없습니다</div>`;
       return;
     }
@@ -529,18 +531,27 @@ async function renderList() {
 function rowHtml(r) {
   const st = r.status || 'draft';
   const badge = st === 'signed' ? '<span class="badge badge-green">서명완료</span>'
+    : st === 'pending_review' ? '<span class="badge badge-orange">검토대기</span>'
     : st === 'sent' ? '<span class="badge badge-blue">발송됨</span>'
       : '<span class="badge badge-gray">작성중</span>';
   const title = r.model_name || r.contract_data?.vehicle_name || '(차량 미선택)';
   const sub = [r.car_number, r.customer_name].filter(Boolean).join(' · ') || '—';
   const showCopy = st !== 'draft';
+  const showApprove = st === 'pending_review';
+  const photos = st === 'pending_review' ? `
+    <div style="display:flex;gap:8px;margin-bottom:8px;">
+      ${r.license_photo ? `<div style="flex:1;"><div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">면허증</div><img src="${r.license_photo}" style="width:100%;max-height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);"></div>` : ''}
+      ${r.face_photo ? `<div style="flex:1;"><div style="font-size:11px;color:var(--text-muted);margin-bottom:3px;">얼굴확인</div><img src="${r.face_photo}" style="width:100%;max-height:120px;object-fit:cover;border-radius:6px;border:1px solid var(--border);"></div>` : ''}
+    </div>` : '';
   return `<div class="rs-row" style="padding:10px 14px;border-bottom:1px solid var(--border);">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">${badge}
       <strong style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(title)}</strong></div>
     <div style="color:var(--text-muted);font-size:12px;margin-bottom:7px;">${esc(sub)} · ${fmtDate(r.created_at)}</div>
-    <div style="display:flex;gap:6px;align-items:center;">
+    ${photos}
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
       <button class="btn btn-sm btn-outline rs-load" data-key="${esc(r._key)}"><i class="ph ph-arrow-square-in"></i> 불러오기</button>
       ${showCopy ? `<button class="btn btn-sm btn-outline rs-copy" data-key="${esc(r._key)}"><i class="ph ph-link"></i> 링크복사</button>` : ''}
+      ${showApprove ? `<button class="btn btn-sm btn-primary rs-approve" data-key="${esc(r._key)}"><i class="ph ph-check-circle"></i> 승인</button>` : ''}
       <button class="btn btn-sm btn-outline rs-del" data-key="${esc(r._key)}" style="margin-left:auto;color:var(--alert-red-text);">삭제</button>
     </div>
   </div>`;
@@ -565,6 +576,22 @@ function copyLink(key) {
   const link = `${location.origin}/rental-sign.html?t=${key}`;
   navigator.clipboard.writeText(link).catch(() => {});
   import('../core/toast.js').then(m => m.showToast('서명 링크 복사됨'));
+}
+
+async function approveEntry(r) {
+  if (!confirm(`${r.customer_name || '고객'}님의 면허증·얼굴 사진을 확인했습니까?\n승인하면 계약이 최종 완료 처리됩니다.`)) return;
+  try {
+    const { updateRecord } = await import('../firebase/db.js');
+    await updateRecord(`contract_sign/${r._key}`, { status: 'signed', approved_at: Date.now() });
+    if (r.contract_code) {
+      updateRecord(`contracts/${r.contract_code}`, { contract_status: '계약완료', signed_at: Date.now() }).catch(() => null);
+    }
+    import('../core/toast.js').then(m => m.showToast('승인 완료 — 서명완료로 처리됐습니다'));
+    renderList();
+  } catch (e) {
+    console.error('[rental-send] approve', e);
+    import('../core/toast.js').then(m => m.showToast('승인 실패: ' + (e?.message || e), 'error'));
+  }
 }
 
 async function deleteEntry(r) {
