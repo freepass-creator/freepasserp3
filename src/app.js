@@ -2338,4 +2338,8 @@ function bindLogout() {
 
 }
 
+// 관리자 콘솔 유틸 — 프로덕션 빌드에서도 브라우저 콘솔로 데이터 수정 가능
+window.__store = store;
+window.__db = { updateRecord, fetchRecord, pushRecord, softDelete, setRecord };
+
 boot();
