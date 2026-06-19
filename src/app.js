@@ -1151,7 +1151,7 @@ async function boot() {
     // 백그라운드 서비스 — ⚠ v3 리팩터(9063c71)에서 호출 블록이 통째로 누락된 회귀 복구.
     //  채팅알림/만기알림/메뉴뱃지/명령팔레트는 읽기전용(구독·토스트·뱃지·단축키) → 안전.
     //  initAutoStatus(차량상태 자동변경)는 부작용 검토 후 별도 — 의도적으로 제외.
-    import('./core/banner-popup.js').then(m => m.initBannerPopup(user.role)).catch(() => {});
+    import('./core/banner-popup.js').then(m => m.initBannerPopup(user.role)).catch(e => console.error('[banner] load error:', e));
     import('./core/chat-notif.js').then(m => m.initChatNotif()).catch(() => {});
     // FCM 푸시 — 알림권한 이미 허용된 기기면 토큰 발급/저장 (앱 닫혀있어도 채팅 알림)
     import('./core/push.js').then(m => m.initPush()).catch(() => {});
@@ -2342,5 +2342,11 @@ function bindLogout() {
 // 관리자 콘솔 유틸 — 프로덕션 빌드에서도 브라우저 콘솔로 데이터 수정 가능
 window.__store = store;
 window.__db = { updateRecord, fetchRecord, pushRecord, softDelete, setRecord };
+window.__checkBanner = () => {
+  const role = store.currentUser?.role;
+  console.log('role:', role);
+  console.log('localStorage hide:', localStorage.getItem('fp_banner_hide_date'));
+  fetchRecord('home_notices/__banner__').then(d => console.log('banner data:', d));
+};
 
 boot();
