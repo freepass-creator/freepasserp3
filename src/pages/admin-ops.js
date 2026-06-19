@@ -443,19 +443,22 @@ function renderNoticeTab(el) {
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
           <i class="ph ph-image"></i> 메인 배너 이미지
         </div>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <input class="input" id="bnImgUrl" placeholder="이미지 URL (https://…)">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div id="bnDropZone" style="border:2px dashed var(--border-strong);border-radius:8px;padding:28px 16px;text-align:center;cursor:pointer;transition:background .15s;color:var(--text-muted);font-size:12px;">
+            <i class="ph ph-upload-simple" style="font-size:22px;display:block;margin-bottom:6px;"></i>
+            이미지를 드래그하거나 클릭해서 업로드
+            <input type="file" id="bnFileInput" accept="image/*" style="display:none;">
+          </div>
+          <div id="bnPreviewBox" style="display:none;border-radius:6px;overflow:hidden;border:1px solid var(--border);position:relative;">
+            <img id="bnPreviewImg" src="" alt="배너 미리보기" style="width:100%;height:auto;display:block;">
+            <button id="bnRemoveImg" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer;">✕ 제거</button>
+          </div>
           <input class="input" id="bnLinkUrl" placeholder="클릭 링크 URL (선택)">
           <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
             <input type="checkbox" id="bnActive"> 배너 활성화
           </label>
-          <div style="display:flex;gap:6px;">
-            <button class="btn btn-sm btn-primary" id="bnSave"><i class="ph ph-floppy-disk"></i> 저장</button>
-            <button class="btn btn-sm" id="bnPreview" style="background:var(--bg-sub)"><i class="ph ph-eye"></i> 미리보기</button>
-          </div>
-          <div id="bnPreviewBox" style="display:none;margin-top:4px;border-radius:6px;overflow:hidden;border:1px solid var(--border);">
-            <img id="bnPreviewImg" src="" alt="배너 미리보기" style="width:100%;height:auto;display:block;">
-          </div>
+          <button class="btn btn-sm btn-primary" id="bnSave"><i class="ph ph-floppy-disk"></i> 저장</button>
+          <input type="hidden" id="bnImgUrl">
         </div>
       </div>
 
@@ -480,28 +483,69 @@ function renderNoticeTab(el) {
   // 배너 현재값 로드
   (async () => {
     const banner = await fetchRecord('home_notices/__banner__');
-    if (banner) {
-      el.querySelector('#bnImgUrl').value  = banner.image_url  || '';
-      el.querySelector('#bnLinkUrl').value = banner.link_url   || '';
+    if (banner?.image_url) {
+      el.querySelector('#bnImgUrl').value  = banner.image_url;
+      el.querySelector('#bnLinkUrl').value = banner.link_url || '';
       el.querySelector('#bnActive').checked = !!banner.active;
+      const img = el.querySelector('#bnPreviewImg');
+      img.src = banner.image_url;
+      el.querySelector('#bnPreviewBox').style.display = 'block';
+      el.querySelector('#bnDropZone').style.display = 'none';
     }
   })();
 
+  // 드래그앤드롭 + 클릭 업로드
+  const dropZone  = el.querySelector('#bnDropZone');
+  const fileInput = el.querySelector('#bnFileInput');
+  const previewBox = el.querySelector('#bnPreviewBox');
+  const previewImg = el.querySelector('#bnPreviewImg');
+  const imgUrlField = el.querySelector('#bnImgUrl');
+
+  const handleFile = async (file) => {
+    if (!file || !file.type.startsWith('image/')) return showToast('이미지 파일만 가능합니다', 'error');
+    dropZone.innerHTML = `<i class="ph ph-spinner-gap" style="font-size:22px;display:block;margin-bottom:6px;animation:spin 1s linear infinite;"></i>업로드 중…`;
+    dropZone.style.pointerEvents = 'none';
+    try {
+      const url = await uploadNoticeImage(file);
+      imgUrlField.value = url;
+      previewImg.src = url;
+      previewBox.style.display = 'block';
+      dropZone.style.display = 'none';
+    } catch (e) {
+      showToast('업로드 실패: ' + (e.message || e), 'error');
+      dropZone.innerHTML = `<i class="ph ph-upload-simple" style="font-size:22px;display:block;margin-bottom:6px;"></i>이미지를 드래그하거나 클릭해서 업로드<input type="file" id="bnFileInput" accept="image/*" style="display:none;">`;
+      dropZone.style.pointerEvents = '';
+    }
+  };
+
+  dropZone.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = 'var(--bg-hover)'; });
+  dropZone.addEventListener('dragleave', () => { dropZone.style.background = ''; });
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.style.background = '';
+    handleFile(e.dataTransfer.files[0]);
+  });
+
+  el.querySelector('#bnRemoveImg').addEventListener('click', () => {
+    imgUrlField.value = '';
+    previewImg.src = '';
+    previewBox.style.display = 'none';
+    dropZone.style.display = '';
+    dropZone.style.pointerEvents = '';
+    dropZone.innerHTML = `<i class="ph ph-upload-simple" style="font-size:22px;display:block;margin-bottom:6px;"></i>이미지를 드래그하거나 클릭해서 업로드<input type="file" id="bnFileInput2" accept="image/*" style="display:none;">`;
+    dropZone.querySelector('#bnFileInput2').addEventListener('change', function() { handleFile(this.files[0]); });
+    dropZone.addEventListener('click', () => dropZone.querySelector('#bnFileInput2').click(), { once: true });
+  });
+
   el.querySelector('#bnSave').addEventListener('click', async () => {
-    const image_url = el.querySelector('#bnImgUrl').value.trim();
-    if (!image_url) return showToast('이미지 URL 필수', 'error');
+    const image_url = imgUrlField.value.trim();
+    if (!image_url) return showToast('이미지를 먼저 업로드하세요', 'error');
     const link_url = el.querySelector('#bnLinkUrl').value.trim();
     const active   = el.querySelector('#bnActive').checked;
     await setRecord('home_notices/__banner__', { image_url, link_url, active });
     showToast('배너 저장 완료');
-  });
-
-  el.querySelector('#bnPreview').addEventListener('click', () => {
-    const url = el.querySelector('#bnImgUrl').value.trim();
-    if (!url) return showToast('이미지 URL을 먼저 입력하세요', 'error');
-    const box = el.querySelector('#bnPreviewBox');
-    el.querySelector('#bnPreviewImg').src = url;
-    box.style.display = box.style.display === 'none' ? 'block' : 'none';
   });
 
   const renderList = async () => {
