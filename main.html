@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>freepass ERP</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1B2A4A">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      background: #f1f3f5;
+      color: #111;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ── 배너 팝업 ── */
+    .banner-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+    }
+    .banner-box {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 100%; max-width: 480px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.28);
+    }
+    .banner-img-wrap {
+      display: block; width: 100%; line-height: 0;
+    }
+    .banner-img-wrap img {
+      width: 100%; height: auto; display: block;
+      max-height: 60vh; object-fit: contain;
+    }
+    .banner-footer {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 8px; padding: 10px 14px;
+      border-top: 1px solid #edeef0;
+    }
+    .banner-btn {
+      padding: 7px 14px;
+      border: none; border-radius: 6px;
+      font-size: 13px; font-family: inherit;
+      cursor: pointer; font-weight: 500;
+    }
+    .banner-btn-skip {
+      background: #f1f3f5; color: #495057;
+    }
+    .banner-btn-close {
+      background: #1B2A4A; color: #fff;
+    }
+
+    /* ── 메인 페이지 ── */
+    #app {
+      min-height: 100dvh;
+      display: flex; flex-direction: column;
+      max-width: 600px; margin: 0 auto; padding: 0 0 40px;
+    }
+    .main-header {
+      padding: 32px 24px 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .main-logo {
+      font-size: 18px; font-weight: 700; color: #1B2A4A; letter-spacing: -.3px;
+    }
+    .main-logo span { color: #7F93B3; }
+    .main-body {
+      flex: 1; padding: 24px 16px 0;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    /* 공지 카드 */
+    .notice-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+      overflow: hidden;
+    }
+    .notice-card-head {
+      padding: 12px 16px 0;
+      font-size: 12px; font-weight: 600; color: #1B2A4A;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .notice-list { list-style: none; }
+    .notice-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid #edeef0;
+    }
+    .notice-item:first-child { border-top: none; }
+    .notice-date {
+      font-size: 11px; color: #868e96; white-space: nowrap; padding-top: 2px; min-width: 52px;
+    }
+    .notice-title {
+      font-size: 13px; color: #111; line-height: 1.5;
+    }
+    .notice-empty {
+      padding: 20px 16px;
+      font-size: 13px; color: #868e96; text-align: center;
+    }
+
+    /* 입장 버튼 */
+    .main-footer {
+      padding: 16px;
+    }
+    .btn-enter {
+      width: 100%;
+      padding: 16px;
+      background: #1B2A4A; color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      cursor: pointer; letter-spacing: -.2px;
+      transition: background .15s;
+    }
+    .btn-enter:hover { background: #0F1B35; }
+    .btn-enter:active { background: #08101f; }
+
+    /* 로딩 */
+    #loading {
+      min-height: 100dvh;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #868e96;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading">로딩 중…</div>
+
+  <!-- 배너 팝업 (JS로 표시) -->
+  <div id="bannerOverlay" class="banner-overlay" style="display:none">
+    <div class="banner-box">
+      <a id="bannerLink" class="banner-img-wrap" href="#" target="_blank" rel="noopener noreferrer">
+        <img id="bannerImg" src="" alt="배너">
+      </a>
+      <div class="banner-footer">
+        <button class="banner-btn banner-btn-skip" id="btnSkipToday">오늘 하루 안보기</button>
+        <button class="banner-btn banner-btn-close" id="btnCloseBanner">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 페이지 -->
+  <div id="app" style="display:none">
+    <header class="main-header">
+      <div class="main-logo">freepass <span>ERP</span></div>
+    </header>
+    <div class="main-body">
+      <div class="notice-card" id="noticeCard">
+        <div class="notice-card-head">
+          <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>
+          공지사항
+        </div>
+        <ul class="notice-list" id="noticeList">
+          <li class="notice-empty">공지사항 없음</li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-footer">
+      <button class="btn-enter" id="btnEnter">ERP 입장하기</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+    import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js';
+
+    const FB_CONFIG = {
+      apiKey: 'AIzaSyA0q_6yo9YRkpNeNaawH1AFPZx1IMgj-dY',
+      databaseURL: 'https://freepasserp3-default-rtdb.asia-southeast1.firebasedatabase.app',
+      projectId: 'freepasserp3',
+    };
+    const app  = initializeApp(FB_CONFIG);
+    const auth = getAuth(app);
+    const db   = getDatabase(app);
+
+    const BANNER_KEY = '__banner__';
+    const HIDE_LS_KEY = 'fp_banner_hide_date';
+
+    function todayStr() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // 미로그인 → ERP 로그인 화면으로
+        sessionStorage.setItem('erp_entered', '1');
+        location.replace('/');
+        return;
+      }
+
+      // 역할 확인
+      let role = '';
+      try {
+        const snap = await get(ref(db, `users/${user.uid}/role`));
+        role = snap.val() || '';
+      } catch (_) {}
+
+      const VALID = ['admin','manager','agent','provider','viewer'];
+      if (!VALID.includes(role)) {
+        sessionStorage.setItem('erp_entered', '1');
+        location.replace('/');
+        return;
+      }
+
+      // home_notices 로드 (배너 + 공지)
+      let banner  = null;
+      let notices = [];
+      try {
+        const snap = await get(ref(db, 'home_notices'));
+        const all  = snap.val() || {};
+        Object.entries(all).forEach(([k, v]) => {
+          if (!v || v.status === 'deleted') return;
+          if (k === BANNER_KEY) { banner = v; return; }
+          notices.push({ _key: k, ...v });
+        });
+      } catch (_) {}
+
+      notices.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+
+      // 공지 렌더
+      const listEl = document.getElementById('noticeList');
+      if (notices.length) {
+        listEl.innerHTML = notices.slice(0, 10).map(n => {
+          const date = n.created_at ? new Date(n.created_at).toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' }) : '';
+          const title = String(n.title || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+          return `<li class="notice-item"><span class="notice-date">${date}</span><span class="notice-title">${title}</span></li>`;
+        }).join('');
+      }
+
+      // 배너 팝업
+      if (banner && banner.active && banner.image_url) {
+        const hideDate = localStorage.getItem(HIDE_LS_KEY);
+        if (hideDate !== todayStr()) {
+          const overlay = document.getElementById('bannerOverlay');
+          const img     = document.getElementById('bannerImg');
+          const link    = document.getElementById('bannerLink');
+          img.src = banner.image_url;
+          if (banner.link_url) {
+            link.href = banner.link_url;
+          } else {
+            link.removeAttribute('href');
+            link.style.cursor = 'default';
+          }
+          overlay.style.display = 'flex';
+
+          document.getElementById('btnSkipToday').addEventListener('click', () => {
+            localStorage.setItem(HIDE_LS_KEY, todayStr());
+            overlay.style.display = 'none';
+          });
+          document.getElementById('btnCloseBanner').addEventListener('click', () => {
+            overlay.style.display = 'none';
+          });
+        }
+      }
+
+      // 페이지 표시
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+
+      // ERP 입장
+      document.getElementById('btnEnter').addEventListener('click', () => {
+        sessionStorage.setItem('erp_entered', '1');
+        location.replace('/');
+      });
+    });
+  </script>
+</body>
+</html>

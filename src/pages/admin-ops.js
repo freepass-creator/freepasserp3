@@ -11,7 +11,7 @@
  * 페이지 컨테이너(.pt-page[data-page="admin"]) 안에 마운트.
  */
 import { store } from '../core/store.js';
-import { fetchCollection } from '../firebase/db.js';
+import { fetchCollection, fetchRecord, setRecord } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { customConfirm } from '../core/confirm.js';
 import { saveNotice, deleteNotice, uploadNoticeImage } from '../firebase/notices.js';
@@ -436,13 +436,37 @@ function statCard(label, value, color) {
 /* ──────── 공지 CRUD ──────── */
 function renderNoticeTab(el) {
   el.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <!-- 배너 관리 -->
+      <div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+          <i class="ph ph-image"></i> 메인 배너 이미지
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <input class="input" id="bnImgUrl" placeholder="이미지 URL (https://…)">
+          <input class="input" id="bnLinkUrl" placeholder="클릭 링크 URL (선택)">
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
+            <input type="checkbox" id="bnActive"> 배너 활성화
+          </label>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-sm btn-primary" id="bnSave"><i class="ph ph-floppy-disk"></i> 저장</button>
+            <button class="btn btn-sm" id="bnPreview" style="background:var(--bg-sub)"><i class="ph ph-eye"></i> 미리보기</button>
+          </div>
+          <div id="bnPreviewBox" style="display:none;margin-top:4px;border-radius:6px;overflow:hidden;border:1px solid var(--border);">
+            <img id="bnPreviewImg" src="" alt="배너 미리보기" style="width:100%;height:auto;display:block;">
+          </div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);">
+
+      <!-- 공지 등록 -->
       <div>
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;">새 공지 등록</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <input class="input" id="ncTitle" placeholder="제목">
           <textarea class="input" id="ncContent" rows="3" placeholder="내용" style="height:auto;"></textarea>
-          <input type="file" id="ncImg" accept="image/*" style="font-size:11px;">
           <button class="btn btn-sm btn-primary" id="ncSave"><i class="ph ph-megaphone"></i> 등록</button>
         </div>
       </div>
@@ -452,9 +476,39 @@ function renderNoticeTab(el) {
       </div>
     </div>
   `;
+
+  // 배너 현재값 로드
+  (async () => {
+    const banner = await fetchRecord('home_notices/__banner__');
+    if (banner) {
+      el.querySelector('#bnImgUrl').value  = banner.image_url  || '';
+      el.querySelector('#bnLinkUrl').value = banner.link_url   || '';
+      el.querySelector('#bnActive').checked = !!banner.active;
+    }
+  })();
+
+  el.querySelector('#bnSave').addEventListener('click', async () => {
+    const image_url = el.querySelector('#bnImgUrl').value.trim();
+    if (!image_url) return showToast('이미지 URL 필수', 'error');
+    const link_url = el.querySelector('#bnLinkUrl').value.trim();
+    const active   = el.querySelector('#bnActive').checked;
+    await setRecord('home_notices/__banner__', { image_url, link_url, active });
+    showToast('배너 저장 완료');
+  });
+
+  el.querySelector('#bnPreview').addEventListener('click', () => {
+    const url = el.querySelector('#bnImgUrl').value.trim();
+    if (!url) return showToast('이미지 URL을 먼저 입력하세요', 'error');
+    const box = el.querySelector('#bnPreviewBox');
+    el.querySelector('#bnPreviewImg').src = url;
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+  });
+
   const renderList = async () => {
     const notices = await fetchCollection('home_notices');
-    const list = notices.filter(n => n.status !== 'deleted').sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+    const list = notices
+      .filter(n => n._key !== '__banner__' && n.status !== 'deleted')
+      .sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
     el.querySelector('#ncList').innerHTML = list.length ? list.map(n => `
       <div style="padding:8px;border-bottom:1px solid var(--border);">
         <div style="display:flex;justify-content:space-between;gap:8px;">
@@ -473,20 +527,18 @@ function renderNoticeTab(el) {
       showToast('삭제 완료'); renderList();
     }));
   };
+
   el.querySelector('#ncSave').addEventListener('click', async () => {
     const title = el.querySelector('#ncTitle').value.trim();
     const content = el.querySelector('#ncContent').value.trim();
     if (!title) return showToast('제목 필수', 'error');
-    let image_url = '';
-    const f = el.querySelector('#ncImg').files[0];
-    if (f) image_url = await uploadNoticeImage(f);
-    await saveNotice({ title, content, image_url, created_by: store.currentUser?.user_code || '' });
+    await saveNotice({ title, content, created_by: store.currentUser?.user_code || '' });
     showToast('등록 완료'); devLog(`✓ 공지: ${title}`);
     el.querySelector('#ncTitle').value = '';
     el.querySelector('#ncContent').value = '';
-    el.querySelector('#ncImg').value = '';
     renderList();
   });
+
   renderList();
 }
 

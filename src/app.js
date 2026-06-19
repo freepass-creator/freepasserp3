@@ -1142,6 +1142,11 @@ async function boot() {
   const isBlocked = user && (user.is_active === false || status === 'pending' || status === 'rejected');
 
   if (user && hasValidRole && !isBlocked) {
+    // 세션 첫 진입 → 메인 랜딩 페이지 거쳐서 ERP 입장
+    if (!sessionStorage.getItem('erp_entered')) {
+      location.replace('/main.html');
+      return;
+    }
     document.body.classList.remove('is-login');
     hydrateUser(user);
     // 인증으로 role 클래스가 붙은 뒤 페이지 가드 재평가 — 초기 showPage 는 인증 전 실행돼

@@ -7,13 +7,13 @@
  *  - 폰트: cache-first (영구)
  *  - API/Firebase: 캐시 안 함
  */
-const VERSION = 'v45';
+const VERSION = 'v46';
 const CACHE_SHELL = `freepass-shell-${VERSION}`;
 const CACHE_ASSETS = `freepass-assets-${VERSION}`;
 const CACHE_IMAGES = `freepass-images-${VERSION}`;
 const CACHE_FONTS = `freepass-fonts-${VERSION}`;
 
-const SHELL_URLS = ['/', '/index.html', '/sign.html', '/catalog.html', '/manifest.json', '/favicon.svg'];
+const SHELL_URLS = ['/', '/index.html', '/main.html', '/sign.html', '/catalog.html', '/manifest.json', '/favicon.svg'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
@@ -51,7 +51,7 @@ function isAsset(request) {
   return /\.(js|mjs|css)$/i.test(new URL(request.url).pathname);
 }
 function isShell(url) {
-  return ['/', '/index.html', '/sign.html', '/catalog.html'].includes(url.pathname);
+  return ['/', '/index.html', '/main.html', '/sign.html', '/catalog.html'].includes(url.pathname);
 }
 
 async function staleWhileRevalidate(request, cacheName) {
