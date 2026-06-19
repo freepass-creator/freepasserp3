@@ -88,6 +88,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        landing: resolve(__dirname, 'main.html'),
         catalog: resolve(__dirname, 'catalog.html'),
         proposal: resolve(__dirname, 'proposal.html'),
         sign: resolve(__dirname, 'sign.html'),
