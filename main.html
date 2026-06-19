@@ -239,8 +239,8 @@
         }).join('');
       }
 
-      // 배너 팝업
-      if (banner && banner.active && banner.image_url) {
+      // 배너 팝업 — 관리자·영업자만
+      if (banner && banner.active && banner.image_url && (role === 'admin' || role === 'agent')) {
         const hideDate = localStorage.getItem(HIDE_LS_KEY);
         if (hideDate !== todayStr()) {
           const overlay = document.getElementById('bannerOverlay');
