@@ -1615,49 +1615,6 @@
       inset 0 -1px 0 var(--border);
   }
 
-  /* ── 상품찾기 배너 ── */
-  [data-page="search"].pt-page.active {
-    display: flex;
-    flex-direction: column;
-  }
-  #searchBannerWrap:empty { display: none; }
-  #searchBannerBar {
-    position: relative;
-    flex-shrink: 0;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 6px;
-    line-height: 0;
-    cursor: default;
-  }
-  #searchBannerBar img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-    display: block;
-  }
-  .search-banner-btns {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    display: flex;
-    gap: 6px;
-  }
-  .search-banner-btn {
-    padding: 4px 10px;
-    border: none;
-    border-radius: 4px;
-    background: rgba(0,0,0,.55);
-    color: #fff;
-    font-size: 12px;
-    font-family: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    line-height: 1.4;
-    backdrop-filter: blur(2px);
-  }
-  .search-banner-btn:hover { background: rgba(0,0,0,.78); }
-
   /* ── 상세 패널 오버레이 (상품 찾기) ──
      리스트는 항상 풀폭, 상세는 우측 absolute 로 빵 뜸 (no animation) */
   [data-page="search"] .ws4 {

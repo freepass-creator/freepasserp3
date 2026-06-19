@@ -11,9 +11,8 @@ function todayStr() {
 export async function initBannerPopup(role) {
   if (role !== 'admin' && role !== 'agent') return;
 
-  const hideVal = localStorage.getItem(HIDE_KEY);
   const today = todayStr();
-  if (hideVal === today) return;
+  if (localStorage.getItem(HIDE_KEY) === today) return;
 
   let banner;
   try {
@@ -23,43 +22,31 @@ export async function initBannerPopup(role) {
 
   if (!banner?.active || !banner?.image_url) return;
 
-  const wrap = document.getElementById('searchBannerWrap');
-  if (!wrap) return;
-
-  const bar = document.createElement('div');
-  bar.id = 'searchBannerBar';
+  const overlay = document.createElement('div');
+  overlay.id = 'catBannerOverlay';
+  const box = document.createElement('div');
+  box.id = 'catBannerBox';
 
   const imgWrap = document.createElement(banner.link_url ? 'a' : 'div');
-  if (banner.link_url) {
-    imgWrap.href = banner.link_url;
-    imgWrap.target = '_blank';
-    imgWrap.rel = 'noopener noreferrer';
-  }
+  if (banner.link_url) { imgWrap.href = banner.link_url; imgWrap.target = '_blank'; imgWrap.rel = 'noopener noreferrer'; }
   const img = document.createElement('img');
-  img.src = banner.image_url;
-  img.alt = '공지';
+  img.src = banner.image_url; img.alt = '공지';
   imgWrap.appendChild(img);
 
   const btnGroup = document.createElement('div');
-  btnGroup.className = 'search-banner-btns';
-
+  btnGroup.className = 'cat-banner-btns';
   const btnSkip = document.createElement('button');
-  btnSkip.className = 'search-banner-btn';
-  btnSkip.textContent = '오늘 하루 안보기';
-
+  btnSkip.className = 'cat-banner-btn'; btnSkip.textContent = '오늘 하루 안보기';
   const btnClose = document.createElement('button');
-  btnClose.className = 'search-banner-btn';
-  btnClose.textContent = '✕ 닫기';
+  btnClose.className = 'cat-banner-btn'; btnClose.textContent = '✕ 닫기';
 
-  const close = () => bar.remove();
-
-  btnSkip.addEventListener('click', () => {
-    localStorage.setItem(HIDE_KEY, todayStr());
-    close();
-  });
+  const close = () => overlay.remove();
+  btnSkip.addEventListener('click', () => { localStorage.setItem(HIDE_KEY, today); close(); });
   btnClose.addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
 
   btnGroup.append(btnSkip, btnClose);
-  bar.append(imgWrap, btnGroup);
-  wrap.appendChild(bar);
+  box.append(imgWrap, btnGroup);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
 }
