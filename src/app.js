@@ -1142,11 +1142,6 @@ async function boot() {
   const isBlocked = user && (user.is_active === false || status === 'pending' || status === 'rejected');
 
   if (user && hasValidRole && !isBlocked) {
-    // 세션 첫 진입 → 메인 랜딩 페이지 거쳐서 ERP 입장
-    if (!sessionStorage.getItem('erp_entered')) {
-      location.replace('/main.html');
-      return;
-    }
     document.body.classList.remove('is-login');
     hydrateUser(user);
     // 인증으로 role 클래스가 붙은 뒤 페이지 가드 재평가 — 초기 showPage 는 인증 전 실행돼
@@ -1156,6 +1151,7 @@ async function boot() {
     // 백그라운드 서비스 — ⚠ v3 리팩터(9063c71)에서 호출 블록이 통째로 누락된 회귀 복구.
     //  채팅알림/만기알림/메뉴뱃지/명령팔레트는 읽기전용(구독·토스트·뱃지·단축키) → 안전.
     //  initAutoStatus(차량상태 자동변경)는 부작용 검토 후 별도 — 의도적으로 제외.
+    import('./core/banner-popup.js').then(m => m.initBannerPopup(user.role)).catch(() => {});
     import('./core/chat-notif.js').then(m => m.initChatNotif()).catch(() => {});
     // FCM 푸시 — 알림권한 이미 허용된 기기면 토큰 발급/저장 (앱 닫혀있어도 채팅 알림)
     import('./core/push.js').then(m => m.initPush()).catch(() => {});
