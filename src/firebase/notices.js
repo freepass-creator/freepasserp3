@@ -3,6 +3,7 @@
  */
 import { watchCollection, setRecord, updateRecord, softDelete, pushRecord } from './db.js';
 import { uploadImage } from './storage-helper.js';
+import { auth } from './config.js';
 
 export function watchNotices(callback) {
   return watchCollection('home_notices', callback);
@@ -26,7 +27,8 @@ export async function deleteNotice(key) {
 }
 
 export async function uploadNoticeImage(file) {
-  const path = `notice-images/${Date.now()}_${file.name}`;
+  const uid = auth.currentUser?.uid || 'unknown';
+  const path = `notice-images/${uid}/${Date.now()}_${file.name}`;
   const { url } = await uploadImage(path, file);
   return url;
 }
