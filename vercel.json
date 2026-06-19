@@ -17,6 +17,7 @@
     },
     { "source": "/catalog.html", "destination": "/catalog.html" },
     { "source": "/proposal.html", "destination": "/proposal.html" },
+    { "source": "/main.html", "destination": "/main.html" },
     { "source": "/sign.html", "destination": "/sign.html" },
     { "source": "/vehicle-options-catalog-test.html", "destination": "/vehicle-options-catalog-test.html" },
     { "source": "/((?!assets|manifest|favicon|icons|robots|api|data|public).*)", "destination": "/index.html" }
