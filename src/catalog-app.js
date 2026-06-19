@@ -737,6 +737,45 @@ authReady.then(() => {
     if (_products.length) renderGrid();
   });
 });
+// 카탈로그 배너 오버레이 — authReady 후 실행 (home_notices/__banner__ 은 auth!=null 룰)
+authReady.then(async () => {
+  const HIDE_KEY = 'fp_banner_hide_date';
+  const today = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
+  console.log('[cat-banner] start, today=', today, 'hideVal=', localStorage.getItem(HIDE_KEY));
+  if (localStorage.getItem(HIDE_KEY) === today) { console.log('[cat-banner] hidden today'); return; }
+  let banner;
+  try {
+    const snap = await get(dbRef(db, 'home_notices/__banner__'));
+    banner = snap.val();
+    console.log('[cat-banner] firebase data:', banner);
+  } catch (e) { console.error('[cat-banner] firebase error:', e); return; }
+  if (!banner?.active || !banner?.image_url) { console.log('[cat-banner] inactive or no image'); return; }
+
+  const overlay = document.createElement('div');
+  overlay.id = 'catBannerOverlay';
+  const box = document.createElement('div');
+  box.id = 'catBannerBox';
+  const imgWrap = document.createElement(banner.link_url ? 'a' : 'div');
+  if (banner.link_url) { imgWrap.href = banner.link_url; imgWrap.target = '_blank'; imgWrap.rel = 'noopener noreferrer'; }
+  const img = document.createElement('img');
+  img.src = banner.image_url; img.alt = '공지';
+  imgWrap.appendChild(img);
+  const btnGroup = document.createElement('div');
+  btnGroup.className = 'cat-banner-btns';
+  const btnSkip = document.createElement('button');
+  btnSkip.className = 'cat-banner-btn'; btnSkip.textContent = '오늘 하루 안보기';
+  const btnClose = document.createElement('button');
+  btnClose.className = 'cat-banner-btn'; btnClose.textContent = '✕ 닫기';
+  const close = () => overlay.remove();
+  btnSkip.addEventListener('click', () => { localStorage.setItem(HIDE_KEY, today); close(); });
+  btnClose.addEventListener('click', close);
+  overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+  btnGroup.append(btnSkip, btnClose);
+  box.append(imgWrap, btnGroup);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+});
+
 watchCollection('products', (list) => {
   let raw = list || [];
   // ?p 공급사 필터

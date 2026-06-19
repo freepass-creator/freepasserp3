@@ -78,3 +78,31 @@
 .pd-act:hover { background: var(--c-bg-zebra); color: var(--c-text); }
 .pd-act.is-primary { background: var(--c-accent); border-color: var(--c-accent); color: #fff; }
 .pd-act.is-primary:hover { background: #0F1B35; }
+
+/* ── 카탈로그 배너 오버레이 ── */
+#catBannerOverlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+}
+#catBannerBox {
+  position: relative;
+  max-width: 520px; width: 100%;
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  line-height: 0;
+}
+#catBannerBox img { width: 100%; max-height: 400px; object-fit: contain; display: block; background: #000; }
+.cat-banner-btns {
+  position: absolute; bottom: 10px; right: 10px;
+  display: flex; gap: 6px; line-height: 1;
+}
+.cat-banner-btn {
+  padding: 5px 12px;
+  border: none; border-radius: 4px;
+  background: rgba(0,0,0,.6); color: #fff;
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  backdrop-filter: blur(2px);
+}
+
