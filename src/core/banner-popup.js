@@ -9,44 +9,22 @@ function todayStr() {
 }
 
 export async function initBannerPopup(role) {
-  console.log('[banner] initBannerPopup called, role=', role);
-
-  if (role !== 'admin' && role !== 'agent') {
-    console.log('[banner] role check fail — not admin/agent');
-    return;
-  }
+  if (role !== 'admin' && role !== 'agent') return;
 
   const hideVal = localStorage.getItem(HIDE_KEY);
   const today = todayStr();
-  if (hideVal === today) {
-    console.log('[banner] localStorage hide_date matched today:', hideVal);
-    return;
-  }
+  if (hideVal === today) return;
 
   let banner;
   try {
     const snap = await get(ref(db, 'home_notices/__banner__'));
     banner = snap.val();
-    console.log('[banner] Firebase data:', banner);
-  } catch (e) {
-    console.error('[banner] Firebase fetch error:', e);
-    return;
-  }
+  } catch { return; }
 
-  if (!banner?.active) {
-    console.log('[banner] banner.active is falsy:', banner?.active);
-    return;
-  }
-  if (!banner?.image_url) {
-    console.log('[banner] banner.image_url is empty');
-    return;
-  }
+  if (!banner?.active || !banner?.image_url) return;
 
   const wrap = document.getElementById('searchBannerWrap');
-  if (!wrap) {
-    console.log('[banner] #searchBannerWrap not found in DOM');
-    return;
-  }
+  if (!wrap) return;
 
   const bar = document.createElement('div');
   bar.id = 'searchBannerBar';
@@ -84,5 +62,4 @@ export async function initBannerPopup(role) {
   btnGroup.append(btnSkip, btnClose);
   bar.append(imgWrap, btnGroup);
   wrap.appendChild(bar);
-  console.log('[banner] banner rendered OK');
 }

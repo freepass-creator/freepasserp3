@@ -741,15 +741,13 @@ authReady.then(() => {
 authReady.then(async () => {
   const HIDE_KEY = 'fp_banner_hide_date';
   const today = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
-  console.log('[cat-banner] start, today=', today, 'hideVal=', localStorage.getItem(HIDE_KEY));
-  if (localStorage.getItem(HIDE_KEY) === today) { console.log('[cat-banner] hidden today'); return; }
+  if (localStorage.getItem(HIDE_KEY) === today) return;
   let banner;
   try {
     const snap = await get(dbRef(db, 'home_notices/__banner__'));
     banner = snap.val();
-    console.log('[cat-banner] firebase data:', banner);
-  } catch (e) { console.error('[cat-banner] firebase error:', e); return; }
-  if (!banner?.active || !banner?.image_url) { console.log('[cat-banner] inactive or no image'); return; }
+  } catch { return; }
+  if (!banner?.active || !banner?.image_url) return;
 
   const overlay = document.createElement('div');
   overlay.id = 'catBannerOverlay';
