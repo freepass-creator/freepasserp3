@@ -69,9 +69,10 @@ const PARTNER_NAME_TO_CODE = {
   '센트로': 'RP017',
   '에이스': 'RP019',
   '우리캐피탈렌터카': 'RP020',
-  '빌린카': 'RP021',
+  '빌린카': 'RP021', '엘씨': 'RP021',
   '퍼시픽': 'RP022',
   '오토플러스': 'RP023',
+  '렌트존': 'PT-0001',
   '퍼스트': 'RP009',
   '스타': 'RP018',
 };
@@ -413,10 +414,9 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
   if (!carNumber || !VALID_CAR_NO.test(carNumber)) {
     const cls = safeGet(row, colIdx('차종분류'));
     const sub = safeGet(row, colIdx('세부모델'));
-    if (!cls && !sub) { console.log(`[sync-debug] row ${absRow}: car="${carNumber}" cls/sub 모두 빔 → null`); return null; }
+    if (!cls && !sub) return null;
     carNumber = `100신${String(absRow).padStart(4, '0')}`;
     pendingPlate = true;
-    console.log(`[sync-debug] row ${absRow}: 미정번호 → ${carNumber} cls="${cls}" sub="${sub}"`);
   }
 
   const idxStatus = findStatusIdx(headers);   // 배차상태/상태/판매상태/즉시출고 별칭 — 탭마다 헤더 다름
@@ -427,8 +427,8 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
   const physicalStatus = idxPhysical >= 0 ? safeGet(row, idxPhysical) : '';
 
   // 공급코드 명시 컬럼 우선, 없으면 차고지에서 회사명 추출
-  const idxProvider = colPartial('공급코드');
-  const idxPolicy   = colPartial('정책코드');
+  const idxProvider = colIdx('공급사코드');
+  const idxPolicy   = colIdx('정책코드');
   const sheetProvider = idxProvider >= 0 ? safeGet(row, idxProvider) : '';
   const sheetPolicy   = idxPolicy   >= 0 ? safeGet(row, idxPolicy)   : '';
 
@@ -436,7 +436,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
   const yard = safeGet(row, idxYard);
   // 공급사 식별: 공급코드 컬럼 > 차고지 추출 > 탭 이름(자동탐지 시 탭=공급사)
   const partnerCode = sheetProvider || findPartnerCode(yard) || tabPartnerCode;
-  if (!partnerCode) { console.log(`[sync-debug] row ${absRow}: car="${carNumber}" yard="${yard}" partnerCode 없음 → null`); return null; }
+  if (!partnerCode) return null;
 
   const product = {
     car_number: carNumber,
@@ -530,8 +530,6 @@ export async function syncFromSheet(source) {
   const nowMs = Date.now();
   let synced = 0, skipped = 0;
   const tabsScanned = [];
-  const _debugSkipped = [];
-
   if (config.schema === 'auto-supply') {
     // 공급사 탭 전수 취합 — 탭 이름 = 공급사. 종합/시스템 탭만 제외.
     //  할당량 보호: 탭별 호출(×N) 대신 batchGet(값) + grid(사진칩·숨김) 각 1회로.
@@ -649,15 +647,9 @@ export async function syncFromSheet(source) {
       } else if (config.schema === 'general') {
         p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
       }
-      if (!p) {
-        const rawCar = row[headers.indexOf('차량번호')] ?? '';
-        const rawCls = row[headers.indexOf('차종분류')] ?? '';
-        const rawYard = row[headers.indexOf('차고지')] ?? '';
-        _debugSkipped.push({ absRow, car: String(rawCar).trim(), cls: String(rawCls).trim(), yard: String(rawYard).trim(), reason: 'parseNull' });
-        skipped++; continue;
-      }
+      if (!p) { skipped++; continue; }
       if (hiddenRows.has(absRow)) { p.vehicle_status = '출고불가'; p.status = 'unavailable'; p.status_label = '시트 숨김'; }
-      if (p.vehicle_status === '출고불가') { _debugSkipped.push({ absRow, car: p.car_number, reason: 'unavailable', status: p.status_label }); skipped++; continue; }   // 출고가능만 import
+      if (p.vehicle_status === '출고불가') { skipped++; continue; }   // 출고가능만 import
       products[p._key] = p;
       synced++;
     }
@@ -671,7 +663,6 @@ export async function syncFromSheet(source) {
     source, sheet_id: config.sheet_id, tab_name: config.tab_name,
     provider_code: config.provider_code || null,
     schema: config.schema,
-    _debug_skipped: _debugSkipped,
   };
 }
 

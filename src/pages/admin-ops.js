@@ -691,10 +691,6 @@ function renderSyncTab(el) {
       _syncFetched = data;
       const unmatched = items.length - matched;
       devLog(`[sync] ✓ ${data.synced}건 · 스킵 ${data.skipped}건 · 자동분류 ${matched}/${items.length}`);
-      if (Array.isArray(data._debug_skipped) && data._debug_skipped.length) {
-        devLog(`[sync] 스킵 상세:`);
-        data._debug_skipped.forEach(d => devLog(`  row${d.absRow} car="${d.car}" cls="${d.cls||''}" yard="${d.yard||''}" → ${d.reason}${d.status ? ' ('+d.status+')' : ''}`));
-      }
       // 공급시트 자동탐지 — 처리한 탭 목록 표시
       if (data.schema === 'auto-supply' && Array.isArray(data.tabs_scanned)) {
         const tabSummary = data.tabs_scanned.map(t => `${t.tab}(${t.synced})`).join(', ');
