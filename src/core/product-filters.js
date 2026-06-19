@@ -6,6 +6,7 @@
  * buildDynamicChips: dynamic 필터(제조사/모델/연식 등) 칩을 products 에서 집계
  */
 import { needsReview, VEHICLE_STATUSES } from './product-badges.js';
+import { normalizeProductType } from './normalize.js';
 
 export const TOP_N = {
   maker: 8, model: 12, submodel: 12, year: 10,
@@ -74,8 +75,8 @@ export const FILTERS = {
   },
   product_type: {
     label: '상품구분', icon: 'ph ph-tag',
-    chips: ['중고렌트','신차렌트','중고구독','신차구독'].map(s => ({
-      id: `pt_${s}`, label: s, match: v => v === s,
+    chips: ['신차','재렌트','재구독'].map(s => ({
+      id: `pt_${s}`, label: s, match: v => normalizeProductType(v) === s,
     })),
   },
   vehicle_class: { label: '차종구분', icon: 'ph ph-car', chips: [], dynamic: true, field: 'vehicle_class' },

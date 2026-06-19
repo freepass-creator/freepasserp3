@@ -64,7 +64,7 @@ import { VEHICLE_STATUSES } from '../core/product-badges.js';
 /* v2 product-manage 옵션 — 차량 스펙 드롭다운 */
 export const PRODUCT_OPTS = {
   vehicle_status: VEHICLE_STATUSES,
-  product_type: ['중고렌트','신차렌트','중고구독','신차구독'],
+  product_type: ['신차','재렌트','재구독'],
   fuel_type: ['가솔린','디젤','LPG','하이브리드','전기','수소'],
   vehicle_class: ['경차','소형','준중형','중형','준대형','대형','SUV','RV','승합','화물','수입'],
   drive_type: ['전륜(FF)','후륜(FR)','4륜(AWD)','4륜(4WD)'],

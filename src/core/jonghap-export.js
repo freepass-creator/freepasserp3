@@ -10,6 +10,8 @@
  *   - 보험·운전 컬럼(운전자범위~전용계좌): 연결 policy 에서 압축 표기로 변환 (best-effort)
  */
 
+import { normalizeProductType } from './normalize.js';
+
 /* 종합탭 머리글 순서 — 절대 임의 변경 금지 (붙여넣기 정합성). 시트 헤더와 1:1 */
 export const JONGHAP_COLUMNS = [
   '상태', '입고일자', '구분', '차량번호', '차종분류', '세부모델', '연료', '외장', '내장', 'Km',
@@ -70,9 +72,10 @@ function policyCells(pol) {
 
 /* product 의 product_type → 종합 '구분' (신차/중고). */
 function gubun(p) {
-  const t = String(p.product_type || '');
-  if (/^신차/.test(t)) return '신차';
-  if (/^중고/.test(t)) return '중고';
+  const t = normalizeProductType(p.product_type);
+  if (t === '신차')   return '신차';
+  if (t === '재렌트') return '중고';
+  if (t === '재구독') return '중고';
   return '';
 }
 

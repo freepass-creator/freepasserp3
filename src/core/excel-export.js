@@ -7,6 +7,7 @@
 
 import { first, parsePol, parseRange, findPolicy, insVal } from './policy-utils.js';
 import { firstProductImage } from './product-photos.js';
+import { normalizeProductType } from './normalize.js';
 
 // enrichProductsWithPolicy는 외부(search.js 등)에서도 쓰므로 re-export
 export { enrichProductsWithPolicy } from './policy-utils.js';
@@ -97,8 +98,7 @@ const pr = (m, k) => ({
 export const PRODUCT_COLS = [
   // ── 뱃지/상태 (먼저) ──
   { f:'vehicle_status', l:'차량상태',  w:10 },
-  { f:'product_origin', l:'신차/중고', w:10, get: r => /^신차/.test(r.product_type || '') ? '신차' : (/^중고/.test(r.product_type || '') ? '중고' : '') },
-  { f:'product_way',    l:'렌트/구독', w:10, get: r => /구독$/.test(r.product_type || '') ? '구독' : (/렌트$/.test(r.product_type || '') ? '렌트' : '') },
+  { f:'product_type_disp', l:'구분', w:8, get: r => normalizeProductType(r.product_type) },
   { f:'review_status',  l:'심사여부',  w:10 },
   // ── 식별 ──
   { f:'car_number',     l:'차량번호',  w:14 },

@@ -31,17 +31,13 @@ function vehicleStatusBadge(product) {
   return tone ? badgeHtml(vs, tone) : '';
 }
 
-/* ── 상품구분 뱃지 — 계열 분리 + 중고는 soft 변형
- *    렌트  = 파랑(info)  | 구독  = 초록(ok)
- *    신차  = is-filled (진하게) | 중고 = is-soft (연하게) */
+/* ── 상품구분 뱃지 — 신차/재렌트/재구독 3분류 */
 function productTypeBadge(product) {
   const pt = normalizeProductType(product?.product_type);
   if (!pt) return '';
-  const isNew = /^신차/.test(pt);
-  const isRent = /렌트$/.test(pt);
-  const tone = isRent ? 'info' : 'ok';
-  const variant = isNew ? 'is-filled' : 'is-soft';
-  return badgeHtml(pt, tone, variant);
+  const COLOR = { '신차': 'blue', '재렌트': 'green', '재구독': 'orange' };
+  const tone = COLOR[pt] || 'gray';
+  return badgeHtml(pt, tone);
 }
 
 /* ── 심사여부 판정 (boolean) ── */

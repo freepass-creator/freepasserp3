@@ -767,7 +767,7 @@ async function createNewProduct() {
     provider_company_code: providerCode,
     partner_code: partnerCode,
     vehicle_status: '상품화중',
-    product_type: '중고렌트',
+    product_type: '재렌트',
     is_active: true,
     created_at: Date.now(),
     created_by: me.uid,

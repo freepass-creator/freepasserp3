@@ -26,6 +26,7 @@ import { findCatalog } from '../core/vehicle-matrix.js';
 import { FILTERS, matchFilter } from '../core/product-filters.js';
 import { creditGradeLabel } from '../core/product-badges.js';
 import { matchRecord } from '../core/search-match.js';
+import { normalizeProductType } from '../core/normalize.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
 let _onCreateRoom = null;
@@ -167,6 +168,12 @@ export function renderSearchTable(products) {
   // CSS 의 line-clamp 로 정적 처리 (col-options 셀 안의 chip 들이 N줄 초과하면 자동 잘림).
 }
 
+function renderTypeBadge(raw) {
+  const t = normalizeProductType(raw);
+  if (!t) return '-';
+  return `<span class="type-chip type-${esc(t)}">${esc(t)}</span>`;
+}
+
 function renderSearchRow(p) {
   const status = p.vehicle_status || '대기';
   const stFull = normalizeVehicleStatus(status);   // 5종 풀 라벨
@@ -190,7 +197,7 @@ function renderSearchRow(p) {
     <tr data-id="${p._key}">
       <td class="sticky-col" title="${esc(p.car_number || '')}">${p.car_number || '-'}</td>
       <td class="center" title="${esc(status)}"><span class="status-chip ${esc(stFull)}">${esc(stFull)}</span></td>
-      <td class="center" title="${esc(p.product_type || '')}">${p.product_type || '-'}</td>
+      <td class="center" title="${esc(p.product_type || '')}">${renderTypeBadge(p.product_type)}</td>
       <td title="${esc(maker)}">${makerBadge(maker)}</td>
       <td title="${esc(model)}">${model}</td>
       <td title="${esc(subModel)}">${subModel}</td>
