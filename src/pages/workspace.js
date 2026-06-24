@@ -250,6 +250,7 @@ export function renderRoomDetail(room) {
     (linkedContract && c.contract_code === linkedContract) ||
     (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom))
   );
+  console.log('[ws-detail] role:', role, 'contract:', contract?.contract_code || 'NOT FOUND', 'store.contracts:', store.contracts?.length, 'productUid:', productUid, 'carNumber:', carNumberRoom);
   // 3번 패널(계약 진행): 진행 단계 + 메모
   if (stepCard) {
     if (!contract) {
