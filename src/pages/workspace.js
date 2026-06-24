@@ -282,7 +282,8 @@ export function renderRoomDetail(room) {
       });
 
       // 계약 서류 미리보기 (면허증 + 첨부서류) — 읽기 전용 + 실시간 갱신
-      console.log('[ws-docs] contract_code:', contract.contract_code, 'key:', contract._key, 'ALL KEYS:', Object.keys(contract).filter(k => k.startsWith('doc') || k.startsWith('customer')));
+      console.log('[ws-docs] store:', contract.contract_code, contract._key, 'doc_license:', contract.doc_license, 'doc_atts:', contract.doc_attachments);
+      import('../firebase/db.js').then(({get, ref, db}) => get(ref(db, `contracts/${contract._key}`)).then(s => { const d = s.val(); console.log('[ws-docs] FIREBASE DIRECT:', d?.doc_license, 'atts:', d?.doc_attachments?.length || d?.doc_attachments, 'cust:', d?.customer_docs); })).catch(e => console.error('[ws-docs] direct read err:', e));
       _appendContractDocs(stepCard.querySelector('.ws4-body'), contract);
 
       // 서류 필드 실시간 감지 — 다른 기기에서 업로드 시 즉시 반영
