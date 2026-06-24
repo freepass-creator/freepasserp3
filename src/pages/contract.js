@@ -323,6 +323,15 @@ export function renderContractDocs(card, c, opts = {}) {
     </div>
   `;
 
+  // 이미지 클릭 → 풀스크린 (모든 역할 — readOnly 포함)
+  const allDocImgs = [...wrap.querySelectorAll('[data-doc-img]')].map(el => el.dataset.docImg);
+  wrap.querySelectorAll('[data-doc-img]').forEach(img => {
+    img.addEventListener('click', () => {
+      const startIdx = allDocImgs.indexOf(img.dataset.docImg);
+      openFullscreen(allDocImgs, Math.max(0, startIdx));
+    });
+  });
+
   if (!canEdit) return;
 
   // 면허증 업로드 + 자동 OCR — 차량등록증과 동일한 UX (업로드 = 자동 분석)
@@ -431,15 +440,6 @@ export function renderContractDocs(card, c, opts = {}) {
     });
   });
 
-  // 이미지 클릭 → 풀스크린 (재고/상품찾기와 동일 openFullscreen 사용)
-  //  면허증 1장 + 첨부서류 N장 모두 한 갤러리로 묶어서 좌우 스와이프 가능
-  const allDocImgs = [...wrap.querySelectorAll('[data-doc-img]')].map(el => el.dataset.docImg);
-  wrap.querySelectorAll('[data-doc-img]').forEach(img => {
-    img.addEventListener('click', () => {
-      const startIdx = allDocImgs.indexOf(img.dataset.docImg);
-      openFullscreen(allDocImgs, Math.max(0, startIdx));
-    });
-  });
 }
 
 /* v2 contract.js renderWork 동등 — 진행 단계 + 클릭 + 드롭다운 + 취소/완료 + 메모 */
@@ -478,7 +478,8 @@ export function renderContractWorkV2(c) {
     const c2 = sub.choices;
     const isOwner = (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
                  || (sub.actor === 'provider' && role === 'provider')
-                 || (sub.actor === 'admin'    && role === 'admin');
+                 || (sub.actor === 'admin'    && role === 'admin')
+                 || (sub.paymentShared && (role === 'provider' || role === 'agent' || role === 'agent_admin'));
     const canClick = isAdmin || isOwner;
     // 본인은 done 셀 못 건드림. admin 만 원복 허용.
     const canEdit = canClick && !st.locked && !sub.rejected && !sub.auto

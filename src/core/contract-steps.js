@@ -37,8 +37,8 @@ export const STEPS = [
     label: '입금',
     icon: 'coin',
     checks: [
-      { actor: 'agent',    key: 'agent_balance_paid',         label: '계약금 입금' },
-      { actor: 'provider', key: 'provider_balance_confirmed', label: '잔금 확인' },
+      { actor: 'agent',    key: 'agent_balance_paid',         label: '계약금 입금', paymentShared: true },
+      { actor: 'provider', key: 'provider_balance_confirmed', label: '잔금 확인', paymentShared: true },
     ],
   },
   {
