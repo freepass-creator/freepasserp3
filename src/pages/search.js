@@ -423,6 +423,34 @@ export async function searchActionContract(p) {
       created_by: me.uid,
     });
     showToast(`가계약 생성됨 — ${tempCode} (완료 시 실코드 부여)`, 'success');
+
+    // 소통방도 자동 생성 (기존 방 없으면)
+    try {
+      const existing = (store.rooms || []).find(r =>
+        r.product_uid === p._key || r.product_id === p._key ||
+        (r.car_number && r.car_number === p.car_number)
+      );
+      if (!existing) {
+        const { pushRecord: push } = await import('../firebase/db.js');
+        const agentUid = assignedAgent?.uid || me.uid;
+        const agentName = assignedAgent?.name || me.name || '';
+        const agentCode = assignedAgent?.user_code || me.user_code || '';
+        const channelCode = assignedAgent?.agent_channel_code || assignedAgent?.channel_code || assignedAgent?.company_code
+          || me.agent_channel_code || me.channel_code || me.company_code || '';
+        await push('rooms', {
+          car_number: p.car_number,
+          maker: p.maker, model: p.model, sub_model: p.sub_model,
+          product_id: p._key, product_uid: p._key,
+          provider_company_code: p.provider_company_code,
+          partner_code: p.partner_code,
+          agent_uid: agentUid, agent_name: agentName,
+          agent_code: agentCode, agent_channel_code: channelCode,
+          created_by_admin: me.role === 'admin' || false,
+          unread: 0, created_at: Date.now(), created_by: me.uid || '',
+        });
+      }
+    } catch (roomErr) { console.warn('[contract] 소통방 자동생성 실패:', roomErr); }
+
     location.hash = 'contract';
   } catch (e) {
     console.error(`[contract create:${step}]`, e);
