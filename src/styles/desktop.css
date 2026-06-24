@@ -2159,8 +2159,8 @@
     border-top-right-radius: 0;
   }
   .chat-img {
-    max-width: 240px;
-    max-height: 320px;
+    max-width: 60%;
+    max-height: 280px;
     border-radius: var(--radius);
     object-fit: contain;
     display: block;
