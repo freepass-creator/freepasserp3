@@ -284,22 +284,10 @@ export function renderRoomDetail(room) {
     }
   }
 
-  // 4번 패널(차량 정보): 차량정보 + 계약 있으면 서류 섹션도 같이
+  // 4번 패널(차량 정보): 계약 있으면 서류로 교체, 없으면 차량정보
   if (carCard) {
-    const carNumber = room.vehicle_number || room.car_number;
-    const contractCar = contract?.car_number_snapshot;
-    const norm = s => String(s || '').replace(/\s/g, '');
-    let p = (store.products || []).find(x =>
-      x._key === productUid ||
-      x.product_uid === productUid ||
-      norm(x.car_number) === norm(carNumber) ||
-      (contractCar && norm(x.car_number) === norm(contractCar)) ||
-      x.product_code === productUid
-    );
-
-    const _finishCarPanel = () => {
-      if (!contract) return;
-      // 서류 섹션을 차량 정보 패널에 추가
+    if (contract) {
+      carCard.querySelector('.ws4-body').innerHTML = '';
       renderContractDocs(carCard, contract);
       if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} }
       _contractUnsub = watchRecord(`contracts/${contract._key}`, (latest) => {
@@ -318,27 +306,32 @@ export function renderRoomDetail(room) {
         });
         renderContractDocs(carCard, contract);
       });
-    };
-
-    if (p) {
-      renderSearchDetail(p, carCard, { skipHead: true });
-      _finishCarPanel();
-    } else if (productUid) {
-      carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">불러오는 중...</div>`;
-      const _enriched = (store.policies || []);
-      fetchRecord(`products/${productUid}`).then(raw => {
-        if (raw) {
-          p = { _key: productUid, ...raw };
-          if (p.policy_code) p._policy = _enriched.find(pol => pol.policy_code === p.policy_code) || {};
-          renderSearchDetail(p, carCard, { skipHead: true });
-        } else {
-          carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${esc(carNumber || productUid)} — 상품 정보 없음</div>`;
-        }
-        _finishCarPanel();
-      }).catch(() => { _finishCarPanel(); });
     } else {
-      carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${carNumber ? esc(carNumber) + ' — 상품 정보 없음' : '차량 정보 없음'}</div>`;
-      _finishCarPanel();
+      const carNumber = room.vehicle_number || room.car_number;
+      const norm = s => String(s || '').replace(/\s/g, '');
+      let p = (store.products || []).find(x =>
+        x._key === productUid ||
+        x.product_uid === productUid ||
+        norm(x.car_number) === norm(carNumber) ||
+        x.product_code === productUid
+      );
+      if (p) {
+        renderSearchDetail(p, carCard, { skipHead: true });
+      } else if (productUid) {
+        carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">불러오는 중...</div>`;
+        const _enriched = (store.policies || []);
+        fetchRecord(`products/${productUid}`).then(raw => {
+          if (raw) {
+            p = { _key: productUid, ...raw };
+            if (p.policy_code) p._policy = _enriched.find(pol => pol.policy_code === p.policy_code) || {};
+            renderSearchDetail(p, carCard, { skipHead: true });
+          } else {
+            carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${esc(carNumber || productUid)} — 상품 정보 없음</div>`;
+          }
+        }).catch(() => {});
+      } else {
+        carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${carNumber ? esc(carNumber) + ' — 상품 정보 없음' : '차량 정보 없음'}</div>`;
+      }
     }
   }
 }
