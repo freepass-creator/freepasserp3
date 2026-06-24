@@ -309,6 +309,7 @@ export function renderPolicyDetail(pol) {
     // 정책 식별자 — 정책 doc 의 policy_code 또는 term_code 또는 _key.
     // 빈값이면 절대 매칭 X (예전 `undefined === undefined` 로 모든 상품이 연결돼 보이던 버그 회피)
     const polCode = pol.policy_code || pol.term_code || pol._key;
+    console.log('[policy-linked] polCode:', polCode, 'store.products:', store.products?.length, 'with policy_code:', store.products?.filter(p => !!p.policy_code).length, 'matching:', store.products?.filter(p => p.policy_code === polCode).length);
     const linked = polCode
       ? (store.products || []).filter(p => !p._deleted && !!p.policy_code && (p.policy_code === polCode || p.term_code === polCode))
       : [];
