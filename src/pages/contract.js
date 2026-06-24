@@ -400,6 +400,7 @@ export function renderContractDocs(card, c, opts = {}) {
           const isImage = file.type?.startsWith('image/');
           const path = `contract-files/${c._key}/att_${Date.now()}_${file.name}`;
           const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+          console.log('[doc-upload]', file.name, 'type:', file.type, 'isImage:', isImage, 'url:', url);
           newUrls.push(url);
         }
         const cur = Array.isArray(c.doc_attachments) ? [...c.doc_attachments] : [];
