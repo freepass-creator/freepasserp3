@@ -307,44 +307,62 @@ export function renderRoomDetail(room) {
 
   // 차량 정보 — 계약 있으면 진행 패널에 통합, 없으면 4번째 패널
   const carNumber = room.vehicle_number || room.car_number;
+  const contractCar = contract?.car_number_snapshot;
   const norm = s => String(s || '').replace(/\s/g, '');
   let p = (store.products || []).find(x =>
     x._key === productUid ||
     x.product_uid === productUid ||
     norm(x.car_number) === norm(carNumber) ||
+    (contractCar && norm(x.car_number) === norm(contractCar)) ||
     x.product_code === productUid
   );
 
-  const _renderCarInfo = (product) => {
-    if (contract && stepCard) {
-      // 진행 패널에 차량정보 append
-      stepCard.querySelector('.ws4-body .ws-car-section')?.remove();
-      const sec = document.createElement('div');
-      sec.className = 'ws-car-section';
-      sec.innerHTML = `<div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">${renderDetailSections(product, {})}</div>`;
-      stepCard.querySelector('.ws4-body').appendChild(sec);
-      if (carCard) carCard.querySelector('.ws4-body').innerHTML = '';
-    } else if (carCard) {
-      renderSearchDetail(product, carCard, { skipHead: true });
-    }
+  const _appendCarToStep = (product) => {
+    if (!stepCard) return;
+    stepCard.querySelector('.ws4-body .ws-car-section')?.remove();
+    const sec = document.createElement('div');
+    sec.className = 'ws-car-section';
+    sec.innerHTML = `<div style="border-top:1px solid var(--border);margin-top:8px;padding-top:8px;">${renderDetailSections(product, {})}</div>`;
+    stepCard.querySelector('.ws4-body').appendChild(sec);
   };
 
-  if (!p && productUid) {
-    if (!contract && carCard) carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">불러오는 중...</div>`;
-    const _enriched = (store.policies || []);
-    fetchRecord(`products/${productUid}`).then(raw => {
-      if (raw) {
-        p = { _key: productUid, ...raw };
-        if (p.policy_code) p._policy = _enriched.find(pol => pol.policy_code === p.policy_code) || {};
-        _renderCarInfo(p);
-      } else if (!contract && carCard) {
-        carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${esc(carNumber || productUid)} — 상품 정보 없음</div>`;
+  if (contract) {
+    // 계약 있으면 — 4번째 패널 숨기고, 진행 패널에 차량정보 통합
+    if (carCard) carCard.style.display = 'none';
+    if (p) {
+      _appendCarToStep(p);
+    } else if (productUid) {
+      const _enriched = (store.policies || []);
+      fetchRecord(`products/${productUid}`).then(raw => {
+        if (raw) {
+          p = { _key: productUid, ...raw };
+          if (p.policy_code) p._policy = _enriched.find(pol => pol.policy_code === p.policy_code) || {};
+          _appendCarToStep(p);
+        }
+      }).catch(() => {});
+    }
+  } else {
+    // 계약 없으면 — 4번째 패널에 차량정보
+    if (carCard) {
+      carCard.style.display = '';
+      if (p) {
+        renderSearchDetail(p, carCard, { skipHead: true });
+      } else if (productUid) {
+        carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">불러오는 중...</div>`;
+        const _enriched = (store.policies || []);
+        fetchRecord(`products/${productUid}`).then(raw => {
+          if (raw) {
+            p = { _key: productUid, ...raw };
+            if (p.policy_code) p._policy = _enriched.find(pol => pol.policy_code === p.policy_code) || {};
+            renderSearchDetail(p, carCard, { skipHead: true });
+          } else {
+            carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${esc(carNumber || productUid)} — 상품 정보 없음</div>`;
+          }
+        }).catch(() => {});
+      } else {
+        carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${carNumber ? esc(carNumber) + ' — 상품 정보 없음' : '차량 정보 없음'}</div>`;
       }
-    }).catch(() => {});
-  } else if (p) {
-    _renderCarInfo(p);
-  } else if (!contract && carCard) {
-    carCard.querySelector('.ws4-body').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);">${carNumber ? esc(carNumber) + ' — 상품 정보 없음' : '차량 정보 없음'}</div>`;
+    }
   }
 }
 
