@@ -237,7 +237,8 @@ export function renderContractDocs(card, c, opts = {}) {
   const licenseEditable = !!c.doc_license;
 
   // 첨부서류 — PC 배열(doc_attachments) + 모바일 객체(customer_docs) 통합
-  const docAtts = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
+  const docAttsRaw = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
+  const docAtts = docAttsRaw.map(u => typeof u === 'object' ? u.url || '' : u).filter(Boolean);
   const mobileDocs = c.customer_docs
     ? Object.values(c.customer_docs).filter(d => d && !d._deleted && d.url)
     : [];
@@ -401,7 +402,8 @@ export function renderContractDocs(card, c, opts = {}) {
           const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
           newUrls.push(url);
         }
-        const next = [...attachments, ...newUrls];
+        const cur = Array.isArray(c.doc_attachments) ? [...c.doc_attachments] : [];
+        const next = [...cur.map(u => typeof u === 'object' ? u.url || '' : u).filter(Boolean), ...newUrls];
         await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
         c.doc_attachments = next;
         showToast(`${newUrls.length}개 업로드 완료`, 'success');
@@ -418,7 +420,7 @@ export function renderContractDocs(card, c, opts = {}) {
     btn.addEventListener('click', async () => {
       const idx = Number(btn.dataset.attDel);
       if (!confirm('첨부 서류를 제거할까요?')) return;
-      const cur = Array.isArray(c.doc_attachments) ? [...c.doc_attachments] : [];
+      const cur = (Array.isArray(c.doc_attachments) ? [...c.doc_attachments] : []).map(u => typeof u === 'object' ? u.url || '' : u).filter(Boolean);
       cur.splice(idx, 1);
       await updateRecord(`contracts/${c._key}`, { doc_attachments: cur, updated_at: Date.now() });
       c.doc_attachments = cur;
