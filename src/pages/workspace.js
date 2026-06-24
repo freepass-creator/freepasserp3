@@ -282,6 +282,7 @@ export function renderRoomDetail(room) {
       });
 
       // 계약 서류 미리보기 (면허증 + 첨부서류) — 읽기 전용 + 실시간 갱신
+      console.log('[ws-docs] contract:', contract._key, 'doc_license:', contract.doc_license, 'customer_license_url:', contract.customer_license_url, 'doc_attachments:', contract.doc_attachments, 'customer_docs:', contract.customer_docs);
       _appendContractDocs(stepCard.querySelector('.ws4-body'), contract);
 
       // 서류 필드 실시간 감지 — 다른 기기에서 업로드 시 즉시 반영
