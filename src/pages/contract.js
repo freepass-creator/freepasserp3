@@ -217,13 +217,13 @@ export function renderContractDetail(c) {
 
   // 3. 첨부 서류 (면허증·신분증·통장사본·재직·사업자등록증 등)
   if (condCard) {
-    renderContractDocs(condCard, c);
+    renderContractDocs(condCard, c, { readOnly: true });
   }
 }
 
-export function renderContractDocs(card, c) {
+export function renderContractDocs(card, c, opts = {}) {
   const role = store.currentUser?.role;
-  const canEdit = role === 'admin' || role === 'agent' || role === 'agent_admin' || role === 'provider';
+  const canEdit = !opts.readOnly && (role === 'admin' || role === 'agent' || role === 'agent_admin' || role === 'provider');
   const body = card.querySelector('.ws4-body');
 
   // 면허증 — PC(doc_license) 우선, 모바일(customer_license_url) fallback
