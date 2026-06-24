@@ -250,7 +250,35 @@ export function renderRoomDetail(room) {
     (linkedContract && c.contract_code === linkedContract) ||
     (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom))
   );
-  console.log('[ws-detail] role:', role, 'contract:', contract?.contract_code || 'NOT FOUND', 'store.contracts:', store.contracts?.length, 'productUid:', productUid, 'carNumber:', carNumberRoom);
+  // 역할 스코프 때문에 store.contracts에 없을 수 있음 → 직접 조회 후 패널 갱신
+  if (!contract && (productUid || carNumberRoom)) {
+    fetchRecord('contracts').then(all => {
+      if (!all || _activeRoomId !== room._key) return;
+      const found = Object.entries(all)
+        .map(([k, v]) => (typeof v === 'object' ? { _key: k, ...v } : null))
+        .filter(c => c && !c._deleted)
+        .find(c =>
+          c.product_uid === productUid ||
+          c.seed_product_key === productUid ||
+          (linkedContract && c.contract_code === linkedContract) ||
+          (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom))
+        );
+      if (!found) return;
+      // 3번 패널 — 계약 진행
+      if (stepCard) {
+        stepCard.querySelector('.ws4-body').innerHTML = renderContractWorkV2(found);
+        bindContractWorkV2(stepCard, found, {
+          reRender: () => { const r = (store.rooms || []).find(x => x._key === _activeRoomId); if (r) renderRoomDetail(r); },
+        });
+      }
+      // 4번 패널 — 서류
+      if (carCard) {
+        carCard.querySelector('.ws4-body').innerHTML = '';
+        renderContractDocs(carCard, found);
+      }
+    }).catch(() => {});
+  }
+
   // 3번 패널(계약 진행): 진행 단계 + 메모
   if (stepCard) {
     if (!contract) {
