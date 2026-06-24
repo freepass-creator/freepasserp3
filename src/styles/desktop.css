@@ -2158,6 +2158,13 @@
     background: var(--c-accent); color: var(--c-text-inv);
     border-top-right-radius: 0;
   }
+  .chat-img {
+    max-width: 240px;
+    max-height: 320px;
+    border-radius: var(--radius);
+    object-fit: contain;
+    display: block;
+  }
   .chat-meta {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 10px; color: var(--text-muted); padding: 0 2px;
