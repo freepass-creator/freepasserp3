@@ -29,7 +29,7 @@ import {
 } from '../core/ui-helpers.js';
 import {
   renderContractWorkV2, bindContractWorkV2,
-  createContractFromRoomLocal,
+  createContractFromRoomLocal, renderContractDocs,
 } from './contract.js';
 import { openFullscreen } from '../core/product-detail-render.js';
 import { renderSearchDetail } from './search.js';
@@ -281,10 +281,8 @@ export function renderRoomDetail(room) {
         },
       });
 
-      // 계약 서류 미리보기 (면허증 + 첨부서류) — 읽기 전용 + 실시간 갱신
-      console.log('[ws-docs] store:', contract.contract_code, contract._key, 'doc_license:', contract.doc_license, 'doc_atts:', contract.doc_attachments);
-      import('../firebase/db.js').then(({get, ref, db}) => get(ref(db, `contracts/${contract._key}`)).then(s => { const d = s.val(); console.log('[ws-docs] FIREBASE DIRECT:', d?.doc_license, 'atts:', d?.doc_attachments?.length || d?.doc_attachments, 'cust:', d?.customer_docs); })).catch(e => console.error('[ws-docs] direct read err:', e));
-      _appendContractDocs(stepCard.querySelector('.ws4-body'), contract);
+      // 계약 서류 (면허증 + 첨부서류) — 업로드/보기/삭제 가능
+      renderContractDocs(stepCard, contract);
 
       // 서류 필드 실시간 감지 — 다른 기기에서 업로드 시 즉시 반영
       if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} }
@@ -302,10 +300,7 @@ export function renderRoomDetail(room) {
           doc_attachments: latest.doc_attachments,
           customer_docs: latest.customer_docs,
         });
-        const body = stepCard?.querySelector('.ws4-body');
-        if (!body) return;
-        body.querySelector('.ws-docs-section')?.remove();
-        _appendContractDocs(body, contract);
+        renderContractDocs(stepCard, contract);
       });
     }
   }
@@ -513,59 +508,6 @@ export async function createRoomFromProduct(product) {
     console.error('[room create]', e);
     showToast('생성 실패 — ' + (e.message || e), 'error');
   }
-}
-
-/* 계약 서류 읽기 전용 섹션 — 계약 진행 패널 하단에 추가 */
-function _appendContractDocs(bodyEl, c) {
-  if (!bodyEl || !c) return;
-  const isPdf = u => /\.pdf(\?|$)/i.test(u || '');
-
-  const license = c.doc_license || c.customer_license_url || '';
-  const docAtts = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
-  const mobileDocs = c.customer_docs
-    ? Object.values(c.customer_docs).filter(d => d && !d._deleted && d.url).map(d => d.url)
-    : [];
-  const allAtts = [...docAtts, ...mobileDocs];
-
-  if (!license && !allAtts.length) return;
-
-  let html = `<div class="ws-docs-section" style="border-top:1px solid var(--border);margin-top:4px;padding:8px 0 4px;">
-    <div style="font-size:11px;font-weight:600;color:var(--text-sub);padding:0 2px 6px;">첨부 서류</div>`;
-
-  if (license) {
-    html += `<div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">운전면허증</div>`;
-    html += isPdf(license)
-      ? `<a href="${esc(license)}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--text-link);text-decoration:none;padding:8px;border:1px solid var(--border);border-radius:4px;background:var(--bg-stripe);margin-bottom:8px;"><i class="ph ph-file-pdf" style="font-size:20px;color:var(--alert-red-text);"></i>면허증 PDF 보기</a>`
-      : `<img src="${esc(license)}" style="max-width:100%;max-height:160px;border-radius:4px;cursor:zoom-in;display:block;margin-bottom:8px;" data-doc-img="${esc(license)}">`;
-  }
-
-  if (allAtts.length) {
-    html += `<div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">첨부서류 ${allAtts.length}개</div>`;
-    html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:5px;">`;
-    allAtts.forEach(url => {
-      html += `<div style="aspect-ratio:1/1;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-stripe);">`;
-      html += isPdf(url)
-        ? `<a href="${esc(url)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--alert-red-text);text-decoration:none;font-size:9px;gap:2px;"><i class="ph ph-file-pdf" style="font-size:22px;"></i><span>PDF</span></a>`
-        : `<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;" data-doc-img="${esc(url)}">`;
-      html += `</div>`;
-    });
-    html += `</div>`;
-  }
-
-  html += `</div>`;
-
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  bodyEl.appendChild(div);
-
-  // 이미지 클릭 → 풀스크린 (면허증 + 첨부서류 갤러리)
-  const allImgUrls = [license, ...allAtts].filter(u => u && !isPdf(u));
-  div.querySelectorAll('[data-doc-img]').forEach(img => {
-    img.addEventListener('click', () => {
-      const idx = allImgUrls.indexOf(img.dataset.docImg);
-      openFullscreen(allImgUrls, Math.max(0, idx));
-    });
-  });
 }
 
 /* 새 대화방 — 업무소통 페이지 헤드 "+" 버튼 → 차량번호 prompt */

@@ -221,7 +221,7 @@ export function renderContractDetail(c) {
   }
 }
 
-function renderContractDocs(card, c) {
+export function renderContractDocs(card, c) {
   const role = store.currentUser?.role;
   const canEdit = role === 'admin' || role === 'agent' || role === 'agent_admin' || role === 'provider';
   const body = card.querySelector('.ws4-body');
