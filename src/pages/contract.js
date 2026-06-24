@@ -226,6 +226,12 @@ export function renderContractDocs(card, c, opts = {}) {
   const canEdit = !opts.readOnly && (role === 'admin' || role === 'agent' || role === 'agent_admin' || role === 'provider');
   const body = card.querySelector('.ws4-body');
 
+  // 기존 서류 섹션 제거 후 재생성 (body 전체를 덮어쓰지 않음)
+  body.querySelector('.ct-docs-wrap')?.remove();
+  const wrap = document.createElement('div');
+  wrap.className = 'ct-docs-wrap';
+  body.appendChild(wrap);
+
   // 면허증 — PC(doc_license) 우선, 모바일(customer_license_url) fallback
   const license = c.doc_license || c.customer_license_url || '';
   const licenseEditable = !!c.doc_license;
@@ -235,14 +241,13 @@ export function renderContractDocs(card, c, opts = {}) {
   const mobileDocs = c.customer_docs
     ? Object.values(c.customer_docs).filter(d => d && !d._deleted && d.url)
     : [];
-  // { url, deletable, docIndex } — docIndex 있는 항목만 삭제 버튼
   const attachments = [
     ...docAtts.map((url, i) => ({ url, deletable: canEdit, docIndex: i })),
     ...mobileDocs.map(d => ({ url: d.url, name: d.name, deletable: false })),
   ];
   const isPdf = (u) => u && /\.pdf(\?|$)/i.test(u);
 
-  body.innerHTML = `
+  wrap.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:12px;padding:8px;">
       <!-- 1. 운전면허증 — 한 장 큰 미리보기 + OCR -->
       <div style="border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-card);">
@@ -319,7 +324,7 @@ export function renderContractDocs(card, c, opts = {}) {
   if (!canEdit) return;
 
   // 면허증 업로드 + 자동 OCR — 차량등록증과 동일한 UX (업로드 = 자동 분석)
-  body.querySelector('#ctLicenseUpload')?.addEventListener('change', async (e) => {
+  wrap.querySelector('#ctLicenseUpload')?.addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     try {
@@ -331,7 +336,7 @@ export function renderContractDocs(card, c, opts = {}) {
       await updateRecord(`contracts/${c._key}`, { doc_license: url, updated_at: Date.now() });
       c.doc_license = url;
       showToast('면허증 업로드 완료', 'success');
-      renderContractDocs(card, c);
+      renderContractDocs(card, c, opts);
 
       // 자동 OCR — 이미지·PDF 모두 ocrFile 로 텍스트 추출 후 driver-license 파서로 필드 매핑
       try {
@@ -354,7 +359,7 @@ export function renderContractDocs(card, c, opts = {}) {
             Object.assign(c, merged);
             c.doc_license_ocr_text = text;
             showToast(`OCR: ${Object.keys(merged).length}개 필드 자동 채움`, 'success');
-            renderContractDocs(card, c);
+            renderContractDocs(card, c, opts);
           } else {
             await updateRecord(`contracts/${c._key}`, { doc_license_ocr_text: text, updated_at: Date.now() });
             showToast('OCR 완료 (모든 필드 이미 입력됨)', 'info');
@@ -373,16 +378,16 @@ export function renderContractDocs(card, c, opts = {}) {
   });
 
   // 면허증 삭제
-  body.querySelector('#ctLicenseDel')?.addEventListener('click', async () => {
+  wrap.querySelector('#ctLicenseDel')?.addEventListener('click', async () => {
     if (!confirm('면허증을 제거할까요?')) return;
     await updateRecord(`contracts/${c._key}`, { doc_license: null, updated_at: Date.now() });
     c.doc_license = null;
     showToast('면허증 제거됨');
-    renderContractDocs(card, c);
+    renderContractDocs(card, c, opts);
   });
 
   // 첨부서류 다중 업로드 — 이미지/PDF 분기 (v2 패턴). 빈 상태/추가 입력 모두 동일 핸들러
-  body.querySelectorAll('input.ctAttUploadAdd').forEach(input => {
+  wrap.querySelectorAll('input.ctAttUploadAdd').forEach(input => {
     input.addEventListener('change', async (e) => {
       const files = Array.from(e.target.files || []);
       if (!files.length) return;
@@ -400,7 +405,7 @@ export function renderContractDocs(card, c, opts = {}) {
         await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
         c.doc_attachments = next;
         showToast(`${newUrls.length}개 업로드 완료`, 'success');
-        renderContractDocs(card, c);
+        renderContractDocs(card, c, opts);
       } catch (err) {
         console.error('[att upload]', err);
         showToast('업로드 실패: ' + (err.message || err), 'error');
@@ -409,7 +414,7 @@ export function renderContractDocs(card, c, opts = {}) {
   });
 
   // 첨부서류 개별 삭제 (PC 업로드분만 — docIndex 기반)
-  body.querySelectorAll('[data-att-del]').forEach(btn => {
+  wrap.querySelectorAll('[data-att-del]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const idx = Number(btn.dataset.attDel);
       if (!confirm('첨부 서류를 제거할까요?')) return;
@@ -418,14 +423,14 @@ export function renderContractDocs(card, c, opts = {}) {
       await updateRecord(`contracts/${c._key}`, { doc_attachments: cur, updated_at: Date.now() });
       c.doc_attachments = cur;
       showToast('제거됨');
-      renderContractDocs(card, c);
+      renderContractDocs(card, c, opts);
     });
   });
 
   // 이미지 클릭 → 풀스크린 (재고/상품찾기와 동일 openFullscreen 사용)
   //  면허증 1장 + 첨부서류 N장 모두 한 갤러리로 묶어서 좌우 스와이프 가능
-  const allDocImgs = [...body.querySelectorAll('[data-doc-img]')].map(el => el.dataset.docImg);
-  body.querySelectorAll('[data-doc-img]').forEach(img => {
+  const allDocImgs = [...wrap.querySelectorAll('[data-doc-img]')].map(el => el.dataset.docImg);
+  wrap.querySelectorAll('[data-doc-img]').forEach(img => {
     img.addEventListener('click', () => {
       const startIdx = allDocImgs.indexOf(img.dataset.docImg);
       openFullscreen(allDocImgs, Math.max(0, startIdx));
