@@ -61,7 +61,7 @@ export function renderRoomList(rooms) {
   if (role === 'agent') visible = visible.filter(r => !r.hidden_for_agent && r.agent_uid === uid);
   // 영업관리자 — 본인이 직접 참여한 룸만 (소속 영업자 대화는 안 보임 — 정책)
   else if (role === 'agent_admin') visible = visible.filter(r => !r.hidden_for_agent && r.agent_uid === uid);
-  else if (role === 'provider') visible = visible.filter(r => !r.hidden_for_provider && (r.provider_uid === uid || r.provider_company_code === myCompany));
+  else if (role === 'provider') visible = visible.filter(r => !r.hidden_for_provider && (r.provider_uid === uid || r.provider_company_code === myCompany || r.partner_code === myCompany));
   else if (role === 'admin') visible = visible.filter(r => !r.hidden_for_admin);
 
 
