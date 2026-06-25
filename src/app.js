@@ -2349,4 +2349,33 @@ window.__checkBanner = () => {
   fetchRecord('home_notices/__banner__').then(d => console.log('banner data:', d));
 };
 
+// 일괄 패치: provider_company_code 빈 계약/소통방에 partner_code 복사
+window.__patchProviderCode = async () => {
+  if (store.currentUser?.role !== 'admin') { console.error('관리자만 실행 가능'); return; }
+  let patched = 0;
+  // 계약
+  const contracts = await fetchRecord('contracts');
+  if (contracts) {
+    for (const [k, c] of Object.entries(contracts)) {
+      if (c && !c.provider_company_code && c.partner_code) {
+        await updateRecord(`contracts/${k}`, { provider_company_code: c.partner_code });
+        patched++;
+        console.log(`[patch] contract ${k} → ${c.partner_code}`);
+      }
+    }
+  }
+  // 소통방
+  const rooms = await fetchRecord('rooms');
+  if (rooms) {
+    for (const [k, r] of Object.entries(rooms)) {
+      if (r && !r.provider_company_code && r.partner_code) {
+        await updateRecord(`rooms/${k}`, { provider_company_code: r.partner_code });
+        patched++;
+        console.log(`[patch] room ${k} → ${r.partner_code}`);
+      }
+    }
+  }
+  console.log(`[patch] 완료 — ${patched}건 패치됨`);
+};
+
 boot();
