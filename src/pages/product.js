@@ -792,6 +792,13 @@ export function renderProductList(products) {
 export function renderProductDetail(p) {
   const page = document.querySelector('.pt-page[data-page="product"]');
   if (!page) return;
+
+  // 입력 중이면 재렌더 스킵 — 다른 필드 값 소멸 방지
+  const focused = document.activeElement;
+  if (focused && page.contains(focused) && (focused.tagName === 'INPUT' || focused.tagName === 'TEXTAREA' || focused.tagName === 'SELECT')) {
+    return;
+  }
+
   const cards = page.querySelectorAll('.ws4-card');
   const assetCard = cards[1];
   const priceCard = cards[2];
