@@ -1264,6 +1264,7 @@ function startHydration() {
   });
   // 상품 — search + 재고관리 양쪽 갱신
   watchCollection('products', (list) => {
+    console.log('[hydration] products loaded:', list?.length || 0);
     store.products = enrichProductsWithPolicy(list || [], store.policies || []);
     calibrateSearchCols(store.products);
     applySearchFilter();   // 필터 경유 — 출고불가/삭제 매물 기본 숨김 (raw 렌더 X)
