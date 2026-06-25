@@ -134,8 +134,32 @@ export function openFullscreen(imgList, startIdx = 0) {
   const applyTransform = (img) => {
     const rot = Number(img.dataset.rot) || 0;
     const zoom = Number(img.dataset.zoom) || 1;
-    img.style.transform = `rotate(${rot}deg) scale(${zoom})`;
+    const tx = Number(img.dataset.tx) || 0;
+    const ty = Number(img.dataset.ty) || 0;
+    img.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg) scale(${zoom})`;
+    img.style.cursor = zoom > 1 ? 'grab' : '';
   };
+
+  // 확대 시 드래그 이동
+  let dragImg = null, dragStart = null;
+  scroller.addEventListener('pointerdown', (e) => {
+    const img = e.target.closest('.srch-fs-img');
+    if (!img || Number(img.dataset.zoom) <= 1) return;
+    dragImg = img; dragStart = { x: e.clientX, y: e.clientY, tx: Number(img.dataset.tx) || 0, ty: Number(img.dataset.ty) || 0 };
+    img.style.cursor = 'grabbing';
+    img.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+  scroller.addEventListener('pointermove', (e) => {
+    if (!dragImg || !dragStart) return;
+    dragImg.dataset.tx = dragStart.tx + (e.clientX - dragStart.x);
+    dragImg.dataset.ty = dragStart.ty + (e.clientY - dragStart.y);
+    applyTransform(dragImg);
+  });
+  scroller.addEventListener('pointerup', () => {
+    if (dragImg) dragImg.style.cursor = 'grab';
+    dragImg = null; dragStart = null;
+  });
 
   overlay.querySelector('#srchFsRotate').addEventListener('click', () => {
     const img = getCurrentImg();
@@ -152,7 +176,9 @@ export function openFullscreen(imgList, startIdx = 0) {
   overlay.querySelector('#srchFsZoomOut').addEventListener('click', () => {
     const img = getCurrentImg();
     if (!img) return;
-    img.dataset.zoom = Math.max(Number(img.dataset.zoom) - 0.5, 0.5);
+    const z = Math.max(Number(img.dataset.zoom) - 0.5, 0.5);
+    img.dataset.zoom = z;
+    if (z <= 1) { img.dataset.tx = 0; img.dataset.ty = 0; }
     applyTransform(img);
   });
   overlay.querySelector('#srchFsDownload').addEventListener('click', async () => {
