@@ -488,8 +488,8 @@ export async function createRoomFromProduct(product) {
       sub_model: product.sub_model,
       product_id: product._key,
       product_uid: product._key,
-      provider_company_code: product.provider_company_code,
-      partner_code: product.partner_code,
+      provider_company_code: product.provider_company_code || product.partner_code,
+      partner_code: product.partner_code || product.provider_company_code,
       // 관리자/영업자 모두 agent_uid 채워서 공급사 측에서 "영업자가 문의" 형태로 받음
       agent_uid: (isAgent || isAdmin) ? (me.uid || '') : '',
       agent_name: (isAgent || isAdmin) ? (me.name || '') : '',
