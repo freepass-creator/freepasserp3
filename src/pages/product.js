@@ -704,6 +704,8 @@ function autoFillFromCarModel(card, maker, model, sub_model) {
 }
 
 /* ──────── B. 목록 + 4패널 상세 ──────── */
+let _stockFilter = 'all'; // 'all' | 'available' | 'unavailable'
+
 export function renderProductList(products) {
   const body = listBody('product');
   if (!body) return;
@@ -718,6 +720,37 @@ export function renderProductList(products) {
       p.provider_uid === me.uid
     );
   }
+
+  // 상태 필터 칩 렌더
+  const listCard = body.closest('.ws4-card');
+  let subbar = listCard?.querySelector('.ws4-subbar.stock-filter');
+  if (!subbar && listCard) {
+    subbar = document.createElement('div');
+    subbar.className = 'ws4-subbar stock-filter';
+    const head = listCard.querySelector('.ws4-head');
+    if (head) head.after(subbar);
+  }
+  if (subbar) {
+    const totalCount = visible.length;
+    const availCount = visible.filter(p => (p.vehicle_status || '') !== '출고불가').length;
+    const unavailCount = visible.filter(p => (p.vehicle_status || '') === '출고불가').length;
+    const chip = (id, label, count) => {
+      const active = _stockFilter === id ? ' active' : '';
+      return `<button class="chip${active}" data-stock-filter="${id}">${label} ${count}</button>`;
+    };
+    subbar.innerHTML = chip('all', '전체', totalCount) + chip('available', '가능', availCount) + chip('unavailable', '불가', unavailCount);
+    subbar.querySelectorAll('[data-stock-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        _stockFilter = btn.dataset.stockFilter;
+        renderProductList(products);
+      });
+    });
+  }
+
+  // 상태 필터 적용
+  if (_stockFilter === 'available') visible = visible.filter(p => (p.vehicle_status || '') !== '출고불가');
+  else if (_stockFilter === 'unavailable') visible = visible.filter(p => (p.vehicle_status || '') === '출고불가');
+
   if (!visible.length) { body.innerHTML = emptyState('상품이 없습니다'); renderProductDetail(null); return; }
   const sorted = [...visible].sort((a, b) => (b.updated_at || 0) - (a.updated_at || 0));
   body.innerHTML = sorted.map((p, i) => {
