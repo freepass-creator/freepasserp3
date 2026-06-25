@@ -215,9 +215,20 @@ export function renderContractDetail(c) {
     ]);
   }
 
-  // 3. 첨부 서류 (면허증·신분증·통장사본·재직·사업자등록증 등)
+  // 3. 차량 정보 — 연결 상품 기반
   if (condCard) {
-    renderContractDocs(condCard, c, { readOnly: true });
+    const productUid = c.product_uid || c.seed_product_key;
+    const normCar = s => String(s || '').replace(/\s/g, '');
+    const p = (store.products || []).find(x =>
+      x._key === productUid ||
+      x.product_uid === productUid ||
+      (c.car_number_snapshot && normCar(x.car_number) === normCar(c.car_number_snapshot))
+    );
+    if (p) {
+      import('./search.js').then(m => m.renderSearchDetail(p, condCard, { skipHead: true }));
+    } else {
+      condCard.querySelector('.ws4-body').innerHTML = emptyState(c.car_number_snapshot ? `${c.car_number_snapshot} — 상품 정보 없음` : '차량 정보 없음');
+    }
   }
 }
 
@@ -265,7 +276,7 @@ export function renderContractDocs(card, c, opts = {}) {
           <div style="padding:8px;display:flex;justify-content:center;background:var(--bg-stripe);">
             ${isPdf(license)
               ? `<a href="${esc(license)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--text-link);text-decoration:none;padding:32px;"><i class="ph ph-file-pdf" style="font-size:48px;"></i><span>PDF 보기</span></a>`
-              : `<img src="${esc(license)}" style="max-width:100%;max-height:280px;border-radius:4px;cursor:zoom-in;display:block;" data-doc-img="${esc(license)}" onerror="this.outerHTML='<div style=\\'padding:32px;text-align:center;color:var(--text-muted)\\'>이미지 로드 실패</div>'">`}
+              : `<img src="${esc(license)}" loading="lazy" style="max-width:100%;max-height:280px;border-radius:4px;cursor:zoom-in;display:block;" data-doc-img="${esc(license)}" onerror="this.outerHTML='<div style=\\'padding:32px;text-align:center;color:var(--text-muted)\\'>이미지 로드 실패</div>'">`}
           </div>
         ` : (canEdit ? `
           <label class="pd-dropzone" for="ctLicenseUpload" style="margin:8px;">
@@ -297,7 +308,7 @@ export function renderContractDocs(card, c, opts = {}) {
                 <div style="position:relative;aspect-ratio:1/1;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg-stripe);">
                   ${isPdf(att.url)
                     ? `<a href="${esc(att.url)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--alert-red-text);text-decoration:none;font-size:9px;gap:2px;"><i class="ph ph-file-pdf" style="font-size:24px;"></i><span>PDF</span></a>`
-                    : `<img src="${esc(att.url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block;" data-doc-img="${esc(att.url)}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:9px;gap:2px\\'><i class=\\'ph ph-file-image\\' style=\\'font-size:24px\\'></i><span>로드실패</span></div>')">`}
+                    : `<img src="${esc(att.url)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block;" data-doc-img="${esc(att.url)}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:9px;gap:2px\\'><i class=\\'ph ph-file-image\\' style=\\'font-size:24px\\'></i><span>로드실패</span></div>')">`}
                   ${att.deletable ? `<button data-att-del="${att.docIndex}" style="position:absolute;top:2px;right:2px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="ph ph-x"></i></button>` : ''}
                   <span style="position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;">${i + 1}</span>
                 </div>
