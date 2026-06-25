@@ -1262,15 +1262,15 @@ function startHydration() {
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage);
   });
-  // 상품 — search + 재고관리 양쪽 갱신
+  // 상품 — search + 재고관리 + 정책연결 양쪽 갱신
   watchCollection('products', (list) => {
-    console.log('[hydration] products loaded:', list?.length || 0);
     store.products = enrichProductsWithPolicy(list || [], store.policies || []);
     calibrateSearchCols(store.products);
-    applySearchFilter();   // 필터 경유 — 출고불가/삭제 매물 기본 숨김 (raw 렌더 X)
+    applySearchFilter();
     renderFilteredProducts();
+    renderFilteredPolicies();
     updateSidebarCounts();
-    window.updateSearchStats?.();   // 토픽바 상품찾기 카운트 갱신
+    window.updateSearchStats?.();
     window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage);
