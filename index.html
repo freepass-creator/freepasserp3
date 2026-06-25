@@ -1317,6 +1317,7 @@
   function showPage(name) {
     if (!VALID_PAGES.includes(name)) name = 'search';
     if (ADMIN_ONLY_PAGES.includes(name) && !document.body.classList.contains('role-admin')) name = 'search';
+    if (name === 'product' && (document.body.classList.contains('role-agent') || document.body.classList.contains('role-agent_admin') || document.body.classList.contains('role-agent_manager'))) name = 'search';
     document.body.dataset.activePage = name;  // 페이지별 크롬 토글용 (예: 발송 페이지는 전역 검색 숨김)
     document.querySelectorAll('.pt-page').forEach(p => p.classList.toggle('active', p.dataset.page === name));
     document.querySelectorAll('.pt-sb a').forEach(a => a.classList.toggle('active', a.dataset.page === name));
