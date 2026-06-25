@@ -237,9 +237,9 @@ export function renderContractDocs(card, c, opts = {}) {
   const licenseEditable = !!c.doc_license;
 
   // 첨부서류 — PC 배열(doc_attachments) + 모바일 객체(customer_docs) 통합
-  const _extractUrl = v => { while (v && typeof v === 'object') v = v.url; return typeof v === 'string' ? v : ''; };
-  const docAttsRaw = Array.isArray(c.doc_attachments) ? c.doc_attachments : (c.doc_attachments ? [c.doc_attachments] : []);
-  const docAtts = docAttsRaw.map(_extractUrl).filter(Boolean);
+  const _extractUrl = v => { while (v && typeof v === 'object') v = v.url || v[Object.keys(v)[0]]; return typeof v === 'string' ? v : ''; };
+  const _toArray = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : v ? [v] : []);
+  const docAtts = _toArray(c.doc_attachments).map(_extractUrl).filter(Boolean);
   const mobileDocs = c.customer_docs
     ? Object.values(c.customer_docs).filter(d => d && !d._deleted && d.url)
     : [];
@@ -413,8 +413,7 @@ export function renderContractDocs(card, c, opts = {}) {
           console.log('[doc-upload]', file.name, 'type:', file.type, 'isImage:', isImage, 'url:', url);
           newUrls.push(url);
         }
-        const cur = Array.isArray(c.doc_attachments) ? [...c.doc_attachments] : [];
-        const next = [...cur.map(_extractUrl).filter(Boolean), ...newUrls];
+        const next = [..._toArray(c.doc_attachments).map(_extractUrl).filter(Boolean), ...newUrls];
         await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
         c.doc_attachments = next;
         showToast(`${newUrls.length}개 업로드 완료`, 'success');
@@ -431,7 +430,7 @@ export function renderContractDocs(card, c, opts = {}) {
     btn.addEventListener('click', async () => {
       const idx = Number(btn.dataset.attDel);
       if (!confirm('첨부 서류를 제거할까요?')) return;
-      const cur = (Array.isArray(c.doc_attachments) ? [...c.doc_attachments] : []).map(_extractUrl).filter(Boolean);
+      const cur = _toArray(c.doc_attachments).map(_extractUrl).filter(Boolean);
       cur.splice(idx, 1);
       await updateRecord(`contracts/${c._key}`, { doc_attachments: cur, updated_at: Date.now() });
       c.doc_attachments = cur;
