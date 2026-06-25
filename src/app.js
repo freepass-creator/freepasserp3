@@ -2379,4 +2379,26 @@ window.__patchProviderCode = async () => {
   console.log(`[patch] 완료 — ${patched}건 패치됨`);
 };
 
+// 일괄 패치: doc_attachments 깨진 데이터 정리 (객체→URL 문자열 배열로)
+window.__patchDocAttachments = async () => {
+  if (store.currentUser?.role !== 'admin') { console.error('관리자만 실행 가능'); return; }
+  const extractUrl = v => { while (v && typeof v === 'object') v = v.url || v[Object.keys(v)[0]]; return typeof v === 'string' ? v : ''; };
+  const toArray = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : v ? [v] : []);
+  const contracts = await fetchRecord('contracts');
+  if (!contracts) { console.log('계약 없음'); return; }
+  let patched = 0;
+  for (const [k, c] of Object.entries(contracts)) {
+    if (!c?.doc_attachments) continue;
+    const raw = toArray(c.doc_attachments);
+    const clean = raw.map(extractUrl).filter(Boolean);
+    const needsFix = raw.length !== clean.length || raw.some(v => typeof v !== 'string');
+    if (needsFix) {
+      await updateRecord(`contracts/${k}`, { doc_attachments: clean });
+      console.log(`[patch-docs] ${k}: ${raw.length}→${clean.length} (${c.contract_code || ''})`);
+      patched++;
+    }
+  }
+  console.log(`[patch-docs] 완료 — ${patched}건 정리됨`);
+};
+
 boot();
