@@ -250,33 +250,50 @@ export function renderRoomDetail(room) {
     (linkedContract && c.contract_code === linkedContract) ||
     (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom))
   );
-  // 역할 스코프 때문에 store.contracts에 없을 수 있음 → 직접 조회 후 패널 갱신
+  // store.contracts에 없으면 개별 계약 조회 시도 (provider/agent 스코프 우회)
   if (!contract && (productUid || carNumberRoom)) {
-    fetchRecord('contracts').then(all => {
-      if (!all || _activeRoomId !== room._key) return;
-      const found = Object.entries(all)
-        .map(([k, v]) => (typeof v === 'object' ? { _key: k, ...v } : null))
-        .filter(c => c && !c._deleted)
-        .find(c =>
-          c.product_uid === productUid ||
-          c.seed_product_key === productUid ||
-          (linkedContract && c.contract_code === linkedContract) ||
-          (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom))
-        );
-      if (!found) return;
-      // 3번 패널 — 계약 진행
+    const _tryFindContract = async () => {
+      // store.contracts 전체에서 다시 한번 검색 (타이밍 이슈 대응)
+      const retry = (store.contracts || []).filter(c => !c._deleted).find(c =>
+        c.product_uid === productUid || c.seed_product_key === productUid ||
+        (linkedContract && c.contract_code === linkedContract) ||
+        (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom))
+      );
+      if (retry) return retry;
+      // 개별 계약 직접 조회 — product_uid 기반 (개별 $id 읽기는 auth!=null 허용)
+      if (productUid) {
+        try {
+          const { ref, query: fbQuery, orderByChild, equalTo, get } = await import('firebase/database');
+          const { db } = await import('../firebase/config.js');
+          const me = store.currentUser || {};
+          let qRef;
+          if (me.role === 'admin') qRef = ref(db, 'contracts');
+          else if (me.role === 'provider') qRef = fbQuery(ref(db, 'contracts'), orderByChild('provider_company_code'), equalTo(me.company_code || ''));
+          else qRef = fbQuery(ref(db, 'contracts'), orderByChild('agent_uid'), equalTo(me.uid || ''));
+          const snap = await get(qRef);
+          const val = snap.val();
+          if (!val) return null;
+          return Object.entries(val).map(([k, v]) => ({ _key: k, ...v }))
+            .filter(c => !c._deleted)
+            .find(c => c.product_uid === productUid || c.seed_product_key === productUid ||
+              (carNumberRoom && normCar(c.car_number_snapshot) === normCar(carNumberRoom)));
+        } catch { return null; }
+      }
+      return null;
+    };
+    _tryFindContract().then(found => {
+      if (!found || _activeRoomId !== room._key) return;
       if (stepCard) {
         stepCard.querySelector('.ws4-body').innerHTML = renderContractWorkV2(found);
         bindContractWorkV2(stepCard, found, {
           reRender: () => { const r = (store.rooms || []).find(x => x._key === _activeRoomId); if (r) renderRoomDetail(r); },
         });
       }
-      // 4번 패널 — 서류
       if (carCard) {
         carCard.querySelector('.ws4-body').innerHTML = '';
         renderContractDocs(carCard, found);
       }
-    }).catch(() => {});
+    });
   }
 
   // 3번 패널(계약 진행): 진행 단계 + 메모
