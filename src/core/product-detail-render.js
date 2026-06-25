@@ -89,16 +89,23 @@ function bindGallery(root, imgList, state, onNav) {
 }
 
 export function openFullscreen(imgList, startIdx = 0) {
-  // 전체 이미지 즉시 병렬 prefetch
   imgList.forEach(url => { const i = new Image(); i.decoding = 'async'; i.src = url; });
 
   const overlay = document.createElement('dialog');
   overlay.className = 'srch-fullscreen srch-fullscreen--scroll';
   overlay.innerHTML = `
-    <button class="srch-fs-close" aria-label="닫기"><i class="ph ph-x"></i></button>
-    <div class="srch-fs-counter" id="srchFsCounter">${startIdx + 1} / ${imgList.length}</div>
+    <div class="srch-fs-toolbar">
+      <div class="srch-fs-counter" id="srchFsCounter">${startIdx + 1} / ${imgList.length}</div>
+      <div class="srch-fs-actions">
+        <button class="srch-fs-btn" id="srchFsRotate" title="회전"><i class="ph ph-arrow-clockwise"></i></button>
+        <button class="srch-fs-btn" id="srchFsZoomIn" title="확대"><i class="ph ph-magnifying-glass-plus"></i></button>
+        <button class="srch-fs-btn" id="srchFsZoomOut" title="축소"><i class="ph ph-magnifying-glass-minus"></i></button>
+        <button class="srch-fs-btn" id="srchFsDownload" title="전체 다운로드"><i class="ph ph-download-simple"></i> ${imgList.length}장</button>
+        <button class="srch-fs-btn srch-fs-close" aria-label="닫기"><i class="ph ph-x"></i></button>
+      </div>
+    </div>
     <div class="srch-fs-scroll" id="srchFsScroll">
-      ${imgList.map((u, i) => `<img class="srch-fs-img" src="${u}" data-idx="${i}" loading="eager" decoding="async">`).join('')}
+      ${imgList.map((u, i) => `<img class="srch-fs-img" src="${u}" data-idx="${i}" data-rot="0" data-zoom="1" loading="eager" decoding="async">`).join('')}
     </div>
   `;
   document.body.appendChild(overlay);
@@ -106,6 +113,7 @@ export function openFullscreen(imgList, startIdx = 0) {
 
   const scroller = overlay.querySelector('#srchFsScroll');
   const counter = overlay.querySelector('#srchFsCounter');
+  let currentIdx = startIdx;
 
   requestAnimationFrame(() => {
     const imgs = scroller.querySelectorAll('.srch-fs-img');
@@ -115,24 +123,55 @@ export function openFullscreen(imgList, startIdx = 0) {
   const observer = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (e.isIntersecting) {
-        const idx = Number(e.target.dataset.idx) || 0;
-        counter.textContent = `${idx + 1} / ${imgList.length}`;
+        currentIdx = Number(e.target.dataset.idx) || 0;
+        counter.textContent = `${currentIdx + 1} / ${imgList.length}`;
       }
     }
-  }, {
-    root: scroller,
-    rootMargin: '-50% 0px -50% 0px',
-    threshold: 0,
-  });
+  }, { root: scroller, rootMargin: '-50% 0px -50% 0px', threshold: 0 });
   scroller.querySelectorAll('.srch-fs-img').forEach(img => observer.observe(img));
+
+  const getCurrentImg = () => scroller.querySelectorAll('.srch-fs-img')[currentIdx];
+  const applyTransform = (img) => {
+    const rot = Number(img.dataset.rot) || 0;
+    const zoom = Number(img.dataset.zoom) || 1;
+    img.style.transform = `rotate(${rot}deg) scale(${zoom})`;
+  };
+
+  overlay.querySelector('#srchFsRotate').addEventListener('click', () => {
+    const img = getCurrentImg();
+    if (!img) return;
+    img.dataset.rot = (Number(img.dataset.rot) + 90) % 360;
+    applyTransform(img);
+  });
+  overlay.querySelector('#srchFsZoomIn').addEventListener('click', () => {
+    const img = getCurrentImg();
+    if (!img) return;
+    img.dataset.zoom = Math.min(Number(img.dataset.zoom) + 0.5, 4);
+    applyTransform(img);
+  });
+  overlay.querySelector('#srchFsZoomOut').addEventListener('click', () => {
+    const img = getCurrentImg();
+    if (!img) return;
+    img.dataset.zoom = Math.max(Number(img.dataset.zoom) - 0.5, 0.5);
+    applyTransform(img);
+  });
+  overlay.querySelector('#srchFsDownload').addEventListener('click', async () => {
+    for (let i = 0; i < imgList.length; i++) {
+      try {
+        const res = await fetch(imgList[i], { mode: 'cors' });
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `photo_${i + 1}.${blob.type?.split('/')[1] || 'jpg'}`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      } catch { window.open(imgList[i], '_blank'); }
+    }
+  });
 
   const ac = new AbortController();
   const close = () => { if (overlay.open) overlay.close(); };
-  overlay.addEventListener('close', () => {
-    ac.abort();
-    observer.disconnect();
-    overlay.remove();
-  }, { once: true });
+  overlay.addEventListener('close', () => { ac.abort(); observer.disconnect(); overlay.remove(); }, { once: true });
   overlay.querySelector('.srch-fs-close').addEventListener('click', close, { signal: ac.signal });
   overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); }, { signal: ac.signal });
 }

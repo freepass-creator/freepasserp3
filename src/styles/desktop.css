@@ -1943,21 +1943,32 @@
     flex-shrink: 0;
     content-visibility: auto;
     contain-intrinsic-size: 96vw 80vh;
+    transition: transform 0.2s ease;
   }
-  .srch-fs-close {
-    position: fixed; top: 16px; right: 16px;
-    width: 36px; height: 36px; border-radius: 999px;
+  .srch-fs-toolbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+  }
+  .srch-fs-actions { display: flex; gap: 6px; }
+  .srch-fs-btn {
+    height: 32px; padding: 0 10px; border-radius: 999px;
     background: rgba(255,255,255,0.15); color: #fff;
-    border: none; cursor: pointer; font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 2;
+    border: none; cursor: pointer; font-size: 13px;
+    display: inline-flex; align-items: center; gap: 4px;
+    backdrop-filter: blur(4px);
+  }
+  .srch-fs-btn:hover { background: rgba(255,255,255,0.3); }
+  .srch-fs-close {
+    width: 32px; padding: 0;
+    justify-content: center; font-size: 16px;
   }
   .srch-fs-counter {
-    position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
     padding: 4px 14px;
     background: rgba(255,255,255,0.15); color: #fff;
     border-radius: 999px; font-size: 13px;
-    font-variant-numeric: tabular-nums; z-index: 2;
+    font-variant-numeric: tabular-nums;
   }
   /* 섹션 타이틀 — 같은 패널 안에 여러 form-grid 를 묶을 때 사용
      경계는 다음 섹션 위 border-top 으로 표시 → 마지막 섹션은 자연스럽게 끝남 */
