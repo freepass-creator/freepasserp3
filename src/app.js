@@ -1143,9 +1143,24 @@ async function boot() {
 
   if (user && hasValidRole && !isBlocked) {
     document.body.classList.remove('is-login');
+    if (user.role === 'provider') {
+      try {
+        const allPartners = await fetchRecord('partners');
+        if (allPartners) {
+          const already = Object.values(allPartners).some(p => p.partner_code === user.company_code);
+          if (!already) {
+            const byName = Object.values(allPartners).find(p =>
+              user.company_name && (p.partner_name === user.company_name || p.company_name === user.company_name)
+            );
+            if (byName?.partner_code) {
+              user.company_code = byName.partner_code;
+              updateRecord(`users/${user.uid}`, { company_code: byName.partner_code }).catch(() => {});
+            }
+          }
+        }
+      } catch (_) {}
+    }
     hydrateUser(user);
-    // 인증으로 role 클래스가 붙은 뒤 페이지 가드 재평가 — 초기 showPage 는 인증 전 실행돼
-    //  관리자가 #users/#partners deep-link 진입 시 잘못 search 로 튕겨 있을 수 있음(회귀 방지).
     window.__showPage?.(location.hash.replace('#', '') || 'search');
     startHydration();
     // 백그라운드 서비스 — ⚠ v3 리팩터(9063c71)에서 호출 블록이 통째로 누락된 회귀 복구.
