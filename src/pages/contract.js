@@ -240,6 +240,7 @@ export function renderContractDocs(card, c, opts = {}) {
   const _extractUrl = v => { while (v && typeof v === 'object') v = v.url || v[Object.keys(v)[0]]; return typeof v === 'string' ? v : ''; };
   const _toArray = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : v ? [v] : []);
   const docAtts = _toArray(c.doc_attachments).map(_extractUrl).filter(Boolean);
+  console.log('[docs-render] raw:', c.doc_attachments, 'parsed:', docAtts);
   const mobileDocs = c.customer_docs
     ? Object.values(c.customer_docs).filter(d => d && !d._deleted && d.url)
     : [];
