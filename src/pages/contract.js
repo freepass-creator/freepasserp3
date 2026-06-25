@@ -215,8 +215,10 @@ export function renderContractDetail(c) {
     ]);
   }
 
-  // 3. 차량 정보 — 연결 상품 기반
+  // 3. 차량 정보 — 연결 상품 기반 (헤더도 갱신)
   if (condCard) {
+    const condHead = condCard.querySelector('.ws4-head span');
+    if (condHead) condHead.textContent = '차량 정보';
     const productUid = c.product_uid || c.seed_product_key;
     const normCar = s => String(s || '').replace(/\s/g, '');
     const p = (store.products || []).find(x =>

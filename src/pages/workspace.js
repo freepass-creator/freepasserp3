@@ -318,9 +318,11 @@ export function renderRoomDetail(room) {
     }
   }
 
-  // 4번 패널(차량 정보): 계약 있으면 서류로 교체, 없으면 차량정보
+  // 4번 패널: 계약 있으면 첨부 서류, 없으면 차량 정보
   if (carCard) {
+    const carHead = carCard.querySelector('.ws4-head span');
     if (contract) {
+      if (carHead) carHead.textContent = '첨부 서류';
       carCard.querySelector('.ws4-body').innerHTML = '';
       renderContractDocs(carCard, contract);
       if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} }
@@ -341,6 +343,7 @@ export function renderRoomDetail(room) {
         renderContractDocs(carCard, contract);
       });
     } else {
+      if (carHead) carHead.textContent = '차량 정보';
       const carNumber = room.vehicle_number || room.car_number;
       const norm = s => String(s || '').replace(/\s/g, '');
       let p = (store.products || []).find(x =>
