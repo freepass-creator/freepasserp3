@@ -67,13 +67,6 @@ export const FILTERS = {
   },
   color:     { label: '외부색상', icon: 'ph ph-palette', chips: [], dynamic: true, field: 'ext_color' },
   int_color: { label: '내부색상', icon: 'ph ph-palette', chips: [], dynamic: true, field: 'int_color' },
-  vehicle_status: {
-    // vehicle_status 표준 5가지 (사용자 정책)
-    label: '출고상태', icon: 'ph ph-truck',
-    chips: VEHICLE_STATUSES.map(s => ({
-      id: `vs_${s}`, label: s, match: v => v === s,
-    })),
-  },
   product_type: {
     label: '상품구분', icon: 'ph ph-tag',
     chips: ['신차','재렌트','재구독'].map(s => ({
@@ -107,7 +100,6 @@ export function matchFilter(p, g, chip) {
   if (g === 'period')         return chip.match(null, p.price);
   if (g === 'mileage')        return chip.match(Number(p.mileage) || 0);
   if (g === 'fuel')           return chip.match(p.fuel_type);
-  if (g === 'vehicle_status') return chip.match(p.vehicle_status);
   if (g === 'product_type')   return chip.match(p.product_type);
   if (g === 'review')         return chip.match(null, p);
   if (f.dynamic && f.field)   return chip.match(getField(p, f.field));
