@@ -178,6 +178,7 @@ export function renderSettlementDetail(s) {
       ['보증금', dep],
       ['공급사', providerLabelByCode(s.provider_company_code || s.partner_code, store) || s.provider_name || s.provider_company_code, true],
       ['영업', agentLine, true],
+      ['영업사', providerLabelByCode(s.agent_channel_code || agentUser?.agent_channel_code || agentUser?.company_code, store) || s.agent_channel_code || ''],
       ['원수수료', baseFee ? Math.round(baseFee/10000) + '만' : ''],
       ['정산금', fee ? Math.round(fee/10000) + '만' : ''],
       ['정산상태', status, true],
