@@ -406,7 +406,11 @@ export function bindFormSave(page, collection, key, _current, options = {}) {
       }
     }
 
-    if (!dirty) return 0;
+    // 핵심 코드 필드 빈값 덮어쓰기 방지
+    const PROTECTED = ['partner_code', 'policy_code', 'contract_code', 'user_code', 'company_code'];
+    for (const k of PROTECTED) { if (k in patch && !patch[k]) delete patch[k]; }
+
+    if (!dirty || Object.keys(patch).length <= 1) return 0;
     try {
       await updateRecord(`${collection}/${key}`, patch);
       if (flashEls.length) flashSaved(flashEls);
