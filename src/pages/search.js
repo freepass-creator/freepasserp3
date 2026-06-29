@@ -60,9 +60,6 @@ export function updateSearchStats(filteredList) {
   el.innerHTML = `
     ${filteredHtml}
     <span class="stat-total">총 ${total}대</span>
-    <span class="stat-즉시">즉시 ${counts['즉시']}</span>
-    <span class="stat-가능">가능 ${counts['가능']}</span>
-    <span class="stat-협의">협의 ${counts['협의']}</span>
   `;
 }
 // 다른 모듈에서 호출하기 쉽게 window 에도 노출 (showPage non-module 스크립트용)
