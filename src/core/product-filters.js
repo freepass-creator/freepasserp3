@@ -119,7 +119,8 @@ export function matchFilter(p, g, chip) {
 export function buildDynamicChips(products, passFn = null) {
   Object.entries(FILTERS).forEach(([key, f]) => {
     if (!f.dynamic) return;
-    const scope = passFn ? products.filter(p => passFn(p, key)) : products;
+    const base = products.filter(p => !/불가|완료/.test(p.vehicle_status || ''));
+    const scope = passFn ? base.filter(p => passFn(p, key)) : base;
     const counts = {};
     scope.forEach(p => {
       const v = getField(p, f.field);
