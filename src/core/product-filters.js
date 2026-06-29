@@ -109,32 +109,44 @@ export function matchFilter(p, g, chip) {
 /** dynamic 필터 칩을 products 에서 집계해 FILTERS 에 채워넣는다.
  *  passFn(p, key): 해당 key 를 제외한 활성필터를 통과하는지 (없으면 전체) */
 export function buildDynamicChips(products, passFn = null) {
-  Object.entries(FILTERS).forEach(([key, f]) => {
-    if (!f.dynamic) return;
-    const base = products.filter(p => !/불가|완료/.test(p.vehicle_status || ''));
-    const scope = passFn ? base.filter(p => passFn(p, key)) : base;
-    const counts = {};
-    scope.forEach(p => {
-      const v = getField(p, f.field);
-      if (v !== undefined && v !== null && v !== '') {
-        counts[String(v)] = (counts[String(v)] || 0) + 1;
-      }
-    });
-    const sorted = key === 'year'
-      ? Object.entries(counts).sort((a, b) => Number(b[0]) - Number(a[0]))
-      : Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const base = products.filter(p => !/불가|완료/.test(p.vehicle_status || ''));
 
-    const mkChip = ([v, cnt]) => {
-      let displayName = v;
-      if (key === 'provider') {
-        const partner = (store.partners || []).find(p => (p.partner_code || p.company_code) === v);
-        if (partner) displayName = (partner.partner_name || partner.company_name || v).replace(/주식회사\s*|㈜/g, '').trim();
+  Object.entries(FILTERS).forEach(([key, f]) => {
+    const scope = passFn ? base.filter(p => passFn(p, key)) : base;
+
+    if (f.dynamic) {
+      // 동적 필터 — 값 집계
+      const counts = {};
+      scope.forEach(p => {
+        const v = getField(p, f.field);
+        if (v !== undefined && v !== null && v !== '') {
+          counts[String(v)] = (counts[String(v)] || 0) + 1;
+        }
+      });
+      const sorted = key === 'year'
+        ? Object.entries(counts).sort((a, b) => Number(b[0]) - Number(a[0]))
+        : Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+      const mkChip = ([v, cnt]) => {
+        let displayName = v;
+        if (key === 'provider') {
+          const partner = (store.partners || []).find(p => (p.partner_code || p.company_code) === v);
+          if (partner) displayName = (partner.partner_name || partner.company_name || v).replace(/주식회사\s*|㈜/g, '').trim();
+        }
+        return { id: `${key}_${v}`, label: `${displayName}(${cnt})`, match: x => String(x) === v };
+      };
+      const limit = TOP_N[key] || 10;
+      f.popular = sorted.slice(0, limit).map(mkChip);
+      f.others  = sorted.slice(limit).map(mkChip);
+      f.chips   = [...f.popular, ...f.others];
+    } else if (f.chips?.length) {
+      // 정적 필터 — 기존 칩에 대수 추가 (matchFilter 재사용)
+      for (const chip of f.chips) {
+        const cnt = scope.filter(p => matchFilter(p, key, chip)).length;
+        const bl = chip._baseLabel || chip.label.replace(/\(\d+\)$/, '');
+        chip._baseLabel = bl;
+        chip.label = `${bl}(${cnt})`;
       }
-      return { id: `${key}_${v}`, label: `${displayName}(${cnt})`, match: x => String(x) === v };
-    };
-    const limit = TOP_N[key] || 10;
-    f.popular = sorted.slice(0, limit).map(mkChip);
-    f.others  = sorted.slice(limit).map(mkChip);
-    f.chips   = [...f.popular, ...f.others];
+    }
   });
 }
