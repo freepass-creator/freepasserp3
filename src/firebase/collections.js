@@ -78,6 +78,7 @@ export async function createSettlement(contract) {
     partner_code: contract.partner_code || contract.provider_company_code,
     provider_company_code: contract.provider_company_code || contract.partner_code,
     agent_uid: contract.agent_uid,
+    agent_name: contract.agent_name || '',
     agent_code: contract.agent_code,
     agent_channel_code: contract.agent_channel_code,
     customer_name: contract.customer_name,
