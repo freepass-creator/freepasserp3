@@ -1281,12 +1281,23 @@ function startHydration() {
   // 상품 — search + 재고관리 + 정책연결 양쪽 갱신
   watchCollection('products', (list) => {
     store.products = enrichProductsWithPolicy(list || [], store.policies || []);
-    // 차종구분 자동 분류 — car_models 마스터에서 vehicle_class 매칭
-    if (store.carModels?.length) {
-      for (const p of store.products) {
-        if (p.vehicle_class) continue;
-        const cm = store.carModels.find(m => m.maker === p.maker && m.model === p.model && (!p.sub_model || m.sub_model === p.sub_model));
-        if (cm?.vehicle_class) p.vehicle_class = cm.vehicle_class;
+    // 차종구분 자동 분류 — 모델명 기반 매핑
+    const _VC = {
+      SUV: /쏘렌토|투싼|싼타페|셀토스|스포티지|코나|베뉴|팰리세이드|GV70|GV80|GV60|QX|NX|토레스|티볼리|렉스턴|코란도|XM3|카이런|모하비|니로|EV[5-9]|아이오닉 [5-9]|캡처|XC[469]0|Q[2-8]|RAV4|CR-V|CX-[3-9]|티구안|투아렉|카이엔|마칸/,
+      세단: /쏘나타|아반떼|그랜저|K[3-9]|제네시스|G[78]0|G90|K5|K8|K9|캠리|아코드|시빅|말리부|A[4-8]|패서트|C클래스|E클래스|S클래스|3시리즈|5시리즈|7시리즈|IS|ES|LS|GS/,
+      경차: /모닝|레이|스파크|캐스퍼|다마스/,
+      소형: /아반떼|i30|프라이드|쏠라리스|K3|베르나|엑센트|벨로스터|i20/,
+      준중형: /K5|쏘나타|말리부|캠리|아코드|시빅|C클래스|3시리즈|IS|A4|골프|레온/,
+      대형: /그랜저|K8|K9|G80|G90|제네시스|LS|A8|S클래스|7시리즈|팰리세이드/,
+      MPV: /카니발|스타리아|스타렉스|카렌스|올란도|오디세이|시에나/,
+      쿠페: /쿠페|GT|스팅어|페라리|람보르기니|벨로스터/,
+      EV: /아이오닉|EV[2-9]|볼트|모델[3SXY]|테슬라|니로 EV|코나 EV|전기/,
+    };
+    for (const p of store.products) {
+      if (p.vehicle_class) continue;
+      const name = `${p.model || ''} ${p.sub_model || ''}`;
+      for (const [cls, re] of Object.entries(_VC)) {
+        if (re.test(name)) { p.vehicle_class = cls; break; }
       }
     }
     calibrateSearchCols(store.products);
