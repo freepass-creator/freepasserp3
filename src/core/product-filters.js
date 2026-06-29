@@ -7,6 +7,7 @@
  */
 import { needsReview, VEHICLE_STATUSES } from './product-badges.js';
 import { normalizeProductType } from './normalize.js';
+import { store } from './store.js';
 
 export const TOP_N = {
   maker: 8, model: 12, submodel: 12, year: 10,
@@ -90,7 +91,7 @@ export const FILTERS = {
   age_lowering:   { label: '운전연령하향',      icon: 'ph ph-arrow-down',     chips: [], dynamic: true, field: '_policy.driver_age_lowering' },
   credit_grade:   { label: '심사기준',          icon: 'ph ph-chart-bar',      chips: [], dynamic: true, field: '_policy.credit_grade' },
   annual_mileage: { label: '연간약정주행거리',  icon: 'ph ph-road-horizon',   chips: [], dynamic: true, field: '_policy.annual_mileage' },
-  provider:       { label: '공급코드',          icon: 'ph ph-buildings',      chips: [], dynamic: true, field: 'provider_company_code' },
+  provider:       { label: '공급사',            icon: 'ph ph-buildings',      chips: [], dynamic: true, field: 'provider_company_code' },
 };
 
 export function getField(obj, path) {
@@ -130,11 +131,14 @@ export function buildDynamicChips(products, passFn = null) {
       ? Object.entries(counts).sort((a, b) => Number(b[0]) - Number(a[0]))
       : Object.entries(counts).sort((a, b) => b[1] - a[1]);
 
-    const mkChip = ([v, cnt]) => ({
-      id: `${key}_${v}`,
-      label: `${v}(${cnt})`,
-      match: x => String(x) === v,
-    });
+    const mkChip = ([v, cnt]) => {
+      let displayName = v;
+      if (key === 'provider') {
+        const partner = (store.partners || []).find(p => (p.partner_code || p.company_code) === v);
+        if (partner) displayName = (partner.partner_name || partner.company_name || v).replace(/주식회사\s*|㈜/g, '').trim();
+      }
+      return { id: `${key}_${v}`, label: `${displayName}(${cnt})`, match: x => String(x) === v };
+    };
     const limit = TOP_N[key] || 10;
     f.popular = sorted.slice(0, limit).map(mkChip);
     f.others  = sorted.slice(limit).map(mkChip);
