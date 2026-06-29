@@ -102,11 +102,20 @@ export function renderUserDetail(u) {
   const ROLES = [['admin', '관리자'], ['provider', '공급사'], ['agent', '영업자']];
   const STATUSES = [['active', '승인'], ['pending', '대기']];
   const currentStatus = normalizeStatus(u);   // 'active' / 'pending'
-  // 사용자 소속 회사 후보 — partners 기반. value=partner_code, display=partner_name
-  const companies = (store.partners || []).filter(p => !p._deleted).map(p => ({
+  // 사용자 소속 회사 후보 — partners 기반. 역할별 필터링
+  const allCompanies = (store.partners || []).filter(p => !p._deleted).map(p => ({
     code: p.partner_code || p.company_code || p._key,
     name: p.partner_name || p.company_name || p.partner_code || p._key,
+    type: p.partner_type || '공급사',
   })).filter(p => p.code);
+  const companiesForRole = (r) => {
+    if (r === 'provider') return allCompanies.filter(c => /(공급|provider)/i.test(c.type));
+    if (r === 'agent' || r === 'agent_admin') return allCompanies.filter(c => /(영업|sales|channel)/i.test(c.type));
+    return allCompanies;
+  };
+  const companyOptions = (list, selected) => `<option value="">-</option>` +
+    list.map(c => `<option value="${esc(c.code)}" ${c.code === selected ? 'selected' : ''}>${esc(c.name)} (${esc(c.code)})</option>`).join('') +
+    (selected && !list.find(c => c.code === selected) ? `<option value="${esc(selected)}" selected>${esc(selected)}</option>` : '');
 
   // 1. 편집
   if (editCard) {
@@ -118,17 +127,19 @@ export function renderUserDetail(u) {
         ${ffi('이름',   'name',  u.name,  dis)}
         ${ffi('직책',   'title', u.title, dis)}
         ${ffi('이메일', 'email', u.email, dis)}
-        <div class="ff"><label>역할</label><select class="input" data-f="role"${lockSel}>${ROLES.map(([k, v]) => `<option value="${k}" ${k === u.role ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
-        <div class="ff"><label>소속코드</label><select class="input" data-f="company_code"${lockSel}>
-          <option value="">-</option>
-          ${companies.map(c => `<option value="${esc(c.code)}" ${c.code === u.company_code ? 'selected' : ''}>${esc(c.name)} (${esc(c.code)})</option>`).join('')}
-          ${u.company_code && !companies.find(c => c.code === u.company_code) ? `<option value="${esc(u.company_code)}" selected>${esc(u.company_code)}</option>` : ''}
+        <div class="ff"><label>역할</label><select class="input" data-f="role" id="userRoleSelect"${lockSel}>${ROLES.map(([k, v]) => `<option value="${k}" ${k === u.role ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
+        <div class="ff"><label>소속코드</label><select class="input" data-f="company_code" id="userCompanySelect"${lockSel}>
+          ${companyOptions(companiesForRole(u.role), u.company_code)}
         </select></div>
         ${ffi('연락처', 'phone', u.phone, dis)}
         <div class="ff"><label>상태</label><select class="input" data-f="status"${lockSel}>${STATUSES.map(([k, v]) => `<option value="${k}" ${k === currentStatus ? 'selected' : ''}>${esc(v)}</option>`).join('')}</select></div>
         <div class="ff"><label>비고</label><textarea class="input" data-f="memo" style="height: 50px;"${lock}>${esc(u.memo || '')}</textarea></div>
       </div>
     `;
+    editCard.querySelector('#userRoleSelect')?.addEventListener('change', (e) => {
+      const sel = editCard.querySelector('#userCompanySelect');
+      if (sel) sel.innerHTML = companyOptions(companiesForRole(e.target.value), '');
+    });
   }
 
   // 2. 상세
