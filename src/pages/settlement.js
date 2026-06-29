@@ -246,6 +246,8 @@ function bindSettleEdit(s) {
 
     try {
       await updateRecord(`settlements/${s._key}`, update);
+      Object.assign(s, update);
+      renderSettlementDetail(s);
       flashSaved([...page.querySelectorAll('#setlFee, #setlDate, #setlMemo')]);
     } catch (e) {
       console.error('[settle] save fail', e);
