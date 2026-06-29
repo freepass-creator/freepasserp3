@@ -140,7 +140,7 @@ export function renderSettlementDetail(s) {
     const monthlyRent = rentRaw ? `${Math.round(Number(rentRaw)/10000)}만/월` : '';
     const dep = depRaw ? `${Math.round(Number(depRaw)/10000)}만` : '';
     const carLine = [s.car_number, s.maker, s.sub_model_snapshot || s.sub_model || s.model_snapshot || s.model, s.trim_name].filter(Boolean).join(' · ');
-    const agentUser = !s.agent_name && s.agent_uid ? (store.users || []).find(u => u.uid === s.agent_uid) : null;
+    const agentUser = !s.agent_name ? (store.users || []).find(u => u.uid === s.agent_uid || u.user_code === s.agent_code) : null;
     const agentName = s.agent_name || agentUser?.name || '';
     const agentLine = [agentName, s.agent_code || s.agent_channel_code].filter(Boolean).join(' · ');
     const rows = [
