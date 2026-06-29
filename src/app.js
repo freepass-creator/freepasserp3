@@ -1281,6 +1281,14 @@ function startHydration() {
   // 상품 — search + 재고관리 + 정책연결 양쪽 갱신
   watchCollection('products', (list) => {
     store.products = enrichProductsWithPolicy(list || [], store.policies || []);
+    // 차종구분 자동 분류 — car_models 마스터에서 vehicle_class 매칭
+    if (store.carModels?.length) {
+      for (const p of store.products) {
+        if (p.vehicle_class) continue;
+        const cm = store.carModels.find(m => m.maker === p.maker && m.model === p.model && (!p.sub_model || m.sub_model === p.sub_model));
+        if (cm?.vehicle_class) p.vehicle_class = cm.vehicle_class;
+      }
+    }
     calibrateSearchCols(store.products);
     applySearchFilter();
     renderFilteredProducts();
