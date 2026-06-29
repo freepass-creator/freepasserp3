@@ -724,6 +724,13 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       if (linkedRoom) {
         await updateRecord(`rooms/${linkedRoom._key}`, { linked_contract: newCode });
       }
+      // 정산 자동 생성
+      try {
+        const { createSettlement } = await import('../firebase/collections.js');
+        c.contract_code = newCode;
+        await createSettlement(c);
+      } catch (se) { console.warn('[settlement] 자동 생성 실패', se); }
+
       const product = findProduct(c.product_uid) || findProductByUid(c.product_uid);
       notifyProviderAndAdmin({
         template: 'contract_done',
