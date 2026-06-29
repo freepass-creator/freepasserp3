@@ -281,7 +281,7 @@ export async function bulkCreateSettlements() {
 export function exportSettlementExcel() {
   const list = _lastFilteredSettlements;
   if (!list.length) { showToast('내보낼 정산 항목이 없습니다', 'info'); return; }
-  const header = ['정산코드','계약번호','계약자','차량번호','공급사','영업코드','영업자','수수료(원)','정산상태','정산일','생성일'];
+  const header = ['정산코드','계약번호','계약자','차량번호','공급사','영업코드','영업자','영업사','수수료(원)','정산상태','정산일','생성일'];
   const rows = list.map(s => {
     const agentUser = (store.users || []).find(u => u.uid === s.agent_uid || u.user_code === s.agent_code);
     return [
@@ -292,6 +292,7 @@ export function exportSettlementExcel() {
       providerNameByCode(s.provider_company_code || s.partner_code, store) || s.provider_company_code || '',
       s.agent_code || '',
       s.agent_name || agentUser?.name || '',
+      s.agent_channel_code || agentUser?.agent_channel_code || agentUser?.company_code || '',
       s.fee_amount || s.commission || 0,
       getSettlementStatus(s),
       s.settled_date || s.settled_at ? fmtDate(s.settled_date || s.settled_at) : '',
