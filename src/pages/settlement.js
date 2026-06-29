@@ -293,7 +293,7 @@ export function exportSettlementExcel() {
       providerNameByCode(s.provider_company_code || s.partner_code, store) || s.provider_company_code || '',
       s.agent_code || '',
       s.agent_name || agentUser?.name || '',
-      s.agent_channel_code || agentUser?.agent_channel_code || agentUser?.company_code || '',
+      providerNameByCode(agentUser?.company_code || s.agent_channel_code, store) || agentUser?.company_code || s.agent_channel_code || '',
       s.fee_amount || s.commission || 0,
       getSettlementStatus(s),
       s.settled_date || s.settled_at ? fmtDate(s.settled_date || s.settled_at) : '',
