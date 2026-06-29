@@ -298,11 +298,12 @@ export function exportSettlementExcel() {
       fmtDate(s.created_at),
     ];
   });
-  const tsv = [header, ...rows].map(r => r.map(c => String(c).replace(/[\t\n]/g, ' ')).join('\t')).join('\n');
-  const blob = new Blob(['﻿' + tsv], { type: 'text/tab-separated-values;charset=utf-8' });
+  const csvEsc = v => { const s = String(v); return /[,"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const csv = [header, ...rows].map(r => r.map(csvEsc).join(',')).join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `정산목록_${new Date().toISOString().slice(0,10)}.xls`;
+  a.download = `정산목록_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
   URL.revokeObjectURL(a.href);
   showToast(`${list.length}건 엑셀 다운로드`, 'success');
