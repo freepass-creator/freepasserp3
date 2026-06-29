@@ -53,7 +53,7 @@ import {
 import { POLICY_OPTS, renderPolicyList, renderPolicyDetail } from './pages/policy.js';
 import { renderPartnerList, renderPartnerDetail } from './pages/partner.js';
 import { renderUserList, renderUserDetail, userFilter } from './pages/user.js';
-import { renderSettlementList, renderSettlementDetail } from './pages/settlement.js';
+import { renderSettlementList, renderSettlementDetail, exportSettlementExcel } from './pages/settlement.js';
 import {
   CONTRACT_STATUSES, renderContractList, renderContractDetail,
   renderContractWorkV2, bindContractWorkV2,
@@ -469,6 +469,7 @@ window.refreshPageActions = function(pageName) {
         { chip: true, label: '완료',   active: f.status === 'done',    onClick: () => setS('done') },
       ],
       right: [
+        { label: '엑셀', icon: 'ph-file-xls', onClick: () => exportSettlementExcel() },
         ...editActions,
         { divider: true },
         { label: '삭제', icon: 'ph-trash', disabled: !hasSelection, danger: true,

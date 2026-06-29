@@ -40,11 +40,37 @@ function toDateInput(ts) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+let _lastFilteredSettlements = [];
+
+export function getFilteredSettlements() { return _lastFilteredSettlements; }
+
 export function renderSettlementList(settlements) {
   const body = listBody('settle');
   if (!body) return;
-  if (!Array.isArray(settlements)) return;   // 미로드 — prototype 보존
+  if (!Array.isArray(settlements)) return;
   const visible = filterByRole(settlements, store.currentUser);
+  _lastFilteredSettlements = visible;
+
+  // 합계 서브바
+  const listCard = body.closest('.ws4-card');
+  let subbar = listCard?.querySelector('.ws4-subbar.settle-summary');
+  if (!subbar && listCard) {
+    subbar = document.createElement('div');
+    subbar.className = 'ws4-subbar settle-summary';
+    const head = listCard.querySelector('.ws4-head');
+    if (head) head.after(subbar);
+  }
+  if (subbar) {
+    const totalFee = visible.reduce((sum, s) => sum + Number(s.fee_amount || s.commission || 0), 0);
+    const pendingFee = visible.filter(s => /대기|미정산/.test(s.settlement_status || '')).reduce((sum, s) => sum + Number(s.fee_amount || s.commission || 0), 0);
+    const doneFee = visible.filter(s => /완료/.test(s.settlement_status || '')).reduce((sum, s) => sum + Number(s.fee_amount || s.commission || 0), 0);
+    subbar.innerHTML = `<span style="font-size:11px;color:var(--text-sub);">${visible.length}건</span>
+      <span style="flex:1"></span>
+      <span style="font-size:11px;color:var(--text-sub);">대기 <b style="color:var(--alert-orange-text)">${Math.round(pendingFee/10000).toLocaleString()}만</b></span>
+      <span style="font-size:11px;color:var(--text-sub);">완료 <b style="color:var(--alert-green-text)">${Math.round(doneFee/10000).toLocaleString()}만</b></span>
+      <span style="font-size:11px;color:var(--text-main);">합계 <b>${Math.round(totalFee/10000).toLocaleString()}만</b></span>`;
+  }
+
   if (!visible.length) { body.innerHTML = emptyState('정산 항목이 없습니다'); renderSettlementDetail(null); return; }
   const sorted = [...visible].sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
   body.innerHTML = sorted.map((s, i) => {
@@ -250,4 +276,34 @@ export async function bulkCreateSettlements() {
     console.error('[settle batch]', e);
     showToast('일괄 정산 실패 — ' + (e.message || e), 'error');
   }
+}
+
+export function exportSettlementExcel() {
+  const list = _lastFilteredSettlements;
+  if (!list.length) { showToast('내보낼 정산 항목이 없습니다', 'info'); return; }
+  const header = ['정산코드','계약번호','계약자','차량번호','공급사','영업코드','영업자','수수료(원)','정산상태','정산일','생성일'];
+  const rows = list.map(s => {
+    const agentUser = (store.users || []).find(u => u.uid === s.agent_uid || u.user_code === s.agent_code);
+    return [
+      s.settlement_code || '',
+      s.contract_code || '',
+      s.customer_name || '',
+      s.car_number || s.car_number_snapshot || '',
+      providerNameByCode(s.provider_company_code || s.partner_code, store) || s.provider_company_code || '',
+      s.agent_code || '',
+      s.agent_name || agentUser?.name || '',
+      s.fee_amount || s.commission || 0,
+      getSettlementStatus(s),
+      s.settled_date || s.settled_at ? fmtDate(s.settled_date || s.settled_at) : '',
+      fmtDate(s.created_at),
+    ];
+  });
+  const tsv = [header, ...rows].map(r => r.map(c => String(c).replace(/[\t\n]/g, ' ')).join('\t')).join('\n');
+  const blob = new Blob(['﻿' + tsv], { type: 'text/tab-separated-values;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `정산목록_${new Date().toISOString().slice(0,10)}.xls`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast(`${list.length}건 엑셀 다운로드`, 'success');
 }
