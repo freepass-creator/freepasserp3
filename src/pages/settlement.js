@@ -145,7 +145,7 @@ export function renderSettlementDetail(s) {
       <div class="form-grid">
         <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${disabled}${lock}></div>
         <div class="ff"><label>정산상태</label>
-          <div id="setlStatus" style="display:flex; gap:3px; flex-wrap:wrap;">
+          <div id="setlStatus" style="display:flex; gap:3px; flex-wrap:wrap;${canEdit ? 'pointer-events:none;opacity:0.7;' : ''}" data-edit-lock="1">
             ${SETTLE_STATUSES.map(st => `<span class="chip${st === status ? ' active' : ''}" data-status="${esc(st)}">${esc(st)}</span>`).join('')}
           </div>
         </div>
@@ -247,6 +247,9 @@ function bindSettleEdit(s) {
     try {
       await updateRecord(`settlements/${s._key}`, update);
       Object.assign(s, update);
+      const idx = (store.settlements || []).findIndex(x => x._key === s._key);
+      if (idx >= 0) Object.assign(store.settlements[idx], update);
+      renderSettlementList(store.settlements || []);
       renderSettlementDetail(s);
       flashSaved([...page.querySelectorAll('#setlFee, #setlDate, #setlMemo')]);
     } catch (e) {
