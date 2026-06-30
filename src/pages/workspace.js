@@ -88,10 +88,15 @@ export function renderRoomList(rooms) {
 
   body.innerHTML = sorted.map((r, i) => {
     const unread = unreadOf(r);
+    // 상품 현재 데이터 우선 (시트 동기화 후 모델명 변경 반영)
+    const product = (store.products || []).find(p =>
+      p._key === (r.product_uid || r.product_id) ||
+      (r.car_number && p.car_number === r.car_number)
+    );
     // 메인: 차량번호 세부모델 공급사명(한글)  /  우측: 날짜
     const mainLine = formatMainLine(
       r.vehicle_number || r.car_number,
-      r.sub_model,
+      product?.sub_model || r.sub_model,
       providerNameByCode(r.provider_company_code || r.provider_code, store),
     );
     // 보조: 영업채널코드 | 영업자계정코드 | 마지막메세지시간 | 마지막메시지
