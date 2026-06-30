@@ -1290,7 +1290,9 @@
 (function(){
   var COMPANIES={
     sonogong:{logo:'assets/logo-sonogong.webp', name:'주식회사 손오공렌터카', ceo:'조규진', title:'대표이사', biz:'000-00-00000', phone:'-', bank:'-', acct:'-'},
-    switchplan:{logo:'', name:'스위치플랜 주식회사', ceo:'박영현', title:'사내이사', biz:'000-00-00000', phone:'-', bank:'-', acct:'-'}
+    switchplan:{logo:'', name:'스위치플랜 주식회사', ceo:'박영현', title:'사내이사', biz:'000-00-00000', phone:'-', bank:'-', acct:'-'},
+    gyeongjinka:{logo:'assets/logo-jpk.png', name:'경진카 주식회사', ceo:'유진수 · 유희주', title:'대표이사', biz:'725-81-02483', phone:'1544-3871', bank:'-', acct:'-', driverScope:'계약자 1인', depositInstallment:'일시납'},
+    gyeongjirentka:{logo:'assets/logo-jpk.png', name:'경진렌트카 주식회사', ceo:'유진수 · 유희정', title:'대표이사', biz:'129-86-87637', phone:'1544-3871', bank:'-', acct:'-', driverScope:'계약자와 배우자 및 직계가족', depositInstallment:'2회 분납'}
   };
   var PRODUCTS={
     '구독인수형':{label:'구독 인수형', sub:true, take:true, ttitle:'자동차 구독 계약 약관 (인수형)'},
@@ -1364,6 +1366,9 @@
       var img=document.querySelector('.co-logo');
       if(img){ if(c.logo){ img.src=c.logo; img.style.display=''; } else { img.style.display='none'; } }
       document.querySelectorAll('.co-name .co-t').forEach(function(n){ n.style.display = c.logo?'none':''; });
+      /* 회사별 기본값 — 사용자가 직접 입력하지 않은 경우에만 적용 */
+      if(c.driverScope && !DATA.driver_scope) setDom('driver_scope', c.driverScope);
+      if(c.depositInstallment) setDom('deposit_installment', c.depositInstallment);
     }
     applySeals();
 
@@ -1431,7 +1436,7 @@
 
   /* ── 좌측 입력 폼(하네스) ── */
   var SELECTS=[
-    {k:'co', label:'회사', opts:[['sonogong','주식회사 손오공렌터카'],['switchplan','스위치플랜 주식회사'],['auto','공급사 자동 (재고 기준)']]},
+    {k:'co', label:'회사', opts:[['sonogong','주식회사 손오공렌터카'],['switchplan','스위치플랜 주식회사'],['gyeongjinka','경진카 주식회사'],['gyeongjirentka','경진렌트카 주식회사'],['auto','공급사 자동 (재고 기준)']]},
     {k:'pd', label:'상품', opts:[['구독인수형','구독 인수형'],['구독선택형','구독 선택형(반납)'],['렌트인수형','렌트 인수형'],['렌트선택형','렌트 선택형(반납)']]},
     {k:'ins', label:'구독 보험', opts:[['포함','포함형'],['별도','별도형']]},
     {k:'ct', label:'계약 유형', opts:[['개인','개인'],['법인','법인']]},
