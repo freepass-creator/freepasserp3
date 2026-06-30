@@ -130,7 +130,9 @@ export function buildDynamicChips(products, passFn = null) {
       const mkChip = ([v, cnt]) => {
         let displayName = v;
         if (key === 'provider') {
-          const partner = (store.partners || []).find(p => (p.partner_code || p.company_code) === v);
+          const partner = (store.partners || []).find(p =>
+            !p._deleted && (p.partner_code === v || p.company_code === v || p._key === v)
+          );
           if (partner) displayName = (partner.partner_name || partner.company_name || v).replace(/주식회사\s*|㈜/g, '').trim();
         }
         return { id: `${key}_${v}`, label: `${displayName}(${cnt})`, match: x => String(x) === v };

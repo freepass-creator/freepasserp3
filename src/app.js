@@ -82,7 +82,7 @@ import {
 } from './pages/product.js';
 import { enrichProductsWithPolicy } from './core/policy-utils.js';
 import { filterByRole, roleScope, roleLabel, ROLES } from './core/roles.js';
-import { PARTNER_TYPES } from './core/partner-types.js';
+import { PARTNER_TYPES, partnerTypeLabel } from './core/partner-types.js';
 import { VEHICLE_STATUSES } from './core/product-badges.js';
 import { renderChatMessages as v2RenderChatMessages, getPeerReadAt } from './core/chat-render.js';
 import { markRoomRead } from './firebase/collections.js';
@@ -252,7 +252,7 @@ function renderFilteredPartners() {
   } else {
     // 그 외 (전체/공급사/영업채널/운영사) — 활성만
     list = list.filter(p => p.is_active !== false);
-    if (f.type !== 'all') list = list.filter(p => p.partner_type === f.type);
+    if (f.type !== 'all') list = list.filter(p => (partnerTypeLabel(p.partner_type) || '공급사') === f.type);
   }
   renderPartnerList(list);
 }
