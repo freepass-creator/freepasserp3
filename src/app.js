@@ -2460,4 +2460,47 @@ window.__patchDocAttachments = async () => {
   console.log(`[patch-docs] 완료 — ${patched}건 정리됨`);
 };
 
+// 일괄 패치: 잘못 매칭된 sub_model 수정 (일렉트리파이드인데 가솔린인 차량)
+window.__patchElectrifiedMismatch = async (dryRun = true) => {
+  if (store.currentUser?.role !== 'admin') { console.error('관리자만 실행 가능'); return; }
+  const idx = await fetch('/data/car-master/_index.json').then(r => r.json()).catch(() => null);
+  if (!idx) { console.error('카탈로그 로드 실패'); return; }
+
+  const targets = (store.products || []).filter(p => {
+    if (p._deleted) return false;
+    if (!/일렉트리파이드/i.test(p.sub_model || '')) return false;
+    const fuel = `${p.variant || ''} ${p.fuel_type || ''} ${p.trim_name || ''}`;
+    return !/전기|EV|electric|일렉트릭/i.test(fuel);
+  });
+
+  console.log(`[patch-ev] 대상 ${targets.length}대:`);
+  targets.forEach(p => console.log(` · ${p.car_number} | ${p.sub_model} | ${p.variant || p.fuel_type}`));
+
+  if (dryRun) { console.log('[patch-ev] dryRun=true → 실제 변경 없음. __patchElectrifiedMismatch(false) 로 실행'); return; }
+
+  let patched = 0;
+  for (const p of targets) {
+    const maker = p.maker || '';
+    const model = p.model || '';
+    const year = Number(p.year) || 0;
+    // 카탈로그에서 같은 모델 중 비전기 항목 찾기 (연식 근접 우선)
+    const candidates = Object.values(idx).filter(e =>
+      e.model_root === model &&
+      !/일렉트리파이드|EV|일렉트릭/i.test(e.title || '') &&
+      (e.title || '').includes(maker === '제네시스' ? '제네시스' : maker)
+    ).sort((a, b) => {
+      const ay = Math.abs((Number(a.year_start?.slice(0,4)) || 0) - year);
+      const by = Math.abs((Number(b.year_start?.slice(0,4)) || 0) - year);
+      return ay - by;
+    });
+    if (!candidates.length) { console.warn(`[patch-ev] ${p.car_number} — 대체 카탈로그 없음, 스킵`); continue; }
+    const best = candidates[0];
+    const newSub = best.model_root === model ? best.title.replace(/^[^\s]+\s/, '') : best.model_root;
+    await updateRecord(`products/${p._key}`, { sub_model: newSub, catalog_id: best.id, updated_at: Date.now() });
+    console.log(`[patch-ev] ${p.car_number}: "${p.sub_model}" → "${newSub}" (${best.id})`);
+    patched++;
+  }
+  console.log(`[patch-ev] 완료 — ${patched}/${targets.length}건 수정됨`);
+};
+
 boot();
