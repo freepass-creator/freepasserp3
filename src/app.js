@@ -117,7 +117,7 @@ let _policyClipboard = null;
 /* 페이지별 필터 상태 — 하단바 chip 으로 토글, watchCollection 이 적용 후 render */
 const _pageFilters = {
   contract:  { status: 'all', company_code: 'all' },   // all / progress / done / cancel
-  settle:    { status: 'all', company_code: 'all' },   // all / pending / done
+  settle:    { status: 'all', company_code: 'all', month: 'all' },
   product:   { status: 'all', company_code: 'all' },   // all / 즉시 / 가능 / 협의 / 불가
   policy:    { status: 'all', company_code: 'all' },   // all / active / inactive
   partners:  { type: 'all' },                          // all / 공급사 / 영업채널 / 운영사
@@ -217,6 +217,12 @@ function renderFilteredSettlements() {
   if (f.status === 'pending')   list = list.filter(s => /(미정산|대기)/.test(s.settlement_status || s.status || ''));
   else if (f.status === 'done') list = list.filter(s => /(완료)/.test(s.settlement_status || s.status || ''));
   if (f.company_code !== 'all') list = list.filter(s => s.partner_code === f.company_code || s.provider_company_code === f.company_code);
+  if (f.month !== 'all') {
+    list = list.filter(s => {
+      const d = new Date(s.created_at || 0);
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` === f.month;
+    });
+  }
   renderSettlementList(list);
 }
 function renderFilteredProducts() {
@@ -462,11 +468,20 @@ window.refreshPageActions = function(pageName) {
     const hasSelection = !!activeId;
     const f = _pageFilters.settle;
     const setS = (v) => { f.status = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
+    const setM = (v) => { f.month = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
+    // 정산 데이터에서 월 목록 추출
+    const months = [...new Set((store.settlements || [])
+      .filter(s => !s._deleted && s.created_at)
+      .map(s => { const d = new Date(s.created_at); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; })
+    )].sort().reverse();
     setPageActions({
       left: [
         { chip: true, label: '전체',   active: f.status === 'all',     onClick: () => setS('all') },
         { chip: true, label: '미정산', active: f.status === 'pending', onClick: () => setS('pending') },
         { chip: true, label: '완료',   active: f.status === 'done',    onClick: () => setS('done') },
+        { divider: true },
+        { chip: true, label: '전체월', active: f.month === 'all', onClick: () => setM('all') },
+        ...months.map(m => ({ chip: true, label: m, active: f.month === m, onClick: () => setM(m) })),
       ],
       right: [
         { label: '엑셀', icon: 'ph-file-xls', onClick: () => exportSettlementExcel() },
