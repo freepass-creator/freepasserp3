@@ -1368,7 +1368,7 @@
       document.querySelectorAll('.co-name .co-t').forEach(function(n){ n.style.display = (c.logo && !c.showName)?'none':''; });
       /* 회사별 기본값 — 사용자가 직접 입력하지 않은 경우에만 적용 */
       if(c.driverScope && !DATA.driver_scope) setDom('driver_scope', c.driverScope);
-      if(c.depositInstallment) setDom('deposit_installment', c.depositInstallment);
+      if(c.depositInstallment && !DATA.deposit_installment) setDom('deposit_installment', c.depositInstallment);
     }
     applySeals();
 
@@ -1446,7 +1446,7 @@
     {t:'계약자', f:[['customer_name','성명/법인명'],['customer_id','주민/법인등록번호'],['driver_or_biz_no','면허/사업자번호'],['customer_phone','연락처'],['customer_email','이메일'],['customer_address','주소',2],['emergency_contact','비상 연락처',2]]},
     {t:'세금계산서 발행처', f:[['tax_issue_type','발행 구분'],['tax_biz_name','상호'],['tax_biz_no','사업자등록번호'],['tax_ceo','대표자'],['tax_biz_type_item','업태/종목'],['tax_email','세금계산서 이메일'],['tax_biz_address','사업장 주소']]},
     {t:'대여 차량', f:[['car_number','차량번호'],['vin','차대번호'],['vehicle_name','차명(전체) ★필수',2],['options','선택 옵션',2],['color_exterior','외장 색상'],['color_interior','내장 색상'],['model_year','연식'],['odometer_delivery','인도 주행거리'],['fuel','연료'],['vehicle_price','차량 가격']]},
-    {t:'대여 조건', f:[['rent_month','대여기간'],['contract_start','시작일'],['contract_end','종료일'],['rent_amount','월 대여료'],['deposit_amount','보증금'],['driver_age','운전자 연령'],['buyback_price','만기 인수가'],['special_terms','특약사항',2]]},
+    {t:'대여 조건', f:[['rent_month','대여기간'],['contract_start','시작일'],['contract_end','종료일'],['rent_amount','월 대여료'],['deposit_amount','보증금'],['deposit_installment','보증금 분납'],['driver_age','운전자 연령'],['driver_scope','운전 가능 범위'],['buyback_price','만기 인수가'],['special_terms','특약사항',2]]},
     {t:'연대보증인 (선택)', f:[['guarantor_name','성명'],['guarantor_rrn','주민번호'],['guarantor_relation','관계'],['guarantor_phone','연락처'],['guarantor_occupation','직업'],['guarantor_address','주소',2]]}
   ];
   /* 정책 값 — 한번 세팅(계약마다 안 바뀜). 추후 freepasserp3 회사별 정책 연동 */
@@ -1458,6 +1458,8 @@
   ];
   /* 고정값 칸 = 드롭다운(datalist) — 직접입력·자동완성 값도 보존하는 자유입력 겸용 */
   var FIELD_OPTS={
+    deposit_installment:['일시납','2회 분납','3회 분납','4회 분납'],
+    driver_scope:['계약자 1인','계약자와 배우자','계약자와 배우자 및 직계가족','계약자 본인 · 추가 운전자'],
     fuel:['가솔린','디젤','LPG','하이브리드','전기','수소'],
     color_exterior:['흰색','검정','쥐색(그레이)','은색(실버)','진주색','남색','파랑','빨강','갈색'],
     color_interior:['검정','베이지','그레이','브라운','아이보리'],
