@@ -1109,6 +1109,17 @@ async function boot() {
       if (e.data?.type === 'SW_UPDATED') window.location.reload();
     });
   }
+  // 청크 로드 실패(배포 후 파일명 변경) → 자동 새로고침
+  window.addEventListener('unhandledrejection', (e) => {
+    const msg = e.reason?.message || String(e.reason || '');
+    if (msg.includes('Failed to fetch dynamically imported module') || msg.includes('Importing a module script failed')) {
+      e.preventDefault();
+      if (!sessionStorage.getItem('_chunkReload')) {
+        sessionStorage.setItem('_chunkReload', '1');
+        window.location.reload();
+      }
+    }
+  });
 
   // 모바일 감지 → body.is-mobile + #mobileApp 표시 (auth 이전, FOUC 회피)
   if (isMobileUA()) {
