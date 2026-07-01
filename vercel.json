@@ -1,6 +1,13 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/auth/action",
+      "destination": "https://freepasserp3.firebaseapp.com/__/auth/action",
+      "permanent": false
+    }
+  ],
   "functions": {
     "api/catalog-share.js": {
       "includeFiles": "dist/catalog.html"
