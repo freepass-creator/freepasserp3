@@ -184,29 +184,28 @@ export function openFullscreen(imgList, startIdx = 0) {
   overlay.querySelector('#srchFsDownload').addEventListener('click', async () => {
     const btn = overlay.querySelector('#srchFsDownload');
     btn.disabled = true;
-    btn.innerHTML = `<i class="ph ph-spinner"></i> 다운로드 중...`;
-    for (let i = 0; i < imgList.length; i++) {
-      try {
-        const res = await fetch(imgList[i], { mode: 'cors' });
+    btn.innerHTML = `<i class="ph ph-spinner"></i> 압축 중...`;
+    try {
+      const JSZip = (await import('jszip')).default;
+      const zip = new JSZip();
+      await Promise.all(imgList.map(async (url, i) => {
+        const res = await fetch(url, { mode: 'cors' });
         if (!res.ok) throw new Error('fetch fail');
         const blob = await res.blob();
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `photo_${String(i + 1).padStart(2, '0')}.${blob.type?.split('/')[1] || 'jpg'}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(a.href);
-      } catch {
-        const a = document.createElement('a');
-        a.href = imgList[i];
-        a.download = `photo_${String(i + 1).padStart(2, '0')}.jpg`;
-        a.target = '_blank';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-      await new Promise(r => setTimeout(r, 300));
+        const ext = blob.type?.split('/')[1] || 'jpg';
+        zip.file(`photo_${String(i + 1).padStart(2, '0')}.${ext}`, blob);
+      }));
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(zipBlob);
+      a.download = `photos_${imgList.length}장.zip`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    } catch (e) {
+      console.error('[zip download]', e);
+      alert('다운로드 실패 — ' + (e.message || e));
     }
     btn.disabled = false;
     btn.innerHTML = `<i class="ph ph-download-simple"></i> ${imgList.length}장`;
