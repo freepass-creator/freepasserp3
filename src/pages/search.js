@@ -289,12 +289,13 @@ function fuelBadge(s) {
   if (!s) return '<span class="fuel-letter" style="color:var(--text-muted);">-</span>';
   const t = String(s);
   let label = '';
-  if (/가솔린|휘발유|gas/i.test(t)) { label = '가솔린'; }
-  else if (/디젤|diesel/i.test(t)) { label = '디젤'; }
-  else if (/lpg|엘피지/i.test(t)) { label = 'LPG'; }
-  else if (/하이브리드|hybrid/i.test(t)) { label = '하이브리드'; }
-  else if (/전기|ev|electric/i.test(t)) { label = '전기'; }
-  else if (/수소|hydrogen/i.test(t)) { label = '수소'; }
+  if (/^G$/i.test(t) || /가솔린|휘발유|gasoline/i.test(t)) { label = '가솔린'; }
+  else if (/^D$/i.test(t) || /디젤|diesel/i.test(t)) { label = '디젤'; }
+  else if (/^L$/i.test(t) || /lpg|엘피지/i.test(t)) { label = 'LPG'; }
+  else if (/^H$/i.test(t) || /하이브리드|hybrid/i.test(t)) { label = '하이브리드'; }
+  else if (/^E$/i.test(t) || /전기|electric/i.test(t)) { label = '전기'; }
+  else if (/^O$/i.test(t) || /수소|hydrogen/i.test(t)) { label = '수소'; }
+  else if (/^휘$/i.test(t)) { label = '가솔린'; }
   return `<span class="fuel-letter" title="${esc(t)}">${label || esc(t)}</span>`;
 }
 
