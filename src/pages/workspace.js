@@ -126,6 +126,7 @@ export function renderRoomList(rooms) {
 export function selectRoom(roomId) {
   _activeRoomId = roomId;
   if (_msgUnsub) { try { _msgUnsub(); } catch (_) {} _msgUnsub = null; }
+  if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} _contractUnsub = null; }
   if (!roomId) {
     const msgWrap = document.querySelector('[data-page="workspace"] .ws-chat-msgs');
     if (msgWrap) msgWrap.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted);"><i class="ph ph-chat-circle" style="font-size:24px;display:block;margin-bottom:6px;"></i>대화방을 선택하세요</div>`;
@@ -332,7 +333,7 @@ export function renderRoomDetail(room) {
       if (carHead) carHead.textContent = '첨부 서류';
       carCard.querySelector('.ws4-body').innerHTML = '';
       renderContractDocs(carCard, contract);
-      if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} }
+      if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} _contractUnsub = null; }
       _contractUnsub = watchRecord(`contracts/${contract._key}`, (latest) => {
         if (!latest) return;
         const docChanged =
@@ -350,6 +351,7 @@ export function renderRoomDetail(room) {
         renderContractDocs(carCard, contract);
       });
     } else {
+      if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} _contractUnsub = null; }
       if (carHead) carHead.textContent = '차량 정보';
       const carNumber = room.vehicle_number || room.car_number;
       const norm = s => String(s || '').replace(/\s/g, '');

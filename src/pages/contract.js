@@ -187,10 +187,15 @@ export function renderContractDetail(c) {
     ].filter(([, v]) => v);
 
     // 3) 대여 조건 정보
+    const canEditDeposit = ['admin', 'agent_admin'].includes(store.currentUser?.role);
+    const depDisplay = fmtMoneyMan(depN, '만원') || (canEditDeposit ? '미설정' : '');
+    const depCell = canEditDeposit
+      ? `${esc(depDisplay)} <button class="edit-deposit-btn" title="보증금 수정" style="background:none;border:none;cursor:pointer;padding:0 2px;color:var(--text-muted);vertical-align:middle;"><i class="ph ph-pencil-simple" style="font-size:12px;"></i></button>`
+      : depDisplay;
     const rentRows = [
       ['대여기간', termN ? termN + '개월' : ''],
       ['월대여료', fmtMoneyMan(rentN, '만원')],
-      ['보증금', fmtMoneyMan(depN, '만원')],
+      ['보증금', depCell, true, canEditDeposit],
       ['계약일', fmtDate(c.contract_date)],
       ['심사기준', c.credit_grade_snapshot],
       ['정책명', c.policy_name_snapshot],
@@ -207,12 +212,45 @@ export function renderContractDetail(c) {
     ].filter(([, v]) => v);
 
     // 공용 헬퍼 — sections 스펙으로 form-section-title + info-grid 통합 렌더
-    detailCard.querySelector('.ws4-body').innerHTML = renderInfoSections([
+    const detailBody = detailCard.querySelector('.ws4-body');
+    detailBody.innerHTML = renderInfoSections([
       { icon: 'user',         label: '계약자 정보',  rows: customerRows },
       { icon: 'car-simple',   label: '차량 정보',    rows: carRows },
       { icon: 'currency-krw', label: '대여조건 정보', rows: rentRows },
       { icon: 'users',        label: '관계자 정보',  rows: partyRows },
     ]);
+
+    // 보증금 인라인 편집 (admin/agent_admin 전용)
+    if (canEditDeposit) {
+      detailBody.querySelector('.edit-deposit-btn')?.addEventListener('click', () => {
+        const btn = detailBody.querySelector('.edit-deposit-btn');
+        if (!btn) return;
+        const valDiv = btn.parentElement;
+        const curMan = Math.round(Number(depN || 0) / 10000);
+        valDiv.innerHTML = `<input type="number" id="depInp" value="${curMan}" min="0" step="1"
+          style="width:80px;font-size:inherit;border:1px solid var(--border,#d1d5db);border-radius:4px;padding:2px 6px;"> 만원`;
+        const inp = valDiv.querySelector('#depInp');
+        inp.focus(); inp.select();
+        const save = async () => {
+          const newVal = (Number(inp.value) || 0) * 10000;
+          if (newVal === Number(depN || 0)) { renderContractDetail(c); return; }
+          try {
+            await updateRecord(`contracts/${c._key}`, { deposit_amount_snapshot: newVal, updated_at: Date.now() });
+            c.deposit_amount_snapshot = newVal;
+            showToast('보증금 수정됨');
+            renderContractDetail(c);
+          } catch (e) {
+            showToast('저장 실패: ' + e.message, 'error');
+            renderContractDetail(c);
+          }
+        };
+        inp.addEventListener('blur', save);
+        inp.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+          if (e.key === 'Escape') { renderContractDetail(c); }
+        });
+      });
+    }
   }
 
   // 3. 차량 정보 — 연결 상품 기반 (헤더도 갱신)

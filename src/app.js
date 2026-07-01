@@ -7,12 +7,17 @@
 /* CSS — index.html 의 <link> + 인라인 <style> 만 사용 (Vite override 방지)
    phosphor 폰트는 public/phosphor/ 에 복사한 파일을 <link> 로 직접 로드 (vite 의존 X) */
 
-// 배포 후 구 버전 청크 로드 실패 시 자동 새로고침
+// 배포 후 구 버전 청크 로드 실패 시 자동 새로고침 (무한 루프 방지: 60초 내 1회만)
 window.addEventListener('unhandledrejection', (e) => {
   const msg = e?.reason?.message || '';
   if (msg.includes('Failed to fetch dynamically imported module') || msg.includes('Importing a module script failed')) {
     e.preventDefault();
-    location.reload();
+    const key = '_chunkReloadAt';
+    const last = Number(sessionStorage.getItem(key) || 0);
+    if (Date.now() - last > 60000) {
+      sessionStorage.setItem(key, Date.now());
+      location.reload();
+    }
   }
 });
 
@@ -210,14 +215,15 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ── 페이지별 필터 적용 후 render 호출 — watchCollection 콜백·chip toggle 양쪽에서 사용 ── */
+const _gq = () => _globalSearch.trim().toLowerCase();
 function renderFilteredContracts() {
   let list = (store.contracts || []).filter(c => !c._deleted);
   const f = _pageFilters.contract;
-  // 단계 매핑 — 대기(요청) / 진행(대기·발송·진행) / 완료
-  if (f.status === 'pending')      list = list.filter(c => /(요청)/.test(c.contract_status || ''));
+  if (f.status === 'pending')       list = list.filter(c => /(요청)/.test(c.contract_status || ''));
   else if (f.status === 'progress') list = list.filter(c => /(대기|발송|진행)/.test(c.contract_status || '') && !/(요청|완료|취소)/.test(c.contract_status || ''));
-  else if (f.status === 'done')    list = list.filter(c => /(완료)/.test(c.contract_status || ''));
-  if (f.company_code !== 'all')    list = list.filter(c => c.partner_code === f.company_code || c.provider_company_code === f.company_code);
+  else if (f.status === 'done')     list = list.filter(c => /(완료)/.test(c.contract_status || ''));
+  if (f.company_code !== 'all')     list = list.filter(c => c.partner_code === f.company_code || c.provider_company_code === f.company_code);
+  const q = _gq(); if (q) list = list.filter(c => matchRecord(c, q, store));
   renderContractList(list);
 }
 function renderFilteredSettlements() {
@@ -232,6 +238,7 @@ function renderFilteredSettlements() {
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` === f.month;
     });
   }
+  const q = _gq(); if (q) list = list.filter(s => matchRecord(s, q, store));
   renderSettlementList(list);
 }
 function renderFilteredProducts() {
@@ -242,27 +249,28 @@ function renderFilteredProducts() {
   else if (f.status === '협의') list = list.filter(p => /협의/.test(p.vehicle_status || ''));
   else if (f.status === '불가') list = list.filter(p => /(불가|완료)/.test(p.vehicle_status || ''));
   if (f.company_code !== 'all') list = list.filter(p => p.provider_company_code === f.company_code || p.partner_code === f.company_code);
+  const q = _gq(); if (q) list = list.filter(p => matchRecord(p, q, store));
   renderProductList(list);
 }
 function renderFilteredPolicies() {
   let list = (store.policies || []).filter(p => !p._deleted);
   const f = _pageFilters.policy;
-  if (f.status === 'active')         list = list.filter(p => p.is_active !== false && p.status !== '중단');
-  else if (f.status === 'inactive')  list = list.filter(p => p.is_active === false || p.status === '중단');
-  if (f.company_code !== 'all')      list = list.filter(p => p.provider_company_code === f.company_code);
+  if (f.status === 'active')        list = list.filter(p => p.is_active !== false && p.status !== '중단');
+  else if (f.status === 'inactive') list = list.filter(p => p.is_active === false || p.status === '중단');
+  if (f.company_code !== 'all')     list = list.filter(p => p.provider_company_code === f.company_code);
+  const q = _gq(); if (q) list = list.filter(p => matchRecord(p, q, store));
   renderPolicyList(list);
 }
 function renderFilteredPartners() {
   let list = (store.partners || []).filter(p => !p._deleted);
   const f = _pageFilters.partners;
   if (f.type === 'inactive') {
-    // 비활성 탭 — type 무관, is_active === false 만
     list = list.filter(p => p.is_active === false);
   } else {
-    // 그 외 (전체/공급사/영업채널/운영사) — 활성만
     list = list.filter(p => p.is_active !== false);
     if (f.type !== 'all') list = list.filter(p => (partnerTypeLabel(p.partner_type) || '공급사') === f.type);
   }
+  const q = _gq(); if (q) list = list.filter(p => matchRecord(p, q, store));
   renderPartnerList(list);
 }
 function renderFilteredRooms() {
@@ -278,6 +286,7 @@ function renderFilteredRooms() {
     });
   }
   if (f.company_code !== 'all') list = list.filter(r => r.provider_company_code === f.company_code || r.agent_channel_code === f.company_code);
+  const q = _gq(); if (q) list = list.filter(r => matchRecord(r, q, store));
   renderRoomList(list);
 }
 
@@ -692,8 +701,8 @@ function pageStatsHtml(p) {
   }
   if (p === 'contract') {
     const list = (store.contracts || []).filter(x => !x._deleted);
-    const wait = list.filter(x => x.contract_status === '계약요청' || x.contract_status === '진행중' || x.contract_status === '대기').length;
-    const done = list.filter(x => x.contract_status === '계약완료' || x.contract_status === '완료').length;
+    const wait = list.filter(x => x.contract_status === '계약요청' || x.contract_status === '계약대기' || x.contract_status === '계약발송').length;
+    const done = list.filter(x => x.contract_status === '계약완료').length;
     return `<span class="stat-total">총 ${list.length}건</span>
       <span class="stat-가능">진행 ${list.length - done}</span>
       <span class="stat-즉시">완료 ${done}</span>
@@ -1692,15 +1701,14 @@ function applyGlobalSearch() {
     return;
   }
 
-  // 모든 페이지 공통 규격 — 레코드 전체 값 + 공급사 회사·담당자명 + 연결 정책 자동 검색 (search-match.js)
-  const M = (item) => matchRecord(item, q, store);
-  if (page === 'workspace')     { if (store.rooms)       renderRoomList(store.rooms.filter(M)); }
-  else if (page === 'contract') { if (store.contracts)   renderContractList(store.contracts.filter(M)); }
-  else if (page === 'settle')   { if (store.settlements) renderSettlementList(store.settlements.filter(M)); }
-  else if (page === 'product')  { if (store.products)    renderProductList(store.products.filter(M)); }
-  else if (page === 'policy')   { if (store.policies)    renderPolicyList(store.policies.filter(M)); }
-  else if (page === 'partners') { if (store.partners)    renderPartnerList(store.partners.filter(M)); }
-  else if (page === 'users')    { renderUserList((store.users || []).filter(M)); }
+  // renderFilteredXxx 가 _globalSearch 를 직접 참조하므로 재호출만 하면 됨
+  if (page === 'workspace')     renderFilteredRooms();
+  else if (page === 'contract') renderFilteredContracts();
+  else if (page === 'settle')   renderFilteredSettlements();
+  else if (page === 'product')  renderFilteredProducts();
+  else if (page === 'policy')   renderFilteredPolicies();
+  else if (page === 'partners') renderFilteredPartners();
+  else if (page === 'users')    renderUserList((store.users || []).filter(u => !q || matchRecord(u, q, store)));
 }
 
 function bindGlobalSearch() {
@@ -1894,7 +1902,7 @@ function buildContextMenuItems(page, id, item) {
     return [
       { icon: 'ph ph-eye', label: '읽음 처리', action: async () => {
         const { markRoomRead } = await import('./firebase/collections.js');
-        await markRoomRead(id, store.currentUser?.uid);
+        await markRoomRead(id, store.currentUser?.role, store.currentUser?.uid, room);
       }},
       { icon: 'ph ph-star', label: '즐겨찾기', action: () => showToast('즐겨찾기 — 추후 지원 예정', 'info') },
       { divider: true },
