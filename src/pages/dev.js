@@ -470,6 +470,7 @@ function renderToolsTab(el) {
           <button class="btn btn-sm" id="devCacheClear"><i class="ph ph-trash"></i> 캐시 초기화 (localStorage)</button>
           <button class="btn btn-sm" id="devStoreView"><i class="ph ph-database"></i> Store 상태 보기</button>
           <button class="btn btn-sm" id="devReload"><i class="ph ph-arrow-clockwise"></i> 강제 새로고침</button>
+          <button class="btn btn-sm" id="devCheckProviderCodes"><i class="ph ph-magnifying-glass"></i> 공급사 코드 불일치 확인</button>
         </div>
       </div>
       <div>
@@ -511,6 +512,27 @@ function renderToolsTab(el) {
   el.querySelector('#devFillPartnerCode').addEventListener('click', () => fillPartnerCode());
   el.querySelector('#devMigrateUserCode').addEventListener('click', () => migrateUserCode());
   el.querySelector('#devMigrateCreditGrade').addEventListener('click', () => migrateCreditGrade());
+  el.querySelector('#devCheckProviderCodes').addEventListener('click', () => checkProviderCodes());
+}
+
+function checkProviderCodes() {
+  const products = (store.products || []).filter(p => !p._deleted);
+  const partners = (store.partners || []).filter(p => !p._deleted);
+  const partnerCodes = new Set(partners.flatMap(p => [p.partner_code, p.company_code, p._key].filter(Boolean)));
+
+  const unmatched = [...new Set(
+    products.map(p => p.provider_company_code || p.partner_code).filter(Boolean)
+  )].filter(code => !partnerCodes.has(code));
+
+  if (!unmatched.length) {
+    alert('불일치 없음 — 모든 공급사 코드가 파트너에 등록되어 있습니다.');
+    return;
+  }
+  const lines = unmatched.map(code => {
+    const cnt = products.filter(p => (p.provider_company_code || p.partner_code) === code).length;
+    return `• ${code} (차량 ${cnt}대)`;
+  });
+  alert(`파트너 미매칭 공급사 코드 ${unmatched.length}건:\n\n${lines.join('\n')}`);
 }
 
 async function migrateTermPolicy() {
