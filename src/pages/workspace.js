@@ -208,6 +208,8 @@ export function renderChatMessages(msgs, room) {
   msgWrap.innerHTML = v2RenderChatMessages(sorted, {
     uid: me.uid,
     peerReadAt: getPeerReadAt(room, me.role),
+    isAdmin: me.role === 'admin',
+    roomId: room?._key || _activeRoomId,
   });
   alignChatSpacers(msgWrap);
   msgWrap.scrollTop = msgWrap.scrollHeight;
@@ -376,6 +378,38 @@ export function renderRoomDetail(room) {
       }
     }
   }
+}
+
+/* 관리자 메시지 수정/삭제 — 채팅 영역 클릭 위임 */
+export function bindAdminChatActions() {
+  const page = document.querySelector('.pt-page[data-page="workspace"]');
+  if (!page) return;
+  const msgWrap = page.querySelector('.ws-chat-msgs');
+  if (!msgWrap) return;
+
+  msgWrap.addEventListener('click', async e => {
+    const btn = e.target.closest('.chat-admin-btn');
+    if (!btn) return;
+    const wrap = btn.closest('.chat-admin-actions');
+    if (!wrap) return;
+    const msgKey = wrap.dataset.msgKey;
+    const roomId = wrap.dataset.roomId;
+    if (!msgKey || !roomId) return;
+
+    const action = btn.dataset.action;
+    if (action === 'delete') {
+      if (!confirm('이 메시지를 삭제하시겠습니까?')) return;
+      await updateRecord(`messages/${roomId}/${msgKey}`, { _deleted: true });
+      showToast('메시지가 삭제됐습니다');
+    } else if (action === 'edit') {
+      const msg = _currentMessages.find(m => m._key === msgKey);
+      const newText = prompt('메시지 수정', msg?.text || '');
+      if (newText === null || newText === (msg?.text || '')) return;
+      if (!newText.trim()) { showToast('내용을 입력해주세요', 'error'); return; }
+      await updateRecord(`messages/${roomId}/${msgKey}`, { text: newText.trim(), edited: true });
+      showToast('메시지가 수정됐습니다');
+    }
+  });
 }
 
 /* 채팅 입력 — Enter 또는 전송 클릭 */

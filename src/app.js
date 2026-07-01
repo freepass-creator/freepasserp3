@@ -73,7 +73,7 @@ import {
 } from './pages/search.js';
 import {
   renderRoomList, selectRoom, renderRoomDetail, renderChatMessages,
-  bindChatInput, bindRoomCreate, createRoomFromProduct,
+  bindChatInput, bindAdminChatActions, bindRoomCreate, createRoomFromProduct,
   getActiveRoomId, getCurrentMessages, getPrevPeerReadAt, setPrevPeerReadAt,
 } from './pages/workspace.js';
 import {
@@ -1402,6 +1402,7 @@ function startHydration() {
   bindSearchInteractions();
   bindGenericListInteractions();
   bindChatInput();
+  bindAdminChatActions();
   bindGlobalSearch();
   bindRoomCreate();
   bindDirtyTracking();

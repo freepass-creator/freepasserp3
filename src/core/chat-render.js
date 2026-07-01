@@ -20,11 +20,15 @@ import { fmtHM, fmtChatDate } from './format.js';
  * @param {Object} ctx
  * @param {string} ctx.uid - 현재 유저 uid (mine 판정)
  * @param {number} [ctx.peerReadAt] - 상대가 마지막 읽은 시각(ms). null/Infinity 면 읽음표시 생략.
+ * @param {boolean} [ctx.isAdmin] - 관리자 여부 (수정/삭제 버튼 표시)
+ * @param {string} [ctx.roomId] - 룸 ID (수정/삭제 시 경로용)
  * @returns {string} HTML
  */
 export function renderChatMessages(messages, ctx = {}) {
   const uid = ctx.uid;
   const peerReadAt = Number.isFinite(ctx.peerReadAt) ? ctx.peerReadAt : null;
+  const isAdmin = !!ctx.isAdmin;
+  const roomId = ctx.roomId || '';
   const sorted = messages;
 
   let lastDate = '';
@@ -68,13 +72,15 @@ export function renderChatMessages(messages, ctx = {}) {
 
     // 콘텐츠
     let content;
-    if (msg.image_url) {
-      // 클릭 → 풀스크린 (app.js 의 delegated handler 가 [data-fullscreen-img] 처리)
+    if (msg._deleted) {
+      content = '<span style="color:var(--text-muted);font-style:italic;">(삭제된 메시지)</span>';
+    } else if (msg.image_url) {
       content = `<img src="${msg.image_url}" class="chat-img" data-fullscreen-img="${msg.image_url}" style="cursor:zoom-in;">`;
     } else if (msg.file_url) {
       content = `<a href="${msg.file_url}" target="_blank" class="chat-file"><i class="ph ph-paperclip"></i> ${(msg.text || '파일').replace(/</g, '&lt;')}</a>`;
     } else {
       content = (msg.text || '').replace(/</g, '&lt;').replace(/\n/g, '<br>');
+      if (msg.edited) content += ' <span style="font-size:10px;color:var(--text-muted);">(수정됨)</span>';
     }
 
     // 읽음 표시 (내 메시지 + peerReadAt 있을 때만)
@@ -91,12 +97,20 @@ export function renderChatMessages(messages, ctx = {}) {
       senderEnd ? 'is-end' : '',
     ].filter(Boolean).join(' ');
 
+    const adminBtns = (isAdmin && !msg._deleted && !msg.image_url && !msg.file_url)
+      ? `<div class="chat-admin-actions" data-msg-key="${msg._key || ''}" data-room-id="${roomId}">
+          <button class="chat-admin-btn" data-action="edit" title="수정"><i class="ph ph-pencil-simple"></i></button>
+          <button class="chat-admin-btn" data-action="delete" title="삭제"><i class="ph ph-trash"></i></button>
+        </div>`
+      : '';
+
     return `${dateSep}<div class="${rowCls}">
       ${!mine && senderStart ? `<div class="chat-sender chat-sender-${roleTone}">${senderLabel}</div>` : (!mine ? '<div class="chat-sender-spacer"></div>' : '')}
       <div class="chat-bubble-wrap">
         <div class="chat-bubble chat-bubble-${roleTone}">${content}</div>
         ${minuteEnd ? `<div class="chat-meta">${readMark}<span class="chat-time">${fmtHM(ts)}</span></div>` : ''}
       </div>
+      ${adminBtns}
     </div>`;
   }).join('');
 }

@@ -2185,6 +2185,20 @@
   }
   .chat-row.is-mine .chat-meta { flex-direction: row-reverse; }
 
+  /* 관리자 메시지 수정/삭제 버튼 */
+  .chat-admin-actions {
+    display: none; align-items: center; gap: 2px;
+    align-self: center; flex-shrink: 0;
+  }
+  .chat-row:hover .chat-admin-actions { display: flex; }
+  .chat-admin-btn {
+    background: none; border: none; cursor: pointer; padding: 3px 5px;
+    color: var(--text-muted); border-radius: 4px; font-size: 13px;
+    line-height: 1;
+  }
+  .chat-admin-btn:hover { background: var(--bg-hover); color: var(--text-main); }
+  .chat-admin-btn[data-action="delete"]:hover { color: var(--alert-red-text); }
+
   /* 채팅 입력 (v2 ws4-chat-input 톤) */
   .ws-input {
     border-top: 1px solid var(--border); padding: 6px 8px;
