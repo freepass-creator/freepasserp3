@@ -7,6 +7,15 @@
 /* CSS — index.html 의 <link> + 인라인 <style> 만 사용 (Vite override 방지)
    phosphor 폰트는 public/phosphor/ 에 복사한 파일을 <link> 로 직접 로드 (vite 의존 X) */
 
+// 배포 후 구 버전 청크 로드 실패 시 자동 새로고침
+window.addEventListener('unhandledrejection', (e) => {
+  const msg = e?.reason?.message || '';
+  if (msg.includes('Failed to fetch dynamically imported module') || msg.includes('Importing a module script failed')) {
+    e.preventDefault();
+    location.reload();
+  }
+});
+
 // 모바일 유틸 (isMobile / haptic) — 부팅 직후 동기 감지 위해 정적 import
 import { isMobile as isMobileUA, bindGlobalHaptic } from './core/mobile-shell.js';
 
