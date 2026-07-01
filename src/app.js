@@ -572,12 +572,11 @@ window.refreshPageActions = function(pageName) {
       fn(cur);
     };
 
-    // 좌: 퀵 필터 — [전체] / 신차 / 중고 / 만26세
+    // 좌: 퀵 필터 — [전체] / 신차 / 중고
     //   ([퀵필터] 시트는 검색창 우측 아이콘 #ptTbFilterBtn 으로 이동)
     const QUICK = [
       { v: 'new', l: '신차' },
       { v: 'used', l: '중고' },
-      { v: 'age26', l: '만26세 이하' },
     ];
     const sheetCount = Object.values(_searchFilter.activeFilters || {})
       .reduce((n, set) => n + (set?.size || 0), 0);
