@@ -284,18 +284,18 @@ function colorBadge(name) {
   return `<span class="color-badge color-badge-text" title="${esc(s)}">${fallback}</span>`;
 }
 
-/* 유종 → 알파벳 1자 (박스 없음). G(가솔린) D(디젤) L(LPG) H(하이브리드) E(전기) O(수소) */
+/* 유종 → 한글 전체명 */
 function fuelBadge(s) {
   if (!s) return '<span class="fuel-letter" style="color:var(--text-muted);">-</span>';
   const t = String(s);
-  let key = '';
-  if (/가솔린|gas/i.test(t)) { key = 'G'; }
-  else if (/디젤|diesel/i.test(t)) { key = 'D'; }
-  else if (/lpg|엘피지/i.test(t)) { key = 'L'; }
-  else if (/하이브리드|hybrid/i.test(t)) { key = 'H'; }
-  else if (/전기|ev|electric/i.test(t)) { key = 'E'; }
-  else if (/수소|hydrogen/i.test(t)) { key = 'O'; }
-  return `<span class="fuel-letter" title="${esc(t)}">${key || esc(t.slice(0, 1))}</span>`;
+  let label = '';
+  if (/가솔린|휘발유|gas/i.test(t)) { label = '가솔린'; }
+  else if (/디젤|diesel/i.test(t)) { label = '디젤'; }
+  else if (/lpg|엘피지/i.test(t)) { label = 'LPG'; }
+  else if (/하이브리드|hybrid/i.test(t)) { label = '하이브리드'; }
+  else if (/전기|ev|electric/i.test(t)) { label = '전기'; }
+  else if (/수소|hydrogen/i.test(t)) { label = '수소'; }
+  return `<span class="fuel-letter" title="${esc(t)}">${label || esc(t)}</span>`;
 }
 
 /* 제조사 → 풀네임 + 브랜드 색상 hint (굴림 12px 4자도 60px 컬럼 fit) */
