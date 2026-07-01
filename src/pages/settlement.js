@@ -134,7 +134,6 @@ export function renderSettlementDetail(s) {
   // 1. 정산 작업 (편집 폼) — 헤더에 [저장] 버튼 (id="setlSave")
   if (workCard) {
     const disabled = canEdit ? '' : ' disabled';
-    const lock = canEdit ? ' readonly data-edit-lock="1"' : '';
     const head = workCard.querySelector('.ws4-head');
     if (head) head.innerHTML = `
       <span>정산 작업</span>
@@ -143,14 +142,14 @@ export function renderSettlementDetail(s) {
     `;
     workCard.querySelector('.ws4-body').innerHTML = `
       <div class="form-grid">
-        <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${disabled}${lock}></div>
+        <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${disabled}></div>
         <div class="ff"><label>정산상태</label>
-          <div id="setlStatus" style="display:flex; gap:3px; flex-wrap:wrap;${canEdit ? 'pointer-events:none;opacity:0.7;' : ''}" data-edit-lock="1">
+          <div id="setlStatus" style="display:flex; gap:3px; flex-wrap:wrap;${!canEdit ? 'pointer-events:none;opacity:0.7;' : ''}">
             ${SETTLE_STATUSES.map(st => `<span class="chip${st === status ? ' active' : ''}" data-status="${esc(st)}">${esc(st)}</span>`).join('')}
           </div>
         </div>
-        <div class="ff"><label>정산일</label><input type="date" class="input" id="setlDate" value="${esc(toDateInput((s.settled_date || s.settled_at)))}"${disabled}${lock}></div>
-        <div class="ff"><label>메모</label><textarea class="input" id="setlMemo" placeholder="정산 메모..." style="height: 80px;"${disabled}${lock}>${esc(s.memo || '')}</textarea></div>
+        <div class="ff"><label>정산일</label><input type="date" class="input" id="setlDate" value="${esc(toDateInput((s.settled_date || s.settled_at)))}"${disabled}></div>
+        <div class="ff"><label>메모</label><textarea class="input" id="setlMemo" placeholder="정산 메모..." style="height: 80px;"${disabled}>${esc(s.memo || '')}</textarea></div>
         ${baseFee ? `<div class="ff"><label>기본수수료</label><div>${Math.round(baseFee/10000)}만${s.term ? ' | ' + s.term + '개월' : ''}</div></div>` : ''}
       </div>
     `;
