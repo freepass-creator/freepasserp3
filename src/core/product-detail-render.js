@@ -182,17 +182,34 @@ export function openFullscreen(imgList, startIdx = 0) {
     applyTransform(img);
   });
   overlay.querySelector('#srchFsDownload').addEventListener('click', async () => {
+    const btn = overlay.querySelector('#srchFsDownload');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="ph ph-spinner"></i> 다운로드 중...`;
     for (let i = 0; i < imgList.length; i++) {
       try {
         const res = await fetch(imgList[i], { mode: 'cors' });
+        if (!res.ok) throw new Error('fetch fail');
         const blob = await res.blob();
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `photo_${i + 1}.${blob.type?.split('/')[1] || 'jpg'}`;
+        a.download = `photo_${String(i + 1).padStart(2, '0')}.${blob.type?.split('/')[1] || 'jpg'}`;
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
         URL.revokeObjectURL(a.href);
-      } catch { window.open(imgList[i], '_blank'); }
+      } catch {
+        const a = document.createElement('a');
+        a.href = imgList[i];
+        a.download = `photo_${String(i + 1).padStart(2, '0')}.jpg`;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      await new Promise(r => setTimeout(r, 300));
     }
+    btn.disabled = false;
+    btn.innerHTML = `<i class="ph ph-download-simple"></i> ${imgList.length}장`;
   });
 
   const ac = new AbortController();
