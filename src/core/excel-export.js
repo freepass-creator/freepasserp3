@@ -102,8 +102,6 @@ export const PRODUCT_COLS = [
   { f:'review_status',  l:'심사여부',  w:10 },
   // ── 식별 ──
   { f:'car_number',     l:'차량번호',  w:14 },
-  { f:'maker',          l:'제조사',    w:12 },
-  { f:'model',     l:'모델',      w:16 },
   { f:'sub_model',      l:'세부모델',  w:16 },
   // ── 기본스펙 ──
   { f:'year',           l:'연식',     w:8 },
@@ -111,17 +109,6 @@ export const PRODUCT_COLS = [
   { f:'fuel_type',      l:'연료',     w:8 },
   { f:'ext_color',      l:'외장색',   w:10 },
   { f:'int_color',      l:'내장색',   w:10 },
-  // ── 문의 하이퍼링크 (차량번호 기준 → 자동 대화 시작) ──
-  { f:'erp',            l:'문의',     w:10, linkText:'💬 문의' },
-  // ── 사진 (외부링크 + Firebase Storage 통합) ──
-  {
-    f: 'photo',
-    l: '사진',
-    w: 10,
-    linkText: '📷 사진',
-    hyperlink: r => firstProductImage(r),
-    get: r => firstProductImage(r),
-  },
   // ── 기간별 대여료·보증금 (기간별 쌍으로, 6개월 제외) ──
   pr(1,'rent'),  pr(1,'deposit'),
   pr(12,'rent'), pr(12,'deposit'),
@@ -166,10 +153,6 @@ export const PRODUCT_COLS = [
   // 대여조건
   { f:'cond_km_upcharge',    l:'1만Km추가',       group:'대여조건', w:14, get: r => r._policy?.mileage_upcharge_per_10000km || '' },
   { f:'cond_deposit_inst',   l:'보증금분납',       group:'대여조건', w:10, get: r => r._policy?.deposit_installment || '' },
-  { f:'cond_payment',        l:'결제방식',         group:'대여조건', w:10, get: r => r._policy?.payment_method || '' },
-  { f:'cond_penalty',        l:'위약금',           group:'대여조건', w:12, get: r => r._policy?.penalty_condition || '' },
-  { f:'cond_card_payment',   l:'보증금카드',       group:'대여조건', w:12, get: r => r._policy?.deposit_card_payment || '' },
-  { f:'cond_rental_region',  l:'대여지역',         group:'대여조건', w:10, get: r => r._policy?.rental_region || '' },
   { f:'cond_delivery_fee',   l:'탁송비',           group:'대여조건', w:10, get: r => r._policy?.delivery_fee || '' },
   { f:'cond_age_lowering',   l:'연령하향',         group:'대여조건', w:12, get: r => r._policy?.driver_age_lowering || '' },
   { f:'cond_age_cost',       l:'연령하향비용',     group:'대여조건', w:14, get: r => r._policy?.age_lowering_cost || '' },
@@ -187,15 +170,8 @@ export const PRODUCT_COLS = [
   { f:'vehicle_age_expiry_date', l:'차령만료일', w:12 },
   { f:'vehicle_price',  l:'차량가격',   w:12, numFmt: won },
   { f:'location',       l:'위치',       w:10 },
-  // 코드
-  { f:'provider_company_code', l:'공급사',   group:'코드', w:12 },
-  { f:'partner_code',   l:'파트너',   group:'코드', w:12 },
-  { f:'policy_code',    l:'정책',     group:'코드', w:14 },
-  { f:'policy_name',    l:'정책명',   group:'코드', w:14 },
-  { f:'product_code',   l:'상품',     group:'코드', w:20 },
   // 메타
   { f:'partner_memo',   l:'특이사항',   w:24 },
-  { f:'product_uid',    l:'상품UID',    w:18 },
 ];
 
 /** 원본 탭·상세 탭용 전체 라벨 (group_label) — 단일행 헤더에서 그룹 맥락 유지 */
