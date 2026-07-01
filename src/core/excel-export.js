@@ -86,56 +86,50 @@ export async function downloadExcel(title, cols, data) {
 
 /* ── 상품 컬럼 (그룹 기반 — 엑셀에서 셀병합 헤더로 렌더) ── */
 const won = '#,##0';
+// 기간별 세트 — group: 'N개월', l: '대여료|보증금|수수료' → 헤더: 'N개월_대여료' 식으로 묶임
 const pr = (m, k) => ({
   f: `${k}_${m}`,
-  l: `${m}개월`,
-  group: { rent:'대여료', deposit:'보증금', fee:'수수료' }[k],
+  l: { rent:'대여료', deposit:'보증금', fee:'수수료' }[k],
+  group: `${m}개월`,
   w: 12,
   numFmt: won,
   get: r => Number(r.price?.[String(m)]?.[k] || 0) || '',
 });
 
 export const PRODUCT_COLS = [
-  // ── 뱃지/상태 (먼저) ──
-  { f:'vehicle_status', l:'차량상태',  w:10 },
-  { f:'product_type_disp', l:'구분', w:8, get: r => normalizeProductType(r.product_type) },
-  { f:'review_status',  l:'심사여부',  w:10 },
+  // ── 뱃지/상태 ──
+  { f:'vehicle_status',    l:'차량상태', w:10 },
+  { f:'product_type_disp', l:'구분',     w:8,  get: r => normalizeProductType(r.product_type) },
+  { f:'review_status',     l:'심사여부', w:10 },
   // ── 식별 ──
-  { f:'car_number',     l:'차량번호',  w:14 },
-  { f:'sub_model',      l:'세부모델',  w:16 },
+  { f:'car_number', l:'차량번호', w:14 },
+  { f:'sub_model',  l:'세부모델', w:16 },
   // ── 기본스펙 ──
-  { f:'year',           l:'연식',     w:8 },
-  { f:'mileage',        l:'주행거리', w:10, numFmt: won },
-  { f:'fuel_type',      l:'연료',     w:8 },
-  { f:'ext_color',      l:'외장색',   w:10 },
-  { f:'int_color',      l:'내장색',   w:10 },
-  // ── 기간별 대여료·보증금 (기간별 쌍으로, 6개월 제외) ──
-  pr(1,'rent'),  pr(1,'deposit'),
-  pr(12,'rent'), pr(12,'deposit'),
-  pr(24,'rent'), pr(24,'deposit'),
-  pr(36,'rent'), pr(36,'deposit'),
-  pr(48,'rent'), pr(48,'deposit'),
-  pr(60,'rent'), pr(60,'deposit'),
-  // ── 세부 ──
-  { f:'trim_name',      l:'세부트림',  w:14 },
-  { f:'options',        l:'세부옵션',  w:40 },
-  // ═════ 이하 정책정보 ═════
-  // 대여기본
-  { f:'basic_driver_age',    l:'운전연령',     group:'대여기본', w:10, get: r => r._policy?.basic_driver_age || r.base_age || '' },
-  { f:'annual_mileage',      l:'연간주행거리', group:'대여기본', w:12, get: r => r._policy?.annual_mileage || r.annual_mileage || '' },
-  { f:'insurance_included',  l:'보험포함',     group:'대여기본', w:10, get: r => r._policy?.insurance_included || r.insurance_included || '' },
-  { f:'credit_grade',        l:'신용등급',     group:'대여기본', w:10, get: r => r._policy?.credit_grade || r.credit_grade || '' },
-  // 보험 — 리스크별 한도·면책금 쌍 (개별 필드 → combined 필드 → legacy pol 순 fallback)
-  { f:'ins_injury_limit',    l:'대인한도',      w:14, get: r => insVal(r, 'injury_limit_deductible',          'injury_compensation_limit',          'bodily',     'limit') },
-  { f:'ins_injury_deduct',   l:'대인면책금',    w:12, get: r => insVal(r, 'injury_limit_deductible',          'injury_deductible',                  'bodily',     'deductible') },
-  { f:'ins_property_limit',  l:'대물한도',      w:14, get: r => insVal(r, 'property_limit_deductible',        'property_compensation_limit',        'property',   'limit') },
-  { f:'ins_property_deduct', l:'대물면책금',    w:12, get: r => insVal(r, 'property_limit_deductible',        'property_deductible',                'property',   'deductible') },
-  { f:'ins_self_limit',      l:'자기신체한도',  w:14, get: r => insVal(r, 'personal_injury_limit_deductible', 'personal_injury_compensation_limit', 'selfBodily', 'limit') },
-  { f:'ins_self_deduct',     l:'자기신체면책금',w:12, get: r => insVal(r, 'personal_injury_limit_deductible', 'personal_injury_deductible',         'selfBodily', 'deductible') },
-  { f:'ins_unins_limit',     l:'무보험한도',    w:14, get: r => insVal(r, 'uninsured_limit_deductible',       'uninsured_compensation_limit',       'uninsured',  'limit') },
-  { f:'ins_unins_deduct',    l:'무보험면책금',  w:12, get: r => insVal(r, 'uninsured_limit_deductible',       'uninsured_deductible',               'uninsured',  'deductible') },
-  { f:'ins_own_limit',       l:'자차한도',      w:14, get: r => insVal(r, 'own_damage_limit_deductible',      'own_damage_compensation',            'ownDamage',  'limit') },
-  { f:'ins_own_rate',        l:'자차수리비율',  w:10, get: r => first(r._policy?.own_damage_compensation_rate, r._policy?.own_damage_repair_rate) },
+  { f:'year',     l:'연식',     w:8 },
+  { f:'mileage',  l:'주행거리', w:10, numFmt: won },
+  { f:'fuel_type',l:'연료',     w:8 },
+  { f:'ext_color',l:'외장색',   w:10 },
+  { f:'int_color',l:'내장색',   w:10 },
+  // ── 기간별 대여료·보증금·수수료 세트 ──
+  pr(1,'rent'),  pr(1,'deposit'),  pr(1,'fee'),
+  pr(12,'rent'), pr(12,'deposit'), pr(12,'fee'),
+  pr(24,'rent'), pr(24,'deposit'), pr(24,'fee'),
+  pr(36,'rent'), pr(36,'deposit'), pr(36,'fee'),
+  pr(48,'rent'), pr(48,'deposit'), pr(48,'fee'),
+  pr(60,'rent'), pr(60,'deposit'), pr(60,'fee'),
+  // ── 옵션 ──
+  { f:'options', l:'세부옵션', w:40 },
+  // ═════ 정책정보 ═════
+  { f:'basic_driver_age',   l:'운전연령',     group:'대여기본', w:10, get: r => r._policy?.basic_driver_age || r.base_age || '' },
+  { f:'annual_mileage',     l:'연간주행거리', group:'대여기본', w:12, get: r => r._policy?.annual_mileage || r.annual_mileage || '' },
+  { f:'insurance_included', l:'보험포함',     group:'대여기본', w:10, get: r => r._policy?.insurance_included || r.insurance_included || '' },
+  { f:'credit_grade',       l:'신용등급',     group:'대여기본', w:10, get: r => r._policy?.credit_grade || r.credit_grade || '' },
+  // 보험 핵심 3종 (대인·대물·자차)
+  { f:'ins_injury_limit',    l:'대인한도',      w:14, get: r => insVal(r, 'injury_limit_deductible',     'injury_compensation_limit',   'bodily',   'limit') },
+  { f:'ins_injury_deduct',   l:'대인면책금',    w:12, get: r => insVal(r, 'injury_limit_deductible',     'injury_deductible',           'bodily',   'deductible') },
+  { f:'ins_property_limit',  l:'대물한도',      w:14, get: r => insVal(r, 'property_limit_deductible',   'property_compensation_limit', 'property', 'limit') },
+  { f:'ins_property_deduct', l:'대물면책금',    w:12, get: r => insVal(r, 'property_limit_deductible',   'property_deductible',         'property', 'deductible') },
+  { f:'ins_own_limit',       l:'자차한도',      w:14, get: r => insVal(r, 'own_damage_limit_deductible', 'own_damage_compensation',     'ownDamage','limit') },
   { f:'ins_own_deduct_min',  l:'자차면책금최소', w:12, get: r => {
     const ind = r._policy?.own_damage_min_deductible;
     if (ind) return ind;
@@ -148,8 +142,7 @@ export const PRODUCT_COLS = [
     const combined = insVal(r, 'own_damage_limit_deductible', '__none__', 'ownDamage', 'deductible');
     return combined ? parseRange(combined).max : '';
   }},
-  // 보험 기타
-  { f:'ins_roadside',        l:'긴급출동',      w:12, get: r => first(r._policy?.roadside_assistance, r.condition?.emergency) },
+  { f:'ins_roadside', l:'긴급출동', w:12, get: r => first(r._policy?.roadside_assistance, r.condition?.emergency) },
   // 대여조건
   { f:'cond_km_upcharge',    l:'1만Km추가',       group:'대여조건', w:14, get: r => r._policy?.mileage_upcharge_per_10000km || '' },
   { f:'cond_deposit_inst',   l:'보증금분납',       group:'대여조건', w:10, get: r => r._policy?.deposit_installment || '' },
@@ -162,16 +155,10 @@ export const PRODUCT_COLS = [
   { f:'cond_addl_cost',      l:'추가운전자비용',   group:'대여조건', w:12, get: r => r._policy?.additional_driver_cost || '' },
   { f:'cond_maintenance',    l:'정비서비스',       group:'대여조건', w:10, get: r => r._policy?.maintenance_service || '' },
   { f:'cond_age_upper',      l:'운전연령상한',     group:'대여조건', w:10, get: r => r._policy?.driver_age_upper_limit || '' },
-  // 기간별 수수료 (6개월 제외)
-  pr(1,'fee'), pr(12,'fee'), pr(24,'fee'), pr(36,'fee'), pr(48,'fee'), pr(60,'fee'),
   // 차량 메타
-  { f:'vehicle_class',  l:'차종구분',   w:10 },
-  { f:'first_registration_date', l:'최초등록일', w:12 },
-  { f:'vehicle_age_expiry_date', l:'차령만료일', w:12 },
-  { f:'vehicle_price',  l:'차량가격',   w:12, numFmt: won },
-  { f:'location',       l:'위치',       w:10 },
-  // 메타
-  { f:'partner_memo',   l:'특이사항',   w:24 },
+  { f:'vehicle_price', l:'차량가격', w:12, numFmt: won },
+  { f:'location',      l:'위치',     w:10 },
+  { f:'partner_memo',  l:'특이사항', w:24 },
 ];
 
 /** 원본 탭·상세 탭용 전체 라벨 (group_label) — 단일행 헤더에서 그룹 맥락 유지 */
