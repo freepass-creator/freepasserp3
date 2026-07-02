@@ -49,8 +49,8 @@ export const STEPS = [
     label: '약정',
     icon: 'signature',
     checks: [
-      { actor: 'agent',    key: 'provider_balance_confirmed', label: '잔금 확인', paymentShared: true },
-      { actor: 'provider', key: 'provider_agreement_done',    label: '약정 작성 완료' },
+      { actor: 'agent',    key: 'provider_agreement_done',    label: '약정 작성 완료' },
+      { actor: 'provider', key: 'provider_balance_confirmed', label: '잔금 확인', paymentShared: true },
     ],
   },
   {
