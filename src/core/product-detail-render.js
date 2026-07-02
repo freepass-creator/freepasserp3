@@ -260,7 +260,7 @@ export function renderDetailSections(p, opts = {}) {
   const aud = opts.audience || (role === 'admin' ? 'admin'
     : (role === 'agent' || role === 'agent_admin' ? 'agent' : 'customer'));
   const isAdmin = aud === 'admin';
-  const canSeeFee = aud === 'admin' || aud === 'agent';
+  const canSeeFee = aud === 'admin';
   const D = extractProductDetailRows(p, { canSeeFee, isAdmin, policies });
   const { spec: specRows, cond: condRows, ins: insRows, etc: adminRows, price: priceRows, fee: feeRows, options: optList } = D;
   const policyName = D.policyName || '';

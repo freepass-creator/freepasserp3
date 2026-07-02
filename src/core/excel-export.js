@@ -110,17 +110,20 @@ export const PRODUCT_COLS = [
   { f:'fuel_type',l:'연료',     w:8 },
   { f:'ext_color',l:'외장색',   w:10 },
   { f:'int_color',l:'내장색',   w:10 },
-  // ── 기간별 대여료·보증금·수수료 세트 ──
-  pr(1,'rent'),  pr(1,'deposit'),  pr(1,'fee'),
-  pr(12,'rent'), pr(12,'deposit'), pr(12,'fee'),
-  pr(24,'rent'), pr(24,'deposit'), pr(24,'fee'),
-  pr(36,'rent'), pr(36,'deposit'), pr(36,'fee'),
-  pr(48,'rent'), pr(48,'deposit'), pr(48,'fee'),
-  pr(60,'rent'), pr(60,'deposit'), pr(60,'fee'),
+  // ── 기간별 대여료 + 보증금 (단기/장기 각 1개) ──
+  { f:'short_deposit', l:'단기보증금', w:12, numFmt: won,
+    get: r => { const p = r.price||{}; for (const [k,v] of Object.entries(p)) { const m = k.includes('_') ? Number(k.split('_')[0]) : Number(k); if (m>=1&&m<=12&&v?.deposit) return Number(v.deposit)||''; } return ''; } },
+  pr(1,'rent'),
+  pr(12,'rent'),
+  { f:'long_deposit', l:'장기보증금', w:12, numFmt: won,
+    get: r => { const p = r.price||{}; for (const [k,v] of Object.entries(p)) { const m = k.includes('_') ? Number(k.split('_')[0]) : Number(k); if (m>=24&&v?.deposit) return Number(v.deposit)||''; } return ''; } },
+  pr(24,'rent'),
+  pr(36,'rent'),
+  pr(48,'rent'),
+  pr(60,'rent'),
   // ── 옵션 ──
   { f:'options', l:'세부옵션', w:40 },
   // ═════ 정책정보 ═════
-  { f:'basic_driver_age',   l:'운전연령',     group:'대여기본', w:10, get: r => r._policy?.basic_driver_age || r.base_age || '' },
   { f:'annual_mileage',     l:'연간주행거리', group:'대여기본', w:12, get: r => r._policy?.annual_mileage || r.annual_mileage || '' },
   { f:'insurance_included', l:'보험포함',     group:'대여기본', w:10, get: r => r._policy?.insurance_included || r.insurance_included || '' },
   { f:'credit_grade',       l:'신용등급',     group:'대여기본', w:10, get: r => r._policy?.credit_grade || r.credit_grade || '' },
