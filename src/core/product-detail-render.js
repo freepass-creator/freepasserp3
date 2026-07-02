@@ -66,9 +66,9 @@ function renderGallery(imgList, { overlayBadges = '', reviewTag = '' } = {}) {
   `;
 }
 
-function bindGallery(root, imgList, state, onNav) {
+function bindGallery(root, imgList, state, onNav, carNumber = '') {
   const img = root.querySelector('#srchGalleryImg');
-  img?.addEventListener('click', () => openFullscreen(imgList, state.idx));
+  img?.addEventListener('click', () => openFullscreen(imgList, state.idx, carNumber));
   if (imgList.length <= 1) return;
   const ctr = root.querySelector('#srchGalleryCtr');
   const update = () => {
@@ -88,7 +88,7 @@ function bindGallery(root, imgList, state, onNav) {
   });
 }
 
-export function openFullscreen(imgList, startIdx = 0) {
+export function openFullscreen(imgList, startIdx = 0, carNumber = '') {
   imgList.forEach(url => { const i = new Image(); i.decoding = 'async'; i.src = url; });
 
   const overlay = document.createElement('dialog');
@@ -196,7 +196,8 @@ export function openFullscreen(imgList, startIdx = 0) {
           if (!res.ok) throw new Error('fetch fail');
           const blob = await res.blob();
           const ext = blob.type?.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg';
-          zip.file(`photo_${String(i + 1).padStart(2, '0')}.${ext}`, blob);
+          const prefix = carNumber ? `${carNumber}_` : '';
+          zip.file(`${prefix}${String(i + 1).padStart(2, '0')}.${ext}`, blob);
           ok++;
         } catch {
           fail++;
@@ -206,7 +207,7 @@ export function openFullscreen(imgList, startIdx = 0) {
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(zipBlob);
-      a.download = `photos_${ok}장.zip`;
+      a.download = `${carNumber || 'photos'}_사진_${ok}장.zip`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -414,7 +415,7 @@ function _renderProductDetail(container, product, options = {}) {
 
   // 갤러리 바인딩
   const galleryState = { idx: 0 };
-  bindGallery(container, imgList, galleryState, onGalleryNav);
+  bindGallery(container, imgList, galleryState, onGalleryNav, p.car_number || '');
 
   // 패널헤드 액션 버튼 주입
   if (showActions) {
