@@ -121,7 +121,7 @@ function productToRow(p, policiesByCode) {
     차고지: p.location || '',
     ...c,
     '21세': p.sheet_meta?.age_21 || '',
-    '23세': p.sheet_meta?.age_23 || '',
+    '23세': p.sheet_meta?.age_23 || p.sheet_meta?.age_21 || '',
     '1만+': p.sheet_meta?.year_1plus || '',
     전용계좌: '',
     비고: p.partner_memo || '',
