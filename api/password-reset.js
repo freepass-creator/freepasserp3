@@ -49,13 +49,14 @@ export default async function handler(req, res) {
     await getAdmin();
 
     const firebaseLink = await admin.auth().generatePasswordResetLink(email, {
-      url: 'https://www.freepasserp.com',
+      url: 'https://freepasserp.com',
     });
 
-    // Firebase 도메인 → 프리패스 도메인으로 교체 (vercel.json에서 /auth/action → Firebase로 프록시)
+    // Firebase 기본 도메인(firebaseapp.com / web.app 모두) → 프리패스 도메인으로 교체
+    // (vercel.json: /auth/action → freepasserp3.firebaseapp.com/__/auth/action 프록시)
     const resetLink = firebaseLink.replace(
-      'https://freepasserp3.firebaseapp.com/__/auth/action',
-      'https://www.freepasserp.com/auth/action'
+      /https:\/\/freepasserp3\.(firebaseapp\.com|web\.app)\/__\/auth\/action/,
+      'https://freepasserp.com/auth/action'
     );
 
     const transporter = nodemailer.createTransport({

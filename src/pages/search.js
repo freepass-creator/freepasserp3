@@ -207,14 +207,25 @@ function renderSearchRow(p) {
       <td class="center col-tight" title="${esc(p.ext_color || '')}">${colorBadge(p.ext_color)}</td>
       <td class="center col-tight" title="${esc(p.int_color || '')}">${colorBadge(p.int_color)}</td>
       <td class="center" title="${esc(credit)}" style="white-space:nowrap;">${creditTxt ? esc(creditTxt) : '<span class="dim">-</span>'}</td>
-      <td class="num" data-period="1m">${fmtPricePair(p.price?.['1'])}</td>
-      <td class="num" data-period="12m">${fmtPricePair(p.price?.['12'])}</td>
-      <td class="num" data-period="24m">${fmtPricePair(p.price?.['24'])}</td>
-      <td class="num" data-period="36m">${fmtPricePair(p.price?.['36'])}</td>
-      <td class="num" data-period="48m">${fmtPricePair(p.price?.['48'])}</td>
-      <td class="num" data-period="60m">${fmtPricePair(p.price?.['60'])}</td>
+      <td class="num" data-period="1m">${fmtPricePair(getPricePairForPeriod(p.price, '1'))}</td>
+      <td class="num" data-period="12m">${fmtPricePair(getPricePairForPeriod(p.price, '12'))}</td>
+      <td class="num" data-period="24m">${fmtPricePair(getPricePairForPeriod(p.price, '24'))}</td>
+      <td class="num" data-period="36m">${fmtPricePair(getPricePairForPeriod(p.price, '36'))}</td>
+      <td class="num" data-period="48m">${fmtPricePair(getPricePairForPeriod(p.price, '48'))}</td>
+      <td class="num" data-period="60m">${fmtPricePair(getPricePairForPeriod(p.price, '60'))}</td>
       <td title="${esc(p.provider_company_code || '')}">${esc(providerName)}</td>
     </tr>`;
+}
+
+/** 구식 price[period] 키 없으면 price[period_Xkm] 중 대여료 낮은 것 반환 */
+function getPricePairForPeriod(price, period) {
+  if (!price) return null;
+  if (price[period]) return price[period];
+  const prefix = period + '_';
+  const candidates = Object.entries(price)
+    .filter(([k]) => k.startsWith(prefix) && price[k]?.rent)
+    .sort((a, b) => Number(a[1].rent) - Number(b[1].rent));
+  return candidates[0]?.[1] || null;
 }
 
 function fmtPricePair(v) {
@@ -789,7 +800,8 @@ function getColumnVal(p, field) {
   if (field.startsWith('_policy.')) return p._policy?.[field.slice(8)];
   if (field.startsWith('price.')) {
     const [, m, type] = field.split('.');
-    const v = Number(p.price?.[m]?.[type] || 0);
+    const pv = getPricePairForPeriod(p.price, m);
+    const v = Number(pv?.[type] || 0);
     return v > 0 ? v : null;
   }
   if (field === 'options' && Array.isArray(p.options)) return p.options.join('·');
@@ -1421,7 +1433,7 @@ function filterProductsExcept(exceptField) {
           if (!val || !val.size) continue;
           const hasAny = [...val].some(pid => {
             const m = pid.slice(1); // 'p12' → '12', 'p1' → '1'
-            return Number(p.price?.[m]?.rent) > 0;
+            return Number(getPricePairForPeriod(p.price, m)?.rent) > 0;
           });
           if (!hasAny) return false;
           continue;

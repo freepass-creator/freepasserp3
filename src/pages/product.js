@@ -73,7 +73,8 @@ export const PRODUCT_OPTS = {
   year: Array.from({ length: 12 }, (_, i) => String(2026 - i)),
 };
 
-export const PRODUCT_TERMS = ['1', '12', '24', '36', '48', '60'];   // v2 PRICE_PERIODS
+export const PRODUCT_TERMS = ['1', '12', '18', '24', '36', '48', '60'];   // v2 PRICE_PERIODS
+export const PRODUCT_KMS   = ['1만', '2만', '3만', '4만', '5만'];           // 연주행 km 옵션
 const MAX_PHOTOS = 30;
 const UPLOAD_CONCURRENCY = 4;
 
@@ -947,23 +948,57 @@ export function renderProductDetail(p) {
         ${policyOpts.map(o => `<option value="${esc(o.code)}" ${o.code === curPol ? 'selected' : ''}>${esc(o.name ? `${o.name} (${o.code})` : o.code)}</option>`).join('')}
         ${curPol && !policyOpts.find(o => o.code === curPol) ? `<option value="${esc(curPol)}" selected>${esc(curPol)}</option>` : ''}
       </select></div>`;
-    const rentRow = m => {
-      const v = p.price?.[m] || {};
-      return `<tr data-term="${m}">
-        <td>${m}개월</td>
-        <td><input class="input pd-price-input" data-period="${m}" data-type="rent" value="${esc(fmt(v.rent))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
-        <td><input class="input pd-price-input" data-period="${m}" data-type="deposit" value="${esc(fmt(v.deposit))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
+    const priceEntries = sortedPriceEntries(p.price);
+    const delBtn = (key) => canEdit
+      ? `<td style="width:28px;"><button class="btn pd-del-price-btn" data-key="${esc(key)}" title="삭제" style="padding:2px 6px; font-size:11px; color:var(--text-weak);">✕</button></td>`
+      : '<td></td>';
+    const rentRow = (entry) => {
+      const { key, period, km } = entry;
+      const v = p.price?.[key] || {};
+      return `<tr data-price-key="${esc(key)}">
+        <td>${esc(period)}개월</td>
+        <td style="color:var(--text-sub);">${esc(km || '-')}</td>
+        <td><input class="input pd-price-input" data-key="${esc(key)}" data-type="rent" value="${esc(fmt(v.rent))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
+        <td><input class="input pd-price-input" data-key="${esc(key)}" data-type="deposit" value="${esc(fmt(v.deposit))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
+        ${delBtn(key)}
       </tr>`;
     };
-    const feeRow = m => {
-      const v = p.price?.[m] || {};
+    const feeRow = (entry) => {
+      const { key, period, km } = entry;
+      const v = p.price?.[key] || {};
       const feeRaw = v.fee != null && v.fee !== '' ? v.fee : (v.commission || '');
-      return `<tr data-term="${m}">
-        <td>${m}개월</td>
-        <td><input class="input pd-price-input" data-period="${m}" data-type="fee" value="${esc(fmt(feeRaw))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
-        <td><input class="input pd-price-memo" data-period="${m}" data-type="fee_memo" value="${esc(v.fee_memo || '')}" placeholder="-" style="width:100%;"${disabled}${lockAttr}></td>
+      return `<tr data-price-key="${esc(key)}">
+        <td>${esc(period)}개월</td>
+        <td style="color:var(--text-sub);">${esc(km || '-')}</td>
+        <td><input class="input pd-price-input" data-key="${esc(key)}" data-type="fee" value="${esc(fmt(feeRaw))}" placeholder="-" inputmode="numeric" style="text-align:right; width:100%;"${disabled}${lockAttr}></td>
+        <td><input class="input pd-price-memo" data-key="${esc(key)}" data-type="fee_memo" value="${esc(v.fee_memo || '')}" placeholder="-" style="width:100%;"${disabled}${lockAttr}></td>
+        ${delBtn(key)}
       </tr>`;
     };
+    const addRowHtml = (tableId) => canEdit ? `
+      <tfoot class="pd-add-price-tfoot" id="${tableId}Foot" style="display:none;">
+        <tr>
+          <td><select class="input pd-add-period-sel" style="font-size:11px; padding:2px;">
+            ${PRODUCT_TERMS.map(t => `<option value="${esc(t)}">${esc(t)}개월</option>`).join('')}
+          </select></td>
+          <td><select class="input pd-add-km-sel" style="font-size:11px; padding:2px;">
+            <option value="">-</option>
+            ${PRODUCT_KMS.map(k => `<option value="${esc(k)}">${esc(k)}</option>`).join('')}
+          </select></td>
+          <td><input class="input pd-add-rent-inp" type="number" placeholder="대여료" style="text-align:right; width:100%; font-size:11px; padding:2px;"></td>
+          <td><input class="input pd-add-deposit-inp" type="number" placeholder="보증금" style="text-align:right; width:100%; font-size:11px; padding:2px;"></td>
+          <td style="white-space:nowrap;">
+            <button class="btn btn-primary pd-add-confirm-btn" data-table="${esc(tableId)}" style="font-size:11px; padding:2px 6px; margin-right:2px;">저장</button>
+            <button class="btn pd-add-cancel-btn" data-table="${esc(tableId)}" style="font-size:11px; padding:2px 6px;">취소</button>
+          </td>
+        </tr>
+      </tfoot>
+    ` : '';
+    const addBtnHtml = (tableId) => canEdit ? `
+      <button class="btn btn-ghost btn-sm pd-add-price-row-btn" data-table="${esc(tableId)}" style="width:100%; margin-top:4px; font-size:12px;">
+        <i class="ph ph-plus"></i> 행 추가
+      </button>
+    ` : '';
     // 정책 정보 (보험·계약조건) — 연결된 정책에서 끌어와 읽기전용 표시. "정보 많은데 제한적" 해소.
     const D = extractProductDetailRows(p, { canSeeFee: false, isAdmin: false, policies: store.policies || [] });
     const curPolName = (store.policies || []).find(t => (t.policy_code || t._key) === curPol)?.policy_name || '';
@@ -990,18 +1025,22 @@ export function renderProductDetail(p) {
         ${ffi('주행거리', 'mileage',         p.mileage,                              disabled)}
       </div>
       <div class="form-section-title"><i class="ph ph-currency-krw"></i>대여료 | 보증금</div>
-      <table class="table pd-price-table" style="margin-bottom: 12px;" id="prodPriceTable">
-        <colgroup><col style="width:60px;"><col style="width:50%;"><col style="width:50%;"></colgroup>
-        <thead><tr><th>기간</th><th class="num">대여료</th><th class="num">보증금</th></tr></thead>
-        <tbody>${PRODUCT_TERMS.map(rentRow).join('')}</tbody>
+      <table class="table pd-price-table" style="margin-bottom: 4px;" id="prodPriceTable">
+        <colgroup><col style="width:56px;"><col style="width:44px;"><col><col><col style="width:28px;"></colgroup>
+        <thead><tr><th>기간</th><th>연주행</th><th class="num">대여료</th><th class="num">보증금</th><th></th></tr></thead>
+        <tbody>${priceEntries.length ? priceEntries.map(rentRow).join('') : `<tr><td colspan="5" style="color:var(--text-muted); text-align:center; padding:8px;">가격 없음</td></tr>`}</tbody>
+        ${addRowHtml('prodPriceTable')}
       </table>
+      ${addBtnHtml('prodPriceTable')}
       ${(role === 'admin' || role === 'agent' || role === 'agent_admin') ? `
-        <div class="form-section-title"><i class="ph ph-percent"></i>수수료 | 비고 <span style="color:var(--text-weak); font-weight:400; font-size:12px;">(내부용)</span></div>
+        <div class="form-section-title" style="margin-top:12px;"><i class="ph ph-percent"></i>수수료 | 비고 <span style="color:var(--text-weak); font-weight:400; font-size:12px;">(내부용)</span></div>
         <table class="table pd-price-table" id="prodFeeTable">
-          <colgroup><col style="width:60px;"><col style="width:50%;"><col style="width:50%;"></colgroup>
-          <thead><tr><th>기간</th><th class="num">수수료</th><th>비고</th></tr></thead>
-          <tbody>${PRODUCT_TERMS.map(feeRow).join('')}</tbody>
+          <colgroup><col style="width:56px;"><col style="width:44px;"><col><col><col style="width:28px;"></colgroup>
+          <thead><tr><th>기간</th><th>연주행</th><th class="num">수수료</th><th>비고</th><th></th></tr></thead>
+          <tbody>${priceEntries.length ? priceEntries.map(feeRow).join('') : `<tr><td colspan="5" style="color:var(--text-muted); text-align:center; padding:8px;">-</td></tr>`}</tbody>
+          ${addRowHtml('prodFeeTable')}
         </table>
+        ${addBtnHtml('prodFeeTable')}
       ` : ''}
       ${polInfoHtml}
     `;
@@ -1501,6 +1540,28 @@ function bindRegUpload(photoCard, p) {
 }
 
 /* ──────── D. 가격 매트릭스 인라인 편집 (v2 패턴) ──────── */
+
+/** price 키를 파싱: '24_3만' → {period:'24', km:'3만'}, '24' → {period:'24', km:null} */
+function parsePriceKey(k) {
+  const idx = k.indexOf('_');
+  if (idx === -1) return { period: k, km: null };
+  return { period: k.slice(0, idx), km: k.slice(idx + 1) };
+}
+
+/** 기존 price 객체에서 표시 순서로 정렬된 엔트리 배열 반환 */
+function sortedPriceEntries(price = {}) {
+  return Object.keys(price)
+    .filter(k => price[k] && typeof price[k] === 'object')
+    .map(k => ({ key: k, ...parsePriceKey(k) }))
+    .sort((a, b) => {
+      const diff = Number(a.period) - Number(b.period);
+      if (diff !== 0) return diff;
+      if (!a.km && b.km) return -1;
+      if (a.km && !b.km) return 1;
+      return (a.km || '').localeCompare(b.km || '');
+    });
+}
+
 function bindProductPriceEdit(p) {
   const page = document.querySelector('.pt-page[data-page="product"]');
   // 가격 패널 상단 form-grid (정책·구분·상태·주행) — 변경 시 즉시 저장
@@ -1543,17 +1604,83 @@ function bindProductPriceEdit(p) {
         return;
       }
       const saved = isMemo ? (val || null) : (val ? Number(val) : null);
-      const m = inp.dataset.period, t = inp.dataset.type;
+      const key = inp.dataset.key, t = inp.dataset.type;
       try {
-        await updateRecord(`products/${p._key}`, { [`price/${m}/${t}`]: saved });
+        await updateRecord(`products/${p._key}`, { [`price/${key}/${t}`]: saved });
         const next = { ...(p.price || {}) };
-        next[m] = { ...(next[m] || {}), [t]: saved };
+        next[key] = { ...(next[key] || {}), [t]: saved };
         p.price = next;
         originalValue = val;
         if (!isMemo && val !== '') inp.value = Number(val).toLocaleString('ko-KR');
         flashSaved(inp);
       } catch (e) {
         console.error('[product price] save fail', e);
+        alert('저장 실패 — ' + (e.message || e));
+      }
+    });
+  });
+
+  // 행 삭제
+  page.querySelectorAll('.pd-del-price-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const key = btn.dataset.key;
+      if (!confirm(`${key} 가격 행을 삭제할까요?`)) return;
+      try {
+        await updateRecord(`products/${p._key}`, { [`price/${key}`]: null });
+        const next = { ...(p.price || {}) };
+        delete next[key];
+        p.price = next;
+        btn.closest('tr')?.remove();
+      } catch (e) {
+        alert('삭제 실패 — ' + (e.message || e));
+      }
+    });
+  });
+
+  // 행 추가
+  page.querySelectorAll('.pd-add-price-row-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tableId = btn.dataset.table;
+      const foot = page.querySelector(`#${tableId}Foot`);
+      if (foot) foot.style.display = '';
+      btn.style.display = 'none';
+    });
+  });
+  page.querySelectorAll('.pd-add-cancel-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tableId = btn.dataset.table;
+      const foot = page.querySelector(`#${tableId}Foot`);
+      if (foot) foot.style.display = 'none';
+      const addBtn = page.querySelector(`.pd-add-price-row-btn[data-table="${tableId}"]`);
+      if (addBtn) addBtn.style.display = '';
+    });
+  });
+  page.querySelectorAll('.pd-add-confirm-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const tableId = btn.dataset.table;
+      const foot = page.querySelector(`#${tableId}Foot`);
+      const period = foot?.querySelector('.pd-add-period-sel')?.value;
+      const km = foot?.querySelector('.pd-add-km-sel')?.value;
+      const isFee = tableId === 'prodFeeTable';
+      const rentInp = foot?.querySelector(isFee ? '.pd-add-rent-inp' : '.pd-add-rent-inp');
+      const depositInp = foot?.querySelector('.pd-add-deposit-inp');
+      if (!period) { alert('기간을 선택하세요.'); return; }
+      const key = km ? `${period}_${km}` : period;
+      if (p.price?.[key]) { alert(`이미 존재하는 항목입니다 (${key})`); return; }
+      const rentVal = Number(rentInp?.value || 0) || null;
+      const depositVal = Number(depositInp?.value || 0) || null;
+      const typeKey = isFee ? 'fee' : 'rent';
+      const updates = {};
+      if (rentVal) updates[`price/${key}/${typeKey}`] = rentVal;
+      if (!isFee && depositVal) updates[`price/${key}/deposit`] = depositVal;
+      try {
+        await updateRecord(`products/${p._key}`, updates);
+        const next = { ...(p.price || {}) };
+        next[key] = { ...(next[key] || {}), [typeKey]: rentVal };
+        if (!isFee && depositVal) next[key].deposit = depositVal;
+        p.price = next;
+        renderProductDetail(p);
+      } catch (e) {
         alert('저장 실패 — ' + (e.message || e));
       }
     });

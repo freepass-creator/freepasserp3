@@ -124,17 +124,24 @@ export function extractProductDetailRows(p, options = {}) {
     ['특이사항',   p.partner_memo || p.note],
   ] : [];
 
-  // 6. 가격 — rent>0 필터, 1~60개월 범위
+  // 6. 가격 — rent>0 필터, 1~60개월 범위 (composite 키 '24_3만' + 구식 키 '24' 모두 지원)
   const priceEntries = Object.entries(p.price || {})
-    .map(([m, v]) => ({
-      m: Number(m),
-      rent: Number(v?.rent || 0),
-      dep:  Number(v?.deposit || 0),
-      fee:  Number(v?.fee || v?.commission || 0),
-      fee_memo: v?.fee_memo || '',
-    }))
+    .map(([key, v]) => {
+      const idx = key.indexOf('_');
+      const period = idx === -1 ? Number(key) : Number(key.slice(0, idx));
+      const km = idx === -1 ? '' : key.slice(idx + 1);
+      return {
+        m: period,
+        km,
+        key,
+        rent: Number(v?.rent || 0),
+        dep:  Number(v?.deposit || 0),
+        fee:  Number(v?.fee || v?.commission || 0),
+        fee_memo: v?.fee_memo || '',
+      };
+    })
     .filter(r => Number.isFinite(r.m) && r.m >= 1 && r.m <= 60 && r.rent > 0)
-    .sort((a, b) => a.m - b.m);
+    .sort((a, b) => a.m - b.m || (a.km || '').localeCompare(b.km || ''));
 
   const fee = canSeeFee ? priceEntries.filter(r => r.fee > 0) : [];
 

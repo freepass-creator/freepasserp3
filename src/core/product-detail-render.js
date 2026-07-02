@@ -191,7 +191,8 @@ export function openFullscreen(imgList, startIdx = 0) {
       let ok = 0, fail = 0;
       await Promise.all(imgList.map(async (url, i) => {
         try {
-          const res = await fetch(url, { mode: 'cors' });
+          const proxyUrl = `/api/img?url=${encodeURIComponent(url)}`;
+          const res = await fetch(proxyUrl);
           if (!res.ok) throw new Error('fetch fail');
           const blob = await res.blob();
           const ext = blob.type?.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg';
@@ -270,6 +271,7 @@ export function renderDetailSections(p, opts = {}) {
   const vehName = composeVehicleName(p);
   const kv = (l, v) => `<div class="pd-kv"><span class="k">${esc(l)}</span><span class="v">${(v != null && String(v).trim() && String(v).trim() !== '-') ? esc(v) : '-'}</span></div>`;
   const cheapest = priceRows.length ? priceRows.reduce((a, b) => (b.rent < a.rent ? b : a), priceRows[0]) : null;
+  const hasKm = priceRows.some(r => r.km);
   const st = p.vehicle_status || '';
   const stCls = /협의/.test(st) ? 'is-consult' : /계약|예약/.test(st) ? 'is-contract' : /불가/.test(st) ? 'is-blocked' : '';
 
@@ -300,8 +302,11 @@ export function renderDetailSections(p, opts = {}) {
       <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
       ${priceRows.length ? `
       <table class="pd-tbl">
-        <thead><tr><th>기간</th><th>월 대여료</th><th>보증금</th></tr></thead>
-        <tbody>${priceRows.map(r => `<tr class="${cheapest && r.m === cheapest.m ? 'best' : ''}"><td>${r.m}개월${cheapest && r.m === cheapest.m ? '<span class="pd-best-tag">최저</span>' : ''}</td><td><span class="pd-rent">${fmtMoneyMan(r.rent)}</span></td><td>${fmtMoneyMan(r.dep) || '-'}</td></tr>`).join('')}</tbody>
+        <thead><tr><th>기간</th><th>연주행</th><th>월 대여료</th><th>보증금</th></tr></thead>
+        <tbody>${priceRows.map(r => {
+          const isBest = cheapest && r.m === cheapest.m && r.km === cheapest.km;
+          return `<tr class="${isBest ? 'best' : ''}"><td>${r.m}개월${isBest ? '<span class="pd-best-tag">최저</span>' : ''}</td><td style="color:var(--text-sub);font-size:12px;">${esc(r.km || '-')}</td><td><span class="pd-rent">${fmtMoneyMan(r.rent)}</span></td><td>${fmtMoneyMan(r.dep) || '-'}</td></tr>`;
+        }).join('')}</tbody>
       </table>
       ${(() => {
         const parts = [condByLabel['기본연령'], String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, ''), condByLabel['보험 포함']].filter(Boolean);

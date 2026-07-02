@@ -125,7 +125,9 @@ export function buildDynamicChips(products, passFn = null) {
       });
       const sorted = key === 'year'
         ? Object.entries(counts).sort((a, b) => Number(b[0]) - Number(a[0]))
-        : Object.entries(counts).sort((a, b) => b[1] - a[1]);
+        : (key === 'model' || key === 'submodel')
+          ? Object.entries(counts).sort((a, b) => a[0].localeCompare(b[0], 'ko'))
+          : Object.entries(counts).sort((a, b) => b[1] - a[1]);
 
       const mkChip = ([v, cnt]) => {
         let displayName = v;

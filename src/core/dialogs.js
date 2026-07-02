@@ -167,9 +167,23 @@ export function pickOrCreateCustomer(product = null) {
   const customers = store.customers || [];
   // 상품의 기간별 가격 — 가격이 등록된 기간만 노출
   const priceMap = product?.price || {};
-  const PERIODS = ['1', '12', '24', '36', '48', '60'];
-  const availablePeriods = PERIODS.filter(p => Number(priceMap[p]?.rent) > 0);
+  const PERIODS = ['1', '12', '18', '24', '36', '48', '60'];
+  // period → { km → {rent,deposit} } 파싱 (구식 키 + composite 키 모두)
+  const periodKmMap = {};
+  for (const [key, val] of Object.entries(priceMap)) {
+    if (!val || typeof val !== 'object' || !Number(val.rent)) continue;
+    const idx = key.indexOf('_');
+    const period = idx === -1 ? key : key.slice(0, idx);
+    const km = idx === -1 ? '' : key.slice(idx + 1);
+    if (!periodKmMap[period]) periodKmMap[period] = {};
+    periodKmMap[period][km] = val;
+  }
+  const availablePeriods = PERIODS.filter(p => periodKmMap[p]);
   const defaultPeriod = availablePeriods.includes('36') ? '36' : (availablePeriods[0] || '');
+  const defaultKm = (period) => {
+    const kms = Object.keys(periodKmMap[period] || {});
+    return kms.includes('3만') ? '3만' : (kms[0] || '');
+  };
 
   return new Promise(resolve => {
     const overlay = document.createElement('div');
@@ -184,6 +198,10 @@ export function pickOrCreateCustomer(product = null) {
             <div id="cuPeriods" style="display:flex; gap:4px; flex-wrap:wrap;">
               ${availablePeriods.map(m => `<button type="button" class="chip cu-period-chip${m === defaultPeriod ? ' is-active' : ''}" data-m="${m}">${m}개월</button>`).join('')}
             </div>
+          </div>
+          <div id="cuKmSection" style="display:none;">
+            <div style="font-size:12px; color:var(--text-sub); margin-bottom:4px;">연주행</div>
+            <div id="cuKms" style="display:flex; gap:4px; flex-wrap:wrap;"></div>
           </div>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
             <div>
@@ -219,23 +237,54 @@ export function pickOrCreateCustomer(product = null) {
     `;
     document.body.appendChild(overlay);
 
-    // 기간 선택 → 대여료/보증금 자동 채움
+    // 기간·km 선택 → 대여료/보증금 자동 채움
     let selectedPeriod = defaultPeriod;
+    let selectedKm = defaultPeriod ? defaultKm(defaultPeriod) : '';
     const rentEl = overlay.querySelector('#cuRent');
     const depEl = overlay.querySelector('#cuDeposit');
-    const fillPrice = (m) => {
-      if (!m || !rentEl || !depEl) return;
-      const p = priceMap[m] || {};
-      rentEl.value = p.rent ? Math.round(Number(p.rent) / 10000) + '만원' : '-';
-      depEl.value = p.deposit ? Math.round(Number(p.deposit) / 10000) + '만원' : '-';
+    const kmSection = overlay.querySelector('#cuKmSection');
+    const kmContainer = overlay.querySelector('#cuKms');
+
+    const fillPrice = (period, km) => {
+      if (!period || !rentEl || !depEl) return;
+      const v = (periodKmMap[period] || {})[km ?? ''] || {};
+      rentEl.value = v.rent ? Math.round(Number(v.rent) / 10000) + '만원' : '-';
+      depEl.value = v.deposit ? Math.round(Number(v.deposit) / 10000) + '만원' : '-';
     };
-    fillPrice(selectedPeriod);
+
+    const renderKmChips = (period) => {
+      if (!kmContainer || !kmSection) return;
+      const kms = Object.keys(periodKmMap[period] || {});
+      const hasMultipleKm = kms.length > 1 || (kms.length === 1 && kms[0] !== '');
+      if (!hasMultipleKm) {
+        kmSection.style.display = 'none';
+        selectedKm = kms[0] || '';
+        return;
+      }
+      kmSection.style.display = '';
+      selectedKm = kms.includes('3만') ? '3만' : kms[0];
+      kmContainer.innerHTML = kms.map(k =>
+        `<button type="button" class="chip cu-km-chip${k === selectedKm ? ' is-active' : ''}" data-km="${k}">${k || '기본'}</button>`
+      ).join('');
+      kmContainer.querySelectorAll('.cu-km-chip').forEach(b => {
+        b.addEventListener('click', () => {
+          kmContainer.querySelectorAll('.cu-km-chip').forEach(x => x.classList.remove('is-active'));
+          b.classList.add('is-active');
+          selectedKm = b.dataset.km;
+          fillPrice(selectedPeriod, selectedKm);
+        });
+      });
+    };
+
+    renderKmChips(selectedPeriod);
+    fillPrice(selectedPeriod, selectedKm);
     overlay.querySelectorAll('.cu-period-chip').forEach(b => {
       b.addEventListener('click', () => {
         overlay.querySelectorAll('.cu-period-chip').forEach(x => x.classList.remove('is-active'));
         b.classList.add('is-active');
         selectedPeriod = b.dataset.m;
-        fillPrice(selectedPeriod);
+        renderKmChips(selectedPeriod);
+        fillPrice(selectedPeriod, selectedKm);
       });
     });
 
@@ -304,12 +353,14 @@ export function pickOrCreateCustomer(product = null) {
             business_number: bizEl.checked ? bizNoEl.value.trim() : '',
             company_name: bizEl.checked ? bizNameEl.value.trim() : '',
           };
-      // product 가 있었으면 기간/대여료/보증금도 같이 반환
+      // product 가 있었으면 기간/km/대여료/보증금도 같이 반환
       const period = selectedPeriod || '';
-      const priceItem = period ? (priceMap[period] || {}) : {};
+      const km = selectedKm || '';
+      const priceItem = period ? ((periodKmMap[period] || {})[km] || {}) : {};
       close({
         ...customerData,
         contract_period: period,
+        contract_km: km,
         contract_rent: Number(priceItem.rent) || 0,
         contract_deposit: Number(priceItem.deposit) || 0,
       });

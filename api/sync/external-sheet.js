@@ -334,14 +334,19 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
     ? headers.findIndex(h => h.includes('선택옵션'))
     : colPartial('옵션');
   const idxNotes = colPartial('비고');
-  let idxRent12 = -1, idxRent24 = -1, idxRent36 = -1;
+  // 헤더에서 '{N}개월{Xkm}' 패턴 자동 탐지 — 12개월3만, 24개월2만, 18개월 등 모두 지원
+  const PERIOD_KM_RE = /^(\d+)개월\s*([1-9]\d*만)?/;
+  const priceColMap = [];
   headers.forEach((h, i) => {
     const hl = h.replace(/\s/g, '');
-    if (hl.includes('12개월') && hl.includes('3만')) idxRent12 = i;
-    else if (hl.includes('24개월') && hl.includes('3만')) idxRent24 = i;
-    else if (hl.includes('36개월') && hl.includes('3만')) idxRent36 = i;
+    const m = PERIOD_KM_RE.exec(hl);
+    if (m) priceColMap.push({ period: m[1], km: m[2] || '', idx: i });
   });
-  if (idxRent12 < 0) idxRent12 = headers.findIndex(h => h.replace(/\s/g, '').includes('12개월'));
+  // 폴백: 헤더에 개월 패턴 없으면 12개월 고정 컬럼 탐색
+  if (!priceColMap.length) {
+    const fallback = headers.findIndex(h => h.replace(/\s/g, '').includes('12개월'));
+    if (fallback >= 0) priceColMap.push({ period: '12', km: '', idx: fallback });
+  }
 
   const statusRaw = safeGet(row, idxStatus);
   const vehicleStatus = normalizeVehicleStatus(statusRaw);
@@ -349,9 +354,6 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
 
   const modelShort = safeGet(row, idxModelShort);
   const modelFull = idxModelFull >= 0 ? safeGet(row, idxModelFull) : '';
-  const rent12 = idxRent12 >= 0 ? parsePrice(safeGet(row, idxRent12)) : 0;
-  const rent24 = idxRent24 >= 0 ? parsePrice(safeGet(row, idxRent24)) : 0;
-  const rent36 = idxRent36 >= 0 ? parsePrice(safeGet(row, idxRent36)) : 0;
   const imp = isImport(modelFull) || isImport(modelShort);
   const depMult = imp ? 3 : 2;
   const uidSeed = `${finalProvider}_${carNumber}`;
@@ -395,9 +397,12 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
     created_at: nowMs, updated_at: nowMs,
     created_by: 'sync_external_sheet',
   };
-  if (rent12) product.price['12'] = { rent: rent12, deposit: rent12 * depMult };
-  if (rent24) product.price['24'] = { rent: rent24, deposit: rent24 * depMult };
-  if (rent36) product.price['36'] = { rent: rent36, deposit: rent36 * depMult };
+  for (const { period, km, idx } of priceColMap) {
+    const rent = parsePrice(safeGet(row, idx));
+    if (!rent) continue;
+    const key = km ? `${period}_${km}` : period;
+    product.price[key] = { rent, deposit: rent * depMult };
+  }
   return product;
 }
 

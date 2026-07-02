@@ -85,9 +85,12 @@ function productToRow(p, policiesByCode) {
   const c = policyCells(pol);
   const price = p.price || {};
   const rent = (m) => won(price[m]?.rent);
-  // 단기보증 = 24개월 미만 보증금 / 장기보증 = 24개월 이상 보증금
-  const shortDep = won(price['12']?.deposit || price['6']?.deposit || price['1']?.deposit);
-  const longDep  = won(price['24']?.deposit || price['36']?.deposit || price['48']?.deposit || price['60']?.deposit);
+  // 보증금 — 기간 무관 첫 번째 값 사용 (단기/장기 동일하므로 통일)
+  const anyDep = won(
+    price['12']?.deposit || price['24']?.deposit ||
+    price['6']?.deposit  || price['36']?.deposit ||
+    price['1']?.deposit  || price['48']?.deposit || price['60']?.deposit
+  );
 
   const byCol = {
     상태: p.vehicle_status || '',
@@ -100,11 +103,11 @@ function productToRow(p, policiesByCode) {
     외장: p.ext_color || '',
     내장: p.int_color || '',
     Km: p.mileage ? String(p.mileage) : '',
-    단기보증: shortDep,
+    단기보증: anyDep,
     '1개월': rent('1'),
     '6개월': rent('6'),
     '12개월': rent('12'),
-    장기보증: longDep,
+    장기보증: anyDep,
     '24개월': rent('24'),
     '36개월': rent('36'),
     '48개월': rent('48'),
@@ -117,9 +120,9 @@ function productToRow(p, policiesByCode) {
     배기량: p.engine_cc ? String(p.engine_cc) : '',
     차고지: p.location || '',
     ...c,
-    '21세': '',
-    '23세': '',
-    '1만+': '',
+    '21세': p.sheet_meta?.age_21 || '',
+    '23세': p.sheet_meta?.age_23 || '',
+    '1만+': p.sheet_meta?.year_1plus || '',
     전용계좌: '',
     비고: p.partner_memo || '',
     공급사코드: p.provider_company_code || p.partner_code || '',
