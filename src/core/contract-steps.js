@@ -1,14 +1,15 @@
 /**
- * contract-steps.js — 계약 진행단계 단일 소스 (v2: 5단계)
+ * contract-steps.js — 계약 진행단계 단일 소스
  *
- * 5단계:
- *  1. 출고 문의 — 가능 여부
- *  2. 서류    — 서류 + 계약서 모두 완료
- *  3. 입금    — 계약금 + 잔금 모두 완료
- *  4. 약정    — 약정 발송 + 작성 완료
- *  5. 출고    — 출고 요청 + 인도 확인 → 정산 자동
+ * 표시 행 순서:
+ *  1. 출고 문의 — 출고 가능 여부
+ *  2. 서류      — 서류 제출 + 확인
+ *  3. 계약금    — 계약금 입금 (agent)
+ *  4. 약정      — 약정 발송 완료 (agent) + 약정 작성 완료 (provider)
+ *  5. 잔금      — 잔금 확인 (provider)
+ *  6. 출고      — 인도 확인 + 출고 완료 → 정산 자동
  *
- * 기존 체크 키는 그대로 유지 (DB 호환). 단계 정의만 5개로 그룹핑.
+ * 기존 체크 키는 그대로 유지 (DB 호환).
  */
 
 export const STEPS = [
@@ -39,7 +40,7 @@ export const STEPS = [
     icon: 'coin',
     checks: [
       { actor: 'agent',    key: 'agent_balance_paid',         label: '계약금 입금', paymentShared: true },
-      { actor: 'provider', key: 'provider_balance_confirmed', label: '잔금 확인', paymentShared: true },
+      { actor: 'provider', key: 'provider_agreement_sent',    label: '약정 발송 완료' },
     ],
   },
   {
@@ -48,8 +49,8 @@ export const STEPS = [
     label: '약정',
     icon: 'signature',
     checks: [
-      { actor: 'agent',    key: 'agent_agreement_sent',      label: '약정 발송 완료' },
-      { actor: 'provider', key: 'provider_agreement_done',   label: '약정 작성 완료' },
+      { actor: 'agent',    key: 'provider_balance_confirmed', label: '잔금 확인', paymentShared: true },
+      { actor: 'provider', key: 'provider_agreement_done',    label: '약정 작성 완료' },
     ],
   },
   {
