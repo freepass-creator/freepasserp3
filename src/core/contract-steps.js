@@ -1,13 +1,14 @@
 /**
- * contract-steps.js — 계약 진행단계 단일 소스 (v2: 4단계 단순화)
+ * contract-steps.js — 계약 진행단계 단일 소스 (v2: 5단계)
  *
- * 4단계:
+ * 5단계:
  *  1. 출고 문의 — 가능 여부
  *  2. 서류    — 서류 + 계약서 모두 완료
  *  3. 입금    — 계약금 + 잔금 모두 완료
- *  4. 출고    — 출고 요청 + 인도 확인 → 정산 자동
+ *  4. 약정    — 약정 발송 + 작성 완료
+ *  5. 출고    — 출고 요청 + 인도 확인 → 정산 자동
  *
- * 기존 14개 체크 키는 그대로 유지 (DB 호환). 단계 정의만 4개로 그룹핑.
+ * 기존 체크 키는 그대로 유지 (DB 호환). 단계 정의만 5개로 그룹핑.
  */
 
 export const STEPS = [
@@ -42,8 +43,18 @@ export const STEPS = [
     ],
   },
   {
-    id: 'release',
+    id: 'agreement',
     phase: 4,
+    label: '약정',
+    icon: 'signature',
+    checks: [
+      { actor: 'agent',    key: 'agent_agreement_sent',      label: '약정 발송 완료' },
+      { actor: 'provider', key: 'provider_agreement_done',   label: '약정 작성 완료' },
+    ],
+  },
+  {
+    id: 'release',
+    phase: 5,
     label: '출고',
     icon: 'truck',
     checks: [
@@ -119,7 +130,7 @@ export function getStepStates(checks = {}) {
 }
 
 /**
- * 전체 진행률 — 단계 단위 (N/4)
+ * 전체 진행률 — 단계 단위 (N/5)
  */
 export function getProgress(checks = {}) {
   const states = getStepStates(checks);
