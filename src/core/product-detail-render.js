@@ -188,21 +188,29 @@ export function openFullscreen(imgList, startIdx = 0) {
     try {
       const JSZip = (await import('jszip')).default;
       const zip = new JSZip();
+      let ok = 0, fail = 0;
       await Promise.all(imgList.map(async (url, i) => {
-        const res = await fetch(url, { mode: 'cors' });
-        if (!res.ok) throw new Error('fetch fail');
-        const blob = await res.blob();
-        const ext = blob.type?.split('/')[1] || 'jpg';
-        zip.file(`photo_${String(i + 1).padStart(2, '0')}.${ext}`, blob);
+        try {
+          const res = await fetch(url, { mode: 'cors' });
+          if (!res.ok) throw new Error('fetch fail');
+          const blob = await res.blob();
+          const ext = blob.type?.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg';
+          zip.file(`photo_${String(i + 1).padStart(2, '0')}.${ext}`, blob);
+          ok++;
+        } catch {
+          fail++;
+        }
       }));
+      if (ok === 0) throw new Error('모든 이미지 다운로드 실패 (CORS/네트워크)');
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(zipBlob);
-      a.download = `photos_${imgList.length}장.zip`;
+      a.download = `photos_${ok}장.zip`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(a.href);
+      if (fail > 0) alert(`${ok}장 다운로드 완료 (${fail}장 실패 — CORS 차단)`);
     } catch (e) {
       console.error('[zip download]', e);
       alert('다운로드 실패 — ' + (e.message || e));
