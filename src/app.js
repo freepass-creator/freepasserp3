@@ -2356,17 +2356,22 @@ function bindLoginForm() {
     if (submitBtn) submitBtn.disabled = true;
     try {
       const { signup } = await import('./firebase/auth.js');
-      const { saveUserProfile } = await import('./firebase/collections.js');
       const user = await signup(email, pw);
-      // role / company_code 는 가입 시 안 받음 — saveUserProfile 이 SP999/agent 로 강제 (admin 승인 시 재지정)
-      // 사업자번호(business_no)는 admin 이 승인 시 partner 매칭 참고용
-      await saveUserProfile(user.uid, {
-        email,
-        name: document.getElementById('suName').value.trim(),
-        phone: document.getElementById('suPhone').value.trim(),
-        company_name: document.getElementById('suCompany').value.trim(),
-        business_no: document.getElementById('suBizNo').value.trim().replace(/[^\d]/g, ''),
+      const idToken = await user.getIdToken();
+      const profileRes = await fetch('/api/signup-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+        body: JSON.stringify({
+          name: document.getElementById('suName').value.trim(),
+          phone: document.getElementById('suPhone').value.trim(),
+          company_name: document.getElementById('suCompany').value.trim(),
+          business_no: document.getElementById('suBizNo').value.trim().replace(/[^\d]/g, ''),
+        }),
       });
+      if (!profileRes.ok) {
+        const d = await profileRes.json().catch(() => ({}));
+        throw new Error(d.error || '프로필 저장 실패');
+      }
       // 즉시 로그인 진입 (login 핸들러와 동일 패턴)
       showToast('가입 완료', 'success');
       location.hash = 'search';
