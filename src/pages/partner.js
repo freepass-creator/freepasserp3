@@ -485,7 +485,7 @@ function bindVehicleRegBatch(card, pa) {
           provider_company_code: code,
           partner_code: code,
           vehicle_status: '상품화중',
-          product_type: '중고렌트',
+          product_type: '재렌트',
           // 제조사 스펙 — catalog 매칭 결과 (실패 시 빈 값, 재고관리에서 수동 입력)
           maker: maker || '',
           model,

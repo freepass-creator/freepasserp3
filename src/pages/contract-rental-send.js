@@ -584,7 +584,10 @@ async function approveEntry(r) {
     const { updateRecord } = await import('../firebase/db.js');
     await updateRecord(`contract_sign/${r._key}`, { status: 'signed', approved_at: Date.now() });
     if (r.contract_code) {
-      updateRecord(`contracts/${r.contract_code}`, { contract_status: '계약완료', signed_at: Date.now() }).catch(() => null);
+      const contract = (store.contracts || []).find(c => c.contract_code === r.contract_code);
+      if (contract?._key) {
+        updateRecord(`contracts/${contract._key}`, { contract_status: '계약완료', signed_at: Date.now() }).catch(() => null);
+      }
     }
     import('../core/toast.js').then(m => m.showToast('승인 완료 — 서명완료로 처리됐습니다'));
     renderList();

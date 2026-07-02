@@ -18,6 +18,9 @@ import {
   settlementStatusPayload, SETTLEMENT_STATUS_DEFAULT,
 } from '../core/settlement-status.js';
 
+let _onSavedCb = null;
+export function setSettlementSavedCb(fn) { _onSavedCb = fn; }
+
 // 칩/뱃지는 SSOT(settlement-status.js) 어휘를 사용. createSettlement 가 '정산대기'로 생성하므로
 //  여기 칩/뱃지에 그 값이 반드시 있어야 신규 정산이 안 깨짐. legacy 별칭(미정산/환수)도 흡수.
 const SETTLE_STATUSES = SETTLEMENT_STATUSES_FULL;   // 정산대기/정산완료/정산보류/환수대기/환수결정
@@ -248,7 +251,7 @@ function bindSettleEdit(s) {
       Object.assign(s, update);
       const idx = (store.settlements || []).findIndex(x => x._key === s._key);
       if (idx >= 0) Object.assign(store.settlements[idx], update);
-      renderSettlementList(store.settlements || []);
+      (_onSavedCb ? _onSavedCb() : renderSettlementList(store.settlements || []));
       renderSettlementDetail(s);
       flashSaved([...page.querySelectorAll('#setlFee, #setlDate, #setlMemo')]);
     } catch (e) {

@@ -65,7 +65,7 @@ export function initAutoStatus() {
       // 계약취소 → 기지급 정산 환수 처리
       if (c.contract_status === '계약취소' && prev !== '계약취소') {
         const settlement = (store.settlements || []).find(s => s.contract_code === c.contract_code);
-        if (settlement?.settlement_status === 'paid' || settlement?.settlement_status === '완료') {
+        if (settlement?.settlement_status === '정산완료') {
           (async () => {
             try {
               const { calculateClawback } = await import('./settlement-rules.js');

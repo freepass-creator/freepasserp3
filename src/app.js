@@ -67,7 +67,7 @@ import {
 import { POLICY_OPTS, renderPolicyList, renderPolicyDetail } from './pages/policy.js';
 import { renderPartnerList, renderPartnerDetail } from './pages/partner.js';
 import { renderUserList, renderUserDetail, userFilter } from './pages/user.js';
-import { renderSettlementList, renderSettlementDetail, exportSettlementExcel } from './pages/settlement.js';
+import { renderSettlementList, renderSettlementDetail, exportSettlementExcel, setSettlementSavedCb } from './pages/settlement.js';
 import {
   CONTRACT_STATUSES, renderContractList, renderContractDetail,
   renderContractWorkV2, bindContractWorkV2,
@@ -1416,6 +1416,7 @@ function startHydration() {
   // vehicle_master Firebase 컬렉션 폐기됨 — 차종 데이터는 catalog (public/data/car-master) 단일 진실원
   // catalog cascade 데이터는 src/core/catalog-source.js 에서 _index.json 로드
 
+  setSettlementSavedCb(renderFilteredSettlements);
   bindSearchInteractions();
   bindGenericListInteractions();
   bindChatInput();
