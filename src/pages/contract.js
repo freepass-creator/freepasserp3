@@ -569,14 +569,29 @@ export function renderContractWorkV2(c) {
     `;
   };
 
+  const canEditInfo = isAdmin || role === 'agent' || role === 'agent_admin';
+  const infoLock = canEditInfo ? ' readonly data-edit-lock="1"' : ' readonly data-permanent-lock="1"';
+  const depositVal = c.deposit_amount_snapshot  ?? c.deposit      ?? '';
+  const rentVal    = c.rent_amount_snapshot     ?? c.monthly_rent ?? '';
+  const monthVal   = c.rent_month_snapshot      ?? c.contract_term ?? '';
+
   return `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
       <div style="font-size:12px;">
         <b style="color:var(--text-main);">${esc(c.contract_code || '-')}</b>
         ${c.customer_name ? ' | ' + esc(c.customer_name) : ''}
         <span style="margin-left:6px;color:var(--text-sub);">${esc(STATUS_LABEL[status] || status)}</span>
       </div>
       <span style="font-size:12px;color:${prog.done === prog.total ? 'var(--alert-green-text)' : 'var(--alert-blue-text)'};">${prog.done}/${prog.total}</span>
+    </div>
+    <div class="info-grid" style="grid-template-columns:60px 1fr 60px 1fr;gap:4px 8px;margin-bottom:4px;font-size:12px;">
+      <div class="lab">고객명</div><input class="input" data-contract-field="customer_name" value="${esc(c.customer_name || '')}" placeholder="-"${infoLock}>
+      <div class="lab">개월수</div><input class="input" type="number" data-contract-field="rent_month_snapshot" value="${esc(monthVal)}" placeholder="-"${infoLock}>
+      <div class="lab">보증금</div><input class="input" type="number" data-contract-field="deposit_amount_snapshot" value="${esc(depositVal)}" placeholder="-"${infoLock}>
+      <div class="lab">대여료</div><input class="input" type="number" data-contract-field="rent_amount_snapshot" value="${esc(rentVal)}" placeholder="-"${infoLock}>
+    </div>
+    <div class="info-grid" style="grid-template-columns:60px 1fr;gap:4px 8px;margin-bottom:8px;font-size:12px;">
+      <div class="lab">인도주소</div><input class="input" data-contract-field="delivery_address" value="${esc(c.delivery_address || '')}" placeholder="-"${infoLock}>
     </div>
     <div class="ct-steps">
       <div class="ct-step-row ct-step-head">
@@ -685,26 +700,35 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
   stepCard.querySelectorAll('textarea[data-memo]').forEach(ta => {
     if (ta.dataset.permanentLock === '1') return;
     let original = ta.value;
-    memoTracked.push({ ta, field: ta.dataset.memo, getOriginal: () => original, setOriginal: v => { original = v; } });
+    memoTracked.push({ el: ta, field: ta.dataset.memo, getValue: () => ta.value, getOriginal: () => original, setOriginal: v => { original = v; } });
   });
-  if (memoTracked.length) {
+
+  // 기본정보 필드 (고객명·보증금·대여료·개월수) — 영업·관리자만
+  const infoTracked = [];
+  stepCard.querySelectorAll('input[data-contract-field]').forEach(inp => {
+    if (inp.dataset.permanentLock === '1') return;
+    let original = inp.value;
+    infoTracked.push({ el: inp, field: inp.dataset.contractField, getValue: () => inp.value, getOriginal: () => original, setOriginal: v => { original = v; } });
+  });
+
+  if (memoTracked.length || infoTracked.length) {
     stepCard.dataset.flushHost = '1';
     stepCard.__flushSave = async () => {
       const patch = {};
       const flashEls = [];
-      for (const m of memoTracked) {
-        if (m.ta.value === m.getOriginal()) continue;
-        patch[m.field] = m.ta.value;
-        flashEls.push(m.ta);
+      for (const m of [...memoTracked, ...infoTracked]) {
+        if (m.getValue() === m.getOriginal()) continue;
+        patch[m.field] = m.getValue();
+        flashEls.push(m.el);
       }
       if (!Object.keys(patch).length) return 0;
       try {
         patch.updated_at = Date.now();
         await updateRecord(`contracts/${c._key}`, patch);
-        for (const m of memoTracked) { c[m.field] = m.ta.value; m.setOriginal(m.ta.value); }
+        for (const m of [...memoTracked, ...infoTracked]) { c[m.field] = m.getValue(); m.setOriginal(m.getValue()); }
         flashSaved(flashEls);
         return 1;
-      } catch (e) { console.error('[contract memo] save fail', e); return 0; }
+      } catch (e) { console.error('[contract] save fail', e); return 0; }
     };
   }
 
