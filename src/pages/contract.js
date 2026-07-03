@@ -571,9 +571,22 @@ export function renderContractWorkV2(c) {
 
   const canEditInfo = isAdmin || role === 'agent' || role === 'agent_admin';
   const infoLock = canEditInfo ? ' readonly data-edit-lock="1"' : ' readonly data-permanent-lock="1"';
-  const depositVal = c.deposit_amount_snapshot  ?? c.deposit      ?? '';
-  const rentVal    = c.rent_amount_snapshot     ?? c.monthly_rent ?? '';
-  const monthVal   = c.rent_month_snapshot      ?? c.contract_term ?? '';
+
+  // 연결 상품 48개월 기준 대여료·보증금 — snapshot 없을 때 기본값으로 사용
+  const _linkedProduct = (store.products || []).find(p =>
+    (c.product_uid && (p._key === c.product_uid || p.product_uid === c.product_uid)) ||
+    (c.car_number_snapshot && p.car_number === c.car_number_snapshot)
+  );
+  const _get48 = (key) => {
+    const price = _linkedProduct?.price || {};
+    if (price['48']?.[key]) return Number(price['48'][key]);
+    const match = Object.entries(price).find(([k]) => k.startsWith('48_'));
+    return match ? Number(match[1]?.[key]) || '' : '';
+  };
+
+  const depositVal = c.deposit_amount_snapshot  ?? c.deposit      ?? _get48('deposit') ?? '';
+  const rentVal    = c.rent_amount_snapshot     ?? c.monthly_rent ?? _get48('rent')    ?? '';
+  const monthVal   = c.rent_month_snapshot      ?? c.contract_term ?? 48;
 
   return `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
