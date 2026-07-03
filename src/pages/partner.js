@@ -137,7 +137,9 @@ export function renderPartnerDetail(pa) {
       ${/영업|sales|channel/i.test(pa.partner_type || '') ? (() => {
         const pCode = pa.partner_code || pa.company_code || pa._key;
         const members = (store.users || []).filter(u => !u._deleted && (u.company_code === pCode || u.agent_channel_code === pCode));
-        const managers = Array.isArray(pa.team_managers) ? pa.team_managers : [];
+        const managers = pa.team_managers
+          ? (Array.isArray(pa.team_managers) ? pa.team_managers : Object.values(pa.team_managers))
+          : [];
         const memberRows = members.length
           ? members.map(u => `
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;pointer-events:auto;user-select:none;">
