@@ -474,10 +474,10 @@ export function bindChatInput() {
   // 파일 첨부
   const fileInput = inputBar.querySelector('.ws-file-input');
   fileInput?.addEventListener('change', async () => {
-    const file = fileInput.files?.[0];
+    const files = [...(fileInput.files || [])];
     fileInput.value = '';
-    if (!file || !_activeRoomId) return;
-    await sendChatFile(file, _activeRoomId);
+    if (!files.length || !_activeRoomId) return;
+    for (const file of files) await sendChatFile(file, _activeRoomId);
   });
 }
 
