@@ -74,6 +74,10 @@ export function renderChatMessages(messages, ctx = {}) {
     let content;
     if (msg._deleted) {
       content = '<span style="color:var(--text-muted);font-style:italic;">(삭제된 메시지)</span>';
+    } else if (msg.image_urls?.length > 1) {
+      const cols = msg.image_urls.length === 2 ? 2 : msg.image_urls.length === 3 ? 3 : 2;
+      const imgs = msg.image_urls.map(u => `<img src="${u}" class="chat-img chat-img-grid" data-fullscreen-img="${u}" style="cursor:zoom-in;width:100%;height:100px;object-fit:cover;border-radius:4px;">`).join('');
+      content = `<div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:3px;max-width:260px;">${imgs}</div>`;
     } else if (msg.image_url) {
       content = `<img src="${msg.image_url}" class="chat-img" data-fullscreen-img="${msg.image_url}" style="cursor:zoom-in;">`;
     } else if (msg.file_url) {

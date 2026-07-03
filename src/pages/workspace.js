@@ -477,7 +477,11 @@ export function bindChatInput() {
     const files = [...(fileInput.files || [])];
     fileInput.value = '';
     if (!files.length || !_activeRoomId) return;
-    for (const file of files) await sendChatFile(file, _activeRoomId);
+    const images = files.filter(f => f.type.startsWith('image/'));
+    const others = files.filter(f => !f.type.startsWith('image/'));
+    if (images.length > 1) await sendChatImages(images, _activeRoomId);
+    else if (images.length === 1) await sendChatFile(images[0], _activeRoomId);
+    for (const file of others) await sendChatFile(file, _activeRoomId);
   });
 }
 
@@ -516,6 +520,44 @@ async function sendChatFile(file, roomId) {
   } catch (e) {
     console.error('[chat] file send fail', e);
     showToast('파일 전송 실패: ' + (e?.message || ''), 'error');
+  }
+}
+
+async function sendChatImages(files, roomId) {
+  try {
+    showToast(`사진 ${files.length}장 업로드 중...`, 'info');
+    const { uploadImage } = await import('../firebase/storage-helper.js');
+    const urls = await Promise.all(files.map(file => {
+      const safe = file.name.replace(/[^\w.\-가-힣]/g, '_').slice(0, 100) || 'file';
+      const path = `contract-files/chat-${roomId}/${Date.now()}_${Math.random().toString(36).slice(2)}_${safe}`;
+      return uploadImage(path, file).then(r => r.url);
+    }));
+    const user = store.currentUser || {};
+    const msgData = {
+      text: `사진 ${urls.length}장`,
+      image_urls: urls,
+      sender_uid: user.uid || '',
+      sender_role: user.role || '',
+      sender_code: user.user_code || '',
+      sender_name: user.name || '',
+      sender_email: user.email || '',
+      created_at: Date.now(),
+    };
+    await pushRecord(`messages/${roomId}`, msgData, { skipAudit: true });
+    const lastMsg = `[사진] ${urls.length}장`;
+    const role = user.role;
+    updateRecord(`rooms/${roomId}`, {
+      last_message: lastMsg, last_message_at: Date.now(),
+      last_sender_uid: user.uid || '', last_sender_role: role,
+      last_sender_code: user.user_code || '',
+    }).catch(() => {});
+    const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
+                      : role === 'provider' ? 'unread_for_agent' : null;
+    if (unreadField) incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(() => {});
+    import('../core/push.js').then(m => m.notifyNewMessage(roomId, lastMsg)).catch(() => {});
+  } catch (e) {
+    console.error('[chat] multi-image send fail', e);
+    showToast('사진 전송 실패: ' + (e?.message || ''), 'error');
   }
 }
 
