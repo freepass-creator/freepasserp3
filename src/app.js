@@ -2266,6 +2266,7 @@ function bindLoginForm() {
   const bizNoMatch = document.getElementById('suBizNoMatch');
   if (bizNoInput) {
     let _partnersCache = null;
+    let _partnersLoadFailed = false;
     let _matchTimer = null;
 
     const loadPartners = async () => {
@@ -2275,9 +2276,11 @@ function bindLoginForm() {
         const { db } = await import('./firebase/config.js');
         const snap = await get(ref(db, 'partners'));
         _partnersCache = snap.val() || {};
+        _partnersLoadFailed = false;
       } catch (e) {
         console.warn('[bizNo match] partners 로드 실패', e?.code || e?.message || e);
         _partnersCache = {};
+        _partnersLoadFailed = true;
       }
       return _partnersCache;
     };
@@ -2294,6 +2297,7 @@ function bindLoginForm() {
     const matchBizNo = async (digits) => {
       if (digits.length < 10) { setMatch('', ''); return; }
       const partners = await loadPartners();
+      if (_partnersLoadFailed) { setMatch('', ''); return; }
       let found = null;
       for (const [k, p] of Object.entries(partners)) {
         if (!p || p._deleted) continue;
