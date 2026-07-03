@@ -79,13 +79,7 @@ export async function logout() {
 }
 
 export async function resetPassword(email) {
-  const res = await fetch('/api/password-reset', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email }),
+  await sendPasswordResetEmail(auth, email, {
+    url: 'https://freepasserp.com',
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || '전송 실패');
-  }
 }
