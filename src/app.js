@@ -2394,14 +2394,15 @@ function bindLoginForm() {
     if (msg) { msg.style.color = ''; msg.textContent = ''; }
     if (!email) { if (msg) msg.textContent = '이메일을 입력해주세요'; return; }
     if (submitBtn) submitBtn.disabled = true;
+    if (msg) { msg.style.color = '#888'; msg.textContent = '전송 중...'; }
     try {
       const { resetPassword } = await import('./firebase/auth.js');
-      await resetPassword(email);
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('요청 시간 초과 — 잠시 후 다시 시도해주세요')), 15000));
+      await Promise.race([resetPassword(email), timeout]);
       if (msg) { msg.style.color = 'var(--accent-green)'; msg.textContent = '재설정 메일 전송됨. 이메일을 확인하세요.'; }
-      // 성공 시 버튼 그대로 disable 유지 (같은 메일 여러번 보내지 않도록)
     } catch (err) {
       console.error('[reset]', err);
-      if (msg) msg.textContent = koreanAuthMsg(err, '전송 실패');
+      if (msg) { msg.style.color = ''; msg.textContent = koreanAuthMsg(err, '전송 실패'); }
       if (submitBtn) submitBtn.disabled = false;
     }
   });
