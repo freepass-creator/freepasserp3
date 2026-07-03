@@ -613,8 +613,8 @@ function renderSyncTab(el) {
             <span class="ao-source-desc">오플 재고 리스트 (RP023)</span>
           </button>
           <button class="ao-source" id="syncFetchGeneralBtn" data-source="general">
-            <span class="ao-source-name"><i class="ph ph-table"></i> 종합 탭</span>
-            <span class="ao-source-desc">[종합표 만들기]로 채운 종합 탭 → ERP 일괄 적용</span>
+            <span class="ao-source-name"><i class="ph ph-table"></i> 렌트사 탭</span>
+            <span class="ao-source-desc">렌트사 탭 직접 읽기 · 배차상태 출고가능만 ERP 반영</span>
           </button>
         </div>
         <div class="ao-links">
@@ -788,11 +788,11 @@ function renderSyncTab(el) {
       const unmatched = items.length - matched;
       devLog(`[sync] ✓ ${data.synced}건 · 스킵 ${data.skipped}건 · 자동분류 ${matched}/${items.length}`);
       // 공급시트 자동탐지 — 처리한 탭 목록 표시
-      if (data.schema === 'auto-supply' && Array.isArray(data.tabs_scanned)) {
+      if (Array.isArray(data.tabs_scanned) && data.tabs_scanned.length) {
         const tabSummary = data.tabs_scanned.map(t => `${t.tab}(${t.synced})`).join(', ');
         devLog(`[sync] 탐지 탭: ${tabSummary}`);
       }
-      const schemaLabel = data.schema === 'auto-supply' ? '공급시트' : data.schema === 'general' ? '종합 탭' : '오플시트';
+      const schemaLabel = data.source === 'general' ? '렌트사 탭' : data.schema === 'auto-supply' ? '공급시트' : '오플시트';
       statusMsg.textContent = `${schemaLabel} — ${items.length}건 · 자동분류 ${matched} · 미매칭 ${unmatched} — 확인 후 [ERP에 반영]`;
 
       // 미리보기 — 좌(시트 추출 raw) ↔ 우(상품찾기에 들어갈 컬럼 그대로) 가로스크롤

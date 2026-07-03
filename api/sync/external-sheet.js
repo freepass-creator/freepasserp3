@@ -27,9 +27,9 @@ export const SHEET_CONFIGS = {
   },
   general: {
     sheet_id: '1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg',
-    tab_name: '종합',
-    label: '프리패스 종합시트 (다업체)',
-    schema: 'general',                    // 차고지 컬럼에서 회사명 → partner_code 추출
+    tab_name: null,                        // 렌트사 탭 자동탐지 (종합 탭 제외)
+    label: '렌트사 탭 (배차상태 출고가능만)',
+    schema: 'auto-supply',                 // 각 렌트사 탭 직접 읽기, 출고불가 자동 제외
   },
   supply: {
     /* 공급시트 자동탐지 — 위 종합시트의 모든 탭 중 헤더에
