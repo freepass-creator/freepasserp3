@@ -54,6 +54,15 @@ function buildFromCode(code) {
     const cn = String(c.car_number_snapshot || c.car_number || '').trim();
     p = (store.products || []).find(x => !x._deleted && String(x.car_number || '').trim() === cn);
     const base = p ? buildFromProduct(p) : {};
+    // 종료일 계산 — 시작일 + 개월수
+    let contractEnd = '';
+    if (c.contract_date && c.rent_month_snapshot) {
+      const d = new Date(c.contract_date);
+      d.setMonth(d.getMonth() + Number(c.rent_month_snapshot));
+      d.setDate(d.getDate() - 1);
+      const pad = n => String(n).padStart(2, '0');
+      contractEnd = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    }
     return {
       ...base,
       contract_code: c.contract_code || v,
@@ -65,6 +74,9 @@ function buildFromCode(code) {
       deposit_amount: c.deposit_amount_snapshot ? Number(c.deposit_amount_snapshot).toLocaleString() : '',
       rent_month: c.rent_month_snapshot ? `${c.rent_month_snapshot} 개월` : '',
       contract_start: c.contract_date || '',
+      contract_end: contractEnd,
+      delivery_location: c.delivery_address || '',
+      deposit_installment: c.deposit_payment_type || base.deposit_installment || '',
     };
   }
   try { import('../core/toast.js').then(m => m.showToast('해당 차량번호·계약코드를 찾을 수 없습니다', 'error')); } catch (_) {}
