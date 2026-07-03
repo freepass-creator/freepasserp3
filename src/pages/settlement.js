@@ -143,7 +143,17 @@ export function renderSettlementDetail(s) {
       <div class="spacer" style="flex:1;"></div>
       ${canEdit ? `<button class="btn btn-sm btn-primary" id="setlSave">저장</button>` : ''}
     `;
+    const rentRawW  = s.rent_amount ?? s.monthly_rent ?? s.rent_amount_snapshot ?? '';
+    const depRawW   = s.deposit_amount ?? s.deposit ?? s.deposit_amount_snapshot ?? '';
+    const termRawW  = s.rent_month ?? s.term ?? s.rent_month_snapshot ?? '';
+    const fmtW = v => v !== '' && v != null ? Number(v).toLocaleString('ko-KR') + '원' : '-';
     workCard.querySelector('.ws4-body').innerHTML = `
+      <div class="info-grid" style="grid-template-columns:60px 1fr 60px 1fr;gap:4px 8px;margin-bottom:8px;font-size:12px;">
+        <div class="lab">고객명</div><div>${esc(s.customer_name || '-')}</div>
+        <div class="lab">개월수</div><div>${termRawW !== '' && termRawW != null ? termRawW + '개월' : '-'}</div>
+        <div class="lab">보증금</div><div>${fmtW(depRawW)}</div>
+        <div class="lab">대여료</div><div>${fmtW(rentRawW)}</div>
+      </div>
       <div class="form-grid">
         <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${disabled}></div>
         <div class="ff"><label>정산상태</label>

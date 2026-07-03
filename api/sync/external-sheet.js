@@ -30,6 +30,7 @@ export const SHEET_CONFIGS = {
     tab_name: null,                        // 렌트사 탭 자동탐지 (종합 탭 제외)
     label: '렌트사 탭 (배차상태 출고가능만)',
     schema: 'auto-supply',                 // 각 렌트사 탭 직접 읽기, 출고불가 자동 제외
+    default_product_type: '재렌트',        // 렌트사 탭 = 항상 재렌트 (신차/pendingPlate 로직 무시)
   },
   supply: {
     /* 공급시트 자동탐지 — 위 종합시트의 모든 탭 중 헤더에
@@ -408,7 +409,7 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
 
 /* 종합시트 — 다업체. 우선순위: 공급코드 컬럼 > 차고지 추출.
  * 정책코드 컬럼 있으면 product.policy_code 로 적용. */
-function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, tabPartnerCode = '' }) {
+function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, tabPartnerCode = '', defaultProductType = '' }) {
   const colIdx = (n) => headers.indexOf(n);
   const colPartial = (kw) => headers.findIndex(h => h.includes(kw));
   const idxCar = colIdx('차량번호');
@@ -459,7 +460,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     engine_cc:    parsePrice(safeGet(row, colIdx('배기량'))),
     location:     yard,
     partner_memo: safeGet(row, colIdx('비고')),
-    product_type: (pendingPlate || safeGet(row, colIdx('구분')) === '신차') ? '신차렌트' : '중고렌트',
+    product_type: defaultProductType || ((pendingPlate || safeGet(row, colIdx('구분')) === '신차') ? '신차렌트' : '중고렌트'),
     is_pending_plate: pendingPlate,     // 번호 미정 신차 — 실번호 받으면 수기로 덮어씀
     status,
     vehicle_status: vehicleStatus,
@@ -597,7 +598,7 @@ export async function syncFromSheet(source) {
       for (let off = 0; off + headerIdx + 1 < rows.length; off++) {
         const absRow = headerIdx + 1 + off;
         const row = rows[absRow] || [];
-        const p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs, tabPartnerCode });
+        const p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs, tabPartnerCode, defaultProductType: config.default_product_type || '' });
         if (!p) { tabSkipped++; continue; }
         if (hiddenRows.has(absRow)) { p.vehicle_status = '출고불가'; p.status = 'unavailable'; p.status_label = '시트 숨김'; }
         if (p.vehicle_status === '출고불가') { tabSkipped++; continue; }   // 출고가능만 import
