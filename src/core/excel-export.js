@@ -86,14 +86,23 @@ export async function downloadExcel(title, cols, data) {
 
 /* ── 상품 컬럼 (그룹 기반 — 엑셀에서 셀병합 헤더로 렌더) ── */
 const won = '#,##0';
-// 기간별 세트 — group: 'N개월', l: '대여료|보증금|수수료' → 헤더: 'N개월_대여료' 식으로 묶임
+// 기간별 대여료 — 단순키(price['24']) + 복합키(price['24_3만']) 모두 지원, 최저값 반환
 const pr = (m, k) => ({
   f: `${k}_${m}`,
   l: { rent:'대여료', deposit:'보증금', fee:'수수료' }[k],
   group: `${m}개월`,
   w: 12,
   numFmt: won,
-  get: r => Number(r.price?.[String(m)]?.[k] || 0) || '',
+  get: r => {
+    const price = r.price || {};
+    if (price[String(m)]?.[k]) return Number(price[String(m)][k]) || '';
+    const prefix = String(m) + '_';
+    const vals = Object.entries(price)
+      .filter(([key]) => key.startsWith(prefix))
+      .map(([, v]) => Number(v?.[k]) || 0)
+      .filter(v => v > 0);
+    return vals.length ? Math.min(...vals) : '';
+  },
 });
 
 export const PRODUCT_COLS = [
@@ -104,6 +113,7 @@ export const PRODUCT_COLS = [
   // ── 식별 ──
   { f:'car_number', l:'차량번호', w:14 },
   { f:'sub_model',  l:'세부모델', w:16 },
+  { f:'trim_name',  l:'트림',     w:14 },
   // ── 기본스펙 ──
   { f:'year',     l:'연식',     w:8 },
   { f:'mileage',  l:'주행거리', w:10, numFmt: won },
@@ -150,8 +160,8 @@ export const PRODUCT_COLS = [
   { f:'cond_km_upcharge',    l:'1만Km추가',       group:'대여조건', w:14, get: r => r._policy?.mileage_upcharge_per_10000km || '' },
   { f:'cond_deposit_inst',   l:'보증금분납',       group:'대여조건', w:10, get: r => r._policy?.deposit_installment || '' },
   { f:'cond_delivery_fee',   l:'탁송비',           group:'대여조건', w:10, get: r => r._policy?.delivery_fee || '' },
-  { f:'cond_age_lowering',   l:'연령하향',         group:'대여조건', w:12, get: r => r._policy?.driver_age_lowering || '' },
-  { f:'cond_age_cost',       l:'연령하향비용',     group:'대여조건', w:14, get: r => r._policy?.age_lowering_cost || '' },
+  { f:'age_21', l:'만21세', group:'대여조건', w:10, get: r => r.sheet_meta?.age_21 || '' },
+  { f:'age_23', l:'만23세', group:'대여조건', w:10, get: r => r.sheet_meta?.age_23 || r.sheet_meta?.age_21 || '' },
   { f:'cond_personal_scope', l:'개인운전자범위',   group:'대여조건', w:12, get: r => r._policy?.personal_driver_scope || '' },
   { f:'cond_business_scope', l:'사업자운전자범위', group:'대여조건', w:12, get: r => r._policy?.business_driver_scope || '' },
   { f:'cond_addl_driver',    l:'추가운전자수',     group:'대여조건', w:10, get: r => r._policy?.additional_driver_allowance_count || '' },
