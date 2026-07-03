@@ -141,12 +141,15 @@ export function renderPartnerDetail(pa) {
           ? (Array.isArray(pa.team_managers) ? pa.team_managers : Object.values(pa.team_managers))
           : [];
         const memberRows = members.length
-          ? members.map(u => `
+          ? members.map(u => {
+            const mUid = u.uid || u._key;
+            return `
             <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;pointer-events:auto;user-select:none;">
-              <input type="checkbox" class="tm-chk" data-uid="${esc(u.uid)}" ${managers.includes(u.uid) ? 'checked' : ''} style="pointer-events:auto;cursor:pointer;width:14px;height:14px;">
-              ${esc(u.name || u.email || u.uid)}
+              <input type="checkbox" class="tm-chk" data-uid="${esc(mUid)}" ${managers.includes(mUid) ? 'checked' : ''} style="pointer-events:auto;cursor:pointer;width:14px;height:14px;">
+              ${esc(u.name || u.email || mUid)}
               <span style="color:var(--text-sub);">(${esc(u.user_code || '')})</span>
-            </label>`).join('')
+            </label>`;
+          }).join('')
           : '<span style="font-size:12px;color:var(--text-sub);">소속 직원 없음 (사용자 관리에서 소속코드를 이 파트너코드로 지정하세요)</span>';
         return sect('영업사 관리자 지정', 'user-gear', `
           <div class="ff" style="grid-column:1/-1;">
@@ -262,7 +265,8 @@ export function renderPartnerDetail(pa) {
       // 각 소속 유저 레코드에 팀매니저 플래그 기록 (로그인 시 roleScope에 반영됨)
       await Promise.all(_paMembers.map(u => {
         if (!u._key) return;
-        const isManager = uids.includes(u.uid);
+        const mUid = u.uid || u._key;
+        const isManager = uids.includes(mUid);
         return updateRecord(`users/${u._key}`, {
           is_team_manager: isManager || null,
           team_channel_code: isManager ? _paCode : null,
