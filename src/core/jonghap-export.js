@@ -84,13 +84,23 @@ function productToRow(p, policiesByCode) {
   const pol = p.policy_code ? policiesByCode.get(p.policy_code) : null;
   const c = policyCells(pol);
   const price = p.price || {};
-  const rent = (m) => won(price[m]?.rent);
-  // 보증금 — 기간 무관 첫 번째 값 사용 (단기/장기 동일하므로 통일)
-  const anyDep = won(
-    price['12']?.deposit || price['24']?.deposit ||
-    price['6']?.deposit  || price['36']?.deposit ||
-    price['1']?.deposit  || price['48']?.deposit || price['60']?.deposit
-  );
+  // 단순키(price['24']) + 복합키(price['24_3만']) 모두 지원
+  const rent = (m) => {
+    if (price[m]?.rent) return won(price[m].rent);
+    const prefix = m + '_';
+    const vals = Object.entries(price)
+      .filter(([k]) => k.startsWith(prefix))
+      .map(([, v]) => Number(v?.rent) || 0)
+      .filter(v => v > 0);
+    return vals.length ? won(Math.min(...vals)) : '';
+  };
+  // 보증금 — 기간 무관 첫 번째 값 (단순키 + 복합키 모두 검색)
+  const anyDep = (() => {
+    for (const v of Object.values(price)) {
+      if (v?.deposit) return won(v.deposit);
+    }
+    return '';
+  })();
 
   const byCol = {
     상태: p.vehicle_status || '',
