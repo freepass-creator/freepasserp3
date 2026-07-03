@@ -925,6 +925,7 @@ async function createNewPartner() {
     created_at: Date.now(),
     created_by: me.uid,
   };
+  await setRecord(`partners/${code}`, newRec);
   store.partners = [newRec, ...(store.partners || [])];
   const m = await import('./pages/partner.js');
   m.renderPartnerList(store.partners);
