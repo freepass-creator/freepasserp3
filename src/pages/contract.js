@@ -500,6 +500,7 @@ export function renderContractWorkV2(c) {
   const isCompleted = status === '계약완료';
   const role = store.currentUser?.role || 'agent';
   const isAdmin = role === 'admin';
+  const isViewer = !isAdmin && store.currentUser?.is_team_manager === true;
   const states = getStepStates(c);
   const prog = getProgress(c);
 
@@ -526,10 +527,11 @@ export function renderContractWorkV2(c) {
   //   - rejected/auto 단계: 누구도 변경 불가 (rejected 는 admin 도 X — 실수 복구는 별도 정책)
   const renderCell = (sub, st) => {
     const c2 = sub.choices;
-    const isOwner = (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
+    const isOwner = !isViewer && (
+                    (sub.actor === 'agent'    && (role === 'agent' || role === 'agent_admin'))
                  || (sub.actor === 'provider' && role === 'provider')
                  || (sub.actor === 'admin'    && role === 'admin')
-                 || (sub.paymentShared && (role === 'provider' || role === 'agent' || role === 'agent_admin'));
+                 || (sub.paymentShared && (role === 'provider' || role === 'agent' || role === 'agent_admin')));
     const canClick = isAdmin || isOwner;
     // 본인은 done 셀 못 건드림. admin 만 원복 허용.
     const canEdit = canClick && !st.locked && !sub.rejected && !sub.auto
@@ -569,7 +571,7 @@ export function renderContractWorkV2(c) {
     `;
   };
 
-  const canEditInfo = isAdmin || role === 'agent' || role === 'agent_admin';
+  const canEditInfo = !isViewer && (isAdmin || role === 'agent' || role === 'agent_admin');
   const infoLock = canEditInfo ? ' readonly data-edit-lock="1"' : ' readonly data-permanent-lock="1"';
 
   // 연결 상품 48개월 기준 대여료·보증금 — snapshot 없을 때 기본값으로 사용
@@ -621,8 +623,10 @@ export function renderContractWorkV2(c) {
         ? `<div style="color:var(--alert-red-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-prohibit"></i>진행 취소됨</div>`
         : isCompleted
           ? `<div style="color:var(--alert-green-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-check-circle"></i>계약 완료</div>`
-          : `<button class="btn btn-sm" id="ctCancelBtn" style="width:100%;color:var(--alert-red-text);justify-content:center;"><i class="ph ph-prohibit"></i>진행 취소</button>
-             ${prog.done === prog.total ? `<button class="btn btn-sm btn-primary" id="ctCompleteBtn" style="width:100%;margin-top:4px;justify-content:center;"><i class="ph ph-check-circle"></i>계약 완료</button>` : ''}`
+          : isViewer
+            ? `<div style="color:var(--text-muted);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:11px;"><i class="ph ph-eye"></i>열람 전용</div>`
+            : `<button class="btn btn-sm" id="ctCancelBtn" style="width:100%;color:var(--alert-red-text);justify-content:center;"><i class="ph ph-prohibit"></i>진행 취소</button>
+               ${prog.done === prog.total ? `<button class="btn btn-sm btn-primary" id="ctCompleteBtn" style="width:100%;margin-top:4px;justify-content:center;"><i class="ph ph-check-circle"></i>계약 완료</button>` : ''}`
       }
     </div>
 
@@ -661,7 +665,9 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
   if (!c?._key || !c?.contract_code) return;   // _key=Firebase 자동키(저장 경로), contract_code=찾기용 코드
   const role = store.currentUser?.role || 'agent';
   const isAdmin = role === 'admin';
+  const isViewer = !isAdmin && store.currentUser?.is_team_manager === true;
   const reRender = options.reRender || (() => renderContractDetail(c));
+  if (isViewer) return;  // 뷰어 모드: 이벤트 바인딩 없음
 
   // 단계 셀 클릭 (단순 체크 토글) — 영업측 단계 ON 시 공급사·관리자에 알림톡
   stepCard.querySelectorAll('.ct-step-cell.clickable, .ct-substep-cell.clickable').forEach(cell => {

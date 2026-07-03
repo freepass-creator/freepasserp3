@@ -40,7 +40,12 @@ export function isParty(role) {
 export function roleScope(me) {
   if (!me?.role || me.role === ROLES.ADMIN) return null;   // 전체
   const NONE = '\x00none';   // 값 없으면 아무것도 안 매칭 (미배정 사용자는 빈 목록)
-  if (me.role === ROLES.AGENT) return { field: 'agent_uid', value: me.uid || NONE };
+  if (me.role === ROLES.AGENT) {
+    // 팀 매니저: 소속 채널 전체 계약 조회 (뷰어 모드)
+    if (me.is_team_manager && (me.team_channel_code || me.agent_channel_code || me.company_code))
+      return { field: 'agent_channel_code', value: me.team_channel_code || me.agent_channel_code || me.company_code };
+    return { field: 'agent_uid', value: me.uid || NONE };
+  }
   if (me.role === ROLES.AGENT_ADMIN || me.role === ROLES.AGENT_MANAGER)
     return { field: 'agent_channel_code', value: me.agent_channel_code || me.company_code || NONE };
   if (me.role === ROLES.PROVIDER)
@@ -72,6 +77,9 @@ export function filterByRole(list, me, fieldMap = {}) {
 
   switch (me.role) {
     case ROLES.AGENT:
+      // 팀 매니저: 소속 채널 전체 계약 (뷰어 모드)
+      if (me.is_team_manager && me.team_channel_code)
+        return list.filter(r => r[agentChannelCode] === me.team_channel_code);
       return list.filter(r => r[agentUid] === me.uid || r[agentCode] === myUserCode);
     case ROLES.AGENT_ADMIN:
     case ROLES.AGENT_MANAGER:

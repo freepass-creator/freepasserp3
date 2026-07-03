@@ -19,6 +19,8 @@ import { parseVehicleRegistration, deriveMakerFromRegistration } from '../core/o
 import { findCatalog, loadCatalog } from '../core/vehicle-matrix.js';
 import { customConfirm } from '../core/confirm.js';
 
+let _selectedPartnerKey = null;
+
 export function renderPartnerList(partners) {
   const body = listBody('partners');
   if (!body) return;
@@ -28,6 +30,9 @@ export function renderPartnerList(partners) {
   const pCode = (pa) => pa.partner_code || pa.company_code || pa._key;
   const pName = (pa) => pa.partner_name || pa.company_name || pCode(pa);
   const sorted = [...partners].sort((a, b) => String(pName(a)).localeCompare(String(pName(b)), 'ko'));
+  // 선택 복원: 기존 선택 키가 있으면 해당 파트너, 없으면 첫 번째
+  const activeKey = (_selectedPartnerKey && sorted.find(p => p._key === _selectedPartnerKey))
+    ? _selectedPartnerKey : sorted[0]._key;
   body.innerHTML = sorted.map((pa, i) => {
     const ptype = pa.partner_type || '';
     const isAgent = ptype === '영업채널' || ptype === 'sales_channel';
@@ -66,13 +71,15 @@ export function renderPartnerList(partners) {
       time: fmtDate(pa.created_at),
       msg: subParts.join(' | ') || '-',
       meta: '',
-      active: i === 0,
+      active: pa._key === activeKey,
     });
   }).join('');
-  renderPartnerDetail(sorted[0]);
+  const toRender = sorted.find(p => p._key === activeKey) || sorted[0];
+  renderPartnerDetail(toRender);
 }
 
 export function renderPartnerDetail(pa) {
+  if (pa) _selectedPartnerKey = pa._key;
   const page = document.querySelector('.pt-page[data-page="partners"]');
   if (!page) return;
   const cards = page.querySelectorAll('.ws4-card');
@@ -127,6 +134,25 @@ export function renderPartnerDetail(pa) {
         ${ffi('이메일',         'email',           pa.email,           dis)}
         <div class="ff" style="grid-column:1/-1;"><label>비고</label><textarea class="input" data-f="memo" style="height:50px;"${canEdit ? ' readonly data-edit-lock="1"' : dis}>${esc(pa.memo || '')}</textarea></div>
       `)}
+      ${/영업|sales|channel/i.test(pa.partner_type || '') ? (() => {
+        const pCode = pa.partner_code || pa.company_code || pa._key;
+        const members = (store.users || []).filter(u => !u._deleted && (u.company_code === pCode || u.agent_channel_code === pCode));
+        const managers = Array.isArray(pa.team_managers) ? pa.team_managers : [];
+        const memberRows = members.length
+          ? members.map(u => `
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;pointer-events:auto;user-select:none;">
+              <input type="checkbox" class="tm-chk" data-uid="${esc(u.uid)}" ${managers.includes(u.uid) ? 'checked' : ''} style="pointer-events:auto;cursor:pointer;width:14px;height:14px;">
+              ${esc(u.name || u.email || u.uid)}
+              <span style="color:var(--text-sub);">(${esc(u.user_code || '')})</span>
+            </label>`).join('')
+          : '<span style="font-size:12px;color:var(--text-sub);">소속 직원 없음 (사용자 관리에서 소속코드를 이 파트너코드로 지정하세요)</span>';
+        return sect('영업사 관리자 지정', 'user-gear', `
+          <div class="ff" style="grid-column:1/-1;">
+            <div style="font-size:11px;color:var(--text-sub);margin-bottom:6px;">체크된 직원은 소속 채널 전체 계약목록 열람 가능 (뷰어 모드, 재로그인 시 적용)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;" id="teamManagerList">${memberRows}</div>
+          </div>
+        `);
+      })() : ''}
     `;
     // 첨부 OCR 은 4번 패널 (historyCard) 에서 트리거 → editCard 폼 입력
   }
@@ -221,6 +247,27 @@ export function renderPartnerDetail(pa) {
   }
 
   if (canEdit) bindFormSave(page, 'partners', pa._key, pa);
+
+  // 관리자 지정 체크박스 — admin 여부 무관하게 바인딩, 저장은 admin만
+  const _paCode = pa.partner_code || pa.company_code || pa._key;
+  const _paMembers = (store.users || []).filter(u => !u._deleted && (u.company_code === _paCode || u.agent_channel_code === _paCode));
+  page.querySelectorAll('.tm-chk').forEach(chk => {
+    chk.addEventListener('change', async () => {
+      if (!canEdit) return;
+      const uids = [...page.querySelectorAll('.tm-chk:checked')].map(c => c.dataset.uid).filter(Boolean);
+      pa.team_managers = uids;  // 즉시 반영해 re-render 시 체크 상태 유지
+      await updateRecord(`partners/${pa._key}`, { team_managers: uids });
+      // 각 소속 유저 레코드에 팀매니저 플래그 기록 (로그인 시 roleScope에 반영됨)
+      await Promise.all(_paMembers.map(u => {
+        if (!u._key) return;
+        const isManager = uids.includes(u.uid);
+        return updateRecord(`users/${u._key}`, {
+          is_team_manager: isManager || null,
+          team_channel_code: isManager ? _paCode : null,
+        });
+      }));
+    });
+  });
 }
 
 /* 신규등록은 하단 액션바(setPageActions) 의 createNewPartner 가 처리 — app.js 정의 */
