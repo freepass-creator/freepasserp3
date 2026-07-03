@@ -9,11 +9,13 @@
  *   recordHaystack(record, store)      → 소문자 합친 문자열
  */
 
-// 검색 노이즈/긴 값 제외 (URL·타임스탬프·내부플래그)
+// 검색 노이즈/긴 값 제외 (URL·타임스탬프·내부플래그·순수숫자 스펙)
 const SKIP_KEYS = new Set([
   'image_urls', 'image_url', 'images', 'photo_urls', 'thumbnail',
   'updated_at', 'created_at', 'deleted_at', 'created_by', 'updated_by',
   '_deleted', '_drive_folder_virtual', '_dirty',
+  // 순수 숫자 스펙 — 차량번호 검색 시 주행거리·가격 등이 오매칭되는 것 방지
+  'mileage', 'vehicle_price', 'engine_cc',
 ]);
 
 /* 공급사 코드 → 회사명·담당자명·연락처 (회사/담당자 어느 걸로 쳐도 매칭) */
