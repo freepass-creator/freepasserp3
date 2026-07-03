@@ -604,14 +604,15 @@ export function renderContractWorkV2(c) {
       <div class="lab">개월수</div><input class="input" type="number" data-contract-field="rent_month_snapshot" value="${esc(monthVal)}" placeholder="-"${infoLock}>
       <div class="lab">보증금</div><input class="input" type="number" data-contract-field="deposit_amount_snapshot" value="${esc(depositVal)}" placeholder="-"${infoLock}>
       <div class="lab">대여료</div><input class="input" type="number" data-contract-field="rent_amount_snapshot" value="${esc(rentVal)}" placeholder="-"${infoLock}>
-    </div>
-    <div class="info-grid" style="grid-template-columns:60px 1fr 60px 1fr;gap:4px 8px;margin-bottom:4px;font-size:12px;">
-      <div class="lab">인도주소</div><input class="input" data-contract-field="delivery_address" value="${esc(c.delivery_address || '')}" placeholder="-"${infoLock} style="grid-column:span 1;">
+      <div class="lab">전화번호</div><input class="input" type="tel" data-contract-field="customer_phone" value="${esc(c.customer_phone || '')}" placeholder="-"${infoLock}>
       <div class="lab">분납</div><select class="input" data-contract-field="deposit_payment_type"${canEditInfo ? ' data-edit-lock="1"' : ' disabled'}>
         <option value="" ${!c.deposit_payment_type ? 'selected' : ''}>-</option>
         <option value="일시납" ${'일시납' === (c.deposit_payment_type || '') ? 'selected' : ''}>일시납</option>
         <option value="2회분납" ${'2회분납' === (c.deposit_payment_type || '') ? 'selected' : ''}>2회분납</option>
       </select>
+    </div>
+    <div class="info-grid" style="grid-template-columns:60px 1fr;gap:4px 8px;margin-bottom:8px;font-size:12px;">
+      <div class="lab">인도주소</div><input class="input" data-contract-field="delivery_address" value="${esc(c.delivery_address || '')}" placeholder="-"${infoLock}>
     </div>
     <div class="ct-steps">
       <div class="ct-step-row ct-step-head">
