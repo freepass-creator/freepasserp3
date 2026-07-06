@@ -71,7 +71,7 @@ export function filterByRole(list, me, fieldMap = {}) {
     agentChannelCode = 'agent_channel_code',
   } = fieldMap;
 
-  const myChannel = me.agent_channel_code || me.channel_code || '';
+  const myChannel = me.agent_channel_code || me.channel_code || me.company_code || '';
   const myCompanyCode = me.company_code || '';
   const myUserCode = me.user_code || '';
 

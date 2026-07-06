@@ -115,7 +115,7 @@ function renderRooms() {
   const rf = document.querySelector('.chip[data-rf].is-active')?.dataset.rf || 'all';
 
   let rooms = (store.rooms || []).filter(r => !r._deleted && !r.is_admin_chat);  // 관리자 소통방은 별도 페이지에서만 (데스크탑과 동일 규격)
-  const myChannelCode = me.agent_channel_code || me.channel_code || '';
+  const myChannelCode = me.agent_channel_code || me.channel_code || me.company_code || '';
   if (role === 'agent') {
     rooms = rooms.filter(r => r.agent_uid === me.uid && !r.hidden_for_agent);
   } else if (role === 'agent_admin') {
