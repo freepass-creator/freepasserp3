@@ -282,6 +282,18 @@ export async function findCatalog(maker, subModel, model, product = {}) {
         if (tn && tn.length >= 2 && productTrimN.includes(tn)) { score += 2; break; }
       }
     }
+    // 배리언트 불일치 패널티 — 카탈로그 전용 키워드(쿠페·쿠페·쿱)가 sub_model·model·trim 에 없으면 감점
+    // (GV80 2.5T AWD → GV80 쿠페 오매칭 방지)
+    const VARIANT_KEYWORDS = ['쿠페', 'coupe', '쿱', '카브리올레', 'cabrio', '컨버터블'];
+    const subModelRaw = (subModel || '').toLowerCase();
+    const modelRaw = (model || '').toLowerCase();
+    const trimRaw = (product?.trim_name || product?.trim || '').toLowerCase();
+    for (const kw of VARIANT_KEYWORDS) {
+      if (titleN.includes(normName(kw)) && !subModelRaw.includes(kw) && !modelRaw.includes(kw) && !trimRaw.includes(kw)) {
+        score -= 40;
+        break;
+      }
+    }
     return { ...c, score };
   });
   scored.sort((a, b) => b.score - a.score);
