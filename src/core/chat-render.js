@@ -122,7 +122,7 @@ export function renderChatMessages(messages, ctx = {}) {
 /** room/role 에서 peerReadAt 계산 — 상대방이 마지막 읽은 시각 */
 export function getPeerReadAt(room, myRole) {
   if (!room) return null;
-  if (myRole === 'agent' || myRole === 'agent_admin') return room.read_at_provider || 0;
-  if (myRole === 'provider') return room.read_at_agent || 0;
+  if (myRole === 'agent' || myRole === 'agent_admin') return room.read_at_provider || null;
+  if (myRole === 'provider') return room.read_at_agent || null;
   return null; // 관리자는 당사자 아님
 }

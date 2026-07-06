@@ -442,13 +442,22 @@ export function bindChatInput() {
       // 룸 메타 갱신
       const role = store.currentUser?.role;
       const senderCode = store.currentUser?.user_code || '';
+      const sentAt = Date.now();
       const update = {
         last_message: text,
-        last_message_at: Date.now(),
+        last_message_at: sentAt,
         last_sender_uid: store.currentUser?.uid || '',
         last_sender_code: senderCode,
         last_sender_role: role,
       };
+      // 발송 = 내가 읽고 있음 → 내 쪽 read_at 갱신 + unread 초기화
+      if (role === 'agent' || role === 'agent_admin') {
+        update.read_at_agent = sentAt;
+        update.unread_for_agent = 0;
+      } else if (role === 'provider') {
+        update.read_at_provider = sentAt;
+        update.unread_for_provider = 0;
+      }
       updateRecord(`rooms/${_activeRoomId}`, update).catch(() => {});
       // unread 는 원자적 증가 — 동시 전송 race 방지 (mobile-workspace 와 동일 규격)
       const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
@@ -508,11 +517,15 @@ async function sendChatFile(file, roomId) {
     await pushRecord(`messages/${roomId}`, msgData, { skipAudit: true });
     const lastMsg = isImage ? `[사진] ${file.name}` : `[파일] ${file.name}`;
     const role = user.role;
-    updateRecord(`rooms/${roomId}`, {
-      last_message: lastMsg, last_message_at: Date.now(),
+    const fileSentAt = Date.now();
+    const fileRoomUpdate = {
+      last_message: lastMsg, last_message_at: fileSentAt,
       last_sender_uid: user.uid || '', last_sender_role: role,
       last_sender_code: user.user_code || '',
-    }).catch(() => {});
+    };
+    if (role === 'agent' || role === 'agent_admin') { fileRoomUpdate.read_at_agent = fileSentAt; fileRoomUpdate.unread_for_agent = 0; }
+    else if (role === 'provider') { fileRoomUpdate.read_at_provider = fileSentAt; fileRoomUpdate.unread_for_provider = 0; }
+    updateRecord(`rooms/${roomId}`, fileRoomUpdate).catch(() => {});
     const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
                       : role === 'provider' ? 'unread_for_agent' : null;
     if (unreadField) incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(() => {});
@@ -546,11 +559,15 @@ async function sendChatImages(files, roomId) {
     await pushRecord(`messages/${roomId}`, msgData, { skipAudit: true });
     const lastMsg = `[사진] ${urls.length}장`;
     const role = user.role;
-    updateRecord(`rooms/${roomId}`, {
-      last_message: lastMsg, last_message_at: Date.now(),
+    const imgSentAt = Date.now();
+    const imgRoomUpdate = {
+      last_message: lastMsg, last_message_at: imgSentAt,
       last_sender_uid: user.uid || '', last_sender_role: role,
       last_sender_code: user.user_code || '',
-    }).catch(() => {});
+    };
+    if (role === 'agent' || role === 'agent_admin') { imgRoomUpdate.read_at_agent = imgSentAt; imgRoomUpdate.unread_for_agent = 0; }
+    else if (role === 'provider') { imgRoomUpdate.read_at_provider = imgSentAt; imgRoomUpdate.unread_for_provider = 0; }
+    updateRecord(`rooms/${roomId}`, imgRoomUpdate).catch(() => {});
     const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
                       : role === 'provider' ? 'unread_for_agent' : null;
     if (unreadField) incrementAtomic(`rooms/${roomId}/${unreadField}`).catch(() => {});
