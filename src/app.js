@@ -1111,9 +1111,18 @@ async function initMobileShell() {
     navigateTo(route);
   });
 
-  // 초기 라우트 — URL 경로 우선, 없으면 /search
-  const initial = TABS[location.pathname] ? location.pathname : '/search';
-  navigateTo(initial);
+  // 영업관리자는 소통·계약만 허용 — 상품 탭 숨김
+  const isAgentManager = ['agent_admin','agent_manager'].includes(store.currentUser?.role);
+  if (isAgentManager) {
+    document.querySelectorAll('.m-tabbar .m-tab[data-route="/search"]').forEach(el => el.style.display = 'none');
+  }
+
+  // 초기 라우트 — URL 경로 우선, 없으면 /workspace(영업관리자) or /search
+  const defaultRoute = isAgentManager ? '/workspace' : '/search';
+  const initial = TABS[location.pathname] ? location.pathname : defaultRoute;
+  // 영업관리자가 허용되지 않는 탭 접근 시 workspace로
+  const allowed = isAgentManager ? ['/workspace', '/contract', '/settings'] : Object.keys(TABS);
+  navigateTo(allowed.includes(initial) ? initial : '/workspace');
 }
 
 async function deleteUser(id) {
