@@ -76,11 +76,13 @@ export function filterByRole(list, me, fieldMap = {}) {
   const myUserCode = me.user_code || '';
 
   switch (me.role) {
-    case ROLES.AGENT:
-      // 팀 매니저: 소속 채널 전체 계약 (뷰어 모드)
-      if (me.is_team_manager && me.team_channel_code)
-        return list.filter(r => r[agentChannelCode] === me.team_channel_code);
+    case ROLES.AGENT: {
+      // 팀 매니저: 소속 채널 전체 계약 (뷰어 모드) — roleScope 와 동일한 폴백 체인
+      const tmChannel = me.team_channel_code || me.agent_channel_code || me.company_code || '';
+      if (me.is_team_manager && tmChannel)
+        return list.filter(r => r[agentChannelCode] === tmChannel);
       return list.filter(r => r[agentUid] === me.uid || r[agentCode] === myUserCode);
+    }
     case ROLES.AGENT_ADMIN:
     case ROLES.AGENT_MANAGER:
       return list.filter(r => r[agentChannelCode] === myChannel);
