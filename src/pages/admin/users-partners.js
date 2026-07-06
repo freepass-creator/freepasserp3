@@ -295,9 +295,10 @@ function loadUser(key) {
         <div class="form-section-body">
           ${ffi('이름','name',u)}
           ${ffv('이메일', u.email)}
-          ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'}])}
+          ${ffs('역할','role',u,[{value:'admin',label:'관리자'},{value:'provider',label:'공급사'},{value:'agent',label:'영업자'},{value:'agent_admin',label:'영업관리자'}])}
           ${ffv('소속코드', u.company_code)}
           ${ffi('소속명','company_name',u)}
+          ${ffi('채널코드','agent_channel_code',u)}
           ${ffv('계정코드', u.user_code)}
           ${ffi('연락처','phone',u)}
           ${ffi('직급','position',u)}
