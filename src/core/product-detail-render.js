@@ -192,7 +192,8 @@ export function openFullscreen(imgList, startIdx = 0, carNumber = '') {
       const failReasons = [];
       await Promise.all(imgList.map(async (url, i) => {
         try {
-          const proxyUrl = `/api/img?url=${encodeURIComponent(url)}`;
+          // url이 이미 /api/img 프록시면 그대로 사용 (더블 프록시 방지)
+          const proxyUrl = url.startsWith('/api/img?') ? url : `/api/img?url=${encodeURIComponent(url)}`;
           const res = await fetch(proxyUrl);
           if (!res.ok) {
             let reason = `HTTP ${res.status}`;
