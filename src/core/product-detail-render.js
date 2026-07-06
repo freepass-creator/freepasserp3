@@ -189,21 +189,31 @@ export function openFullscreen(imgList, startIdx = 0, carNumber = '') {
       const JSZip = (await import('jszip')).default;
       const zip = new JSZip();
       let ok = 0, fail = 0;
+      const failReasons = [];
       await Promise.all(imgList.map(async (url, i) => {
         try {
           const proxyUrl = `/api/img?url=${encodeURIComponent(url)}`;
           const res = await fetch(proxyUrl);
-          if (!res.ok) throw new Error('fetch fail');
+          if (!res.ok) {
+            let reason = `HTTP ${res.status}`;
+            try { const j = await res.json(); reason = `${res.status}: ${j.message || ''}`; } catch {}
+            throw new Error(reason);
+          }
           const blob = await res.blob();
           const ext = blob.type?.split('/')[1]?.replace('jpeg', 'jpg') || 'jpg';
           const prefix = carNumber ? `${carNumber}_` : '';
           zip.file(`${prefix}${String(i + 1).padStart(2, '0')}.${ext}`, blob);
           ok++;
-        } catch {
+        } catch (err) {
           fail++;
+          failReasons.push(`[${i + 1}] ${err.message}`);
+          console.warn('[img-dl fail]', url, err.message);
         }
       }));
-      if (ok === 0) throw new Error('모든 이미지 다운로드 실패 (CORS/네트워크)');
+      if (ok === 0) {
+        console.error('[img-dl] 전체 실패:', failReasons);
+        throw new Error(`모든 이미지 다운로드 실패 — ${failReasons[0] || 'CORS/네트워크'}`);
+      }
       const zipBlob = await zip.generateAsync({ type: 'blob' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(zipBlob);

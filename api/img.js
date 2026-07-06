@@ -17,6 +17,7 @@ const ALLOWED_HOSTS = [
   'lh5.googleusercontent.com',
   'lh6.googleusercontent.com',
   'firebasestorage.googleapis.com',
+  'storage.googleapis.com',   // Firebase Storage 버킷 직접 URL (*.storage.googleapis.com)
   'firebasestorage.app',
   // 외부 사이트 스크래핑 — 핫링크 차단 우회
   'autoplus.co.kr',
@@ -24,6 +25,7 @@ const ALLOWED_HOSTS = [
   'moderentcar.co.kr',
   'moren-images.s3.amazonaws.com',
   'moren-images.s3.ap-northeast-2.amazonaws.com',
+  'amazonaws.com',            // S3 버킷 서브도메인 전체
 ];
 
 export default async function handler(req, res) {
@@ -62,10 +64,20 @@ export default async function handler(req, res) {
       res.status(upstream.status).end();
       return;
     }
-    const ct = upstream.headers.get('content-type') || 'image/jpeg';
+    let ct = upstream.headers.get('content-type') || '';
+    // Firebase Storage / S3는 octet-stream으로 응답하는 경우가 있음 — URL 확장자로 보완
     if (!ct.startsWith('image/')) {
-      res.status(415).json({ ok: false, message: 'not an image' });
-      return;
+      const ext = target.pathname.split('.').pop()?.toLowerCase();
+      const extMap = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif', avif: 'image/avif' };
+      if (ext && extMap[ext]) {
+        ct = extMap[ext];
+      } else if (ct !== 'application/octet-stream') {
+        // octet-stream이 아닌 확실히 이미지 아닌 경우만 거부
+        res.status(415).json({ ok: false, message: `not an image: ${ct}` });
+        return;
+      } else {
+        ct = 'image/jpeg'; // octet-stream → jpeg 추정
+      }
     }
     const buf = Buffer.from(await upstream.arrayBuffer());
     res.setHeader('Content-Type', ct);
