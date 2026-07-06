@@ -2162,6 +2162,8 @@ function hydrateUser(user) {
   // body 에 role 클래스 — CSS 가 권한별 메뉴 가시성 처리
   document.body.classList.remove('role-admin', 'role-provider', 'role-agent', 'role-agent_admin', 'role-agent_manager');
   if (user.role) document.body.classList.add(`role-${user.role}`);
+  // 팀 매니저(viewer) — 계약발송 등 발신 기능 숨김
+  document.body.classList.toggle('is-team-manager', !!user.is_team_manager);
   // 시스템 관리자(이메일 화이트리스트) — 개발도구(#dev) 가시성 게이팅
   document.body.classList.toggle('is-sysadmin', isSystemAdmin(user));
 }
