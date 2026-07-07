@@ -1111,17 +1111,24 @@ async function initMobileShell() {
     navigateTo(route);
   });
 
-  // 영업관리자는 소통·계약만 허용 — 상품 탭 숨김
-  const isAgentManager = ['agent_admin','agent_manager'].includes(store.currentUser?.role);
-  if (isAgentManager) {
+  // 영업관리자(agent_admin/agent_manager)는 상품찾기 탭 숨김
+  const role = store.currentUser?.role;
+  const isAgentAdmin   = role === 'agent_admin';   // 소통+정산
+  const isAgentManager = role === 'agent_manager'; // 소통+계약
+  if (isAgentAdmin || isAgentManager) {
     document.querySelectorAll('.m-tabbar .m-tab[data-route="/search"]').forEach(el => el.style.display = 'none');
+  }
+  // agent_admin은 계약 탭 숨김
+  if (isAgentAdmin) {
+    document.querySelectorAll('.m-tabbar .m-tab[data-route="/contract"]').forEach(el => el.style.display = 'none');
   }
 
   // 초기 라우트 — URL 경로 우선, 없으면 /workspace(영업관리자) or /search
-  const defaultRoute = isAgentManager ? '/workspace' : '/search';
+  const defaultRoute = (isAgentAdmin || isAgentManager) ? '/workspace' : '/search';
   const initial = TABS[location.pathname] ? location.pathname : defaultRoute;
-  // 영업관리자가 허용되지 않는 탭 접근 시 workspace로
-  const allowed = isAgentManager ? ['/workspace', '/contract', '/settings'] : Object.keys(TABS);
+  const allowed = isAgentAdmin   ? ['/workspace', '/settings'] :
+                  isAgentManager ? ['/workspace', '/contract', '/settings'] :
+                  Object.keys(TABS);
   navigateTo(allowed.includes(initial) ? initial : '/workspace');
 }
 
