@@ -10,16 +10,18 @@ const DATABASE_URL = 'https://freepasserp3-default-rtdb.asia-southeast1.firebase
 let _appPromise = null;
 function getAdmin() {
   if (_appPromise) return _appPromise;
-  _appPromise = (async () => {
+  const p = (async () => {
     if (admin.apps.length) return admin.app();
     const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON || process.env.FIREBASE_SERVICE_ACCOUNT || '';
-    if (!raw) throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON env var not set');
+    if (!raw) throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON 환경변수가 Vercel에 설정되지 않았습니다');
     const trimmed = raw.trim();
     const decoded = trimmed.startsWith('{') ? trimmed : Buffer.from(trimmed, 'base64').toString('utf8');
     const creds = JSON.parse(decoded);
     return admin.initializeApp({ credential: admin.credential.cert(creds), databaseURL: DATABASE_URL });
   })();
-  return _appPromise;
+  _appPromise = p;
+  p.catch(() => { _appPromise = null; }); // 초기화 실패 시 다음 요청에서 재시도
+  return p;
 }
 
 async function readBody(req) {

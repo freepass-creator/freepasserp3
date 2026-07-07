@@ -2316,15 +2316,23 @@ function bindLoginForm() {
       });
       if (!profileRes.ok) {
         const d = await profileRes.json().catch(() => ({}));
-        throw new Error(d.error || '프로필 저장 실패');
+        const errMsg = d.error || `HTTP ${profileRes.status}`;
+        throw new Error(`프로필 저장 실패: ${errMsg}`);
       }
       if (msg) { msg.style.color = 'var(--accent,#22c55e)'; msg.textContent = '완료! 페이지를 새로고침합니다...'; }
       setTimeout(() => location.reload(), 800);
     } catch (err) {
       console.error('[completeProfile]', err);
-      if (msg) msg.textContent = err.message || '오류가 발생했습니다';
+      if (msg) { msg.style.color = 'var(--danger,#ef4444)'; msg.textContent = err.message || '오류가 발생했습니다'; }
       if (submitBtn) submitBtn.disabled = false;
     }
+  });
+
+  document.getElementById('cpLogoutLink')?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const { logout: _lo } = await import('./firebase/auth.js');
+    await _lo().catch(() => {});
+    location.reload();
   });
 
   // 사업자번호 자동 포맷팅 + 실시간 partners 매칭
@@ -2425,10 +2433,21 @@ function bindLoginForm() {
     if (msg) { msg.style.color = ''; msg.textContent = ''; }
     if (!email || !pw || pw.length < 6) { if (msg) msg.textContent = '이메일·비밀번호(6자 이상) 필수'; return; }
     if (submitBtn) submitBtn.disabled = true;
+    let _authUser = null;
     try {
       const { signup } = await import('./firebase/auth.js');
-      const user = await signup(email, pw);
-      const idToken = await user.getIdToken();
+      // email-already-in-use: 이전 가입 시도에 Firebase Auth만 생성된 경우 → login으로 유도
+      try {
+        _authUser = await signup(email, pw);
+      } catch (authErr) {
+        if (authErr.code === 'auth/email-already-in-use') {
+          if (msg) { msg.style.color = 'var(--danger,#ef4444)'; msg.textContent = '이미 가입된 이메일입니다. 로그인하거나 아래 "로그인으로 돌아가기"를 클릭하세요.'; }
+          if (submitBtn) submitBtn.disabled = false;
+          return;
+        }
+        throw authErr;
+      }
+      const idToken = await _authUser.getIdToken();
       const profileRes = await fetch('/api/signup-profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
@@ -2441,10 +2460,11 @@ function bindLoginForm() {
       });
       if (!profileRes.ok) {
         const d = await profileRes.json().catch(() => ({}));
-        throw new Error(d.error || '프로필 저장 실패');
+        const errMsg = d.error || `HTTP ${profileRes.status}`;
+        throw new Error(`프로필 저장 실패: ${errMsg}`);
       }
+      _authUser = null; // 성공 — 정리 불필요
       // 가입 완료 → Firebase Auth 세션 정리 후 로그인 폼으로 전환
-      // location.reload() 는 RTDB 쓰기 전파 race condition 으로 role 누락 → 튕김 버그 있어 사용 안 함
       const { logout: _fbLogout } = await import('./firebase/auth.js');
       await _fbLogout().catch(() => {});
       showCard('login');
@@ -2453,8 +2473,13 @@ function bindLoginForm() {
       if (msg) { msg.style.color = 'var(--accent,#22c55e)'; msg.textContent = '가입 완료! 이메일·비밀번호로 로그인해주세요.'; }
       showToast('가입 완료', 'success');
     } catch (err) {
+      // 프로필 저장 실패 시 Firebase Auth 계정 삭제 → 같은 이메일로 재가입 가능
+      if (_authUser) {
+        await _authUser.delete().catch(() => {});
+        _authUser = null;
+      }
       console.error('[signup]', err);
-      if (msg) msg.textContent = koreanAuthMsg(err, '가입 실패');
+      if (msg) { msg.style.color = 'var(--danger,#ef4444)'; msg.textContent = koreanAuthMsg(err, '가입 실패'); }
       if (submitBtn) submitBtn.disabled = false;
     }
   });

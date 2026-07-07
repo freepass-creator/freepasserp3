@@ -12,6 +12,9 @@
     "api/catalog-share.js": {
       "includeFiles": "dist/catalog.html"
     },
+    "api/signup-profile.js": {
+      "maxDuration": 30
+    },
     "api/sync/auto.js": {
       "maxDuration": 300
     }
