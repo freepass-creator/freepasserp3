@@ -406,6 +406,20 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
   return product;
 }
 
+/* 신차/재렌트 판별:
+ * 1) pendingPlate 또는 100신XXXX → 항상 신차렌트
+ * 2) 구분 컬럼에 '신차' 포함 → 신차렌트
+ * 3) 구분 컬럼에 '중고'|'재렌트' 포함 → 중고렌트
+ * 4) 구분 비어있음 → null (admin-ops가 기존 DB값 보존)
+ * 5) defaultProductType 폴백 */
+function resolveProductType({ pendingPlate, carNumber, kindVal, defaultProductType }) {
+  if (pendingPlate || /^100신\d{4}$/.test(carNumber)) return '신차렌트';
+  if (kindVal && /신차/.test(kindVal)) return '신차렌트';
+  if (kindVal && /중고|재렌트/.test(kindVal)) return '중고렌트';
+  if (!kindVal) return null;
+  return defaultProductType || '중고렌트';
+}
+
 /* 종합시트 — 다업체. 우선순위: 공급코드 컬럼 > 차고지 추출.
  * 정책코드 컬럼 있으면 product.policy_code 로 적용. */
 function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, tabPartnerCode = '', defaultProductType = '' }) {
@@ -459,7 +473,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     engine_cc:    parsePrice(safeGet(row, colIdx('배기량'))),
     location:     yard,
     partner_memo: safeGet(row, colIdx('비고')),
-    product_type: (pendingPlate || /^100신\d{4}$/.test(carNumber) || /신차/.test(safeGet(row, colIdx('구분') >= 0 ? colIdx('구분') : colPartial('구분')))) ? '신차렌트' : (defaultProductType || '중고렌트'),
+    product_type: resolveProductType({ pendingPlate, carNumber, kindVal: safeGet(row, colIdx('구분') >= 0 ? colIdx('구분') : colPartial('구분')), defaultProductType }),
     is_pending_plate: pendingPlate,     // 번호 미정 신차 — 실번호 받으면 수기로 덮어씀
     status,
     vehicle_status: vehicleStatus,
