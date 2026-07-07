@@ -1318,11 +1318,9 @@
     if (!VALID_PAGES.includes(name)) name = 'search';
     if (ADMIN_ONLY_PAGES.includes(name) && !document.body.classList.contains('role-admin')) name = 'search';
     if (name === 'product' && (document.body.classList.contains('role-agent') || document.body.classList.contains('role-agent_admin') || document.body.classList.contains('role-agent_manager'))) name = 'search';
-    // agent_admin: 소통+계약+정산 허용 / agent_manager: 소통+계약만 허용
-    const AGENT_ADMIN_ONLY = ['workspace','contract','settle'];
+    // 영업관리자(agent_admin/agent_manager) 또는 팀 매니저(is_team_manager)는 계약발송 접근 차단
     const AGENT_MANAGER_ONLY = ['workspace','contract'];
-    if (document.body.classList.contains('role-agent_admin') && !AGENT_ADMIN_ONLY.includes(name)) name = 'workspace';
-    if (document.body.classList.contains('role-agent_manager') && !AGENT_MANAGER_ONLY.includes(name)) name = 'workspace';
+    if ((document.body.classList.contains('role-agent_admin') || document.body.classList.contains('role-agent_manager')) && !AGENT_MANAGER_ONLY.includes(name)) name = 'workspace';
     if (document.body.classList.contains('is-team-manager') && name === 'send') name = 'contract';
     document.body.dataset.activePage = name;  // 페이지별 크롬 토글용 (예: 발송 페이지는 전역 검색 숨김)
     document.querySelectorAll('.pt-page').forEach(p => p.classList.toggle('active', p.dataset.page === name));

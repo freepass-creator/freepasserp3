@@ -999,11 +999,10 @@
   .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { background: rgba(0,0,0,0.8); }
   .lightbox-count { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; padding: 6px 14px; background: rgba(0,0,0,0.5); border-radius: 12px; }
   /* 권한별 메뉴 가시성 — body class 로 토글
-   * agent_admin : 소통 + 계약 + 정산 (상품찾기·계약발송·재고·정책·파트너·사용자 숨김)
-   * agent_manager : 소통 + 계약만 (상품찾기·정산·계약발송·재고·정책·파트너·사용자 숨김)
-   * agent       : 재고·정책·파트너·사용자 숨김
-   * provider    : 파트너·사용자 숨김 (재고·정책 포함)
-   * admin       : 모두 */
+   * agent_admin/agent_manager : 업무소통 + 계약관리만 (상품찾기·정산·계약발송·재고·정책·파트너·사용자 숨김)
+   * agent                     : 재고·정책·파트너·사용자 숨김
+   * provider                  : 파트너·사용자 숨김 (재고·정책 포함)
+   * admin                     : 모두 */
   body.role-agent       .pt-sb a[data-page="product"],
   body.role-agent       .pt-sb a[data-page="policy"],
   body.role-agent       .pt-sb a[data-page="partners"],
@@ -1013,6 +1012,7 @@
   body.role-agent_admin .pt-sb a[data-page="partners"],
   body.role-agent_admin .pt-sb a[data-page="users"],
   body.role-agent_admin .pt-sb a[data-page="search"],
+  body.role-agent_admin .pt-sb a[data-page="settle"],
   body.role-agent_admin .pt-sb a[data-page="send"],
   body.role-agent_manager .pt-sb a[data-page="product"],
   body.role-agent_manager .pt-sb a[data-page="policy"],
