@@ -1158,14 +1158,19 @@ async function boot() {
       if (e.data?.type === 'SW_UPDATED') window.location.reload();
     });
   }
-  // 청크 로드 실패(배포 후 파일명 변경) → 자동 새로고침
+  // 청크 로드 실패(배포 후 파일명 변경) → SW 캐시 전체 삭제 후 자동 새로고침 (10초 쿨다운)
   window.addEventListener('unhandledrejection', (e) => {
     const msg = e.reason?.message || String(e.reason || '');
     if (msg.includes('Failed to fetch dynamically imported module') || msg.includes('Importing a module script failed')) {
       e.preventDefault();
-      if (!sessionStorage.getItem('_chunkReload')) {
-        sessionStorage.setItem('_chunkReload', '1');
-        window.location.reload();
+      const last = parseInt(sessionStorage.getItem('_chunkReload') || '0', 10);
+      if (Date.now() - last > 10000) {
+        sessionStorage.setItem('_chunkReload', String(Date.now()));
+        if ('caches' in window) {
+          caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).finally(() => location.reload());
+        } else {
+          location.reload();
+        }
       }
     }
   });

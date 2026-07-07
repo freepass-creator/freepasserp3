@@ -7,7 +7,7 @@
  *  - 폰트: cache-first (영구)
  *  - API/Firebase: 캐시 안 함
  */
-const VERSION = 'v51';
+const VERSION = 'v52';
 const CACHE_SHELL = `freepass-shell-${VERSION}`;
 const CACHE_ASSETS = `freepass-assets-${VERSION}`;
 const CACHE_IMAGES = `freepass-images-${VERSION}`;
@@ -110,8 +110,8 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // JS/CSS 번들 — stale-while-revalidate
-  if (isAsset(e.request)) { e.respondWith(staleWhileRevalidate(e.request, CACHE_ASSETS)); return; }
+  // JS/CSS 번들 — network-first (배포 후 구버전 해시 파일 참조 방지)
+  if (isAsset(e.request)) { e.respondWith(networkFirst(e.request, CACHE_ASSETS)); return; }
 });
 
 // 강제 업데이트 트리거
