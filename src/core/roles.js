@@ -47,7 +47,8 @@ export function roleScope(me) {
     return { field: 'agent_uid', value: me.uid || NONE };
   }
   if (me.role === ROLES.AGENT_ADMIN || me.role === ROLES.AGENT_MANAGER)
-    return { field: 'agent_channel_code', value: me.agent_channel_code || me.company_code || NONE };
+    // Firebase rules 는 agent_channel_code 필드만 체크 — RTDB 실제 저장값(agent_channel_code)을 우선 사용
+    return { field: 'agent_channel_code', value: me.agent_channel_code || NONE };
   if (me.role === ROLES.PROVIDER)
     return { field: 'provider_company_code', value: me.company_code || NONE };
   return { field: 'agent_uid', value: me.uid || NONE };   // 알수없는 역할 = 보수적

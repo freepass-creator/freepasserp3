@@ -306,7 +306,17 @@ function loadUser(key) {
       </div>
     </div>
   `;
-  bindFormAutoSave(formEl, (field, value) => updateRecord(`users/${key}`, { [field]: value }), { eager: true });
+  bindFormAutoSave(formEl, async (field, value) => {
+    const updates = { [field]: value };
+    // agent_admin/agent_manager 로 역할 변경 시 agent_channel_code 없으면 company_code 로 자동 세팅
+    if (field === 'role' && (value === 'agent_admin' || value === 'agent_manager')) {
+      const u = (store.users || []).find(x => x._key === key);
+      if (u && !u.agent_channel_code && u.company_code) {
+        updates.agent_channel_code = u.company_code;
+      }
+    }
+    await updateRecord(`users/${key}`, updates);
+  }, { eager: true });
 
   // 상세
   document.getElementById('admDetail').innerHTML = `
