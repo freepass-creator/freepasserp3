@@ -65,11 +65,13 @@ export function initAutoStatus() {
       // 계약취소 → 기지급 정산 환수 처리
       if (c.contract_status === '계약취소' && prev !== '계약취소') {
         const settlement = (store.settlements || []).find(s => s.contract_code === c.contract_code);
-        if (settlement?.settlement_status === '정산완료') {
+        if (settlement) {
           (async () => {
             try {
               const { calculateClawback } = await import('./settlement-rules.js');
               const { SETTLEMENT_STATUS } = await import('./settlement-status.js');
+              // 정산완료분만 환수 대상 — SSOT 상수로 비교 (리터럴 하드코딩 금지: 환수 0원 버그 동형 재발 방지)
+              if (settlement.settlement_status !== SETTLEMENT_STATUS.DONE) return;
               const clawbackAmount = calculateClawback(settlement, c);
               if (clawbackAmount > 0) {
                 await updateRecord(`settlements/${settlement._key}`, {

@@ -56,15 +56,24 @@ export async function allocateTempCarNumber() {
   return `100신${String(seq).padStart(4, '0')}`;
 }
 
-/* ── 정산 생성 (계약 완료 시) ── */
+/* ── 정산 생성 (계약 완료 시) ──
+ *  멱등 (원칙 16): 계약당 정산 1건 보장.
+ *   ① 키 = ST_{contract_code} 결정적 — 같은 계약 재호출 시 같은 키
+ *   ② runTransaction(없을 때만 생성) — 더블클릭·contract.js/auto-status 이중 호출 레이스에도 1건
+ *   ③ 레거시(ST-YYMMDD-NNN 채번 시절) 정산 있으면 skip
+ *  ⚠ 과거 채번 방식(nextSequence)은 호출마다 새 정산을 만들어 수수료 이중지급 위험이 있었음 — 회귀 금지 */
 export async function createSettlement(contract) {
-  const dateStr = todayYYMMDD();
-  const seq = await nextSequence(`settlement_${dateStr}`);
-  const code = `ST-${dateStr}-${String(seq).padStart(3, '0')}`;
+  const contractCode = contract?.contract_code;
+  if (!contractCode) { console.warn('[createSettlement] contract_code 없음 — 생성 skip'); return null; }
+  const code = `ST_${contractCode}`;
+
+  // 레거시 포함 기존 정산 존재 확인 (store 스냅샷 + 결정적 키 직접 조회)
+  const { store } = await import('../core/store.js');
+  const existing = (store.settlements || []).find(s => !s._deleted && s.contract_code === contractCode);
+  if (existing) return existing.settlement_code || existing._key;
 
   const { settlementStatusPayload, SETTLEMENT_STATUS_DEFAULT } = await import('../core/settlement-status.js');
   const { getFeeRate } = await import('../core/settlement-rules.js');
-  const { store } = await import('../core/store.js');
 
   // 수수료: 명시값 > 자동계산 (월대여료 × 파트너 수수료율)
   const rentAmount = Number(contract.rent_amount_snapshot || 0);
@@ -75,9 +84,9 @@ export async function createSettlement(contract) {
   const settleDate = contract.contract_date ? new Date(contract.contract_date) : new Date(now);
   const settle_month = `${settleDate.getFullYear()}-${String(settleDate.getMonth() + 1).padStart(2, '0')}`;
 
-  await setRecord(`settlements/${code}`, {
+  const data = {
     settlement_code: code,
-    contract_code: contract.contract_code,
+    contract_code: contractCode,
     ...settlementStatusPayload(SETTLEMENT_STATUS_DEFAULT),
     settle_month,
     partner_code: contract.partner_code || contract.provider_company_code,
@@ -98,7 +107,14 @@ export async function createSettlement(contract) {
     fee_amount: feeAmount,
     confirms: { provider: false, agent: false, admin: false },
     created_at: now,
-  });
+    updated_at: now,
+  };
+  // 원자적 조건부 생성 — 이미 있으면 abort (기존 정산 상태를 절대 덮어쓰지 않음)
+  const result = await runTransaction(ref(db, `settlements/${code}`), (cur) => (cur === null ? data : undefined));
+  if (result.committed) {
+    const { logAudit } = await import('./audit-log.js');   // setRecord 미경유 → audit 직접 기록
+    logAudit({ action: 'create', path: `settlements/${code}`, fields: Object.keys(data), data });
+  }
   return code;
 }
 

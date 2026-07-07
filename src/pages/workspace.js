@@ -53,13 +53,13 @@ export function renderRoomList(rooms) {
   const role = store.currentUser?.role;
   const uid = store.currentUser?.uid;
   const myCompany = store.currentUser?.company_code;
-  const myChannel = store.currentUser?.agent_channel_code || store.currentUser?.channel_code;
+  const myChannel = store.currentUser?.agent_channel_code || store.currentUser?.channel_code || store.currentUser?.company_code;   // 폴백 체인 = mobile-workspace·roles.filterByRole 과 동일 규격
 
   // v2 필터링 — 삭제·숨김·역할별 가시성
   // 관리자 소통 룸(is_admin_chat) 은 별도 페이지(#admin-chat) 에서만 노출 → workspace 에서 제외
   let visible = (rooms || []).filter(r => !r._deleted && !r.is_admin_chat);
   if (role === 'agent') visible = visible.filter(r => !r.hidden_for_agent && r.agent_uid === uid);
-  else if (role === 'agent_admin') visible = visible.filter(r => !r.hidden_for_agent && r.agent_channel_code === me.agent_channel_code);
+  else if (role === 'agent_admin') visible = visible.filter(r => !r.hidden_for_agent && r.agent_channel_code === myChannel);   // me 미정의 ReferenceError 수정 — agent_admin 소통목록 크래시 원인
   else if (role === 'provider') visible = visible.filter(r => !r.hidden_for_provider && (r.provider_uid === uid || r.provider_company_code === myCompany || r.partner_code === myCompany));
   else if (role === 'admin') visible = visible.filter(r => !r.hidden_for_admin);
 

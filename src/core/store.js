@@ -165,5 +165,14 @@ export function filterCollectionByRole(data, collection) {
     if (collection === 'rooms') return data.filter(r => r.agent_uid === uid);
   }
 
+  // agent_admin — 채널 스코프 (누락 시 타 채널 계약·정산 전량 노출되던 구멍. roles.filterByRole 과 동일 규격)
+  if (user.role === 'agent_admin') {
+    const ch = user.agent_channel_code || user.channel_code || user.company_code;
+    if (!ch) return [];
+    if (collection === 'contracts') return data.filter(c => c.agent_channel_code === ch);
+    if (collection === 'settlements') return data.filter(s => s.agent_channel_code === ch);
+    if (collection === 'rooms') return data.filter(r => r.agent_channel_code === ch);
+  }
+
   return data;
 }

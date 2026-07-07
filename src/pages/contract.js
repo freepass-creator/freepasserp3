@@ -12,7 +12,7 @@
  * 분리 원칙: workspace 의존성 제거 — bindContractWorkV2 가 페이지별 재렌더 콜백을 외부 주입받음.
  */
 import { store, findProduct, findProductByUid } from '../core/store.js';
-import { pushRecord, updateRecord } from '../firebase/db.js';
+import { pushRecord, updateRecord, ref, db, update } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { openFullscreen } from '../core/product-detail-render.js';
 import { filterByRole } from '../core/roles.js';
@@ -795,22 +795,26 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
     try {
       const oldCode = c.contract_code;
       const newCode = await allocateRealContractCode();
-      await updateRecord(`contracts/${c._key}`, {
-        contract_code: newCode,
-        is_draft: false,
-        contract_status: '계약완료',
-        completed_at: Date.now(),
-        completed_by: store.currentUser?.uid,
-      });
+      // 계약상태·차량상태·룸링크를 multi-path 1회로 원자 반영 (원칙 11)
+      //  — 개별 write 시 중간 실패하면 "계약완료인데 차량은 출고가능"으로 남아 이중 출고 위험
+      const now = Date.now();
+      const atomicUpdate = {
+        [`contracts/${c._key}/contract_code`]: newCode,
+        [`contracts/${c._key}/is_draft`]: false,
+        [`contracts/${c._key}/contract_status`]: '계약완료',
+        [`contracts/${c._key}/completed_at`]: now,
+        [`contracts/${c._key}/completed_by`]: store.currentUser?.uid || '',
+        [`contracts/${c._key}/updated_at`]: now,
+      };
       if (c.product_uid) {
-        await updateRecord(`products/${c.product_uid}`, {
-          vehicle_status: '출고불가', updated_at: Date.now(),
-        });
+        atomicUpdate[`products/${c.product_uid}/vehicle_status`] = '출고불가';
+        atomicUpdate[`products/${c.product_uid}/updated_at`] = now;
       }
       const linkedRoom = (store.rooms || []).find(r => r.linked_contract === oldCode);
-      if (linkedRoom) {
-        await updateRecord(`rooms/${linkedRoom._key}`, { linked_contract: newCode });
-      }
+      if (linkedRoom) atomicUpdate[`rooms/${linkedRoom._key}/linked_contract`] = newCode;
+      await update(ref(db), atomicUpdate);    // root multi-path — 전부 성공 or 전부 실패
+      const { logAudit } = await import('../firebase/audit-log.js');
+      logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['contract_status', 'contract_code'], data: { contract_status: '계약완료', contract_code: newCode } });
       // 정산 자동 생성
       try {
         const { createSettlement } = await import('../firebase/collections.js');
