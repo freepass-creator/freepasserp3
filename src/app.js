@@ -2395,10 +2395,15 @@ function bindLoginForm() {
         const d = await profileRes.json().catch(() => ({}));
         throw new Error(d.error || '프로필 저장 실패');
       }
-      // 즉시 로그인 진입 (login 핸들러와 동일 패턴)
+      // 가입 완료 → Firebase Auth 세션 정리 후 로그인 폼으로 전환
+      // location.reload() 는 RTDB 쓰기 전파 race condition 으로 role 누락 → 튕김 버그 있어 사용 안 함
+      const { logout: _fbLogout } = await import('./firebase/auth.js');
+      await _fbLogout().catch(() => {});
+      showCard('login');
+      const loginEmailEl = document.getElementById('loginEmail');
+      if (loginEmailEl) loginEmailEl.value = email;
+      if (msg) { msg.style.color = 'var(--accent,#22c55e)'; msg.textContent = '가입 완료! 이메일·비밀번호로 로그인해주세요.'; }
       showToast('가입 완료', 'success');
-      location.hash = 'search';
-      location.reload();
     } catch (err) {
       console.error('[signup]', err);
       if (msg) msg.textContent = koreanAuthMsg(err, '가입 실패');
