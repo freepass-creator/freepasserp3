@@ -57,15 +57,22 @@
 
     "contracts": {
       ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (query.orderByChild === 'agent_uid' && query.equalTo === auth.uid) || (query.orderByChild === 'provider_company_code' && query.equalTo === root.child('users').child(auth.uid).child('company_code').val()) || (query.orderByChild === 'agent_channel_code' && (query.equalTo === root.child('users').child(auth.uid).child('agent_channel_code').val() || query.equalTo === root.child('users').child(auth.uid).child('company_code').val())))",
-      ".write": "auth != null",
-      "$id": { ".read": "auth != null" },
+      "$id": {
+        ".read": "auth != null",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (data.exists() && (data.child('agent_uid').val() === auth.uid || data.child('provider_company_code').val() === root.child('users').child(auth.uid).child('company_code').val() || data.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('agent_channel_code').val() || data.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('company_code').val())) || (!data.exists() && (newData.child('agent_uid').val() === auth.uid || newData.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('agent_channel_code').val() || newData.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('company_code').val())))"
+      },
       ".indexOn": ["product_uid", "partner_code", "contract_status", "agent_uid", "provider_company_code", "agent_channel_code", "created_at"]
     },
 
     "settlements": {
       ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (query.orderByChild === 'agent_uid' && query.equalTo === auth.uid) || (query.orderByChild === 'provider_company_code' && query.equalTo === root.child('users').child(auth.uid).child('company_code').val()) || (query.orderByChild === 'agent_channel_code' && (query.equalTo === root.child('users').child(auth.uid).child('agent_channel_code').val() || query.equalTo === root.child('users').child(auth.uid).child('company_code').val())))",
-      ".write": "auth != null",
-      "$id": { ".read": "auth != null" },
+      "$id": {
+        ".read": "auth != null",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (data.exists() && (data.child('agent_uid').val() === auth.uid || data.child('provider_company_code').val() === root.child('users').child(auth.uid).child('company_code').val() || data.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('agent_channel_code').val() || data.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('company_code').val())) || (!data.exists() && (newData.child('agent_uid').val() === auth.uid || newData.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('agent_channel_code').val() || newData.child('agent_channel_code').val() === root.child('users').child(auth.uid).child('company_code').val())))",
+        "fee_amount": {
+          ".validate": "!data.exists() || newData.val() === data.val() || root.child('users').child(auth.uid).child('role').val() === 'admin'"
+        }
+      },
       ".indexOn": ["contract_code", "settlement_status", "provider_company_code", "agent_uid", "agent_channel_code"]
     },
 
@@ -77,8 +84,10 @@
 
     "customers": {
       ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (query.orderByChild === 'created_by' && query.equalTo === auth.uid))",
-      ".write": "auth != null",
-      "$id": { ".read": "auth != null" },
+      "$id": {
+        ".read": "auth != null",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (data.exists() && data.child('created_by').val() === auth.uid) || (!data.exists() && newData.child('created_by').val() === auth.uid))"
+      },
       ".indexOn": ["phone", "name", "created_at", "created_by"]
     },
 

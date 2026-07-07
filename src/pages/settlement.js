@@ -155,7 +155,7 @@ export function renderSettlementDetail(s) {
         <div class="lab">대여료</div><div>${fmtW(rentRawW)}</div>
       </div>
       <div class="form-grid">
-        <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${disabled}></div>
+        <div class="ff"><label>수수료</label><input type="text" class="input" id="setlFee" value="${fee ? fee.toLocaleString() : ''}" style="text-align:right;"${role === 'admin' ? disabled : ' disabled'}></div>
         <div class="ff"><label>정산상태</label>
           <div id="setlStatus" style="display:flex; gap:3px; flex-wrap:wrap;${!canEdit ? 'pointer-events:none;opacity:0.7;' : ''}">
             ${SETTLE_STATUSES.map(st => `<span class="chip${st === status ? ' active' : ''}" data-status="${esc(st)}">${esc(st)}</span>`).join('')}
@@ -240,13 +240,14 @@ function bindSettleEdit(s) {
     const settled_at = dateStr ? new Date(dateStr).getTime() : null;
 
     const update = {
-      fee_amount: Number(feeStr) || 0,
       // settlement_status + status 둘 다 기록 (reader 가 settlement_status 우선 → 둘 동기화 안 하면 편집 반영 안 됨)
       ...settlementStatusPayload(status),
       memo,
       settled_at,
       updated_at: Date.now(),
     };
+    // 수수료 금액 수정 = admin 전용 (원칙 12 — 계산값은 정해진 권한·경로로만. 공급사 임의 상향 방지)
+    if (store.currentUser?.role === 'admin') update.fee_amount = Number(feeStr) || 0;
     const events = Array.isArray(s.events) ? [...s.events] : [];
     events.push({
       at: Date.now(),
