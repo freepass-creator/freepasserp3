@@ -462,6 +462,9 @@ function parseZonghapRow(row) {
   out.location = c(25);
   out.account = c(38);
   out.partner_memo = c(39);
+  out.provider_company_code = c(41);  // AP: 공급사코드
+  out.partner_code = c(41);           // partner_code = provider_company_code (동일 값)
+  out.policy_code = c(42);            // AQ: 정책코드
   // 전용계좌 컬럼에서 회사명 추출 — "은행명 계좌번호 회사명" 패턴
   //   예: "국민 274101-04-182593 우리캐피탈오토파크(주)" → "우리캐피탈오토파크(주)"
   out.account_company = extractAccountCompany(c(38));
@@ -607,6 +610,9 @@ function fallbackMatchedProduct(raw) {
     product_type: (raw.kind && /신차/.test(raw.kind)) ? '신차렌트' : '중고렌트',
     options: raw.options || [],
     partner_memo: raw.partner_memo || '',
+    provider_company_code: raw.provider_company_code || '',
+    partner_code: raw.partner_code || raw.provider_company_code || '',
+    policy_code: raw.policy_code || '',
     price: raw.price,
     status_label_raw: raw.status_label,
     account_raw: raw.account || '',
@@ -702,6 +708,9 @@ export async function enrichWithCatalog(raw) {
       product_type: (raw.kind && /신차/.test(raw.kind)) ? '신차렌트' : '중고렌트',
       options: standardOptions.length ? standardOptions : raw.options,
       partner_memo: raw.partner_memo || '',
+      provider_company_code: raw.provider_company_code || '',
+      partner_code: raw.partner_code || raw.provider_company_code || '',
+      policy_code: raw.policy_code || '',
       price: raw.price,
       status_label_raw: raw.status_label,
       account_raw: raw.account || '',

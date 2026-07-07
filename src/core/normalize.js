@@ -20,7 +20,12 @@ export function normalizeProductType(raw) {
     '리스':    '재렌트',
     '장기':    '재렌트',
   };
-  return MAP[s] || s;
+  if (MAP[s]) return MAP[s];
+  // 부분 매칭 — "신차(프로모션·보증금 300만원)" 같은 복합 문자열 처리
+  if (s.includes('신차')) return '신차';
+  if (s.includes('중고') || s.includes('재렌트')) return '재렌트';
+  if (s.includes('구독')) return '재구독';
+  return s;
 }
 
 /** 연식 — YY / YY년 / YY년식 / 'YY / YYYY 등 → 4자리 YYYY 문자열 */
