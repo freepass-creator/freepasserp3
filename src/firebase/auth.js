@@ -47,6 +47,14 @@ export function initAuth() {
         }
         // role 정규화 — agent_manager 는 agent_admin 의 동의어 (코드 전체에서 agent_admin 으로 통일 처리)
         if (profile.role === 'agent_manager') profile.role = 'agent_admin';
+        // agent_admin/agent_manager 인데 agent_channel_code 가 비어있고 company_code 가 있으면 자동 보정
+        // — Firebase rules 가 agent_channel_code 기준으로 쿼리를 검증하므로 RTDB 값이 반드시 있어야 함
+        if ((profile.role === 'agent_admin' || profile.role === 'agent_manager') &&
+            !profile.agent_channel_code && profile.company_code) {
+          const { update } = await import('firebase/database');
+          await update(ref(db, `users/${user.uid}`), { agent_channel_code: profile.company_code }).catch(() => {});
+          profile.agent_channel_code = profile.company_code;
+        }
         // ⚠ Firebase rule 의 auth.uid 매칭용 — profile 에 uid 필드가 다른 값으로 들어있으면
         //   여기서 덮어쓰여 PERMISSION_DENIED 발생. spread 뒤에 uid/email 명시.
         store.currentUser = { ...profile, uid: user.uid, email: user.email };
