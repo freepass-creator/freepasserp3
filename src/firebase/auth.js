@@ -79,7 +79,5 @@ export async function logout() {
 }
 
 export async function resetPassword(email) {
-  await sendPasswordResetEmail(auth, email, {
-    url: 'https://freepasserp.com',
-  });
+  await sendPasswordResetEmail(auth, email);
 }

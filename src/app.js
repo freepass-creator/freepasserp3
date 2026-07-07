@@ -2426,7 +2426,7 @@ function bindLoginForm() {
       const { resetPassword } = await import('./firebase/auth.js');
       const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('요청 시간 초과 — 잠시 후 다시 시도해주세요')), 15000));
       await Promise.race([resetPassword(email), timeout]);
-      if (msg) { msg.style.color = 'var(--accent-green)'; msg.textContent = '재설정 메일 전송됨. 이메일을 확인하세요.'; }
+      if (msg) { msg.style.color = 'var(--accent-green)'; msg.textContent = '재설정 메일 전송됨. 이메일(스팸함 포함)을 확인하세요.'; }
     } catch (err) {
       console.error('[reset]', err);
       if (msg) { msg.style.color = ''; msg.textContent = koreanAuthMsg(err, '전송 실패'); }
