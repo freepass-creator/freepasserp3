@@ -4,7 +4,11 @@
  * 계약 완료 → 정산 레코드 자동 생성 (계약당 1건)
  * - 수수료: 월 대여료 × 수수료율 (기본 10% / 파트너별 오버라이드)
  * - 환수: 계약 취소/중도해지 시 기지급 수수료 환수 금액 계산
+ *
+ * 상태값은 settlement-status.js SSOT 만 사용 — 영문값('paid' 등) 비교 금지
+ *  (과거 'paid' 비교로 환수가 항상 0원 반환되던 버그의 재발 방지)
  */
+import { SETTLEMENT_STATUS } from './settlement-status.js';
 
 /** 수수료율 조회 — 파트너별 커스텀 > 기본값 */
 export function getFeeRate(providerCode, partners = []) {
@@ -34,15 +38,15 @@ export function calculateSettlement(contract, partners = []) {
     rent_amount: rentAmount,
     fee_rate: feeRate,
     fee_amount: feeAmount,
-    settlement_status: '정산대기',
+    settlement_status: SETTLEMENT_STATUS.PENDING,
     contract_date: contract.contract_date || '',
     created_at: Date.now(),
   };
 }
 
-/** 환수 금액 계산 — 계약 중도해지 시 기지급분 비례 환수 */
+/** 환수 금액 계산 — 계약 중도해지 시 기지급분 비례 환수 (정산완료분만 대상) */
 export function calculateClawback(settlement, contract) {
-  if (!settlement || settlement.settlement_status !== 'paid') return 0;
+  if (!settlement || settlement.settlement_status !== SETTLEMENT_STATUS.DONE) return 0;
   const originalMonths = Number(contract.rent_month_snapshot || 0);
   const contractStart = contract.contract_date ? new Date(contract.contract_date).getTime() : 0;
   const cancelledAt = contract.cancelled_at || Date.now();
@@ -58,10 +62,10 @@ export function calculateClawback(settlement, contract) {
 /**
  * 계약 상태 → 정산 상태 자동 전환 제안
  * - 계약완료 + 정산 없음 → 정산 생성 필요
- * - 계약취소 + 정산 paid → 환수 필요
+ * - 계약취소 + 정산완료 → 환수 필요
  */
 export function getAutoAction(contract, settlement) {
   if (contract.contract_status === '계약완료' && !settlement) return 'create';
-  if (contract.contract_status === '계약취소' && settlement?.settlement_status === 'paid') return 'clawback';
+  if (contract.contract_status === '계약취소' && settlement?.settlement_status === SETTLEMENT_STATUS.DONE) return 'clawback';
   return null;
 }

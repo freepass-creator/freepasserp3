@@ -69,10 +69,11 @@ export function initAutoStatus() {
           (async () => {
             try {
               const { calculateClawback } = await import('./settlement-rules.js');
+              const { SETTLEMENT_STATUS } = await import('./settlement-status.js');
               const clawbackAmount = calculateClawback(settlement, c);
               if (clawbackAmount > 0) {
                 await updateRecord(`settlements/${settlement._key}`, {
-                  settlement_status: 'clawback',
+                  settlement_status: SETTLEMENT_STATUS.CLAWBACK_WAIT,   // SSOT '환수대기' (비표준 'clawback' 금지)
                   clawback_amount: clawbackAmount,
                   clawback_at: Date.now(),
                 });

@@ -5,6 +5,7 @@ import {
   calculateClawback,
   getAutoAction,
 } from '../settlement-rules.js';
+import { SETTLEMENT_STATUS } from '../settlement-status.js';
 
 describe('getFeeRate', () => {
   it('파트너 커스텀 fee_rate 우선', () => {
@@ -38,7 +39,7 @@ describe('calculateSettlement', () => {
     expect(result.settlement_code).toBe('ST_CT2604_01');
     expect(result.contract_code).toBe('CT2604_01');
     expect(result.car_number).toBe('12가3456');
-    expect(result.settlement_status).toBe('pending');
+    expect(result.settlement_status).toBe(SETTLEMENT_STATUS.PENDING);   // '정산대기' (SSOT)
   });
 
   it('파트너 커스텀 수수료율 적용', () => {
@@ -82,16 +83,23 @@ describe('calculateSettlement', () => {
 });
 
 describe('calculateClawback', () => {
-  it('지급되지 않은 정산 → 환수 0', () => {
-    const settlement = { settlement_status: 'pending', fee_amount: 100000 };
+  it('정산대기(미지급) → 환수 0', () => {
+    const settlement = { settlement_status: SETTLEMENT_STATUS.PENDING, fee_amount: 100000 };
     const contract = {};
     expect(calculateClawback(settlement, contract)).toBe(0);
   });
 
-  it('지급된 정산 — 절반 사용 시 절반 환수', () => {
+  it("영문 잔재값('paid' 등) → 환수 0 (SSOT 외 값 불인정)", () => {
+    // 회귀 방지 — 과거 'paid' 비교 버그의 반대 방향 검증
+    const settlement = { settlement_status: 'paid', fee_amount: 1000000 };
+    const contract = { rent_month_snapshot: 12, contract_date: '2024-01-01' };
+    expect(calculateClawback(settlement, contract)).toBe(0);
+  });
+
+  it('정산완료 — 절반 사용 시 절반 환수', () => {
     const start = new Date('2024-01-01').getTime();
     const cancelledAt = start + 6 * 30 * 86400 * 1000;   // 6개월 경과 (12개월 계약 중 절반)
-    const settlement = { settlement_status: 'paid', fee_amount: 1000000 };
+    const settlement = { settlement_status: SETTLEMENT_STATUS.DONE, fee_amount: 1000000 };
     const contract = {
       rent_month_snapshot: 12,
       contract_date: '2024-01-01',
@@ -101,10 +109,10 @@ describe('calculateClawback', () => {
     expect(refund).toBe(500000);
   });
 
-  it('지급된 정산 — 만료 후 취소 → 환수 0 (모두 사용)', () => {
+  it('정산완료 — 만료 후 취소 → 환수 0 (모두 사용)', () => {
     const start = new Date('2024-01-01').getTime();
     const cancelledAt = start + 13 * 30 * 86400 * 1000;
-    const settlement = { settlement_status: 'paid', fee_amount: 1000000 };
+    const settlement = { settlement_status: SETTLEMENT_STATUS.DONE, fee_amount: 1000000 };
     const contract = {
       rent_month_snapshot: 12,
       contract_date: '2024-01-01',
@@ -114,7 +122,7 @@ describe('calculateClawback', () => {
   });
 
   it('계약 정보 부족 → 0', () => {
-    const settlement = { settlement_status: 'paid', fee_amount: 100000 };
+    const settlement = { settlement_status: SETTLEMENT_STATUS.DONE, fee_amount: 100000 };
     expect(calculateClawback(settlement, {})).toBe(0);
   });
 });
@@ -123,17 +131,17 @@ describe('getAutoAction', () => {
   it('계약완료 + 정산 없음 → create', () => {
     expect(getAutoAction({ contract_status: '계약완료' }, null)).toBe('create');
   });
-  it('계약취소 + paid 정산 → clawback', () => {
+  it('계약취소 + 정산완료 → clawback', () => {
     const action = getAutoAction(
       { contract_status: '계약취소' },
-      { settlement_status: 'paid' },
+      { settlement_status: SETTLEMENT_STATUS.DONE },
     );
     expect(action).toBe('clawback');
   });
   it('계약완료 + 정산 있음 → null (이미 처리)', () => {
     const action = getAutoAction(
       { contract_status: '계약완료' },
-      { settlement_status: 'pending' },
+      { settlement_status: SETTLEMENT_STATUS.PENDING },
     );
     expect(action).toBeNull();
   });

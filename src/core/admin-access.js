@@ -9,6 +9,7 @@
  *    (둘 다 본인 계정이면 그대로 둬도 무방 — 잠금 방지용으로 둘 다 등록)
  */
 export const SYSTEM_ADMIN_EMAILS = [
+  'pyh@teamjpk.com',      // 대표 마스터 (2026-07-07)
   'dudguq@gmail.com',
   'jpkpyh@gmail.com',
   'tbag4783@gmail.com',
