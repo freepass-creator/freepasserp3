@@ -129,7 +129,7 @@ export function renderSettlementDetail(s) {
   }
 
   const role = store.currentUser?.role;
-  const canEdit = role === 'admin' || role === 'provider';
+  const canEdit = role === 'admin' || role === 'provider' || role === 'agent_admin';
   const fee = Number(s.fee_amount || s.commission || 0);
   const baseFee = Number(s.base_fee || 0);
   const status = getSettlementStatus(s);

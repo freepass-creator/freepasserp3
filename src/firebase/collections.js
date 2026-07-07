@@ -71,10 +71,15 @@ export async function createSettlement(contract) {
   const feeRate = getFeeRate(contract.provider_company_code || contract.partner_code, store.partners || []);
   const feeAmount = contract.price?.fee || contract.fee_amount || Math.round(rentAmount * feeRate);
 
+  const now = Date.now();
+  const settleDate = contract.contract_date ? new Date(contract.contract_date) : new Date(now);
+  const settle_month = `${settleDate.getFullYear()}-${String(settleDate.getMonth() + 1).padStart(2, '0')}`;
+
   await setRecord(`settlements/${code}`, {
     settlement_code: code,
     contract_code: contract.contract_code,
     ...settlementStatusPayload(SETTLEMENT_STATUS_DEFAULT),
+    settle_month,
     partner_code: contract.partner_code || contract.provider_company_code,
     provider_company_code: contract.provider_company_code || contract.partner_code,
     agent_uid: contract.agent_uid,
@@ -92,7 +97,7 @@ export async function createSettlement(contract) {
     fee_rate: feeRate,
     fee_amount: feeAmount,
     confirms: { provider: false, agent: false, admin: false },
-    created_at: Date.now(),
+    created_at: now,
   });
   return code;
 }

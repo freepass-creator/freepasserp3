@@ -234,8 +234,8 @@ function renderFilteredSettlements() {
   if (f.company_code !== 'all') list = list.filter(s => s.partner_code === f.company_code || s.provider_company_code === f.company_code);
   if (f.month !== 'all') {
     list = list.filter(s => {
-      const d = new Date(s.created_at || 0);
-      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` === f.month;
+      const m = s.settle_month || (() => { const d = new Date(s.created_at || 0); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; })();
+      return m === f.month;
     });
   }
   const q = _gq(); if (q) list = list.filter(s => matchRecord(s, q, store));
@@ -487,10 +487,10 @@ window.refreshPageActions = function(pageName) {
     const f = _pageFilters.settle;
     const setS = (v) => { f.status = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
     const setM = (v) => { f.month = v; renderFilteredSettlements(); window.refreshPageActions?.('settle'); };
-    // 정산 데이터에서 월 목록 추출
+    // 정산 데이터에서 월 목록 추출 (settle_month 우선, fallback created_at)
     const months = [...new Set((store.settlements || [])
-      .filter(s => !s._deleted && s.created_at)
-      .map(s => { const d = new Date(s.created_at); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; })
+      .filter(s => !s._deleted && (s.settle_month || s.created_at))
+      .map(s => s.settle_month || (() => { const d = new Date(s.created_at); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; })())
     )].sort().reverse();
     setPageActions({
       left: [
@@ -694,7 +694,7 @@ function pageStatsHtml(p) {
   if (p === 'workspace') {
     const list = (store.rooms || []).filter(x => !x._deleted);
     const role = store.currentUser?.role;
-    const unreadKey = role === 'agent' ? 'unread_for_agent' : role === 'provider' ? 'unread_for_provider' : 'unread_for_admin';
+    const unreadKey = (role === 'agent' || role === 'agent_admin') ? 'unread_for_agent' : role === 'provider' ? 'unread_for_provider' : 'unread_for_admin';
     const unread = list.reduce((sum, r) => sum + Number(r[unreadKey] || 0), 0);
     return `<span class="stat-total">총 ${list.length}개</span>
       ${unread ? `<span class="stat-협의">안읽음 ${unread}</span>` : ''}`;

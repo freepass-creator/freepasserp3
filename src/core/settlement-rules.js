@@ -34,7 +34,7 @@ export function calculateSettlement(contract, partners = []) {
     rent_amount: rentAmount,
     fee_rate: feeRate,
     fee_amount: feeAmount,
-    settlement_status: 'pending', // pending | paid | clawback
+    settlement_status: '정산대기',
     contract_date: contract.contract_date || '',
     created_at: Date.now(),
   };
