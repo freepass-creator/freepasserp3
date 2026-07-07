@@ -1280,7 +1280,7 @@ function buildFtPop(th) {
     const k = String(v);
     counts.set(k, (counts.get(k) || 0) + 1);
   });
-  const allEntries = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ko'));
+  const allEntries = [...counts.entries()].sort((a, b) => a[0].localeCompare(b[0], 'ko'));
   const selected = _searchFilter.column[field];
 
   wrap.innerHTML = `
