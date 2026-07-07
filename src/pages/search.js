@@ -1144,7 +1144,7 @@ function openPhotoZipDialog(list) {
         const provider = fsSafe(entry.p.provider_company_code || '미지정');
         const carNo = fsSafe(entry.p.car_number || entry.p._key);
         const folder = zip.folder(provider).folder(carNo);
-        entry.imgs.forEach((u, i) => tasks.push({ entry, folder, url: u, idx: i }));
+        entry.imgs.forEach((u, i) => tasks.push({ entry, folder, url: toProxiedImage(u), idx: i }));
       }
       const totalTasks = tasks.length;
       if (!totalTasks) { showToast('선택한 차량에 사진이 없습니다'); resetBtn(); return; }

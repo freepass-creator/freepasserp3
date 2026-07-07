@@ -12,10 +12,7 @@
 
 const ALLOWED_HOSTS = [
   'drive.google.com',
-  'lh3.googleusercontent.com',
-  'lh4.googleusercontent.com',
-  'lh5.googleusercontent.com',
-  'lh6.googleusercontent.com',
+  'googleusercontent.com',      // lh3/lh4/lh5/lh6/lh7 등 서브도메인 전체
   'firebasestorage.googleapis.com',
   'storage.googleapis.com',   // Firebase Storage 버킷 직접 URL (*.storage.googleapis.com)
   'firebasestorage.app',
