@@ -898,7 +898,7 @@ export async function createContractFromRoomLocal(room) {
       agent_uid: agent.uid || agent._key,
       agent_code: agent.user_code,
       agent_name: agent.name,
-      agent_channel_code: agent.agent_channel_code || agent.channel_code,
+      agent_channel_code: agent.agent_channel_code || agent.channel_code || agent.company_code,
       provider_company_code: room.provider_company_code || product?.provider_company_code,
       provider_uid: room.provider_uid,
       // 정책 snapshot

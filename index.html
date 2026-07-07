@@ -1254,6 +1254,34 @@
       <p class="login-msg" id="resetMsg" aria-live="polite"></p>
     </form>
 
+    <!-- 프로필 미완료 복구 카드 — Firebase Auth는 있지만 RTDB 프로필 저장 실패한 경우 -->
+    <form class="login-card" id="completeProfileForm" novalidate hidden>
+      <header class="login-head">
+        <h2 class="login-title">가입 완료 처리</h2>
+        <p class="login-sub">이전 가입이 완료되지 않았습니다. 아래 정보를 입력해 완료해주세요.</p>
+      </header>
+      <div class="login-form">
+        <div class="login-field">
+          <label for="cpName">이름 <span style="color:var(--danger,#ef4444)">*</span></label>
+          <input id="cpName" placeholder="홍길동" required>
+        </div>
+        <div class="login-field">
+          <label for="cpPhone">연락처</label>
+          <input id="cpPhone" type="tel" placeholder="010-0000-0000">
+        </div>
+        <div class="login-field">
+          <label for="cpCompany">소속 회사명</label>
+          <input id="cpCompany" placeholder="회사명">
+        </div>
+        <div class="login-field">
+          <label for="cpBizNo">소속 사업자번호</label>
+          <input id="cpBizNo" inputmode="numeric" placeholder="000-00-00000" autocomplete="off">
+        </div>
+        <button type="submit" class="login-submit">가입 완료하기</button>
+      </div>
+      <p class="login-msg" id="completeProfileMsg" aria-live="polite"></p>
+    </form>
+
     <!-- 가입 완료 안내 카드 -->
     <div class="login-card" id="pendingCard" hidden>
       <header class="login-head">

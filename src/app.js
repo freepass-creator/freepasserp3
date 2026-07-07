@@ -126,6 +126,7 @@ window.addEventListener('fp:open-room', ({ detail }) => {
 /* ── 페이지별 하단 액션바 — index.html showPage() 에서 호출 ── */
 let _productClipboard = null;
 let _policyClipboard = null;
+let _showCompleteProfileCard = false;
 
 
 /* 페이지별 필터 상태 — 하단바 chip 으로 토글, watchCollection 이 적용 후 render */
@@ -1245,8 +1246,11 @@ async function boot() {
     //  v3 리팩터에서 호출 누락돼 신규유저 온보딩이 죽어있던 회귀 복구. 알림 권한 안내가 채팅알림과 보완.
     import('./core/onboard-prompt.js').then(m => m.checkOnboard()).catch(() => {});
   } else {
-    // 인증은 됐지만 진입 자격 없음 → 강제 로그아웃 + 로그인 폼
-    if (user) {
+    if (user && !user.role) {
+      // Firebase Auth는 있지만 RTDB 프로필이 없음 — 프로필 완료 카드 표시 (로그아웃 안 함)
+      _showCompleteProfileCard = true;
+    } else if (user) {
+      // 프로필은 있지만 역할/상태 문제 → 강제 로그아웃
       const reason = !hasValidRole ? '권한이 부여되지 않은 계정입니다' :
         (status === 'rejected' ? '가입이 거부되었습니다' :
          user.is_active === false ? '비활성 계정입니다' :
@@ -2273,16 +2277,55 @@ function koreanAuthMsg(err, fallbackPrefix) {
 }
 
 function bindLoginForm() {
-  const loginForm  = document.getElementById('loginForm');
-  const signupForm = document.getElementById('signupForm');
-  const resetForm  = document.getElementById('resetForm');
+  const loginForm           = document.getElementById('loginForm');
+  const signupForm          = document.getElementById('signupForm');
+  const resetForm           = document.getElementById('resetForm');
+  const completeProfileForm = document.getElementById('completeProfileForm');
 
-  // 카드 토글 — login / signup / reset 한 번에 하나만 표시
+  // 카드 토글 — login / signup / reset / completeProfile 한 번에 하나만 표시
   const showCard = (which) => {
-    [loginForm, signupForm, resetForm].forEach(el => { if (el) el.hidden = true; });
-    const target = { login: loginForm, signup: signupForm, reset: resetForm }[which];
+    [loginForm, signupForm, resetForm, completeProfileForm].forEach(el => { if (el) el.hidden = true; });
+    const target = { login: loginForm, signup: signupForm, reset: resetForm, completeProfile: completeProfileForm }[which];
     if (target) target.hidden = false;
   };
+
+  // 프로필 미완료 복구 카드 — Firebase Auth 있지만 RTDB 프로필 없는 경우
+  if (_showCompleteProfileCard) showCard('completeProfile');
+
+  completeProfileForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = completeProfileForm.querySelector('button[type="submit"]');
+    if (submitBtn?.disabled) return;
+    const msg = document.getElementById('completeProfileMsg');
+    if (msg) { msg.style.color = ''; msg.textContent = ''; }
+    if (submitBtn) submitBtn.disabled = true;
+    try {
+      const { auth: _fbAuth } = await import('./firebase/config.js');
+      const firebaseUser = _fbAuth.currentUser;
+      if (!firebaseUser) throw new Error('세션이 만료되었습니다. 페이지를 새로고침해주세요.');
+      const idToken = await firebaseUser.getIdToken();
+      const profileRes = await fetch('/api/signup-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+        body: JSON.stringify({
+          name: document.getElementById('cpName')?.value.trim() || '',
+          phone: document.getElementById('cpPhone')?.value.trim() || '',
+          company_name: document.getElementById('cpCompany')?.value.trim() || '',
+          business_no: (document.getElementById('cpBizNo')?.value || '').replace(/[^\d]/g, ''),
+        }),
+      });
+      if (!profileRes.ok) {
+        const d = await profileRes.json().catch(() => ({}));
+        throw new Error(d.error || '프로필 저장 실패');
+      }
+      if (msg) { msg.style.color = 'var(--accent,#22c55e)'; msg.textContent = '완료! 페이지를 새로고침합니다...'; }
+      setTimeout(() => location.reload(), 800);
+    } catch (err) {
+      console.error('[completeProfile]', err);
+      if (msg) msg.textContent = err.message || '오류가 발생했습니다';
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
 
   // 사업자번호 자동 포맷팅 + 실시간 partners 매칭
   const bizNoInput = document.getElementById('suBizNo');
