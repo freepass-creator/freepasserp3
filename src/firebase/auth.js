@@ -7,7 +7,7 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from 'firebase/auth';
-import { ref, get } from 'firebase/database';
+import { ref, get, update } from 'firebase/database';
 import { auth, db } from './config.js';
 import { store } from '../core/store.js';
 import { startIdleLogout, stopIdleLogout } from '../core/idle-logout.js';
@@ -51,7 +51,6 @@ export function initAuth() {
         // — Firebase rules 가 agent_channel_code 기준으로 쿼리를 검증하므로 RTDB 값이 반드시 있어야 함
         if ((profile.role === 'agent_admin' || profile.role === 'agent_manager') &&
             !profile.agent_channel_code && profile.company_code) {
-          const { update } = await import('firebase/database');
           await update(ref(db, `users/${user.uid}`), { agent_channel_code: profile.company_code }).catch(() => {});
           profile.agent_channel_code = profile.company_code;
         }
