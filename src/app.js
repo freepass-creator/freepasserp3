@@ -2276,6 +2276,59 @@ function koreanAuthMsg(err, fallbackPrefix) {
     || (code ? `${fallbackPrefix} — ${code}` : `${fallbackPrefix} — ${message.slice(0, 100)}`);
 }
 
+// 가입·복구 시 RTDB에 직접 프로필 저장 (Firebase Admin SDK / API 불필요)
+// 신규 가입 유저는 인증된 상태 → database rules에서 본인 UID 쓰기 허용
+async function _writeUserProfile(user, { name, phone, company_name, business_no }) {
+  const { ref, get, runTransaction, set } = await import('firebase/database');
+  const { db } = await import('./firebase/config.js');
+
+  const bizNo = String(business_no || '').replace(/\D/g, '');
+  let role = 'agent', company_code = 'SP999', agent_channel_code = '', matched_partner_code = null;
+
+  if (bizNo) {
+    try {
+      const snap = await get(ref(db, 'partners'));
+      const partners = snap.val() || {};
+      for (const [k, p] of Object.entries(partners)) {
+        if (!p || p._deleted) continue;
+        const pn = String(p.business_number || '').replace(/\D/g, '');
+        if (pn && pn === bizNo) {
+          matched_partner_code = p.partner_code || k;
+          const pt = p.partner_type || '';
+          if (/영업|sales/i.test(pt)) {
+            role = 'agent'; company_code = matched_partner_code; agent_channel_code = matched_partner_code;
+          } else if (/공급|provider/i.test(pt)) {
+            role = 'provider'; company_code = matched_partner_code;
+          }
+          break;
+        }
+      }
+    } catch (_) {}
+  }
+
+  let user_code = 'U0001';
+  try {
+    const res = await runTransaction(ref(db, 'counters/user_code_seq'), cur => (cur || 0) + 1);
+    if (res.committed) user_code = `U${String(res.snapshot.val()).padStart(4, '0')}`;
+  } catch (_) {}
+
+  await set(ref(db, `users/${user.uid}`), {
+    uid: user.uid,
+    email: user.email || '',
+    name: name || '',
+    phone: phone || '',
+    company_name: company_name || '',
+    business_no: bizNo,
+    user_code,
+    role,
+    company_code,
+    agent_channel_code,
+    matched_partner_code,
+    status: 'active',
+    created_at: Date.now(),
+  });
+}
+
 function bindLoginForm() {
   const loginForm           = document.getElementById('loginForm');
   const signupForm          = document.getElementById('signupForm');
@@ -2303,22 +2356,12 @@ function bindLoginForm() {
       const { auth: _fbAuth } = await import('./firebase/config.js');
       const firebaseUser = _fbAuth.currentUser;
       if (!firebaseUser) throw new Error('세션이 만료되었습니다. 페이지를 새로고침해주세요.');
-      const idToken = await firebaseUser.getIdToken();
-      const profileRes = await fetch('/api/signup-profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
-        body: JSON.stringify({
-          name: document.getElementById('cpName')?.value.trim() || '',
-          phone: document.getElementById('cpPhone')?.value.trim() || '',
-          company_name: document.getElementById('cpCompany')?.value.trim() || '',
-          business_no: (document.getElementById('cpBizNo')?.value || '').replace(/[^\d]/g, ''),
-        }),
+      await _writeUserProfile(firebaseUser, {
+        name: document.getElementById('cpName')?.value.trim() || '',
+        phone: document.getElementById('cpPhone')?.value.trim() || '',
+        company_name: document.getElementById('cpCompany')?.value.trim() || '',
+        business_no: document.getElementById('cpBizNo')?.value || '',
       });
-      if (!profileRes.ok) {
-        const d = await profileRes.json().catch(() => ({}));
-        const errMsg = d.error || `HTTP ${profileRes.status}`;
-        throw new Error(`프로필 저장 실패: ${errMsg}`);
-      }
       if (msg) { msg.style.color = 'var(--accent,#22c55e)'; msg.textContent = '완료! 페이지를 새로고침합니다...'; }
       setTimeout(() => location.reload(), 800);
     } catch (err) {
@@ -2447,22 +2490,12 @@ function bindLoginForm() {
         }
         throw authErr;
       }
-      const idToken = await _authUser.getIdToken();
-      const profileRes = await fetch('/api/signup-profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
-        body: JSON.stringify({
-          name: document.getElementById('suName').value.trim(),
-          phone: document.getElementById('suPhone').value.trim(),
-          company_name: document.getElementById('suCompany').value.trim(),
-          business_no: document.getElementById('suBizNo').value.trim().replace(/[^\d]/g, ''),
-        }),
+      await _writeUserProfile(_authUser, {
+        name: document.getElementById('suName').value.trim(),
+        phone: document.getElementById('suPhone').value.trim(),
+        company_name: document.getElementById('suCompany').value.trim(),
+        business_no: document.getElementById('suBizNo').value.trim(),
       });
-      if (!profileRes.ok) {
-        const d = await profileRes.json().catch(() => ({}));
-        const errMsg = d.error || `HTTP ${profileRes.status}`;
-        throw new Error(`프로필 저장 실패: ${errMsg}`);
-      }
       _authUser = null; // 성공 — 정리 불필요
       // 가입 완료 → Firebase Auth 세션 정리 후 로그인 폼으로 전환
       const { logout: _fbLogout } = await import('./firebase/auth.js');
