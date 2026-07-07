@@ -924,20 +924,20 @@ function renderSyncTab(el) {
     try {
       const products = _syncFetched.products || {};
       const incomingUids = new Set(Object.keys(products));
-      // 기존 external_sheet 매물 조회 — autoplus 면 RP023 단일, general 이면 시트 공급사코드 범위만
+      // 기존 매물 조회 — autoplus 면 RP023 단일, general 이면 시트 공급사코드 기준 전체 (source 무관)
       const schema = _syncFetched.schema || 'autoplus';
       const existing = (store.products || []).filter(p => {
-        if (p.source !== 'external_sheet' || p._deleted) return false;
-        if (schema === 'autoplus') return p.provider_company_code === _syncFetched.provider_code;
+        if (p._deleted) return false;
+        if (schema === 'autoplus') return p.source === 'external_sheet' && p.provider_company_code === _syncFetched.provider_code;
         if (schema === 'general') {
-          if (p.source_schema !== 'general') return false;
-          // 이번 시트에 등장한 공급사코드로만 정리 범위 제한 — 다른 렌트사 매물 건드리지 않음
+          // 이번 시트 공급사코드 집합 — source 무관하게 해당 공급사 매물 전체를 정리 범위로
           const incomingProviders = new Set(
             Object.values(_syncFetched.products || {})
               .flatMap(x => [x.provider_company_code, x.partner_code].filter(Boolean))
           );
-          if (incomingProviders.size === 0) return true;
-          return incomingProviders.has(p.provider_company_code) || incomingProviders.has(p.partner_code);
+          if (incomingProviders.size === 0) return p.source === 'external_sheet' && p.source_schema === 'general';
+          return (incomingProviders.has(p.provider_company_code) || incomingProviders.has(p.partner_code))
+                 && p.vehicle_status !== '출고불가';
         }
         if (schema === 'auto-supply') {
           // 공급시트 동기화 — 같은 schema 의 기존 매물 + 시트에 등장한 partner_code 들에 한함
