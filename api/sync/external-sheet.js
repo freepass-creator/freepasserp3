@@ -30,7 +30,6 @@ export const SHEET_CONFIGS = {
     tab_name: null,                        // 렌트사 탭 자동탐지 (종합 탭 제외)
     label: '렌트사 탭 (배차상태 출고가능만)',
     schema: 'auto-supply',                 // 각 렌트사 탭 직접 읽기, 출고불가 자동 제외
-    default_product_type: '재렌트',        // 렌트사 탭 = 항상 재렌트 (신차/pendingPlate 로직 무시)
   },
   supply: {
     /* 공급시트 자동탐지 — 위 종합시트의 모든 탭 중 헤더에
@@ -460,7 +459,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     engine_cc:    parsePrice(safeGet(row, colIdx('배기량'))),
     location:     yard,
     partner_memo: safeGet(row, colIdx('비고')),
-    product_type: defaultProductType || ((pendingPlate || safeGet(row, colIdx('구분')) === '신차') ? '신차렌트' : '중고렌트'),
+    product_type: (pendingPlate || /신차/.test(safeGet(row, colIdx('구분')))) ? '신차렌트' : (defaultProductType || '중고렌트'),
     is_pending_plate: pendingPlate,     // 번호 미정 신차 — 실번호 받으면 수기로 덮어씀
     status,
     vehicle_status: vehicleStatus,

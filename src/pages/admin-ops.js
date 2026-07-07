@@ -940,10 +940,14 @@ function renderSyncTab(el) {
                  && p.vehicle_status !== '출고불가';
         }
         if (schema === 'auto-supply') {
-          // 공급시트 동기화 — 같은 schema 의 기존 매물 + 시트에 등장한 partner_code 들에 한함
-          if (p.source_schema !== 'general') return false;
-          const tabPartners = new Set(Object.values(_syncFetched.products || {}).map(x => x.partner_code).filter(Boolean));
-          return tabPartners.has(p.partner_code);
+          // 시트에 등장한 공급사코드 범위 — source 무관하게 해당 공급사 모든 출고가능 매물 정리
+          const tabPartners = new Set(
+            Object.values(_syncFetched.products || {})
+              .flatMap(x => [x.partner_code, x.provider_company_code].filter(Boolean))
+          );
+          if (tabPartners.size === 0) return false;
+          return (tabPartners.has(p.partner_code) || tabPartners.has(p.provider_company_code))
+                 && p.vehicle_status !== '출고불가';
         }
         return false;
       });
