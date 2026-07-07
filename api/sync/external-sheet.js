@@ -459,7 +459,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     engine_cc:    parsePrice(safeGet(row, colIdx('배기량'))),
     location:     yard,
     partner_memo: safeGet(row, colIdx('비고')),
-    product_type: (pendingPlate || /신차/.test(safeGet(row, colIdx('구분')))) ? '신차렌트' : (defaultProductType || '중고렌트'),
+    product_type: (pendingPlate || /^100신\d{4}$/.test(carNumber) || /신차/.test(safeGet(row, colIdx('구분') >= 0 ? colIdx('구분') : colPartial('구분')))) ? '신차렌트' : (defaultProductType || '중고렌트'),
     is_pending_plate: pendingPlate,     // 번호 미정 신차 — 실번호 받으면 수기로 덮어씀
     status,
     vehicle_status: vehicleStatus,
