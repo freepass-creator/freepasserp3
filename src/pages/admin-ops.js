@@ -924,12 +924,21 @@ function renderSyncTab(el) {
     try {
       const products = _syncFetched.products || {};
       const incomingUids = new Set(Object.keys(products));
-      // 기존 external_sheet 매물 조회 — autoplus 면 RP023 단일, general 이면 schema 일치 전체
+      // 기존 external_sheet 매물 조회 — autoplus 면 RP023 단일, general 이면 시트 공급사코드 범위만
       const schema = _syncFetched.schema || 'autoplus';
       const existing = (store.products || []).filter(p => {
         if (p.source !== 'external_sheet' || p._deleted) return false;
         if (schema === 'autoplus') return p.provider_company_code === _syncFetched.provider_code;
-        if (schema === 'general')  return p.source_schema === 'general';
+        if (schema === 'general') {
+          if (p.source_schema !== 'general') return false;
+          // 이번 시트에 등장한 공급사코드로만 정리 범위 제한 — 다른 렌트사 매물 건드리지 않음
+          const incomingProviders = new Set(
+            Object.values(_syncFetched.products || {})
+              .flatMap(x => [x.provider_company_code, x.partner_code].filter(Boolean))
+          );
+          if (incomingProviders.size === 0) return true;
+          return incomingProviders.has(p.provider_company_code) || incomingProviders.has(p.partner_code);
+        }
         if (schema === 'auto-supply') {
           // 공급시트 동기화 — 같은 schema 의 기존 매물 + 시트에 등장한 partner_code 들에 한함
           if (p.source_schema !== 'general') return false;
@@ -954,6 +963,7 @@ function renderSyncTab(el) {
           updates[`products/${found._key}/options`] = p.options;
           updates[`products/${found._key}/partner_memo`] = p.partner_memo;
           updates[`products/${found._key}/location`] = p.location;
+          if (p.product_type) updates[`products/${found._key}/product_type`] = p.product_type;
           if (p.photo_link) updates[`products/${found._key}/photo_link`] = p.photo_link;   // 시트에 사진 링크 있을 때만 (빈값으로 기존 사진 덮어쓰기 방지)
           updates[`products/${found._key}/updated_at`] = p.updated_at;
           // 차종 분류 (maker/model) — 비어있을 때만 자동 채움
