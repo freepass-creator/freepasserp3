@@ -16,7 +16,7 @@ import app, { db, auth } from '../firebase/config.js';
 
 /* ⚠️ Firebase 콘솔 → 프로젝트 설정 → 클라우드 메시징 → "웹 푸시 인증서"(Web Push certificates)
  *  의 키 쌍(Key pair) 값을 그대로 붙여넣어야 함. 없으면 토큰 발급 실패(푸시 동작 안 함). */
-const VAPID_KEY = '__PASTE_WEB_PUSH_VAPID_KEY_HERE__';
+const VAPID_KEY = 'BEzn7JeQVD6bj8W8Eib9jSJUztdmdo6UjQ8hEgCYyp9bK_PZw-xVwnZrOOydcru2k7nMxektniBF2CG3iCAVx-0';
 
 let _registered = false;
 
