@@ -659,8 +659,24 @@ function applyFeed(data) {
   }
   handleProducts(data.products || []);
 }
-loadFeed().then(applyFeed).catch(e => console.warn('[catalog] feed 로드 실패:', e?.message || e));
-setInterval(() => loadFeed().then(applyFeed).catch(() => {}), 5 * 60 * 1000);
+/* 피드 실패 시 RTDB 직구독 폴백 — 서버 env(FIREBASE_SERVICE_ACCOUNT_JSON) 미설정/장애로
+ *  피드가 죽어도 카탈로그(영업 도구)는 살아있어야 함. rules 의 익명차단 배포 전까지 유효한 응급 경로.
+ *  ⚠ env 등록 + 피드 정상 확인 후 rules 배포하면 이 폴백은 자연 무력화(익명 read 거부) — 제거하지 말 것. */
+let _feedOk = false;
+async function legacyFallback() {
+  if (_feedOk) return;
+  console.warn('[catalog] feed 실패 — RTDB 직구독 폴백');
+  const { watchCollection } = await import('./firebase/db.js');
+  await authReady;
+  watchCollection('products', (list) => {
+    if (_feedOk) return;   // 피드가 살아나면 폴백 무시
+    let raw = (list || []).filter(p => !p._deleted && p.is_active !== false);
+    if (providerCode) raw = raw.filter(p => p.provider_company_code === providerCode || p.partner_code === providerCode);
+    handleProducts(raw);
+  });
+}
+loadFeed().then(d => { _feedOk = true; applyFeed(d); }).catch(e => { console.warn('[catalog] feed 로드 실패:', e?.message || e); legacyFallback(); });
+setInterval(() => loadFeed().then(d => { _feedOk = true; applyFeed(d); }).catch(() => {}), 5 * 60 * 1000);
 // 카탈로그 배너 오버레이 — authReady 후 실행 (home_notices/__banner__ 은 auth!=null 룰)
 authReady.then(async () => {
   const HIDE_KEY = 'fp_banner_hide_date';
