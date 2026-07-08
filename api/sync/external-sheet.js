@@ -472,8 +472,11 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     vehicle_price: parsePrice(safeGet(row, colIdx('소비자가격'))),
     engine_cc:    parsePrice(safeGet(row, colIdx('배기량'))),
     location:     yard,
+    address:      safeGet(row, colIdx('주소')),
     partner_memo: safeGet(row, colIdx('비고')),
     product_type: resolveProductType({ pendingPlate, carNumber, kindVal: safeGet(row, colIdx('구분') >= 0 ? colIdx('구분') : colPartial('구분')), defaultProductType }),
+    arrival_note:  safeGet(row, colIdx('입고일자')),
+    deposit_free:  /무보증/.test(safeGet(row, colIdx('입고일자'))),
     is_pending_plate: pendingPlate,     // 번호 미정 신차 — 실번호 받으면 수기로 덮어씀
     status,
     vehicle_status: vehicleStatus,
@@ -689,7 +692,7 @@ export async function syncFromSheet(source) {
  * 오플 + 공급사(보이는 탭) 시트의 42컬럼을 헤더이름 기준으로 종합 표준 순서에 정렬해 그대로 출력.
  * 공급사 탭이 이미 종합 양식(42컬럼)이라 passthrough — 입고일자·운전자범위·대인·대물 등 다 채워짐.
  * 출고불가/숨김 행 제외 (노출 차량만). 종합표 만들기 UI 가 호출 → 클립보드 TSV → 종합탭 붙여넣기. */
-const JONGHAP_HEADERS = ['상태', '입고일자', '구분', '차량번호', '차종분류', '세부모델', '연료', '외장', '내장', 'Km', '단기보증', '1개월', '6개월', '12개월', '장기보증', '24개월', '36개월', '48개월', '60개월', '트림', '옵션', '최초등록', '소비자가격', '제조사', '배기량', '차고지', '운전자범위', '연주행', '분납', '21세', '23세', '1만+', '대인', '대물', '자차', '자손', '무보험', '정비', '전용계좌', '비고', '공급사코드', '정책코드'];
+const JONGHAP_HEADERS = ['상태', '입고일자', '구분', '차량번호', '차종분류', '세부모델', '연료', '외장', '내장', 'Km', '단기보증', '1개월', '6개월', '12개월', '장기보증', '24개월', '36개월', '48개월', '60개월', '트림', '옵션', '최초등록', '소비자가격', '제조사', '배기량', '차고지', '주소', '운전자범위', '연주행', '분납', '21세', '23세', '1만+', '대인', '대물', '자차', '자손', '무보험', '정비', '전용계좌', '비고', '공급사코드', '정책코드'];
 const JONGHAP_ALIAS = { '상태': STATUS_COL_NAMES };   // 탭별 상태 컬럼 표기 차이 흡수
 const PC_COL = JONGHAP_HEADERS.indexOf('공급사코드');
 const CAR_COL = JONGHAP_HEADERS.indexOf('차량번호');

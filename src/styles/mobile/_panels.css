@@ -204,7 +204,7 @@
 
   .m-chat-input-area {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: var(--sp-2);
     padding: var(--sp-2) var(--sp-3);
     padding-bottom: calc(var(--sp-2) + env(safe-area-inset-bottom));
@@ -213,7 +213,9 @@
   }
 
   /* 높이는 내부 padding + 폰트로 자동 — 폰마다 다른 뷰포트 대응 */
-  .m-chat-input {
+  .m-chat-input, textarea.m-chat-input {
+    resize: none;
+    overflow-y: auto;
     flex: 1;
     min-width: 0;
     padding: var(--sp-2) var(--sp-3);

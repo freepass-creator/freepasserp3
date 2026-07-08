@@ -875,6 +875,9 @@ export function renderProductDetail(p) {
         ${ffi('차량가격',  'vehicle_price', p.vehicle_price, dis)}
         ${ffi('차령만료일', 'vehicle_age_expiry_date', p.vehicle_age_expiry_date, dis)}
         ${ffi('위치',      'location',      p.location, dis)}
+        ${ffi('주소',      'address',       p.address, dis)}
+        ${ffi('입고일자',  'arrival_note',  p.arrival_note, dis)}
+        <div class="ff"><label>무보증</label><span class="input" style="display:flex;align-items:center;gap:6px;">${p.deposit_free ? '<span class="status-chip 즉시출고" style="font-size:12px;">무보증 가능</span>' : '<span style="color:var(--text-muted);">-</span>'}</span></div>
         <div class="ff" style="grid-column:1/-1;"><label>메모</label><textarea class="input" data-f="partner_memo" style="height:50px;"${dis}${canEdit ? ' readonly data-edit-lock="1"' : ''}>${esc(p.partner_memo || p.note || '')}</textarea></div>
       `)}
       ${sect('등록증스펙', 'file-text', `

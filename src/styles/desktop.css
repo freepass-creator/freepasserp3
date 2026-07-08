@@ -2210,7 +2210,8 @@
     border-top: 1px solid var(--border); padding: 6px 8px;
     display: flex; gap: 4px; flex-shrink: 0; background: var(--bg-card);
   }
-  .ws-input input { flex: 1; }
+  .ws-input input, .ws-input textarea { flex: 1; }
+  .ws-input textarea.ws-msg-input { resize: none; overflow-y: auto; line-height: 1.4; padding-top: 5px; padding-bottom: 5px; align-self: flex-end; }
   .ws-send-btn { flex-shrink: 0; padding: 0; width: 32px; display: inline-flex; align-items: center; justify-content: center; }
   .ws-send-btn i { font-size: 16px; }
   .ws-attach-btn { flex-shrink: 0; width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); border-radius: 4px; }

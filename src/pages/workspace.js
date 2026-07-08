@@ -419,15 +419,22 @@ export function bindChatInput() {
   if (!page) return;
   const inputBar = page.querySelector('.ws-input');
   if (!inputBar) return;
-  const input = inputBar.querySelector('input.input');
+  const input = inputBar.querySelector('textarea.ws-msg-input') || inputBar.querySelector('input.input');
   const sendBtn = inputBar.querySelector('.btn-primary');
   if (!input || !sendBtn) return;
+
+  const autoResize = () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+  };
+  input.addEventListener('input', autoResize);
 
   const send = async () => {
     const text = input.value.trim();
     if (!text || !_activeRoomId) return;
     input.focus();           // PWA 키보드 유지 — await 전에 동기 focus
     input.value = '';
+    input.style.height = 'auto';
     try {
       await pushRecord(`messages/${_activeRoomId}`, {
         text,

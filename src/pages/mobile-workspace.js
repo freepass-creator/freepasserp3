@@ -229,11 +229,11 @@ function openRoom(roomId) {
       </div>
       <div class="m-chat-input-area">
         <label class="m-chat-attach" title="파일 첨부"><i class="ph ph-paperclip"></i><input type="file" hidden id="mwsChatFile" accept="image/*,.pdf,.heic,.webp"></label>
-        <input class="m-chat-input" id="mwsChatText" type="text"
+        <textarea class="m-chat-input" id="mwsChatText" rows="1"
                placeholder="메시지 입력..."
                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                data-form-type="other" data-lpignore="true"
-               enterkeyhint="send" inputmode="text">
+               enterkeyhint="send"></textarea>
         <button class="m-chat-send" id="mwsChatSend" aria-label="보내기"><i class="ph ph-paper-plane-tilt"></i></button>
       </div>
     </div>
@@ -318,6 +318,7 @@ function bindChatInput(roomId, room) {
     const user = store.currentUser;
     if (!user?.uid || !user?.role) { showToast('로그인 필요', 'error'); return; }
     input.value = '';  // 낙관적 클리어 — 실패 시 복구
+    input.style.height = 'auto';
     input.focus();    // 키보드 유지 — 버튼 탭 후 포커스 이탈 방지
     // 개인 식별자만 허용 — company_code 폴백 금지 (SP999 같은 공유 임시채널 노출 방지)
     const senderCode = user.user_code || '';
@@ -342,6 +343,12 @@ function bindChatInput(roomId, room) {
       showToast('전송 실패 — 다시 시도하세요', 'error');
     }
   };
+
+  const autoResize = () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 96) + 'px';
+  };
+  input?.addEventListener('input', autoResize);
 
   sendBtn?.addEventListener('click', send);
   input?.addEventListener('keydown', (e) => {
