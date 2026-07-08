@@ -9,7 +9,7 @@ import { trackSave } from '../core/save-status.js';
  *  쓰기 전 undefined 프로퍼티 제거 (중첩 객체/배열까지 재귀).
  *  계약 생성 등에서 product?.x / customer._key 같은 optional 필드가 undefined 로 섞여
  *  set 전체가 실패하던 문제 방지. null(=삭제) 은 그대로 둠. */
-function stripUndefined(value) {
+export function stripUndefined(value) {
   if (Array.isArray(value)) return value.map(stripUndefined);
   if (value && typeof value === 'object') {
     const out = {};

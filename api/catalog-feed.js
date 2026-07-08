@@ -1,20 +1,9 @@
 /**
- * /api/catalog-feed — 손님용 카탈로그 공개 데이터 피드 (원칙 23 PII / 대외비 차단)
+ * /api/catalog-feed - public customer catalog feed.
  *
- * 배경: 기존 catalog.html 은 RTDB products(.read:true)·policies·partners·users 를
- *  익명 인증으로 직접 구독 → 원가·수수료·공급사코드·메모·전직원 연락처까지
- *  브라우저에서 통째로 덤프 가능했음. 이 피드가 서버에서 정제 후 필요한 것만 내려줌.
- *  (RTDB 원본 노드들은 rules 에서 익명 접근 차단 — database.rules.json)
- *
- * GET /api/catalog-feed?p={공급사코드}&a={영업자코드}
- *  - p: 해당 공급사 매물만 + brand(회사명) 반환. 코드 자체는 응답에 안 나감.
- *  - a: 영업자 카드 정보(이름·전화·회사·직급) 반환 — 손님에게 의도적으로 노출되는 값만.
- *
- * 응답: { generated_at, count, products:[...], brand?, agent? }
- *  products 필드 = 화이트리스트 (아래 sanitize). 수수료(fee/commission)·정책코드·
- *  공급사코드·내부메모·source 계열은 절대 포함 금지.
- *
- * 캐시: Vercel 엣지 s-maxage=300 (쿼리별 캐시) — RTDB 부하/비용 보호.
+ * The browser receives only whitelisted fields. Internal source fields, provider
+ * codes, policy codes, fees, commissions, memos, users, and partner records stay
+ * server-side.
  */
 import admin from 'firebase-admin';
 
@@ -35,43 +24,79 @@ function getAdmin() {
   return _appPromise;
 }
 
-/* 월별 가격에서 공개 가능한 rent/deposit 만 — fee/commission(마진) 제거 */
 function publicPrice(price) {
   const out = {};
-  for (const [m, v] of Object.entries(price || {})) {
-    const month = Number(m);
+  for (const [key, v] of Object.entries(price || {})) {
+    const month = Number(String(key).split('_')[0]);
     if (!Number.isFinite(month) || month < 1 || month > 60) continue;
     const rent = Number(v?.rent || 0);
     if (rent <= 0) continue;
-    out[m] = { rent, deposit: Number(v?.deposit || 0) };
+    out[key] = { rent, deposit: Number(v?.deposit || 0) };
   }
   return out;
 }
 
-/* 정책(보험조건 등) 공개분 — 수수료·환수·코드·메모 계열 제거 후 첨부.
- *  손님 상세화면이 대인/대물/자차/운전자범위 등을 _policy 에서 표시함. */
-const POLICY_DENY = /commission|clawback|fee|수수료|환수|memo|비고|_code$|^code|created_by|updated_by/i;
+const PUBLIC_POLICY_FIELDS = [
+  'policy_name',
+  'policy_type',
+  'insurance_included',
+  'injury_compensation_limit',
+  'injury_deductible',
+  'property_compensation_limit',
+  'property_deductible',
+  'self_body_accident',
+  'self_body_deductible',
+  'personal_injury_compensation_limit',
+  'personal_injury_deductible',
+  'uninsured_damage',
+  'uninsured_compensation_limit',
+  'uninsured_deductible',
+  'own_damage_compensation',
+  'own_damage_repair_ratio',
+  'own_damage_compensation_rate',
+  'own_damage_min_deductible',
+  'own_damage_max_deductible',
+  'annual_roadside_assistance',
+  'roadside_assistance',
+  'credit_grade',
+  'screening_criteria',
+  'annual_mileage',
+  'mileage_upcharge_per_10000km',
+  'deposit_installment',
+  'deposit_card_payment',
+  'payment_method',
+  'penalty_condition',
+  'rental_region',
+  'delivery_fee',
+  'basic_driver_age',
+  'driver_age_upper_limit',
+  'personal_driver_scope',
+  'business_driver_scope',
+  'additional_driver_allowance_count',
+  'additional_driver_cost',
+  'maintenance_service',
+];
+
 function publicPolicy(policy) {
   if (!policy) return null;
   const out = {};
-  for (const [k, v] of Object.entries(policy)) {
-    if (POLICY_DENY.test(k)) continue;
+  for (const k of PUBLIC_POLICY_FIELDS) {
+    const v = policy[k];
     if (v === null || v === undefined || v === '') continue;
     out[k] = v;
   }
   return Object.keys(out).length ? out : null;
 }
-/* 상품 ↔ 정책 매칭 — 클라이언트 policy-utils.findPolicy 와 동일 규칙 (policy_code === policy_code | _key) */
+
 function findPolicyFor(p, policies) {
   if (!p.policy_code) return null;
   return policies.find(x => x && (x.policy_code === p.policy_code || x._key === p.policy_code)) || null;
 }
 
-/* 카탈로그 표시 필드 화이트리스트 — 여기 없는 필드는 절대 안 나감 */
 function sanitizeForCatalog(key, p) {
   return {
     _key: key,
-    car_number: p.car_number || '',        // 카탈로그는 차량번호를 의도적으로 표시 (?car 단일 모드)
+    car_number: p.car_number || '',
     maker: p.maker || '',
     model: p.model || '',
     sub_model: p.sub_model || '',
@@ -89,18 +114,43 @@ function sanitizeForCatalog(key, p) {
     product_type: p.product_type || '',
     vehicle_status: p.vehicle_status || '',
     status: p.status || '',
+    // 손님 상세 표기 필드 (product-detail-rows customer 경로가 읽음 — 누락 시 영구 '-')
+    drive_type: p.drive_type || '',
+    seats: p.seats || '',
+    usage: p.usage || '',
+    credit_grade: p.credit_grade || '',
+    insurance_included: p.insurance_included || '',
+    annual_mileage: p.annual_mileage || '',
+    base_age: p.base_age || '',
+    min_age: p.min_age || '',
+    sheet_meta: p.sheet_meta ? { age_21: p.sheet_meta.age_21 || '', age_23: p.sheet_meta.age_23 || '' } : undefined,   // 내부 운영 컬럼 제외, 대여조건 2개만
     photo_link: p.photo_link || '',
     image_url: p.image_url || '',
-    image_urls: Array.isArray(p.image_urls) ? p.image_urls : undefined,
+    image_urls: publicImages(p),
     price: publicPrice(p.price),
     created_at: p.created_at || 0,
     updated_at: p.updated_at || 0,
   };
 }
 
+/* 사진 정규화 — image_urls(배열|JSON문자열) + 레거시 images/photos 병합 (product-photos.collectImages 동일 규칙) */
+function publicImages(p) {
+  const urls = [];
+  for (const src of [p.image_urls, p.images, p.photos]) {
+    if (!src) continue;
+    let arr = src;
+    if (typeof src === 'string') { try { arr = JSON.parse(src); } catch { continue; } }
+    if (Array.isArray(arr)) for (const u of arr) { if (u && typeof u === 'string') urls.push(u); }
+  }
+  return urls.length ? [...new Set(urls)] : undefined;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
-  if (req.method !== 'GET') { res.statusCode = 405; return res.end(JSON.stringify({ ok: false, message: 'GET only' })); }
+  if (req.method !== 'GET') {
+    res.statusCode = 405;
+    return res.end(JSON.stringify({ ok: false, message: 'GET only' }));
+  }
 
   const providerCode = String(req.query?.p || '').trim();
   const agentCode = String(req.query?.a || '').trim();
@@ -121,11 +171,10 @@ export default async function handler(req, res) {
       .map(([k, p]) => {
         const out = sanitizeForCatalog(k, p);
         const pol = publicPolicy(findPolicyFor(p, policies));
-        if (pol) out._policy = pol;   // 보험조건 등 공개분 — 손님 상세 표시용
+        if (pol) out._policy = pol;
         return out;
       });
 
-    // 공급사 브랜드명 (?p) — 코드 대신 이름만
     let brand = null;
     if (providerCode) {
       const partners = (await db.ref('partners').once('value')).val() || {};
@@ -133,10 +182,8 @@ export default async function handler(req, res) {
       if (partner) brand = partner.partner_name || partner.company_name || '';
     }
 
-    // 영업자 카드 (?a) — 손님에게 의도 노출되는 필드만 (uid/email/role 원본 등 제외)
     let agent = null;
     if (agentCode) {
-      // orderByChild 는 rules indexOn 필요(admin SDK 도 인덱스 요구) — 전체 로드 후 서버에서 find (외부 미노출)
       const users = (await db.ref('users').once('value')).val() || {};
       const u = Object.values(users).find(x => x && x.user_code === agentCode);
       if (u) {

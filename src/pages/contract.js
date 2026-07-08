@@ -26,7 +26,7 @@ import {
   providerNameByCode, providerLabelByCode, formatMainLine, renderInfoSections, fmtMoneyMan,
 } from '../core/ui-helpers.js';
 
-export const CONTRACT_STATUSES = ['계약요청', '계약대기', '계약발송', '계약완료', '계약취소'];
+export const CONTRACT_STATUSES = Object.freeze(Object.values(CONTRACT_STATUS));   // SSOT 파생 — 별도 리터럴 배열 재정의 금지 (app.js 상태변경 메뉴의 write 값 공급원)
 
 /* 화면 표시용 라벨 매핑 — DB 값(계약취소)는 그대로 두고 라벨만 진행취소로
  *  (가계약 단계 취소는 정식 계약 취소가 아니므로) */
@@ -777,12 +777,20 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
           await updateRecord(`products/${c.product_uid}`, { vehicle_status: '출고가능', updated_at: Date.now() });
         }
       }
+      // 정산완료 건이면 잔여기간 비례 환수 처리 (구 auto-status watcher 는 미기동 데드코드라 환수 100% 누락이었음)
+      try {
+        const { applyClawbackOnCancel } = await import('../firebase/collections.js');
+        const amt = await applyClawbackOnCancel({ ...c, contract_status: CONTRACT_STATUS.CANCELLED, cancelled_at: Date.now() });
+        if (amt) showToast(`환수대기 전환 | 환수액 ${Math.round(amt / 10000)}만원`, 'info');
+      } catch (ce) { console.warn('[clawback] 처리 실패', ce); showToast('환수 처리 실패 — 정산관리에서 수동 확인 필요', 'error'); }
       showToast('진행 취소됨', 'info');
     } catch (e) { showToast('취소 실패: ' + (e.message || e), 'error'); }
   });
 
   // 계약 완료 — 임시 코드 → 정식 코드 promote, 같은 차량의 다른 완료 계약 차단
   stepCard.querySelector('#ctCompleteBtn')?.addEventListener('click', async () => {
+    if (!confirm('계약을 완료 처리하시겠습니까?')) return;
+    // 중복완료 가드 — confirm 뒤에 재평가 (다이얼로그 떠있는 동안 다른 클라이언트가 완료했을 수 있음. store 스냅샷 기반이라 완전한 상호배제는 아님 — 잔여 레이스는 짧은 창)
     if (c.product_uid) {
       const alreadyDone = (store.contracts || []).find(x =>
         x._key !== c._key && x.product_uid === c.product_uid &&
@@ -792,7 +800,6 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
         return showToast(`이미 완료된 계약이 있습니다 | ${alreadyDone.contract_code}`, 'error');
       }
     }
-    if (!confirm('계약을 완료 처리하시겠습니까?')) return;
     try {
       const oldCode = c.contract_code;
       const newCode = await allocateRealContractCode();
@@ -802,7 +809,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       const atomicUpdate = {
         [`contracts/${c._key}/contract_code`]: newCode,
         [`contracts/${c._key}/is_draft`]: false,
-        [`contracts/${c._key}/contract_status`]: '계약완료',
+        [`contracts/${c._key}/contract_status`]: CONTRACT_STATUS.DONE,   // 완료 상태의 핵심 write — SSOT 상수 필수 (audit 만 상수고 write 가 리터럴이면 2원화)
         [`contracts/${c._key}/completed_at`]: now,
         [`contracts/${c._key}/completed_by`]: store.currentUser?.uid || '',
         [`contracts/${c._key}/updated_at`]: now,
@@ -816,12 +823,15 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       await update(ref(db), atomicUpdate);    // root multi-path — 전부 성공 or 전부 실패
       const { logAudit } = await import('../firebase/audit-log.js');
       logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['contract_status', 'contract_code'], data: { contract_status: CONTRACT_STATUS.DONE, contract_code: newCode } });
-      // 정산 자동 생성
+      // 정산 자동 생성 — 실패를 침묵시키지 않음 (수수료 레코드 영구 누락 사고 방지)
       try {
         const { createSettlement } = await import('../firebase/collections.js');
         c.contract_code = newCode;
         await createSettlement(c);
-      } catch (se) { console.warn('[settlement] 자동 생성 실패', se); }
+      } catch (se) {
+        console.warn('[settlement] 자동 생성 실패', se);
+        showToast('⚠ 정산 자동생성 실패 — 정산관리에서 수동 생성 필요', 'error');
+      }
 
       const product = findProduct(c.product_uid) || findProductByUid(c.product_uid);
       notifyProviderAndAdmin({

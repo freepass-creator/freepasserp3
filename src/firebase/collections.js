@@ -3,7 +3,7 @@
  */
 import { ref, runTransaction, get } from 'firebase/database';
 import { db } from './config.js';
-import { setRecord, updateRecord, pushRecord } from './db.js';
+import { setRecord, updateRecord, pushRecord, stripUndefined } from './db.js';
 
 /* ── 코드 시퀀스 채번 ──
  *  정상 트랜잭션 → 1부터 증가하는 seq
@@ -109,13 +109,40 @@ export async function createSettlement(contract) {
     created_at: now,
     updated_at: now,
   };
-  // 원자적 조건부 생성 — 이미 있으면 abort (기존 정산 상태를 절대 덮어쓰지 않음)
-  const result = await runTransaction(ref(db, `settlements/${code}`), (cur) => (cur === null ? data : undefined));
+  // 원자적 조건부 생성 — 활성 정산이 이미 있으면 abort (기존 상태 절대 덮어쓰지 않음).
+  //  · stripUndefined 필수: 트랜잭션 반환값에 undefined 있으면 SDK가 throw → 정산 조용히 미생성 (setRecord와 달리 자동정제 없음)
+  //  · soft delete tombstone(_deleted:true) 위에는 재생성 허용 — store 가드(72행)와 의도 일치
+  const clean = stripUndefined(data);
+  const result = await runTransaction(ref(db, `settlements/${code}`),
+    (cur) => (cur === null || cur._deleted === true ? clean : undefined));
   if (result.committed) {
     const { logAudit } = await import('./audit-log.js');   // setRecord 미경유 → audit 직접 기록
-    logAudit({ action: 'create', path: `settlements/${code}`, fields: Object.keys(data), data });
+    logAudit({ action: 'create', path: `settlements/${code}`, fields: Object.keys(clean), data: clean });
   }
   return code;
+}
+
+/* ── 계약취소 시 환수 처리 (동기) ──
+ *  기존 auto-status.js 의 clawback 은 initAutoStatus 가 어디서도 호출되지 않는 데드코드였음
+ *  → 환수가 100% 누락되던 상태. 취소 액션 안에서 동기 호출하도록 이관 (클라이언트 watcher 의존 제거).
+ *  정산이 '정산완료'일 때만 잔여기간 비례 환수액 계산 → '환수대기' 전환. */
+export async function applyClawbackOnCancel(contract) {
+  if (!contract?.contract_code) return null;
+  const { store } = await import('../core/store.js');
+  const settlement = (store.settlements || []).find(s => !s._deleted && s.contract_code === contract.contract_code);
+  if (!settlement) return null;
+  const { SETTLEMENT_STATUS } = await import('../core/settlement-status.js');
+  if (settlement.settlement_status !== SETTLEMENT_STATUS.DONE) return null;
+  const { calculateClawback } = await import('../core/settlement-rules.js');
+  const clawbackAmount = calculateClawback(settlement, contract);
+  if (clawbackAmount <= 0) return null;
+  await updateRecord(`settlements/${settlement._key}`, {
+    settlement_status: SETTLEMENT_STATUS.CLAWBACK_WAIT,
+    status: SETTLEMENT_STATUS.CLAWBACK_WAIT,
+    clawback_amount: clawbackAmount,
+    clawback_at: Date.now(),
+  });
+  return clawbackAmount;
 }
 
 /* ── 관리자 월별 수수료 정산 (수기 등록) ──

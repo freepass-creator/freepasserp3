@@ -7,6 +7,7 @@
  */
 import { store, subscribe, filterCollectionByRole } from './store.js';
 import { SETTLEMENT_STATUS as SS, getSettlementStatus } from './settlement-status.js';
+import { CONTRACT_STATUS as CS } from './contract-status.js';
 
 function setBadge(id, hasUnread) {
   document.querySelectorAll(`[data-badge="${id}"]`).forEach(el => {
@@ -36,7 +37,8 @@ function recompute() {
   const contracts = filterCollectionByRole(store.contracts || [], 'contracts');
   const hasActiveContracts = contracts.some(c => {
     const s = c.contract_status;
-    return s && s !== '계약완료' && s !== '계약취소' && !c._deleted;
+    // 블랙리스트 유지 (미지/레거시 상태도 진행중으로 표시) — CONTRACT_IN_PROGRESS 화이트리스트로 바꾸면 의미 변경
+    return s && s !== CS.DONE && s !== CS.CANCELLED && !c._deleted;
   });
   setBadge('contract', hasActiveContracts);
 

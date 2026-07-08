@@ -6,7 +6,6 @@
  *   ?id={product_key}  → 단일 차량 모드 (모달 자동 오픈, 그리드 숨김)
  * 정책: 수수료 / 모든 코드 / 계약·정산 일체 비공개. 그 외 모두 공개
  */
-import { pushRecord } from './firebase/db.js';
 import { auth } from './firebase/config.js';
 import { signInAnonymously } from 'firebase/auth';
 import { ref as dbRef, get } from 'firebase/database';
@@ -130,6 +129,15 @@ function fmtDate(v) {
   if (d.length === 6) return `20${d.slice(0,2)}.${d.slice(2,4)}.${d.slice(4,6)}`;
   return String(v ?? '').trim();
 }
+function bestPriceForMonth(price, month) {
+  const direct = price?.[String(month)];
+  if (direct?.rent) return direct;
+  const prefix = `${month}_`;
+  return Object.entries(price || {})
+    .filter(([key, value]) => key.startsWith(prefix) && Number(value?.rent || 0) > 0)
+    .map(([, value]) => value)
+    .sort((a, b) => Number(a.rent || 0) - Number(b.rent || 0))[0] || null;
+}
 function shortStatus(s) {
   return ({
     '즉시': '즉시', '즉시 가능': '즉시',
@@ -161,8 +169,9 @@ function applyFilter() {
       }
       return false;
     };
-    if (!matchAnyRange(_filter.rentIdx, RANGE_PRESETS.rent.items, Number(p.price?.['24']?.rent || 0) / 10000)) return false;
-    if (!matchAnyRange(_filter.depositIdx, RANGE_PRESETS.deposit.items, Number(p.price?.['24']?.deposit || 0) / 10000)) return false;
+    const p24 = bestPriceForMonth(p.price, '24');
+    if (!matchAnyRange(_filter.rentIdx, RANGE_PRESETS.rent.items, Number(p24?.rent || 0) / 10000)) return false;
+    if (!matchAnyRange(_filter.depositIdx, RANGE_PRESETS.deposit.items, Number(p24?.deposit || 0) / 10000)) return false;
     if (!matchAnyRange(_filter.yearIdx, RANGE_PRESETS.year.items, Number(p.year || 0))) return false;
     if (!matchAnyRange(_filter.mileageIdx, RANGE_PRESETS.mileage.items, Number(p.mileage || 0))) return false;
     if (q) {
@@ -194,7 +203,7 @@ function renderGrid() {
     const status = shortStatus(p.vehicle_status || '');
     const carName = `${p.car_number || '-'} ${p.maker || ''} ${p.sub_model || p.model || ''}`.trim();
     const sub = [p.year ? p.year + '년' : '', p.fuel_type, p.mileage ? fmtMileage(p.mileage) + 'km' : ''].filter(Boolean).join(' | ');
-    const p36 = p.price?.['36'];
+    const p36 = bestPriceForMonth(p.price, '36');
     const priceText = p36?.rent ? `${Math.round(p36.rent/10000)}만 <small>/${Math.round((p36.deposit||0)/10000)}만 | 36개월</small>` : '<small>가격 문의</small>';
     const badges = computeCardBadges(p);
     return `<div class="cat-card" data-key="${esc(p._key)}">
@@ -618,83 +627,6 @@ const RANGE_PRESETS = {
     ],
   },
 };
-function openCatRangePop(anchor, key) {
-  document.querySelector('.cat-range-pop')?.remove();
-  const pop = document.createElement('div');
-  pop.className = 'cat-range-pop';
-
-  if (key === 'fuel') {
-    const fuels = ['가솔린', '디젤', 'LPG', '하이브리드', '전기'];
-    pop.innerHTML = `
-      <div class="cat-range-title">연료 (다중 선택)</div>
-      <div class="cat-preset-list">
-        ${fuels.map(f => `<button class="cat-preset-chip ${_filter.fuels.has(f) ? 'is-active' : ''}" data-fuel="${f}">${f}</button>`).join('')}
-        <button class="cat-preset-chip cat-preset-reset" data-act="reset">초기화</button>
-      </div>
-    `;
-    pop.addEventListener('click', (e) => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-      if (btn.dataset.act === 'reset') {
-        _filter.fuels.clear();
-        anchor.classList.remove('is-active');
-      } else {
-        const f = btn.dataset.fuel;
-        if (_filter.fuels.has(f)) _filter.fuels.delete(f); else _filter.fuels.add(f);
-        anchor.classList.toggle('is-active', _filter.fuels.size > 0);
-        btn.classList.toggle('is-active');
-      }
-      renderGrid();
-    });
-  } else {
-    const cfg = RANGE_PRESETS[key];
-    const minK = key + 'Min', maxK = key + 'Max';
-    const isMatch = (item) => _filter[minK] === item.min && _filter[maxK] === item.max;
-    pop.innerHTML = `
-      <div class="cat-range-title">${cfg.title}</div>
-      <div class="cat-preset-list">
-        ${cfg.items.map((it, i) => `<button class="cat-preset-chip ${isMatch(it) ? 'is-active' : ''}" data-i="${i}">${it.l}</button>`).join('')}
-        <button class="cat-preset-chip cat-preset-reset" data-act="reset">초기화</button>
-      </div>
-    `;
-    pop.addEventListener('click', (e) => {
-      const btn = e.target.closest('button');
-      if (!btn) return;
-      if (btn.dataset.act === 'reset') {
-        _filter[minK] = null; _filter[maxK] = null;
-        anchor.classList.remove('is-active');
-      } else {
-        const it = cfg.items[Number(btn.dataset.i)];
-        // 같은 preset 다시 누르면 해제
-        if (isMatch(it)) {
-          _filter[minK] = null; _filter[maxK] = null;
-          anchor.classList.remove('is-active');
-        } else {
-          _filter[minK] = it.min; _filter[maxK] = it.max;
-          anchor.classList.add('is-active');
-        }
-      }
-      pop.remove();
-      renderGrid();
-    });
-  }
-  document.body.appendChild(pop);
-  // 위치 — anchor 아래쪽
-  const r = anchor.getBoundingClientRect();
-  pop.style.top = (r.bottom + 4) + 'px';
-  pop.style.left = Math.min(r.left, window.innerWidth - pop.offsetWidth - 8) + 'px';
-
-  // 외부 클릭 시 닫기
-  setTimeout(() => {
-    const onDocClick = (ev) => {
-      if (!pop.contains(ev.target) && ev.target !== anchor) {
-        pop.remove();
-        document.removeEventListener('click', onDocClick);
-      }
-    };
-    document.addEventListener('click', onDocClick);
-  }, 0);
-}
 
 /* 데이터 로드 — 서버 피드(/api/catalog-feed) 단일 호출 (원칙 23).
  *  구버전: RTDB products(.read:true)·policies·partners·users 직접 구독 → 원가·수수료·
@@ -709,14 +641,15 @@ async function loadFeed() {
   return res.json();
 }
 function applyFeed(data) {
-  handleProducts(data.products || []);
   // 공급사 브랜드 (?p)
   if (providerCode && data.brand) {
     const name = stripLegalEntity(data.brand);
     const brandText = document.getElementById('catBrandText');
     if (brandText) brandText.textContent = name;
-    document.title = name;
-    document.querySelector('meta[property="og:title"]')?.setAttribute('content', name);
+    if (!singleProductId && !singleCarNumber) {
+      document.title = name;
+      document.querySelector('meta[property="og:title"]')?.setAttribute('content', name);
+    }
   }
   // 영업자 카드 (?a) — 인라인(공유링크 내장) 값이 비어있지 않으면 우선
   if (agentCode && data.agent) {
@@ -724,6 +657,7 @@ function applyFeed(data) {
     _agent = { ...data.agent, ...overrides };
     renderAgent();
   }
+  handleProducts(data.products || []);
 }
 loadFeed().then(applyFeed).catch(e => console.warn('[catalog] feed 로드 실패:', e?.message || e));
 setInterval(() => loadFeed().then(applyFeed).catch(() => {}), 5 * 60 * 1000);
@@ -765,13 +699,19 @@ authReady.then(async () => {
 });
 
 /* 피드 products 반영 — ?p 필터는 서버(catalog-feed)가 이미 적용 */
+let _singleOpened = false;   // 단일모드 상세 1회만 자동 오픈 ('.cat-modal' 셀렉터는 DOM에 없어 가드 불능 — 5분 갱신마다 재오픈·scrollTo(0,0) 버그)
 function handleProducts(list) {
-  _products = list || [];
+  // 5분 갱신 시 drive fetch 가 심어둔 런타임 사진(image_urls·_drive_folder_virtual) 이월 — 소실되면 전량 재fetch
+  const prev = new Map((_products || []).map(x => [x._key, x]));
+  _products = (list || []).map(x => {
+    const old = prev.get(x._key);
+    return old?._drive_folder_virtual ? { ...x, image_urls: old.image_urls, _drive_folder_virtual: true } : x;
+  });
   renderGrid();
 
-  // 단일 차량 모드 — ?id / ?pid / ?car 지원, 데이터 도착 후 자동 오픈
+  // 단일 차량 모드 — ?id / ?pid / ?car 지원, 데이터 도착 후 자동 오픈 (최초 1회)
   const isSingle = singleProductId || singleCarNumber;
-  if (isSingle && !document.querySelector('.cat-modal')) {
+  if (isSingle && !_singleOpened) {
     const target = singleCarNumber
       ? _products.find(x => (x.car_number || '').replace(/\s+/g, '') === singleCarNumber.replace(/\s+/g, ''))
       : _products.find(x => x._key === singleProductId);
@@ -783,6 +723,7 @@ function handleProducts(list) {
       document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title);
       const sub = [target.year ? target.year + '년' : '', target.fuel_type, target.mileage ? Number(target.mileage).toLocaleString() + 'km' : ''].filter(Boolean).join(' | ');
       document.querySelector('meta[property="og:description"]')?.setAttribute('content', sub || '');
+      _singleOpened = true;
       openDetail(target._key);
     } else if (_products.length) {
       // 데이터는 로드됐는데 해당 차량 없음 → 단일 모드 해제 + 전체 카탈로그 노출

@@ -110,7 +110,7 @@ import { renderAdminOps } from './pages/admin-ops.js';
 import { renderAdminSettlement } from './pages/admin-settlement.js';
 import { isSystemAdmin } from './core/admin-access.js';
 import { setPageActions } from './core/page-actions.js';
-import { CONTRACT_STATUS } from './core/contract-status.js';
+import { CONTRACT_STATUS, CONTRACT_IN_PROGRESS } from './core/contract-status.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
 window.renderDev = renderDev;
@@ -221,9 +221,9 @@ const _gq = () => _globalSearch.trim().toLowerCase();
 function renderFilteredContracts() {
   let list = (store.contracts || []).filter(c => !c._deleted);
   const f = _pageFilters.contract;
-  if (f.status === 'pending')       list = list.filter(c => /(요청)/.test(c.contract_status || ''));
-  else if (f.status === 'progress') list = list.filter(c => /(대기|발송|진행)/.test(c.contract_status || '') && !/(요청|완료|취소)/.test(c.contract_status || ''));
-  else if (f.status === 'done')     list = list.filter(c => /(완료)/.test(c.contract_status || ''));
+  if (f.status === 'pending')       list = list.filter(c => c.contract_status === CONTRACT_STATUS.REQUESTED);
+  else if (f.status === 'progress') list = list.filter(c => c.contract_status === CONTRACT_STATUS.WAITING || c.contract_status === CONTRACT_STATUS.SENT);
+  else if (f.status === 'done')     list = list.filter(c => c.contract_status === CONTRACT_STATUS.DONE);   // 정규식 부분매칭 → SSOT 정확일치 ('진행' 죽은 분기 제거)
   if (f.company_code !== 'all')     list = list.filter(c => c.partner_code === f.company_code || c.provider_company_code === f.company_code);
   const q = _gq(); if (q) list = list.filter(c => matchRecord(c, q, store));
   renderContractList(list);
@@ -2143,6 +2143,14 @@ function buildContextMenuItems(page, id, item) {
           label: s, active: c.contract_status === s,
           action: async () => {
             await updateRecord(`contracts/${c._key}`, { contract_status: s, updated_at: Date.now() });
+            // 취소 전환 시 정산완료분 환수 처리 (계약페이지 취소 버튼과 동일 규칙)
+            if (s === CONTRACT_STATUS.CANCELLED) {
+              try {
+                const { applyClawbackOnCancel } = await import('./firebase/collections.js');
+                const amt = await applyClawbackOnCancel({ ...c, contract_status: s, cancelled_at: Date.now() });
+                if (amt) showToast(`환수대기 전환 | 환수액 ${Math.round(amt / 10000)}만원`, 'info');
+              } catch (ce) { console.warn('[clawback] 처리 실패', ce); }
+            }
             showToast(`상태 → ${s}`);
           },
         })),
@@ -2210,8 +2218,8 @@ function updateSidebarCounts() {
   // 계약 관리 — 진행중 (요청/대기/발송). 완료·취소 제외
   const pendingContracts = (store.contracts || []).filter(c => {
     if (c._deleted) return false;
-    const s = c.contract_status || '계약요청';
-    return s === '계약요청' || s === '계약대기' || s === '계약발송';
+    const s = c.contract_status || CONTRACT_STATUS.REQUESTED;   // 상태 누락 계약은 진행중으로 집계 (기존 폴백 보존)
+    return CONTRACT_IN_PROGRESS.includes(s);
   }).length;
   setCnt('contract', pendingContracts);
 

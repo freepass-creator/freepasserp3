@@ -40,7 +40,8 @@ export const FILTERS = {
   period: {
     label: '기간', icon: 'ph ph-calendar-blank',
     chips: ['1','12','24','36','48','60'].map(m => ({
-      id: `p${m}`, label: `${m}개월`, match: (_, p) => Number(p?.[m]?.rent || 0) > 0,
+      id: `p${m}`, label: `${m}개월`, match: (_, p) => Object.entries(p || {})
+        .some(([key, value]) => (key === m || key.startsWith(`${m}_`)) && Number(value?.rent || 0) > 0),
     })),
   },
   maker:    { label: '제조사',  icon: 'ph ph-factory',      chips: [], dynamic: true, field: 'maker' },
