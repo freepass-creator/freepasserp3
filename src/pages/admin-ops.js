@@ -936,8 +936,7 @@ function renderSyncTab(el) {
               .flatMap(x => [x.provider_company_code, x.partner_code].filter(Boolean))
           );
           if (incomingProviders.size === 0) return p.source === 'external_sheet' && p.source_schema === 'general';
-          return (incomingProviders.has(p.provider_company_code) || incomingProviders.has(p.partner_code))
-                 && p.vehicle_status !== '출고불가';
+          return (incomingProviders.has(p.provider_company_code) || incomingProviders.has(p.partner_code));
         }
         if (schema === 'auto-supply') {
           // 시트에 등장한 공급사코드 범위 — source 무관하게 해당 공급사 모든 출고가능 매물 정리
@@ -946,8 +945,7 @@ function renderSyncTab(el) {
               .flatMap(x => [x.partner_code, x.provider_company_code].filter(Boolean))
           );
           if (tabPartners.size === 0) return false;
-          return (tabPartners.has(p.partner_code) || tabPartners.has(p.provider_company_code))
-                 && p.vehicle_status !== '출고불가';
+          return (tabPartners.has(p.partner_code) || tabPartners.has(p.provider_company_code));
         }
         return false;
       });
@@ -1004,9 +1002,8 @@ function renderSyncTab(el) {
       let droppedToBlocked = 0;
       for (const x of existing) {
         if (!incomingUids.has(x.product_uid) && !incomingUids.has(x._key)) {
-          updates[`products/${x._key}/vehicle_status`] = '출고불가';
-          updates[`products/${x._key}/status`] = 'unavailable';
-          updates[`products/${x._key}/status_label`] = '시트에서 제거됨';
+          updates[`products/${x._key}/_deleted`] = true;
+          updates[`products/${x._key}/status`] = 'deleted';
           updates[`products/${x._key}/updated_at`] = Date.now();
           droppedToBlocked++;
         }
