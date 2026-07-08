@@ -1,7 +1,7 @@
 {
   "rules": {
     "users": {
-      ".read": "auth != null",
+      ".read": "auth != null && auth.token.firebase.sign_in_provider !== 'anonymous'",
       "$uid": {
         ".write": "auth != null && ($uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
         "role": {
@@ -11,13 +11,13 @@
     },
 
     "partners": {
-      ".read": "auth != null",
+      ".read": "auth != null && auth.token.firebase.sign_in_provider !== 'anonymous'",
       ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
       ".indexOn": ["partner_code", "partner_type"]
     },
 
     "policies": {
-      ".read": "auth != null",
+      ".read": "auth != null && auth.token.firebase.sign_in_provider !== 'anonymous'",
       ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || root.child('users').child(auth.uid).child('role').val() === 'provider')",
       ".indexOn": ["policy_code", "provider_company_code"]
     },
@@ -28,8 +28,8 @@
     },
 
     "products": {
-      ".read": true,
-      ".write": "auth != null",
+      ".read": "auth != null && auth.token.firebase.sign_in_provider !== 'anonymous'",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider !== 'anonymous'",
       ".indexOn": ["car_number", "product_code", "provider_company_code", "status", "vehicle_status"]
     },
 

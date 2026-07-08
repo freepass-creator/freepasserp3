@@ -6,13 +6,12 @@
  *   ?id={product_key}  → 단일 차량 모드 (모달 자동 오픈, 그리드 숨김)
  * 정책: 수수료 / 모든 코드 / 계약·정산 일체 비공개. 그 외 모두 공개
  */
-import { watchCollection, pushRecord } from './firebase/db.js';
+import { pushRecord } from './firebase/db.js';
 import { auth } from './firebase/config.js';
 import { signInAnonymously } from 'firebase/auth';
 import { ref as dbRef, get } from 'firebase/database';
 import { db } from './firebase/config.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage } from './core/product-photos.js';
-import { enrichProductsWithPolicy } from './core/policy-utils.js';
 import { renderDetailSections } from './core/product-detail-render.js';
 import { stripLegalEntity } from './core/ui-helpers.js';
 import { FILTERS, matchFilter, buildDynamicChips } from './core/product-filters.js';
@@ -63,22 +62,9 @@ const inlineAgent = (params.get('n') || params.get('tel')) ? {
   title: params.get('ti') || '',
 } : null;
 
-// 영업자 정보 로드 — 인라인(구버전 링크) 있으면 즉시 렌더, 인증 후 ?a= 조회로 보강
+// 영업자 정보 로드 — 인라인(구버전 링크) 있으면 즉시 렌더, 피드(?a) 응답으로 보강
+//  (구버전: RTDB users 전체를 익명으로 읽었음 — 전직원 연락처 덤프 구멍이라 서버 피드로 이관)
 if (inlineAgent) { _agent = inlineAgent; renderAgent(); }
-if (agentCode) {
-  authReady.then(() => loadAgent()).then(found => {
-    if (!found) { if (!inlineAgent) _agent = null; return; }
-    const overrides = Object.fromEntries(Object.entries(inlineAgent || {}).filter(([, v]) => v));  // 인라인 비어있지 않은 값만 우선
-    _agent = { ...found, ...overrides };
-    renderAgent();
-  }).catch(e => console.warn('[catalog] 영업자 로드 실패:', e?.message || e));
-}
-
-async function loadAgent() {
-  const snap = await get(dbRef(db, 'users'));
-  const users = snap.val() || {};
-  return Object.values(users).find(u => u.user_code === agentCode) || null;
-}
 
 function renderAgent() {
   if (!_agent) return;
@@ -710,33 +696,37 @@ function openCatRangePop(anchor, key) {
   }, 0);
 }
 
-/* Firebase 데이터 로드.
-   policies/partners 는 rule 이 auth!=null → 익명 인증 완료 후 구독(인증 전 구독 시 초기 1회
-   PERMISSION_DENIED + 데이터 빈 깜빡임 발생). products 는 public(.read:true)이라 즉시 구독해 빠른 초기 렌더. */
-authReady.then(() => {
-  watchCollection('policies', (list) => {
-    _policies = list || [];
-    if (_products.length) {
-      _products = enrichProductsWithPolicy(_products, _policies);
-      renderGrid();
-    }
-  });
-  watchCollection('partners', (list) => {
-    _partners = list || [];
-    // 공급사 카탈로그면 브랜드 자동 갱신 (?p)
-    if (providerCode) {
-      const partner = _partners.find(p => (p.partner_code || p.company_code || p._key) === providerCode);
-      if (partner) {
-        const name = stripLegalEntity(partner.partner_name || partner.company_name || providerCode);
-        const brandText = document.getElementById('catBrandText');
-        if (brandText) brandText.textContent = name;
-        document.title = name;
-        document.querySelector('meta[property="og:title"]')?.setAttribute('content', name);
-      }
-    }
-    if (_products.length) renderGrid();
-  });
-});
+/* 데이터 로드 — 서버 피드(/api/catalog-feed) 단일 호출 (원칙 23).
+ *  구버전: RTDB products(.read:true)·policies·partners·users 직접 구독 → 원가·수수료·
+ *  공급사코드·전직원 연락처까지 브라우저에서 덤프 가능했음. 피드는 화이트리스트 필드만.
+ *  5분 엣지캐시 + 5분 주기 갱신 (카탈로그는 실시간성 요구 낮음). */
+async function loadFeed() {
+  const q = new URLSearchParams();
+  if (providerCode) q.set('p', providerCode);
+  if (agentCode) q.set('a', agentCode);
+  const res = await fetch(`/api/catalog-feed${q.toString() ? '?' + q.toString() : ''}`);
+  if (!res.ok) throw new Error(`feed HTTP ${res.status}`);
+  return res.json();
+}
+function applyFeed(data) {
+  handleProducts(data.products || []);
+  // 공급사 브랜드 (?p)
+  if (providerCode && data.brand) {
+    const name = stripLegalEntity(data.brand);
+    const brandText = document.getElementById('catBrandText');
+    if (brandText) brandText.textContent = name;
+    document.title = name;
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', name);
+  }
+  // 영업자 카드 (?a) — 인라인(공유링크 내장) 값이 비어있지 않으면 우선
+  if (agentCode && data.agent) {
+    const overrides = Object.fromEntries(Object.entries(inlineAgent || {}).filter(([, v]) => v));
+    _agent = { ...data.agent, ...overrides };
+    renderAgent();
+  }
+}
+loadFeed().then(applyFeed).catch(e => console.warn('[catalog] feed 로드 실패:', e?.message || e));
+setInterval(() => loadFeed().then(applyFeed).catch(() => {}), 5 * 60 * 1000);
 // 카탈로그 배너 오버레이 — authReady 후 실행 (home_notices/__banner__ 은 auth!=null 룰)
 authReady.then(async () => {
   const HIDE_KEY = 'fp_banner_hide_date';
@@ -774,16 +764,9 @@ authReady.then(async () => {
   document.body.appendChild(overlay);
 });
 
-watchCollection('products', (list) => {
-  let raw = list || [];
-  // ?p 공급사 필터
-  if (providerCode) {
-    raw = raw.filter(p =>
-      p.provider_company_code === providerCode ||
-      p.partner_code === providerCode
-    );
-  }
-  _products = enrichProductsWithPolicy(raw, _policies);
+/* 피드 products 반영 — ?p 필터는 서버(catalog-feed)가 이미 적용 */
+function handleProducts(list) {
+  _products = list || [];
   renderGrid();
 
   // 단일 차량 모드 — ?id / ?pid / ?car 지원, 데이터 도착 후 자동 오픈
@@ -794,10 +777,8 @@ watchCollection('products', (list) => {
       : _products.find(x => x._key === singleProductId);
     if (target) {
       const carName = `${target.maker || ''} ${target.sub_model || target.model || ''}`.trim() || target.car_number;
-      // 보내는 사람 정보(영업자 또는 공급사)로 타이틀 — freepass 노출 X
-      const senderLabel = _agent?.company_name || _agent?.name
-        || (_partners.find(p => (p.partner_code || p.company_code || p._key) === target.provider_company_code)?.partner_name)
-        || '';
+      // 보내는 사람 정보(영업자)로 타이틀 — freepass 노출 X (공급사명은 피드 brand 가 별도 처리)
+      const senderLabel = _agent?.company_name || _agent?.name || '';
       document.title = senderLabel ? `${carName} | ${senderLabel}` : carName;
       document.querySelector('meta[property="og:title"]')?.setAttribute('content', document.title);
       const sub = [target.year ? target.year + '년' : '', target.fuel_type, target.mileage ? Number(target.mileage).toLocaleString() + 'km' : ''].filter(Boolean).join(' | ');
@@ -808,4 +789,4 @@ watchCollection('products', (list) => {
       document.body.classList.remove('is-single');
     }
   }
-});
+}
