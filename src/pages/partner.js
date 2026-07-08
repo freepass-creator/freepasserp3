@@ -18,6 +18,7 @@ import { parseBankbook } from '../core/ocr-parsers/bankbook.js';
 import { parseVehicleRegistration, deriveMakerFromRegistration } from '../core/ocr-parsers/vehicle-registration.js';
 import { findCatalog, loadCatalog } from '../core/vehicle-matrix.js';
 import { customConfirm } from '../core/confirm.js';
+import { CONTRACT_STATUS } from '../core/contract-status.js';
 
 let _selectedPartnerKey = null;
 
@@ -173,7 +174,7 @@ export function renderPartnerDetail(pa) {
     const carAvail = cars.filter(c => !['출고불가','계약완료'].includes(c.vehicle_status)).length;
     const carContracted = cars.filter(c => c.vehicle_status === '출고불가').length;
     const contracts = allContracts.filter(c => c.provider_company_code === code || c.agent_company === code);
-    const ctDone = contracts.filter(c => c.contract_status === '계약완료').length;
+    const ctDone = contracts.filter(c => c.contract_status === CONTRACT_STATUS.DONE).length;
     const ctOngoing = contracts.length - ctDone;
     const thisMonth = (() => {
       const m = new Date(); const y = m.getFullYear(), mo = m.getMonth();

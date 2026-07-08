@@ -110,6 +110,7 @@ import { renderAdminOps } from './pages/admin-ops.js';
 import { renderAdminSettlement } from './pages/admin-settlement.js';
 import { isSystemAdmin } from './core/admin-access.js';
 import { setPageActions } from './core/page-actions.js';
+import { CONTRACT_STATUS } from './core/contract-status.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
 window.renderDev = renderDev;
@@ -702,8 +703,8 @@ function pageStatsHtml(p) {
   }
   if (p === 'contract') {
     const list = (store.contracts || []).filter(x => !x._deleted);
-    const wait = list.filter(x => x.contract_status === '계약요청' || x.contract_status === '계약대기' || x.contract_status === '계약발송').length;
-    const done = list.filter(x => x.contract_status === '계약완료').length;
+    const wait = list.filter(x => x.contract_status === CONTRACT_STATUS.REQUESTED || x.contract_status === CONTRACT_STATUS.WAITING || x.contract_status === CONTRACT_STATUS.SENT).length;
+    const done = list.filter(x => x.contract_status === CONTRACT_STATUS.DONE).length;
     return `<span class="stat-total">총 ${list.length}건</span>
       <span class="stat-가능">진행 ${list.length - done}</span>
       <span class="stat-즉시">완료 ${done}</span>

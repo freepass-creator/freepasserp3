@@ -265,7 +265,7 @@ function loadUser(key) {
     fa.innerHTML = `<button class="btn btn-xs btn-outline" id="admDeleteBtn" style="color:var(--c-err);"><i class="ph ph-trash"></i> 삭제</button>`;
     document.getElementById('admDeleteBtn')?.addEventListener('click', async () => {
       if (!confirm('삭제하시겠습니까?')) return;
-      await updateRecord(`users/${key}`, { status: 'deleted' });
+      await updateRecord(`users/${key}`, { _deleted: true, is_active: false, deleted_by: store.currentUser?.uid || '' });   // 표준 soft delete — status:'deleted' 는 목록 필터·audit 판정에 안 잡히던 비표준값
       showToast('삭제됨');
     });
   }
@@ -281,7 +281,7 @@ function loadUser(key) {
     `;
     document.getElementById('admDeleteBtn')?.addEventListener('click', async () => {
       if (!confirm('삭제하시겠습니까?')) return;
-      await updateRecord(`users/${key}`, { status: 'deleted' });
+      await updateRecord(`users/${key}`, { _deleted: true, is_active: false, deleted_by: store.currentUser?.uid || '' });   // 표준 soft delete — status:'deleted' 는 목록 필터·audit 판정에 안 잡히던 비표준값
       showToast('삭제됨');
     });
   }

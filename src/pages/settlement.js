@@ -13,6 +13,7 @@ import {
   listBody, emptyState, renderRoomItem, flashSaved,
   providerNameByCode, providerLabelByCode, formatMainLine, renderInfoGrid,
 } from '../core/ui-helpers.js';
+import { CONTRACT_STATUS } from '../core/contract-status.js';
 import {
   SETTLEMENT_STATUSES_FULL, getSettlementStatus,
   settlementStatusPayload, SETTLEMENT_STATUS_DEFAULT,
@@ -143,7 +144,7 @@ export function renderSettlementDetail(s) {
       <div class="spacer" style="flex:1;"></div>
       ${canEdit ? `<button class="btn btn-sm btn-primary" id="setlSave">저장</button>` : ''}
     `;
-    const rentRawW  = s.rent_amount ?? s.monthly_rent ?? s.rent_amount_snapshot ?? '';
+    const rentRawW  = s.rent_amount ?? s.rent_amount_snapshot ?? s.monthly_rent ?? '';   // 스냅샷 우선 — 라이브성 monthly_rent 를 스냅샷보다 앞세우면 계약 후 상품가 변경 시 정산 표시가 산정액과 어긋남 (원칙 10)
     const depRawW   = s.deposit_amount ?? s.deposit ?? s.deposit_amount_snapshot ?? '';
     const termRawW  = s.rent_month ?? s.term ?? s.rent_month_snapshot ?? '';
     const fmtW = v => v !== '' && v != null ? Number(v).toLocaleString('ko-KR') + '원' : '-';
@@ -279,7 +280,7 @@ export async function bulkCreateSettlements() {
     showToast('일괄 정산은 관리자 전용', 'error');
     return;
   }
-  const completed = (store.contracts || []).filter(c => !c._deleted && c.contract_status === '계약완료');
+  const completed = (store.contracts || []).filter(c => !c._deleted && c.contract_status === CONTRACT_STATUS.DONE);
   const existingCodes = new Set((store.settlements || []).map(s => s.contract_code).filter(Boolean));
   const targets = completed.filter(c => !existingCodes.has(c.contract_code));
   if (!targets.length) { showToast('정산 대상 없음 — 모든 계약완료 건이 이미 정산됨', 'info'); return; }

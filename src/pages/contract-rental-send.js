@@ -18,6 +18,7 @@
 
 import { store } from '../core/store.js';
 import { providerNameByCode } from '../core/ui-helpers.js';
+import { CONTRACT_STATUS } from '../core/contract-status.js';
 
 let built = false;
 let currentToken = null;     // 편집 중인 저장본 토큰 (없으면 저장 시 신규 발급)
@@ -598,7 +599,7 @@ async function approveEntry(r) {
     if (r.contract_code) {
       const contract = (store.contracts || []).find(c => c.contract_code === r.contract_code);
       if (contract?._key) {
-        updateRecord(`contracts/${contract._key}`, { contract_status: '계약완료', signed_at: Date.now() }).catch(() => null);
+        updateRecord(`contracts/${contract._key}`, { contract_status: CONTRACT_STATUS.DONE, signed_at: Date.now() }).catch(() => null);
       }
     }
     import('../core/toast.js').then(m => m.showToast('승인 완료 — 서명완료로 처리됐습니다'));

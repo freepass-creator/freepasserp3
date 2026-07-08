@@ -19,6 +19,7 @@ import { filterByRole } from '../core/roles.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from '../core/contract-steps.js';
 import { notifyProviderAndAdmin } from '../core/notify.js';
 import { pickAgent, pickOrCreateCustomer } from '../core/dialogs.js';
+import { CONTRACT_STATUS } from '../core/contract-status.js';
 import {
   esc, fmtDate, fmtTime, fmtListDate,
   listBody, emptyState, renderRoomItem, flashSaved,
@@ -762,7 +763,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
     if (!confirm('진행 중인 계약을 취소하시겠습니까?\n차량 상태도 함께 복구됩니다.')) return;
     try {
       await updateRecord(`contracts/${c._key}`, {
-        contract_status: '계약취소',
+        contract_status: CONTRACT_STATUS.CANCELLED,
         cancelled_at: Date.now(),
         cancelled_by: store.currentUser?.uid,
       });
@@ -770,7 +771,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       if (c.product_uid) {
         const others = (store.contracts || []).filter(x =>
           x._key !== c._key && x.product_uid === c.product_uid && !x._deleted &&
-          (x.contract_status === '계약요청' || x.contract_status === '계약대기' || x.contract_status === '계약발송')
+          (x.contract_status === CONTRACT_STATUS.REQUESTED || x.contract_status === CONTRACT_STATUS.WAITING || x.contract_status === CONTRACT_STATUS.SENT)
         );
         if (!others.length) {
           await updateRecord(`products/${c.product_uid}`, { vehicle_status: '출고가능', updated_at: Date.now() });
@@ -785,7 +786,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
     if (c.product_uid) {
       const alreadyDone = (store.contracts || []).find(x =>
         x._key !== c._key && x.product_uid === c.product_uid &&
-        x.contract_status === '계약완료' && !x._deleted
+        x.contract_status === CONTRACT_STATUS.DONE && !x._deleted
       );
       if (alreadyDone) {
         return showToast(`이미 완료된 계약이 있습니다 | ${alreadyDone.contract_code}`, 'error');
@@ -814,7 +815,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
       if (linkedRoom) atomicUpdate[`rooms/${linkedRoom._key}/linked_contract`] = newCode;
       await update(ref(db), atomicUpdate);    // root multi-path — 전부 성공 or 전부 실패
       const { logAudit } = await import('../firebase/audit-log.js');
-      logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['contract_status', 'contract_code'], data: { contract_status: '계약완료', contract_code: newCode } });
+      logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['contract_status', 'contract_code'], data: { contract_status: CONTRACT_STATUS.DONE, contract_code: newCode } });
       // 정산 자동 생성
       try {
         const { createSettlement } = await import('../firebase/collections.js');
@@ -910,7 +911,7 @@ export async function createContractFromRoomLocal(room) {
       policy_name_snapshot: product?._policy?.policy_name,
       credit_grade_snapshot: product?._policy?.credit_grade,
       // 메타
-      contract_status: '계약요청',
+      contract_status: CONTRACT_STATUS.REQUESTED,
       contract_date: new Date().toISOString().slice(0, 10),
       created_at: Date.now(),
       created_by: me.uid,

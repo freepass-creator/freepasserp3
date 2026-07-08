@@ -9,6 +9,7 @@
  *  (과거 'paid' 비교로 환수가 항상 0원 반환되던 버그의 재발 방지)
  */
 import { SETTLEMENT_STATUS } from './settlement-status.js';
+import { CONTRACT_STATUS } from './contract-status.js';
 
 /** 수수료율 조회 — 파트너별 커스텀 > 기본값 */
 export function getFeeRate(providerCode, partners = []) {
@@ -65,7 +66,7 @@ export function calculateClawback(settlement, contract) {
  * - 계약취소 + 정산완료 → 환수 필요
  */
 export function getAutoAction(contract, settlement) {
-  if (contract.contract_status === '계약완료' && !settlement) return 'create';
-  if (contract.contract_status === '계약취소' && settlement?.settlement_status === SETTLEMENT_STATUS.DONE) return 'clawback';
+  if (contract.contract_status === CONTRACT_STATUS.DONE && !settlement) return 'create';
+  if (contract.contract_status === CONTRACT_STATUS.CANCELLED && settlement?.settlement_status === SETTLEMENT_STATUS.DONE) return 'clawback';
   return null;
 }

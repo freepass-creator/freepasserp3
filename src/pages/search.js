@@ -27,6 +27,7 @@ import { FILTERS, matchFilter } from '../core/product-filters.js';
 import { creditGradeLabel } from '../core/product-badges.js';
 import { matchRecord } from '../core/search-match.js';
 import { normalizeProductType } from '../core/normalize.js';
+import { CONTRACT_STATUS } from '../core/contract-status.js';
 
 /* 외부 주입 콜백 — workspace 가 createRoomFromProduct 를 setSearchCallbacks 로 주입 */
 let _onCreateRoom = null;
@@ -401,7 +402,7 @@ export async function searchActionContract(p) {
     await pushRecord('contracts', {
       contract_code: tempCode,
       is_draft: true,
-      contract_status: '계약요청',
+      contract_status: CONTRACT_STATUS.REQUESTED,
       customer_uid: customerKey,
       customer_name: r.name,
       customer_phone: r.phone,

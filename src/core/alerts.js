@@ -3,6 +3,7 @@
  */
 import { subscribe } from './store.js';
 import { showToast } from './toast.js';
+import { CONTRACT_STATUS } from './contract-status.js';
 
 let alerted = new Set();
 
@@ -13,7 +14,7 @@ export function initAlerts() {
 
     const now = Date.now();
     for (const c of contracts) {
-      if (c.contract_status !== '계약완료') continue;
+      if (c.contract_status !== CONTRACT_STATUS.DONE) continue;
       if (!c.contract_date || !c.rent_month_snapshot) continue;
 
       const startDate = new Date(c.contract_date).getTime();

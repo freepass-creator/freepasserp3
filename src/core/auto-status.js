@@ -9,13 +9,14 @@
 import { subscribe, store } from './store.js';
 import { updateRecord } from '../firebase/db.js';
 import { createSettlement } from '../firebase/collections.js';
+import { CONTRACT_STATUS, CONTRACT_IN_PROGRESS } from './contract-status.js';
 
-const IN_PROGRESS = new Set(['계약대기', '계약요청', '계약발송']);
+const IN_PROGRESS = new Set(CONTRACT_IN_PROGRESS);
 
 /** 계약 상태 → 차량 상태 매핑 (해당 없으면 null = 건드리지 않음) */
 function deriveVehicleStatus(contractStatus) {
-  if (contractStatus === '계약완료') return '출고불가';
-  if (contractStatus === '계약취소') return '출고가능';
+  if (contractStatus === CONTRACT_STATUS.DONE) return '출고불가';
+  if (contractStatus === CONTRACT_STATUS.CANCELLED) return '출고가능';
   if (IN_PROGRESS.has(contractStatus)) return '출고협의';
   return null;
 }
@@ -54,7 +55,7 @@ export function initAutoStatus() {
       }
 
       // 계약완료 최초 진입 시 정산 자동 생성 + 양측 알림톡
-      if (c.contract_status === '계약완료' && prev !== '계약완료') {
+      if (c.contract_status === CONTRACT_STATUS.DONE && prev !== CONTRACT_STATUS.DONE) {
         const already = (store.settlements || []).some(s => s.contract_code === c.contract_code);
         if (!already) {
           createSettlement(c).catch(err => console.warn('[auto-settlement] 생성 실패', err));
@@ -63,7 +64,7 @@ export function initAutoStatus() {
       }
 
       // 계약취소 → 기지급 정산 환수 처리
-      if (c.contract_status === '계약취소' && prev !== '계약취소') {
+      if (c.contract_status === CONTRACT_STATUS.CANCELLED && prev !== CONTRACT_STATUS.CANCELLED) {
         const settlement = (store.settlements || []).find(s => s.contract_code === c.contract_code);
         if (settlement) {
           (async () => {

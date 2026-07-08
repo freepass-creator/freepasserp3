@@ -11,6 +11,7 @@ import { fmtDate, providerNameByCode } from '../core/ui-helpers.js';
 import { STEPS, getStepStates, getProgress } from '../core/contract-steps.js';
 import { pushMobileView } from '../core/mobile-shell.js';
 import { filterByRole, roleScope } from '../core/roles.js';
+import { CONTRACT_STATUS } from '../core/contract-status.js';
 
 /** 운전 가능 연령 — 기본 연령 + 하향 연령 포맷 */
 function formatDriverAge(pol) {
@@ -170,8 +171,8 @@ function renderList() {
   const f = document.querySelector('.chip[data-f].is-active')?.dataset.f || 'all';
 
   let list = getVisible();
-  if (f === 'active') list = list.filter(c => c.contract_status !== '계약완료' && c.contract_status !== '계약취소');
-  else if (f === 'done') list = list.filter(c => c.contract_status === '계약완료');
+  if (f === 'active') list = list.filter(c => c.contract_status !== CONTRACT_STATUS.DONE && c.contract_status !== CONTRACT_STATUS.CANCELLED);
+  else if (f === 'done') list = list.filter(c => c.contract_status === CONTRACT_STATUS.DONE);
   if (q) {
     const qDigits = q.replace(/\D/g, '');
     list = list.filter(c => {
@@ -227,8 +228,8 @@ function renderList() {
   const renderCard = (c) => {
     const prog = getProgress(c);
     const pct = Math.round((prog.done / prog.total) * 100);
-    const done = c.contract_status === '계약완료';
-    const cancelled = c.contract_status === '계약취소';
+    const done = c.contract_status === CONTRACT_STATUS.DONE;
+    const cancelled = c.contract_status === CONTRACT_STATUS.CANCELLED;
     const tone = done ? 'ok' : cancelled ? 'err' : 'info';
     const icon = done ? 'ph-check-circle' : cancelled ? 'ph-x-circle' : 'ph-file-text';
     const avatarLabel = done ? '완료' : cancelled ? '취소' : '진행중';
@@ -546,7 +547,7 @@ function bindContractView(view, c) {
 function renderProgressPanel(c) {
   const role = store.currentUser?.role || 'agent';
   const isAdmin = role === 'admin';
-  const isCompleted = c.contract_status === '계약완료';
+  const isCompleted = c.contract_status === CONTRACT_STATUS.DONE;
   const states = getStepStates(c);
   const prog = getProgress(c);
 

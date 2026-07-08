@@ -14,6 +14,7 @@ import { renderChatMessages, getPeerReadAt } from '../core/chat-render.js';
 import { mEmpty, mLoading } from '../core/format.js';
 import { fmtDate, chatCodeOf, providerNameByCode, esc } from '../core/ui-helpers.js';
 import { isAgentSide, roleScope } from '../core/roles.js';
+import { CONTRACT_STATUS } from '../core/contract-status.js';
 
 let unsubRooms = null;
 let unsubMessages = null;
@@ -625,7 +626,7 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
             c.agent_uid === dupAgentUid &&
             c.product_uid === productUid &&
             (c.customer_name || '').trim() === name &&
-            c.contract_status !== '계약취소'
+            c.contract_status !== CONTRACT_STATUS.CANCELLED
           );
           if (dup) {
             showToast(`이미 진행중 — 계약 페이지로 이동 (${dup.contract_code})`, 'info');
@@ -702,7 +703,7 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
             policy_name_snapshot: p._policy?.policy_name || '',
             credit_grade_snapshot: p._policy?.credit_grade || '',
             // 메타
-            contract_status: '계약요청',
+            contract_status: CONTRACT_STATUS.REQUESTED,
             contract_date: new Date().toISOString().slice(0, 10),
             created_at: Date.now(),
             created_by: me.uid || '',
