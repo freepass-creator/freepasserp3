@@ -29,6 +29,9 @@ export function initAuth() {
     let resolved = false;
     let lastUid = null;
 
+    // Firebase Auth 응답 없으면 8초 후 null 로 resolve → 로그인 화면 표시
+    setTimeout(() => { if (!resolved) { resolved = true; resolve(null); } }, 8000);
+
     onAuthStateChanged(auth, async (user) => {
       const uid = user?.uid || null;
       if (uid === lastUid && uid !== null) {
