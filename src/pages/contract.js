@@ -12,7 +12,7 @@
  * 분리 원칙: workspace 의존성 제거 — bindContractWorkV2 가 페이지별 재렌더 콜백을 외부 주입받음.
  */
 import { store, findProduct, findProductByUid } from '../core/store.js';
-import { pushRecord, updateRecord, ref, db, update } from '../firebase/db.js';
+import { pushRecord, updateRecord, ref, db, update, appendToArray, removeFromArray } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { openFullscreen } from '../core/product-detail-render.js';
 import { filterByRole } from '../core/roles.js';
@@ -20,6 +20,7 @@ import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from '../core/
 import { notifyProviderAndAdmin } from '../core/notify.js';
 import { pickAgent, pickOrCreateCustomer } from '../core/dialogs.js';
 import { CONTRACT_STATUS } from '../core/contract-status.js';
+import { VEHICLE_STATUS } from '../core/vehicle-status.js';
 import {
   esc, fmtDate, fmtTime, fmtListDate,
   listBody, emptyState, renderRoomItem, flashSaved,
@@ -350,7 +351,7 @@ export function renderContractDocs(card, c, opts = {}) {
                   ${isPdf(att.url)
                     ? `<a href="${esc(att.url)}" target="_blank" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--alert-red-text);text-decoration:none;font-size:9px;gap:2px;"><i class="ph ph-file-pdf" style="font-size:24px;"></i><span>PDF</span></a>`
                     : `<img src="${esc(att.url)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;display:block;" data-doc-img="${esc(att.url)}" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);font-size:9px;gap:2px\\'><i class=\\'ph ph-file-image\\' style=\\'font-size:24px\\'></i><span>로드실패</span></div>')">`}
-                  ${att.deletable ? `<button data-att-del="${att.docIndex}" style="position:absolute;top:2px;right:2px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="ph ph-x"></i></button>` : ''}
+                  ${att.deletable ? `<button data-att-del="${esc(att.url)}" style="position:absolute;top:2px;right:2px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:rgba(0,0,0,0.6);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="ph ph-x"></i></button>` : ''}
                   <span style="position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;padding:1px 4px;border-radius:2px;">${i + 1}</span>
                 </div>
               `).join('')}
@@ -465,10 +466,25 @@ export function renderContractDocs(card, c, opts = {}) {
           console.log('[doc-upload]', file.name, 'type:', file.type, 'isImage:', isImage, 'url:', url);
           newUrls.push(url);
         }
-        const next = [..._toArray(c.doc_attachments).map(_extractUrl).filter(Boolean), ...newUrls];
-        await updateRecord(`contracts/${c._key}`, { doc_attachments: next, updated_at: Date.now() });
+        // 첨부 추가 = URL별 트랜잭션 append (동시 업로드 소실 방지 — 원칙 22).
+        //  부분실패 추적: 실패 URL 은 한 번 더 서버에 병합 저장 (마지막 성공이 중간실패를 가리지 않게)
+        let next = c.doc_attachments;
+        const failed = [];
+        for (const url of newUrls) {
+          const r = await appendToArray(`contracts/${c._key}/doc_attachments`, url);
+          if (r != null) next = r; else failed.push(url);
+        }
+        const { logAudit } = await import('../firebase/audit-log.js');
+        if (failed.length) {
+          const merged = [..._toArray(next), ...failed];
+          await updateRecord(`contracts/${c._key}`, { doc_attachments: merged });   // 실패분 실제 서버 저장 (로컬만 갱신 금지)
+          next = merged;
+          showToast(`${newUrls.length - failed.length}/${newUrls.length}개 업로드 (일부 재저장)`, 'info');
+        } else {
+          showToast(`${newUrls.length}개 업로드 완료`, 'success');
+        }
         c.doc_attachments = next;
-        showToast(`${newUrls.length}개 업로드 완료`, 'success');
+        logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['doc_attachments'], data: { added: newUrls } });
         renderContractDocs(card, c, opts);
       } catch (err) {
         console.error('[att upload]', err);
@@ -480,12 +496,20 @@ export function renderContractDocs(card, c, opts = {}) {
   // 첨부서류 개별 삭제 (PC 업로드분만 — docIndex 기반)
   wrap.querySelectorAll('[data-att-del]').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const idx = Number(btn.dataset.attDel);
-      if (!confirm('첨부 서류를 제거할까요?')) return;
-      const cur = _toArray(c.doc_attachments).map(_extractUrl).filter(Boolean);
-      cur.splice(idx, 1);
-      await updateRecord(`contracts/${c._key}`, { doc_attachments: cur, updated_at: Date.now() });
-      c.doc_attachments = cur;
+      const targetUrl = btn.dataset.attDel;   // 렌더가 URL 자체를 담음 (인덱스 어긋남·희소슬롯 무관)
+      if (!targetUrl || !confirm('첨부 서류를 제거할까요?')) return;
+      // 값 기반 트랜잭션 제거 — 인덱스 통째덮어쓰기는 동시 첨부추가를 소실시킴 (원칙 22)
+      let next = await removeFromArray(`contracts/${c._key}/doc_attachments`, targetUrl);
+      if (next == null) {   // 트랜잭션 실패 폴백 — 값으로 찾아 서버 저장
+        const raw = _toArray(c.doc_attachments);
+        const ri = raw.findIndex(x => _extractUrl(x) === targetUrl);
+        if (ri >= 0) raw.splice(ri, 1);
+        await updateRecord(`contracts/${c._key}`, { doc_attachments: raw });
+        next = raw;
+      }
+      c.doc_attachments = next;
+      const { logAudit } = await import('../firebase/audit-log.js');
+      logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['doc_attachments'], data: { removed: targetUrl } });
       showToast('제거됨');
       renderContractDocs(card, c, opts);
     });
@@ -778,7 +802,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
           (x.contract_status === CONTRACT_STATUS.REQUESTED || x.contract_status === CONTRACT_STATUS.WAITING || x.contract_status === CONTRACT_STATUS.SENT)
         );
         if (!others.length) {
-          await updateRecord(`products/${c.product_uid}`, { vehicle_status: '출고가능', updated_at: Date.now() });
+          await updateRecord(`products/${c.product_uid}`, { vehicle_status: VEHICLE_STATUS.AVAILABLE, updated_at: Date.now() });
         }
       }
       // 정산완료 건이면 잔여기간 비례 환수 처리 (구 auto-status watcher 는 미기동 데드코드라 환수 100% 누락이었음)
@@ -819,7 +843,7 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
         [`contracts/${c._key}/updated_at`]: now,
       };
       if (c.product_uid) {
-        atomicUpdate[`products/${c.product_uid}/vehicle_status`] = '출고불가';
+        atomicUpdate[`products/${c.product_uid}/vehicle_status`] = VEHICLE_STATUS.BLOCKED;
         atomicUpdate[`products/${c.product_uid}/updated_at`] = now;
       }
       const linkedRoom = (store.rooms || []).find(r => r.linked_contract === oldCode);
@@ -946,7 +970,7 @@ export async function createContractFromRoomLocal(room) {
     await updateRecord(`rooms/${room._key}`, { linked_contract: code });
     if (product?._key) {
       // 차량 상태 자동 전환 — 임시 계약 생성 시 '출고협의' (이미 출고불가면 유지)
-      const vsUpdate = (product.vehicle_status === '출고불가') ? {} : { vehicle_status: '출고협의' };
+      const vsUpdate = (product.vehicle_status === VEHICLE_STATUS.BLOCKED) ? {} : { vehicle_status: VEHICLE_STATUS.NEGOTIABLE };
       await updateRecord(`products/${product._key}`, {
         ...vsUpdate,
         assigned_agent_uid: agent.uid || agent._key,

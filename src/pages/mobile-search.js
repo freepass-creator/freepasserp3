@@ -18,6 +18,7 @@ import { pushMobileView, closeAllMobileViews } from '../core/mobile-shell.js';
 import { FILTERS, matchFilter } from '../core/product-filters.js';
 import { openFilterSheet } from '../core/filter-sheet.js';
 import { normalizeYear } from '../core/normalize.js';
+import { VEHICLE_STATUS } from '../core/vehicle-status.js';
 
 let unsub = null;
 let unsubPol = null;
@@ -181,7 +182,7 @@ function getFiltered() {
   const explicitOut = vsActive && vsActive.has('vs_출고불가');
   list = list.filter(p => {
     if (p._deleted) return false;
-    if (p.vehicle_status !== '출고불가') return true;
+    if (p.vehicle_status !== VEHICLE_STATUS.BLOCKED) return true;
     // 출고불가 매물 분기
     if (role === 'agent' || role === 'agent_admin') return false;     // 영업자 차단
     if (role === 'provider') return p.provider_company_code === myCompany;  // 본인 회사만
@@ -289,10 +290,10 @@ function renderCard(p) {
   const priceHtml = bestRent
     ? `<span class="m-card-price-rent">${fmtMoney(bestRent)}</span>${bestDep ? `<span class="m-card-price-dep">보증 ${fmtMoney(bestDep)}</span>` : ''}<span class="m-card-price-period">${bestMonth}개월</span>`
     : `<span class="m-card-price-ask">가격 문의</span>`;
-  const statusTone = p.vehicle_status === '즉시출고' || p.vehicle_status === '출고가능' ? 'ok'
-                   : p.vehicle_status === '상품화중' ? 'warn'
-                   : p.vehicle_status === '출고협의' ? 'info'
-                   : p.vehicle_status === '출고불가' ? 'err' : 'muted';
+  const statusTone = p.vehicle_status === VEHICLE_STATUS.IMMEDIATE || p.vehicle_status === VEHICLE_STATUS.AVAILABLE ? 'ok'
+                   : p.vehicle_status === VEHICLE_STATUS.PREPARING ? 'warn'
+                   : p.vehicle_status === VEHICLE_STATUS.NEGOTIABLE ? 'info'
+                   : p.vehicle_status === VEHICLE_STATUS.BLOCKED ? 'err' : 'muted';
   // 상품구분: 신차는 진하게, 중고는 같은 계열 연하게
   const typeTone = /신차/.test(p.product_type || '') ? 'type-new'
                  : /중고/.test(p.product_type || '') ? 'type-used'

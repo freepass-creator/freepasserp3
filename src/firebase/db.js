@@ -141,6 +141,58 @@ export async function incrementAtomic(path, delta = 1) {
   }
 }
 
+/**
+ * 배열 필드에 원자적 append — 동시편집 Lost Update 방지 (원칙 #22).
+ *  read-modify-write(스냅샷 push 후 통째 저장)는 두 사람이 동시에 다른 항목을 추가하면
+ *  한쪽이 소실됨. runTransaction 으로 서버 최신값 위에 append → 둘 다 보존.
+ * @param {string} path — 배열 필드 경로 (예: settlements/{id}/events)
+ * @param {object|any} item — 추가할 항목
+ * @param {number} [max] — 지정 시 앞에서 잘라 최근 max개만 유지
+ * @returns {Promise<Array|null>} 커밋 후 배열 (실패 시 null)
+ */
+/* RTDB 는 배열을 numeric-key 객체로 복원하기도 함 → 항상 조밀 배열로 정규화 (희소슬롯·객체형 손실 방지) */
+const _asArray = (cur) => Array.isArray(cur) ? cur.slice()
+  : (cur && typeof cur === 'object' ? Object.values(cur) : []);
+
+export async function appendToArray(path, item, max = 0) {
+  const { runTransaction } = await import('firebase/database');
+  try {
+    const result = await runTransaction(ref(db, path), (cur) => {
+      const arr = _asArray(cur);
+      arr.push(item);
+      return max > 0 && arr.length > max ? arr.slice(arr.length - max) : arr;
+    });
+    return result.committed ? (result.snapshot.val() || []) : null;
+  } catch (e) {
+    console.warn('[appendToArray]', path, e);
+    return null;
+  }
+}
+
+/**
+ * 배열에서 값으로 첫 일치 항목 원자적 제거 — 인덱스 통째덮어쓰기의 동시 add 소실 방지 (원칙 #22).
+ *  항목이 문자열(url) 또는 {url} 객체 혼재 가능 → 둘 다 비교.
+ * @param {string} path — 배열 필드 경로
+ * @param {string} value — 제거할 url(문자열) 또는 항목의 url
+ * @returns {Promise<Array|null>} 커밋 후 배열 (실패 시 null)
+ */
+export async function removeFromArray(path, value) {
+  const { runTransaction } = await import('firebase/database');
+  const matches = (it) => it === value || (it && typeof it === 'object' && (it.url === value || it.link === value));
+  try {
+    const result = await runTransaction(ref(db, path), (cur) => {
+      const arr = _asArray(cur);   // 객체형/희소도 배열로 정규화 후 제거 (구 self-heal 동작 보존)
+      const i = arr.findIndex(matches);
+      if (i < 0) return arr.length ? arr : cur;
+      arr.splice(i, 1); return arr;
+    });
+    return result.committed ? (result.snapshot.val() || []) : null;
+  } catch (e) {
+    console.warn('[removeFromArray]', path, e);
+    return null;
+  }
+}
+
 export async function updateRecord(path, data, opts = {}) {
   const clean = stripUndefined({ ...data, updated_at: Date.now() });
   const promise = update(ref(db, path), clean);

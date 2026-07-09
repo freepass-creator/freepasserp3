@@ -111,6 +111,7 @@ import { renderAdminSettlement } from './pages/admin-settlement.js';
 import { isSystemAdmin } from './core/admin-access.js';
 import { setPageActions } from './core/page-actions.js';
 import { CONTRACT_STATUS, CONTRACT_IN_PROGRESS } from './core/contract-status.js';
+import { VEHICLE_STATUS } from './core/vehicle-status.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
 window.renderDev = renderDev;
@@ -801,7 +802,7 @@ async function createNewProduct() {
     car_number: '',
     provider_company_code: providerCode,
     partner_code: partnerCode,
-    vehicle_status: '상품화중',
+    vehicle_status: VEHICLE_STATUS.PREPARING,
     product_type: '재렌트',
     is_active: true,
     created_at: Date.now(),

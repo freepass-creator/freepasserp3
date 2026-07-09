@@ -19,6 +19,7 @@ import { parseVehicleRegistration, deriveMakerFromRegistration } from '../core/o
 import { findCatalog, loadCatalog } from '../core/vehicle-matrix.js';
 import { customConfirm } from '../core/confirm.js';
 import { CONTRACT_STATUS } from '../core/contract-status.js';
+import { VEHICLE_STATUS } from '../core/vehicle-status.js';
 
 let _selectedPartnerKey = null;
 
@@ -185,7 +186,7 @@ export function renderPartnerDetail(pa) {
     const allContracts = store.contracts || [];
     const cars = allProducts.filter(p => p.provider_company_code === code || p.partner_code === code);
     const carAvail = cars.filter(c => !['출고불가','계약완료'].includes(c.vehicle_status)).length;
-    const carContracted = cars.filter(c => c.vehicle_status === '출고불가').length;
+    const carContracted = cars.filter(c => c.vehicle_status === VEHICLE_STATUS.BLOCKED).length;
     const contracts = allContracts.filter(c => c.provider_company_code === code || c.agent_company === code);
     const ctDone = contracts.filter(c => c.contract_status === CONTRACT_STATUS.DONE).length;
     const ctOngoing = contracts.length - ctDone;
@@ -578,7 +579,7 @@ function bindVehicleRegBatch(card, pa) {
           product_code: uid,
           provider_company_code: code,
           partner_code: code,
-          vehicle_status: '상품화중',
+          vehicle_status: VEHICLE_STATUS.PREPARING,
           product_type: '재렌트',
           // 제조사 스펙 — catalog 매칭 결과 (실패 시 빈 값, 재고관리에서 수동 입력)
           maker: maker || '',

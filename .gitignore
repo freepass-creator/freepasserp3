@@ -43,3 +43,6 @@ _products.json
 
 # car-master 번들 (자동 생성, npm run build:car-master)
 public/data/car-master/_bundle.js
+
+.vercel
+.env*

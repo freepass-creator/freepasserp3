@@ -17,6 +17,7 @@ import { fpIdsToNames } from '../core/fp-options-master.js';
 import { isSystemAdmin } from '../core/admin-access.js';
 import { parseTrim, buildMasterTree, masterTreeStats } from '../core/vehicle-master-tree.js';
 import { renderMasterCascade } from '../core/master-cascade.js';
+import { VEHICLE_STATUS } from '../core/vehicle-status.js';
 
 let devUnsubs = [];
 let _activeDev = 'tools';
@@ -778,7 +779,7 @@ function renderStockTab(el) {
     for (let i = 0; i < keys.length; i += CHUNK) {
       const slice = {};
       for (const k of keys.slice(i, i + CHUNK)) {
-        slice[`products/${k}/vehicle_status`] = '출고불가';
+        slice[`products/${k}/vehicle_status`] = VEHICLE_STATUS.BLOCKED;
         slice[`products/${k}/status`] = 'unavailable';
         slice[`products/${k}/status_label`] = '일괄 출고불가';
         slice[`products/${k}/updated_at`] = Date.now();
@@ -909,7 +910,7 @@ function renderUploadTab(el) {
         product_code: uid,
         ...product,
         status: 'available',
-        vehicle_status: product.vehicle_status || '출고가능',
+        vehicle_status: product.vehicle_status || VEHICLE_STATUS.AVAILABLE,
         created_at: Date.now(),
       });
       saved++;

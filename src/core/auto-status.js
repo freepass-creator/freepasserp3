@@ -10,14 +10,15 @@ import { subscribe, store } from './store.js';
 import { updateRecord } from '../firebase/db.js';
 import { createSettlement } from '../firebase/collections.js';
 import { CONTRACT_STATUS, CONTRACT_IN_PROGRESS } from './contract-status.js';
+import { VEHICLE_STATUS } from './vehicle-status.js';
 
 const IN_PROGRESS = new Set(CONTRACT_IN_PROGRESS);
 
 /** 계약 상태 → 차량 상태 매핑 (해당 없으면 null = 건드리지 않음) */
 function deriveVehicleStatus(contractStatus) {
-  if (contractStatus === CONTRACT_STATUS.DONE) return '출고불가';
-  if (contractStatus === CONTRACT_STATUS.CANCELLED) return '출고가능';
-  if (IN_PROGRESS.has(contractStatus)) return '출고협의';
+  if (contractStatus === CONTRACT_STATUS.DONE) return VEHICLE_STATUS.BLOCKED;
+  if (contractStatus === CONTRACT_STATUS.CANCELLED) return VEHICLE_STATUS.AVAILABLE;
+  if (IN_PROGRESS.has(contractStatus)) return VEHICLE_STATUS.NEGOTIABLE;
   return null;
 }
 

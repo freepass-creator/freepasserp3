@@ -12,6 +12,7 @@
  */
 import { store, findProduct } from '../core/store.js';
 import { pushRecord, updateRecord } from '../firebase/db.js';
+import { VEHICLE_STATUS } from '../core/vehicle-status.js';
 import { uploadImage } from '../firebase/storage-helper.js';
 import { showToast } from '../core/toast.js';
 import {
@@ -733,8 +734,8 @@ export function renderProductList(products) {
   }
   if (subbar) {
     const totalCount = visible.length;
-    const availCount = visible.filter(p => (p.vehicle_status || '') !== '출고불가').length;
-    const unavailCount = visible.filter(p => (p.vehicle_status || '') === '출고불가').length;
+    const availCount = visible.filter(p => (p.vehicle_status || '') !== VEHICLE_STATUS.BLOCKED).length;
+    const unavailCount = visible.filter(p => (p.vehicle_status || '') === VEHICLE_STATUS.BLOCKED).length;
     const chip = (id, label, count) => {
       const active = _stockFilter === id ? ' active' : '';
       return `<button class="chip${active}" data-stock-filter="${id}">${label} ${count}</button>`;
@@ -749,8 +750,8 @@ export function renderProductList(products) {
   }
 
   // 상태 필터 적용
-  if (_stockFilter === 'available') visible = visible.filter(p => (p.vehicle_status || '') !== '출고불가');
-  else if (_stockFilter === 'unavailable') visible = visible.filter(p => (p.vehicle_status || '') === '출고불가');
+  if (_stockFilter === 'available') visible = visible.filter(p => (p.vehicle_status || '') !== VEHICLE_STATUS.BLOCKED);
+  else if (_stockFilter === 'unavailable') visible = visible.filter(p => (p.vehicle_status || '') === VEHICLE_STATUS.BLOCKED);
 
   if (!visible.length) { body.innerHTML = emptyState('상품이 없습니다'); renderProductDetail(null); return; }
   const sorted = [...visible].sort((a, b) => (b.updated_at || 0) - (a.updated_at || 0));

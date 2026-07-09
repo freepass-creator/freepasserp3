@@ -15,6 +15,7 @@ import { mEmpty, mLoading } from '../core/format.js';
 import { fmtDate, chatCodeOf, providerNameByCode, esc } from '../core/ui-helpers.js';
 import { isAgentSide, roleScope } from '../core/roles.js';
 import { CONTRACT_STATUS } from '../core/contract-status.js';
+import { VEHICLE_STATUS } from '../core/vehicle-status.js';
 
 let unsubRooms = null;
 let unsubMessages = null;
@@ -138,7 +139,7 @@ function renderRooms() {
       const prod = store.products.find(
         p => p._key === r.product_uid || (r.product_code && p.product_code === r.product_code)
       );
-      if (!prod || prod.vehicle_status !== '출고불가') return true;
+      if (!prod || prod.vehicle_status !== VEHICLE_STATUS.BLOCKED) return true;
       return Number(r[unreadKey] || r.unread || 0) > 0;
     });
   }
@@ -722,7 +723,7 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
             await updateRecord(`rooms/${room._key}`, { linked_contract: code }).catch(() => null);
           }
           if (p._key) {
-            const vsUpdate = (p.vehicle_status === '출고불가') ? {} : { vehicle_status: '출고협의' };
+            const vsUpdate = (p.vehicle_status === VEHICLE_STATUS.BLOCKED) ? {} : { vehicle_status: VEHICLE_STATUS.NEGOTIABLE };
             await updateRecord(`products/${p._key}`, {
               ...vsUpdate,
               assigned_agent_uid: agent.uid || agent._key,

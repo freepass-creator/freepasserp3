@@ -5,7 +5,7 @@
  * Export: renderSettlementList / renderSettlementDetail / bindSettlementCreate
  */
 import { store } from '../core/store.js';
-import { updateRecord } from '../firebase/db.js';
+import { updateRecord, appendToArray } from '../firebase/db.js';
 import { showToast } from '../core/toast.js';
 import { filterByRole } from '../core/roles.js';
 import {
@@ -249,20 +249,21 @@ function bindSettleEdit(s) {
     };
     // 수수료 금액 수정 = admin 전용 (원칙 12 — 계산값은 정해진 권한·경로로만. 공급사 임의 상향 방지)
     if (store.currentUser?.role === 'admin') update.fee_amount = Number(feeStr) || 0;
-    const events = Array.isArray(s.events) ? [...s.events] : [];
-    events.push({
+    const evt = {
       at: Date.now(),
       status,
       actor: store.currentUser?.name || store.currentUser?.email || '-',
       note: `${status}${update.fee_amount ? ' | ' + Math.round(update.fee_amount/10000) + '만' : ''}`,
-    });
-    update.events = events;
+    };
 
     try {
+      // 스칼라 필드는 필드단위 update, 이력(events)은 트랜잭션 append — 동시편집 시 이력 소실 방지 (원칙 22)
       await updateRecord(`settlements/${s._key}`, update);
-      Object.assign(s, update);
+      const events = await appendToArray(`settlements/${s._key}/events`, evt);
+      if (!events) throw new Error('이력 저장 실패(트랜잭션) — 상태·금액은 저장됨, 다시 시도해주세요');   // null 을 로컬 성공으로 위장 금지
+      Object.assign(s, update, { events });
       const idx = (store.settlements || []).findIndex(x => x._key === s._key);
-      if (idx >= 0) Object.assign(store.settlements[idx], update);
+      if (idx >= 0) Object.assign(store.settlements[idx], update, { events });
       (_onSavedCb ? _onSavedCb() : renderSettlementList(store.settlements || []));
       renderSettlementDetail(s);
       flashSaved([...page.querySelectorAll('#setlFee, #setlDate, #setlMemo')]);
