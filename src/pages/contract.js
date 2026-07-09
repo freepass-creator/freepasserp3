@@ -629,7 +629,11 @@ export function renderContractWorkV2(c) {
       ${isCancelled
         ? `<div style="color:var(--alert-red-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-prohibit"></i>진행 취소됨</div>`
         : isCompleted
-          ? `<div style="color:var(--alert-green-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-check-circle"></i>계약 완료</div>`
+          ? (() => {
+              const hasSettlement = (store.settlements || []).some(s => !s._deleted && s.contract_code === c.contract_code);
+              return `<div style="color:var(--alert-green-text);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;"><i class="ph ph-check-circle"></i>계약 완료</div>
+              ${isAdmin && !hasSettlement ? `<button class="btn btn-sm btn-outline" id="ctSettleBtn" style="width:100%;margin-top:4px;justify-content:center;"><i class="ph ph-coins"></i>정산 생성</button>` : ''}`;
+            })()
           : isViewer
             ? `<div style="color:var(--text-muted);padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;font-size:11px;"><i class="ph ph-eye"></i>열람 전용</div>`
             : `<button class="btn btn-sm" id="ctCancelBtn" style="width:100%;color:var(--alert-red-text);justify-content:center;"><i class="ph ph-prohibit"></i>진행 취소</button>
@@ -844,6 +848,19 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
     } catch (e) {
       console.error('[contract complete]', e);
       showToast('완료 실패: ' + (e.message || e), 'error');
+    }
+  });
+
+  // 정산 수동 생성 버튼 (계약완료 후 자동 생성 실패 시 복구용 — admin 전용)
+  stepCard.querySelector('#ctSettleBtn')?.addEventListener('click', async () => {
+    if (!isAdmin) return;
+    try {
+      const { createSettlement } = await import('../firebase/collections.js');
+      await createSettlement(c);
+      showToast('정산 생성 완료', 'success');
+      reRender();
+    } catch (e) {
+      showToast('정산 생성 실패: ' + (e.message || e), 'error');
     }
   });
 }
