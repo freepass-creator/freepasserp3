@@ -35,16 +35,39 @@ async function notifyContractDoneBoth(contract) {
 }
 
 let prevContracts = new Map();
+let _recoveryContracts = null;
+let _recoverySettlements = null;
+const _settlementAttempted = new Set();
+
+function _recoverMissingSettlements() {
+  if (!_recoveryContracts || !_recoverySettlements) return;
+  const settled = new Set(_recoverySettlements.map(s => s.contract_code));
+  for (const c of _recoveryContracts) {
+    if (c.contract_status === CONTRACT_STATUS.DONE
+        && !settled.has(c.contract_code)
+        && !_settlementAttempted.has(c.contract_code)) {
+      _settlementAttempted.add(c.contract_code);
+      createSettlement(c).catch(err => console.warn('[auto-settlement] 복구 실패', c.contract_code, err));
+    }
+  }
+}
 
 export function initAutoStatus() {
+  subscribe('settlements', (settlements) => {
+    _recoverySettlements = settlements || [];
+    _recoverMissingSettlements();
+  });
+
   subscribe('contracts', (contracts) => {
     if (!contracts?.length) return;
+    _recoveryContracts = contracts;
+    _recoverMissingSettlements();
 
     for (const c of contracts) {
       const prev = prevContracts.get(c.contract_code);
       if (prev === c.contract_status) continue;  // 변화 없음
       if (!prev) {
-        // 최초 스냅샷: 이미 존재하던 계약은 retroactive 덮어쓰지 않음
+        // 최초 스냅샷: 차량 상태는 retroactive 변경 안 함
         continue;
       }
 
