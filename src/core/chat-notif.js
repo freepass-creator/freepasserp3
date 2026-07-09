@@ -44,6 +44,8 @@ export function initChatNotif() {
 
       // New message detected
       if (curTs > prevTs) {
+        // 팀매니저: 자기가 agent_uid인 방만 알림 (채널 전체 방 구독이라 다른 직원 방 알람 오탐 방지)
+        if (me?.is_team_manager && role === 'agent' && room.agent_uid !== uid) continue;
         // 본인이 보낸 메시지는 알림 제외 — UID 우선 (공유 코드 SP001 등 오탐 방지)
         const isMine =
           (room.last_sender_uid && room.last_sender_uid === uid) ||
