@@ -215,8 +215,10 @@ export async function ensureRoom({ productUid, productCode, agentUid, agentCode,
 
 /* ── 읽음 처리 ── */
 export async function markRoomRead(roomId, role, uid, room) {
-  // 관리자는 당사자 아님 → 읽음 상태 관여 X
+  // 관리자·팀매니저는 당사자 아님 → 읽음 상태 관여 X
   if (role !== 'agent' && role !== 'provider' && role !== 'agent_admin') return;
+  // 팀매니저: 본인이 agent_uid인 방이 아니면 skip (다른 영업자 방 unread 초기화 방지)
+  if (role === 'agent' && room && room.agent_uid !== uid) return;
   // 영업관리자는 본인이 당사자(agent_uid)인 방일 때만 읽음 처리
   if (role === 'agent_admin' && room && room.agent_uid !== uid) return;
   const updates = {};
