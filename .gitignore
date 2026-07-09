@@ -46,3 +46,7 @@ public/data/car-master/_bundle.js
 
 .vercel
 .env*
+
+# 런타임 미사용 대형 데이터 (OCR 소스 사진·빌드 출력물) — 배포/clone 군살 방지
+public/data/wikicar/
+public/data/car-master/_maker-options-v2.json
