@@ -124,9 +124,22 @@ export function renderPartnerDetail(pa) {
         ${ffi('본점 소재지',    'hq_address',      pa.hq_address,      dis)}
       `)}
       ${sect('통장 정보', 'bank', `
-        ${ffi('은행',           'bank_name',       pa.bank_name,       dis)}
-        ${ffi('계좌번호',       'bank_account',    pa.bank_account,    dis)}
-        ${ffi('예금주',         'bank_holder',     pa.bank_holder,     dis)}
+        <div class="ff" style="grid-column:1/-1;font-size:11px;font-weight:600;color:var(--text-sub);padding-bottom:2px;border-bottom:1px solid var(--border);">보증금</div>
+        ${ffi('은행',     'bank_name',    pa.bank_name,    dis)}
+        ${ffi('계좌번호', 'bank_account', pa.bank_account, dis)}
+        ${ffi('예금주',   'bank_holder',  pa.bank_holder,  dis)}
+        <div class="ff" style="grid-column:1/-1;font-size:11px;font-weight:600;color:var(--text-sub);padding-bottom:2px;border-bottom:1px solid var(--border);margin-top:6px;display:flex;align-items:center;gap:8px;">
+          <span>렌트료</span>
+          ${canEdit ? `<label style="display:flex;align-items:center;gap:4px;font-weight:400;cursor:pointer;">
+            <input type="checkbox" id="rentBankSame" data-f="rent_bank_same" ${pa.rent_bank_same ? 'checked' : ''} style="cursor:pointer;">
+            <span>보증금과 동일</span>
+          </label>` : (pa.rent_bank_same ? '<span style="font-weight:400;color:var(--text-muted);">보증금과 동일</span>' : '')}
+        </div>
+        <div id="rentBankFields" ${pa.rent_bank_same ? 'style="display:none;"' : ''}>
+          ${ffi('은행',     'rent_bank_name',    pa.rent_bank_name,    dis)}
+          ${ffi('계좌번호', 'rent_bank_account', pa.rent_bank_account, dis)}
+          ${ffi('예금주',   'rent_bank_holder',  pa.rent_bank_holder,  dis)}
+        </div>
       `)}
       ${sect('선택 정보', 'note-pencil', `
         ${ffi('담당자',         'contact_name',    pa.contact_name,    dis)}
@@ -253,6 +266,33 @@ export function renderPartnerDetail(pa) {
   }
 
   if (canEdit) bindFormSave(page, 'partners', pa._key, pa);
+
+  // 렌트료 계좌 "보증금과 동일" 체크박스
+  const rentSameChk = page.querySelector('#rentBankSame');
+  const rentBankFields = page.querySelector('#rentBankFields');
+  if (rentSameChk && rentBankFields) {
+    const syncRentToDeposit = () => {
+      const bName    = page.querySelector('[data-f="bank_name"]')?.value    || pa.bank_name    || '';
+      const bAccount = page.querySelector('[data-f="bank_account"]')?.value || pa.bank_account || '';
+      const bHolder  = page.querySelector('[data-f="bank_holder"]')?.value  || pa.bank_holder  || '';
+      const rName    = page.querySelector('[data-f="rent_bank_name"]');
+      const rAccount = page.querySelector('[data-f="rent_bank_account"]');
+      const rHolder  = page.querySelector('[data-f="rent_bank_holder"]');
+      if (rName)    { rName.value    = bName;    rName.dispatchEvent(new Event('change')); }
+      if (rAccount) { rAccount.value = bAccount; rAccount.dispatchEvent(new Event('change')); }
+      if (rHolder)  { rHolder.value  = bHolder;  rHolder.dispatchEvent(new Event('change')); }
+    };
+    rentSameChk.addEventListener('change', () => {
+      rentBankFields.style.display = rentSameChk.checked ? 'none' : '';
+      if (rentSameChk.checked) syncRentToDeposit();
+    });
+    // 보증금 필드 변경 시 렌트료도 연동 (동일 체크 중일 때만)
+    ['bank_name', 'bank_account', 'bank_holder'].forEach(f => {
+      page.querySelector(`[data-f="${f}"]`)?.addEventListener('change', () => {
+        if (rentSameChk.checked) syncRentToDeposit();
+      });
+    });
+  }
 
   // 관리자 지정 체크박스 — admin 여부 무관하게 바인딩, 저장은 admin만
   const _paCode = pa.partner_code || pa.company_code || pa._key;

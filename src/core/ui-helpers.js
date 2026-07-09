@@ -209,7 +209,7 @@ function getProviderCache(store) {
   const map = new Map();
   for (const x of partners) {
     if (x._deleted) continue;
-    const code = x.partner_code || x.company_code;
+    const code = x.partner_code || x.company_code || x._key;
     if (!code) continue;
     const name = stripLegalEntity(x.partner_name || x.company_name || code);
     map.set(code, name);
