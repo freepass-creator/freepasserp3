@@ -195,7 +195,7 @@ function renderSearchRow(p) {
     <tr data-id="${p._key}">
       <td class="sticky-col" title="${esc(p.car_number || '')}">${p.car_number || '-'}</td>
       <td class="center" title="${esc(status)}"><span class="status-chip ${esc(stFull)}">${esc(stFull)}</span></td>
-      <td class="center" title="${esc(p.product_type || '')}">${renderTypeBadge(p.product_type)}${p.deposit_free ? '<span class="status-chip" style="font-size:10px;padding:1px 5px;margin-left:3px;">무보증</span>' : ''}</td>
+      <td class="center" title="${esc(p.product_type || '')}">${renderTypeBadge(p.product_type)}${p.deposit_free ? '<span class="type-chip type-무보증" style="margin-left:3px;" title="무보증">무</span>' : ''}</td>
       <td title="${esc(maker)}">${makerBadge(maker)}</td>
       <td title="${esc(model)}">${model}</td>
       <td title="${esc(subModel)}">${subModel}</td>

@@ -409,6 +409,7 @@ input[type="radio"] {
 .type-chip.type-신차   { background: #1d4ed8; color: #fff; }
 .type-chip.type-재렌트 { background: var(--alert-green-bg);  color: var(--alert-green-text);  }
 .type-chip.type-재구독 { background: var(--alert-orange-bg); color: var(--alert-orange-text); }
+.type-chip.type-무보증 { background: #7c3aed; color: #fff; min-width: 18px; padding: 0 3px; }
 
 /* 외부/내부 색상 뱃지 — status-chip(출고가능) 과 동일 규격 (min-width 30 / 높이 18 / 패딩 0 5px / 라운드 2px) */
 .color-badge {
