@@ -928,7 +928,7 @@ function renderSyncTab(el) {
       const schema = _syncFetched.schema || 'autoplus';
       const existing = (store.products || []).filter(p => {
         if (p._deleted) return false;
-        if (schema === 'autoplus') return p.source === 'external_sheet' && p.provider_company_code === _syncFetched.provider_code;
+        if (schema === 'autoplus') return p.provider_company_code === _syncFetched.provider_code;
         if (schema === 'general') {
           // 이번 시트 공급사코드 집합 — source 무관하게 해당 공급사 매물 전체를 정리 범위로
           const incomingProviders = new Set(

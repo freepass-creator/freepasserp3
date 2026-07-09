@@ -132,7 +132,7 @@ export function normalizeFuel(text) {
   const s = String(text || '').toLowerCase();
   if (!s) return '';
   if (/하이브리드|hybrid|hev|hv/i.test(s)) return '하이브리드';
-  if (/^전기|\bev\b|electric|배터리|kwh/i.test(s)) return '전기';
+  if (/^전기|\bev\b|electric|배터리|kwh/i.test(s)) return 'EV';
   if (/디젤|diesel|\bd\b\s*\d/i.test(s)) return '디젤';
   if (/lpg|lpi|liquid|가스/i.test(s)) return 'LPG';
   if (/수소|hydrogen|fcev/i.test(s)) return '수소';
