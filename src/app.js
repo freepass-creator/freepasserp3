@@ -1403,12 +1403,28 @@ function startHydration() {
   }, { scope: roleScope(store.currentUser) });   // 채팅방도 자기 것만 (대화 프라이버시)
   // 역할별 서버 스코프 — 비관리자는 자기 것만 다운로드 (서버측 read 보호의 클라이언트 절반)
   const _dataScope = roleScope(store.currentUser);
+  const _settleRecoveryAttempted = new Set();
+  async function recoverMissingSettlements() {
+    if (store.currentUser?.role !== 'admin') return;
+    if (!Array.isArray(store.contracts) || !Array.isArray(store.settlements)) return;
+    const settled = new Set(store.settlements.map(s => s.contract_code));
+    const { createSettlement } = await import('./firebase/collections.js');
+    for (const c of store.contracts) {
+      if (c.contract_status !== '계약완료') continue;
+      if (settled.has(c.contract_code)) continue;
+      if (_settleRecoveryAttempted.has(c.contract_code)) continue;
+      _settleRecoveryAttempted.add(c.contract_code);
+      createSettlement(c).catch(e => console.warn('[auto-recovery] 정산 복구 실패', c.contract_code, e));
+    }
+  }
   watchCollection('contracts',   (list) => { store.contracts   = list || []; renderFilteredContracts();      updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
-    if (activePage) window.updatePageStats?.(activePage); }, { scope: _dataScope });
+    if (activePage) window.updatePageStats?.(activePage);
+    recoverMissingSettlements(); }, { scope: _dataScope });
   watchCollection('settlements', (list) => { store.settlements = list || []; renderFilteredSettlements();    updateSidebarCounts(); window.refreshPageActions?.();
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
-    if (activePage) window.updatePageStats?.(activePage); }, { scope: _dataScope });
+    if (activePage) window.updatePageStats?.(activePage);
+    recoverMissingSettlements(); }, { scope: _dataScope });
   // admin_settlements 는 관리자 전용 (read rule 도 admin) — 비관리자는 watch 안 함 (PERMISSION_DENIED 방지)
   if (store.currentUser?.role === 'admin') {
     watchCollection('admin_settlements', (list) => { store.adminSettlements = list || [];
