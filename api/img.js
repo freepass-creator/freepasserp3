@@ -23,6 +23,12 @@ const ALLOWED_HOSTS = [
   'moren-images.s3.amazonaws.com',
   'moren-images.s3.ap-northeast-2.amazonaws.com',
   'amazonaws.com',            // S3 버킷 서브도메인 전체
+  'cloudfront.net',           // AWS CloudFront CDN
+  'ncloud.com',               // 네이버 클라우드
+  'ncloudstorage.com',        // 네이버 오브젝트 스토리지
+  'kakaocdn.net',             // 카카오 CDN
+  'pstatic.net',              // 네이버 이미지 스토리지
+  'icarimage.com',            // 아이카 차량 이미지
 ];
 
 export default async function handler(req, res) {

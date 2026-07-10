@@ -194,7 +194,11 @@ export function openFullscreen(imgList, startIdx = 0, carNumber = '') {
         try {
           // url이 이미 /api/img 프록시면 그대로 사용 (더블 프록시 방지)
           const proxyUrl = url.startsWith('/api/img?') ? url : `/api/img?url=${encodeURIComponent(url)}`;
-          const res = await fetch(proxyUrl);
+          let res = await fetch(proxyUrl);
+          // 프록시가 host not allowed(400)로 거부하면 직접 fetch 시도
+          if (!res.ok && res.status === 400 && !url.startsWith('/api/img?')) {
+            res = await fetch(url);
+          }
           if (!res.ok) {
             let reason = `HTTP ${res.status}`;
             try { const j = await res.json(); reason = `${res.status}: ${j.message || ''}`; } catch {}
