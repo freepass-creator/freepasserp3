@@ -281,11 +281,18 @@ function renderFilteredRooms() {
   const f = _pageFilters.workspace;
   if (f.unread === 'unread' || f.unread === 'read') {
     const role = store.currentUser?.role;
-    const key = role === 'agent' || role === 'agent_admin' ? 'unread_for_agent'
-              : role === 'provider' ? 'unread_for_provider' : 'unread_for_admin';
     list = list.filter(r => {
-      const u = Number(r[key] || 0);
-      return f.unread === 'unread' ? u > 0 : u === 0;
+      let hasUnread;
+      if (role === 'agent' || role === 'agent_admin') {
+        hasUnread = (r.unread_for_agent || 0) > 0;
+      } else if (role === 'provider') {
+        hasUnread = (r.unread_for_provider || 0) > 0;
+      } else {
+        // admin: localStorage 기반 (ws_ar_<roomId>)
+        const lastRead = Number(localStorage.getItem(`ws_ar_${r._key}`) || 0);
+        hasUnread = (r.last_message_at || 0) > lastRead;
+      }
+      return f.unread === 'unread' ? hasUnread : !hasUnread;
     });
   }
   if (f.company_code !== 'all') list = list.filter(r => r.provider_company_code === f.company_code || r.agent_channel_code === f.company_code);

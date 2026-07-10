@@ -150,16 +150,16 @@ function renderRooms() {
     r.last_message, r.last_sender_code,
   ].some(v => v && String(v).toLowerCase().includes(q)));
 
+  const mobileUnreadOf = (r) => {
+    if (role === 'agent' || role === 'agent_admin') return Number(r.unread_for_agent || 0);
+    if (role === 'provider') return Number(r.unread_for_provider || 0);
+    const lastRead = Number(localStorage.getItem(`ws_ar_${r._key}`) || 0);
+    return (r.last_message_at || 0) > lastRead ? 1 : 0;
+  };
   if (rf === 'unread') {
-    rooms = rooms.filter(r => {
-      const n = (role === 'agent' || role === 'agent_admin') ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : 0;
-      return (n || 0) > 0;
-    });
+    rooms = rooms.filter(r => mobileUnreadOf(r) > 0);
   } else if (rf === 'read') {
-    rooms = rooms.filter(r => {
-      const n = (role === 'agent' || role === 'agent_admin') ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : 0;
-      return !(n > 0);
-    });
+    rooms = rooms.filter(r => !(mobileUnreadOf(r) > 0));
   }
 
   rooms.sort((a, b) => (b.last_message_at || 0) - (a.last_message_at || 0));
@@ -173,7 +173,9 @@ function renderRooms() {
   }
 
   el.innerHTML = rooms.map(r => {
-    const unread = (role === 'agent' || role === 'agent_admin') ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : 0;
+    const unread = (role === 'agent' || role === 'agent_admin') ? r.unread_for_agent
+                 : role === 'provider' ? r.unread_for_provider
+                 : ((r.last_message_at || 0) > Number(localStorage.getItem(`ws_ar_${r._key}`) || 0) ? 1 : 0);
     const dateStr = fmtDate(r.last_message_at);
     const fmtHM   = r.last_message_at ? new Date(r.last_message_at).toLocaleTimeString('ko', { hour: '2-digit', minute: '2-digit' }) : '';
     // 메인: 차량번호 세부모델 공급사명 (공백 구분, 데스크톱과 통일)

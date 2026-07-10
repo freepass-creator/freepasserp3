@@ -40,6 +40,7 @@ let _msgUnsub = null;       // 현재 룸 메시지 구독 해제 함수
 let _contractUnsub = null;  // 계약 서류 실시간 구독 해제 함수
 let _currentMessages = [];  // 활성 룸 메시지 캐시
 let _prevPeerReadAt = 0;    // 상대 마지막 읽음 시각 (변경 감지)
+let _lastRooms = [];        // renderRoomList 마지막 인자 캐시 (admin 읽음 처리 후 즉시 재렌더용)
 
 export function getActiveRoomId() { return _activeRoomId; }
 export function getCurrentMessages() { return _currentMessages; }
@@ -50,6 +51,7 @@ export function renderRoomList(rooms) {
   const body = listBody('workspace');
   if (!body) return;
   if (!Array.isArray(rooms)) return;   // 미로드 — prototype 보존
+  _lastRooms = rooms;
   const role = store.currentUser?.role;
   const uid = store.currentUser?.uid;
   const myCompany = store.currentUser?.company_code;
@@ -71,7 +73,13 @@ export function renderRoomList(rooms) {
     return;
   }
 
-  const unreadOf = (r) => Number((role === 'agent' ? r.unread_for_agent : role === 'provider' ? r.unread_for_provider : (r.unread_for_admin || r.unread)) || 0);
+  const unreadOf = (r) => {
+    if (role === 'agent' || role === 'agent_admin') return Number(r.unread_for_agent || 0);
+    if (role === 'provider') return Number(r.unread_for_provider || 0);
+    // admin: last_message_at vs localStorage 기록 비교
+    const lastRead = Number(localStorage.getItem(`ws_ar_${r._key}`) || 0);
+    return (r.last_message_at || 0) > lastRead ? 1 : 0;
+  };
   const sorted = [...visible].sort((a, b) => (b.last_message_at || 0) - (a.last_message_at || 0));
 
   if (_activeRoomId && !sorted.find(r => r._key === _activeRoomId)) _activeRoomId = null;
@@ -124,6 +132,12 @@ export function renderRoomList(rooms) {
 /* 룸 선택 — 메시지 구독 교체 + 우측 패널 갱신 */
 export function selectRoom(roomId) {
   _activeRoomId = roomId;
+  // admin은 Firebase unread 필드 없음 → localStorage 기록으로 읽음 처리
+  if (roomId && store.currentUser?.role === 'admin') {
+    const r = (store.rooms || []).find(x => x._key === roomId);
+    localStorage.setItem(`ws_ar_${roomId}`, r?.last_message_at || Date.now());
+    if (_lastRooms.length) renderRoomList(_lastRooms);
+  }
   if (_msgUnsub) { try { _msgUnsub(); } catch (_) {} _msgUnsub = null; }
   if (_contractUnsub) { try { _contractUnsub(); } catch (_) {} _contractUnsub = null; }
   if (!roomId) {
@@ -156,6 +170,9 @@ export function selectRoom(roomId) {
       if (_activeRoomId === roomId && !document.hidden && me?.uid && me?.role) {
         const r = (store.rooms || []).find(x => x._key === roomId);
         markRoomRead(roomId, me.role, me.uid, r).catch(() => {});
+        if (me.role === 'admin' && r?.last_message_at) {
+          localStorage.setItem(`ws_ar_${roomId}`, r.last_message_at);
+        }
       }
       try {
         renderChatMessages(_currentMessages, (store.rooms || []).find(x => x._key === roomId));
@@ -463,6 +480,8 @@ export function bindChatInput() {
       } else if (role === 'provider') {
         update.read_at_provider = sentAt;
         update.unread_for_provider = 0;
+      } else if (role === 'admin') {
+        localStorage.setItem(`ws_ar_${_activeRoomId}`, sentAt);
       }
       updateRecord(`rooms/${_activeRoomId}`, update).catch(() => {});
       // unread 는 원자적 증가 — 동시 전송 race 방지 (mobile-workspace 와 동일 규격)
@@ -531,6 +550,7 @@ async function sendChatFile(file, roomId) {
     };
     if (role === 'agent' || role === 'agent_admin') { fileRoomUpdate.read_at_agent = fileSentAt; fileRoomUpdate.unread_for_agent = 0; }
     else if (role === 'provider') { fileRoomUpdate.read_at_provider = fileSentAt; fileRoomUpdate.unread_for_provider = 0; }
+    else if (role === 'admin') localStorage.setItem(`ws_ar_${roomId}`, fileSentAt);
     updateRecord(`rooms/${roomId}`, fileRoomUpdate).catch(() => {});
     const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
                       : role === 'provider' ? 'unread_for_agent' : null;
@@ -573,6 +593,7 @@ async function sendChatImages(files, roomId) {
     };
     if (role === 'agent' || role === 'agent_admin') { imgRoomUpdate.read_at_agent = imgSentAt; imgRoomUpdate.unread_for_agent = 0; }
     else if (role === 'provider') { imgRoomUpdate.read_at_provider = imgSentAt; imgRoomUpdate.unread_for_provider = 0; }
+    else if (role === 'admin') localStorage.setItem(`ws_ar_${roomId}`, imgSentAt);
     updateRecord(`rooms/${roomId}`, imgRoomUpdate).catch(() => {});
     const unreadField = (role === 'agent' || role === 'agent_admin') ? 'unread_for_provider'
                       : role === 'provider' ? 'unread_for_agent' : null;

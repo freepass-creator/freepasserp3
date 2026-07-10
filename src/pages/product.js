@@ -75,7 +75,7 @@ export const PRODUCT_OPTS = {
 };
 
 export const PRODUCT_TERMS = ['1', '12', '18', '24', '36', '48', '60'];   // v2 PRICE_PERIODS
-export const PRODUCT_KMS   = ['1만', '2만', '3만', '4만', '5만'];           // 연주행 km 옵션
+export const PRODUCT_KMS   = ['1만', '2만', '2.5만', '3만', '4만', '5만'];   // 연주행 km 옵션
 const MAX_PHOTOS = 30;
 const UPLOAD_CONCURRENCY = 4;
 

@@ -86,7 +86,7 @@ export const POLICY_OPTS = {
   additional_driver_allowance_count: ['불가','1인','2인','3인','무제한'],
   additional_driver_cost: ['없음','월 1만원','월 2만원','월 3만원','월 5만원','협의'],
   age_lowering_cost: ['불가','대여료의 5%','대여료의 7%','대여료의 10%','5만원','7만원','10만원','월15만원 추가'],
-  annual_mileage: ['연간 1만Km','연간 2만Km','연간 3만Km','연간 4만Km','연간 5만Km'],
+  annual_mileage: ['연간 1만Km','연간 2만Km','연간 2.5만Km','연간 3만Km','연간 4만Km','연간 5만Km'],
   mileage_upcharge_per_10000km: ['없음','1만원','2만원','3만원','5만원','10만원','협의'],
   deposit_installment: ['불가능','협의','가능'],
   deposit_card_payment: ['가능','협의','불가'],
