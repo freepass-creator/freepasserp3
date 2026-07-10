@@ -108,7 +108,7 @@ export function renderRoomList(rooms) {
     return renderRoomItem({
       id: r._key,
       icon: unread > 0 ? 'chat-circle-dots' : 'chat-circle',
-      badge: unread > 0 ? '안읽' : '읽음',
+      badge: unread > 0 ? 'N' : '읽음',
       tone: unread > 0 ? 'blue' : 'gray',
       name: mainLine,
       time: fmtDate(r.last_message_at || r.created_at),    // 메인줄 우측 = 날짜 (YY.MM.DD)

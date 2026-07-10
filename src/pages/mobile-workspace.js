@@ -193,7 +193,7 @@ function renderRooms() {
       <div class="m-room-item" data-rid="${r._key}">
         <div class="m-chat-avatar ${hasUnread ? 'is-accent' : ''}">
           <i class="ph ${hasUnread ? 'ph-chat-circle-dots' : 'ph-chat-circle'}"></i>
-          <span class="m-avatar-label">${hasUnread ? '안읽음' : '읽음'}</span>
+          <span class="m-avatar-label">${hasUnread ? 'N' : '읽음'}</span>
         </div>
         <div class="m-room-item-body">
           <div class="m-room-item-top">
