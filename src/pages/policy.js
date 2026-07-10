@@ -281,7 +281,7 @@ export function renderPolicyDetail(pol) {
         ${ffAmt('자손면책', 'self_body_deductible', pol.self_body_deductible || pol.personal_injury_deductible, dis, { unit: '만원' })}
         ${ffs('무보험상해', 'uninsured_damage',                   pol.uninsured_damage || pol.uninsured_compensation_limit,              O.uninsured_damage, dis)}
         ${ffAmt('무보험면책', 'uninsured_deductible', pol.uninsured_deductible, dis, { unit: '만원' })}
-        ${ffs('자차손해',   'own_damage_compensation',            pol.own_damage_compensation,                                           O.own_damage_compensation, dis)}
+        ${ffi('자차손해',   'own_damage_compensation',            pol.own_damage_compensation, dis)}
         ${ffAmt('자차수리율', 'own_damage_repair_ratio', pol.own_damage_repair_ratio || pol.own_damage_compensation_rate, dis, { unit: '%' })}
         ${ffAmt('자차최소', 'own_damage_min_deductible', pol.own_damage_min_deductible, dis, { unit: '만원' })}
         ${ffAmt('자차최대', 'own_damage_max_deductible', pol.own_damage_max_deductible, dis, { unit: '만원' })}
