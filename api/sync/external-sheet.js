@@ -617,7 +617,7 @@ export async function syncFromSheet(source) {
         const p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs, tabPartnerCode, defaultProductType: config.default_product_type || '' });
         if (!p) { tabSkipped++; continue; }
         if (hiddenRows.has(absRow)) { p.vehicle_status = '출고불가'; p.status = 'unavailable'; p.status_label = '시트 숨김'; }
-        if (p.vehicle_status === '출고불가') { tabSkipped++; continue; }   // 출고가능만 import
+        if (p.vehicle_status !== '출고가능' && p.vehicle_status !== '즉시출고') { tabSkipped++; continue; }   // 출고가능/즉시출고만 import
         products[p._key] = p;
         tabSynced++;
       }
