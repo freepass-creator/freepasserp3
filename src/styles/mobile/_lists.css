@@ -333,8 +333,8 @@
 
   /* ── 업무소통 방 리스트 — 공통 아바타에 색상 변형만 ── */
   .m-room-item .m-chat-avatar.is-accent {
-    background: var(--c-accent-soft);
-    color: var(--c-accent);
+    background: #1d4ed8;
+    color: #fff;
   }
   .m-avatar-label {
     font-size: var(--fs-2xs);
