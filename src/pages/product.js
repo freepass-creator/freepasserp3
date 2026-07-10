@@ -1035,6 +1035,7 @@ export function renderProductDetail(p) {
         <tbody>${priceEntries.length ? priceEntries.map(rentRow).join('') : `<tr><td colspan="5" style="color:var(--text-muted); text-align:center; padding:8px;">가격 없음</td></tr>`}</tbody>
         ${addRowHtml('prodPriceTable')}
       </table>
+      ${p.deposit_condition ? `<div style="display:flex;align-items:flex-start;gap:6px;margin:4px 0 8px;padding:7px 10px;background:var(--alert-orange-bg);border-radius:4px;font-size:12px;color:var(--alert-orange-text);"><i class="ph ph-warning" style="flex-shrink:0;margin-top:1px;"></i><span>${esc(p.deposit_condition)}</span></div>` : ''}
       ${addBtnHtml('prodPriceTable')}
       ${(role === 'admin' || role === 'agent' || role === 'agent_admin') ? `
         <div class="form-section-title" style="margin-top:12px;"><i class="ph ph-percent"></i>수수료 | 비고 <span style="color:var(--text-weak); font-weight:400; font-size:12px;">(내부용)</span></div>

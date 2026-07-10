@@ -524,6 +524,19 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     if (inverted) { console.warn(`[sync] ${carNumber} ${k}개월 대여료 ${r} 역전(장기보다 쌈) 제거`); delete product.price[k]; }
   }
 
+  // 보증금 조건 탐색 — 어느 셀이든 "공동임차인/소득증빙...보증금 XXX만원" 패턴 있으면 캡처
+  const DEP_COND_RE = /공동임차인|소득증빙조건/;
+  const DEP_AMT_RE = /보증금\s*(\d+(?:\.\d+)?)\s*만원/;
+  for (const cell of row) {
+    const v = String(cell ?? '').trim();
+    if (DEP_COND_RE.test(v)) {
+      product.deposit_condition = v.replace(/^\(|\)$/g, '').trim();
+      const m = DEP_AMT_RE.exec(v);
+      if (m) product.deposit_condition_amount = Math.round(parseFloat(m[1]) * 10000);
+      break;
+    }
+  }
+
   // 차종 표기 정규화 — 같은 차 모델명/세부모델 흔들림 통일 (예: 테슬라 모델 Y 신차 → 모델 Y 주니퍼)
   normalizeVehicleNaming(product, { isNew: product.product_type === '신차렌트' });
 
