@@ -1379,6 +1379,45 @@ function startHydration() {
     const activePage = document.querySelector('.pt-page.active')?.dataset.page;
     if (activePage) window.updatePageStats?.(activePage);
   });
+  // 공지 — N 뱃지 + 업무소통 패널 렌더
+  const NOTICES_SEEN_KEY = 'fp_notices_seen_at';
+  function _updateNoticesBadge(notices) {
+    const seenAt = parseInt(localStorage.getItem(NOTICES_SEEN_KEY) || '0', 10);
+    const hasNew = (notices || []).some(n => !n._deleted && n._key !== '__banner__' && n.status !== 'deleted' && (n.created_at || 0) > seenAt);
+    document.getElementById('wsNoticeBadge')?.classList.toggle('is-visible', hasNew);
+  }
+  function _renderWorkspaceNotices(notices) {
+    const el = document.getElementById('wsNoticeList');
+    if (!el) return;
+    const seenAt = parseInt(localStorage.getItem(NOTICES_SEEN_KEY) || '0', 10);
+    const list = (notices || [])
+      .filter(n => !n._deleted && n._key !== '__banner__' && n.status !== 'deleted')
+      .sort((a, b) => (b.created_at || 0) - (a.created_at || 0))
+      .slice(0, 5);
+    if (!list.length) { el.innerHTML = ''; return; }
+    const fmt = (ts) => ts ? new Date(ts).toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' }) : '';
+    el.innerHTML = list.map(n => {
+      const isNew = (n.created_at || 0) > seenAt;
+      return `<div class="ws-notice-item${isNew ? ' is-new' : ''}">
+        ${isNew ? '<span class="ws-notice-n">N</span>' : '<span class="ws-notice-n ws-notice-n-placeholder"></span>'}
+        <span class="ws-notice-title">${esc(n.title || '(제목없음)')}</span>
+        <span class="ws-notice-date">${fmt(n.created_at)}</span>
+      </div>`;
+    }).join('');
+  }
+  window._markNoticesSeen = () => {
+    localStorage.setItem(NOTICES_SEEN_KEY, String(Date.now()));
+    _updateNoticesBadge(store.notices || []);
+    _renderWorkspaceNotices(store.notices || []);
+  };
+  watchCollection('home_notices', (list) => {
+    store.notices = list || [];
+    _updateNoticesBadge(store.notices);
+    const activePage = document.querySelector('.pt-page.active')?.dataset.page;
+    if (activePage === 'workspace') _renderWorkspaceNotices(store.notices);
+    else _renderWorkspaceNotices(store.notices);
+  });
+
   // 대화방 (업무소통) + 계약 + 정산 + 파트너 + 사용자
   watchCollection('rooms',       (list) => {
     store.rooms = list || [];
