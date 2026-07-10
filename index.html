@@ -61,7 +61,7 @@
     <button class="pt-sb-toggle" id="sbToggle" title="사이드바 접기/펼치기"><i class="ph ph-caret-left"></i></button>
   </div>
   <a href="#search" data-page="search" title="상품 찾기"><i class="ph ph-magnifying-glass"></i><span class="sb-label">상품 찾기</span><span class="cnt" data-badge="search"></span></a>
-  <a href="#workspace" data-page="workspace" title="업무 소통"><i class="ph ph-chat-circle-dots"></i><span class="sb-label">업무 소통</span><span class="cnt" data-badge="workspace"></span><span class="notice-n-badge" id="wsNoticeBadge">N</span></a>
+  <a href="#workspace" data-page="workspace" title="업무 소통"><i class="ph ph-chat-circle-dots"></i><span class="sb-label">업무 소통</span><span class="cnt" data-badge="workspace"></span></a>
   <a href="#contract" data-page="contract" title="계약 관리"><i class="ph ph-file-text"></i><span class="sb-label">계약 관리</span><span class="cnt" data-badge="contract"></span></a>
   <a href="#settle" data-page="settle" title="정산 관리"><i class="ph ph-coins"></i><span class="sb-label">정산 관리</span><span class="cnt" data-badge="settle"></span></a>
   <a href="#product" data-page="product" title="재고 관리"><i class="ph ph-package"></i><span class="sb-label">재고 관리</span><span class="cnt" data-badge="product"></span></a>
@@ -294,7 +294,6 @@
         <span>업무 목록</span>
         <div class="spacer"></div>
       </div>
-      <div id="wsNoticeList"></div>
       <div class="ws4-body no-pad">
         <div class="room-item active">
           <div class="room-item-avatar is-accent"><i class="ph ph-chat-circle-dots"></i>안읽음</div>
@@ -1378,8 +1377,6 @@
       const statsEl = document.getElementById('ptTbSearchStats');
       if (statsEl) statsEl.innerHTML = '';
     }
-    // 업무소통 진입 시 공지 읽음 처리
-    if (name === 'workspace') window._markNoticesSeen?.();
     // settings / dev / admin-chat — app.js 가 window 에 노출
     if (name === 'settings') {
       window.renderSettings?.();

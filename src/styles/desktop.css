@@ -240,14 +240,6 @@
     align-self: center;
   }
   .pt-sb a > .cnt.has-unread { display: inline-block; }
-  /* N 뱃지 — 새 공지 있을 때 표시 */
-  .pt-sb a > .notice-n-badge {
-    display: none; flex-shrink: 0;
-    background: #7c3aed; color: #fff;
-    font-size: 9px; font-weight: 700; line-height: 1;
-    padding: 2px 4px; border-radius: 3px;
-  }
-  .pt-sb a > .notice-n-badge.is-visible { display: inline-flex; align-items: center; }
   /* 사이드바 접힌 상태 — dot 을 아이콘 우상단으로 이동 (요즘 패턴) */
   body.is-sb-collapsed .pt-sb a {
     position: relative;
@@ -2052,24 +2044,6 @@
   }
   /* 긴 한글/영문 단어 패널 못 벗어남 */
   .ws4-body { word-wrap: break-word; overflow-wrap: break-word; }
-
-  /* 업무소통 공지 패널 */
-  .ws-notice-item {
-    display: flex; align-items: center; gap: 6px;
-    padding: 6px 12px; font-size: 12px;
-    border-bottom: 1px solid var(--border-soft);
-    background: var(--bg-card);
-  }
-  .ws-notice-item.is-new { background: color-mix(in srgb, #7c3aed 8%, var(--bg-card)); }
-  .ws-notice-n {
-    flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
-    width: 14px; height: 14px;
-    background: #7c3aed; color: #fff;
-    font-size: 9px; font-weight: 700; border-radius: 2px;
-  }
-  .ws-notice-n-placeholder { width: 14px; height: 14px; }
-  .ws-notice-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-main); }
-  .ws-notice-date { flex-shrink: 0; font-size: 11px; color: var(--text-muted); }
 
   /* 룸 아이템 */
   /* ── 모든 페이지 공통 목록 카드 (2줄: 메인 / 보조) ── */
