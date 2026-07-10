@@ -247,9 +247,16 @@ export function snapToSsot(p, snapIndex) {
   if (pf === '전기' || pf === '수소') {
     const ev = cand.filter(e => e.variants.some(v => fuelKey(v.fuel) === pf));
     if (ev.length) cand = ev;
-  } else if (pf) {
-    const nonEv = cand.filter(e => !isEvOnly(e));
-    if (nonEv.length) cand = nonEv;
+  } else {
+    // pf 미상일 때도 raw 텍스트에 EV 키워드 없으면 EV 전용 세부모델 제외
+    // (연료 컬럼 없는 시트에서 G80 → 일렉트리파이드 G80으로 오매칭 방지)
+    const rawEvHint = /(전기|일렉트릭|일렉트리파이드|electrified|\bEV\b)/i.test(
+      `${p.fuel_type || ''} ${p.trim_name || ''} ${p.raw_model_full || ''} ${p.raw_model_short || ''}`
+    );
+    if (!rawEvHint) {
+      const nonEv = cand.filter(e => !isEvOnly(e));
+      if (nonEv.length) cand = nonEv;
+    }
   }
 
   // 3) 최종 세부모델 — (matchVehicle 픽 또는 제품 세부모델) 이 후보에 있으면 그것, 없으면 연료맞는 것 → 최신
