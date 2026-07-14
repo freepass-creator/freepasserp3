@@ -924,11 +924,12 @@ export async function createContractFromRoomLocal(room) {
     agent = me;
   }
 
-  // 계약자(고객) 결정
-  const customer = await pickOrCreateCustomer();
+  // 차량(상품) 먼저 확정 — 견적 UI 에 넘겨 대여료/보증금/기간 스냅샷 확보(정산 수수료 ₩0 방지, search.js 와 대칭)
+  const product = (store.products || []).find(p => p._key === room.product_uid || p.car_number === (room.vehicle_number || room.car_number));
+  // 계약자(고객) 결정 — product 전달로 견적 입력 노출
+  const customer = await pickOrCreateCustomer(product);
   if (!customer) return;
 
-  const product = (store.products || []).find(p => p._key === room.product_uid || p.car_number === (room.vehicle_number || room.car_number));
   const code = await makeTempContractCode();
   try {
     // 신규 고객이면 customers 에 먼저 저장해 key 확보 (search.js 와 동일 — 없으면 customer_uid undefined 로 set 실패)
@@ -958,6 +959,10 @@ export async function createContractFromRoomLocal(room) {
       year_snapshot: product?.year,
       fuel_type_snapshot: product?.fuel_type,
       ext_color_snapshot: product?.ext_color,
+      // 대여료/보증금/기간 snapshot — 견적 입력값(정산 수수료 산정 기준). 누락 시 완료 후 fee ₩0.
+      rent_month_snapshot: Number(customer.contract_period) || 0,
+      rent_amount_snapshot: customer.contract_rent || 0,
+      deposit_amount_snapshot: customer.contract_deposit || 0,
       // 계약자 참조 + snapshot
       customer_uid: customerKey,
       customer_name: customer.name,

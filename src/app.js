@@ -2183,9 +2183,25 @@ function buildContextMenuItems(page, id, item) {
         submenu: CONTRACT_STATUSES.map(s => ({
           label: s, active: c.contract_status === s,
           action: async () => {
+            // 완료는 원시 상태쓰기가 아니라 공용 완료 루틴(차량 출고불가·코드승격·정산 자동생성)으로 —
+            //  원시 write 는 "완료인데 차량은 판매가능(이중출고)"·"정산 미생성(수수료 누락)"을 만든다.
+            if (s === CONTRACT_STATUS.DONE) {
+              const { completeContract } = await import('./pages/contract.js');
+              const res = await completeContract(c);
+              if (!res.ok) return showToast(res.reason === 'dup' ? `이미 완료된 계약 | ${res.code}` : '완료 실패', 'error');
+              if (res.settlementFailed) showToast('⚠ 정산 자동생성 실패 — 정산관리에서 수동 생성', 'error');
+              return showToast(`상태 → 계약완료 | ${res.code}`);
+            }
             await updateRecord(`contracts/${c._key}`, { contract_status: s, updated_at: Date.now() });
-            // 취소 전환 시 정산완료분 환수 처리 (계약페이지 취소 버튼과 동일 규칙)
+            // 취소 전환 시 정산완료분 환수 + 이 계약이 잡고 있던 차량(출고불가) 원복 (계약페이지 취소와 동일 규칙)
             if (s === CONTRACT_STATUS.CANCELLED) {
+              if (c.product_uid) {
+                const prod = (store.products || []).find(p => p._key === c.product_uid || p.product_uid === c.product_uid);
+                if (prod?.vehicle_status === VEHICLE_STATUS.BLOCKED) {
+                  try { await updateRecord(`products/${c.product_uid}`, { vehicle_status: VEHICLE_STATUS.AVAILABLE, updated_at: Date.now() }); }
+                  catch (ve) { console.warn('[cancel] 차량 원복 실패', ve); }
+                }
+              }
               try {
                 const { applyClawbackOnCancel } = await import('./firebase/collections.js');
                 const amt = await applyClawbackOnCancel({ ...c, contract_status: s, cancelled_at: Date.now() });
