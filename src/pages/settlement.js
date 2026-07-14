@@ -15,7 +15,7 @@ import {
 } from '../core/ui-helpers.js';
 import { CONTRACT_STATUS } from '../core/contract-status.js';
 import {
-  SETTLEMENT_STATUSES_FULL, getSettlementStatus,
+  SETTLEMENT_STATUSES_FULL, getSettlementStatus, SETTLEMENT_STATUS,
   settlementStatusPayload, SETTLEMENT_STATUS_DEFAULT,
 } from '../core/settlement-status.js';
 
@@ -65,14 +65,19 @@ export function renderSettlementList(settlements) {
     if (head) head.after(subbar);
   }
   if (subbar) {
-    const totalFee = visible.reduce((sum, s) => sum + Number(s.fee_amount || s.commission || 0), 0);
-    const pendingFee = visible.filter(s => /대기|미정산/.test(s.settlement_status || '')).reduce((sum, s) => sum + Number(s.fee_amount || s.commission || 0), 0);
-    const doneFee = visible.filter(s => /완료/.test(s.settlement_status || '')).reduce((sum, s) => sum + Number(s.fee_amount || s.commission || 0), 0);
+    // 정확 상태매칭(SSOT) — 이전 /대기|미정산/ 는 '환수대기'까지 대기에 오집계했음.
+    const feeOf = (s) => Number(s.fee_amount || s.commission || 0);
+    const clawOf = (s) => Number(s.clawback_amount || 0);
+    const pendingFee = visible.filter(s => getSettlementStatus(s) === SETTLEMENT_STATUS.PENDING).reduce((sum, s) => sum + feeOf(s), 0);
+    const doneFee    = visible.filter(s => getSettlementStatus(s) === SETTLEMENT_STATUS.DONE).reduce((sum, s) => sum + feeOf(s), 0);
+    const clawbackFee = visible.reduce((sum, s) => sum + clawOf(s), 0);                  // 환수액 합계
+    const netFee = visible.reduce((sum, s) => sum + feeOf(s), 0) - clawbackFee;          // 합계(순) = 총수수료 − 환수
     subbar.innerHTML = `<span style="font-size:11px;color:var(--text-sub);">${visible.length}건</span>
       <span style="flex:1"></span>
       <span style="font-size:11px;color:var(--text-sub);">대기 <b style="color:var(--alert-orange-text)">${Math.round(pendingFee/10000).toLocaleString()}만</b></span>
       <span style="font-size:11px;color:var(--text-sub);">완료 <b style="color:var(--alert-green-text)">${Math.round(doneFee/10000).toLocaleString()}만</b></span>
-      <span style="font-size:11px;color:var(--text-main);">합계 <b>${Math.round(totalFee/10000).toLocaleString()}만</b></span>`;
+      ${clawbackFee > 0 ? `<span style="font-size:11px;color:var(--text-sub);">환수 <b style="color:var(--alert-red-text,#dc2626)">-${Math.round(clawbackFee/10000).toLocaleString()}만</b></span>` : ''}
+      <span style="font-size:11px;color:var(--text-main);">합계 <b>${Math.round(netFee/10000).toLocaleString()}만</b></span>`;
   }
 
   if (!visible.length) { body.innerHTML = emptyState('정산 항목이 없습니다'); renderSettlementDetail(null); return; }
