@@ -3,6 +3,7 @@
  */
 import { ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { storage } from './config.js';
+import { isDemo } from '../core/demo.js';   // 체험 모드: 업로드는 로컬 미리보기 URL 로 대체
 
 /**
  * Upload a file and return download URL
@@ -11,6 +12,8 @@ import { storage } from './config.js';
  * @returns {Promise<{url: string, name: string, type: string, size: number}>}
  */
 export async function uploadFile(path, file) {
+  // 체험 모드: 실 Storage 업로드 없이 로컬 objectURL 반환(화면 미리보기용, 새로고침 시 소멸)
+  if (isDemo()) return { url: URL.createObjectURL(file), name: file.name, type: file.type, size: file.size };
   const fileRef = storageRef(storage, path);
   const snap = await uploadBytes(fileRef, file);
   const url = await getDownloadURL(snap.ref);

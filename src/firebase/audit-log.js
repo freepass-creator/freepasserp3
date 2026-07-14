@@ -16,6 +16,7 @@
 import { ref, push } from 'firebase/database';
 import { db } from './config.js';
 import { store } from '../core/store.js';
+import { isDemo } from '../core/demo.js';   // 체험 모드: 감사로그 no-op
 
 /* 감사 대상 컬렉션 — 고볼륨 (messages 등) 은 의도적으로 제외 */
 const AUDITED_COLLECTIONS = new Set([
@@ -40,6 +41,7 @@ const isNoisyField = (f) => NOISY_FIELDS.has(f) || f.startsWith('read_by/');
  * @param {Object} [params.data]  — 변경 후 값 (선택, 작은 데이터만)
  */
 export async function logAudit({ action, path, fields, data }) {
+  if (isDemo()) return;   // 체험 모드: 실 Firebase 감사로그 기록 안 함
   if (!action || !path) return;
   const [collection, ...rest] = path.split('/');
   if (!AUDITED_COLLECTIONS.has(collection)) return;   // 감사 대상 아님

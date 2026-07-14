@@ -9,6 +9,8 @@
  *   recordHaystack(record, store)      → 소문자 합친 문자열
  */
 
+import { findPartner, findPartnerByKey } from './store.js';   // 파트너 O(1) 인덱스 조회 (키입력 핫패스)
+
 // 검색 노이즈/긴 값 제외 (URL·타임스탬프·내부플래그·순수숫자 스펙)
 const SKIP_KEYS = new Set([
   'image_urls', 'image_url', 'images', 'photo_urls', 'thumbnail', 'photo_link',
@@ -23,10 +25,10 @@ const PHONE_KEYS = new Set(['phone', 'manager_phone', 'company_phone', 'manager_
 
 /* 공급사 코드 → 회사명·담당자명·연락처 (회사/담당자 어느 걸로 쳐도 매칭) */
 function partnerText(code, store) {
-  const p = (store.partners || []).find(
-    x => (x.partner_code === code || x.company_code === code || x._key === code) && !x._deleted
-  );
-  if (!p) return '';
+  // partner_code·_key 는 O(1) 인덱스, company_code 매칭만 폴백 선형탐색 (대부분 인덱스로 해결)
+  const p = findPartner(code) || findPartnerByKey(code)
+         || (store.partners || []).find(x => x.company_code === code && !x._deleted);
+  if (!p || p._deleted) return '';
   return [p.partner_name, p.company_name, p.ceo_name, p.manager_name, p.manager_phone, p.company_phone, p.business_number]
     .filter(Boolean).join(' ');
 }
@@ -53,7 +55,7 @@ export function recordHaystack(record, store = {}, query = '') {
     const pt = partnerText(code, store);
     // 파트너 전화번호도 5자리 미만 쿼리 시 제외
     if (skipPhone) {
-      const pObj = (store.partners || []).find(x => (x.partner_code === code || x.company_code === code) && !x._deleted);
+      const pObj = findPartner(code) || findPartnerByKey(code) || (store.partners || []).find(x => x.company_code === code && !x._deleted);
       const phones = [pObj?.manager_phone, pObj?.company_phone].filter(Boolean).join(' ');
       const ptSafe = pt.replace(phones, '');
       parts.push(ptSafe);

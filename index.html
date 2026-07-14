@@ -1347,11 +1347,11 @@
   // 관리자 전용 페이지 — 비관리자가 URL 해시로 직접 진입(#users/#partners 등) 시 차단.
   //  CSS 메뉴 숨김(display:none)은 우회 가능 → 실제 렌더 진입을 역할로 가드.
   //  partners/users 는 영업채널·전직원 PII 노출 경로라 특히 중요. admin-chat 은 비관리자도 쓰는 기능이라 제외.
-  const ADMIN_ONLY_PAGES = ['partners','users','admin','admin-settle','dev'];
+  const ADMIN_ONLY_PAGES = ['partners','users','admin','admin-settle','dev','send'];
   function showPage(name) {
     if (!VALID_PAGES.includes(name)) name = 'search';
     if (ADMIN_ONLY_PAGES.includes(name) && !document.body.classList.contains('role-admin')) name = 'search';
-    if (name === 'product' && (document.body.classList.contains('role-agent') || document.body.classList.contains('role-agent_admin') || document.body.classList.contains('role-agent_manager'))) name = 'search';
+    if ((name === 'product' || name === 'policy') && (document.body.classList.contains('role-agent') || document.body.classList.contains('role-agent_admin') || document.body.classList.contains('role-agent_manager'))) name = 'search';
     // agent_admin: 소통+정산 / agent_manager: 소통+계약 / 팀매니저: 계약발송 차단
     const AGENT_ADMIN_ALLOWED  = ['workspace','settle'];
     const AGENT_MANAGER_ALLOWED = ['workspace','contract'];

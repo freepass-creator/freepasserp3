@@ -56,14 +56,7 @@ function toArr(raw) {
     .sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
 }
 
-function emit(path) {
-  const raw = mem()[path];
-  const set = _subs.get(path);
-  if (set) set.forEach(({ cb, options }) => cb(options?.transform ? options.transform(raw) : toArr(raw)));
-}
-
-/* 경로 유틸 — 'rooms/K1/messages/M1' 같은 중첩 경로 지원 */
-function topOf(path) { return String(path).split('/')[0]; }
+/* 경로 유틸 — 'messages/K1', 'rooms/K1/messages/M1' 같은 중첩 경로 지원 */
 function getByPath(path) {
   const parts = String(path).split('/');
   let node = mem();
@@ -81,17 +74,29 @@ function setByPath(path, value) {
   node[parts[parts.length - 1]] = value;
 }
 
+/* 쓰기 후 알림 — 변경된 경로 자신 또는 그 조상(=구독 경로)인 워처를 모두 발화.
+ *  (평면 topOf 브로드캐스트는 'messages/{roomId}' 같은 중첩 구독을 놓쳐 채팅이 죽던 버그 수정) */
+function notifyWrite(writtenPath) {
+  const wp = String(writtenPath);
+  for (const [subPath, set] of _subs) {
+    if (wp === subPath || wp.startsWith(subPath + '/')) {
+      const raw = getByPath(subPath);
+      set.forEach(({ cb, options }) => cb(options?.transform ? options.transform(raw) : toArr(raw)));
+    }
+  }
+}
+
 /* ── 읽기 ── */
 export function demoWatchCollection(path, cb, options = {}) {
   if (!_subs.has(path)) _subs.set(path, new Set());
   const entry = { cb, options };
   _subs.get(path).add(entry);
-  const raw = mem()[path];
+  const raw = getByPath(path);
   cb(options.transform ? options.transform(raw) : toArr(raw));
   return () => { _subs.get(path)?.delete(entry); };
 }
 export function demoWatchRecord(path, cb) { cb(getByPath(path)); return () => {}; }
-export async function demoFetchCollection(path) { return toArr(mem()[path]); }
+export async function demoFetchCollection(path) { return toArr(getByPath(path)); }
 export async function demoFetchRecord(path) { return getByPath(path); }
 
 /* ── 쓰기 (메모리에서만, 새로고침 시 리셋) ── */
@@ -101,25 +106,25 @@ export async function demoPush(path, data) {
   const bucket = (cur && typeof cur === 'object') ? cur : {};
   bucket[key] = { ...data, created_at: Date.now() };
   setByPath(path, bucket);
-  emit(topOf(path));
+  notifyWrite(path);
   demoWriteNotice();
   return key;
 }
 export async function demoSet(path, data) {
   setByPath(path, { ...data, updated_at: Date.now() });
-  emit(topOf(path));
+  notifyWrite(path);
   demoWriteNotice();
 }
 export async function demoUpdate(path, data) {
   const cur = getByPath(path) || {};
   setByPath(path, { ...cur, ...data, updated_at: Date.now() });
-  emit(topOf(path));
+  notifyWrite(path);
   if (data?._deleted === undefined) demoWriteNotice();
 }
 export async function demoSoftDelete(path) {
   const cur = getByPath(path) || {};
   setByPath(path, { ...cur, _deleted: true, deleted_at: Date.now() });
-  emit(topOf(path));
+  notifyWrite(path);
 }
 
 export async function demoIncrement(path, delta = 1) {
@@ -134,7 +139,7 @@ export async function demoAppendToArray(path, item, max = 0) {
   arr.push(item);
   const out = (max > 0 && arr.length > max) ? arr.slice(arr.length - max) : arr;
   setByPath(path, out);
-  emit(topOf(path));
+  notifyWrite(path);
   return out;
 }
 export async function demoRemoveFromArray(path, value) {
@@ -143,7 +148,7 @@ export async function demoRemoveFromArray(path, value) {
   const i = arr.findIndex(matches);
   if (i >= 0) arr.splice(i, 1);
   setByPath(path, arr);
-  emit(topOf(path));
+  notifyWrite(path);
   return arr;
 }
 

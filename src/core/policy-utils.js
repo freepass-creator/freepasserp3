@@ -39,11 +39,21 @@ export function findPolicy(product, policies = []) {
   return policies.find(t => t.policy_code === product.policy_code || t._key === product.policy_code) || {};
 }
 
-/* ── products 배열에 정책 병합 (엑셀 내보내기 전 호출) ── */
+/* ── products 배열에 정책 병합 (매 데이터 변경마다 호출되는 핫패스) ──
+ *  정책 인덱스(policy_code/_key)를 1회 구성해 매물마다의 선형탐색(O(N×M)) 제거.
+ *  또한 정책이 삭제되어 매칭이 사라지면 상품에 남은 stale _policy 를 떼어냄(삭제 정책 스냅샷 잔존 방지). */
 export function enrichProductsWithPolicy(products, policies = []) {
+  const byCode = new Map();
+  for (const t of policies || []) {
+    if (t?.policy_code) byCode.set(t.policy_code, t);
+    if (t?._key) byCode.set(t._key, t);
+  }
+  const hasPolicies = byCode.size > 0;
   return products.map(p => {
-    const policy = findPolicy(p, policies);
-    return policy && Object.keys(policy).length ? { ...p, _policy: policy } : p;
+    const policy = p.policy_code ? byCode.get(p.policy_code) : null;
+    if (policy) return { ...p, _policy: policy };
+    if (hasPolicies && p._policy) { const { _policy, ...rest } = p; return rest; }  // 삭제된 정책의 stale 스냅샷 제거
+    return p;
   });
 }
 

@@ -4,12 +4,14 @@
 import { ref, runTransaction, get } from 'firebase/database';
 import { db } from './config.js';
 import { setRecord, updateRecord, pushRecord, stripUndefined } from './db.js';
+import { isDemo, demoIncrement } from '../core/demo.js';   // 체험 모드: 채번도 인메모리로
 
 /* ── 코드 시퀀스 채번 ──
  *  정상 트랜잭션 → 1부터 증가하는 seq
  *  실패 fallback → 충돌 회피용 999000+ 난수 (정상 seq 범위와 명확 분리)
  *  실패했더라도 호출 로그 남겨서 재발 감지 가능 */
 export async function nextSequence(sequenceKey) {
+  if (isDemo()) return demoIncrement(`code_sequences/${sequenceKey}`);   // 체험: 실 Firebase 트랜잭션 안 함
   const seqRef = ref(db, `code_sequences/${sequenceKey}`);
   try {
     const result = await runTransaction(seqRef, (v) => (v || 0) + 1);

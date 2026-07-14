@@ -151,6 +151,9 @@ function buildFromProduct(p) {
 export function renderSend() {
   const host = document.querySelector('.pt-page[data-page="send"]');
   if (!host) return;
+  // 계약발송은 관리자 전용 — showPage 라우팅 우회(#send 딥링크·window.renderSend 직접호출) 대비 방어.
+  //  고객 계약서 PII(이름·전화·차량·금액·서명) 페이지라 비관리자 진입 시 렌더 차단.
+  if (store.currentUser?.role !== 'admin') { host.innerHTML = ''; return; }
   if (built) { refreshListIfOpen(); return; } // 이미 렌더됨 — iframe 유지(작성 중 내용 보존)
   built = true;
 
