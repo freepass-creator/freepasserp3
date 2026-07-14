@@ -31,6 +31,10 @@
      이전 정적 버전 그대로 (Variable 추가 시 데스크톱 글씨 metrics 변화 가능성 회피) -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css">
+<!-- CI 폰트 (Exo 2) — 로그인 브랜드 워드마크용. CI센터 규격과 동일 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 <!-- tokens.css 가 base.css 보다 먼저 로드되어야 :root 토큰이 살아남음 -->
 <link rel="stylesheet" href="/src/styles/tokens.css">
 <link rel="stylesheet" href="/src/styles/base.css">
@@ -1179,9 +1183,8 @@
           <input id="loginPw" type="password" placeholder="비밀번호 입력" autocomplete="current-password" required>
         </div>
         <button type="submit" class="login-submit">로그인</button>
-        <button type="button" class="login-guest" id="guestBrowseBtn"
-                onclick="location.href='catalog.html'">
-          <i class="ph ph-storefront"></i> 로그인 없이 상품 둘러보기
+        <button type="button" class="login-guest" id="agentDemoBtn">
+          <i class="ph ph-storefront"></i> 로그인 없이 둘러보기
         </button>
       </div>
       <div class="login-links">

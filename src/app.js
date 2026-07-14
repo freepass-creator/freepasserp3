@@ -32,6 +32,8 @@ if (isMobileUA()) {
 }
 
 import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';
+// 영업자 체험(둘러보기) 모드 — 로그인 없이 샘플 데이터로 실제 화면 체험
+import { isDemo, DEMO_USER, mountDemoBanner, enterDemo } from './core/demo.js';
 import { watchCollection, pushRecord, updateRecord, softDelete, fetchRecord, setRecord } from './firebase/db.js';
 import { store } from './core/store.js';
 import { matchRecord } from './core/search-match.js';
@@ -1205,10 +1207,17 @@ async function boot() {
   clearSampleData();
 
   let user = null;
-  try {
-    user = await initAuth();
-  } catch (e) {
-    console.error('[auth] init failed', e);
+  if (isDemo()) {
+    // 체험 모드 — Firebase 인증을 아예 건너뛰고 가짜 영업자로 진입 (db.js 가 샘플 데이터로 우회)
+    user = DEMO_USER;
+    store.currentUser = DEMO_USER;
+    store.authReady = true;
+  } else {
+    try {
+      user = await initAuth();
+    } catch (e) {
+      console.error('[auth] init failed', e);
+    }
   }
 
   // 유효한 역할을 가진 사용자만 진입 — 그 외(미가입/role 없음/비활성/대기/거부) 모두 로그인 화면
@@ -1242,18 +1251,27 @@ async function boot() {
     // 백그라운드 서비스 — ⚠ v3 리팩터(9063c71)에서 호출 블록이 통째로 누락된 회귀 복구.
     //  채팅알림/만기알림/메뉴뱃지/명령팔레트는 읽기전용(구독·토스트·뱃지·단축키) → 안전.
     //  initAutoStatus(차량상태 자동변경)는 부작용 검토 후 별도 — 의도적으로 제외.
-    import('./core/banner-popup.js').then(m => m.initBannerPopup(user.role)).catch(e => console.error('[banner] load error:', e));
-    import('./core/chat-notif.js').then(m => m.initChatNotif()).catch(() => {});
-    // FCM 푸시 — 알림권한 이미 허용된 기기면 토큰 발급/저장 (앱 닫혀있어도 채팅 알림)
-    import('./core/push.js').then(m => m.initPush()).catch(() => {});
-    import('./core/alerts.js').then(m => m.initAlerts()).catch(() => {});
-    import('./core/menu-badges.js').then(m => m.initMenuBadges()).catch(() => {});
-    import('./core/command-palette.js').then(m => m.initCommandPalette()).catch(() => {});
-    // 모바일(폰) UA → 4탭 SPA 활성화
-    initMobileShell();
-    // 모바일 온보딩(PWA 설치 + 알림 권한 안내) — 모바일 UA 에서만 자동 노출, 7일 쿨다운.
-    //  v3 리팩터에서 호출 누락돼 신규유저 온보딩이 죽어있던 회귀 복구. 알림 권한 안내가 채팅알림과 보완.
-    import('./core/onboard-prompt.js').then(m => m.checkOnboard()).catch(() => {});
+    if (isDemo()) {
+      // 체험 모드 — Firebase/FCM 를 건드리는 백그라운드 서비스는 스킵, 상단 데모 배너만 표시.
+      //  (menu-badges·command-palette 는 store 기반 UI 라 안전)
+      mountDemoBanner();
+      import('./core/menu-badges.js').then(m => m.initMenuBadges()).catch(() => {});
+      import('./core/command-palette.js').then(m => m.initCommandPalette()).catch(() => {});
+      initMobileShell();
+    } else {
+      import('./core/banner-popup.js').then(m => m.initBannerPopup(user.role)).catch(e => console.error('[banner] load error:', e));
+      import('./core/chat-notif.js').then(m => m.initChatNotif()).catch(() => {});
+      // FCM 푸시 — 알림권한 이미 허용된 기기면 토큰 발급/저장 (앱 닫혀있어도 채팅 알림)
+      import('./core/push.js').then(m => m.initPush()).catch(() => {});
+      import('./core/alerts.js').then(m => m.initAlerts()).catch(() => {});
+      import('./core/menu-badges.js').then(m => m.initMenuBadges()).catch(() => {});
+      import('./core/command-palette.js').then(m => m.initCommandPalette()).catch(() => {});
+      // 모바일(폰) UA → 4탭 SPA 활성화
+      initMobileShell();
+      // 모바일 온보딩(PWA 설치 + 알림 권한 안내) — 모바일 UA 에서만 자동 노출, 7일 쿨다운.
+      //  v3 리팩터에서 호출 누락돼 신규유저 온보딩이 죽어있던 회귀 복구. 알림 권한 안내가 채팅알림과 보완.
+      import('./core/onboard-prompt.js').then(m => m.checkOnboard()).catch(() => {});
+    }
   } else {
     if (user && !user.role) {
       // Firebase Auth는 있지만 RTDB 프로필이 없음 — 프로필 완료 카드 표시 (로그아웃 안 함)
@@ -2367,6 +2385,9 @@ function bindLoginForm() {
   const signupForm          = document.getElementById('signupForm');
   const resetForm           = document.getElementById('resetForm');
   const completeProfileForm = document.getElementById('completeProfileForm');
+
+  // 로그인 없이 영업자 화면 체험(둘러보기) — 샘플 데이터로 실제 화면 진입
+  document.getElementById('agentDemoBtn')?.addEventListener('click', () => enterDemo());
 
   // 카드 토글 — login / signup / reset / completeProfile 한 번에 하나만 표시
   const showCard = (which) => {

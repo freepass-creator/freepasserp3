@@ -1026,6 +1026,8 @@
   body.role-provider    .pt-sb a[data-page="users"] { display: none; }
   /* 팀 매니저(viewer)는 계약발송 숨김 */
   body.is-team-manager .pt-sb a[data-page="send"] { display: none; }
+  /* 계약발송은 관리자 전용 — 영업자·공급사 등 비관리자 전원 숨김 (다 보이면 안 됨) */
+  body:not(.role-admin) .pt-sb a[data-page="send"] { display: none; }
   /* 관리자 페이지(외부상품 동기화 / 공지)는 admin 만 */
   body:not(.role-admin) .pt-sb a[data-page="admin"] { display: none; }
   /* 관리자 정산(월별 수수료 정산)도 admin 만 */
@@ -2767,16 +2769,26 @@
   .login-page select { user-select: text; }
 
   .login-brand {
-    font-size: 22px;
-    letter-spacing: -0.035em;
+    font-size: 25px;
+    letter-spacing: -0.04em;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 3px;
     text-transform: lowercase;
   }
-  .login-brand-main { font-weight: 700; color: #1B2A4A; }
-  .login-brand-base { font-weight: 400; color: #7F93B3; }
+  /* .login-page * 의 Pretendard 강제를 CI 폰트(Exo 2)로 되돌림 — 브랜드 워드마크만 */
+  .login-brand,
+  .login-brand * { font-family: 'Exo 2', 'Pretendard', sans-serif; }
+  .login-brand-main { font-weight: 600; color: #1B2A4A; }   /* CI main */
+  .login-brand-base { font-weight: 500; color: #7F93B3; }   /* CI base */
+  /* CI 앵커 도트 — 워드마크 뒤 '마침표'처럼 하단에 딱 붙여 의도적으로 (freepass 상징) */
+  .login-brand::after {
+    content: '';
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #9EC5F3;                                     /* CI accent */
+    align-self: flex-end; margin: 0 0 3px 2px;
+  }
 
   .login-card {
     position: relative;

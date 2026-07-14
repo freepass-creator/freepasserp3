@@ -4,6 +4,12 @@
 import { ref, onValue, off, get, set, update, push, query, limitToLast, orderByChild, equalTo } from 'firebase/database';
 import { db } from './config.js';
 import { trackSave } from '../core/save-status.js';
+// 영업자 체험(둘러보기) 모드 — 이 초크포인트에서 Firebase 대신 인메모리 샘플 DB 로 우회.
+//  실데이터/개인정보 0% 노출 보장. (isDemo() 아니면 아래 로직은 전혀 개입하지 않음)
+import {
+  isDemo, demoWatchCollection, demoWatchRecord, demoFetchCollection, demoFetchRecord,
+  demoSet, demoUpdate, demoPush, demoSoftDelete, demoIncrement, demoAppendToArray, demoRemoveFromArray,
+} from '../core/demo.js';
 
 /** RTDB 는 undefined 값을 통째로 거부("set failed: value argument contains undefined") →
  *  쓰기 전 undefined 프로퍼티 제거 (중첩 객체/배열까지 재귀).
@@ -30,6 +36,7 @@ const _watchers = new Map(); // cacheKey → { ref, callbacks, unsubscribe }
  * Multiple callers watching the same path share ONE Firebase listener.
  */
 export function watchCollection(path, callback, options = {}) {
+  if (isDemo()) return demoWatchCollection(path, callback, options);
   const { limit, transform, scope } = options;
   // scope = { field, value } → 역할별 서버측 쿼리 스코핑 (자기 것만 다운로드). 없으면 전체(admin).
   const scopeKey = scope ? `${scope.field}=${scope.value}` : '';
@@ -91,6 +98,7 @@ export function watchCollection(path, callback, options = {}) {
  * Watch a single record
  */
 export function watchRecord(path, callback) {
+  if (isDemo()) return demoWatchRecord(path, callback);
   const dbRef = ref(db, path);
   const unsub = onValue(dbRef, (snap) => callback(snap.val()));
   return unsub;
@@ -100,11 +108,13 @@ export function watchRecord(path, callback) {
  * Fetch once
  */
 export async function fetchCollection(path) {
+  if (isDemo()) return demoFetchCollection(path);
   const snap = await get(ref(db, path));
   return snapshotToArray(snap.val());
 }
 
 export async function fetchRecord(path) {
+  if (isDemo()) return demoFetchRecord(path);
   const snap = await get(ref(db, path));
   return snap.val();
 }
@@ -113,6 +123,7 @@ export async function fetchRecord(path) {
  * Write operations
  */
 export async function setRecord(path, data, opts = {}) {
+  if (isDemo()) return demoSet(path, data);
   const clean = stripUndefined({ ...data, updated_at: Date.now() });
   const promise = set(ref(db, path), clean);
   const result = await (opts.silent ? promise : trackSave(promise));
@@ -131,6 +142,7 @@ export async function setRecord(path, data, opts = {}) {
  * @returns {Promise<number>} 증가 후 값 (트랜잭션 실패 시 null)
  */
 export async function incrementAtomic(path, delta = 1) {
+  if (isDemo()) return demoIncrement(path, delta);
   const { runTransaction } = await import('firebase/database');
   try {
     const result = await runTransaction(ref(db, path), (cur) => (Number(cur) || 0) + delta);
@@ -155,6 +167,7 @@ const _asArray = (cur) => Array.isArray(cur) ? cur.slice()
   : (cur && typeof cur === 'object' ? Object.values(cur) : []);
 
 export async function appendToArray(path, item, max = 0) {
+  if (isDemo()) return demoAppendToArray(path, item, max);
   const { runTransaction } = await import('firebase/database');
   try {
     const result = await runTransaction(ref(db, path), (cur) => {
@@ -177,6 +190,7 @@ export async function appendToArray(path, item, max = 0) {
  * @returns {Promise<Array|null>} 커밋 후 배열 (실패 시 null)
  */
 export async function removeFromArray(path, value) {
+  if (isDemo()) return demoRemoveFromArray(path, value);
   const { runTransaction } = await import('firebase/database');
   const matches = (it) => it === value || (it && typeof it === 'object' && (it.url === value || it.link === value));
   try {
@@ -194,6 +208,7 @@ export async function removeFromArray(path, value) {
 }
 
 export async function updateRecord(path, data, opts = {}) {
+  if (isDemo()) return demoUpdate(path, data);
   const clean = stripUndefined({ ...data, updated_at: Date.now() });
   const promise = update(ref(db, path), clean);
   const result = await (opts.silent ? promise : trackSave(promise));
@@ -209,6 +224,7 @@ export async function updateRecord(path, data, opts = {}) {
 }
 
 export async function pushRecord(path, data, opts = {}) {
+  if (isDemo()) return demoPush(path, data);
   const newRef = push(ref(db, path));
   const clean = stripUndefined({ ...data, created_at: Date.now() });
   const promise = set(newRef, clean);
@@ -224,6 +240,7 @@ export async function pushRecord(path, data, opts = {}) {
  * Soft delete (status = 'deleted')
  */
 export async function softDelete(path) {
+  if (isDemo()) return demoSoftDelete(path);
   await update(ref(db, path), { _deleted: true, deleted_at: Date.now() });
 }
 
