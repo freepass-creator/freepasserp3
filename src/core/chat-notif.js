@@ -105,7 +105,7 @@ function updateBadge(rooms) {
 
   let total = 0;
   for (const room of rooms) {
-    if (role === 'agent' && room.unread_for_agent > 0) total += room.unread_for_agent;
+    if ((role === 'agent' || role === 'agent_admin') && room.unread_for_agent > 0) total += room.unread_for_agent;   // agent_admin 도 unread_for_agent 사용(누락 시 배지 영구 0)
     else if (role === 'provider' && room.unread_for_provider > 0) total += room.unread_for_provider;
   }
 

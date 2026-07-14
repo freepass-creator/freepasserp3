@@ -27,8 +27,10 @@ export async function initBannerPopup(role) {
   const box = document.createElement('div');
   box.id = 'catBannerBox';
 
-  const imgWrap = document.createElement(banner.link_url ? 'a' : 'div');
-  if (banner.link_url) { imgWrap.href = banner.link_url; imgWrap.target = '_blank'; imgWrap.rel = 'noopener noreferrer'; }
+  // link_url 은 http(s) 만 허용 — javascript:/data: 등 스킴 차단(home_notices 를 저권한 사용자가 write 가능하므로 배너 주입 XSS 방지)
+  const safeLink = /^https?:\/\//i.test(String(banner.link_url || '').trim()) ? banner.link_url.trim() : '';
+  const imgWrap = document.createElement(safeLink ? 'a' : 'div');
+  if (safeLink) { imgWrap.href = safeLink; imgWrap.target = '_blank'; imgWrap.rel = 'noopener noreferrer'; }
   const img = document.createElement('img');
   img.src = banner.image_url; img.alt = '공지';
   imgWrap.appendChild(img);

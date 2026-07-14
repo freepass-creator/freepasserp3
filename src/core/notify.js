@@ -16,8 +16,9 @@ export function getProviderTel(providerCode) {
 }
 
 export function getAdminTels() {
+  const meUid = store.currentUser?.uid;   // 발신을 트리거한 본인(관리자)에겐 자기 알림톡을 보내지 않음(자기발송 방지)
   return (store.users || [])
-    .filter(u => u.role === 'admin' && !u._deleted && u.is_active !== false && u.phone)
+    .filter(u => u.role === 'admin' && !u._deleted && u.is_active !== false && u.phone && u.uid !== meUid)
     .map(u => u.phone);
 }
 
