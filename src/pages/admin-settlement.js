@@ -165,6 +165,11 @@ function resetPeriodNow() { const d = new Date(); _pY = d.getFullYear(); _pM = d
 function defaultMonth() { return `${_pY}-${String(_pM).padStart(2, '0')}`; }
 
 /* ──────── 페이지 렌더 (ws4 규격) ──────── */
+// 인라인 편집 상태는 공유 store 가 아니라 모듈 로컬로 관리 — watchCollection 이 store.adminSettlements 를
+//  RTDB 에코마다 통째 교체해도(app.js) 미저장 신규행/편집중 상태가 소실되지 않도록(원인: _new/_editing 을 store 에 넣던 것).
+let _newRows = [];                 // 미저장 신규행 placeholder (Firebase 에 아직 없음)
+const _editingKeys = new Set();    // 편집 중인 기존행 _key
+
 export function renderAdminSettlement() {
   const page = document.querySelector('.pt-page[data-page="admin-settle"]');
   if (!page) return;
@@ -213,8 +218,9 @@ export function renderAdminSettlement() {
 function drawRows() {
   const tbody = document.getElementById('asRows');
   if (!tbody) return;
-  const all = (store.adminSettlements || []).filter(s => !s._deleted && inPeriod(s.settle_month));
-  all.sort((a, b) => (b.settle_month || '').localeCompare(a.settle_month || '') || (a.contract_code || '').localeCompare(b.contract_code || ''));
+  const existing = (store.adminSettlements || []).filter(s => !s._deleted && inPeriod(s.settle_month));
+  existing.sort((a, b) => (b.settle_month || '').localeCompare(a.settle_month || '') || (a.contract_code || '').localeCompare(b.contract_code || ''));
+  const all = [..._newRows, ...existing];   // 미저장 신규행은 항상 상단 표시(기간필터 무관)
 
   if (!all.length) {
     tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;padding:32px;color:var(--text-muted);">${esc(periodLabel())} 정산 내역이 없습니다. 하단 [정산 등록]으로 추가하세요.</td></tr>`;
@@ -228,7 +234,7 @@ function drawRows() {
 /** 행 1개 HTML — 인라인 편집 가능 */
 function rowHtml(s) {
   const c = compute(s);
-  const editing = s._editing;
+  const editing = s._new || _editingKeys.has(s._key);
   const month = s.settle_month || defaultMonth();
   const statusOptionsHtml = STATUS_OPTS.map(o =>
     `<option value="${esc(o)}" ${o === (s.settle_status || '계약완료') ? 'selected' : ''}>${esc(o)}</option>`
@@ -286,8 +292,7 @@ function bindRowEvents(tbody) {
     tr.addEventListener('click', (e) => {
       if (e.target.closest('[data-del]') || e.target.closest('button')) return;
       const key = tr.dataset.key;
-      const rec = (store.adminSettlements || []).find(x => x._key === key);
-      if (rec) { rec._editing = true; drawRows(); }
+      _editingKeys.add(key); drawRows();
     });
   });
   // 편집 모드 — 숫자 실시간 자동계산 (monthly_profit)
@@ -316,16 +321,13 @@ function bindRowEvents(tbody) {
       });
       patch.updated_at = Date.now();
       try {
-        const rec = (store.adminSettlements || []).find(x => x._key === key);
-        const isNew = rec && rec._new;
-        if (isNew) {
-          // 새 행 — RTDB create
+        if (key.startsWith('_new_')) {
+          // 새 행 — RTDB create 후 로컬 placeholder 제거 (watch 가 실제행 push)
           await createAdminSettlement(patch);
-          // 로컬 placeholder 제거 (RTDB watch 가 새로 push)
-          store.adminSettlements = (store.adminSettlements || []).filter(x => x._key !== key);
+          _newRows = _newRows.filter(x => x._key !== key);
         } else {
           await updateRecord(`admin_settlements/${key}`, patch);
-          if (rec) { rec._editing = false; }
+          _editingKeys.delete(key);
         }
         showToast('저장됨');
         drawRows();
@@ -337,10 +339,9 @@ function bindRowEvents(tbody) {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const key = btn.dataset.cancel;
-      const rec = (store.adminSettlements || []).find(x => x._key === key);
-      if (rec) {
-        if (rec._new) store.adminSettlements = store.adminSettlements.filter(x => x._key !== key);
-        else rec._editing = false;
+      {
+        if (key.startsWith('_new_')) _newRows = _newRows.filter(x => x._key !== key);
+        else _editingKeys.delete(key);
         drawRows();
       }
     });
@@ -361,15 +362,14 @@ function bindRowEvents(tbody) {
 /** 정산 등록 버튼 — 테이블 상단에 빈 행 추가 + 인라인 입력 */
 function addInlineRow() {
   if (!isAdmin()) return;
-  // placeholder 한 건 — _new + _editing
+  // placeholder 한 건 — 모듈 로컬 _newRows 에만 (편집상태는 _new 로 파생)
   const placeholder = {
     _key: '_new_' + Date.now(),
     _new: true,
-    _editing: true,
     settle_month: defaultMonth(),
     settle_status: '계약완료',
   };
-  store.adminSettlements = [placeholder, ...(store.adminSettlements || [])];
+  _newRows = [placeholder, ..._newRows];
   drawRows();
   // 첫 입력 셀에 포커스
   setTimeout(() => {
