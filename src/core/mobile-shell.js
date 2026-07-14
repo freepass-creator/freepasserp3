@@ -178,6 +178,7 @@ export function openBottomSheet(html, opts = {}) {
     if (closed) return;
     closed = true;
     window.removeEventListener('popstate', onPopState);
+    document.removeEventListener('keydown', onKey);   // ESC 핸들러 제거 — 오버레이클릭·드래그·back 등 모든 닫기 경로 공통(누수 방지). onKey 는 아래서 정의되나 close 시점엔 항상 초기화됨.
     sheet.style.transition = 'transform var(--dur) var(--ease), opacity var(--dur) var(--ease)';
     // dropdown 은 fade-out + 살짝 위로, 데스크톱 가운데 시트는 translate(-50%, 100%), 모바일은 translateY(100%)
     if (sheet.classList.contains('is-anchored')) {

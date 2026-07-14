@@ -1223,7 +1223,7 @@ async function boot() {
   const VALID_ROLES = Object.values(ROLES);   // roles.js 단일 소스
   const status = user?.status || 'active';
   const hasValidRole = user && VALID_ROLES.includes(user.role);
-  const isBlocked = user && (user.is_active === false || status === 'pending' || status === 'rejected');
+  const isBlocked = user && (user.is_active === false || status === 'pending' || status === 'rejected' || status === 'deleted');
 
   if (user && hasValidRole && !isBlocked) {
     document.body.classList.remove('is-login');
@@ -1278,7 +1278,8 @@ async function boot() {
     } else if (user) {
       // 프로필은 있지만 역할/상태 문제 → 강제 로그아웃
       const reason = !hasValidRole ? '권한이 부여되지 않은 계정입니다' :
-        (status === 'rejected' ? '가입이 거부되었습니다' :
+        (status === 'deleted' ? '삭제된 계정입니다' :
+         status === 'rejected' ? '가입이 거부되었습니다' :
          user.is_active === false ? '비활성 계정입니다' :
          '관리자 승인 대기 중입니다');
       await fbLogout();

@@ -559,13 +559,16 @@ function bindAll(main, u) {
     const entered = prompt('계정을 삭제하려면 이메일을 입력하세요:');
     if (entered !== u.email) { showToast('이메일 불일치', 'error'); return; }
     try {
-      // 1) DB 먼저 (auth 삭제 후엔 토큰 무효화로 write 불가) → 2) auth 계정 삭제 → 3) 로그아웃/이동
-      await updateRecord(`users/${u.uid}`, { status: 'deleted', deleted_at: Date.now() });
-      await auth.currentUser.delete();
-      showToast('계정 삭제됨');
+      // DB 를 확정적으로 삭제/비활성 표시(재로그인 차단·목록 제거). auth 계정 삭제는 best-effort —
+      //  재인증 필요(auth/requires-recent-login)나 세션만료로 실패해도 로그아웃은 반드시 수행.
+      //  (이전: DB만 status='deleted' 찍고 auth.delete 실패 시 로그인 유지 → boot 가 안 막아 재로그인 가능했음)
+      await updateRecord(`users/${u.uid}`, { status: 'deleted', is_active: false, _deleted: true, deleted_at: Date.now() });
+      try { await auth.currentUser?.delete(); }
+      catch (ae) { console.warn('[account-delete] auth 계정 삭제 실패(재인증 필요 가능) — DB 삭제표시로 로그인 차단됨', ae); }
+      showToast('계정이 삭제 처리됐습니다');
       await logout();
     } catch (e) {
-      showToast('삭제 실패: 재로그인 후 시도하세요', 'error');
+      showToast('삭제 실패: ' + (e?.message || e), 'error');
     }
   });
   document.getElementById('mstLogout')?.addEventListener('click', async () => {

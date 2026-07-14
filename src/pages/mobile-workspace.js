@@ -251,6 +251,9 @@ function openRoom(roomId) {
       // 읽음 처리
       const me = store.currentUser;
       if (me?.uid && me?.role) markRoomRead(roomId, me.role, me.uid, room).catch(() => {});
+      // admin 은 서버 unread 카운터가 아니라 localStorage ws_ar_ 로 읽음 판정(mobile 목록 156·178) →
+      //  open 시 기록해야 배지가 지워짐(데스크톱 workspace.js:138 과 동일). 이 write 누락으로 admin 은 영구 '안읽음'이었음.
+      if (me?.role === 'admin') { try { localStorage.setItem(`ws_ar_${roomId}`, String(room.last_message_at || Date.now())); } catch {} }
       document.getElementById('mwsShowContract')?.addEventListener('click', () => openContractSheet(room));
       // 입력칸 자동 포커스 — slide-in 중 focus 하면 iOS 가 스크롤 점프 발생, 완료 후 올림
       setTimeout(() => document.getElementById('mwsChatText')?.focus(), 120);
@@ -639,9 +642,8 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
             c.contract_status !== CONTRACT_STATUS.CANCELLED
           );
           if (dup) {
-            showToast(`이미 진행중 — 계약 페이지로 이동 (${dup.contract_code})`, 'info');
-            const { navigate } = await import('../core/router.js');
-            navigate('/contract');
+            showToast(`이미 진행중인 계약이 있습니다 (${dup.contract_code})`, 'info');
+            history.back();   // 시트/오버레이 닫기(성공경로와 동일) — 이 누락으로 시트가 화면에 잔류해 조작 막힘.
             onCreated?.(dup.contract_code);
             return;
           }
