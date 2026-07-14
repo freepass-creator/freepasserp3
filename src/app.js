@@ -105,21 +105,20 @@ import { markRoomRead } from './firebase/collections.js';
 import { STEPS as CONTRACT_STEPS_V2, getStepStates, getProgress } from './core/contract-steps.js';
 // vehicle_master Firebase 컬렉션 폐기 — catalog (public/data/car-master) 단일 진실원
 // findCarModel/inferCarModel 은 호출처(product.js, vehicle-ocr.js) 에서 직접 import
-import { renderSettings } from './pages/settings.js';
-import { renderDev } from './pages/dev.js';
-import { renderSend } from './pages/contract-rental-send.js';
-import { renderAdminOps } from './pages/admin-ops.js';
-import { renderAdminSettlement } from './pages/admin-settlement.js';
+import { renderSettings } from './pages/settings.js';   // 부팅 시 필요(applyStored*) — 정적 유지
 import { isSystemAdmin } from './core/admin-access.js';
 import { setPageActions } from './core/page-actions.js';
 import { CONTRACT_STATUS, CONTRACT_IN_PROGRESS } from './core/contract-status.js';
 import { VEHICLE_STATUS } from './core/vehicle-status.js';
 // index.html 의 non-module <script> 가 호출할 수 있도록 window 에 노출
 window.renderSettings = renderSettings;
-window.renderDev = renderDev;
-window.renderSend = renderSend;
-window.renderAdminOps = renderAdminOps;
-window.renderAdminSettlement = renderAdminSettlement;
+// 부팅에 불필요한 무거운 페이지 모듈(dev/admin-ops/admin-settlement/계약발송)은 지연로딩 —
+//  정적 import 시 초기 main 번들에 인라인되어 전 사용자가 ~170KB 다운로드하던 것을 첫 진입 시 청크로만 로드.
+//  index.html 디스패치 window.renderX?.() 는 그대로 동작(async 로더 반환).
+window.renderDev = async (...a) => (await import('./pages/dev.js')).renderDev(...a);
+window.renderSend = async (...a) => (await import('./pages/contract-rental-send.js')).renderSend(...a);
+window.renderAdminOps = async (...a) => (await import('./pages/admin-ops.js')).renderAdminOps(...a);
+window.renderAdminSettlement = async (...a) => (await import('./pages/admin-settlement.js')).renderAdminSettlement(...a);
 
 // 채팅 알림 팝업 클릭 → 업무소통 페이지로 이동 + 해당 대화방 선택
 window.addEventListener('fp:open-room', ({ detail }) => {
