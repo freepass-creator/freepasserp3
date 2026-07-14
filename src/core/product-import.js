@@ -22,35 +22,39 @@ export function sheetsUrlToCsv(url) {
  * CSV 문자열 → 객체 배열 (첫 행 = 헤더)
  */
 export function parseCsv(csv) {
-  const lines = csv.split(/\r?\n/).filter(l => l.trim());
-  if (!lines.length) return [];
-
-  const parseLine = (line) => {
-    const out = [];
-    let cur = '';
-    let inQuotes = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
+  // 전체 문자열을 한 번에 상태머신 파싱 — 줄 단위 선분할(구버전)은 따옴표로 감싼 셀 안의 개행에서
+  //  한 행이 여러 깨진 행으로 분해되던 버그. 따옴표 내부의 개행/콤마/이스케이프("")를 정확히 처리.
+  const s = String(csv || '');
+  const rows = [];
+  let row = [], cur = '', inQuotes = false;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (inQuotes) {
       if (c === '"') {
-        if (inQuotes && line[i + 1] === '"') { cur += '"'; i++; }
-        else inQuotes = !inQuotes;
-      } else if (c === ',' && !inQuotes) {
-        out.push(cur);
-        cur = '';
-      } else {
-        cur += c;
-      }
+        if (s[i + 1] === '"') { cur += '"'; i++; }   // 이스케이프된 따옴표
+        else inQuotes = false;
+      } else cur += c;                                 // 따옴표 안이면 개행·콤마도 데이터
+    } else if (c === '"') {
+      inQuotes = true;
+    } else if (c === ',') {
+      row.push(cur); cur = '';
+    } else if (c === '\n' || c === '\r') {
+      row.push(cur); cur = '';
+      rows.push(row); row = [];
+      if (c === '\r' && s[i + 1] === '\n') i++;        // CRLF 한 번만
+    } else {
+      cur += c;
     }
-    out.push(cur);
-    return out;
-  };
+  }
+  if (cur !== '' || row.length) { row.push(cur); rows.push(row); }   // 마지막 행 flush(끝 개행 없어도)
 
-  const headers = parseLine(lines[0]).map(h => h.trim());
-  return lines.slice(1).map(line => {
-    const cells = parseLine(line);
-    const row = {};
-    headers.forEach((h, i) => { row[h] = (cells[i] || '').trim(); });
-    return row;
+  const nonEmpty = rows.filter(r => r.some(cell => String(cell).trim() !== ''));  // 빈 행 제거
+  if (!nonEmpty.length) return [];
+  const headers = nonEmpty[0].map(h => h.trim());
+  return nonEmpty.slice(1).map(cells => {
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (cells[i] || '').trim(); });
+    return obj;
   });
 }
 
