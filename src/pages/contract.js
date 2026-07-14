@@ -72,6 +72,63 @@ export async function allocateRealContractCode() {
   return `CT-${dateStr}-${String(seq).padStart(2, '0')}`;
 }
 
+/**
+ * 계약 완료 처리 (SSOT) — 수동 완료버튼(#ctCompleteBtn)과 계약발송 서명승인(approveEntry)이 공용 호출.
+ *  코드 승격(TMP→CT) + 차량 출고불가(BLOCKED) + 룸링크 갱신을 root multi-path 로 원자 반영(원칙 11) →
+ *  중간 실패 시 "완료인데 차량은 출고가능"으로 남는 이중출고 방지. 이어 정산 자동생성 + 공급사/관리자 알림.
+ *  이미 완료(멱등)·동일차량 중복완료를 가드.
+ * @param {object} c 계약 레코드(_key 필수)
+ * @returns {Promise<{ok:boolean, code?:string, reason?:'dup'|'no_contract', already?:boolean, settlementFailed?:boolean}>}
+ */
+export async function completeContract(c) {
+  if (!c?._key) return { ok: false, reason: 'no_contract' };
+  if (c.contract_status === CONTRACT_STATUS.DONE) return { ok: true, code: c.contract_code, already: true };
+  // 중복완료 가드 — 같은 차량에 이미 완료된 다른 계약 (스냅샷 기반, 잔여 레이스는 짧은 창)
+  if (c.product_uid) {
+    const alreadyDone = (store.contracts || []).find(x =>
+      x._key !== c._key && x.product_uid === c.product_uid &&
+      x.contract_status === CONTRACT_STATUS.DONE && !x._deleted);
+    if (alreadyDone) return { ok: false, reason: 'dup', code: alreadyDone.contract_code };
+  }
+  const oldCode = c.contract_code;
+  const newCode = await allocateRealContractCode();
+  const now = Date.now();
+  const atomicUpdate = {
+    [`contracts/${c._key}/contract_code`]: newCode,
+    [`contracts/${c._key}/is_draft`]: false,
+    [`contracts/${c._key}/contract_status`]: CONTRACT_STATUS.DONE,
+    [`contracts/${c._key}/completed_at`]: now,
+    [`contracts/${c._key}/completed_by`]: store.currentUser?.uid || '',
+    [`contracts/${c._key}/updated_at`]: now,
+  };
+  if (c.product_uid) {
+    atomicUpdate[`products/${c.product_uid}/vehicle_status`] = VEHICLE_STATUS.BLOCKED;
+    atomicUpdate[`products/${c.product_uid}/updated_at`] = now;
+  }
+  const linkedRoom = (store.rooms || []).find(r => r.linked_contract === oldCode);
+  if (linkedRoom) atomicUpdate[`rooms/${linkedRoom._key}/linked_contract`] = newCode;
+  await update(ref(db), atomicUpdate);    // 전부 성공 or 전부 실패
+  const { logAudit } = await import('../firebase/audit-log.js');
+  logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['contract_status', 'contract_code'], data: { contract_status: CONTRACT_STATUS.DONE, contract_code: newCode } });
+  c.contract_code = newCode;
+  let settlementFailed = false;
+  try {
+    const { createSettlement } = await import('../firebase/collections.js');
+    await createSettlement(c);
+  } catch (se) {
+    console.warn('[settlement] 자동 생성 실패', se);
+    settlementFailed = true;
+  }
+  const product = findProduct(c.product_uid) || findProductByUid(c.product_uid);
+  notifyProviderAndAdmin({
+    template: 'contract_done',
+    providerCode: c.provider_company_code,
+    subject: '계약 체결',
+    message: `[Freepass]\n${product?.car_number || c.car_number_snapshot || ''} ${c.customer_name || ''} 계약이 체결됐습니다 (${newCode}).`,
+  }).catch(() => null);
+  return { ok: true, code: newCode, settlementFailed };
+}
+
 export function renderContractList(contracts) {
   const body = listBody('contract');
   if (!body) return;
@@ -818,57 +875,14 @@ export function bindContractWorkV2(stepCard, c, options = {}) {
   // 계약 완료 — 임시 코드 → 정식 코드 promote, 같은 차량의 다른 완료 계약 차단
   stepCard.querySelector('#ctCompleteBtn')?.addEventListener('click', async () => {
     if (!confirm('계약을 완료 처리하시겠습니까?')) return;
-    // 중복완료 가드 — confirm 뒤에 재평가 (다이얼로그 떠있는 동안 다른 클라이언트가 완료했을 수 있음. store 스냅샷 기반이라 완전한 상호배제는 아님 — 잔여 레이스는 짧은 창)
-    if (c.product_uid) {
-      const alreadyDone = (store.contracts || []).find(x =>
-        x._key !== c._key && x.product_uid === c.product_uid &&
-        x.contract_status === CONTRACT_STATUS.DONE && !x._deleted
-      );
-      if (alreadyDone) {
-        return showToast(`이미 완료된 계약이 있습니다 | ${alreadyDone.contract_code}`, 'error');
-      }
-    }
     try {
-      const oldCode = c.contract_code;
-      const newCode = await allocateRealContractCode();
-      // 계약상태·차량상태·룸링크를 multi-path 1회로 원자 반영 (원칙 11)
-      //  — 개별 write 시 중간 실패하면 "계약완료인데 차량은 출고가능"으로 남아 이중 출고 위험
-      const now = Date.now();
-      const atomicUpdate = {
-        [`contracts/${c._key}/contract_code`]: newCode,
-        [`contracts/${c._key}/is_draft`]: false,
-        [`contracts/${c._key}/contract_status`]: CONTRACT_STATUS.DONE,   // 완료 상태의 핵심 write — SSOT 상수 필수 (audit 만 상수고 write 가 리터럴이면 2원화)
-        [`contracts/${c._key}/completed_at`]: now,
-        [`contracts/${c._key}/completed_by`]: store.currentUser?.uid || '',
-        [`contracts/${c._key}/updated_at`]: now,
-      };
-      if (c.product_uid) {
-        atomicUpdate[`products/${c.product_uid}/vehicle_status`] = VEHICLE_STATUS.BLOCKED;
-        atomicUpdate[`products/${c.product_uid}/updated_at`] = now;
+      const res = await completeContract(c);   // 공용 완료 루틴(차량 출고불가·코드승격·정산·알림) — SSOT
+      if (!res.ok) {
+        return showToast(res.reason === 'dup'
+          ? `이미 완료된 계약이 있습니다 | ${res.code}` : '완료 실패', 'error');
       }
-      const linkedRoom = (store.rooms || []).find(r => r.linked_contract === oldCode);
-      if (linkedRoom) atomicUpdate[`rooms/${linkedRoom._key}/linked_contract`] = newCode;
-      await update(ref(db), atomicUpdate);    // root multi-path — 전부 성공 or 전부 실패
-      const { logAudit } = await import('../firebase/audit-log.js');
-      logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['contract_status', 'contract_code'], data: { contract_status: CONTRACT_STATUS.DONE, contract_code: newCode } });
-      // 정산 자동 생성 — 실패를 침묵시키지 않음 (수수료 레코드 영구 누락 사고 방지)
-      try {
-        const { createSettlement } = await import('../firebase/collections.js');
-        c.contract_code = newCode;
-        await createSettlement(c);
-      } catch (se) {
-        console.warn('[settlement] 자동 생성 실패', se);
-        showToast('⚠ 정산 자동생성 실패 — 정산관리에서 수동 생성 필요', 'error');
-      }
-
-      const product = findProduct(c.product_uid) || findProductByUid(c.product_uid);
-      notifyProviderAndAdmin({
-        template: 'contract_done',
-        providerCode: c.provider_company_code,
-        subject: '계약 체결',
-        message: `[Freepass]\n${product?.car_number || c.car_number_snapshot || ''} ${c.customer_name || ''} 계약이 체결됐습니다 (${newCode}).`,
-      }).catch(() => null);
-      showToast(`계약 완료 | ${newCode}`, 'success');
+      if (res.settlementFailed) showToast('⚠ 정산 자동생성 실패 — 정산관리에서 수동 생성 필요', 'error');
+      showToast(`계약 완료 | ${res.code}`, 'success');
     } catch (e) {
       console.error('[contract complete]', e);
       showToast('완료 실패: ' + (e.message || e), 'error');

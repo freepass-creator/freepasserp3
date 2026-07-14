@@ -602,10 +602,19 @@ async function approveEntry(r) {
     if (r.contract_code) {
       const contract = (store.contracts || []).find(c => c.contract_code === r.contract_code);
       if (contract?._key) {
-        updateRecord(`contracts/${contract._key}`, { contract_status: CONTRACT_STATUS.DONE, signed_at: Date.now() }).catch(() => null);
+        await updateRecord(`contracts/${contract._key}`, { signed_at: Date.now() });
+        // ⚠ 이전엔 contract_status 만 찍어 차량이 '판매가능'으로 남아 이중출고 위험이었음.
+        //  수동 완료버튼과 동일한 정식 완료 루틴(차량 출고불가·코드승격·정산·알림)을 공용 호출.
+        const { completeContract } = await import('./contract.js');
+        const res = await completeContract(contract);
+        if (!res.ok && res.reason === 'dup') {
+          import('../core/toast.js').then(m => m.showToast(`이미 완료된 계약이 있습니다 | ${res.code}`, 'error'));
+          renderList();
+          return;
+        }
       }
     }
-    import('../core/toast.js').then(m => m.showToast('승인 완료 — 서명완료로 처리됐습니다'));
+    import('../core/toast.js').then(m => m.showToast('승인 완료 — 계약이 최종 완료 처리됐습니다'));
     renderList();
   } catch (e) {
     console.error('[rental-send] approve', e);
