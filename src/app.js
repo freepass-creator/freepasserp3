@@ -33,7 +33,7 @@ if (isMobileUA()) {
 
 import { initAuth, login as fbLogin, logout as fbLogout } from './firebase/auth.js';
 // 영업자 체험(둘러보기) 모드 — 로그인 없이 샘플 데이터로 실제 화면 체험
-import { isDemo, DEMO_USER, mountDemoBanner, enterDemo } from './core/demo.js';
+import { isDemo, DEMO_USER, mountDemoBanner, enterDemo, clearDemoFlag } from './core/demo.js';
 import { watchCollection, pushRecord, updateRecord, softDelete, fetchRecord, setRecord } from './firebase/db.js';
 import { store } from './core/store.js';
 import { matchRecord } from './core/search-match.js';
@@ -2520,6 +2520,7 @@ function bindLoginForm() {
     if (submitBtn) submitBtn.disabled = true;
     try {
       await fbLogin(email, pw);
+      clearDemoFlag();   // 이전 "둘러보기" 체험 플래그가 남아있으면 reload 후 실로그인이 무시되고 데모로 되돌아감 — 실로그인 성공 시 반드시 제거
       location.hash = 'search';
       location.reload();
     } catch (err) {

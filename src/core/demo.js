@@ -23,6 +23,11 @@ export function exitDemo() {
   try { sessionStorage.removeItem(FLAG); } catch {}
   location.replace(location.pathname);     // 플래그 제거 후 로그인 화면으로
 }
+/** reload 없이 플래그만 제거 — 실제 로그인/가입 성공 직후, 뒤이어 실행될 reload 가
+ *  isDemo() 를 다시 통과하지 않도록 호출 (안 지우면 실로그인 성공해도 데모로 되돌아감). */
+export function clearDemoFlag() {
+  try { sessionStorage.removeItem(FLAG); } catch {}
+}
 
 /** 데모용 가짜 영업자 (role=agent). 실제 계정 아님. */
 export const DEMO_USER = Object.freeze({
