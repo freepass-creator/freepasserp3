@@ -612,6 +612,10 @@ function renderSyncTab(el) {
             <span class="ao-source-name"><i class="ph ph-table"></i> 오토플러스</span>
             <span class="ao-source-desc">오플 재고 리스트 (RP023)</span>
           </button>
+          <button class="ao-source" id="syncFetchSongogongBtn" data-source="songogong">
+            <span class="ao-source-name"><i class="ph ph-table"></i> 손오공렌터카</span>
+            <span class="ao-source-desc">손오공 재고 리스트 (RP012)</span>
+          </button>
           <button class="ao-source" id="syncFetchGeneralBtn" data-source="general">
             <span class="ao-source-name"><i class="ph ph-table"></i> 렌트사 탭</span>
             <span class="ao-source-desc">렌트사 탭 직접 읽기 · 배차상태 출고가능만 ERP 반영</span>
@@ -619,6 +623,8 @@ function renderSyncTab(el) {
         </div>
         <div class="ao-links">
           <a href="https://docs.google.com/spreadsheets/d/1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U/edit?gid=284963459" target="_blank">오플시트 열기 ↗</a>
+          ·
+          <a href="https://docs.google.com/spreadsheets/d/1vBTcj1MpKt44Bzclvgjm23OXFEIY-1hp_g5Wu3bztsQ/edit?gid=0" target="_blank">손오공시트 열기 ↗</a>
           ·
           <a href="https://docs.google.com/spreadsheets/d/1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg/edit?gid=1422892422" target="_blank">종합시트 열기 ↗</a>
         </div>
@@ -640,8 +646,9 @@ function renderSyncTab(el) {
     </div>
   `;
   const fetchAutoplusBtn = el.querySelector('#syncFetchAutoplusBtn');
+  const fetchSongogongBtn = el.querySelector('#syncFetchSongogongBtn');
   const fetchGeneralBtn  = el.querySelector('#syncFetchGeneralBtn');
-  const fetchBtns = [fetchAutoplusBtn, fetchGeneralBtn];
+  const fetchBtns = [fetchAutoplusBtn, fetchSongogongBtn, fetchGeneralBtn];
   const applyBtn = el.querySelector('#syncApplyBtn');
   const statusMsg = el.querySelector('#syncStatusMsg');
   const preview = el.querySelector('#syncPreview');
@@ -687,7 +694,7 @@ function renderSyncTab(el) {
     applyBtn.disabled = true;
     _syncFetched = null;
     preview.style.display = 'none';
-    const sourceLabel = source === 'autoplus' ? '오플시트' : source === 'supply' ? '공급시트' : '종합 탭';
+    const sourceLabel = source === 'autoplus' ? '오플시트' : source === 'songogong' ? '손오공시트' : source === 'supply' ? '공급시트' : '종합 탭';
     statusMsg.textContent = `${sourceLabel} 읽는 중...`;
     devLog(`[sync] ${source} 시트 fetch 시작`);
     try {
@@ -699,13 +706,13 @@ function renderSyncTab(el) {
       const data = await res.json();
       if (!data.ok) throw new Error(data.message || '시트 읽기 실패');
 
-      // autoplus 만 catalog 기반 자동 분류 (raw_model_short/full 컬럼 있음).
+      // autoplus/songogong 만 catalog 기반 자동 분류 (raw_model_short/full 컬럼 있음).
       //   v3 source of truth = public/data/car-master/_index.json (catalog).
       //   vehicle_master Firebase 컬렉션은 더 이상 단독 사용 X — catalog 우선 + vehicle_master 보조.
       // general 은 시트 자체에 maker/model/sub_model/trim 컬럼 그대로 담고 있어 매칭 불필요.
       let matched = 0;
       const items = Object.values(data.products || {});
-      if (data.schema === 'autoplus') {
+      if (data.schema === 'autoplus' || data.schema === 'songogong') {
         const { buildVehicleIndex, matchVehicle } = await import('../core/vehicle-matcher.js');
         const { loadIndex } = await import('../core/vehicle-matrix.js');
         const catalogIdx = await loadIndex();
@@ -914,6 +921,7 @@ function renderSyncTab(el) {
     }
   };
   fetchAutoplusBtn.addEventListener('click', onFetchClick);
+  fetchSongogongBtn.addEventListener('click', onFetchClick);
   fetchGeneralBtn.addEventListener('click', onFetchClick);
 
   applyBtn.addEventListener('click', async () => {
@@ -928,7 +936,7 @@ function renderSyncTab(el) {
       const schema = _syncFetched.schema || 'autoplus';
       const existing = (store.products || []).filter(p => {
         if (p._deleted) return false;
-        if (schema === 'autoplus') return p.provider_company_code === _syncFetched.provider_code;
+        if (schema === 'autoplus' || schema === 'songogong') return p.provider_company_code === _syncFetched.provider_code;
         if (schema === 'general') {
           // 이번 시트 공급사코드 집합 — source 무관하게 해당 공급사 매물 전체를 정리 범위로
           const incomingProviders = new Set(

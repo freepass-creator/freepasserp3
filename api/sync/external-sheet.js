@@ -1,7 +1,7 @@
 /**
  * 외부 구글시트 → products 동기화 (다업체)
  * POST /api/sync/external-sheet  body: { source }
- *   source: 'autoplus' (오토플러스 RP023) | 'general' (종합시트, 행마다 partner_code)
+ *   source: 'autoplus' (오토플러스 RP023) | 'general' (종합시트, 행마다 partner_code) | 'songogong' (손오공렌터카 RP012)
  *
  * v1 freepasserp app.py 의 /api/sync/external-sheet 를 Node.js Vercel Serverless 로 포팅.
  *
@@ -39,6 +39,13 @@ export const SHEET_CONFIGS = {
     tab_name: null,                       // 자동 탐지
     label: '공급시트 자동탐지 (공급/정책 컬럼 있는 탭)',
     schema: 'auto-supply',
+  },
+  songogong: {
+    sheet_id: '1vBTcj1MpKt44Bzclvgjm23OXFEIY-1hp_g5Wu3bztsQ',
+    tab_name: '판매차량리스트',
+    provider_code: 'RP012',
+    label: '손오공렌터카 (RP012)',
+    schema: 'songogong',
   },
 };
 
@@ -406,6 +413,99 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
   return product;
 }
 
+/* 손오공렌터카 — 단일 공급사 (RP012). 시트가 같은 차량에 인수형/반납형 두 가격 세트를 가짐
+ *  → 매물 1개로 합쳐 등록 (rent/deposit=인수형, rent_return/deposit_return=반납형).
+ * "구분" 컬럼이 "재구독"인 행은 보증금 컬럼이 비어있고, 시트 안내문 그대로
+ *  "개월수 × 대여료" 로 산출. 그 외("재렌트" 등)는 보증금 컬럼에 이미 값이 있어 그대로(전 기간 공통) 사용.
+ * 헤더에 "보증금"/"12개월".."60개월" 이 인수형·반납형 두 번씩 나오므로 위치 기반(첫/두번째 occurrence)으로 구분. */
+function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, sheetId, nowMs }) {
+  const colIdx = (n) => headers.indexOf(n);
+  const idxCar = colIdx('차량번호');
+  const carNumber = safeGet(row, idxCar);
+  if (!carNumber || !VALID_CAR_NO.test(carNumber)) return null;
+
+  const idxKind = colIdx('구분');
+  const kindVal = safeGet(row, idxKind);
+  const idxStatus = colIdx('배차상태');
+  const statusRaw = safeGet(row, idxStatus);
+  const vehicleStatus = normalizeVehicleStatus(statusRaw);
+  const status = statusFlag(vehicleStatus);
+
+  const modelShort = safeGet(row, colIdx('차종'));
+  const trimFull = safeGet(row, colIdx('트림'));
+  const regDate = safeGet(row, colIdx('최초등록일'));
+  let year = '';
+  if (regDate) {
+    const m = /^(\d{2,4})/.exec(regDate);
+    if (m) year = m[1].length === 4 ? `${m[1].slice(2)}년식` : `${m[1]}년식`;
+  }
+  const idxCond = colIdx('판매상태');   // 정상/정비중 — 상태(배차상태)와 별개
+  const condVal = safeGet(row, idxCond);
+
+  const uidSeed = `${providerCode}_${carNumber}`;
+  const productUid = `EXT_${crypto.createHash('md5').update(uidSeed).digest('hex').slice(0, 12)}`;
+
+  const product = {
+    _key: productUid,
+    product_uid: productUid,
+    product_code: `${providerCode}_${carNumber}`,
+    provider_company_code: providerCode,
+    partner_code: providerCode,
+    policy_code: '',
+    car_number: carNumber,
+    raw_model_short: modelShort,
+    raw_model_full: trimFull,
+    maker: '', sub_model: '',
+    trim_name: extractTrimFromModel(trimFull, modelShort),
+    ext_color: safeGet(row, colIdx('외부색상')),
+    int_color: (() => { const v = safeGet(row, colIdx('내부색상')); return v === '-' ? '' : v; })(),
+    fuel_type: safeGet(row, colIdx('연료')),
+    mileage: parseInt(String(safeGet(row, colIdx('KM'))).replace(/[^\d]/g, '') || '0', 10),
+    year, first_registration_date: regDate,
+    status, vehicle_status: vehicleStatus,
+    product_type: '중고구독',
+    status_label: statusRaw,
+    is_active: true,
+    options: safeGet(row, colIdx('옵션')),
+    partner_memo: condVal && condVal !== '정상' ? `판매상태:${condVal}` : '',
+    photo_link: photoLinkMap[absRow] || '',
+    source: 'external_sheet',
+    source_sheet_id: sheetId,
+    source_schema: 'songogong',
+    price: {},
+    created_at: nowMs, updated_at: nowMs,
+    created_by: 'sync_external_sheet',
+  };
+
+  // 가격 — "보증금"/"12개월".."60개월" 헤더가 인수형(1번째)·반납형(2번째) 두 블록으로 반복됨.
+  const depIdxOwn = headers.indexOf('보증금');
+  const depIdxReturn = headers.lastIndexOf('보증금');
+  const isResubscribe = /재구독/.test(kindVal);
+  const depositFlatOwn = depIdxOwn >= 0 ? parsePrice(safeGet(row, depIdxOwn)) : 0;
+  const depositFlatReturn = (depIdxReturn >= 0 && depIdxReturn !== depIdxOwn) ? parsePrice(safeGet(row, depIdxReturn)) : 0;
+  const periods = ['12', '24', '36', '48', '60'];
+  periods.forEach((period, i) => {
+    const m = Number(period);
+    const rentOwn = depIdxOwn >= 0 ? parsePrice(safeGet(row, depIdxOwn + 1 + i)) : 0;
+    const rentReturn = depIdxReturn >= 0 ? parsePrice(safeGet(row, depIdxReturn + 1 + i)) : 0;
+    if (!rentOwn && !rentReturn) return;
+    const entry = {};
+    if (rentOwn) {
+      entry.rent = rentOwn;
+      const dep = isResubscribe ? Math.round(rentOwn * (m / 12)) : depositFlatOwn;
+      if (dep) entry.deposit = dep;
+    }
+    if (rentReturn) {
+      entry.rent_return = rentReturn;
+      const depR = isResubscribe ? Math.round(rentReturn * (m / 12)) : depositFlatReturn;
+      if (depR) entry.deposit_return = depR;
+    }
+    product.price[period] = entry;
+  });
+
+  return product;
+}
+
 /* 신차/재렌트 판별:
  * 1) pendingPlate 또는 100신XXXX → 항상 신차렌트
  * 2) 구분 컬럼에 '신차' 포함 → 신차렌트
@@ -681,6 +781,8 @@ export async function syncFromSheet(source) {
         p = parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
       } else if (config.schema === 'general') {
         p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
+      } else if (config.schema === 'songogong') {
+        p = parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
       }
       if (!p) { skipped++; continue; }
       if (hiddenRows.has(absRow)) { p.vehicle_status = '출고불가'; p.status = 'unavailable'; p.status_label = '시트 숨김'; }

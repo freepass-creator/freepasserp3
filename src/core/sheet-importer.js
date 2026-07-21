@@ -1,11 +1,12 @@
 /**
  * sheet-importer.js — 외부 공급사 구글시트 → freepasserp3 product 변환.
  *
- * **현재 지원 시트는 정확히 2개** (사용자 요청: "범용성 없이 딱 내가 준거 2개만"):
- *   1) 종합시트   (sheetId 1BcH... · gid 1422892422 · "종합" 탭)
- *   2) 오토플러스 (sheetId 1TJB... · gid 284963459  · "판매차량리스트" 탭)
+ * **지원 시트 3개** (사용자 요청: "범용성 없이 딱 내가 준 것만"):
+ *   1) 종합시트     (sheetId 1BcH... · gid 1422892422 · "종합" 탭)
+ *   2) 오토플러스   (sheetId 1TJB... · gid 284963459  · "판매차량리스트" 탭)
+ *   3) 손오공렌터카 (sheetId 1vBT... · gid 0          · "판매차량리스트" 탭)
  *
- * 각 시트는 컬럼 인덱스 기반 전용 파서가 있음 (parseZonghapRow / parseAutoplusRow).
+ * 각 시트는 컬럼 인덱스 기반 전용 파서가 있음 (parseZonghapRow / parseAutoplusRow / parseSongogongRow).
  * 다른 시트가 들어오면 detectProfile 이 null 을 반환하고 fetch 단계에서 throw.
  *
  * 흐름:
@@ -370,6 +371,23 @@ const SHEET_PROFILES = {
       'S 옵션', 'T 비고',
     ],
   },
+  songogong: {
+    key: 'songogong',
+    label: '손오공렌터카',
+    sheetId: '1vBTcj1MpKt44Bzclvgjm23OXFEIY-1hp_g5Wu3bztsQ',
+    defaultGid: 0,
+    headerRowIdx: 2,
+    dataStartRowIdx: 3,
+    carNumberColLetter: 'C',
+    parser: parseSongogongRow,
+
+    columnLabels: [
+      'A 구분(재렌트/재구독)', 'B 배차상태', 'C 차량번호', 'D 차종', 'E 트림', 'F 옵션',
+      'G 외부색상', 'H 내부색상', 'I 연료', 'J 최초등록일', 'K KM', 'L 재고일수', 'M 판매상태',
+      'N 보증금(인수형)', 'O 12개월(인수형)', 'P 24개월(인수형)', 'Q 36개월(인수형)', 'R 48개월(인수형)', 'S 60개월(인수형)',
+      'T 보증금(반납형)', 'U 12개월(반납형)', 'V 24개월(반납형)', 'W 36개월(반납형)', 'X 48개월(반납형)', 'Y 60개월(반납형)',
+    ],
+  },
 };
 
 export function detectProfile(sheetId) {
@@ -495,18 +513,18 @@ function parseZonghapRow(row) {
   // 트림 풀명 + 트림 짧은표기 + 배기량컬럼 에서 displacement 추출
   out.displacement = extractDisplacement(c(6) + ' ' + c(19)) || extractDisplacement(c(24));
 
-  // 가격 매트릭스 — K(10)=단기보증 / O(14)=장기보증 (보증금)
-  //   단기 1/6/12 보증금 = K, 장기 24/36/48/60 보증금 = O. 대여료는 별도 컬럼.
+  // 가격 매트릭스 — K(10)=1개월 단기보증 (원본값 그대로). 12/24/36/48/60개월은 시트 계산식과
+  //   동일하게 월 대여료 × 개월치(12=1·24=2·36=3·48=4·60=5)로 산출 — 시트의 O열 단일값을
+  //   여러 기간에 그대로 복사하면 기간별 실제 보증금과 달라짐 (대여료가 기간마다 다르므로).
   const price = {};
   const shortDeposit = normalizePrice(c(10));
-  const longDeposit = normalizePrice(c(14));
   // 6개월 (인덱스 12) 항목 제외 — 사용자 정책으로 단기는 1/12 만 운영
   const priceMap = { '1': 11, '12': 13, '24': 15, '36': 16, '48': 17, '60': 18 };
-  const longPeriods = new Set(['24', '36', '48', '60']);
   for (const [period, idx] of Object.entries(priceMap)) {
     const rent = normalizePrice(c(idx));
     if (!rent) continue;
-    const dep = longPeriods.has(period) ? longDeposit : shortDeposit;
+    const m = Number(period);
+    const dep = m === 1 ? shortDeposit : Math.round(rent * (m / 12));
     price[period] = dep ? { rent, deposit: dep } : { rent };
   }
   if (Object.keys(price).length) out.price = price;
@@ -564,6 +582,83 @@ function parseAutoplusRow(row) {
     .map(([p, i]) => { const r = normalizePrice(c(i)); return r ? `${p}/3만:${r.toLocaleString()}` : ''; })
     .filter(Boolean).join(' ');
   if (ext3man) out.partner_memo = (out.partner_memo ? out.partner_memo + ' | ' : '') + ext3man;
+
+  out.vehicle_status = mapStatusLabel(out.status_label);
+  return out;
+}
+
+/** "YY-MM-DD" 또는 "YY-MM" (일자 생략) 모두 지원 — 손오공 시트는 최초등록일에 일자를 종종 생략함.
+ *  normalizeDate() 는 3-part(년월일) 만 매칭하므로 2-part(년월) 전용 폴백. */
+function parseYearMonthLoose(text) {
+  const s = String(text || '').trim();
+  const full = s.match(/^(\d{2,4})[-./](\d{1,2})[-./](\d{1,2})/);
+  if (full) return normalizeDate(s);
+  const ym = s.match(/^(\d{2,4})[-./](\d{1,2})$/);
+  if (!ym) return { date: '', year: null };
+  let y = Number(ym[1]);
+  if (y < 100) y = y < 50 ? 2000 + y : 1900 + y;
+  const mo = String(ym[2]).padStart(2, '0');
+  return { date: `${y}.${mo}`, year: y };
+}
+
+/** 손오공렌터카 — 컬럼 인덱스 기반 (헤더 3행 / 데이터 4행~).
+ *  같은 차량이 인수형/반납형 두 가격 세트를 가짐 → 매물 1개에 합쳐서 등록
+ *  (가격 매트릭스에 rent_return/deposit_return 추가, product-detail-rows.js 가 해석).
+ *  "재구독" 행은 보증금 컬럼이 비어있고 시트 안내문 그대로 "개월수 × 대여료" 로 산출.
+ *  "재렌트" 등 나머지는 보증금 컬럼에 원본값이 있어 그대로 사용 (해당 유형의 전 기간 공통값). */
+function parseSongogongRow(row) {
+  const c = (i) => String(row[i] ?? '').trim();
+  const out = { _raw_row: row, _profile: 'songogong' };
+
+  const subscriptionType = c(0);   // 재렌트 / 재구독
+  out.status_label = c(1);
+  out.car_number = c(2);
+  const carKind = c(3);            // 차종 (짧은 표기, 예: "카니발")
+  const trimFull = c(4);           // 트림 풀명 (예: "카니발 자가용 9인승 디젤 2.2 프레스티지 A/T")
+  out.options_raw = c(5);
+  out.options = splitOptions(c(5));
+  out.ext_color = c(6);
+  out.int_color = c(7) === '-' ? '' : c(7);
+  out.fuel_type = normalizeFuel(c(8)) || (c(8).trim() ? '가솔린' : '');
+  const dateInfo = parseYearMonthLoose(c(9));
+  out.first_registration_date = dateInfo.date;
+  out.year = dateInfo.year;
+  out.mileage = normalizeMileage(c(10));
+  out.partner_memo = c(12) && c(12) !== '정상' ? `판매상태:${c(12)}` : '';   // 정비중 등만 기록
+
+  out.maker = inferMaker('', carKind, trimFull);
+  out.raw_model = stripMakerPrefix(carKind, out.maker);
+  out.sub_model_raw = stripMakerPrefix(carKind, out.maker);
+  out.trim_name = stripMakerPrefix(trimFull, out.maker);
+  out.displacement = extractDisplacement(trimFull) || extractDisplacement(c(8));
+
+  // 가격 매트릭스 — 인수형(N~S) / 반납형(T~Y), 기간별로 합쳐서 하나의 price[period] 에 저장.
+  //   보증금 = "재구독" 행만 개월수×대여료로 산출, 그 외는 시트의 보증금 컬럼(전 기간 공통) 그대로.
+  const isResubscribe = /재구독/.test(subscriptionType);
+  const depositFlatOwn = normalizePrice(c(13));    // N — 인수형 보증금 (재구독 아닌 경우만 사용)
+  const depositFlatReturn = normalizePrice(c(19)); // T — 반납형 보증금 (재구독 아닌 경우만 사용)
+  const ownPeriodIdx = { '12': 14, '24': 15, '36': 16, '48': 17, '60': 18 };
+  const returnPeriodIdx = { '12': 20, '24': 21, '36': 22, '48': 23, '60': 24 };
+  const price = {};
+  for (const period of Object.keys(ownPeriodIdx)) {
+    const m = Number(period);
+    const rentOwn = normalizePrice(c(ownPeriodIdx[period]));
+    const rentReturn = normalizePrice(c(returnPeriodIdx[period]));
+    if (!rentOwn && !rentReturn) continue;
+    const entry = {};
+    if (rentOwn) {
+      entry.rent = rentOwn;
+      const dep = isResubscribe ? Math.round(rentOwn * (m / 12)) : depositFlatOwn;
+      if (dep) entry.deposit = dep;
+    }
+    if (rentReturn) {
+      entry.rent_return = rentReturn;
+      const depR = isResubscribe ? Math.round(rentReturn * (m / 12)) : depositFlatReturn;
+      if (depR) entry.deposit_return = depR;
+    }
+    price[period] = entry;
+  }
+  if (Object.keys(price).length) out.price = price;
 
   out.vehicle_status = mapStatusLabel(out.status_label);
   return out;

@@ -286,8 +286,10 @@ export function renderDetailSections(p, opts = {}) {
   const providerName = providerLabelByCode(p.provider_company_code || p.partner_code, st0) || '';
   const vehName = composeVehicleName(p);
   const kv = (l, v) => `<div class="pd-kv"><span class="k">${esc(l)}</span><span class="v">${(v != null && String(v).trim() && String(v).trim() !== '-') ? esc(v) : '-'}</span></div>`;
-  const cheapest = priceRows.length ? priceRows.reduce((a, b) => (b.rent < a.rent ? b : a), priceRows[0]) : null;
+  const effRent = r => r.rent || r.rentReturn;
+  const cheapest = priceRows.length ? priceRows.reduce((a, b) => (effRent(b) < effRent(a) ? b : a), priceRows[0]) : null;
   const hasKm = priceRows.some(r => r.km);
+  const hasReturn = priceRows.some(r => r.rentReturn > 0);   // 손오공렌터카 등 인수형/반납형 이중가격 매물
   const st = p.vehicle_status || '';
   const stCls = /협의/.test(st) ? 'is-consult' : /계약|예약/.test(st) ? 'is-contract' : /불가/.test(st) ? 'is-blocked' : '';
 
@@ -318,10 +320,15 @@ export function renderDetailSections(p, opts = {}) {
       <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
       ${priceRows.length ? `
       <table class="pd-tbl">
-        <thead><tr><th>기간</th><th>연주행</th><th>월 대여료</th><th>보증금</th></tr></thead>
+        <thead><tr><th>기간</th><th>연주행</th>${hasReturn ? '<th>인수형 대여료</th><th>인수형 보증금</th><th>반납형 대여료</th><th>반납형 보증금</th>' : '<th>월 대여료</th><th>보증금</th>'}</tr></thead>
         <tbody>${priceRows.map(r => {
           const isBest = cheapest && r.m === cheapest.m && r.km === cheapest.km;
-          return `<tr class="${isBest ? 'best' : ''}"><td>${r.m}개월${isBest ? '<span class="pd-best-tag">최저</span>' : ''}</td><td style="color:var(--text-sub);font-size:12px;">${esc(r.km || '-')}</td><td><span class="pd-rent">${fmtMoneyMan(r.rent)}</span></td><td>${fmtMoneyMan(r.dep) || '-'}</td></tr>`;
+          const label = `${r.m}개월${isBest ? '<span class="pd-best-tag">최저</span>' : ''}`;
+          const kmCell = `<td style="color:var(--text-sub);font-size:12px;">${esc(r.km || '-')}</td>`;
+          const cells = hasReturn
+            ? `<td>${r.rent ? `<span class="pd-rent">${fmtMoneyMan(r.rent)}</span>` : '-'}</td><td>${fmtMoneyMan(r.dep) || '-'}</td><td>${r.rentReturn ? `<span class="pd-rent">${fmtMoneyMan(r.rentReturn)}</span>` : '-'}</td><td>${fmtMoneyMan(r.depReturn) || '-'}</td>`
+            : `<td><span class="pd-rent">${fmtMoneyMan(r.rent)}</span></td><td>${fmtMoneyMan(r.dep) || '-'}</td>`;
+          return `<tr class="${isBest ? 'best' : ''}"><td>${label}</td>${kmCell}${cells}</tr>`;
         }).join('')}</tbody>
       </table>
       ${(() => {
