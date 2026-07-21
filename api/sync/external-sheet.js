@@ -462,6 +462,7 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
     fuel_type: safeGet(row, colIdx('연료')),
     mileage: parseInt(String(safeGet(row, colIdx('KM'))).replace(/[^\d]/g, '') || '0', 10),
     year, first_registration_date: regDate,
+    location: '',   // 손오공 시트엔 현위치 컬럼 없음 — Firebase update 가 undefined 를 거부하므로 빈값 명시
     status, vehicle_status: vehicleStatus,
     product_type: '중고구독',
     status_label: statusRaw,
