@@ -413,7 +413,7 @@ export function renderContractDocs(card, c, opts = {}) {
                 </div>
               `).join('')}
               ${canEdit ? `
-                <label style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:10px;border:1px dashed var(--border);border-radius:4px;gap:2px;">
+                <label class="pd-dropzone" style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted);font-size:10px;border:1px dashed var(--border);border-radius:4px;gap:2px;margin-bottom:0;padding:0;">
                   <i class="ph ph-plus" style="font-size:18px;"></i>
                   <span>추가</span>
                   <input type="file" hidden accept="image/*,application/pdf" multiple class="ctAttUploadAdd">
@@ -445,8 +445,8 @@ export function renderContractDocs(card, c, opts = {}) {
   if (!canEdit) return;
 
   // 면허증 업로드 + 자동 OCR — 차량등록증과 동일한 UX (업로드 = 자동 분석)
-  wrap.querySelector('#ctLicenseUpload')?.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
+  //   change(파일선택) / drop(드래그앤드롭) 공용 핸들러
+  const handleLicenseFile = async (file) => {
     if (!file) return;
     try {
       showToast('면허증 업로드 중...', 'info');
@@ -496,7 +496,21 @@ export function renderContractDocs(card, c, opts = {}) {
       console.error('[license upload]', err);
       showToast('업로드 실패: ' + (err.message || err), 'error');
     }
-  });
+  };
+  wrap.querySelector('#ctLicenseUpload')?.addEventListener('change', (e) => handleLicenseFile(e.target.files[0]));
+  const licenseZone = wrap.querySelector('label.pd-dropzone[for="ctLicenseUpload"]');
+  if (licenseZone) {
+    licenseZone.addEventListener('dragover', e => {
+      if (e.dataTransfer.types.includes('Files')) { e.preventDefault(); licenseZone.classList.add('is-drop-target'); }
+    });
+    licenseZone.addEventListener('dragleave', () => licenseZone.classList.remove('is-drop-target'));
+    licenseZone.addEventListener('drop', e => {
+      if (!e.dataTransfer.files.length) return;
+      e.preventDefault();
+      licenseZone.classList.remove('is-drop-target');
+      handleLicenseFile(e.dataTransfer.files[0]);
+    });
+  }
 
   // 면허증 삭제
   wrap.querySelector('#ctLicenseDel')?.addEventListener('click', async () => {
@@ -507,46 +521,58 @@ export function renderContractDocs(card, c, opts = {}) {
     renderContractDocs(card, c, opts);
   });
 
-  // 첨부서류 다중 업로드 — 이미지/PDF 분기 (v2 패턴). 빈 상태/추가 입력 모두 동일 핸들러
-  wrap.querySelectorAll('input.ctAttUploadAdd').forEach(input => {
-    input.addEventListener('change', async (e) => {
-      const files = Array.from(e.target.files || []);
-      if (!files.length) return;
-      try {
-        showToast(`${files.length}개 파일 업로드 중...`, 'info');
-        const { uploadImage, uploadFile } = await import('../firebase/storage-helper.js');
-        const newUrls = [];
-        for (const file of files) {
-          const isImage = file.type?.startsWith('image/');
-          const path = `contract-files/${c._key}/att_${Date.now()}_${file.name}`;
-          const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
-          console.log('[doc-upload]', file.name, 'type:', file.type, 'isImage:', isImage, 'url:', url);
-          newUrls.push(url);
-        }
-        // 첨부 추가 = URL별 트랜잭션 append (동시 업로드 소실 방지 — 원칙 22).
-        //  부분실패 추적: 실패 URL 은 한 번 더 서버에 병합 저장 (마지막 성공이 중간실패를 가리지 않게)
-        let next = c.doc_attachments;
-        const failed = [];
-        for (const url of newUrls) {
-          const r = await appendToArray(`contracts/${c._key}/doc_attachments`, url);
-          if (r != null) next = r; else failed.push(url);
-        }
-        const { logAudit } = await import('../firebase/audit-log.js');
-        if (failed.length) {
-          const merged = [..._toArray(next), ...failed];
-          await updateRecord(`contracts/${c._key}`, { doc_attachments: merged });   // 실패분 실제 서버 저장 (로컬만 갱신 금지)
-          next = merged;
-          showToast(`${newUrls.length - failed.length}/${newUrls.length}개 업로드 (일부 재저장)`, 'info');
-        } else {
-          showToast(`${newUrls.length}개 업로드 완료`, 'success');
-        }
-        c.doc_attachments = next;
-        logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['doc_attachments'], data: { added: newUrls } });
-        renderContractDocs(card, c, opts);
-      } catch (err) {
-        console.error('[att upload]', err);
-        showToast('업로드 실패: ' + (err.message || err), 'error');
+  // 첨부서류 다중 업로드 — 이미지/PDF 분기 (v2 패턴). 빈 상태/추가 입력/드래그앤드롭 모두 동일 핸들러
+  const handleAttachmentFiles = async (files) => {
+    if (!files.length) return;
+    try {
+      showToast(`${files.length}개 파일 업로드 중...`, 'info');
+      const { uploadImage, uploadFile } = await import('../firebase/storage-helper.js');
+      const newUrls = [];
+      for (const file of files) {
+        const isImage = file.type?.startsWith('image/');
+        const path = `contract-files/${c._key}/att_${Date.now()}_${file.name}`;
+        const { url } = isImage ? await uploadImage(path, file) : await uploadFile(path, file);
+        console.log('[doc-upload]', file.name, 'type:', file.type, 'isImage:', isImage, 'url:', url);
+        newUrls.push(url);
       }
+      // 첨부 추가 = URL별 트랜잭션 append (동시 업로드 소실 방지 — 원칙 22).
+      //  부분실패 추적: 실패 URL 은 한 번 더 서버에 병합 저장 (마지막 성공이 중간실패를 가리지 않게)
+      let next = c.doc_attachments;
+      const failed = [];
+      for (const url of newUrls) {
+        const r = await appendToArray(`contracts/${c._key}/doc_attachments`, url);
+        if (r != null) next = r; else failed.push(url);
+      }
+      const { logAudit } = await import('../firebase/audit-log.js');
+      if (failed.length) {
+        const merged = [..._toArray(next), ...failed];
+        await updateRecord(`contracts/${c._key}`, { doc_attachments: merged });   // 실패분 실제 서버 저장 (로컬만 갱신 금지)
+        next = merged;
+        showToast(`${newUrls.length - failed.length}/${newUrls.length}개 업로드 (일부 재저장)`, 'info');
+      } else {
+        showToast(`${newUrls.length}개 업로드 완료`, 'success');
+      }
+      c.doc_attachments = next;
+      logAudit({ action: 'update', path: `contracts/${c._key}`, fields: ['doc_attachments'], data: { added: newUrls } });
+      renderContractDocs(card, c, opts);
+    } catch (err) {
+      console.error('[att upload]', err);
+      showToast('업로드 실패: ' + (err.message || err), 'error');
+    }
+  };
+  wrap.querySelectorAll('input.ctAttUploadAdd').forEach(input => {
+    input.addEventListener('change', (e) => handleAttachmentFiles(Array.from(e.target.files || [])));
+    const zone = input.closest('label');
+    if (!zone) return;
+    zone.addEventListener('dragover', e => {
+      if (e.dataTransfer.types.includes('Files')) { e.preventDefault(); zone.classList.add('is-drop-target'); }
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('is-drop-target'));
+    zone.addEventListener('drop', e => {
+      if (!e.dataTransfer.files.length) return;
+      e.preventDefault();
+      zone.classList.remove('is-drop-target');
+      handleAttachmentFiles(Array.from(e.dataTransfer.files));
     });
   });
 
