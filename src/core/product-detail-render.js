@@ -325,9 +325,12 @@ export function renderDetailSections(p, opts = {}) {
           const isBest = cheapest && r.m === cheapest.m && r.km === cheapest.km;
           const label = `${r.m}개월${isBest ? '<span class="pd-best-tag">최저</span>' : ''}`;
           const kmCell = `<td style="color:var(--text-sub);font-size:12px;">${esc(r.km || '-')}</td>`;
+          // 천원 단위까지 표시 (fmtMoneyMan 은 만원 단위로 반올림해서, 대여료가 딱 떨어지지 않으면
+          //  "보증금 = 대여료 × 개월수/12" 검산이 안 맞아 보임 — 정밀 표시로 실제 계산과 일치하게).
+          const fmtP = v => { const n = Number(v); if (!n) return ''; const man = n / 10000; return (Number.isInteger(man) ? man : Math.round(man * 10) / 10) + '만'; };
           const cells = hasReturn
-            ? `<td>${r.rent ? `<span class="pd-rent">${fmtMoneyMan(r.rent)}</span>` : '-'}</td><td>${fmtMoneyMan(r.dep) || '-'}</td><td>${r.rentReturn ? `<span class="pd-rent">${fmtMoneyMan(r.rentReturn)}</span>` : '-'}</td><td>${fmtMoneyMan(r.depReturn) || '-'}</td>`
-            : `<td><span class="pd-rent">${fmtMoneyMan(r.rent)}</span></td><td>${fmtMoneyMan(r.dep) || '-'}</td>`;
+            ? `<td>${r.rent ? `<span class="pd-rent">${fmtP(r.rent)}</span>` : '-'}</td><td>${fmtP(r.dep) || '-'}</td><td>${r.rentReturn ? `<span class="pd-rent">${fmtP(r.rentReturn)}</span>` : '-'}</td><td>${fmtP(r.depReturn) || '-'}</td>`
+            : `<td><span class="pd-rent">${fmtP(r.rent)}</span></td><td>${fmtP(r.dep) || '-'}</td>`;
           return `<tr class="${isBest ? 'best' : ''}"><td>${label}</td>${kmCell}${cells}</tr>`;
         }).join('')}</tbody>
       </table>
