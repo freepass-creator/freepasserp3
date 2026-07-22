@@ -616,6 +616,10 @@ function renderSyncTab(el) {
             <span class="ao-source-name"><i class="ph ph-table"></i> 손오공렌터카</span>
             <span class="ao-source-desc">손오공 재고 리스트 (RP012)</span>
           </button>
+          <button class="ao-source" id="syncFetchAicarBtn" data-source="aicar">
+            <span class="ao-source-name"><i class="ph ph-table"></i> 아이카</span>
+            <span class="ao-source-desc">아이카종합 탭 (RP004)</span>
+          </button>
           <button class="ao-source" id="syncFetchGeneralBtn" data-source="general">
             <span class="ao-source-name"><i class="ph ph-table"></i> 렌트사 탭</span>
             <span class="ao-source-desc">렌트사 탭 직접 읽기 · 배차상태 출고가능만 ERP 반영</span>
@@ -625,6 +629,8 @@ function renderSyncTab(el) {
           <a href="https://docs.google.com/spreadsheets/d/1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U/edit?gid=284963459" target="_blank">오플시트 열기 ↗</a>
           ·
           <a href="https://docs.google.com/spreadsheets/d/1vBTcj1MpKt44Bzclvgjm23OXFEIY-1hp_g5Wu3bztsQ/edit?gid=0" target="_blank">손오공시트 열기 ↗</a>
+          ·
+          <a href="https://docs.google.com/spreadsheets/d/1AVW2uFy94qLPV4TU-MsgYMIDLrfC6KZhfxVjoFw7sH0/edit?gid=965600926" target="_blank">아이카시트 열기 ↗</a>
           ·
           <a href="https://docs.google.com/spreadsheets/d/1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg/edit?gid=1422892422" target="_blank">종합시트 열기 ↗</a>
         </div>
@@ -647,8 +653,9 @@ function renderSyncTab(el) {
   `;
   const fetchAutoplusBtn = el.querySelector('#syncFetchAutoplusBtn');
   const fetchSongogongBtn = el.querySelector('#syncFetchSongogongBtn');
+  const fetchAicarBtn = el.querySelector('#syncFetchAicarBtn');
   const fetchGeneralBtn  = el.querySelector('#syncFetchGeneralBtn');
-  const fetchBtns = [fetchAutoplusBtn, fetchSongogongBtn, fetchGeneralBtn];
+  const fetchBtns = [fetchAutoplusBtn, fetchSongogongBtn, fetchAicarBtn, fetchGeneralBtn];
   const applyBtn = el.querySelector('#syncApplyBtn');
   const statusMsg = el.querySelector('#syncStatusMsg');
   const preview = el.querySelector('#syncPreview');
@@ -694,7 +701,7 @@ function renderSyncTab(el) {
     applyBtn.disabled = true;
     _syncFetched = null;
     preview.style.display = 'none';
-    const sourceLabel = source === 'autoplus' ? '오플시트' : source === 'songogong' ? '손오공시트' : source === 'supply' ? '공급시트' : '종합 탭';
+    const sourceLabel = source === 'autoplus' ? '오플시트' : source === 'songogong' ? '손오공시트' : source === 'aicar' ? '아이카시트' : source === 'supply' ? '공급시트' : '종합 탭';
     statusMsg.textContent = `${sourceLabel} 읽는 중...`;
     devLog(`[sync] ${source} 시트 fetch 시작`);
     try {
@@ -922,6 +929,7 @@ function renderSyncTab(el) {
   };
   fetchAutoplusBtn.addEventListener('click', onFetchClick);
   fetchSongogongBtn.addEventListener('click', onFetchClick);
+  fetchAicarBtn.addEventListener('click', onFetchClick);
   fetchGeneralBtn.addEventListener('click', onFetchClick);
 
   applyBtn.addEventListener('click', async () => {

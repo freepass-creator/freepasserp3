@@ -47,6 +47,14 @@ export const SHEET_CONFIGS = {
     label: '손오공렌터카 (RP012)',
     schema: 'songogong',
   },
+  aicar: {
+    // 아이카 전용 시트 — "아이카종합" 탭이 기존 종합시트와 동일한 42컬럼 포맷 +
+    // 행마다 공급사코드(RP004)·정책코드가 이미 채워져 있어 parseGeneralRow 그대로 재사용.
+    sheet_id: '1AVW2uFy94qLPV4TU-MsgYMIDLrfC6KZhfxVjoFw7sH0',
+    tab_name: '아이카종합',
+    label: '아이카 (RP004)',
+    schema: 'general',
+  },
 };
 
 /* 오플 자동탐지 시 제외할 탭 — 공지/수정중/구버전(구 …)/구독안내. 나머지 보이는 탭은 모두 차량 리스트로 간주. */
