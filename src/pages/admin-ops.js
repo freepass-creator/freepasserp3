@@ -591,6 +591,27 @@ function renderNoticeTab(el) {
  *  서버(api/sync/external-sheet.js)가 시트 읽고 products 객체 반환 → 미리보기 → [적용] 클라이언트가 Firebase 일괄 write.
  *  ※ 전부 수동 — 자동 cron 비활성화 (2026-06-08).
  */
+/* 동기화 소스 목록 — 회사 추가 시 여기 한 줄만 추가하면 버튼·클릭 처리 자동 반영
+ * (api/sync/external-sheet.js 의 SHEET_CONFIGS 키와 1:1 대응). */
+const SYNC_SOURCES = [
+  { key: 'autoplus', label: '오토플러스', desc: '오플 재고 리스트 (RP023)' },
+  { key: 'songogong', label: '손오공렌터카', desc: '손오공 재고 리스트 (RP012)' },
+  { key: 'aicar', label: '아이카', desc: '아이카종합 탭 (RP004)' },
+  { key: 'pacific', label: '퍼시픽', desc: '퍼시픽 (RP022)' },
+  { key: 'leaders', label: '리더스', desc: '리더스 (RP008)' },
+  { key: 'star', label: '스타', desc: '스타 (RP018)' },
+  { key: 'rentzone', label: '렌트존', desc: '렌트존 (PT-0001)' },
+  { key: 'gyeongjinRent', label: '경진렌트카', desc: '경진렌트카 (RP015)' },
+  { key: 'gyeongjinCar', label: '경진카', desc: '경진카 (RP016)' },
+  { key: 'wooriCapital', label: '우리캐피탈렌터카', desc: '우리캐피탈렌터카 (RP020)' },
+  { key: 'kh', label: 'KH', desc: 'KH (RP010)' },
+  { key: 'centro', label: '센트로', desc: '센트로 (RP017)' },
+  { key: 'billin', label: '빌린카', desc: '빌린카 (RP021)' },
+  { key: 'ian', label: '아이언', desc: '아이언 (RP006)' },
+  { key: 'wellix', label: '웰릭스', desc: '웰릭스 (RP013)' },
+  { key: 'general', label: '렌트사 탭', desc: '렌트사 탭 직접 읽기 · 배차상태 출고가능만 ERP 반영' },
+];
+
 function renderSyncTab(el) {
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:14px;height:100%;">
@@ -608,30 +629,14 @@ function renderSyncTab(el) {
       <div class="ao-step">
         <div class="ao-step-title"><span class="ao-step-no">1</span> 불러올 시트 선택</div>
         <div class="ao-sources">
-          <button class="ao-source" id="syncFetchAutoplusBtn" data-source="autoplus">
-            <span class="ao-source-name"><i class="ph ph-table"></i> 오토플러스</span>
-            <span class="ao-source-desc">오플 재고 리스트 (RP023)</span>
-          </button>
-          <button class="ao-source" id="syncFetchSongogongBtn" data-source="songogong">
-            <span class="ao-source-name"><i class="ph ph-table"></i> 손오공렌터카</span>
-            <span class="ao-source-desc">손오공 재고 리스트 (RP012)</span>
-          </button>
-          <button class="ao-source" id="syncFetchAicarBtn" data-source="aicar">
-            <span class="ao-source-name"><i class="ph ph-table"></i> 아이카</span>
-            <span class="ao-source-desc">아이카종합 탭 (RP004)</span>
-          </button>
-          <button class="ao-source" id="syncFetchGeneralBtn" data-source="general">
-            <span class="ao-source-name"><i class="ph ph-table"></i> 렌트사 탭</span>
-            <span class="ao-source-desc">렌트사 탭 직접 읽기 · 배차상태 출고가능만 ERP 반영</span>
-          </button>
+          ${SYNC_SOURCES.map(s => `
+            <button class="ao-source" data-source="${s.key}">
+              <span class="ao-source-name"><i class="ph ph-table"></i> ${esc(s.label)}</span>
+              <span class="ao-source-desc">${esc(s.desc)}</span>
+            </button>
+          `).join('')}
         </div>
         <div class="ao-links">
-          <a href="https://docs.google.com/spreadsheets/d/1TJBG4PABgly7EtGG6Os5GcY9La7kDR_yex56KHhXe2U/edit?gid=284963459" target="_blank">오플시트 열기 ↗</a>
-          ·
-          <a href="https://docs.google.com/spreadsheets/d/1vBTcj1MpKt44Bzclvgjm23OXFEIY-1hp_g5Wu3bztsQ/edit?gid=0" target="_blank">손오공시트 열기 ↗</a>
-          ·
-          <a href="https://docs.google.com/spreadsheets/d/1AVW2uFy94qLPV4TU-MsgYMIDLrfC6KZhfxVjoFw7sH0/edit?gid=965600926" target="_blank">아이카시트 열기 ↗</a>
-          ·
           <a href="https://docs.google.com/spreadsheets/d/1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg/edit?gid=1422892422" target="_blank">종합시트 열기 ↗</a>
         </div>
       </div>
@@ -651,11 +656,8 @@ function renderSyncTab(el) {
       <div id="syncPreview" style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
     </div>
   `;
-  const fetchAutoplusBtn = el.querySelector('#syncFetchAutoplusBtn');
-  const fetchSongogongBtn = el.querySelector('#syncFetchSongogongBtn');
-  const fetchAicarBtn = el.querySelector('#syncFetchAicarBtn');
-  const fetchGeneralBtn  = el.querySelector('#syncFetchGeneralBtn');
-  const fetchBtns = [fetchAutoplusBtn, fetchSongogongBtn, fetchAicarBtn, fetchGeneralBtn];
+  const sourcesEl = el.querySelector('.ao-sources');
+  const fetchBtns = [...el.querySelectorAll('.ao-source')];
   const applyBtn = el.querySelector('#syncApplyBtn');
   const statusMsg = el.querySelector('#syncStatusMsg');
   const preview = el.querySelector('#syncPreview');
@@ -696,12 +698,14 @@ function renderSyncTab(el) {
   });
 
   const onFetchClick = async (e) => {
-    const source = e.currentTarget.dataset.source;
+    const btn = e.target.closest('.ao-source');
+    if (!btn) return;
+    const source = btn.dataset.source;
     fetchBtns.forEach(b => b.disabled = true);
     applyBtn.disabled = true;
     _syncFetched = null;
     preview.style.display = 'none';
-    const sourceLabel = source === 'autoplus' ? '오플시트' : source === 'songogong' ? '손오공시트' : source === 'aicar' ? '아이카시트' : source === 'supply' ? '공급시트' : '종합 탭';
+    const sourceLabel = SYNC_SOURCES.find(s => s.key === source)?.label || (source === 'supply' ? '공급시트' : '종합 탭');
     statusMsg.textContent = `${sourceLabel} 읽는 중...`;
     devLog(`[sync] ${source} 시트 fetch 시작`);
     try {
@@ -719,7 +723,7 @@ function renderSyncTab(el) {
       // general 은 시트 자체에 maker/model/sub_model/trim 컬럼 그대로 담고 있어 매칭 불필요.
       let matched = 0;
       const items = Object.values(data.products || {});
-      if (data.schema === 'autoplus' || data.schema === 'songogong') {
+      if (data.schema === 'autoplus' || data.schema === 'songogong' || data.schema === 'rentco') {
         const { buildVehicleIndex, matchVehicle } = await import('../core/vehicle-matcher.js');
         const { loadIndex } = await import('../core/vehicle-matrix.js');
         const catalogIdx = await loadIndex();
@@ -927,10 +931,7 @@ function renderSyncTab(el) {
       fetchBtns.forEach(b => b.disabled = false);
     }
   };
-  fetchAutoplusBtn.addEventListener('click', onFetchClick);
-  fetchSongogongBtn.addEventListener('click', onFetchClick);
-  fetchAicarBtn.addEventListener('click', onFetchClick);
-  fetchGeneralBtn.addEventListener('click', onFetchClick);
+  sourcesEl.addEventListener('click', onFetchClick);
 
   applyBtn.addEventListener('click', async () => {
     if (!_syncFetched) return;
@@ -944,7 +945,7 @@ function renderSyncTab(el) {
       const schema = _syncFetched.schema || 'autoplus';
       const existing = (store.products || []).filter(p => {
         if (p._deleted) return false;
-        if (schema === 'autoplus' || schema === 'songogong') return p.provider_company_code === _syncFetched.provider_code;
+        if (schema === 'autoplus' || schema === 'songogong' || schema === 'rentco') return p.provider_company_code === _syncFetched.provider_code;
         if (schema === 'general') {
           // 이번 시트 공급사코드 집합 — source 무관하게 해당 공급사 매물 전체를 정리 범위로
           const incomingProviders = new Set(

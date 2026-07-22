@@ -55,6 +55,23 @@ export const SHEET_CONFIGS = {
     label: '아이카 (RP004)',
     schema: 'general',
   },
+
+  /* 렌트사 개별 전용시트 — 전부 동일한 33컬럼 포맷(parseRentCoRow). 회사 추가될 때마다
+   * sheet_id·provider_code·label 3줄만 추가하면 됨 (admin-ops.js 목록도 같이 추가). */
+  pacific:  { sheet_id: '17ptJasUHfkTsTAPV7n09biOUxwON69ga_boY7Lj1YQI', tab_name: '시트1', provider_code: 'RP022', label: '퍼시픽 (RP022)', schema: 'rentco' },
+  leaders:  { sheet_id: '1JzkGriOncxVC0CiQlL18uiHW-iyzvMNyJkJN4BPGoqI', tab_name: '시트1', provider_code: 'RP008', label: '리더스 (RP008)', schema: 'rentco' },
+  star:     { sheet_id: '1IP7uES-NrxS58JK9UCtD3ppGZGeSL9STpT2jHJO5JIM', tab_name: '시트1', provider_code: 'RP018', label: '스타 (RP018)', schema: 'rentco' },
+  rentzone: { sheet_id: '1IFV4_rNq4hW_KornQpz1ppBWbziCyklTo6oOH0BaUc8', tab_name: '시트1', provider_code: 'PT-0001', label: '렌트존 (PT-0001)', schema: 'rentco' },
+  gyeongjinRent: { sheet_id: '1uxcBiaf9YUokWY6pA6cSQF5dWC_NhAbWzch6rFNPxks', tab_name: '시트1', provider_code: 'RP015', label: '경진렌트카 (RP015)', schema: 'rentco' },
+  gyeongjinCar:  { sheet_id: '1zglJo10nM_oilYzLdk9XAe3SMVPkVf5fd8a3vF1yXHo', tab_name: '시트1', provider_code: 'RP016', label: '경진카 (RP016)', schema: 'rentco' },
+  wooriCapital:  { sheet_id: '1V4dqn5e8dtTLjX_wnHx5wOup0arU3TAtsvEvuh0sisY', tab_name: '시트1', provider_code: 'RP020', label: '우리캐피탈렌터카 (RP020)', schema: 'rentco' },
+  kh:       { sheet_id: '1BLoZxJ_5n0N9P4S4tkw6otj0trqGSDpe35jRT9DVs0k', tab_name: '시트1', provider_code: 'RP010', label: 'KH (RP010)', schema: 'rentco' },
+  centro:   { sheet_id: '1iVCesNhymbW8SsvHU0MysRmsVHGb2PtXzA5c30xqm0I', tab_name: '시트1', provider_code: 'RP017', label: '센트로 (RP017)', schema: 'rentco' },
+  billin:   { sheet_id: '1Iroh8oZFMqCgTQHwNXp0gOxa-SYOCOgqwcwPCgJzJaA', tab_name: '빌린카', provider_code: 'RP021', label: '빌린카 (RP021)', schema: 'rentco' },
+  ian:      { sheet_id: '1fUC8sok_XKmpgDAvRRi6HEbeAkY-Rbvrt-th8j8G7Ms', tab_name: '시트1', provider_code: 'RP006', label: '아이언 (RP006)', schema: 'rentco' },
+  wellix:   { sheet_id: '1hfXngq7GcXRF2u7OhmH39PqERQK34r6hq9dfSoI2Sy0', tab_name: '시트1', provider_code: 'RP013', label: '웰릭스 (RP013)', schema: 'rentco' },
+  // SA렌터카(1C5rRLQOPyFM3UoVfIHN79fud099H6m-_QOtUnlFykvo) · J&J렌트카(1tVEVEZY-6e9y2Gz89eXnIRvsScFv7Y7sAiWw7hr_OFY)
+  //  — 신규 파트너, 아직 공급사코드 미배정 (파트너 관리에서 등록 후 코드 확정되면 추가)
 };
 
 /* 오플 자동탐지 시 제외할 탭 — 공지/수정중/구버전(구 …)/구독안내. 나머지 보이는 탭은 모두 차량 리스트로 간주. */
@@ -418,6 +435,81 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
     const key = km ? `${period}_${km}` : period;
     product.price[key] = { rent, deposit: rent * depMult };
   }
+  return product;
+}
+
+/* 렌트사 개별 전용시트 (퍼시픽·리더스·스타·렌트존·경진렌트카·경진카·우리캐피탈렌터카·KH·센트로·빌린카·아이언 등) —
+ *  전부 동일한 33컬럼 포맷(배차상태·차량번호·차종·모델명(트림)·...·전용계좌·비고) 하나를 공용으로 파싱.
+ *  공급사코드 컬럼이 없어 config.provider_code 로 고정. maker/sub_model 은 비워두고
+ *  admin-ops.js 클라이언트 쪽 catalog 매칭 파이프라인(raw_model_short/full 기반)에 위임(autoplus 와 동일). */
+function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, sheetId, nowMs }) {
+  const colIdx = (n) => headers.indexOf(n);
+  const idxCar = colIdx('차량번호');
+  const carNumber = safeGet(row, idxCar);
+  if (!carNumber || !VALID_CAR_NO.test(carNumber)) return null;
+
+  const statusRaw = safeGet(row, colIdx('배차상태'));
+  const vehicleStatus = normalizeVehicleStatus(statusRaw);
+  const status = statusFlag(vehicleStatus);
+  const kindVal = safeGet(row, colIdx('구분'));
+
+  const modelShort = safeGet(row, colIdx('차종'));
+  const trimFull = safeGet(row, colIdx('모델명(트림)'));
+  const regDate = safeGet(row, colIdx('최초등록일'));
+  let year = '';
+  if (regDate) {
+    const m = /^(\d{2,4})/.exec(regDate);
+    if (m) year = m[1].length === 4 ? `${m[1].slice(2)}년식` : `${m[1]}년식`;
+  }
+
+  const uidSeed = `${providerCode}_${carNumber}`;
+  const productUid = `EXT_${crypto.createHash('md5').update(uidSeed).digest('hex').slice(0, 12)}`;
+
+  const product = {
+    _key: productUid,
+    product_uid: productUid,
+    product_code: `${providerCode}_${carNumber}`,
+    provider_company_code: providerCode,
+    partner_code: providerCode,
+    policy_code: '',
+    car_number: carNumber,
+    raw_model_short: modelShort,
+    raw_model_full: trimFull,
+    maker: '', sub_model: '',
+    trim_name: extractTrimFromModel(trimFull, modelShort),
+    ext_color: safeGet(row, colIdx('외장색')),
+    int_color: safeGet(row, colIdx('내장색')),
+    fuel_type: safeGet(row, colIdx('유종')),
+    mileage: parseInt(String(safeGet(row, colIdx('주행거리'))).replace(/[^\d]/g, '') || '0', 10),
+    year, first_registration_date: regDate,
+    location: '',
+    vehicle_price: parsePrice(safeGet(row, colIdx('소비자가격'))) || 0,
+    status, vehicle_status: vehicleStatus,
+    product_type: resolveProductType({ pendingPlate: false, carNumber, kindVal, defaultProductType: '' }),
+    status_label: statusRaw,
+    is_active: true,
+    options: safeGet(row, colIdx('옵션')),
+    partner_memo: safeGet(row, colIdx('비고')),
+    photo_link: photoLinkMap[absRow] || '',
+    source: 'external_sheet',
+    source_sheet_id: sheetId,
+    source_schema: 'rentco',
+    price: {},
+    created_at: nowMs, updated_at: nowMs,
+    created_by: 'sync_external_sheet',
+  };
+
+  // 보증금 — 단기보증(1/6/12개월 공통) / 장기보증(24/36/48/60개월 공통), 시트 원본값 그대로.
+  const shortDep = parsePrice(safeGet(row, colIdx('단기보증')));
+  const longDep = parsePrice(safeGet(row, colIdx('장기보증')));
+  const rentCols = { '1': '1개월', '6': '6개월', '12': '12개월', '24': '24개월', '36': '36개월', '48': '48개월', '60': '60개월' };
+  for (const [m, col] of Object.entries(rentCols)) {
+    const r = parsePrice(safeGet(row, colIdx(col)));
+    if (!r || r < 100000) continue;
+    const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
+    product.price[m] = dep ? { rent: r, deposit: dep } : { rent: r };
+  }
+
   return product;
 }
 
@@ -797,6 +889,8 @@ export async function syncFromSheet(source) {
         p = parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId: config.sheet_id, nowMs });
       } else if (config.schema === 'songogong') {
         p = parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
+      } else if (config.schema === 'rentco') {
+        p = parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode: config.provider_code, sheetId: config.sheet_id, nowMs });
       }
       if (!p) { skipped++; continue; }
       if (hiddenRows.has(absRow)) { p.vehicle_status = '출고불가'; p.status = 'unavailable'; p.status_label = '시트 숨김'; }
