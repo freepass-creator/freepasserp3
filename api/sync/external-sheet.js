@@ -507,15 +507,20 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
   return product;
 }
 
-/* 신차/재렌트 판별:
+/* 신차/재렌트/재구독 판별:
  * 1) pendingPlate 또는 100신XXXX → 항상 신차렌트
- * 2) 구분 컬럼에 '신차' 포함 → 신차렌트
- * 3) 구분 컬럼에 '중고'|'재렌트' 포함 → 중고렌트
- * 4) 구분 비어있음 → null (admin-ops가 기존 DB값 보존)
- * 5) defaultProductType 폴백 */
+ * 2) 구분 컬럼에 '신차'|'신규' 포함 → 신차렌트
+ * 3) 구분 컬럼에 '구독' 포함 → 중고구독 (재구독/구독상품/구독 J·R/제휴구독/LC구독(재구독) 등 —
+ *    "구독"이 아닌 "재렌트"만 걸러야 하므로 아래 중고 체크보다 먼저 검사)
+ * 4) 구분 컬럼에 '중고'|'재렌트' 포함 → 중고렌트
+ * 5) 구분 비어있음 → null (admin-ops가 기존 DB값 보존)
+ * 6) defaultProductType 폴백
+ * (전체 공급사 탭 실사 결과 — 신규/구독/구독상품/구독 J/구독 R/제휴구독/LC구독(재구독) 이
+ *  전부 기본값 '중고렌트'로 잘못 떨어지고 있었음 — 2026-07-22) */
 function resolveProductType({ pendingPlate, carNumber, kindVal, defaultProductType }) {
   if (pendingPlate || /^100신\d{4}$/.test(carNumber)) return '신차렌트';
-  if (kindVal && /신차/.test(kindVal)) return '신차렌트';
+  if (kindVal && /신차|신규/.test(kindVal)) return '신차렌트';
+  if (kindVal && /구독/.test(kindVal)) return '중고구독';
   if (kindVal && /중고|재렌트/.test(kindVal)) return '중고렌트';
   if (!kindVal) return null;
   return defaultProductType || '중고렌트';
