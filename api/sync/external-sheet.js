@@ -67,7 +67,7 @@ export const SHEET_CONFIGS = {
   wooriCapital:  { sheet_id: '1V4dqn5e8dtTLjX_wnHx5wOup0arU3TAtsvEvuh0sisY', tab_name: '시트1', provider_code: 'RP020', label: '우리캐피탈렌터카 (RP020)', schema: 'rentco' },
   kh:       { sheet_id: '1BLoZxJ_5n0N9P4S4tkw6otj0trqGSDpe35jRT9DVs0k', tab_name: '시트1', provider_code: 'RP010', label: 'KH (RP010)', schema: 'rentco' },
   centro:   { sheet_id: '1iVCesNhymbW8SsvHU0MysRmsVHGb2PtXzA5c30xqm0I', tab_name: '시트1', provider_code: 'RP017', label: '센트로 (RP017)', schema: 'rentco' },
-  billin:   { sheet_id: '1Iroh8oZFMqCgTQHwNXp0gOxa-SYOCOgqwcwPCgJzJaA', tab_name: '빌린카', provider_code: 'RP021', label: '빌린카 (RP021)', schema: 'rentco' },
+  billin:   { sheet_id: '1Iroh8oZFMqCgTQHwNXp0gOxa-SYOCOgqwcwPCgJzJaA', tab_name: '빌린카', extra_tabs: ['엘씨렌트', '빌린카구독'], provider_code: 'RP021', label: '빌린카 (RP021)', schema: 'rentco' },
   ian:      { sheet_id: '1fUC8sok_XKmpgDAvRRi6HEbeAkY-Rbvrt-th8j8G7Ms', tab_name: '시트1', provider_code: 'RP006', label: '아이언 (RP006)', schema: 'rentco' },
   wellix:   { sheet_id: '1hfXngq7GcXRF2u7OhmH39PqERQK34r6hq9dfSoI2Sy0', tab_name: '시트1', provider_code: 'RP013', label: '웰릭스 (RP013)', schema: 'rentco' },
   // SA렌터카(1C5rRLQOPyFM3UoVfIHN79fud099H6m-_QOtUnlFykvo) · J&J렌트카(1tVEVEZY-6e9y2Gz89eXnIRvsScFv7Y7sAiWw7hr_OFY)

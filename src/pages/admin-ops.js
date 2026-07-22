@@ -639,6 +639,10 @@ function renderSyncTab(el) {
         <div class="ao-links">
           <a href="https://docs.google.com/spreadsheets/d/1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg/edit?gid=1422892422" target="_blank">종합시트 열기 ↗</a>
         </div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:10px;">
+          <button class="btn btn-sm btn-primary" id="syncBulkBtn"><i class="ph ph-lightning"></i> 전체 일괄 불러와 반영 (렌트사 탭 제외)</button>
+          <span id="syncBulkStatus" class="ao-status"></span>
+        </div>
       </div>
 
       <!-- 2단계: 검토 후 반영 -->
@@ -657,7 +661,9 @@ function renderSyncTab(el) {
     </div>
   `;
   const sourcesEl = el.querySelector('.ao-sources');
-  const fetchBtns = [...el.querySelectorAll('.ao-source')];
+  const bulkBtn = el.querySelector('#syncBulkBtn');
+  const bulkStatusEl = el.querySelector('#syncBulkStatus');
+  const fetchBtns = [...el.querySelectorAll('.ao-source'), bulkBtn];
   const applyBtn = el.querySelector('#syncApplyBtn');
   const statusMsg = el.querySelector('#syncStatusMsg');
   const preview = el.querySelector('#syncPreview');
@@ -697,10 +703,7 @@ function renderSyncTab(el) {
     `;
   });
 
-  const onFetchClick = async (e) => {
-    const btn = e.target.closest('.ao-source');
-    if (!btn) return;
-    const source = btn.dataset.source;
+  const doFetch = async (source) => {
     fetchBtns.forEach(b => b.disabled = true);
     applyBtn.disabled = true;
     _syncFetched = null;
@@ -931,9 +934,13 @@ function renderSyncTab(el) {
       fetchBtns.forEach(b => b.disabled = false);
     }
   };
-  sourcesEl.addEventListener('click', onFetchClick);
+  sourcesEl.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.ao-source');
+    if (!btn) return;
+    await doFetch(btn.dataset.source);
+  });
 
-  applyBtn.addEventListener('click', async () => {
+  const doApply = async () => {
     if (!_syncFetched) return;
     applyBtn.disabled = true;
     fetchBtns.forEach(b => b.disabled = true);
@@ -1039,13 +1046,46 @@ function renderSyncTab(el) {
       statusMsg.textContent = `완료 — 신규 ${added}, 업데이트 ${updated}, 출고불가 ${dropped}`;
       showToast(`동기화 완료 (신규 ${added} · 업데이트 ${updated} · 출고불가 ${dropped})`);
       _syncFetched = null;
+      return { added, updated, dropped };
     } catch (e) {
       devLog(`[sync] ✗ ${e.message}`);
       statusMsg.textContent = `오류: ${e.message}`;
       showToast(`동기화 실패: ${e.message}`, 'error');
       applyBtn.disabled = false;
+      throw e;
     } finally {
       fetchBtns.forEach(b => b.disabled = false);
     }
+  };
+  applyBtn.addEventListener('click', doApply);
+
+  // 전체 일괄 — 회사별 시트를 순서대로 fetch→반영 반복 (렌트사 탭 제외 — 별도 다중탭 자동탐지라 성격 다름)
+  const BULK_SOURCES = SYNC_SOURCES.filter(s => s.key !== 'general').map(s => s.key);
+  bulkBtn.addEventListener('click', async () => {
+    bulkBtn.disabled = true;
+    let okCount = 0, failCount = 0;
+    const totals = { added: 0, updated: 0, dropped: 0 };
+    for (let i = 0; i < BULK_SOURCES.length; i++) {
+      const key = BULK_SOURCES[i];
+      const label = SYNC_SOURCES.find(s => s.key === key)?.label || key;
+      bulkStatusEl.textContent = `일괄 처리 중... (${i + 1}/${BULK_SOURCES.length}) ${label}`;
+      try {
+        await doFetch(key);
+        if (_syncFetched) {
+          const r = await doApply();
+          totals.added += r.added; totals.updated += r.updated; totals.dropped += r.dropped;
+          okCount++;
+        } else {
+          failCount++;
+        }
+      } catch (e) {
+        devLog(`[bulk] ${key} 실패: ${e.message}`);
+        failCount++;
+      }
+      await new Promise(res => setTimeout(res, 300));   // Sheets API 연속호출 과부하 방지
+    }
+    bulkStatusEl.textContent = `일괄 완료 — ${okCount}개 성공 · ${failCount}개 실패 (신규 ${totals.added} · 업데이트 ${totals.updated} · 출고불가 ${totals.dropped})`;
+    showToast(`일괄 동기화 완료 — 성공 ${okCount} · 실패 ${failCount}`);
+    bulkBtn.disabled = false;
   });
 }
