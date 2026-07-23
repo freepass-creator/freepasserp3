@@ -2344,67 +2344,19 @@ function koreanAuthMsg(err, fallbackPrefix) {
 
 // 가입·복구 시 RTDB에 직접 프로필 저장 (Firebase Admin SDK / API 불필요)
 // 신규 가입 유저는 인증된 상태 → database rules에서 본인 UID 쓰기 허용
+/* 가입 직후 프로필 저장 — /api/signup-profile (Firebase Admin, RTDB 규칙 우회)를 통해 서버에서 처리.
+ *  클라이언트에서 users/{uid} 직접 write 하면 auth 토큰이 RTDB SDK 내부 리스너에 아직 전파되기 전이라
+ *  간헐적으로 PERMISSION_DENIED 나는 레이스가 있었음 — Admin SDK 경유로 근본 해결. */
 async function _writeUserProfile(user, { name, phone, company_name, business_no }) {
-  const { ref, get, runTransaction, set } = await import('firebase/database');
-  const { db } = await import('./firebase/config.js');
-
-  const bizNo = String(business_no || '').replace(/\D/g, '');
-  let role = 'agent', company_code = 'SP999', agent_channel_code = '', matched_partner_code = null;
-
-  if (bizNo) {
-    try {
-      const snap = await get(ref(db, 'partners'));
-      const partners = snap.val() || {};
-      for (const [k, p] of Object.entries(partners)) {
-        if (!p || p._deleted) continue;
-        const pn = String(p.business_number || '').replace(/\D/g, '');
-        if (pn && pn === bizNo) {
-          matched_partner_code = p.partner_code || k;
-          const pt = p.partner_type || '';
-          if (/영업|sales/i.test(pt)) {
-            role = 'agent'; company_code = matched_partner_code; agent_channel_code = matched_partner_code;
-          } else if (/공급|provider/i.test(pt)) {
-            role = 'provider'; company_code = matched_partner_code;
-          }
-          break;
-        }
-      }
-    } catch (_) {}
-  }
-
-  let user_code = 'U0001';
-  try {
-    const res = await runTransaction(ref(db, 'counters/user_code_seq'), cur => (cur || 0) + 1);
-    if (res.committed) user_code = `U${String(res.snapshot.val()).padStart(4, '0')}`;
-  } catch (_) {}
-
-  const profile = {
-    uid: user.uid,
-    email: user.email || '',
-    name: name || '',
-    phone: phone || '',
-    company_name: company_name || '',
-    business_no: bizNo,
-    user_code,
-    role,
-    company_code,
-    agent_channel_code,
-    matched_partner_code,
-    status: 'active',
-    created_at: Date.now(),
-  };
-  // 회원가입 직후 DB 쓰기가 auth 토큰 전파보다 먼저 도착해 PERMISSION_DENIED 나는 레이스 방어 —
-  //  1회 짧게 대기 후 재시도 (진짜 권한 문제면 재시도도 동일하게 실패해 원래 에러 그대로 던짐)
-  try {
-    await set(ref(db, `users/${user.uid}`), profile);
-  } catch (err) {
-    if (String(err?.code || err?.message || '').toLowerCase().includes('permission_denied')) {
-      await new Promise(r => setTimeout(r, 800));
-      await set(ref(db, `users/${user.uid}`), profile);
-    } else {
-      throw err;
-    }
-  }
+  const idToken = await user.getIdToken();
+  const res = await fetch('/api/signup-profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+    body: JSON.stringify({ name, phone, company_name, business_no }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !data.ok) throw new Error(data.error || `프로필 저장 실패 (${res.status})`);
+  return data;
 }
 
 function bindLoginForm() {
