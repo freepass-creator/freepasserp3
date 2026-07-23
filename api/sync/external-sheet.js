@@ -504,7 +504,9 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
   const longDep = parsePrice(safeGet(row, colIdx('장기보증')));
   const rentCols = { '1': '1개월', '6': '6개월', '12': '12개월', '24': '24개월', '36': '36개월', '48': '48개월', '60': '60개월' };
   for (const [m, col] of Object.entries(rentCols)) {
-    const r = parsePrice(safeGet(row, colIdx(col)));
+    const raw = safeGet(row, colIdx(col));
+    if (/무보증/.test(raw)) { product.deposit_free = true; continue; }   // 숫자 대신 "무보증가능" 등 텍스트인 칸
+    const r = parsePrice(raw);
     if (!r || r < 100000) continue;
     const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
     product.price[m] = dep ? { rent: r, deposit: dep } : { rent: r };
