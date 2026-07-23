@@ -15,7 +15,7 @@
 import { store, findProduct } from '../core/store.js';
 import { productImages, productExternalImages, supportedDriveSource, toProxiedImage, shortImg } from '../core/product-photos.js';
 import { renderDetailSections } from '../core/product-detail-render.js';
-import { downloadExcelWithFilter, PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichProductsWithPolicy } from '../core/excel-export.js';
+import { downloadExcelWithFilter, SIMPLE_PRODUCT_COLS, PRODUCT_FILTER_FIELDS, enrichProductsWithPolicy } from '../core/excel-export.js';
 import { showToast } from '../core/toast.js';
 import {
   esc, shortStatus, mapStatusDot, fmtMileage, normalizeVehicleStatus,
@@ -571,7 +571,7 @@ export async function searchExportExcel() {
   if (!list.length) { showToast('다운로드할 차량이 없습니다', 'error'); return; }
   try {
     const enriched = enrichProductsWithPolicy(list, store.policies || []);
-    await downloadExcelWithFilter('차량목록', PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
+    await downloadExcelWithFilter('차량목록', SIMPLE_PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
       baseUrl: location.origin,
     });
   } catch (e) {

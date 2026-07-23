@@ -174,6 +174,67 @@ export const PRODUCT_COLS = [
   { f:'partner_memo',  l:'특이사항', w:24 },
 ];
 
+// 기간별 대여료 (단순 버전 — group 헤더 없이 "N개월" 한 컬럼)
+const prSimple = (m) => ({
+  f: `rent_${m}`, l: `${m}개월`, w: 11, numFmt: won,
+  get: r => {
+    const price = r.price || {};
+    if (price[String(m)]?.rent) return Number(price[String(m)].rent) || '';
+    const prefix = String(m) + '_';
+    const vals = Object.entries(price)
+      .filter(([key]) => key.startsWith(prefix))
+      .map(([, v]) => Number(v?.rent) || 0)
+      .filter(v => v > 0);
+    return vals.length ? Math.min(...vals) : '';
+  },
+});
+// 보험 "한도/면책금" 결합 표기 (시트 원본과 동일한 "무한/50" 형태)
+const insCombo = (limitVal, deductVal) => {
+  const l = String(limitVal || '').trim();
+  const d = String(deductVal || '').trim();
+  if (!l && !d) return '';
+  return d ? `${l || '-'}/${d}` : l;
+};
+
+/** 외부 공급사 시트(배차상태~비고 33컬럼) 와 동일한 순서·구성의 간소화 엑셀 —
+ *  보험·정책 세부항목 없이 실제 판매/재고 확인에 필요한 핵심만. */
+export const SIMPLE_PRODUCT_COLS = [
+  { f:'vehicle_status', l:'배차상태', w:10 },
+  { f:'car_number',     l:'차량번호', w:14 },
+  { f:'sub_model',      l:'차종',     w:14 },
+  { f:'trim_name',      l:'모델명(트림)', w:26 },
+  { f:'options',        l:'옵션',     w:30 },
+  { f:'ext_color',      l:'외장색',   w:10 },
+  { f:'int_color',      l:'내장색',   w:10 },
+  { f:'fuel_type',      l:'유종',     w:8 },
+  { f:'first_registration_date', l:'최초등록일', w:12 },
+  { f:'mileage',        l:'주행거리', w:10, numFmt: won },
+  { f:'product_type_disp', l:'구분',  w:10, get: r => normalizeProductType(r.product_type) },
+  { f:'short_deposit', l:'단기보증', w:12, numFmt: won,
+    get: r => { const p = r.price||{}; for (const [k,v] of Object.entries(p)) { const m = k.includes('_') ? Number(k.split('_')[0]) : Number(k); if (m>=1&&m<=12&&v?.deposit) return Number(v.deposit)||''; } return ''; } },
+  prSimple(1), prSimple(6), prSimple(12),
+  { f:'long_deposit', l:'장기보증', w:12, numFmt: won,
+    get: r => { const p = r.price||{}; for (const [k,v] of Object.entries(p)) { const m = k.includes('_') ? Number(k.split('_')[0]) : Number(k); if (m>=24&&v?.deposit) return Number(v.deposit)||''; } return ''; } },
+  prSimple(24), prSimple(36), prSimple(48), prSimple(60),
+  { f:'vehicle_price', l:'소비자가격', w:12, numFmt: won },
+  { f:'annual_mileage', l:'연주행', w:10, get: r => r._policy?.annual_mileage || r.annual_mileage || '' },
+  { f:'deposit_installment', l:'분납', w:8, get: r => r._policy?.deposit_installment || '' },
+  { f:'age_21', l:'21세', w:8, get: r => r.sheet_meta?.age_21 || '' },
+  { f:'age_23', l:'23세', w:8, get: r => r.sheet_meta?.age_23 || r.sheet_meta?.age_21 || '' },
+  { f:'cond_km_upcharge', l:'1만+', w:10, get: r => r._policy?.mileage_upcharge_per_10000km || '' },
+  { f:'ins_injury', l:'대인', w:12,
+    get: r => insCombo(insVal(r,'injury_limit_deductible','injury_compensation_limit','bodily','limit'), insVal(r,'injury_limit_deductible','injury_deductible','bodily','deductible')) },
+  { f:'ins_property', l:'대물', w:12,
+    get: r => insCombo(insVal(r,'property_limit_deductible','property_compensation_limit','property','limit'), insVal(r,'property_limit_deductible','property_deductible','property','deductible')) },
+  { f:'ins_own', l:'자차', w:12,
+    get: r => insCombo(insVal(r,'own_damage_limit_deductible','own_damage_compensation','ownDamage','limit'), insVal(r,'own_damage_limit_deductible','__none__','ownDamage','deductible')) },
+  { f:'ins_self', l:'자손', w:12,
+    get: r => insCombo(r._policy?.self_body_accident, r._policy?.self_body_deductible) },
+  { f:'ins_uninsured', l:'무보험', w:12,
+    get: r => insCombo(r._policy?.uninsured_damage, r._policy?.uninsured_deductible) },
+  { f:'partner_memo', l:'비고', w:26 },
+];
+
 /** 원본 탭·상세 탭용 전체 라벨 (group_label) — 단일행 헤더에서 그룹 맥락 유지 */
 const fullHead = c => c.group ? `${c.group}_${c.l}` : c.l;
 

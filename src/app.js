@@ -1694,8 +1694,9 @@ async function onSelectionAction(act) {
     openCompareModal(products);
   } else if (act === 'excel') {
     try {
-      const { downloadExcel, PRODUCT_COLS } = await import('./core/excel-export.js');
-      await downloadExcel('차량목록', PRODUCT_COLS, products);
+      const { downloadExcel, SIMPLE_PRODUCT_COLS, enrichProductsWithPolicy } = await import('./core/excel-export.js');
+      const enriched = enrichProductsWithPolicy(products, store.policies || []);
+      await downloadExcel('차량목록', SIMPLE_PRODUCT_COLS, enriched);
     } catch (e) {
       alert('엑셀 내보내기 실패 — ' + (e.message || e));
     }
