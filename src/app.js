@@ -2378,7 +2378,7 @@ async function _writeUserProfile(user, { name, phone, company_name, business_no 
     if (res.committed) user_code = `U${String(res.snapshot.val()).padStart(4, '0')}`;
   } catch (_) {}
 
-  await set(ref(db, `users/${user.uid}`), {
+  const profile = {
     uid: user.uid,
     email: user.email || '',
     name: name || '',
@@ -2392,7 +2392,19 @@ async function _writeUserProfile(user, { name, phone, company_name, business_no 
     matched_partner_code,
     status: 'active',
     created_at: Date.now(),
-  });
+  };
+  // 회원가입 직후 DB 쓰기가 auth 토큰 전파보다 먼저 도착해 PERMISSION_DENIED 나는 레이스 방어 —
+  //  1회 짧게 대기 후 재시도 (진짜 권한 문제면 재시도도 동일하게 실패해 원래 에러 그대로 던짐)
+  try {
+    await set(ref(db, `users/${user.uid}`), profile);
+  } catch (err) {
+    if (String(err?.code || err?.message || '').toLowerCase().includes('permission_denied')) {
+      await new Promise(r => setTimeout(r, 800));
+      await set(ref(db, `users/${user.uid}`), profile);
+    } else {
+      throw err;
+    }
+  }
 }
 
 function bindLoginForm() {
