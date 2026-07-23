@@ -542,6 +542,7 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
 
   const idxKind = colIdx('구분');
   const kindVal = safeGet(row, idxKind);
+  const isResubscribe = /재구독/.test(kindVal);   // 정책 2종 — 구독(POL-0020) / 렌트(POL-0046)
   const idxStatus = colIdx('배차상태');
   const statusRaw = safeGet(row, idxStatus);
   const vehicleStatus = normalizeVehicleStatus(statusRaw);
@@ -567,7 +568,7 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
     product_code: `${providerCode}_${carNumber}`,
     provider_company_code: providerCode,
     partner_code: providerCode,
-    policy_code: '',
+    policy_code: isResubscribe ? 'POL-0020' : 'POL-0046',
     car_number: carNumber,
     raw_model_short: modelShort,
     raw_model_full: trimFull,
@@ -597,7 +598,6 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
   // 가격 — "보증금"/"12개월".."60개월" 헤더가 인수형(1번째)·반납형(2번째) 두 블록으로 반복됨.
   const depIdxOwn = headers.indexOf('보증금');
   const depIdxReturn = headers.lastIndexOf('보증금');
-  const isResubscribe = /재구독/.test(kindVal);
   const depositFlatOwn = depIdxOwn >= 0 ? parsePrice(safeGet(row, depIdxOwn)) : 0;
   const depositFlatReturn = (depIdxReturn >= 0 && depIdxReturn !== depIdxOwn) ? parsePrice(safeGet(row, depIdxReturn)) : 0;
   const periods = ['12', '24', '36', '48', '60'];
