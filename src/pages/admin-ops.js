@@ -993,6 +993,8 @@ function renderSyncTab(el) {
           if (p.address)       updates[`products/${found._key}/address`]       = p.address;
           if (p.arrival_note)  updates[`products/${found._key}/arrival_note`]  = p.arrival_note;
           updates[`products/${found._key}/deposit_free`] = !!p.deposit_free;
+          updates[`products/${found._key}/deposit_condition`] = p.deposit_condition || null;
+          updates[`products/${found._key}/deposit_condition_amount`] = p.deposit_condition_amount || null;
           if (p.product_type != null) updates[`products/${found._key}/product_type`] = p.product_type;
           if (p.photo_link) updates[`products/${found._key}/photo_link`] = p.photo_link;   // 시트에 사진 링크 있을 때만 (빈값으로 기존 사진 덮어쓰기 방지)
           updates[`products/${found._key}/updated_at`] = p.updated_at;

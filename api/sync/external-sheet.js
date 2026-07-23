@@ -510,6 +510,20 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
     product.price[m] = dep ? { rent: r, deposit: dep } : { rent: r };
   }
 
+  // 보증금 조건 탐색 — 어느 셀이든 "공동임차인/소득증빙조건...보증금 XXX만원" 패턴 있으면 캡처
+  //  (parseGeneralRow 와 동일 패턴 — product.js 상세 화면에서 주황 경고 배지로 표시됨)
+  const DEP_COND_RE = /공동임차인|소득증빙조건/;
+  const DEP_AMT_RE = /보증금\s*(\d+(?:\.\d+)?)\s*만원/;
+  for (const cell of row) {
+    const v = String(cell ?? '').trim();
+    if (DEP_COND_RE.test(v)) {
+      product.deposit_condition = v.replace(/^\(|\)$/g, '').trim();
+      const m = DEP_AMT_RE.exec(v);
+      if (m) product.deposit_condition_amount = Math.round(parseFloat(m[1]) * 10000);
+      break;
+    }
+  }
+
   return product;
 }
 
