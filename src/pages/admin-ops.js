@@ -611,12 +611,11 @@ const SYNC_SOURCES = [
   { key: 'wellix', label: '웰릭스', desc: '웰릭스 (RP013)' },
   { key: 'sarent', label: 'SA렌터카', desc: 'SA렌터카 (PT-0023)' },
   { key: 'jnj', label: 'J&J렌트카', desc: 'J&J렌트카 (RP030)' },
-  { key: 'general', label: '렌트사 탭', desc: '렌트사 탭 직접 읽기 · 배차상태 출고가능만 ERP 반영' },
 ];
 
 function renderSyncTab(el) {
   el.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:14px;min-height:100%;overflow-y:auto;">
+    <div style="display:flex;flex-direction:column;gap:14px;height:100%;min-height:0;overflow-y:auto;">
 
       <!-- 동기화 안내 (수동) -->
       <div class="ao-banner">
@@ -659,7 +658,7 @@ function renderSyncTab(el) {
       </div>
 
       <div id="syncRulesBox" style="display:none;border:1px solid var(--border);border-radius:4px;padding:10px;background-color:var(--bg-stripe);font-size:11px;line-height:1.6;"></div>
-      <div id="syncPreview" style="flex:1;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
+      <div id="syncPreview" style="flex:1;min-height:300px;max-height:70vh;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
     </div>
   `;
   const sourcesEl = el.querySelector('.ao-sources');
