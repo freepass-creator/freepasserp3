@@ -1667,7 +1667,7 @@
   /* row 클릭으로 자동 펼침 — JS 처리 (별도 reopen 버튼 불필요) */
   .ws4-head > span:first-child,
   .ws4-head > .head-title { color: var(--text-main); }   /* 패널 제목만 main */
-  .ws4-body { flex: 1; overflow: auto; padding: 8px 8px; }
+  .ws4-body { flex: 1; min-height: 0; overflow: auto; padding: 8px 8px; }
   .ws4-body.no-pad { padding: 0; }
   /* sub-bar (검색·chip 띠) — 헤드와 같은 padding 0 8 정렬 */
   .ws4-subbar {

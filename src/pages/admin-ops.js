@@ -77,7 +77,7 @@ export function renderAdminOps() {
       <!-- 가운데 (본문) -->
       <div class="ws4-card" style="flex: 2 1 0;">
         <div class="ws4-head"><span>${esc(active?.label || '')}</span></div>
-        <div class="ws4-body" id="aoContent" style="padding: var(--sp-3); overflow: hidden; display: flex; flex-direction: column;"></div>
+        <div class="ws4-body" id="aoContent" style="padding: var(--sp-3); overflow-y: auto; display: flex; flex-direction: column;"></div>
       </div>
 
       <!-- 우 (1): 로그 -->
@@ -609,12 +609,14 @@ const SYNC_SOURCES = [
   { key: 'billin', label: '빌린카', desc: '빌린카 (RP021)' },
   { key: 'ian', label: '아이언', desc: '아이언 (RP006)' },
   { key: 'wellix', label: '웰릭스', desc: '웰릭스 (RP013)' },
+  { key: 'sarent', label: 'SA렌터카', desc: 'SA렌터카 (PT-0023)' },
+  { key: 'jnj', label: 'J&J렌트카', desc: 'J&J렌트카 (RP030)' },
   { key: 'general', label: '렌트사 탭', desc: '렌트사 탭 직접 읽기 · 배차상태 출고가능만 ERP 반영' },
 ];
 
 function renderSyncTab(el) {
   el.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:14px;height:100%;">
+    <div style="display:flex;flex-direction:column;gap:14px;min-height:100%;overflow-y:auto;">
 
       <!-- 동기화 안내 (수동) -->
       <div class="ao-banner">

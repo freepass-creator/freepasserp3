@@ -70,8 +70,8 @@ export const SHEET_CONFIGS = {
   billin:   { sheet_id: '1Iroh8oZFMqCgTQHwNXp0gOxa-SYOCOgqwcwPCgJzJaA', tab_name: '빌린카', extra_tabs: ['엘씨렌트', '빌린카구독'], provider_code: 'RP021', label: '빌린카 (RP021)', schema: 'rentco' },
   ian:      { sheet_id: '1fUC8sok_XKmpgDAvRRi6HEbeAkY-Rbvrt-th8j8G7Ms', tab_name: '시트1', provider_code: 'RP006', label: '아이언 (RP006)', schema: 'rentco' },
   wellix:   { sheet_id: '1hfXngq7GcXRF2u7OhmH39PqERQK34r6hq9dfSoI2Sy0', tab_name: '시트1', provider_code: 'RP013', label: '웰릭스 (RP013)', schema: 'rentco' },
-  // SA렌터카(1C5rRLQOPyFM3UoVfIHN79fud099H6m-_QOtUnlFykvo) · J&J렌트카(1tVEVEZY-6e9y2Gz89eXnIRvsScFv7Y7sAiWw7hr_OFY)
-  //  — 신규 파트너, 아직 공급사코드 미배정 (파트너 관리에서 등록 후 코드 확정되면 추가)
+  sarent: { sheet_id: '1C5rRLQOPyFM3UoVfIHN79fud099H6m-_QOtUnlFykvo', tab_name: '시트1', provider_code: 'PT-0023', label: 'SA렌터카 (PT-0023)', schema: 'rentco' },
+  jnj:    { sheet_id: '1tVEVEZY-6e9y2Gz89eXnIRvsScFv7Y7sAiWw7hr_OFY', tab_name: '시트1', provider_code: 'RP030', label: 'J&J렌트카 (RP030)', schema: 'rentco' },
 };
 
 /* 오플 자동탐지 시 제외할 탭 — 공지/수정중/구버전(구 …)/구독안내. 나머지 보이는 탭은 모두 차량 리스트로 간주. */

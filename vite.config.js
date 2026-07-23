@@ -106,6 +106,15 @@ export default defineConfig({
   },
   appType: 'mpa',
   plugins: [localServerless(), {
+    // 이 앱은 컴포넌트 단위 HMR accept 를 쓰지 않는 vanilla-JS 구조라, 부분 HMR 이
+    // DOM 이벤트 바인딩/클로저 상태를 어중간하게 남겨 "고쳤는데 화면이 그대로" 현상을 만듦.
+    // 파일 변경 시 항상 전체 새로고침으로 강제 — 매번 확실하게 최신 상태 보장.
+    name: 'force-full-reload',
+    handleHotUpdate({ server }) {
+      server.ws.send({ type: 'full-reload' });
+      return [];
+    },
+  }, {
     name: 'spa-fallback',
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
