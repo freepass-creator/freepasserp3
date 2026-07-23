@@ -44,12 +44,18 @@ async function fetchProductMeta(id) {
     const trim = p.trim_name || p.trim || '';
     const title = [p.car_number, p.sub_model || p.model, trim].filter(Boolean).join(' ');
     const km = p.mileage ? Number(p.mileage).toLocaleString() + 'km' : '';
-    let rentFrom = 0;
+    // 인수형(rent)·반납형(rent_return) 각각 최저가 — 손오공 등 이중가격 매물은 둘 다 표시
+    let rentFrom = 0, rentReturnFrom = 0;
     for (const v of Object.values(p.price || {})) {
       const r = Number(v?.rent || 0);
       if (r >= 100000 && (!rentFrom || r < rentFrom)) rentFrom = r;
+      const rr = Number(v?.rent_return || 0);
+      if (rr >= 100000 && (!rentReturnFrom || rr < rentReturnFrom)) rentReturnFrom = rr;
     }
-    const rentTxt = rentFrom ? `월 ${Math.round(rentFrom / 10000)}만~` : '';
+    const rentTxt = rentFrom && rentReturnFrom
+      ? `월 ${Math.round(rentFrom / 10000)}만~(인수) / ${Math.round(rentReturnFrom / 10000)}만~(반납)`
+      : rentFrom ? `월 ${Math.round(rentFrom / 10000)}만~`
+      : rentReturnFrom ? `월 ${Math.round(rentReturnFrom / 10000)}만~` : '';
     const desc = [p.year, km, p.fuel_type, rentTxt].filter(Boolean).join(' · ');
     const photo = (Array.isArray(p.image_urls) && p.image_urls[0]) || p.image_url || p.photo_link || '';
     return { title, desc, photo };
