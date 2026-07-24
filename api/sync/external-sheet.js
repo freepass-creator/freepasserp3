@@ -495,6 +495,12 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
     source_sheet_id: sheetId,
     source_schema: 'rentco',
     price: {},
+    sheet_meta: {
+      age_21: safeGet(row, colIdx('21세')),
+      age_23: safeGet(row, colIdx('23세')),
+      year_1plus: safeGet(row, colIdx('1만+')),
+      installment: safeGet(row, colIdx('분납')),
+    },
     created_at: nowMs, updated_at: nowMs,
     created_by: 'sync_external_sheet',
   };

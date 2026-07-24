@@ -992,6 +992,7 @@ function renderSyncTab(el) {
           updates[`products/${found._key}/options`] = p.options;
           updates[`products/${found._key}/partner_memo`] = p.partner_memo;
           updates[`products/${found._key}/location`] = p.location;
+          if (p.sheet_meta) updates[`products/${found._key}/sheet_meta`] = p.sheet_meta;
           if (p.address)       updates[`products/${found._key}/address`]       = p.address;
           if (p.arrival_note)  updates[`products/${found._key}/arrival_note`]  = p.arrival_note;
           updates[`products/${found._key}/deposit_free`] = !!p.deposit_free;
