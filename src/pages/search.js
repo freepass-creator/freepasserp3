@@ -565,15 +565,52 @@ export function isPeriodVisible(period) {
   return !hidden.has(period);
 }
 
-/** 엑셀 다운로드 — 현재 필터된 결과 */
+/* 연동 시트 목록 (렌트사 탭 제외) — 엑셀 다운로드 시 "지금 시트에 실제 있는 차만" 필터링용.
+ *  admin-ops.js 매물 정리 도구와 동일 소스 목록. */
+const EXPORT_SHEET_SOURCES = ['autoplus','songogong','aicar','pacific','leaders','star','rentzone',
+  'gyeongjinRent','gyeongjinCar','wooriCapital','kh','centro','billin','ian','wellix','sarent','jnj'];
+
+async function fetchLiveSheetCarNumbers(onProgress) {
+  const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
+  const set = new Set();
+  for (let i = 0; i < EXPORT_SHEET_SOURCES.length; i++) {
+    const src = EXPORT_SHEET_SOURCES[i];
+    onProgress?.(i + 1, EXPORT_SHEET_SOURCES.length, src);
+    try {
+      const res = await fetch('/api/sync/external-sheet', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: src }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        for (const p of Object.values(data.products || {})) {
+          if (p.car_number) set.add(norm(p.car_number));
+        }
+      }
+    } catch (_) {}
+    await new Promise(r => setTimeout(r, 150));
+  }
+  return set;
+}
+
+/** 엑셀 다운로드 — 현재 필터된 결과 중, 판매가능 상태 + 연동 시트에 지금 실제로 있는 차량만.
+ *  매번 17개 시트를 실시간 대조하므로 몇 초 걸림 (정확도 우선). */
 export async function searchExportExcel() {
   const list = filterProductsExcept(null);
   if (!list.length) { showToast('다운로드할 차량이 없습니다', 'error'); return; }
   try {
-    const enriched = enrichProductsWithPolicy(list, store.policies || []);
+    showToast('연동 시트 대조 중... (몇 초 걸려요)', 'info');
+    const liveCarNumbers = await fetchLiveSheetCarNumbers();
+    const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
+    const SELLABLE = new Set(['출고가능', '즉시출고']);
+    const filtered = list.filter(p =>
+      SELLABLE.has(String(p.vehicle_status || '').trim()) && liveCarNumbers.has(norm(p.car_number))
+    );
+    if (!filtered.length) { showToast('연동 시트에서 확인되는 판매가능 차량이 없습니다', 'error'); return; }
+    const enriched = enrichProductsWithPolicy(filtered, store.policies || []);
     await downloadExcelWithFilter('차량목록', SIMPLE_PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
       baseUrl: location.origin,
     });
+    showToast(`${filtered.length}건 다운로드 완료 (전체 ${list.length}건 중 시트 미확인/판매불가 제외)`, 'success');
   } catch (e) {
     console.error('[srchExcel]', e);
     showToast('엑셀 다운로드 실패 — ' + (e.message || e), 'error');
