@@ -32,6 +32,7 @@ let _syncFetched = null;
 const TABS = [
   { id: 'jonghap', icon: 'table',            label: '종합표 만들기',   sub: '매물 → 종합탭 붙여넣기' },
   { id: 'sync',    icon: 'google-drive-logo', label: '외부 상품 동기화', sub: '오플시트 / 공급시트 자동탐지 / 종합' },
+  { id: 'cleanup', icon: 'trash',            label: '매물 정리',       sub: '시트에 없고 계약·문의도 없는 매물 정리' },
   { id: 'notice',  icon: 'megaphone',         label: '공지',           sub: '대시보드 공지 CRUD' },
   { id: 'apikeys', icon: 'key',              label: 'API 키',         sub: '외부 홈피 매물 연동 키 발급/폐기' },
   { id: 'vehicle-master', icon: 'car-profile', label: '차종마스터',    sub: '5단계 분류 (제조사→모델→세부모델→파워트레인→트림)' },
@@ -106,6 +107,7 @@ function renderTab(id) {
   if (tab) setBreadcrumbTail({ icon: `ph ph-${tab.icon}`, label: tab.label });
   if (id === 'jonghap') return renderJonghapTab(el);
   if (id === 'sync')    return renderSyncTab(el);
+  if (id === 'cleanup') return renderCleanupTab(el);
   if (id === 'notice')  return renderNoticeTab(el);
   if (id === 'apikeys') return renderApiKeysTab(el);
   if (id === 'vehicle-master') return renderVehicleMasterTab(el);
@@ -1090,5 +1092,185 @@ function renderSyncTab(el) {
     bulkStatusEl.textContent = `일괄 완료 — ${okCount}개 성공 · ${failCount}개 실패 (신규 ${totals.added} · 업데이트 ${totals.updated} · 출고불가 ${totals.dropped})`;
     showToast(`일괄 동기화 완료 — 성공 ${okCount} · 실패 ${failCount}`);
     bulkBtn.disabled = false;
+  });
+}
+
+/* ──────── 매물 정리 ────────
+ * 연동된 시트(SYNC_SOURCES, "렌트사 탭" 제외) 전체에 없고, 계약·문의방(rooms)에도
+ * 안 걸린 매물만 정리 대상으로 — 예전 "렌트사 탭"(구 종합시트 자동탐지) 경로로 들어왔다가
+ * 그 버튼을 없앤 뒤로 아무도 갱신 안 해줘서 계속 "재고 있음"으로 박제된 매물을 잡아냄.
+ * 삭제 대신 기존 동기화의 "시트에서 빠진 매물" 정리와 동일하게 _deleted:true 처리(복원 가능). */
+function renderCleanupTab(el) {
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:14px;height:100%;min-height:0;overflow-y:auto;">
+      <div class="ao-banner">
+        <i class="ph ph-trash"></i>
+        <div>
+          <b>매물 정리</b> · 연동된 시트 전체(렌트사 탭 제외) + 계약 + 문의방에 없는 매물만 찾아 정리합니다.<br>
+          <span class="ao-banner-sub">삭제 안 하고 출고불가 처리(_deleted) — 나중에 복원 가능. 계약/문의 걸린 매물은 절대 건드리지 않음.</span>
+        </div>
+      </div>
+      <div class="ao-step">
+        <div class="ao-step-title"><span class="ao-step-no">1</span> 분석 실행</div>
+        <div class="ao-actions">
+          <button class="btn btn-sm btn-primary" id="cleanupAnalyzeBtn"><i class="ph ph-magnifying-glass"></i> 분석 시작</button>
+          <span id="cleanupStatus" class="ao-status"></span>
+        </div>
+      </div>
+      <div id="cleanupPreview" style="min-height:300px;max-height:55vh;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
+      <div class="ao-step" id="cleanupActions" style="display:none;">
+        <div class="ao-step-title"><span class="ao-step-no">2</span> 정리 실행</div>
+        <div class="ao-actions">
+          <button class="btn btn-sm" id="cleanupApplyBtn" style="color:var(--alert-red-text);border-color:var(--alert-red-text);"><i class="ph ph-trash"></i> 선택 항목 출고불가 처리</button>
+          <span id="cleanupApplyStatus" class="ao-status"></span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const analyzeBtn = el.querySelector('#cleanupAnalyzeBtn');
+  const statusEl = el.querySelector('#cleanupStatus');
+  const previewEl = el.querySelector('#cleanupPreview');
+  const actionsEl = el.querySelector('#cleanupActions');
+  const applyBtn = el.querySelector('#cleanupApplyBtn');
+  const applyStatusEl = el.querySelector('#cleanupApplyStatus');
+  let _orphans = [];
+
+  const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
+  const CLEANUP_SOURCES = ['autoplus','songogong','aicar','pacific','leaders','star','rentzone',
+    'gyeongjinRent','gyeongjinCar','wooriCapital','kh','centro','billin','ian','wellix','sarent','jnj'];
+
+  analyzeBtn.addEventListener('click', async () => {
+    analyzeBtn.disabled = true;
+    previewEl.style.display = 'none';
+    actionsEl.style.display = 'none';
+    try {
+      // 1. 계약/문의방이 참조하는 매물 — 안전 목록 (절대 정리 대상 아님)
+      const safeKeys = new Set();
+      const safeCarNumbers = new Set();
+      for (const c of (store.contracts || [])) {
+        if (c._deleted) continue;
+        if (c.product_uid) safeKeys.add(c.product_uid);
+        if (c.seed_product_key) safeKeys.add(c.seed_product_key);
+        if (c.car_number_snapshot) safeCarNumbers.add(norm(c.car_number_snapshot));
+      }
+      for (const r of (store.rooms || [])) {
+        if (r._deleted) continue;
+        const pid = r.product_uid || r.product_id;
+        if (pid) safeKeys.add(pid);
+        const cn = r.vehicle_number || r.car_number;
+        if (cn) safeCarNumbers.add(norm(cn));
+      }
+      devLog(`[cleanup] 안전목록 — 계약/문의 연결 ${safeKeys.size + safeCarNumbers.size}건`);
+
+      // 2. 연동 시트 전체 fetch → 현재 시트에 실제 존재하는 차량번호 집합
+      const sheetCarNumbers = new Set();
+      let sourceFail = 0;
+      for (let i = 0; i < CLEANUP_SOURCES.length; i++) {
+        const src = CLEANUP_SOURCES[i];
+        statusEl.textContent = `시트 확인 중... (${i + 1}/${CLEANUP_SOURCES.length}) ${src}`;
+        try {
+          const res = await fetch('/api/sync/external-sheet', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: src }),
+          });
+          const data = await res.json();
+          if (data.ok) {
+            for (const p of Object.values(data.products || {})) {
+              if (p.car_number) sheetCarNumbers.add(norm(p.car_number));
+            }
+          } else { sourceFail++; }
+        } catch (e) { sourceFail++; }
+        await new Promise(r => setTimeout(r, 200));
+      }
+      devLog(`[cleanup] 시트 현재 차량번호 ${sheetCarNumbers.size}개 확인 (조회 실패 ${sourceFail}건 — 실패한 소스는 안전하게 전부 보존 대상)`);
+
+      // 3. 정리 후보 — 시트에도 없고, 계약/문의에도 안 걸린 것만
+      const all = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted');
+      const orphans = all.filter(p => {
+        if (safeKeys.has(p._key) || safeKeys.has(p.product_uid)) return false;
+        const cn = norm(p.car_number);
+        if (cn && safeCarNumbers.has(cn)) return false;
+        if (cn && sheetCarNumbers.has(cn)) return false;
+        return true;
+      });
+      _orphans = orphans;
+
+      statusEl.textContent = `분석 완료 — 전체 ${all.length}건 중 정리 후보 ${orphans.length}건`;
+      devLog(`[cleanup] 정리 후보 ${orphans.length}건 / 전체 ${all.length}건`);
+
+      previewEl.style.display = 'block';
+      previewEl.innerHTML = orphans.length ? `
+        <table style="font-size:11px;border-collapse:collapse;width:100%;">
+          <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
+            <tr>
+              <th style="padding:4px 6px;"><input type="checkbox" id="cleanupSelectAll" checked></th>
+              <th style="padding:4px 6px;text-align:left;">차량번호</th>
+              <th style="padding:4px 6px;text-align:left;">차종</th>
+              <th style="padding:4px 6px;text-align:left;">공급사코드</th>
+              <th style="padding:4px 6px;text-align:left;">상태</th>
+              <th style="padding:4px 6px;text-align:left;">등록일</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${orphans.map((p, i) => `
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:4px 6px;"><input type="checkbox" class="cleanupRow" data-idx="${i}" checked></td>
+                <td style="padding:4px 6px;">${esc(p.car_number || '-')}</td>
+                <td style="padding:4px 6px;">${esc(p.sub_model || p.model || '-')}</td>
+                <td style="padding:4px 6px;">${esc(p.provider_company_code || '-')}</td>
+                <td style="padding:4px 6px;">${esc(p.vehicle_status || '-')}</td>
+                <td style="padding:4px 6px;">${p.created_at ? new Date(p.created_at).toLocaleDateString('ko') : '-'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      ` : `<div style="padding:24px;text-align:center;color:var(--text-muted);">정리 대상 없음 — 깨끗합니다</div>`;
+
+      previewEl.querySelector('#cleanupSelectAll')?.addEventListener('change', (e) => {
+        previewEl.querySelectorAll('.cleanupRow').forEach(cb => { cb.checked = e.target.checked; });
+      });
+
+      actionsEl.style.display = orphans.length ? 'block' : 'none';
+    } catch (e) {
+      devLog(`[cleanup] ✗ ${e.message}`);
+      statusEl.textContent = `오류: ${e.message}`;
+      showToast('분석 실패 — ' + (e.message || e), 'error');
+    } finally {
+      analyzeBtn.disabled = false;
+    }
+  });
+
+  applyBtn.addEventListener('click', async () => {
+    const checked = [...previewEl.querySelectorAll('.cleanupRow:checked')].map(cb => Number(cb.dataset.idx));
+    const targets = checked.map(i => _orphans[i]).filter(Boolean);
+    if (!targets.length) return;
+    if (!await customConfirm({ message: `${targets.length}건을 출고불가 처리할까요? (삭제 아님, 언제든 복원 가능)`, danger: true, okLabel: '처리' })) return;
+    applyBtn.disabled = true;
+    applyStatusEl.textContent = '처리 중...';
+    try {
+      const { ref, update } = await import('firebase/database');
+      const { db } = await import('../firebase/config.js');
+      const updates = {};
+      const now = Date.now();
+      for (const p of targets) {
+        updates[`products/${p._key}/_deleted`] = true;
+        updates[`products/${p._key}/status`] = 'deleted';
+        updates[`products/${p._key}/status_label`] = '매물정리(시트·계약·문의 미확인)';
+        updates[`products/${p._key}/updated_at`] = now;
+      }
+      await update(ref(db), updates);
+      showToast(`${targets.length}건 출고불가 처리 완료`);
+      devLog(`[cleanup] ✓ ${targets.length}건 처리 완료`);
+      applyStatusEl.textContent = `완료 — ${targets.length}건 처리됨`;
+      actionsEl.style.display = 'none';
+      previewEl.style.display = 'none';
+      statusEl.textContent = '다시 분석하시면 반영된 결과를 확인할 수 있어요';
+    } catch (e) {
+      devLog(`[cleanup] ✗ 적용 실패: ${e.message}`);
+      applyStatusEl.textContent = `오류: ${e.message}`;
+      showToast('처리 실패 — ' + (e.message || e), 'error');
+    } finally {
+      applyBtn.disabled = false;
+    }
   });
 }
