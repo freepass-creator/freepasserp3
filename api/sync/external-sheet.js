@@ -505,7 +505,10 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
   const rentCols = { '1': '1개월', '6': '6개월', '12': '12개월', '24': '24개월', '36': '36개월', '48': '48개월', '60': '60개월' };
   for (const [m, col] of Object.entries(rentCols)) {
     const raw = safeGet(row, colIdx(col));
-    if (/무보증/.test(raw)) { product.deposit_free = true; continue; }   // 숫자 대신 "무보증가능" 등 텍스트인 칸
+    // "무보증가능" 등 숫자 대신 텍스트인 칸 — 해당 기간만 미제공(스킵). deposit_free 는 매물 전체 단위 필드라
+    //  특정 기간(예: 12개월)만 무보증이어도 여기서 전체 매물에 플래그를 걸면 다른 기간의 진짜 보증금이
+    //  있는데도 "무보증 가능" 배지가 잘못 붙음 — 그래서 플래그는 안 걸고 그 기간만 건너뜀.
+    if (/무보증/.test(raw)) continue;
     const r = parsePrice(raw);
     if (!r || r < 100000) continue;
     const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
