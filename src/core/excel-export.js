@@ -200,16 +200,16 @@ const insCombo = (limitVal, deductVal) => {
  *  보험·정책 세부항목 없이 실제 판매/재고 확인에 필요한 핵심만. */
 export const SIMPLE_PRODUCT_COLS = [
   { f:'vehicle_status', l:'배차상태', w:10 },
+  { f:'product_type_disp', l:'구분',  w:10, get: r => normalizeProductType(r.product_type) },
   { f:'car_number',     l:'차량번호', w:14 },
   { f:'sub_model',      l:'차종',     w:14 },
-  { f:'trim_name',      l:'모델명(트림)', w:26 },
+  { f:'trim_name',      l:'모델명(트림)', w:26, get: r => [r.variant, r.trim_name].filter(Boolean).join(' ') },
   { f:'options',        l:'옵션',     w:30 },
   { f:'ext_color',      l:'외장색',   w:10 },
   { f:'int_color',      l:'내장색',   w:10 },
   { f:'fuel_type',      l:'유종',     w:8 },
   { f:'first_registration_date', l:'최초등록일', w:12 },
   { f:'mileage',        l:'주행거리', w:10, numFmt: won },
-  { f:'product_type_disp', l:'구분',  w:10, get: r => normalizeProductType(r.product_type) },
   { f:'short_deposit', l:'단기보증', w:12, numFmt: won,
     get: r => { const p = r.price||{}; for (const [k,v] of Object.entries(p)) { const m = k.includes('_') ? Number(k.split('_')[0]) : Number(k); if (m>=1&&m<=12&&v?.deposit) return Number(v.deposit)||''; } return ''; } },
   prSimple(1), prSimple(6), prSimple(12),
