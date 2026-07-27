@@ -1119,6 +1119,14 @@ function renderCleanupTab(el) {
           <span id="cleanupStatus" class="ao-status"></span>
         </div>
       </div>
+      <div class="ao-step">
+        <div class="ao-step-title"><i class="ph ph-question"></i> 특정 차량 왜 안 잡히는지 확인</div>
+        <div class="ao-actions">
+          <input type="text" id="cleanupCheckInput" placeholder="차량번호 (예: 181하5327)" class="input input-sm" style="width:180px;">
+          <button class="btn btn-sm" id="cleanupCheckBtn">확인</button>
+        </div>
+        <div id="cleanupCheckResult" style="font-size:11px;line-height:1.6;color:var(--text-sub);white-space:pre-wrap;"></div>
+      </div>
       <div id="cleanupPreview" style="min-height:300px;max-height:55vh;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
       <div class="ao-step" id="cleanupActions" style="display:none;">
         <div class="ao-step-title"><span class="ao-step-no">2</span> 정리 실행</div>
@@ -1142,57 +1150,102 @@ function renderCleanupTab(el) {
   const CLEANUP_SOURCES = ['autoplus','songogong','aicar','pacific','leaders','star','rentzone',
     'gyeongjinRent','gyeongjinCar','wooriCapital','kh','centro','billin','ian','wellix','sarent','jnj'];
 
+  // 계약/문의방 안전목록 + 연동 시트 현재 차량번호(어느 소스에서 나왔는지까지) — 분석/개별확인 공용
+  async function buildSafetyContext(onProgress) {
+    const safeKeys = new Set();
+    const safeCarNumbers = new Set();
+    for (const c of (store.contracts || [])) {
+      if (c._deleted) continue;
+      if (c.product_uid) safeKeys.add(c.product_uid);
+      if (c.seed_product_key) safeKeys.add(c.seed_product_key);
+      if (c.car_number_snapshot) safeCarNumbers.add(norm(c.car_number_snapshot));
+    }
+    for (const r of (store.rooms || [])) {
+      if (r._deleted) continue;
+      const pid = r.product_uid || r.product_id;
+      if (pid) safeKeys.add(pid);
+      const cn = r.vehicle_number || r.car_number;
+      if (cn) safeCarNumbers.add(norm(cn));
+    }
+    const sheetCarSources = new Map();   // norm(car_number) -> Set<source key>
+    let sourceFail = 0;
+    for (let i = 0; i < CLEANUP_SOURCES.length; i++) {
+      const src = CLEANUP_SOURCES[i];
+      onProgress?.(i + 1, CLEANUP_SOURCES.length, src);
+      try {
+        const res = await fetch('/api/sync/external-sheet', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: src }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          for (const p of Object.values(data.products || {})) {
+            if (!p.car_number) continue;
+            const cn = norm(p.car_number);
+            if (!sheetCarSources.has(cn)) sheetCarSources.set(cn, new Set());
+            sheetCarSources.get(cn).add(src);
+          }
+        } else { sourceFail++; }
+      } catch (e) { sourceFail++; }
+      await new Promise(r => setTimeout(r, 200));
+    }
+    return { safeKeys, safeCarNumbers, sheetCarSources, sourceFail };
+  }
+
+  const checkBtn = el.querySelector('#cleanupCheckBtn');
+  const checkInput = el.querySelector('#cleanupCheckInput');
+  const checkResultEl = el.querySelector('#cleanupCheckResult');
+  checkBtn.addEventListener('click', async () => {
+    const carNo = checkInput.value.trim();
+    if (!carNo) return;
+    checkBtn.disabled = true;
+    checkResultEl.textContent = '확인 중...';
+    try {
+      const { safeKeys, safeCarNumbers, sheetCarSources, sourceFail } = await buildSafetyContext(
+        (i, n, src) => { checkResultEl.textContent = `시트 확인 중... (${i}/${n}) ${src}`; }
+      );
+      const cn = norm(carNo);
+      const matches = (store.products || []).filter(p => norm(p.car_number) === cn);
+      if (!matches.length) {
+        checkResultEl.textContent = `"${carNo}" — ERP에 이 차량번호로 된 매물이 없습니다.`;
+        return;
+      }
+      const lines = [`"${carNo}" — 매물 ${matches.length}건 발견 (조회 실패한 시트 ${sourceFail}개는 무조건 안전 처리됨)\n`];
+      matches.forEach((p, i) => {
+        const reasons = [];
+        if (p._deleted || p.status === 'deleted') reasons.push('이미 출고불가 처리됨(_deleted)');
+        if (safeKeys.has(p._key) || safeKeys.has(p.product_uid)) reasons.push('계약/문의방이 product_uid로 직접 연결');
+        if (safeCarNumbers.has(cn)) reasons.push('계약/문의방의 차량번호 스냅샷과 일치');
+        const inSources = sheetCarSources.has(cn) ? [...sheetCarSources.get(cn)] : [];
+        if (inSources.length) reasons.push(`연동 시트에 존재: ${inSources.join(', ')}`);
+        lines.push(`[${i + 1}] key=${p._key} · 공급사=${p.provider_company_code || '-'} · 상태=${p.vehicle_status || '-'}`);
+        lines.push(reasons.length ? `   → 보존 이유: ${reasons.join(' / ')}` : `   → 정리 후보 (안전목록에 없음, 시트에도 없음)`);
+      });
+      checkResultEl.textContent = lines.join('\n');
+    } catch (e) {
+      checkResultEl.textContent = '확인 실패: ' + (e.message || e);
+    } finally {
+      checkBtn.disabled = false;
+    }
+  });
+
   analyzeBtn.addEventListener('click', async () => {
     analyzeBtn.disabled = true;
     previewEl.style.display = 'none';
     actionsEl.style.display = 'none';
     try {
-      // 1. 계약/문의방이 참조하는 매물 — 안전 목록 (절대 정리 대상 아님)
-      const safeKeys = new Set();
-      const safeCarNumbers = new Set();
-      for (const c of (store.contracts || [])) {
-        if (c._deleted) continue;
-        if (c.product_uid) safeKeys.add(c.product_uid);
-        if (c.seed_product_key) safeKeys.add(c.seed_product_key);
-        if (c.car_number_snapshot) safeCarNumbers.add(norm(c.car_number_snapshot));
-      }
-      for (const r of (store.rooms || [])) {
-        if (r._deleted) continue;
-        const pid = r.product_uid || r.product_id;
-        if (pid) safeKeys.add(pid);
-        const cn = r.vehicle_number || r.car_number;
-        if (cn) safeCarNumbers.add(norm(cn));
-      }
+      const { safeKeys, safeCarNumbers, sheetCarSources, sourceFail } = await buildSafetyContext(
+        (i, n, src) => { statusEl.textContent = `시트 확인 중... (${i}/${n}) ${src}`; }
+      );
       devLog(`[cleanup] 안전목록 — 계약/문의 연결 ${safeKeys.size + safeCarNumbers.size}건`);
+      devLog(`[cleanup] 시트 현재 차량번호 ${sheetCarSources.size}개 확인 (조회 실패 ${sourceFail}건 — 실패한 소스는 안전하게 전부 보존 대상)`);
 
-      // 2. 연동 시트 전체 fetch → 현재 시트에 실제 존재하는 차량번호 집합
-      const sheetCarNumbers = new Set();
-      let sourceFail = 0;
-      for (let i = 0; i < CLEANUP_SOURCES.length; i++) {
-        const src = CLEANUP_SOURCES[i];
-        statusEl.textContent = `시트 확인 중... (${i + 1}/${CLEANUP_SOURCES.length}) ${src}`;
-        try {
-          const res = await fetch('/api/sync/external-sheet', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ source: src }),
-          });
-          const data = await res.json();
-          if (data.ok) {
-            for (const p of Object.values(data.products || {})) {
-              if (p.car_number) sheetCarNumbers.add(norm(p.car_number));
-            }
-          } else { sourceFail++; }
-        } catch (e) { sourceFail++; }
-        await new Promise(r => setTimeout(r, 200));
-      }
-      devLog(`[cleanup] 시트 현재 차량번호 ${sheetCarNumbers.size}개 확인 (조회 실패 ${sourceFail}건 — 실패한 소스는 안전하게 전부 보존 대상)`);
-
-      // 3. 정리 후보 — 시트에도 없고, 계약/문의에도 안 걸린 것만
+      // 정리 후보 — 시트에도 없고, 계약/문의에도 안 걸린 것만
       const all = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted');
       const orphans = all.filter(p => {
         if (safeKeys.has(p._key) || safeKeys.has(p.product_uid)) return false;
         const cn = norm(p.car_number);
         if (cn && safeCarNumbers.has(cn)) return false;
-        if (cn && sheetCarNumbers.has(cn)) return false;
+        if (cn && sheetCarSources.has(cn)) return false;
         return true;
       });
       _orphans = orphans;
