@@ -1407,7 +1407,7 @@ function filterProductsExcept(exceptField) {
   const me = store.currentUser || {};
   const role = me.role;
   const myCompany = me.company_code;
-  return all.filter(p => {
+  const filtered = all.filter(p => {
     if (p._deleted || p.status === 'deleted') return false;   // 삭제 매물은 항상 제외
     const norm = shortStatus(p.vehicle_status || '');
     // 출고불가 가시성 — 역할별 정책:
@@ -1496,10 +1496,10 @@ function filterProductsExcept(exceptField) {
   });
   // 차량번호 중복 제거 — DB에 같은 차가 여러 레코드로 쌓인 경우(레거시 임포트 등) 가장
   //  최근 갱신된 것 하나만 남김. 화면 리스트·엑셀·사진ZIP 등 이 함수를 쓰는 모든 곳에 자동 적용.
-  const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
+  const normCar = s => String(s || '').replace(/\s/g, '').toUpperCase();
   const byCarNumber = new Map();
   for (const p of filtered) {
-    const cn = norm(p.car_number);
+    const cn = normCar(p.car_number);
     const key = cn || p._key;   // 차량번호 없는 매물은 자기 _key로 (중복판단 불가하니 그대로 유지)
     const prev = byCarNumber.get(key);
     if (!prev || (p.updated_at || 0) > (prev.updated_at || 0)) byCarNumber.set(key, p);
