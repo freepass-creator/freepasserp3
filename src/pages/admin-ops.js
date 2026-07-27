@@ -1135,6 +1135,28 @@ function renderCleanupTab(el) {
           <span id="cleanupApplyStatus" class="ao-status"></span>
         </div>
       </div>
+      <div class="ao-banner" style="border-color:var(--alert-red-text);">
+        <i class="ph ph-warning"></i>
+        <div>
+          <b>회사코드 오류 매물</b> · provider_company_code 가 정상 코드(RP-/PT-)가 아니라
+          시트 탭 이름 문자열로 잘못 들어간 매물 — 종합시트 회사명 매핑 누락 버그로 전용시트
+          매물과 중복 생성된 것들. <a href="#" id="cleanupBadCodeInfo">왜 생기나요?</a><br>
+          <span class="ao-banner-sub">계약/문의 걸린 건 자동 제외. 삭제 아님(_deleted) — 복원 가능.</span>
+        </div>
+      </div>
+      <div class="ao-step">
+        <div class="ao-actions">
+          <button class="btn btn-sm btn-primary" id="cleanupBadCodeBtn"><i class="ph ph-magnifying-glass"></i> 회사코드 오류 매물 찾기</button>
+          <span id="cleanupBadCodeStatus" class="ao-status"></span>
+        </div>
+      </div>
+      <div id="cleanupBadCodePreview" style="min-height:200px;max-height:45vh;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
+      <div class="ao-step" id="cleanupBadCodeActions" style="display:none;">
+        <div class="ao-actions">
+          <button class="btn btn-sm" id="cleanupBadCodeApplyBtn" style="color:var(--alert-red-text);border-color:var(--alert-red-text);"><i class="ph ph-trash"></i> 선택 항목 출고불가 처리</button>
+          <span id="cleanupBadCodeApplyStatus" class="ao-status"></span>
+        </div>
+      </div>
     </div>
   `;
 
@@ -1326,6 +1348,122 @@ function renderCleanupTab(el) {
       showToast('처리 실패 — ' + (e.message || e), 'error');
     } finally {
       applyBtn.disabled = false;
+    }
+  });
+
+  // ── 회사코드 오류 매물 — 종합시트 회사명 매핑 누락으로 탭 이름이 그대로 provider_company_code에
+  //  들어가 전용시트 매물과 중복 생성된 것. sheetCarSources 존재 여부와 무관하게(오히려 존재해야
+  //  진짜 중복) 코드 형식 자체로 판별 — 위 orphan 로직과 별개 카테고리. */
+  const VALID_PARTNER_CODE = /^(RP|PT)-?\d+$/i;
+  let _badCodeItems = [];
+
+  el.querySelector('#cleanupBadCodeInfo')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showToast('종합시트의 회사 탭 이름이 매핑표에 없으면 코드 대신 탭 이름 문자열이 공급사코드로 잘못 저장돼요. 그 회사 전용시트 정상 매물과 물리적으로 같은 차가 중복 생성됩니다.', 'info', 8000);
+  });
+
+  const badCodeBtn = el.querySelector('#cleanupBadCodeBtn');
+  const badCodeStatusEl = el.querySelector('#cleanupBadCodeStatus');
+  const badCodePreviewEl = el.querySelector('#cleanupBadCodePreview');
+  const badCodeActionsEl = el.querySelector('#cleanupBadCodeActions');
+  const badCodeApplyBtn = el.querySelector('#cleanupBadCodeApplyBtn');
+  const badCodeApplyStatusEl = el.querySelector('#cleanupBadCodeApplyStatus');
+
+  badCodeBtn.addEventListener('click', async () => {
+    badCodeBtn.disabled = true;
+    badCodePreviewEl.style.display = 'none';
+    badCodeActionsEl.style.display = 'none';
+    try {
+      const { safeKeys, safeCarNumbers } = await buildSafetyContext(
+        (i, n, src) => { badCodeStatusEl.textContent = `안전목록 확인 중... (${i}/${n}) ${src}`; }
+      );
+      const all = (store.products || []).filter(p => !p._deleted && p.status !== 'deleted');
+      const badCode = all.filter(p => {
+        if (p.source !== 'external_sheet') return false;   // 수기 등록건은 절대 건드리지 않음
+        const code = p.provider_company_code || p.partner_code || '';
+        if (!code || VALID_PARTNER_CODE.test(code)) return false;
+        if (safeKeys.has(p._key) || safeKeys.has(p.product_uid)) return false;
+        const cn = norm(p.car_number);
+        if (cn && safeCarNumbers.has(cn)) return false;
+        return true;
+      });
+      _badCodeItems = badCode;
+      badCodeStatusEl.textContent = `분석 완료 — 전체 ${all.length}건 중 회사코드 오류 ${badCode.length}건`;
+      devLog(`[cleanup] 회사코드 오류 매물 ${badCode.length}건`);
+
+      badCodePreviewEl.style.display = 'block';
+      badCodePreviewEl.innerHTML = badCode.length ? `
+        <table style="font-size:11px;border-collapse:collapse;width:100%;">
+          <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
+            <tr>
+              <th style="padding:4px 6px;"><input type="checkbox" id="cleanupBadCodeSelectAll" checked></th>
+              <th style="padding:4px 6px;text-align:left;">차량번호</th>
+              <th style="padding:4px 6px;text-align:left;">차종</th>
+              <th style="padding:4px 6px;text-align:left;">잘못된 코드</th>
+              <th style="padding:4px 6px;text-align:left;">상태</th>
+              <th style="padding:4px 6px;text-align:left;">등록일</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${badCode.map((p, i) => `
+              <tr style="border-bottom:1px solid var(--border);">
+                <td style="padding:4px 6px;"><input type="checkbox" class="cleanupBadCodeRow" data-idx="${i}" checked></td>
+                <td style="padding:4px 6px;">${esc(p.car_number || '-')}</td>
+                <td style="padding:4px 6px;">${esc(p.sub_model || p.model || '-')}</td>
+                <td style="padding:4px 6px;color:var(--alert-red-text);">${esc(p.provider_company_code || p.partner_code || '-')}</td>
+                <td style="padding:4px 6px;">${esc(p.vehicle_status || '-')}</td>
+                <td style="padding:4px 6px;">${p.created_at ? new Date(p.created_at).toLocaleDateString('ko') : '-'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      ` : `<div style="padding:24px;text-align:center;color:var(--text-muted);">회사코드 오류 매물 없음 — 깨끗합니다</div>`;
+
+      badCodePreviewEl.querySelector('#cleanupBadCodeSelectAll')?.addEventListener('change', (e) => {
+        badCodePreviewEl.querySelectorAll('.cleanupBadCodeRow').forEach(cb => { cb.checked = e.target.checked; });
+      });
+
+      badCodeActionsEl.style.display = badCode.length ? 'block' : 'none';
+    } catch (e) {
+      devLog(`[cleanup] ✗ 회사코드 오류 분석 실패: ${e.message}`);
+      badCodeStatusEl.textContent = `오류: ${e.message}`;
+      showToast('분석 실패 — ' + (e.message || e), 'error');
+    } finally {
+      badCodeBtn.disabled = false;
+    }
+  });
+
+  badCodeApplyBtn.addEventListener('click', async () => {
+    const checked = [...badCodePreviewEl.querySelectorAll('.cleanupBadCodeRow:checked')].map(cb => Number(cb.dataset.idx));
+    const targets = checked.map(i => _badCodeItems[i]).filter(Boolean);
+    if (!targets.length) return;
+    if (!await customConfirm({ message: `${targets.length}건을 출고불가 처리할까요? (삭제 아님, 언제든 복원 가능)`, danger: true, okLabel: '처리' })) return;
+    badCodeApplyBtn.disabled = true;
+    badCodeApplyStatusEl.textContent = '처리 중...';
+    try {
+      const { ref, update } = await import('firebase/database');
+      const { db } = await import('../firebase/config.js');
+      const updates = {};
+      const now = Date.now();
+      for (const p of targets) {
+        updates[`products/${p._key}/_deleted`] = true;
+        updates[`products/${p._key}/status`] = 'deleted';
+        updates[`products/${p._key}/status_label`] = '매물정리(회사코드 오류·중복)';
+        updates[`products/${p._key}/updated_at`] = now;
+      }
+      await update(ref(db), updates);
+      showToast(`${targets.length}건 출고불가 처리 완료`);
+      devLog(`[cleanup] ✓ 회사코드 오류 ${targets.length}건 처리 완료`);
+      badCodeApplyStatusEl.textContent = `완료 — ${targets.length}건 처리됨`;
+      badCodeActionsEl.style.display = 'none';
+      badCodePreviewEl.style.display = 'none';
+      badCodeStatusEl.textContent = '다시 분석하시면 반영된 결과를 확인할 수 있어요';
+    } catch (e) {
+      devLog(`[cleanup] ✗ 회사코드 오류 적용 실패: ${e.message}`);
+      badCodeApplyStatusEl.textContent = `오류: ${e.message}`;
+      showToast('처리 실패 — ' + (e.message || e), 'error');
+    } finally {
+      badCodeApplyBtn.disabled = false;
     }
   });
 }
