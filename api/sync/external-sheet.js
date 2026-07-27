@@ -567,7 +567,7 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
   const status = statusFlag(vehicleStatus);
 
   const modelShort = safeGet(row, colIdx('차종'));
-  const trimFull = safeGet(row, colIdx('트림'));
+  const trimFull = safeGet(row, colIdx('모델명(트림)'));
   const regDate = safeGet(row, colIdx('최초등록일'));
   let year = '';
   if (regDate) {
@@ -592,10 +592,10 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
     raw_model_full: trimFull,
     maker: '', sub_model: '',
     trim_name: extractTrimFromModel(trimFull, modelShort),
-    ext_color: safeGet(row, colIdx('외부색상')),
-    int_color: (() => { const v = safeGet(row, colIdx('내부색상')); return v === '-' ? '' : v; })(),
-    fuel_type: safeGet(row, colIdx('연료')),
-    mileage: parseInt(String(safeGet(row, colIdx('KM'))).replace(/[^\d]/g, '') || '0', 10),
+    ext_color: safeGet(row, colIdx('외장색')),
+    int_color: (() => { const v = safeGet(row, colIdx('내장색')); return v === '-' ? '' : v; })(),
+    fuel_type: safeGet(row, colIdx('유종')),
+    mileage: parseInt(String(safeGet(row, colIdx('주행거리'))).replace(/[^\d]/g, '') || '0', 10),
     year, first_registration_date: regDate,
     location: '',   // 손오공 시트엔 현위치 컬럼 없음 — Firebase update 가 undefined 를 거부하므로 빈값 명시
     status, vehicle_status: vehicleStatus,
