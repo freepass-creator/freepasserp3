@@ -599,7 +599,8 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
     year, first_registration_date: regDate,
     location: '',   // 손오공 시트엔 현위치 컬럼 없음 — Firebase update 가 undefined 를 거부하므로 빈값 명시
     status, vehicle_status: vehicleStatus,
-    product_type: '중고구독',
+    // 구분 컬럼 무시하고 무조건 '중고구독'으로 고정돼있던 버그 — "재렌트" 행도 구독으로 잘못 표시됨.
+    product_type: resolveProductType({ pendingPlate: false, carNumber, kindVal, defaultProductType: '중고렌트' }),
     status_label: statusRaw,
     is_active: true,
     options: safeGet(row, colIdx('옵션')),
