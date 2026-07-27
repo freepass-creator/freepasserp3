@@ -139,10 +139,15 @@ export function calibrateSearchCols(products) {
   widths.forEach((w, idx) => cols[idx]?.style.setProperty('width', w + 'px'));
 }
 
+// 필터 안 좁히고 전체 목록(수천 건) 볼 때 매번 innerHTML 로 수만 개 DOM 노드를 새로 만드는 게
+//  영업자들이 겪던 렉의 핵심 원인 — 화면엔 어차피 스크롤 몇 페이지분만 보이므로 상한을 둠.
+//  엑셀 다운로드·사진ZIP 은 filterProductsExcept() 를 직접 호출해 이 상한과 무관하게 전체 반영.
+const ROW_RENDER_CAP = 300;
+
 export function renderSearchTable(products) {
   const tbody = document.querySelector('[data-page="search"] .table tbody');
   if (!tbody) return;
-  // 토픽바 카운트 — 필터된 결과 길이 반영
+  // 토픽바 카운트 — 필터된 결과 길이 반영 (상한과 무관하게 실제 결과 수)
   updateSearchStats(products || []);
   if (!products || !products.length) {
     tbody.innerHTML = '<tr><td colspan="22" class="empty-state" style="text-align:center; padding:24px; color:var(--text-muted);">표시할 상품이 없습니다</td></tr>';
@@ -150,7 +155,24 @@ export function renderSearchTable(products) {
   }
   // 재렌더 전 현재 선택 row 의 product key 보존 — partners 갱신 등으로 재렌더 시 선택 유지
   const prevSelectedId = tbody.querySelector('tr.selected')?.dataset.id;
-  tbody.innerHTML = products.map(renderSearchRow).join('');
+
+  let toRender = products;
+  let truncated = false;
+  if (products.length > ROW_RENDER_CAP) {
+    truncated = true;
+    const capped = products.slice(0, ROW_RENDER_CAP);
+    // 잘린 범위 밖의 항목이 선택돼 있었으면 맨 앞에 끼워넣어 선택이 끊기지 않게
+    if (prevSelectedId && !capped.some(p => p._key === prevSelectedId)) {
+      const kept = products.find(p => p._key === prevSelectedId);
+      toRender = kept ? [kept, ...capped.slice(0, ROW_RENDER_CAP - 1)] : capped;
+    } else {
+      toRender = capped;
+    }
+  }
+  const noticeHtml = truncated
+    ? `<tr class="search-cap-notice"><td colspan="22" style="text-align:center; padding:10px; color:var(--text-muted); background:var(--bg-stripe);">결과 ${products.length}건 중 ${toRender.length}건만 표시 중 — 검색어·필터로 좁히면 전체를 볼 수 있어요 (엑셀 다운로드는 전체 반영됨)</td></tr>`
+    : '';
+  tbody.innerHTML = toRender.map(renderSearchRow).join('') + noticeHtml;
   // 이전 선택 복원, 없으면 첫 row
   const restored = prevSelectedId ? tbody.querySelector(`tr[data-id="${prevSelectedId}"]`) : null;
   const target = restored || tbody.querySelector('tr');
@@ -270,6 +292,10 @@ function isLightHex(hex) {
   return (r * 299 + g * 587 + b * 114) / 1000 > 150;
 }
 
+// 길이 내림차순 키 목록 — colorBadge() 매 호출(행마다 최대 2회)마다 다시 정렬하면
+//  매물 수 많을 때 누적 비용이 커짐 (렉 원인 중 하나) → 모듈 로드 시 1회만 계산.
+const COLOR_MAP_KEYS_DESC = Object.keys(COLOR_MAP).sort((a, b) => b.length - a.length);
+
 /* 색상 → 색칩 (배경=실제색, 안에 한글 약어 1자). 연료뱃지 동일 규격
    매칭 안 되면 회색 bg + 입력 첫 1자 fallback. 빈값은 dashed empty */
 function colorBadge(name) {
@@ -279,8 +305,7 @@ function colorBadge(name) {
   let entry = COLOR_MAP[s] || COLOR_MAP[s.toLowerCase()];
   if (!entry) {
     const lower = s.toLowerCase();
-    const keys = Object.keys(COLOR_MAP).sort((a, b) => b.length - a.length);
-    for (const k of keys) {
+    for (const k of COLOR_MAP_KEYS_DESC) {
       if (lower.includes(k) || s.includes(k)) { entry = COLOR_MAP[k]; break; }
     }
   }
