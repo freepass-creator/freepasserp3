@@ -602,24 +602,16 @@ export async function searchExportExcel() {
     const liveCarNumbers = await fetchLiveSheetCarNumbers();
     const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
     const SELLABLE = new Set(['출고가능', '즉시출고']);
-    const sellable = list.filter(p =>
+    // list 는 filterProductsExcept() 단계에서 이미 차량번호 중복 제거됨
+    const filtered = list.filter(p =>
       SELLABLE.has(String(p.vehicle_status || '').trim()) && liveCarNumbers.has(norm(p.car_number))
     );
-    // 차량번호 중복 제거 — 같은 차가 여러 레코드로 쌓인 경우 최근 갱신된 것 하나만
-    const byCarNumber = new Map();
-    for (const p of sellable) {
-      const cn = norm(p.car_number);
-      const prev = byCarNumber.get(cn);
-      if (!prev || (p.updated_at || 0) > (prev.updated_at || 0)) byCarNumber.set(cn, p);
-    }
-    const filtered = [...byCarNumber.values()];
-    const dupCount = sellable.length - filtered.length;
     if (!filtered.length) { showToast('연동 시트에서 확인되는 판매가능 차량이 없습니다', 'error'); return; }
     const enriched = enrichProductsWithPolicy(filtered, store.policies || []);
     await downloadExcelWithFilter('차량목록', SIMPLE_PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
       baseUrl: location.origin,
     });
-    showToast(`${filtered.length}건 다운로드 완료 (전체 ${list.length}건 중 시트 미확인/판매불가 제외${dupCount ? `, 중복 ${dupCount}건 통합` : ''})`, 'success');
+    showToast(`${filtered.length}건 다운로드 완료 (전체 ${list.length}건 중 시트 미확인/판매불가 제외)`, 'success');
   } catch (e) {
     console.error('[srchExcel]', e);
     showToast('엑셀 다운로드 실패 — ' + (e.message || e), 'error');
@@ -1502,6 +1494,17 @@ function filterProductsExcept(exceptField) {
     }
     return true;
   });
+  // 차량번호 중복 제거 — DB에 같은 차가 여러 레코드로 쌓인 경우(레거시 임포트 등) 가장
+  //  최근 갱신된 것 하나만 남김. 화면 리스트·엑셀·사진ZIP 등 이 함수를 쓰는 모든 곳에 자동 적용.
+  const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
+  const byCarNumber = new Map();
+  for (const p of filtered) {
+    const cn = norm(p.car_number);
+    const key = cn || p._key;   // 차량번호 없는 매물은 자기 _key로 (중복판단 불가하니 그대로 유지)
+    const prev = byCarNumber.get(key);
+    if (!prev || (p.updated_at || 0) > (prev.updated_at || 0)) byCarNumber.set(key, p);
+  }
+  return [...byCarNumber.values()];
 }
 
 /** 모바일과 동일한 필터 시트를 데스크톱에서도 — mobile.css 가 데스크톱에 미로드라 동적 import.

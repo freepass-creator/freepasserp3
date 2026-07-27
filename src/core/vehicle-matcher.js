@@ -29,17 +29,31 @@ export function buildVehicleIndex(carModels) {
   return { entries, modelToMaker, modelSubs, modelsSet };
 }
 
+/** 등록일 → 연도. 'YYYY-MM-DD' / 'YY-MM-DD'(공급사 시트에 흔함, 18→2018) / 'YYYYMM' 모두 처리.
+ *  ssot-snap.js regYearOf() 와 동일 로직 — naive slice(0,4) 는 'YY-MM-DD' 에서 NaN 나서 세대매칭이 조용히 꺼짐. */
+function parseRegYear(regDate) {
+  const s = String(regDate || '').trim();
+  let mm;
+  if ((mm = s.match(/(19|20)\d{2}/))) return Number(mm[0]);
+  if ((mm = s.match(/^(\d{2})[-.\/ ]/))) return 2000 + Number(mm[1]);
+  return 0;
+}
+
 /**
- * 차종 매칭 — raw 차종(short)/풀네임(full)/등록일(YYYY-MM-DD) → maker/model/sub_model/trim_name
+ * 차종 매칭 — raw 차종(short)/풀네임(full)/등록일 → maker/model/sub_model/trim_name
  * @param {string} shortName - 시트의 "차종" 컬럼 (예: "그랜저")
  * @param {string} fullName  - 시트의 풀네임 컬럼 (예: "그랜저 IG 3.0 익스클루시브")
- * @param {string} regDate   - 최초등록일 ('YYYY-MM-DD' 또는 'YYYY' 시작)
+ * @param {string} regDate   - 최초등록일 ('YYYY-MM-DD' / 'YY-MM-DD' / 'YYYY' 등)
  * @param {object} index     - buildVehicleIndex() 결과
  */
 export function matchVehicle(shortName, fullName, regDate, index) {
   const { entries, modelToMaker, modelSubs, modelsSet } = index;
-  const regYear = regDate ? Number(String(regDate).slice(0, 4)) || 0 : 0;
+  const regYear = parseRegYear(regDate);
   let maker = '', model = '';
+  // 벤츠 "S-클래스" 등 마스터는 하이픈 포함 표기인데 공급사 시트는 "S클래스"로 하이픈 없이
+  // 적는 경우가 대부분 → 하이픈 무시 비교 안 하면 "S-클래스" 매칭 실패 후 "S3"(아우디) 가
+  // "S350" 안의 부분문자열로 오매칭됨. 모든 "X-클래스" 모델에 동일하게 영향.
+  const stripDash = s => String(s || '').replace(/-/g, '');
 
   // ── 1단계: 제조사 + 모델 ──
   if (modelToMaker[shortName]) {
@@ -48,8 +62,9 @@ export function matchVehicle(shortName, fullName, regDate, index) {
   } else {
     // 풀네임+차종에서 마스터 모델명 키워드 검색 (긴 이름 우선)
     const searchText = `${shortName} ${fullName}`;
+    const searchTextNoDash = stripDash(searchText);
     for (const m of modelsSet) {
-      if (searchText.includes(m)) {
+      if (searchText.includes(m) || searchTextNoDash.includes(stripDash(m))) {
         maker = modelToMaker[m]; model = m; break;
       }
     }
@@ -79,8 +94,9 @@ export function matchVehicle(shortName, fullName, regDate, index) {
       }
       if (!maker) {
         const cleanedFull = fullName.replace(RE_PREFIX, '').trim();
+        const cleanedFullNoDash = stripDash(cleanedFull);
         for (const m of modelsSet) {
-          if (cleanedFull.includes(m)) { maker = modelToMaker[m]; model = m; break; }
+          if (cleanedFull.includes(m) || cleanedFullNoDash.includes(stripDash(m))) { maker = modelToMaker[m]; model = m; break; }
         }
       }
     }
