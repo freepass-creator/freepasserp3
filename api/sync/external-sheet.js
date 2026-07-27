@@ -107,6 +107,8 @@ const PARTNER_NAME_TO_CODE = {
   '렌트존': 'PT-0001',
   '퍼스트': 'RP009',
   '스타': 'RP018',
+  '에스에이렌터카': 'PT-0023', '에스에이': 'PT-0023', 'SA렌터카': 'PT-0023', 'SA': 'PT-0023',
+  '제이앤제이렌트카': 'RP030', '제이앤제이': 'RP030', 'J&J렌트카': 'RP030', 'J&J': 'RP030',
 };
 const findPartnerCode = (carYard) => {
   if (!carYard) return '';
