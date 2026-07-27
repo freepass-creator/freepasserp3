@@ -983,15 +983,21 @@ function renderSyncTab(el) {
       for (const [uid, p] of Object.entries(products)) {
         const found = existing.find(x => x.product_uid === uid || x._key === uid);
         if (found) {
-          // 기존 — 가격·상태·메모는 항상 업데이트
+          // 기존 — 가격·상태는 항상 업데이트. 그 외 필드는 시트값이 비어있으면(다른 소스가
+          //  같은 차를 부실하게 기재한 경우 등) 기존 값을 지우지 않고 보존 — 손오공처럼 같은
+          //  차가 전용시트(부실)·종합시트(상세) 양쪽에서 동기화될 때 나중 것이 앞서 채워진
+          //  값을 빈값으로 덮어쓰던 버그 수정 (2026-07-27).
           updates[`products/${found._key}/price`] = p.price;
           updates[`products/${found._key}/vehicle_status`] = p.vehicle_status;
           updates[`products/${found._key}/status`] = p.status;
           updates[`products/${found._key}/status_label`] = p.status_label;
-          updates[`products/${found._key}/mileage`] = p.mileage;
-          updates[`products/${found._key}/options`] = p.options;
-          updates[`products/${found._key}/partner_memo`] = p.partner_memo;
-          updates[`products/${found._key}/location`] = p.location;
+          if (p.mileage) updates[`products/${found._key}/mileage`] = p.mileage;
+          if (p.options) updates[`products/${found._key}/options`] = p.options;
+          if (p.partner_memo) updates[`products/${found._key}/partner_memo`] = p.partner_memo;
+          if (p.location) updates[`products/${found._key}/location`] = p.location;
+          if (p.ext_color) updates[`products/${found._key}/ext_color`] = p.ext_color;
+          if (p.int_color) updates[`products/${found._key}/int_color`] = p.int_color;
+          if (p.fuel_type) updates[`products/${found._key}/fuel_type`] = p.fuel_type;
           if (p.sheet_meta) updates[`products/${found._key}/sheet_meta`] = p.sheet_meta;
           if (p.annual_mileage) updates[`products/${found._key}/annual_mileage`] = p.annual_mileage;
           if (p.address)       updates[`products/${found._key}/address`]       = p.address;
