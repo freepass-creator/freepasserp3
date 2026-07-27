@@ -602,15 +602,24 @@ export async function searchExportExcel() {
     const liveCarNumbers = await fetchLiveSheetCarNumbers();
     const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
     const SELLABLE = new Set(['출고가능', '즉시출고']);
-    const filtered = list.filter(p =>
+    const sellable = list.filter(p =>
       SELLABLE.has(String(p.vehicle_status || '').trim()) && liveCarNumbers.has(norm(p.car_number))
     );
+    // 차량번호 중복 제거 — 같은 차가 여러 레코드로 쌓인 경우 최근 갱신된 것 하나만
+    const byCarNumber = new Map();
+    for (const p of sellable) {
+      const cn = norm(p.car_number);
+      const prev = byCarNumber.get(cn);
+      if (!prev || (p.updated_at || 0) > (prev.updated_at || 0)) byCarNumber.set(cn, p);
+    }
+    const filtered = [...byCarNumber.values()];
+    const dupCount = sellable.length - filtered.length;
     if (!filtered.length) { showToast('연동 시트에서 확인되는 판매가능 차량이 없습니다', 'error'); return; }
     const enriched = enrichProductsWithPolicy(filtered, store.policies || []);
     await downloadExcelWithFilter('차량목록', SIMPLE_PRODUCT_COLS, enriched, PRODUCT_FILTER_FIELDS, {
       baseUrl: location.origin,
     });
-    showToast(`${filtered.length}건 다운로드 완료 (전체 ${list.length}건 중 시트 미확인/판매불가 제외)`, 'success');
+    showToast(`${filtered.length}건 다운로드 완료 (전체 ${list.length}건 중 시트 미확인/판매불가 제외${dupCount ? `, 중복 ${dupCount}건 통합` : ''})`, 'success');
   } catch (e) {
     console.error('[srchExcel]', e);
     showToast('엑셀 다운로드 실패 — ' + (e.message || e), 'error');
