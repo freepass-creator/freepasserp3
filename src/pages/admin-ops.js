@@ -763,7 +763,8 @@ function renderSyncTab(el) {
           if (m.maker)     p.maker = m.maker;
           if (m.model)     p.model = m.model;
           if (m.sub_model) p.sub_model = m.sub_model;
-          if (m.trim_name) p.trim_name = m.trim_name;
+          // trim_name 은 안 건드림 — 시트 파서가 이미 raw_model_full 에서 뽑아둔 실제 트림 텍스트가
+          //  matchVehicle 의 "모델명 이후 나머지" 추정치보다 정확함 (아래 SSOT snap 단계도 동일 원칙).
           if (m.maker && m.model) matched++;
         }
       } else {
@@ -778,11 +779,12 @@ function renderSyncTab(el) {
         // 우리 규격에 가둠 — 제조사·모델·세부모델·파워트레인·세부트림 전부 SSOT 실재값으로.
         //  (없는 트림이어도 제일 비슷한 SSOT 트림으로 스냅. 어떤 차든 종착지 1개로.)
         const snap = snapIndex ? snapToSsot(p, snapIndex) : null;
+        const rawTrim = p.trim_name;   // 시트 파서가 이미 채운 실제 트림 텍스트 — SSOT 추정으로 덮어쓰지 않게 보존
         if (snap) {
           p.maker = snap.maker; p.model = snap.model; p.sub_model = snap.sub_model;
           p.gen_code = snap.gen_code;
           p.variant = snap.variant;
-          p.trim_name = snap.trim_name;
+          p.trim_name = rawTrim || snap.trim_name;   // 시트에 실제 트림 있으면 그대로, 없을 때만 SSOT 추정치
           p.match_confidence = snap.confidence;            // 'high' | 'review'
           p.match_flags = snap.flags && snap.flags.length ? snap.flags.join(',') : '';
           if (snap.confidence === 'review') reviewN++;
@@ -797,7 +799,7 @@ function renderSyncTab(el) {
           if (sm) { p.sub_model = sm.sub_model; p.catalog_id = sm.catalog_id; }
           const { variant, trim } = powertrainFromProduct(p);
           if (variant) p.variant = variant;
-          if (trim) p.trim_name = trim;
+          if (!rawTrim && trim) p.trim_name = trim;
         }
         // ③ 정책 자동매칭 (공통) — 시트 정책코드 우선, 없으면 공급코드로 해당 공급사 기본정책 → policy_code
         if (!p.policy_code) {
