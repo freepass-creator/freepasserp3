@@ -338,6 +338,8 @@ export function renderDetailSections(p, opts = {}) {
         const parts = [condByLabel['기본연령'], String(condByLabel['약정 주행거리'] || '').replace(/\s*주행$/, ''), condByLabel['보험 포함']].filter(Boolean);
         return parts.length ? `<div class="pd-ins-sub" style="margin-top:6px;text-align:right;">* ${esc(parts.join(' · '))} 기준</div>` : '';
       })()}` : `<div class="pd-empty">가격 미입력</div>`}
+      ${p.deposit_condition ? `<div style="display:flex;align-items:flex-start;gap:6px;margin-top:8px;padding:7px 10px;background:var(--c-warn-bg);border-radius:4px;font-size:12px;color:var(--c-warn);"><i class="ph ph-warning" style="flex-shrink:0;margin-top:1px;"></i><span>${esc(p.deposit_condition)}</span></div>` : ''}
+      ${p.sheet_meta?.additional_fee ? `<div style="display:flex;align-items:flex-start;gap:6px;margin-top:8px;padding:7px 10px;background:var(--c-warn-bg);border-radius:4px;font-size:12px;color:var(--c-warn);"><i class="ph ph-plus-circle" style="flex-shrink:0;margin-top:1px;"></i><span>추가수수료 ${esc(p.sheet_meta.additional_fee)}</span></div>` : ''}
     </div>
 
     <div class="pd-sec">
