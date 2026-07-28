@@ -509,6 +509,9 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
       ins_own: safeGet(row, colIdx('자차')),
       ins_self: safeGet(row, colIdx('자손')),
       ins_uninsured: safeGet(row, colIdx('무보험')),
+      // 33컬럼 표준 외 회사별 추가 컬럼 — 없는 회사는 항상 빈 값
+      deposit_adjust_condition: safeGet(row, colIdx('보증금 조율 조건')),   // 빌린카·우리캐피탈
+      additional_fee: safeGet(row, colIdx('추가수수료')),                    // 웰릭스
     },
     created_at: nowMs, updated_at: nowMs,
     created_by: 'sync_external_sheet',
@@ -542,6 +545,11 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
       if (m) product.deposit_condition_amount = Math.round(parseFloat(m[1]) * 10000);
       break;
     }
+  }
+  // 위 패턴 못 찾았는데 "보증금 조율 조건" 컬럼(빌린카·우리캐피탈)에 값 있으면 그걸 씀 —
+  //  product.js 상세화면의 동일한 주황 경고 배지에 그대로 노출.
+  if (!product.deposit_condition && product.sheet_meta.deposit_adjust_condition) {
+    product.deposit_condition = product.sheet_meta.deposit_adjust_condition;
   }
 
   return product;

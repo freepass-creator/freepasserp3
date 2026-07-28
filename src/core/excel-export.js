@@ -233,6 +233,7 @@ export const SIMPLE_PRODUCT_COLS = [
     get: r => r.sheet_meta?.ins_self || insCombo(r._policy?.self_body_accident, r._policy?.self_body_deductible) },
   { f:'ins_uninsured', l:'무보험', w:12,
     get: r => r.sheet_meta?.ins_uninsured || insCombo(r._policy?.uninsured_damage, r._policy?.uninsured_deductible) },
+  { f:'additional_fee', l:'추가수수료', w:12, get: r => r.sheet_meta?.additional_fee || '' },
   { f:'partner_memo', l:'비고', w:26 },
 ];
 
