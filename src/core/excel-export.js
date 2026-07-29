@@ -12,6 +12,14 @@ import { normalizeProductType } from './normalize.js';
 // enrichProductsWithPolicy는 외부(search.js 등)에서도 쓰므로 re-export
 export { enrichProductsWithPolicy } from './policy-utils.js';
 
+// ERP 화면의 구분 뱃지(type-chip)와 동일한 배색 — base.css .type-chip.type-* 값 그대로.
+// downloadExcel/downloadExcelWithFilter 양쪽 다 씀.
+const TYPE_COLORS = {
+  '신차':   { bg: 'FF1D4ED8', font: 'FFFFFFFF' },
+  '재렌트': { bg: 'FFF0FDF4', font: 'FF15803D' },
+  '재구독': { bg: 'FFFFFBEB', font: 'FFD97706' },
+};
+
 export async function downloadExcel(title, cols, data) {
   const ExcelJS = (await import('exceljs')).default;
   const wb = new ExcelJS.Workbook();
@@ -39,11 +47,12 @@ export async function downloadExcel(title, cols, data) {
   );
 
   // Excel Table (네이티브 표) — 헤더에 체크박스 필터 드롭다운 자동 + 슬라이서 삽입 가능
+  // theme:null — downloadExcelWithFilter() 와 동일 버그(테마가 직접 지정한 셀 배경색을 덮어씀).
   ws.addTable({
     name: 'DataTbl',
     ref: 'A1',
     headerRow: true,
-    style: { theme: 'TableStyleLight1', showRowStripes: false },
+    style: { theme: null, showRowStripes: false },
     columns: cols.map(c => ({ name: c.l, filterButton: true })),
     rows: rows.length ? rows : [cols.map(() => '')],
   });
@@ -63,14 +72,16 @@ export async function downloadExcel(title, cols, data) {
     const isStripe = r % 2 === 1;
     cols.forEach((c, i) => {
       const cell = excelRow.getCell(i + 1);
+      const typeColor = c.f === 'product_type_disp' ? TYPE_COLORS[rows[r][i]] : null;
       if (c.hyperlink) {
         cell.font = { name: 'Pretendard', size: 9, color: { argb: 'FF1B2A4A' }, underline: true };
       } else {
-        cell.font = { name: 'Pretendard', size: 9 };
+        cell.font = { name: 'Pretendard', size: 9, ...(typeColor ? { color: { argb: typeColor.font }, bold: true } : {}) };
       }
-      cell.alignment = { vertical: 'middle' };
+      cell.alignment = { vertical: 'middle', ...(typeColor ? { horizontal: 'center' } : {}) };
       if (c.numFmt) cell.numFmt = c.numFmt;
-      if (isStripe) cell.fill = stripeFill;
+      if (typeColor) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: typeColor.bg } };
+      else if (isStripe) cell.fill = stripeFill;
     });
   }
 
@@ -312,12 +323,6 @@ export async function downloadExcelWithFilter(title, cols, data, filterFields, o
     cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
   });
   const stripeFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEDEFF2' } };
-  // ERP 화면의 구분 뱃지(type-chip)와 동일한 배색 — base.css .type-chip.type-* 값 그대로.
-  const TYPE_COLORS = {
-    '신차':   { bg: 'FF1D4ED8', font: 'FFFFFFFF' },
-    '재렌트': { bg: 'FFF0FDF4', font: 'FF15803D' },
-    '재구독': { bg: 'FFFFFBEB', font: 'FFD97706' },
-  };
   for (let r = 0; r < rows.length; r++) {
     const row = ws.getRow(r + 2);
     row.height = 18;
