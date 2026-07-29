@@ -639,9 +639,6 @@ function renderSyncTab(el) {
             </button>
           `).join('')}
         </div>
-        <div class="ao-links">
-          <a href="https://docs.google.com/spreadsheets/d/1BcHvwidHrdJADPUH0M3C5abaxst04fDnfxm7R9FgLDg/edit?gid=1422892422" target="_blank">종합시트 열기 ↗</a>
-        </div>
         <div style="margin-top:10px;display:flex;align-items:center;gap:10px;">
           <button class="btn btn-sm btn-primary" id="syncBulkBtn"><i class="ph ph-lightning"></i> 전체 일괄 불러와 반영 (렌트사 탭 제외)</button>
           <span id="syncBulkStatus" class="ao-status"></span>
