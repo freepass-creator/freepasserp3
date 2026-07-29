@@ -1008,20 +1008,25 @@ function renderSyncTab(el) {
           if (p.product_type != null) updates[`products/${found._key}/product_type`] = p.product_type;
           if (p.photo_link) updates[`products/${found._key}/photo_link`] = p.photo_link;   // 시트에 사진 링크 있을 때만 (빈값으로 기존 사진 덮어쓰기 방지)
           updates[`products/${found._key}/updated_at`] = p.updated_at;
-          // 차종 분류 (maker/model) — 비어있을 때만 자동 채움
-          if (!found.maker && p.maker) updates[`products/${found._key}/maker`] = p.maker;
-          if (!found.model && p.model) updates[`products/${found._key}/model`] = p.model;
-          // 세부모델/파워트레인/트림 — 미분류(빈값·모델레벨)만 분류결과로 갱신, 이미 세대 지정(분류완료·수기보정)이면 보존.
+          // 세부모델/제조사/모델/파워트레인/트림 — 미분류(빈값·모델레벨)면 maker/model 까지 통째로
+          //  최신 분류결과로 갱신, 이미 세대 지정(분류완료·수기보정)이면 보존.
           //   "절충" 정책: 재동기화가 관리자 수기수정을 덮어쓰지 않음. 미분류 매물만 자동 세분화.
+          //  (예전엔 maker/model 이 "비어있을 때만" 채워져서, sub_model 은 재분류돼도 잘못된 예전
+          //   maker/model 값 — 예: 벤츠 S-클래스가 아우디 S3 — 이 영영 안 고쳐지던 버그. 미분류
+          //   판정이면 maker/model 도 sub_model 과 함께 갱신하도록 수정.)
           const curSub = found.sub_model || '';
           const unclassified = !curSub || curSub === found.model || curSub === p.model;
           if (unclassified) {
+            if (p.maker)      updates[`products/${found._key}/maker`]      = p.maker;
+            if (p.model)      updates[`products/${found._key}/model`]      = p.model;
             if (p.sub_model)  updates[`products/${found._key}/sub_model`]  = p.sub_model;
             if (p.catalog_id) updates[`products/${found._key}/catalog_id`] = p.catalog_id;
             if (p.variant)    updates[`products/${found._key}/variant`]    = p.variant;
             if (p.trim_name)  updates[`products/${found._key}/trim_name`]  = p.trim_name;
           } else {
-            // 분류완료/수기보정 보존 — 단 신규필드(파워트레인)·catalog_id가 빈 칸이면 보충만
+            // 분류완료/수기보정 보존 — 단 빈 칸(maker/model/파워트레인/catalog_id)은 보충만
+            if (!found.maker && p.maker)            updates[`products/${found._key}/maker`]      = p.maker;
+            if (!found.model && p.model)            updates[`products/${found._key}/model`]      = p.model;
             if (!found.variant && p.variant)        updates[`products/${found._key}/variant`]    = p.variant;
             if (!found.catalog_id && p.catalog_id)  updates[`products/${found._key}/catalog_id`] = p.catalog_id;
           }
