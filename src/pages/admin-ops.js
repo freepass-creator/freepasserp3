@@ -602,7 +602,7 @@ const SYNC_SOURCES = [
   { key: 'pacific', label: '퍼시픽', desc: '퍼시픽 (RP022)' },
   { key: 'leaders', label: '리더스', desc: '리더스 (RP008)' },
   { key: 'star', label: '스타', desc: '스타 (RP018)' },
-  { key: 'rentzone', label: '렌트존', desc: '렌트존 (PT-0001)' },
+  { key: 'rentzone', label: '렌트존', desc: '렌트존 (RP011)' },
   { key: 'gyeongjinRent', label: '경진렌트카', desc: '경진렌트카 (RP015)' },
   { key: 'gyeongjinCar', label: '경진카', desc: '경진카 (RP016)' },
   { key: 'wooriCapital', label: '우리캐피탈렌터카', desc: '우리캐피탈렌터카 (RP020)' },

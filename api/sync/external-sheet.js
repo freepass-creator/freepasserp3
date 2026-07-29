@@ -61,7 +61,7 @@ export const SHEET_CONFIGS = {
   pacific:  { sheet_id: '17ptJasUHfkTsTAPV7n09biOUxwON69ga_boY7Lj1YQI', tab_name: '시트1', provider_code: 'RP022', label: '퍼시픽 (RP022)', schema: 'rentco' },
   leaders:  { sheet_id: '1JzkGriOncxVC0CiQlL18uiHW-iyzvMNyJkJN4BPGoqI', tab_name: '시트1', provider_code: 'RP008', label: '리더스 (RP008)', schema: 'rentco' },
   star:     { sheet_id: '1IP7uES-NrxS58JK9UCtD3ppGZGeSL9STpT2jHJO5JIM', tab_name: '시트1', provider_code: 'RP018', label: '스타 (RP018)', schema: 'rentco' },
-  rentzone: { sheet_id: '1IFV4_rNq4hW_KornQpz1ppBWbziCyklTo6oOH0BaUc8', tab_name: '시트1', provider_code: 'PT-0001', label: '렌트존 (PT-0001)', schema: 'rentco' },
+  rentzone: { sheet_id: '1IFV4_rNq4hW_KornQpz1ppBWbziCyklTo6oOH0BaUc8', tab_name: '시트1', provider_code: 'RP011', label: '렌트존 (RP011)', schema: 'rentco' },
   gyeongjinRent: { sheet_id: '1uxcBiaf9YUokWY6pA6cSQF5dWC_NhAbWzch6rFNPxks', tab_name: '시트1', provider_code: 'RP015', label: '경진렌트카 (RP015)', schema: 'rentco' },
   gyeongjinCar:  { sheet_id: '1zglJo10nM_oilYzLdk9XAe3SMVPkVf5fd8a3vF1yXHo', tab_name: '시트1', provider_code: 'RP016', label: '경진카 (RP016)', schema: 'rentco' },
   wooriCapital:  { sheet_id: '1V4dqn5e8dtTLjX_wnHx5wOup0arU3TAtsvEvuh0sisY', tab_name: '시트1', provider_code: 'RP020', label: '우리캐피탈렌터카 (RP020)', schema: 'rentco' },
@@ -104,7 +104,7 @@ const PARTNER_NAME_TO_CODE = {
   '빌린카': 'RP021', '엘씨': 'RP021',
   '퍼시픽': 'RP022',
   '오토플러스': 'RP023',
-  '렌트존': 'PT-0001',
+  '렌트존': 'RP011',
   '퍼스트': 'RP009',
   '스타': 'RP018',
   '에스에이렌터카': 'PT-0023', '에스에이': 'PT-0023', 'SA렌터카': 'PT-0023', 'SA': 'PT-0023',
@@ -167,8 +167,9 @@ function normalizeVehicleStatus(raw) {
   const s = String(raw || '').trim();
   // 1) '출고가능'으로 시작 — 뒤에 조건 붙어도(정비중·대차중 등) 출고가능 우선
   if (/^출고가능/.test(s)) return '출고가능';
-  // 2) 명확히 출고불가
-  if (/출고불가|계약|매각|판매완료|완료|사고|대차|미정|보류|회수|반납|폐차/.test(s)) return '출고불가';
+  // 2) 명확히 출고불가 — 배차중(고객에게 배송 준비중이라 이미 나간 것과 같음)도 포함.
+  //  "배차대기"는 별개(아직 배정 전) 이므로 이 패턴에 안 걸리게 "배차중"으로 정확히 매치.
+  if (/출고불가|계약|매각|판매완료|완료|사고|대차|미정|보류|회수|반납|폐차|배차중/.test(s)) return '출고불가';
   // 3) 정확히 일치하는 나머지 종
   if (s === '즉시출고') return '즉시출고';
   if (s === '상품화중') return '상품화중';
@@ -447,8 +448,18 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
 function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, sheetId, nowMs }) {
   const colIdx = (n) => headers.indexOf(n);
   const idxCar = colIdx('차량번호');
-  const carNumber = safeGet(row, idxCar);
-  if (!carNumber || !VALID_CAR_NO.test(carNumber)) return null;
+  let carNumber = safeGet(row, idxCar);
+  // 번호 없는 신차(미정/번호미정/빈칸) — parseGeneralRow 와 동일하게, 차종 정보 있는 실제
+  //  차량이면 버리지 말고 100신XXXX 임시번호 부여 (우리캐피탈 등에서 신차 10대가 통째로
+  //  누락되던 원인 — "미정" 이 차량번호 형식 검증에 걸려 그냥 스킵되고 있었음).
+  let pendingPlate = false;
+  if (!carNumber || !VALID_CAR_NO.test(carNumber)) {
+    const cls = safeGet(row, colIdx('차종'));
+    const sub = safeGet(row, colIdx('모델명(트림)'));
+    if (!cls && !sub) return null;
+    carNumber = `100신${String(absRow).padStart(4, '0')}`;
+    pendingPlate = true;
+  }
 
   const statusRaw = safeGet(row, colIdx('배차상태'));
   const vehicleStatus = normalizeVehicleStatus(statusRaw);
@@ -488,8 +499,9 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
     vehicle_price: parsePrice(safeGet(row, colIdx('소비자가격'))) || 0,
     annual_mileage: safeGet(row, colIdx('연주행')),
     status, vehicle_status: vehicleStatus,
-    product_type: resolveProductType({ pendingPlate: false, carNumber, kindVal, defaultProductType: '' }),
+    product_type: resolveProductType({ pendingPlate, carNumber, kindVal, defaultProductType: '' }),
     status_label: statusRaw,
+    is_pending_plate: pendingPlate,
     is_active: true,
     options: safeGet(row, colIdx('옵션')),
     partner_memo: safeGet(row, colIdx('비고')),
@@ -725,7 +737,8 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     partner_memo: safeGet(row, colIdx('비고')),
     product_type: resolveProductType({ pendingPlate, carNumber, kindVal: safeGet(row, colIdx('구분') >= 0 ? colIdx('구분') : colPartial('구분')), defaultProductType }),
     arrival_note:  safeGet(row, colIdx('입고일자')),
-    deposit_free:  /무보증/.test(safeGet(row, colIdx('입고일자'))),
+    // 아이카는 전용 "무보증여부" 컬럼이 따로 있음 — 없는 공급사는 기존처럼 입고일자 칸 텍스트로 폴백.
+    deposit_free:  /무보증/.test(safeGet(row, colIdx('무보증여부'))) || /무보증/.test(safeGet(row, colIdx('입고일자'))),
     is_pending_plate: pendingPlate,     // 번호 미정 신차 — 실번호 받으면 수기로 덮어씀
     status,
     vehicle_status: vehicleStatus,

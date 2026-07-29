@@ -72,13 +72,16 @@ export function renderChatMessages(messages, ctx = {}) {
 
     // 콘텐츠
     let content;
+    let isMedia = false;   // 사진 전용 메시지 — 말풍선 여백 없이 꽉 채움
     if (msg._deleted) {
       content = '<span style="color:var(--text-muted);font-style:italic;">(삭제된 메시지)</span>';
     } else if (msg.image_urls?.length > 1) {
+      isMedia = true;
       const cols = msg.image_urls.length === 2 ? 2 : msg.image_urls.length === 3 ? 3 : 2;
-      const imgs = msg.image_urls.map(u => `<img src="${u}" class="chat-img chat-img-grid" data-fullscreen-img="${u}" style="cursor:zoom-in;width:100%;height:100px;object-fit:cover;border-radius:4px;">`).join('');
-      content = `<div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:3px;max-width:260px;">${imgs}</div>`;
+      const imgs = msg.image_urls.map(u => `<img src="${u}" class="chat-img chat-img-grid" data-fullscreen-img="${u}" style="cursor:zoom-in;width:100%;height:100px;object-fit:cover;">`).join('');
+      content = `<div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:2px;max-width:260px;">${imgs}</div>`;
     } else if (msg.image_url) {
+      isMedia = true;
       content = `<img src="${msg.image_url}" class="chat-img" data-fullscreen-img="${msg.image_url}" style="cursor:zoom-in;">`;
     } else if (msg.file_url) {
       content = `<a href="${msg.file_url}" target="_blank" class="chat-file"><i class="ph ph-paperclip"></i> ${(msg.text || '파일').replace(/</g, '&lt;')}</a>`;
@@ -111,7 +114,7 @@ export function renderChatMessages(messages, ctx = {}) {
     return `${dateSep}<div class="${rowCls}">
       ${!mine && senderStart ? `<div class="chat-sender chat-sender-${roleTone}">${senderLabel}</div>` : (!mine ? '<div class="chat-sender-spacer"></div>' : '')}
       <div class="chat-bubble-wrap">
-        <div class="chat-bubble chat-bubble-${roleTone}">${content}</div>
+        <div class="chat-bubble chat-bubble-${roleTone}${isMedia ? ' chat-bubble-media' : ''}">${content}</div>
         ${minuteEnd ? `<div class="chat-meta">${readMark}<span class="chat-time">${fmtHM(ts)}</span></div>` : ''}
       </div>
       ${adminBtns}

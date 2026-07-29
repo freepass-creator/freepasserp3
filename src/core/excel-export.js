@@ -302,6 +302,12 @@ export async function downloadExcelWithFilter(title, cols, data, filterFields, o
     cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
   });
   const stripeFill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEDEFF2' } };
+  // ERP 화면의 구분 뱃지(type-chip)와 동일한 배색 — base.css .type-chip.type-* 값 그대로.
+  const TYPE_COLORS = {
+    '신차':   { bg: 'FF1D4ED8', font: 'FFFFFFFF' },
+    '재렌트': { bg: 'FFF0FDF4', font: 'FF15803D' },
+    '재구독': { bg: 'FFFFFBEB', font: 'FFD97706' },
+  };
   for (let r = 0; r < rows.length; r++) {
     const row = ws.getRow(r + 2);
     row.height = 18;
@@ -309,12 +315,14 @@ export async function downloadExcelWithFilter(title, cols, data, filterFields, o
     cols.forEach((c, i) => {
       const cell = row.getCell(i + 1);
       const isLink = c.f === 'erp' || c.hyperlink;
+      const typeColor = c.f === 'product_type_disp' ? TYPE_COLORS[rows[r][i]] : null;
       cell.font = isLink
         ? { name: 'Pretendard', size: 9, color: { argb: 'FF1B2A4A' }, underline: true }
-        : { name: 'Pretendard', size: 9 };
-      cell.alignment = { vertical: 'middle' };
+        : { name: 'Pretendard', size: 9, ...(typeColor ? { color: { argb: typeColor.font }, bold: true } : {}) };
+      cell.alignment = { vertical: 'middle', ...(typeColor ? { horizontal: 'center' } : {}) };
       if (c.numFmt) cell.numFmt = c.numFmt;
-      if (isStripe) cell.fill = stripeFill;
+      if (typeColor) cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: typeColor.bg } };
+      else if (isStripe) cell.fill = stripeFill;
     });
   }
 

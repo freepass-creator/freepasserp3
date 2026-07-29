@@ -2162,6 +2162,8 @@
   }
   /* 채팅 말풍선 — 내 메시지: 네이비(브랜드), 상대방: 밝은 회색 */
   .chat-bubble { border: 0; }
+  /* 사진 전용 메시지 — 배경색 여백 없이 사진이 말풍선을 꽉 채움 (모서리는 overflow:hidden 으로 유지) */
+  .chat-bubble.chat-bubble-media { padding: 0; overflow: hidden; line-height: 0; }
   .chat-row.is-mine .chat-bubble {
     background: var(--c-accent); color: var(--c-text-inv);
     border-top-right-radius: 0;
