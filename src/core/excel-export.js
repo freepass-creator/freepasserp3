@@ -233,7 +233,15 @@ export const SIMPLE_PRODUCT_COLS = [
     get: r => r.sheet_meta?.ins_self || insCombo(r._policy?.self_body_accident, r._policy?.self_body_deductible) },
   { f:'ins_uninsured', l:'무보험', w:12,
     get: r => r.sheet_meta?.ins_uninsured || insCombo(r._policy?.uninsured_damage, r._policy?.uninsured_deductible) },
-  { f:'additional_fee', l:'추가수수료', w:12, get: r => r.sheet_meta?.additional_fee || '' },
+  // 회사마다 제각각인 특이조건(무보증여부/보증금 조율조건/추가수수료 등)을 컬럼별로 흩어놓지
+  //  않고 여기 하나로 합쳐서 표기 — 아이카·빌린카·우리캐피탈·웰릭스 등 공통 적용.
+  { f:'special_notes', l:'특이사항(통합)', w:32, get: r => {
+    const parts = [];
+    if (r.deposit_free) parts.push('무보증가능');
+    if (r.deposit_condition) parts.push(r.deposit_condition);
+    if (r.sheet_meta?.additional_fee) parts.push(`추가수수료 ${r.sheet_meta.additional_fee}`);
+    return parts.join(' / ');
+  } },
   { f:'partner_memo', l:'비고', w:26 },
 ];
 
@@ -291,7 +299,9 @@ export async function downloadExcelWithFilter(title, cols, data, filterFields, o
     name: 'MainTbl',
     ref: 'A1',
     headerRow: true,
-    style: { theme: 'TableStyleLight1', showRowStripes: false },
+    // theme:null — Excel 테이블 테마가 지정되면 구분/무보증 셀에 직접 지정한 배경색을
+    //  덮어써버려서 안 보이던 버그. 필터버튼만 필요하고 밴딩 배색은 필요없으니 테마 제거.
+    style: { theme: null, showRowStripes: false },
     columns: headerNames.map(n => ({ name: n, filterButton: true })),
     rows: rows.length ? rows : [headerNames.map(() => '')],
   });
