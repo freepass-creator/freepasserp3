@@ -505,6 +505,7 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
     is_active: true,
     options: safeGet(row, colIdx('옵션')),
     partner_memo: safeGet(row, colIdx('비고')),
+    account_number: safeGet(row, colIdx('전용계좌')),
     photo_link: photoLinkMap[absRow] || '',
     source: 'external_sheet',
     source_sheet_id: sheetId,
@@ -543,6 +544,25 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
     if (!r || r < 100000) continue;
     const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
     product.price[m] = dep ? { rent: r, deposit: dep } : { rent: r };
+  }
+
+  // 웰릭스처럼 "일반조건/심사상품(저신용)" 이중 가격 블록이 있는 시트 — 헤더에 "장기보증"이
+  //  두 번 나오면(=lastIndexOf 가 첫 occurrence 와 다르면) 두 번째 블록도 캡처.
+  //  손오공의 인수형/반납형(rent_return)과는 의미가 달라(신용조건 구분) 별도 필드로 저장 —
+  //  화면에서 "반납형"이 아니라 "심사상품"이라는 정확한 라벨로 표시하기 위함.
+  const idxLongDep = colIdx('장기보증');
+  const idxLongDep2 = headers.lastIndexOf('장기보증');
+  if (idxLongDep2 >= 0 && idxLongDep2 !== idxLongDep) {
+    const longDep2 = parsePrice(safeGet(row, idxLongDep2));
+    ['12', '24', '36', '48'].forEach((m, i) => {
+      const raw2 = safeGet(row, idxLongDep2 + 1 + i);
+      if (/무보증/.test(raw2)) return;
+      const r2 = parsePrice(raw2);
+      if (!r2 || r2 < 100000) return;
+      if (!product.price[m]) product.price[m] = {};
+      product.price[m].rent_screened = r2;
+      if (longDep2) product.price[m].deposit_screened = longDep2;
+    });
   }
 
   // 보증금 조건 탐색 — 어느 셀이든 "공동임차인/소득증빙조건...보증금 XXX만원" 패턴 있으면 캡처
@@ -625,6 +645,7 @@ function parseSongogongRow({ row, headers, absRow, photoLinkMap, providerCode, s
     is_active: true,
     options: safeGet(row, colIdx('옵션')),
     partner_memo: condVal && condVal !== '정상' ? `판매상태:${condVal}` : '',
+    account_number: safeGet(row, colIdx('전용계좌')),
     photo_link: photoLinkMap[absRow] || '',
     source: 'external_sheet',
     source_sheet_id: sheetId,
@@ -735,6 +756,7 @@ function parseGeneralRow({ row, headers, absRow, photoLinkMap, sheetId, nowMs, t
     location:     yard,
     address:      safeGet(row, colIdx('주소')),
     partner_memo: safeGet(row, colIdx('비고')),
+    account_number: safeGet(row, colIdx('전용계좌')),
     product_type: resolveProductType({ pendingPlate, carNumber, kindVal: safeGet(row, colIdx('구분') >= 0 ? colIdx('구분') : colPartial('구분')), defaultProductType }),
     arrival_note:  safeGet(row, colIdx('입고일자')),
     // 아이카는 전용 "무보증여부" 컬럼이 따로 있음 — 없는 공급사는 기존처럼 입고일자 칸 텍스트로 폴백.

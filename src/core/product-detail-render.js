@@ -286,10 +286,11 @@ export function renderDetailSections(p, opts = {}) {
   const providerName = providerLabelByCode(p.provider_company_code || p.partner_code, st0) || '';
   const vehName = composeVehicleName(p);
   const kv = (l, v) => `<div class="pd-kv"><span class="k">${esc(l)}</span><span class="v">${(v != null && String(v).trim() && String(v).trim() !== '-') ? esc(v) : '-'}</span></div>`;
-  const effRent = r => r.rent || r.rentReturn;
+  const effRent = r => r.rent || r.rentReturn || r.rentScreened;
   const cheapest = priceRows.length ? priceRows.reduce((a, b) => (effRent(b) < effRent(a) ? b : a), priceRows[0]) : null;
   const hasKm = priceRows.some(r => r.km);
-  const hasReturn = priceRows.some(r => r.rentReturn > 0);   // 손오공렌터카 등 인수형/반납형 이중가격 매물
+  const hasReturn = priceRows.some(r => r.rentReturn > 0);     // 손오공렌터카 등 인수형/반납형 이중가격 매물
+  const hasScreened = priceRows.some(r => r.rentScreened > 0); // 웰릭스 등 일반조건/심사상품(신용조건) 이중가격 매물
   const st = p.vehicle_status || '';
   const stCls = /협의/.test(st) ? 'is-consult' : /계약|예약/.test(st) ? 'is-contract' : /불가/.test(st) ? 'is-blocked' : '';
 
@@ -320,7 +321,9 @@ export function renderDetailSections(p, opts = {}) {
       <div class="pd-sec-h"><span class="bar"></span>기간별 대여료</div>
       ${priceRows.length ? `
       <table class="pd-tbl">
-        <thead><tr><th>기간</th><th>연주행</th>${hasReturn ? '<th>인수형 대여료</th><th>인수형 보증금</th><th>반납형 대여료</th><th>반납형 보증금</th>' : '<th>월 대여료</th><th>보증금</th>'}</tr></thead>
+        <thead><tr><th>기간</th><th>연주행</th>${hasReturn ? '<th>인수형 대여료</th><th>인수형 보증금</th><th>반납형 대여료</th><th>반납형 보증금</th>'
+          : hasScreened ? '<th>일반조건 대여료</th><th>일반조건 보증금</th><th>심사상품 대여료</th><th>심사상품 보증금</th>'
+          : '<th>월 대여료</th><th>보증금</th>'}</tr></thead>
         <tbody>${priceRows.map(r => {
           const isBest = cheapest && r.m === cheapest.m && r.km === cheapest.km;
           const label = `${r.m}개월${isBest ? '<span class="pd-best-tag">최저</span>' : ''}`;
@@ -330,6 +333,8 @@ export function renderDetailSections(p, opts = {}) {
           const fmtP = v => { const n = Number(v); if (!n) return ''; const man = n / 10000; return (Number.isInteger(man) ? man : Math.round(man * 10) / 10) + '만'; };
           const cells = hasReturn
             ? `<td>${r.rent ? `<span class="pd-rent">${fmtP(r.rent)}</span>` : '-'}</td><td>${fmtP(r.dep) || '-'}</td><td>${r.rentReturn ? `<span class="pd-rent">${fmtP(r.rentReturn)}</span>` : '-'}</td><td>${fmtP(r.depReturn) || '-'}</td>`
+            : hasScreened
+            ? `<td>${r.rent ? `<span class="pd-rent">${fmtP(r.rent)}</span>` : '-'}</td><td>${fmtP(r.dep) || '-'}</td><td>${r.rentScreened ? `<span class="pd-rent">${fmtP(r.rentScreened)}</span>` : '-'}</td><td>${fmtP(r.depScreened) || '-'}</td>`
             : `<td><span class="pd-rent">${fmtP(r.rent)}</span></td><td>${fmtP(r.dep) || '-'}</td>`;
           return `<tr class="${isBest ? 'best' : ''}"><td>${label}</td>${kmCell}${cells}</tr>`;
         }).join('')}</tbody>

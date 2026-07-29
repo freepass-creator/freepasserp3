@@ -125,7 +125,9 @@ export function extractProductDetailRows(p, options = {}) {
   ] : [];
 
   // 6. 가격 — rent>0 필터, 1~60개월 범위 (composite 키 '24_3만' + 구식 키 '24' 모두 지원)
-  //   rent_return/deposit_return — 손오공렌터카 등 "인수형/반납형" 이중 가격 매물 (없으면 undefined, 기존 매물 영향 0)
+  //   rent_return/deposit_return — 손오공렌터카 등 "인수형/반납형" 이중 가격 매물
+  //   rent_screened/deposit_screened — 웰릭스 등 "일반조건/심사상품(신용조건)" 이중 가격 매물
+  //   (둘 다 없으면 undefined, 기존 매물 영향 0)
   const priceEntries = Object.entries(p.price || {})
     .map(([key, v]) => {
       const idx = key.indexOf('_');
@@ -139,11 +141,13 @@ export function extractProductDetailRows(p, options = {}) {
         dep:  Number(v?.deposit || 0),
         rentReturn: Number(v?.rent_return || 0),
         depReturn:  Number(v?.deposit_return || 0),
+        rentScreened: Number(v?.rent_screened || 0),
+        depScreened:  Number(v?.deposit_screened || 0),
         fee:  Number(v?.fee || v?.commission || 0),
         fee_memo: v?.fee_memo || '',
       };
     })
-    .filter(r => Number.isFinite(r.m) && r.m >= 1 && r.m <= 60 && (r.rent > 0 || r.rentReturn > 0))
+    .filter(r => Number.isFinite(r.m) && r.m >= 1 && r.m <= 60 && (r.rent > 0 || r.rentReturn > 0 || r.rentScreened > 0))
     .sort((a, b) => a.m - b.m || (a.km || '').localeCompare(b.km || ''));
 
   const fee = canSeeFee ? priceEntries.filter(r => r.fee > 0) : [];

@@ -244,16 +244,17 @@ export const SIMPLE_PRODUCT_COLS = [
     get: r => r.sheet_meta?.ins_self || insCombo(r._policy?.self_body_accident, r._policy?.self_body_deductible) },
   { f:'ins_uninsured', l:'무보험', w:12,
     get: r => r.sheet_meta?.ins_uninsured || insCombo(r._policy?.uninsured_damage, r._policy?.uninsured_deductible) },
+  { f:'account_number', l:'계좌번호', w:24, get: r => r.account_number || '' },
+  { f:'partner_memo', l:'비고', w:26 },
   // 회사마다 제각각인 특이조건(무보증여부/보증금 조율조건/추가수수료 등)을 컬럼별로 흩어놓지
   //  않고 여기 하나로 합쳐서 표기 — 아이카·빌린카·우리캐피탈·웰릭스 등 공통 적용.
-  { f:'special_notes', l:'특이사항(통합)', w:32, get: r => {
+  { f:'special_notes', l:'AH', w:32, get: r => {
     const parts = [];
     if (r.deposit_free) parts.push('무보증가능');
     if (r.deposit_condition) parts.push(r.deposit_condition);
     if (r.sheet_meta?.additional_fee) parts.push(`추가수수료 ${r.sheet_meta.additional_fee}`);
     return parts.join(' / ');
   } },
-  { f:'partner_memo', l:'비고', w:26 },
 ];
 
 /** 원본 탭·상세 탭용 전체 라벨 (group_label) — 단일행 헤더에서 그룹 맥락 유지 */

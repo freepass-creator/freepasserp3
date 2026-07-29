@@ -997,6 +997,7 @@ function renderSyncTab(el) {
           if (p.ext_color) updates[`products/${found._key}/ext_color`] = p.ext_color;
           if (p.int_color) updates[`products/${found._key}/int_color`] = p.int_color;
           if (p.fuel_type) updates[`products/${found._key}/fuel_type`] = p.fuel_type;
+          if (p.account_number) updates[`products/${found._key}/account_number`] = p.account_number;
           if (p.sheet_meta) updates[`products/${found._key}/sheet_meta`] = p.sheet_meta;
           if (p.annual_mileage) updates[`products/${found._key}/annual_mileage`] = p.annual_mileage;
           if (p.address)       updates[`products/${found._key}/address`]       = p.address;
