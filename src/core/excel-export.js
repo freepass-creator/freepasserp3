@@ -8,6 +8,8 @@
 import { first, parsePol, parseRange, findPolicy, insVal } from './policy-utils.js';
 import { firstProductImage } from './product-photos.js';
 import { normalizeProductType } from './normalize.js';
+import { providerNameByCode } from './ui-helpers.js';
+import { store } from './store.js';
 
 // enrichProductsWithPolicy는 외부(search.js 등)에서도 쓰므로 re-export
 export { enrichProductsWithPolicy } from './policy-utils.js';
@@ -210,6 +212,9 @@ const insCombo = (limitVal, deductVal) => {
 /** 외부 공급사 시트(배차상태~비고 33컬럼) 와 동일한 순서·구성의 간소화 엑셀 —
  *  보험·정책 세부항목 없이 실제 판매/재고 확인에 필요한 핵심만. */
 export const SIMPLE_PRODUCT_COLS = [
+  // 공급사 시트 각각엔 없는 컬럼(그 시트 자체가 1개 회사) — 여러 회사를 합쳐 내보내는
+  // ERP 다운로드엔 어느 회사 매물인지 구분할 컬럼이 아예 없었음 — 검색/필터 위해 추가.
+  { f:'provider_name', l:'공급사', w:14, get: r => providerNameByCode(r.provider_company_code || r.partner_code, store) || r.provider_company_code || '' },
   { f:'vehicle_status', l:'배차상태', w:10 },
   { f:'product_type_disp', l:'구분',  w:10, get: r => normalizeProductType(r.product_type) },
   { f:'car_number',     l:'차량번호', w:14 },
@@ -248,7 +253,8 @@ export const SIMPLE_PRODUCT_COLS = [
   { f:'partner_memo', l:'비고', w:26 },
   // 회사마다 제각각인 특이조건(무보증여부/보증금 조율조건/추가수수료 등)을 컬럼별로 흩어놓지
   //  않고 여기 하나로 합쳐서 표기 — 아이카·빌린카·우리캐피탈·웰릭스 등 공통 적용.
-  { f:'special_notes', l:'AH', w:32, get: r => {
+  //  "AH" 는 컬럼 위치 지칭이었을 뿐 실제 헤더명 아님 — 무보증/추가수수료 등 내용 그대로 라벨링.
+  { f:'special_notes', l:'무보증/추가수수료', w:32, get: r => {
     const parts = [];
     if (r.deposit_free) parts.push('무보증가능');
     if (r.deposit_condition) parts.push(r.deposit_condition);

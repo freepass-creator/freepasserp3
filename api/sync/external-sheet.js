@@ -423,12 +423,27 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
     status_label: statusRaw,
     is_active: true,
     options: idxOptions >= 0 ? safeGet(row, idxOptions) : '',
-    partner_memo: idxNotes >= 0 ? safeGet(row, idxNotes) : '',
+    // 공지사항 안내문 중 매물별 비고엔 없는 공통 조건(위약금·탁송비·연령)을 비고 뒤에 덧붙임.
+    partner_memo: [
+      idxNotes >= 0 ? safeGet(row, idxNotes) : '',
+      '중도해지수수료 잔여이용료의 30%',
+      '탁송비 무료(제주 왕복 80만원 별도, 울릉도 불가)',
+      '만 26~70세 (연령조건 변경 불가)',
+    ].filter(Boolean).join(' / '),
     photo_link: photoLinkMap[absRow] || '',
     source: 'external_sheet',
     source_sheet_id: sheetId,
     source_schema: 'autoplus',
     price: {},
+    // 오토플러스는 매물별 조건 컬럼이 없고 "공지사항" 탭 안내문으로 전체 공통 고지됨 (2023-09-14자).
+    //  자차(자기차량손해)는 안내문에 명시 없어 임의로 채우지 않음 — 확인 후 추가.
+    annual_mileage: '2만/3만Km',   // "3. 주행거리: 연간 20,000km / 30,000km" 중 선택
+    sheet_meta: {
+      ins_injury: '무한/50',       // "7-6) 대인 무한 / 대물 1억 / 자손 1억", "7-7) 면책금 국산·수입 공통 50만원/건당"
+      ins_property: '1억/50',
+      ins_self: '1억',
+      year_1plus: '국산 100원/km, 수입 200원/km',   // "3-1) 초과 1km당 국산차 100원/수입차 200원 추가"
+    },
     created_at: nowMs, updated_at: nowMs,
     created_by: 'sync_external_sheet',
   };
