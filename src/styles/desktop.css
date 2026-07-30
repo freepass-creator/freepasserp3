@@ -2189,6 +2189,13 @@
     object-fit: contain;
     display: block;
   }
+  /* 여러 장 그리드 이미지(chat-img-grid) — 단일 이미지용 max-width:60% 가 그대로 상속돼서
+     그리드 칸의 60%만 채우고 나머지 40%는 말풍선 배경(여백처럼 보임)이 비치던 버그. */
+  .chat-img.chat-img-grid {
+    max-width: 100%;
+    max-height: none;
+    border-radius: 0;
+  }
   .chat-meta {
     display: inline-flex; align-items: center; gap: 4px;
     font-size: 10px; color: var(--text-muted); padding: 0 2px;
