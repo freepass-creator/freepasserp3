@@ -556,10 +556,9 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
   const depositFreePeriods = [];
   for (const [m, col] of Object.entries(rentCols)) {
     const raw = safeGet(row, colIdx(col));
-    // "무보증가능" 등 숫자 대신 텍스트인 칸 — 해당 기간만 미제공(스킵). deposit_free 는 매물 전체 단위 필드라
-    //  특정 기간(예: 12개월)만 무보증이어도 여기서 전체 매물에 플래그를 걸면 다른 기간의 진짜 보증금이
-    //  있는데도 "무보증 가능" 배지가 잘못 붙음 — 그래서 플래그는 안 걸고 그 기간만 건너뛰되,
-    //  어느 기간이 무보증인지는 특이사항에 남김 (아이언 등에서 이 정보 자체가 안 보이던 문제).
+    // "무보증가능" — 어느 기간이든 하나라도 있으면 그 매물 전체가 무보증 (아이언 등 확인된 실제
+    //  영업방식). 그 기간 자체는 값이 없어 스킵하되, 아래에서 product.deposit_free 를 걸고
+    //  이미 채워둔 다른 기간들의 deposit 도 전부 제거함.
     if (/무보증/.test(raw)) { depositFreePeriods.push(m); continue; }
     const r = parsePrice(raw);
     if (!r || r < 100000) continue;
@@ -567,7 +566,9 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
     product.price[m] = dep ? { rent: r, deposit: dep } : { rent: r };
   }
   if (depositFreePeriods.length) {
-    product.sheet_meta.deposit_free_periods = `${depositFreePeriods.join('/')}개월 무보증가능`;
+    product.deposit_free = true;
+    product.sheet_meta.deposit_free_periods = `전체 무보증가능`;
+    for (const entry of Object.values(product.price)) delete entry.deposit;
   }
 
   // 웰릭스처럼 "일반조건/심사상품(저신용)" 이중 가격 블록이 있는 시트 — 헤더에 "장기보증"이
