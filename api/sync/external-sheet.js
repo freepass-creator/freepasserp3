@@ -390,7 +390,9 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
   const modelShort = safeGet(row, idxModelShort);
   const modelFull = idxModelFull >= 0 ? safeGet(row, idxModelFull) : '';
   const imp = isImport(modelFull) || isImport(modelShort);
-  const depMult = imp ? 3 : 2;
+  // 오플 구독 보증금 계산(2026-07-30 안내) — 국산차·제네시스는 기간 무관 렌탈료×2 고정.
+  //  수입차만 12개월 ×3 / 24개월 이상 ×6 으로 갈림.
+  const depMultFor = (period) => imp ? (Number(period) >= 24 ? 6 : 3) : 2;
   const uidSeed = `${finalProvider}_${carNumber}`;
   const productUid = `EXT_${crypto.createHash('md5').update(uidSeed).digest('hex').slice(0, 12)}`;
   const mileage = parseInt(String(safeGet(row, idxMileage)).replace(/[^\d]/g, '') || '0', 10);
@@ -429,7 +431,9 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
       '중도해지수수료 잔여이용료의 30%',
       '탁송비 무료(제주 왕복 80만원 별도, 울릉도 불가)',
       '만 26~70세 (연령조건 변경 불가)',
+      '계약금 500,000원 선점 · 최대 5일 홀딩 고정',
     ].filter(Boolean).join(' / '),
+    account_number: '국민 845701-04-153164 오토플러스(주)',
     photo_link: photoLinkMap[absRow] || '',
     source: 'external_sheet',
     source_sheet_id: sheetId,
@@ -451,7 +455,7 @@ function parseAutoplusRow({ row, headers, headerIdx, absRow, photoLinkMap, provi
     const rent = parsePrice(safeGet(row, idx));
     if (!rent) continue;
     const key = km ? `${period}_${km}` : period;
-    product.price[key] = { rent, deposit: rent * depMult };
+    product.price[key] = { rent, deposit: rent * depMultFor(period) };
   }
   return product;
 }
@@ -549,16 +553,21 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
   const shortDep = parsePrice(safeGet(row, colIdx('단기보증')));
   const longDep = parsePrice(safeGet(row, colIdx('장기보증')));
   const rentCols = { '1': '1개월', '6': '6개월', '12': '12개월', '24': '24개월', '36': '36개월', '48': '48개월', '60': '60개월' };
+  const depositFreePeriods = [];
   for (const [m, col] of Object.entries(rentCols)) {
     const raw = safeGet(row, colIdx(col));
     // "무보증가능" 등 숫자 대신 텍스트인 칸 — 해당 기간만 미제공(스킵). deposit_free 는 매물 전체 단위 필드라
     //  특정 기간(예: 12개월)만 무보증이어도 여기서 전체 매물에 플래그를 걸면 다른 기간의 진짜 보증금이
-    //  있는데도 "무보증 가능" 배지가 잘못 붙음 — 그래서 플래그는 안 걸고 그 기간만 건너뜀.
-    if (/무보증/.test(raw)) continue;
+    //  있는데도 "무보증 가능" 배지가 잘못 붙음 — 그래서 플래그는 안 걸고 그 기간만 건너뛰되,
+    //  어느 기간이 무보증인지는 특이사항에 남김 (아이언 등에서 이 정보 자체가 안 보이던 문제).
+    if (/무보증/.test(raw)) { depositFreePeriods.push(m); continue; }
     const r = parsePrice(raw);
     if (!r || r < 100000) continue;
     const dep = (Number(m) >= 24 ? longDep : shortDep) || 0;
     product.price[m] = dep ? { rent: r, deposit: dep } : { rent: r };
+  }
+  if (depositFreePeriods.length) {
+    product.sheet_meta.deposit_free_periods = `${depositFreePeriods.join('/')}개월 무보증가능`;
   }
 
   // 웰릭스처럼 "일반조건/심사상품(저신용)" 이중 가격 블록이 있는 시트 — 헤더에 "장기보증"이
