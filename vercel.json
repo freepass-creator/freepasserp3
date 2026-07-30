@@ -15,6 +15,9 @@
     "api/signup-profile.js": {
       "maxDuration": 30
     },
+    "api/contract-create.js": {
+      "maxDuration": 30
+    },
     "api/sync/auto.js": {
       "maxDuration": 300
     }
