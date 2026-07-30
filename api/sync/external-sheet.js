@@ -556,9 +556,9 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
   const depositFreePeriods = [];
   for (const [m, col] of Object.entries(rentCols)) {
     const raw = safeGet(row, colIdx(col));
-    // "무보증가능" — 어느 기간이든 하나라도 있으면 그 매물 전체가 무보증 (아이언 등 확인된 실제
-    //  영업방식). 그 기간 자체는 값이 없어 스킵하되, 아래에서 product.deposit_free 를 걸고
-    //  이미 채워둔 다른 기간들의 deposit 도 전부 제거함.
+    // "무보증가능" — 아예 무보증 확정이 아니라 "심사 후 무보증 가능"이라는 조건부 안내
+    //  (사용자 확인). product.deposit_free 는 확정 무보증 매물에만 쓰는 필드라 여기선 안 걸고,
+    //  다른 기간의 실제 보증금 값도 그대로 유지 — 특이사항에 안내 문구만 남김.
     if (/무보증/.test(raw)) { depositFreePeriods.push(m); continue; }
     const r = parsePrice(raw);
     if (!r || r < 100000) continue;
@@ -566,9 +566,7 @@ function parseRentCoRow({ row, headers, absRow, photoLinkMap, providerCode, shee
     product.price[m] = dep ? { rent: r, deposit: dep } : { rent: r };
   }
   if (depositFreePeriods.length) {
-    product.deposit_free = true;
-    product.sheet_meta.deposit_free_periods = `전체 무보증가능`;
-    for (const entry of Object.values(product.price)) delete entry.deposit;
+    product.sheet_meta.deposit_free_periods = '심사 후 무보증가능';
   }
 
   // 웰릭스처럼 "일반조건/심사상품(저신용)" 이중 가격 블록이 있는 시트 — 헤더에 "장기보증"이
