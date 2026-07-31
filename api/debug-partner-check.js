@@ -27,6 +27,48 @@ export default async function handler(req, res) {
   try {
     await getAdmin();
     const db = admin.database();
+
+    // POST — 렌트존 중복매물 정리 + POL-0021 정책 코드 정정 (한 번만 실행)
+    if (req.method === 'POST') {
+      const RENTZONE_CODES = ['RP011', 'RP014', 'PT-0001'];
+      const allProdSnap = await db.ref('products').once('value');
+      const allProdVal = allProdSnap.val() || {};
+      const byCar = {};
+      for (const [key, p] of Object.entries(allProdVal)) {
+        if (p._deleted) continue;
+        const code = p.provider_company_code || p.partner_code || '';
+        if (!RENTZONE_CODES.includes(code)) continue;
+        (byCar[p.car_number] ||= []).push({ key, code, updated_at: p.updated_at || 0 });
+      }
+      const contractsSnap = await db.ref('contracts').once('value');
+      const contractsVal = contractsSnap.val() || {};
+      const referencedKeys = new Set(Object.values(contractsVal).filter(c => !c._deleted).map(c => c.product_uid).filter(Boolean));
+
+      const updates = {};
+      const report = [];
+      for (const [carNumber, entries] of Object.entries(byCar)) {
+        if (entries.length < 2) continue;
+        // 계약이 걸린 매물이 있으면 그걸 canonical 로, 없으면 최신 updated_at 을 canonical 로
+        const referenced = entries.find(e => referencedKeys.has(e.key));
+        const canonical = referenced || [...entries].sort((a, b) => b.updated_at - a.updated_at)[0];
+        updates[`products/${canonical.key}/provider_company_code`] = 'PT-0014';
+        updates[`products/${canonical.key}/partner_code`] = 'PT-0014';
+        updates[`products/${canonical.key}/updated_at`] = Date.now();
+        const removed = [];
+        for (const e of entries) {
+          if (e.key === canonical.key) continue;
+          updates[`products/${e.key}/_deleted`] = true;
+          updates[`products/${e.key}/status`] = 'deleted';
+          updates[`products/${e.key}/updated_at`] = Date.now();
+          removed.push(e.key);
+        }
+        report.push({ carNumber, canonical: canonical.key, removed });
+      }
+      updates['policies/POL-0021/provider_company_code'] = 'PT-0014';
+      await db.ref().update(updates);
+      return res.json({ ok: true, cleaned: report, policyFixed: 'POL-0021 -> PT-0014' });
+    }
+
     const snap = await db.ref('partners').once('value');
     const val = snap.val() || {};
     const hits = [];
