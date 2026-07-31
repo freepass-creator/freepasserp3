@@ -56,7 +56,25 @@ export default async function handler(req, res) {
       _deleted: p._deleted || false, status: p.status, vehicle_status: p.vehicle_status, updated_at: p.updated_at, sheet_meta_source: p.sheet_meta?.source || null,
     }));
 
-    res.json({ ok: true, partners: hits, policies: polHits, product_188호3065: prodHits });
+    // 렌트존 관련 코드별 활성 매물 수 — 중복 규모 파악용
+    const allProdSnap = await db.ref('products').once('value');
+    const allProdVal = allProdSnap.val() || {};
+    const codeCounts = {};
+    const dupByCarNumber = {};
+    for (const [key, p] of Object.entries(allProdVal)) {
+      if (p._deleted) continue;
+      const code = p.provider_company_code || p.partner_code || '';
+      if (['RP011', 'RP014', 'PT-0001', 'PT-0014', 'RP007'].includes(code)) {
+        codeCounts[code] = (codeCounts[code] || 0) + 1;
+        if (p.car_number) {
+          if (!dupByCarNumber[p.car_number]) dupByCarNumber[p.car_number] = [];
+          dupByCarNumber[p.car_number].push({ key, code });
+        }
+      }
+    }
+    const duplicated = Object.entries(dupByCarNumber).filter(([, v]) => v.length > 1);
+
+    res.json({ ok: true, partners: hits, policies: polHits, product_188호3065: prodHits, codeCounts, duplicatedCarCount: duplicated.length, duplicatedSample: duplicated.slice(0, 10) });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
