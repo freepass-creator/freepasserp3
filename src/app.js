@@ -1169,6 +1169,9 @@ async function boot() {
       if (e.data?.type === 'SW_UPDATED') window.location.reload();
     });
   }
+  // 빌드 버전 폴링 — SW 갱신 감지와 별개로, 탭을 오래 켜둔 채 새로고침을 안 하면 배포된 새
+  //  코드를 영영 못 받는 문제 방지 (청크 파일이 서버에 남아있어 로드 실패로도 안 걸림).
+  import('./core/version-watch.js').then(m => m.startVersionWatch()).catch(() => {});
   // 청크 로드 실패(배포 후 파일명 변경) → SW 캐시 전체 삭제 후 자동 새로고침 (10초 쿨다운)
   window.addEventListener('unhandledrejection', (e) => {
     const msg = e.reason?.message || String(e.reason || '');

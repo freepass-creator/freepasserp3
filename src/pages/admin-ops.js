@@ -1021,15 +1021,19 @@ function renderSyncTab(el) {
             if (p.model)      updates[`products/${found._key}/model`]      = p.model;
             if (p.sub_model)  updates[`products/${found._key}/sub_model`]  = p.sub_model;
             if (p.catalog_id) updates[`products/${found._key}/catalog_id`] = p.catalog_id;
-            if (p.variant)    updates[`products/${found._key}/variant`]    = p.variant;
-            if (p.trim_name)  updates[`products/${found._key}/trim_name`]  = p.trim_name;
           } else {
-            // 분류완료/수기보정 보존 — 단 빈 칸(maker/model/파워트레인/catalog_id)은 보충만
+            // 분류완료/수기보정 보존 — 단 빈 칸(maker/model/catalog_id)은 보충만
             if (!found.maker && p.maker)            updates[`products/${found._key}/maker`]      = p.maker;
             if (!found.model && p.model)            updates[`products/${found._key}/model`]      = p.model;
-            if (!found.variant && p.variant)        updates[`products/${found._key}/variant`]    = p.variant;
             if (!found.catalog_id && p.catalog_id)  updates[`products/${found._key}/catalog_id`] = p.catalog_id;
           }
+          // 파워트레인/트림 — 세대(sub_model)와 달리 항상 최신 재계산값으로 갱신.
+          //  admin이 이 필드만 따로 수기 고정할 이유가 희박한 반면, SSOT 원본(match-index) 갱신이나
+          //  시트의 실제 트림 텍스트는 매번 최신이 진실 — sub_model 처럼 "동결" 시키면 예전에 한 번
+          //  잘못 스냅된 파워트레인(예: LPi 차량이 SSOT에 LPG 변형이 없던 시점에 디젤로 스냅)이
+          //  sub_model 은 맞아도 영원히 안 고쳐지던 버그 수정 (2026-07-31).
+          if (p.variant)    updates[`products/${found._key}/variant`]    = p.variant;
+          if (p.trim_name)  updates[`products/${found._key}/trim_name`]  = p.trim_name;
           // 시트의 정책코드/공급코드 — 시트값 명시되면 항상 우선 (사용자 마스터 데이터)
           if (p.policy_code)            updates[`products/${found._key}/policy_code`]            = p.policy_code;
           if (p.provider_company_code)  updates[`products/${found._key}/provider_company_code`]  = p.provider_company_code;

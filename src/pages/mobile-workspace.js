@@ -652,90 +652,87 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
         const submitBtn = sheet.querySelector('#csSubmit');
         if (submitBtn) submitBtn.disabled = true;
         try {
-          const { pushRecord, updateRecord } = await import('../firebase/db.js');
           const { makeTempContractCode } = await import('./contract.js');
+          const { auth: fbAuth } = await import('../firebase/config.js');
 
-          // 1. 계약자 — phone 매칭 시 기존 reuse, 없으면 신규 push
-          let customer = (store.customers || []).find(c => c.phone === phone || (c.phone || '').replace(/\D/g, '') === phone);
-          if (!customer) {
-            const cKey = await pushRecord('customers', {
-              name,
-              phone,
-              birth,
-              is_business: isBiz,
-              business_no: isBiz ? bizNo : '',
-              business_name: isBiz ? bizName : '',
-              created_by: me.uid,
-            });
-            customer = { _key: cKey, name, phone, birth, is_business: isBiz };
-          }
+          // 1. 계약자 — phone 매칭 시 기존 reuse, 없으면 서버에서 신규 생성
+          const existingCustomer = (store.customers || []).find(c => c.phone === phone || (c.phone || '').replace(/\D/g, '') === phone);
 
           // 2. 영업자 — 위 submit 핸들러 진입부에서 결정 (agent 변수 사용)
 
-          // 3. 계약 생성 — desktop createContractFromRoomLocal 과 동일 필드
+          // 3. 계약 생성 — Firebase 직접 write 대신 Admin SDK 서버 API 경유 (desktop createContractFromRoomLocal 과
+          //  동일 패턴 — RTDB rules PERMISSION_DENIED 우회. 모바일만 이 전환이 누락돼 계약생성이 계속 안 되던 버그 수정.)
           const code = await makeTempContractCode();
           const priceVal = priceMap[m] || {};
-          // Firebase RTDB 는 undefined 거부 → 모든 필드를 fallback '' 또는 0 으로
-          const payload = {
-            contract_code: code,
-            is_draft: true,
-            product_uid: p._key || ctx.product_uid || '',
-            product_code: p.product_code || '',
-            // 차량 snapshot
-            car_number_snapshot: p.car_number || ctx.vehicle_number || '',
-            maker_snapshot: p.maker || ctx.maker || '',
-            model_snapshot: p.model || ctx.model || '',
-            sub_model_snapshot: p.sub_model || ctx.sub_model || '',
-            vehicle_name_snapshot: `${p.maker || ''} ${p.sub_model || p.model || ''}`.trim(),
-            year_snapshot: p.year || '',
-            fuel_type_snapshot: p.fuel_type || '',
-            ext_color_snapshot: p.ext_color || '',
-            // 기간/가격 snapshot
-            rent_month_snapshot: Number(m) || 0,
-            rent_amount_snapshot: Number(priceVal.rent) || 0,
-            deposit_amount_snapshot: Number(priceVal.deposit) || 0,
-            // 계약자 snapshot
-            customer_uid: customer._key || '',
-            customer_name: name,
-            customer_birth: birth || '',
-            customer_phone: phone,
-            customer_is_business: isBiz,
-            // 데스크톱 계약상세 reader(contract.js:174-175)와 동일 표준명
-            customer_business_number: isBiz ? (bizNo || '') : '',
-            customer_company_name: isBiz ? (bizName || '') : '',
-            // 관계자 — 본인 (agent_uid/code 가 본인이어야 본인 목록에 노출)
-            agent_uid: agent.uid || agent._key || '',
-            agent_code: agent.user_code || '',
-            agent_name: agent.name || '',
-            agent_channel_code: agent.agent_channel_code || agent.channel_code || '',
-            provider_company_code: ctx.provider_company_code || p.provider_company_code || '',
-            provider_uid: ctx.provider_uid || p.provider_uid || '',
-            // 정책 snapshot
-            policy_code: p.policy_code || '',
-            policy_name_snapshot: p._policy?.policy_name || '',
-            credit_grade_snapshot: p._policy?.credit_grade || '',
-            // 메타
-            contract_status: CONTRACT_STATUS.REQUESTED,
-            contract_date: new Date().toISOString().slice(0, 10),
-            created_at: Date.now(),
-            created_by: me.uid || '',
-          };
-          await pushRecord('contracts', payload);
-
-          // 4. room 연결 + product 상태 전환 (desktop 동일)
-          if (room && room._key) {
-            await updateRecord(`rooms/${room._key}`, { linked_contract: code }).catch(() => null);
-          }
-          if (p._key) {
-            const vsUpdate = (p.vehicle_status === VEHICLE_STATUS.BLOCKED) ? {} : { vehicle_status: VEHICLE_STATUS.NEGOTIABLE };
-            await updateRecord(`products/${p._key}`, {
-              ...vsUpdate,
-              assigned_agent_uid: agent.uid || agent._key,
-              assigned_agent_code: agent.user_code,
-              assigned_agent_name: agent.name,
-              assigned_at: Date.now(),
-            }).catch(() => null);
-          }
+          const idToken = await fbAuth.currentUser.getIdToken();
+          const res = await fetch('/api/contract-create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+            body: JSON.stringify({
+              customer: existingCustomer
+                ? { key: existingCustomer._key }
+                : { isNew: true, data: {
+                    name,
+                    phone,
+                    birth,
+                    is_business: isBiz,
+                    business_no: isBiz ? bizNo : '',
+                    business_name: isBiz ? bizName : '',
+                  } },
+              contract: {
+                contract_code: code,
+                is_draft: true,
+                product_uid: p._key || ctx.product_uid || '',
+                product_code: p.product_code || '',
+                // 차량 snapshot
+                car_number_snapshot: p.car_number || ctx.vehicle_number || '',
+                maker_snapshot: p.maker || ctx.maker || '',
+                model_snapshot: p.model || ctx.model || '',
+                sub_model_snapshot: p.sub_model || ctx.sub_model || '',
+                vehicle_name_snapshot: `${p.maker || ''} ${p.sub_model || p.model || ''}`.trim(),
+                year_snapshot: p.year || '',
+                fuel_type_snapshot: p.fuel_type || '',
+                ext_color_snapshot: p.ext_color || '',
+                // 기간/가격 snapshot
+                rent_month_snapshot: Number(m) || 0,
+                rent_amount_snapshot: Number(priceVal.rent) || 0,
+                deposit_amount_snapshot: Number(priceVal.deposit) || 0,
+                // 계약자 snapshot
+                customer_name: name,
+                customer_birth: birth || '',
+                customer_phone: phone,
+                customer_is_business: isBiz,
+                // 데스크톱 계약상세 reader(contract.js:174-175)와 동일 표준명
+                customer_business_number: isBiz ? (bizNo || '') : '',
+                customer_company_name: isBiz ? (bizName || '') : '',
+                // 관계자 — 본인 (agent_uid/code 가 본인이어야 본인 목록에 노출)
+                agent_uid: agent.uid || agent._key || '',
+                agent_code: agent.user_code || '',
+                agent_name: agent.name || '',
+                agent_channel_code: agent.agent_channel_code || agent.channel_code || '',
+                provider_company_code: ctx.provider_company_code || p.provider_company_code || '',
+                provider_uid: ctx.provider_uid || p.provider_uid || '',
+                // 정책 snapshot
+                policy_code: p.policy_code || '',
+                policy_name_snapshot: p._policy?.policy_name || '',
+                credit_grade_snapshot: p._policy?.credit_grade || '',
+                // 메타
+                contract_status: CONTRACT_STATUS.REQUESTED,
+                contract_date: new Date().toISOString().slice(0, 10),
+              },
+              room_key: (room && room._key) || null,
+              product_key: p._key || null,
+              product_update: p._key ? {
+                ...(p.vehicle_status === VEHICLE_STATUS.BLOCKED ? {} : { vehicle_status: VEHICLE_STATUS.NEGOTIABLE }),
+                assigned_agent_uid: agent.uid || agent._key,
+                assigned_agent_code: agent.user_code,
+                assigned_agent_name: agent.name,
+                assigned_at: Date.now(),
+              } : null,
+            }),
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) throw new Error(data.error || `계약 생성 실패 (${res.status})`);
 
           showToast(`계약 생성됨 (${code})`, 'success');
           // 시트 닫고 채팅방으로 복귀 (history.back = openBottomSheet 가 push 한 entry 팝)
@@ -743,9 +740,7 @@ export function openContractStartSheet({ room, product, onCreated } = {}) {
           onCreated?.(code);
         } catch (e) {
           console.error('[contract start]', e);
-          const msg = e?.code === 'PERMISSION_DENIED' ? '권한 없음 (RTDB rules)'
-                    : e?.message || String(e).slice(0, 80);
-          showToast(`계약 생성 실패: ${msg}`, 'error');
+          showToast(`계약 생성 실패: ${e.message || e}`, 'error');
           if (submitBtn) submitBtn.disabled = false;
         }
       });
