@@ -34,10 +34,28 @@ export default async function handler(req, res) {
       const code = p.partner_code || p.company_code || key;
       const name = p.partner_name || p.company_name || '';
       if (code === 'RP011' || String(name).includes('연카') || String(name).includes('렌트존')) {
-        hits.push({ key, code, partner_code: p.partner_code, company_code: p.company_code, partner_name: p.partner_name, company_name: p.company_name });
+        hits.push({ key, code, partner_code: p.partner_code, company_code: p.company_code, partner_name: p.partner_name, company_name: p.company_name, _deleted: p._deleted || false, created_at: p.created_at });
       }
     }
-    res.json({ ok: true, hits });
+
+    const polSnap = await db.ref('policies').once('value');
+    const polVal = polSnap.val() || {};
+    const polHits = [];
+    for (const [key, pol] of Object.entries(polVal)) {
+      const name = pol.partner_name || pol.provider_name || '';
+      const code = pol.provider_company_code || pol.partner_code || '';
+      if (code === 'RP011' || String(name).includes('연카') || String(name).includes('렌트존')) {
+        polHits.push({ key, policy_name: pol.policy_name, provider_company_code: pol.provider_company_code, partner_code: pol.partner_code, partner_name: pol.partner_name, _deleted: pol._deleted || false });
+      }
+    }
+
+    const prodSnap = await db.ref('products').orderByChild('car_number').equalTo('188호3065').once('value');
+    const prodVal = prodSnap.val() || {};
+    const prodHits = Object.entries(prodVal).map(([key, p]) => ({
+      key, car_number: p.car_number, provider_company_code: p.provider_company_code, partner_code: p.partner_code, product_type: p.product_type,
+    }));
+
+    res.json({ ok: true, partners: hits, policies: polHits, product_188호3065: prodHits });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
