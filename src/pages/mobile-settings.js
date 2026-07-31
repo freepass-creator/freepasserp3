@@ -23,7 +23,7 @@ import { roleLabel } from '../core/roles.js';
 import { AUTO_LOGOUT_OPTIONS } from '../core/idle-logout.js';
 import { updateRecord, fetchCollection } from '../firebase/db.js';
 import { uploadImage, uploadFile } from '../firebase/storage-helper.js';
-import { logout, resetPassword } from '../firebase/auth.js';
+import { logout } from '../firebase/auth.js';
 import { auth } from '../firebase/config.js';
 import { canInstall, isIOS, isStandalone, promptInstall, onInstallStateChange } from '../core/pwa-install.js';
 import { fmtFullTime } from '../core/ui-helpers.js';
@@ -549,11 +549,19 @@ function bindAll(main, u) {
     btn.addEventListener('click', () => navigate(btn.dataset.path));
   });
 
-  // 계정 관리
+  // 계정 관리 — 이메일 대신 SMS (구글 발신 메일이 네이버 등에서 스팸 필터링되는 문제 회피)
   document.getElementById('mstResetPw')?.addEventListener('click', async () => {
     if (!u.email) return;
-    try { await resetPassword(u.email); showToast('비밀번호 재설정 메일 전송됨'); }
-    catch (e) { showToast('전송 실패', 'error'); }
+    try {
+      const res = await fetch('/api/password-reset-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: u.email }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `전송 실패 (${res.status})`);
+      showToast('등록된 휴대폰으로 재설정 링크를 보냈습니다');
+    } catch (e) { showToast('전송 실패: ' + (e.message || e), 'error'); }
   });
   document.getElementById('mstDelete')?.addEventListener('click', async () => {
     const entered = prompt('계정을 삭제하려면 이메일을 입력하세요:');

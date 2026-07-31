@@ -18,6 +18,9 @@
     "api/contract-create.js": {
       "maxDuration": 30
     },
+    "api/password-reset-sms.js": {
+      "maxDuration": 30
+    },
     "api/sync/auto.js": {
       "maxDuration": 300
     }

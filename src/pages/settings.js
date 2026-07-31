@@ -8,7 +8,7 @@
  */
 import { store } from '../core/store.js';
 import { updateRecord } from '../firebase/db.js';
-import { logout as fbLogout, resetPassword } from '../firebase/auth.js';
+import { logout as fbLogout } from '../firebase/auth.js';
 import { showToast } from '../core/toast.js';
 import { esc, renderRoomItem } from '../core/ui-helpers.js';
 import { roleLabel } from '../core/roles.js';
@@ -352,12 +352,18 @@ function bindAccountSection(body, user) {
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
   });
 
-  // 비밀번호 재설정
+  // 비밀번호 재설정 — 이메일 대신 SMS (구글 발신 메일이 네이버 등에서 스팸 필터링되는 문제 회피)
   body.querySelector('#acResetPw')?.addEventListener('click', async () => {
     if (!user.email) return showToast('이메일이 없습니다', 'error');
     try {
-      await resetPassword(user.email);
-      showToast('비밀번호 재설정 메일 전송됨');
+      const res = await fetch('/api/password-reset-sms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `전송 실패 (${res.status})`);
+      showToast('등록된 휴대폰으로 재설정 링크를 보냈습니다');
     } catch (e) {
       showToast('전송 실패: ' + (e.message || e), 'error');
     }

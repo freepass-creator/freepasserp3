@@ -2564,13 +2564,23 @@ function bindLoginForm() {
     if (submitBtn) submitBtn.disabled = true;
     if (msg) { msg.style.color = '#888'; msg.textContent = '전송 중...'; }
     try {
-      const { resetPassword } = await import('./firebase/auth.js');
+      // Firebase 기본 재설정 메일 대신 문자(SMS)로 발송 — 구글 공유 발신 메일이 네이버 등
+      //  국내 메일함에서 스팸 필터에 걸려 도착 안 하는 사례가 많아 등록된 휴대폰으로 대체.
       const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('요청 시간 초과 — 잠시 후 다시 시도해주세요')), 15000));
-      await Promise.race([resetPassword(email), timeout]);
-      if (msg) { msg.style.color = 'var(--accent-green)'; msg.textContent = '재설정 메일 전송됨. 이메일(스팸함 포함)을 확인하세요.'; }
+      const res = await Promise.race([
+        fetch('/api/password-reset-sms', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        }),
+        timeout,
+      ]);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) throw new Error(data.error || `전송 실패 (${res.status})`);
+      if (msg) { msg.style.color = 'var(--accent-green)'; msg.textContent = '가입 시 등록한 휴대폰으로 재설정 링크를 보냈습니다. 문자를 확인하세요.'; }
     } catch (err) {
       console.error('[reset]', err);
-      if (msg) { msg.style.color = ''; msg.textContent = koreanAuthMsg(err, '전송 실패'); }
+      if (msg) { msg.style.color = ''; msg.textContent = err.message || '전송 실패'; }
       if (submitBtn) submitBtn.disabled = false;
     }
   });
