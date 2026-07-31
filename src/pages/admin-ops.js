@@ -1172,6 +1172,21 @@ function renderCleanupTab(el) {
           <span id="cleanupBadCodeApplyStatus" class="ao-status"></span>
         </div>
       </div>
+      <div class="ao-banner" style="border-color:var(--alert-orange-text, #d97706);">
+        <i class="ph ph-warning"></i>
+        <div>
+          <b>공급사 코드 매핑 점검</b> · 시트소스마다 지정된 provider_code 가 실제 partners
+          등록명과 맞는지 확인 — 렌트존이 "연카" 코드(RP011)에 잘못 연결됐던 사고 재발 방지용.<br>
+          <span class="ao-banner-sub">신규 시트소스 추가할 때마다 한 번씩 돌려보면 좋음.</span>
+        </div>
+      </div>
+      <div class="ao-step">
+        <div class="ao-actions">
+          <button class="btn btn-sm btn-primary" id="cleanupProviderMapBtn"><i class="ph ph-magnifying-glass"></i> 공급사 코드 매핑 확인</button>
+          <span id="cleanupProviderMapStatus" class="ao-status"></span>
+        </div>
+      </div>
+      <div id="cleanupProviderMapPreview" style="min-height:150px;max-height:40vh;overflow:auto;border:1px solid var(--border);border-radius:4px;display:none;"></div>
     </div>
   `;
 
@@ -1480,5 +1495,67 @@ function renderCleanupTab(el) {
     } finally {
       badCodeApplyBtn.disabled = false;
     }
+  });
+
+  // ── 공급사 코드 매핑 점검 — SHEET_CONFIGS(api/sync/external-sheet.js) 의 provider_code 가
+  //  partners 등록명과 그럴듯하게 맞는지 확인. 렌트존이 연카(RP011)에 잘못 연결됐던 사고 재발 방지.
+  //  api/sync/external-sheet.js 와 이 목록은 별개 런타임(서버/클라이언트)이라 코드 추가 시 양쪽 다 갱신 필요.
+  const PROVIDER_SOURCES = [
+    { code: 'RP023', name: '오토플러스' }, { code: 'RP012', name: '손오공' },
+    { code: 'RP004', name: '아이카' }, { code: 'RP022', name: '퍼시픽' },
+    { code: 'RP008', name: '리더스' }, { code: 'RP018', name: '스타' },
+    { code: 'PT-0014', name: '렌트존' }, { code: 'RP015', name: '경진렌트카' },
+    { code: 'RP016', name: '경진카' }, { code: 'RP020', name: '우리캐피탈렌터카' },
+    { code: 'RP010', name: 'KH' }, { code: 'RP017', name: '센트로' },
+    { code: 'RP021', name: '빌린카' }, { code: 'RP006', name: '아이언' },
+    { code: 'RP013', name: '웰릭스' }, { code: 'PT-0023', name: 'SA렌터카' },
+    { code: 'RP030', name: 'J&J렌트카' },
+  ];
+  const coreToken = s => String(s || '').replace(/\(주\)|주식회사|렌터카|렌트카|모빌리티|캐피탈/g, '').trim();
+
+  const providerMapBtn = el.querySelector('#cleanupProviderMapBtn');
+  const providerMapStatusEl = el.querySelector('#cleanupProviderMapStatus');
+  const providerMapPreviewEl = el.querySelector('#cleanupProviderMapPreview');
+
+  providerMapBtn?.addEventListener('click', () => {
+    const byCode = new Map();
+    for (const p of (store.partners || [])) {
+      if (p._deleted) continue;
+      const code = p.partner_code || p.company_code || p._key;
+      byCode.set(code, p.partner_name || p.company_name || '');
+    }
+    const rows = PROVIDER_SOURCES.map(s => {
+      const partnerName = byCode.get(s.code);
+      const found = partnerName != null;
+      const expected = coreToken(s.name);
+      const actual = coreToken(partnerName || '');
+      const looksOk = found && (actual.includes(expected) || expected.includes(actual));
+      return { ...s, partnerName: partnerName || '(등록 없음)', found, looksOk };
+    });
+    const problemCount = rows.filter(r => !r.looksOk).length;
+    providerMapStatusEl.textContent = `${rows.length}개 소스 확인 — ${problemCount ? `⚠ ${problemCount}건 확인 필요` : '전부 정상'}`;
+    providerMapPreviewEl.style.display = 'block';
+    providerMapPreviewEl.innerHTML = `
+      <table style="font-size:11px;border-collapse:collapse;width:100%;">
+        <thead style="position:sticky;top:0;background:var(--bg-header);z-index:1;">
+          <tr>
+            <th style="padding:4px 6px;text-align:left;">시트소스</th>
+            <th style="padding:4px 6px;text-align:left;">코드</th>
+            <th style="padding:4px 6px;text-align:left;">실제 등록된 파트너명</th>
+            <th style="padding:4px 6px;text-align:left;">상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(r => `
+            <tr style="border-bottom:1px solid var(--border);${r.looksOk ? '' : 'background:rgba(220,38,38,0.08);'}">
+              <td style="padding:4px 6px;">${esc(r.name)}</td>
+              <td style="padding:4px 6px;">${esc(r.code)}</td>
+              <td style="padding:4px 6px;">${esc(r.partnerName)}</td>
+              <td style="padding:4px 6px;${r.looksOk ? '' : 'color:var(--alert-red-text);font-weight:600;'}">${r.looksOk ? 'OK' : (r.found ? '⚠ 이름 확인 필요(오탐 가능)' : '⚠ 등록 안 됨')}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
   });
 }
