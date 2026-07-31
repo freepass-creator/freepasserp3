@@ -53,6 +53,7 @@ export default async function handler(req, res) {
     const prodVal = prodSnap.val() || {};
     const prodHits = Object.entries(prodVal).map(([key, p]) => ({
       key, car_number: p.car_number, provider_company_code: p.provider_company_code, partner_code: p.partner_code, product_type: p.product_type,
+      _deleted: p._deleted || false, status: p.status, vehicle_status: p.vehicle_status, updated_at: p.updated_at, sheet_meta_source: p.sheet_meta?.source || null,
     }));
 
     res.json({ ok: true, partners: hits, policies: polHits, product_188호3065: prodHits });
