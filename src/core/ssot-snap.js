@@ -299,6 +299,13 @@ export function snapToSsot(p, snapIndex) {
   if (prodDispL(p) == null && sameFuelDispVary) review.push('배기량미상');  // 같은연료 배기량 여러개인데 배기량 모름
   if (!regYear && nGen > 1) info.push('연식미상');                     // 다세대인데 등록일 없음 (세대=최신 추정)
   if (rawTrimText.length >= 2 && (vTrims || []).length > 1 && tr.score < 0.2) info.push('트림추정');
+  // '그래비티' 등 캡틴시트 트림은 SSOT 원본에서도 인승수가 5/6/7/9 등으로 차종·연식마다 제각각이라
+  // (실제 차량마다도 다름 — 확정된 규칙이 없음), raw 텍스트에 인승수가 명시 안 돼있으면 픽된
+  // 인승을 그대로 신뢰하지 말고 검토 필요로 표시 (2026-08-04, 확인 안 된 채로 자동 확정 방지).
+  if (/그래비티/.test(tr.name) && !/\d\s*인승/.test(rawTrimText)) {
+    const seatsForThisTrim = new Set((entry.variants || []).filter(x => (x.trims || []).includes(tr.name)).map(x => x.seat).filter(Boolean));
+    if (seatsForThisTrim.size > 1) review.push('그래비티 인승 불명확');
+  }
   const flags = [...review, ...info];
   const confidence = review.length ? 'review' : 'high';
 
