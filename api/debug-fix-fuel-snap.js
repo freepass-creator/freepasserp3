@@ -50,10 +50,21 @@ export default async function handler(req, res) {
     const prodSnap = await db.ref('products').once('value');
     const prodVal = prodSnap.val() || {};
     const byCarNumber = new Map();
+    const dupCars = new Map();
     for (const [key, pr] of Object.entries(prodVal)) {
       if (pr._deleted) continue;
       if (!pr.car_number) continue;
+      if (byCarNumber.has(pr.car_number)) {
+        if (!dupCars.has(pr.car_number)) dupCars.set(pr.car_number, [{ key: byCarNumber.get(pr.car_number).key, variant: byCarNumber.get(pr.car_number).variant, sub_model: byCarNumber.get(pr.car_number).sub_model }]);
+        dupCars.get(pr.car_number).push({ key, variant: pr.variant, sub_model: pr.sub_model });
+      }
       byCarNumber.set(pr.car_number, { key, ...pr });
+    }
+
+    if (req.query?.probe) {
+      const cars = String(req.query.probe).split(',');
+      const probeOut = cars.map(cn => ({ car_number: cn, live: byCarNumber.get(cn) || null, duplicates: dupCars.get(cn) || null }));
+      return res.json({ ok: true, probeOut });
     }
 
     const diffs = [];
