@@ -86,7 +86,10 @@ export function variantLabel(v, showSeat) {
 /* ── 파워트레인 스냅: SSOT variants 중 최근접 ── */
 function snapVariant(p, variants) {
   if (!variants || !variants.length) return null;
-  const pf = fuelKey(p.fuel_type) || fuelKey(`${p.trim_name || ''} ${p.raw_model_full || ''}`);
+  // raw 텍스트(트림/모델명 원문)에 연료가 명시돼 있으면 그게 우선 — 시트의 별도 '연료' 컬럼은
+  //  공급사가 잘못 기재/미갱신하는 경우가 있는 반면(예: LPG 차량인데 연료컬럼에 '가솔린'),
+  //  트림 원문은 실제 그 차량을 그대로 옮겨적은 텍스트라 더 신뢰 가능 (trim_name 우선 원칙과 동일).
+  const pf = fuelKey(`${p.trim_name || ''} ${p.raw_model_full || ''}`) || fuelKey(p.fuel_type);
   const pd = prodDispL(p);
   const pdr = driveKey(`${p.trim_name || ''} ${p.raw_model_full || ''} ${p.variant || ''} ${p.drive_type || ''}`);
   const ps = prodSeat(p);
@@ -235,7 +238,10 @@ export function snapToSsot(p, snapIndex) {
   if (!cand || !cand.length) return null;
   const nGen = cand.length;   // 이 모델의 세대(세부모델) 수 — 연식 중요도 판단용
 
-  const pf = fuelKey(p.fuel_type) || fuelKey(`${p.trim_name || ''} ${p.raw_model_full || ''}`);
+  // raw 텍스트(트림/모델명 원문)에 연료가 명시돼 있으면 그게 우선 — 시트의 별도 '연료' 컬럼은
+  //  공급사가 잘못 기재/미갱신하는 경우가 있는 반면(예: LPG 차량인데 연료컬럼에 '가솔린'),
+  //  트림 원문은 실제 그 차량을 그대로 옮겨적은 텍스트라 더 신뢰 가능 (trim_name 우선 원칙과 동일).
+  const pf = fuelKey(`${p.trim_name || ''} ${p.raw_model_full || ''}`) || fuelKey(p.fuel_type);
   const regYear = regYearOf(p);
 
   // 1) 연식 범위 (생산기간) 필터
@@ -259,12 +265,19 @@ export function snapToSsot(p, snapIndex) {
     }
   }
 
-  // 3) 최종 세부모델 — (matchVehicle 픽 또는 제품 세부모델) 이 후보에 있으면 그것, 없으면 연료맞는 것 → 최신
+  // 3) 최종 세부모델 — (matchVehicle 픽 또는 제품 세부모델) 이 후보에 있으면 그것이 우선이지만,
+  //  연료가 확실한데 그 세부모델엔 해당 연료 파워트레인 자체가 없으면(예: '하이브리드 전용' 파생
+  //  세부모델로 잘못 픽) 같은 후보군 내 그 연료를 실제로 갖는 다른 세부모델을 대신 채택.
+  //  (안 그러면 한 번 잘못 픽된 세부모델이 매 재동기화마다 그대로 재확정되며 고착됨.)
   const preferredSub = (m && m.sub_model) || p.sub_model || '';
-  const entry =
+  const bySub =
     (preferredSub && cand.find(e => e.sub_model === preferredSub)) ||
-    (preferredSub && cand.find(e => keyNorm(e.sub_model) === keyNorm(preferredSub))) ||
+    (preferredSub && cand.find(e => keyNorm(e.sub_model) === keyNorm(preferredSub)));
+  const bySubHasFuel = !pf || !bySub || bySub.variants.some(v => fuelKey(v.fuel) === pf);
+  const entry =
+    (bySub && bySubHasFuel && bySub) ||
     cand.find(e => pf && e.variants.some(v => fuelKey(v.fuel) === pf)) ||
+    bySub ||
     [...cand].sort((a, b) => String(b.year_start || '').localeCompare(String(a.year_start || '')))[0];
   if (!entry) return null;
 
