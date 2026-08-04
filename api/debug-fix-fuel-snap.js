@@ -70,7 +70,11 @@ export default async function handler(req, res) {
         const newVariant = snap.variant;
         const newTrim = rawTrim || snap.trim_name;
         const newSub = snap.sub_model;
-        if (existing.variant !== newVariant || existing.sub_model !== newSub) {
+        // 연료 오분류 픽스(74fb3e7) 로 인한 변경만 — 세부모델명 변경(SSOT 원본 갱신 등 무관한 드리프트)은
+        // 스코프 밖이라 제외. variant 라벨은 항상 '연료 배기량 ...' 순서(variantLabel()) 라 첫 토큰이 연료.
+        const oldFuel = String(existing.variant || '').split(' ')[0];
+        const newFuel = String(newVariant || '').split(' ')[0];
+        if (oldFuel && newFuel && oldFuel !== newFuel) {
           diffs.push({
             key: existing.key, car_number: p.car_number, source: src,
             old_sub_model: existing.sub_model, new_sub_model: newSub,
