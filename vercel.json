@@ -23,9 +23,6 @@
     },
     "api/sync/auto.js": {
       "maxDuration": 300
-    },
-    "api/debug-fix-fuel-snap.js": {
-      "maxDuration": 300
     }
   },
   "rewrites": [
