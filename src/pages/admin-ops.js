@@ -440,27 +440,18 @@ function renderNoticeTab(el) {
   el.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:20px;">
 
-      <!-- 배너 관리 -->
+      <!-- 배너 관리 (페이지 자유 추가/삭제 — 로그인 시 팝업에서 페이지 넘겨보기, X로 닫기) -->
       <div>
         <div style="font-size:12px;color:var(--text-sub);margin-bottom:6px;display:flex;align-items:center;gap:6px;">
           <i class="ph ph-image"></i> 메인 배너 이미지
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div id="bnDropZone" style="border:2px dashed var(--border-strong);border-radius:8px;padding:28px 16px;text-align:center;cursor:pointer;transition:background .15s;color:var(--text-muted);font-size:12px;">
-            <i class="ph ph-upload-simple" style="font-size:22px;display:block;margin-bottom:6px;"></i>
-            이미지를 드래그하거나 클릭해서 업로드
-            <input type="file" id="bnFileInput" accept="image/*" style="display:none;">
-          </div>
-          <div id="bnPreviewBox" style="display:none;border-radius:6px;overflow:hidden;border:1px solid var(--border);position:relative;">
-            <img id="bnPreviewImg" src="" alt="배너 미리보기" style="width:100%;height:auto;display:block;">
-            <button id="bnRemoveImg" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer;">✕ 제거</button>
-          </div>
-          <input class="input" id="bnLinkUrl" placeholder="클릭 링크 URL (선택)">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div id="bnSlots" style="display:flex;flex-direction:column;gap:14px;"></div>
+          <button class="btn btn-sm" id="bnAddPage"><i class="ph ph-plus"></i> 페이지 추가</button>
           <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;">
             <input type="checkbox" id="bnActive"> 배너 활성화
           </label>
           <button class="btn btn-sm btn-primary" id="bnSave"><i class="ph ph-floppy-disk"></i> 저장</button>
-          <input type="hidden" id="bnImgUrl">
         </div>
       </div>
 
@@ -482,71 +473,101 @@ function renderNoticeTab(el) {
     </div>
   `;
 
-  // 배너 현재값 로드
+  // 배너 페이지 — 개수 고정 없이 자유롭게 추가/삭제. 상태는 배열로 들고 매번 다시 그림.
+  let bannerPages = [{ image_url: '', link_url: '' }];   // 최소 1페이지
+  const slotsEl = el.querySelector('#bnSlots');
+
+  const renderSlots = () => {
+    slotsEl.innerHTML = bannerPages.map((p, i) => `
+      <div style="display:flex;flex-direction:column;gap:8px;padding:10px;border:1px solid var(--border);border-radius:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:11px;color:var(--text-muted);">${i + 1}페이지</div>
+          ${bannerPages.length > 1 ? `<button class="btn btn-xs is-danger" data-remove-page="${i}"><i class="ph ph-trash"></i> 페이지 삭제</button>` : ''}
+        </div>
+        <div class="bnDropZone" data-i="${i}" style="display:${p.image_url ? 'none' : ''};border:2px dashed var(--border-strong);border-radius:8px;padding:22px 16px;text-align:center;cursor:pointer;transition:background .15s;color:var(--text-muted);font-size:12px;">
+          <i class="ph ph-upload-simple" style="font-size:20px;display:block;margin-bottom:6px;"></i>
+          이미지를 드래그하거나 클릭해서 업로드
+          <input type="file" class="bnFileInput" data-i="${i}" accept="image/*" style="display:none;">
+        </div>
+        <div class="bnPreviewBox" data-i="${i}" style="display:${p.image_url ? 'block' : 'none'};border-radius:6px;overflow:hidden;border:1px solid var(--border);position:relative;">
+          <img class="bnPreviewImg" data-i="${i}" src="${p.image_url ? esc(p.image_url) : ''}" alt="배너 ${i + 1}페이지 미리보기" style="width:100%;height:auto;display:block;">
+          <button class="bnRemoveImg" data-i="${i}" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer;">✕ 이미지 제거</button>
+        </div>
+        <input class="input bnLinkUrl" data-i="${i}" placeholder="클릭 링크 URL (선택)" value="${esc(p.link_url || '')}">
+      </div>
+    `).join('');
+
+    slotsEl.querySelectorAll('.bnLinkUrl').forEach(inp => {
+      inp.addEventListener('input', () => { bannerPages[Number(inp.dataset.i)].link_url = inp.value; });
+    });
+    slotsEl.querySelectorAll('[data-remove-page]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        bannerPages.splice(Number(btn.dataset.removePage), 1);
+        renderSlots();
+      });
+    });
+    slotsEl.querySelectorAll('.bnRemoveImg').forEach(btn => {
+      btn.addEventListener('click', () => {
+        bannerPages[Number(btn.dataset.i)].image_url = '';
+        renderSlots();
+      });
+    });
+
+    const handleFile = async (i, dropZone, file) => {
+      if (!file || !file.type.startsWith('image/')) return showToast('이미지 파일만 가능합니다', 'error');
+      const original = dropZone.innerHTML;
+      dropZone.innerHTML = `<i class="ph ph-spinner-gap" style="font-size:20px;display:block;margin-bottom:6px;animation:spin 1s linear infinite;"></i>업로드 중…`;
+      dropZone.style.pointerEvents = 'none';
+      try {
+        const url = await uploadNoticeImage(file);
+        bannerPages[i].image_url = url;
+        renderSlots();
+      } catch (e) {
+        showToast('업로드 실패: ' + (e.message || e), 'error');
+        dropZone.innerHTML = original;
+        dropZone.style.pointerEvents = '';
+      }
+    };
+    slotsEl.querySelectorAll('.bnDropZone').forEach(dropZone => {
+      const i = Number(dropZone.dataset.i);
+      const fileInput = dropZone.querySelector('.bnFileInput');
+      dropZone.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', () => handleFile(i, dropZone, fileInput.files[0]));
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = 'var(--bg-hover)'; });
+      dropZone.addEventListener('dragleave', () => { dropZone.style.background = ''; });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.background = '';
+        handleFile(i, dropZone, e.dataTransfer.files[0]);
+      });
+    });
+  };
+  renderSlots();
+
+  el.querySelector('#bnAddPage').addEventListener('click', () => {
+    bannerPages.push({ image_url: '', link_url: '' });
+    renderSlots();
+  });
+
+  // 배너 현재값 로드 — pages[] (신규) 우선, 없으면 예전 단일 image_url 폴백(1페이지로 표시)
   (async () => {
     const banner = await fetchRecord('home_notices/__banner__');
-    if (banner?.image_url) {
-      el.querySelector('#bnImgUrl').value  = banner.image_url;
-      el.querySelector('#bnLinkUrl').value = banner.link_url || '';
-      el.querySelector('#bnActive').checked = !!banner.active;
-      const img = el.querySelector('#bnPreviewImg');
-      img.src = banner.image_url;
-      el.querySelector('#bnPreviewBox').style.display = 'block';
-      el.querySelector('#bnDropZone').style.display = 'none';
+    if (!banner) return;
+    el.querySelector('#bnActive').checked = !!banner.active;
+    const pages = (Array.isArray(banner.pages) && banner.pages.length)
+      ? banner.pages
+      : (banner.image_url ? [{ image_url: banner.image_url, link_url: banner.link_url || '' }] : []);
+    if (pages.length) {
+      bannerPages = pages.map(p => ({ image_url: p?.image_url || '', link_url: p?.link_url || '' }));
+      renderSlots();
     }
   })();
 
-  // 드래그앤드롭 + 클릭 업로드
-  const dropZone  = el.querySelector('#bnDropZone');
-  const fileInput = el.querySelector('#bnFileInput');
-  const previewBox = el.querySelector('#bnPreviewBox');
-  const previewImg = el.querySelector('#bnPreviewImg');
-  const imgUrlField = el.querySelector('#bnImgUrl');
-
-  const handleFile = async (file) => {
-    if (!file || !file.type.startsWith('image/')) return showToast('이미지 파일만 가능합니다', 'error');
-    dropZone.innerHTML = `<i class="ph ph-spinner-gap" style="font-size:22px;display:block;margin-bottom:6px;animation:spin 1s linear infinite;"></i>업로드 중…`;
-    dropZone.style.pointerEvents = 'none';
-    try {
-      const url = await uploadNoticeImage(file);
-      imgUrlField.value = url;
-      previewImg.src = url;
-      previewBox.style.display = 'block';
-      dropZone.style.display = 'none';
-    } catch (e) {
-      showToast('업로드 실패: ' + (e.message || e), 'error');
-      dropZone.innerHTML = `<i class="ph ph-upload-simple" style="font-size:22px;display:block;margin-bottom:6px;"></i>이미지를 드래그하거나 클릭해서 업로드<input type="file" id="bnFileInput" accept="image/*" style="display:none;">`;
-      dropZone.style.pointerEvents = '';
-    }
-  };
-
-  dropZone.addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
-  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.background = 'var(--bg-hover)'; });
-  dropZone.addEventListener('dragleave', () => { dropZone.style.background = ''; });
-  dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropZone.style.background = '';
-    handleFile(e.dataTransfer.files[0]);
-  });
-
-  el.querySelector('#bnRemoveImg').addEventListener('click', () => {
-    imgUrlField.value = '';
-    previewImg.src = '';
-    previewBox.style.display = 'none';
-    dropZone.style.display = '';
-    dropZone.style.pointerEvents = '';
-    dropZone.innerHTML = `<i class="ph ph-upload-simple" style="font-size:22px;display:block;margin-bottom:6px;"></i>이미지를 드래그하거나 클릭해서 업로드<input type="file" id="bnFileInput2" accept="image/*" style="display:none;">`;
-    dropZone.querySelector('#bnFileInput2').addEventListener('change', function() { handleFile(this.files[0]); });
-    dropZone.addEventListener('click', () => dropZone.querySelector('#bnFileInput2').click(), { once: true });
-  });
-
   el.querySelector('#bnSave').addEventListener('click', async () => {
-    const image_url = imgUrlField.value.trim();
-    if (!image_url) return showToast('이미지를 먼저 업로드하세요', 'error');
-    const link_url = el.querySelector('#bnLinkUrl').value.trim();
-    const active   = el.querySelector('#bnActive').checked;
-    await setRecord('home_notices/__banner__', { image_url, link_url, active });
+    const pages = bannerPages.filter(p => p.image_url);
+    if (!pages.length) return showToast('이미지를 먼저 업로드하세요', 'error');
+    const active = el.querySelector('#bnActive').checked;
+    await setRecord('home_notices/__banner__', { pages, active });
     showToast('배너 저장 완료');
   });
 

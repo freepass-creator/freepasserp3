@@ -93,7 +93,9 @@
   box-shadow: 0 8px 32px rgba(0,0,0,.4);
   line-height: 0;
 }
-#catBannerBox img { width: 100%; max-height: 400px; object-fit: contain; display: block; background: #000; }
+/* max-height 를 낮게 고정하면 세로로 긴 배너(카드형 프로모션 등)가 object-fit:contain 으로
+   눌려서 좌우 검은 여백(레터박스)이 생김 — 뷰포트 안에서 최대한 원본 비율 그대로 보이게 */
+#catBannerBox img { width: 100%; max-height: 85vh; object-fit: contain; display: block; }
 .cat-banner-btns {
   position: absolute; bottom: 10px; right: 10px;
   display: flex; gap: 6px; line-height: 1;
@@ -104,5 +106,23 @@
   background: rgba(0,0,0,.6); color: #fff;
   font-size: 12px; font-weight: 500; cursor: pointer;
   backdrop-filter: blur(2px);
+}
+.cat-banner-dots {
+  position: absolute; bottom: 10px; left: 10px;
+  display: flex; align-items: center; gap: 6px; line-height: 1;
+}
+.cat-banner-nav {
+  width: 24px; height: 24px;
+  border: none; border-radius: 4px;
+  background: rgba(0,0,0,.6); color: #fff;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  backdrop-filter: blur(2px);
+}
+.cat-banner-nav:disabled { opacity: .35; cursor: default; }
+.cat-banner-page-label {
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,.6); color: #fff;
+  font-size: 11px; font-weight: 500;
 }
 
