@@ -634,6 +634,7 @@ const SYNC_SOURCES = [
   { key: 'wellix', label: '웰릭스', desc: '웰릭스 (RP013)' },
   { key: 'sarent', label: 'SA렌터카', desc: 'SA렌터카 (PT-0023)' },
   { key: 'jnj', label: 'J&J렌트카', desc: 'J&J렌트카 (RP030)' },
+  { key: 'iancar', label: '이안카', desc: '이안카 (RP031)' },
 ];
 
 function renderSyncTab(el) {
@@ -1221,7 +1222,7 @@ function renderCleanupTab(el) {
 
   const norm = s => String(s || '').replace(/\s/g, '').toUpperCase();
   const CLEANUP_SOURCES = ['autoplus','songogong','aicar','pacific','leaders','star','rentzone',
-    'gyeongjinRent','gyeongjinCar','wooriCapital','kh','centro','billin','ian','wellix','sarent','jnj'];
+    'gyeongjinRent','gyeongjinCar','wooriCapital','kh','centro','billin','ian','wellix','sarent','jnj','iancar'];
 
   // 계약/문의방 안전목록 + 연동 시트 현재 차량번호(어느 소스에서 나왔는지까지) — 분석/개별확인 공용
   async function buildSafetyContext(onProgress) {
@@ -1530,7 +1531,7 @@ function renderCleanupTab(el) {
     { code: 'RP010', name: 'KH' }, { code: 'RP017', name: '센트로' },
     { code: 'RP021', name: '빌린카' }, { code: 'RP006', name: '아이언' },
     { code: 'RP013', name: '웰릭스' }, { code: 'PT-0023', name: 'SA렌터카' },
-    { code: 'RP030', name: 'J&J렌트카' },
+    { code: 'RP030', name: 'J&J렌트카' }, { code: 'RP031', name: '이안카' },
   ];
   const coreToken = s => String(s || '').replace(/\(주\)|주식회사|렌터카|렌트카|모빌리티|캐피탈/g, '').trim();
 
