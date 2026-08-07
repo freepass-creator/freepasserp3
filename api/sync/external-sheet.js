@@ -75,6 +75,7 @@ export const SHEET_CONFIGS = {
   // 이안카 — 종합시트와 동일한 42컬럼(차종분류/세부모델/Km/최초등록 등) 포맷이라 parseGeneralRow 재사용.
   //  행별 공급사코드 컬럼은 없지만 차고지="이안카" 텍스트로 findPartnerCode 매칭 + provider_code 로도 이중 보강.
   iancar: { sheet_id: '1fJuFSdaW559niD0ow7vVC3qcgjy8KRb8Cr3U8Of01vs', tab_name: '이안카', extra_tabs: ['이안카 재렌트'], provider_code: 'RP031', label: '이안카 (RP031)', schema: 'general' },
+  ecorent: { sheet_id: '1F2l4uTUqm_n3byL7d4fIkreCdpt4Vo5tiarMSh5iOmQ', tab_name: '시트1', provider_code: 'RP032', label: '에코렌트카 (RP032)', schema: 'rentco' },
 };
 
 /* 오플 자동탐지 시 제외할 탭 — 공지/수정중/구버전(구 …)/구독안내. 나머지 보이는 탭은 모두 차량 리스트로 간주. */
@@ -113,6 +114,7 @@ const PARTNER_NAME_TO_CODE = {
   '에스에이렌터카': 'PT-0023', '에스에이': 'PT-0023', 'SA렌터카': 'PT-0023', 'SA': 'PT-0023',
   '제이앤제이렌트카': 'RP030', '제이앤제이': 'RP030', 'J&J렌트카': 'RP030', 'J&J': 'RP030',
   '이안카': 'RP031',
+  '에코렌트카': 'RP032', '에코렌터카': 'RP032', '에코': 'RP032',
 };
 const findPartnerCode = (carYard) => {
   if (!carYard) return '';

@@ -28,6 +28,20 @@ export default async function handler(req, res) {
     await getAdmin();
     const db = admin.database();
 
+    if (req.method === 'POST') {
+      const KEY = 'RP032';
+      const existing = await db.ref(`partners/${KEY}`).once('value');
+      if (existing.exists()) return res.json({ ok: false, error: 'RP032 이미 존재함', data: existing.val() });
+      await db.ref(`partners/${KEY}`).set({
+        partner_code: KEY,
+        partner_name: '에코렌트카',
+        partner_type: '공급사',
+        created_at: Date.now(),
+        created_by: 'sync_onboarding',
+      });
+      return res.json({ ok: true, created: KEY });
+    }
+
     const partnersSnap = await db.ref('partners').once('value');
     const partnersVal = partnersSnap.val() || {};
     const partnerHits = [];
